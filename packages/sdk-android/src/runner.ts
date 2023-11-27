@@ -75,13 +75,14 @@ export const packageAndroid = async (_c: Context) => {
     return true;
 };
 
-export const runAndroid = async (c: Context) => {
+export const getDeviceToRunOn = async (c: Context) => {
+    logTask('getDeviceToRunOn');
+
+    if (!c.platform) return;
+
     const { target } = c.program;
     const { platform } = c;
     const defaultTarget = c.runtime.target;
-    logTask('runAndroid', `target:${target} default:${defaultTarget}`);
-
-    if (!platform) return;
 
     await resetAdb(c);
 
@@ -126,12 +127,12 @@ export const runAndroid = async (c: Context) => {
             });
             if (response.chosenEmulator) {
                 const dev = activeDevices.find((d) => d.name === response.chosenEmulator);
-                await runReactNativeAndroid(c, platform, dev);
+                return dev;
             }
         } else {
             await askForNewEmulator(c, platform);
-            const devices = await checkForActiveEmulator(c);
-            await runReactNativeAndroid(c, platform, devices);
+            const device = await checkForActiveEmulator(c);
+            return device;
         }
     };
 
@@ -141,11 +142,11 @@ export const runAndroid = async (c: Context) => {
         const foundDevice = devicesAndEmulators.find((d) => d.udid.includes(target) || d.name.includes(target));
         if (foundDevice) {
             if (foundDevice.isActive) {
-                await runReactNativeAndroid(c, platform, foundDevice);
+               return foundDevice;
             } else {
                 await launchAndroidSimulator(c, foundDevice, true);
                 const device = await checkForActiveEmulator(c);
-                await runReactNativeAndroid(c, platform, device);
+                return device;
             }
         } else {
             await askWhereToRun();
@@ -154,7 +155,7 @@ export const runAndroid = async (c: Context) => {
         // Only one that is active, running on that one
         const dv = activeDevices[0];
         logInfo(`Found device ${dv.name}:${dv.udid}!`);
-        await runReactNativeAndroid(c, platform, dv);
+        return dv;
     } else if (defaultTarget) {
         // neither a target nor an active device is found, revert to default target if available
         logDebug('Default target used', defaultTarget);
@@ -167,13 +168,22 @@ export const runAndroid = async (c: Context) => {
         } else {
             await launchAndroidSimulator(c, foundDevice, true);
             const device = await checkForActiveEmulator(c);
-            await runReactNativeAndroid(c, platform, device);
+            return device;
         }
     } else {
         // we don't know what to do, ask the user
         logDebug('Target not provided, asking where to run');
         await askWhereToRun();
     }
+}
+
+export const runAndroid = async (c: Context) => {
+    logTask('runAndroid', `target:${target} default:${defaultTarget}`);
+    const { platform } = c;
+
+    if (!platform) return;
+
+    await runReactNativeAndroid(c, platform, device);
 };
 
 const _checkSigningCerts = async (c: Context) => {

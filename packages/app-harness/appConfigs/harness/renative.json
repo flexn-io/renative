@@ -9,7 +9,7 @@
         "description": "Cross-platform application project based on ReNative",
         "buildSchemes": {
             "debug": {
-                "id": "renative.helloworld.debug",
+                "id": "renative.helloworld.debugs",
                 "title": "ReNative Debug"
             },
             "test": {
@@ -44,7 +44,9 @@
         },
         "ios": {
             "buildSchemes": {
-                "debug": {}
+                "debug": {
+                    "teamID": "BTT4G9WRN2"
+                }
             }
         },
         "tvos": {
