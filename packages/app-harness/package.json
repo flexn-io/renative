@@ -31,7 +31,6 @@
     },
     "dependencies": {
         "@lightningjs/sdk": "^5.4.1",
-        "@react-native-community/cli": "^11.3.8",
         "@rnv/renative": "1.0.0-rc.0",
         "next": "13.5.2",
         "raf": "3.4.1",
@@ -63,8 +62,7 @@
         "detox": "18.20.2",
         "jetifier": "1.6.5",
         "metro-react-native-babel-preset": "0.76.8",
-        "rnv": "1.0.0-rc.0",
-        "xcode": "2.1.0"
+        "rnv": "1.0.0-rc.0"
     },
     "private": true
 }

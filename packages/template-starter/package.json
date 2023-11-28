@@ -116,8 +116,7 @@
         "react-native-gesture-handler": "2.13.1",
         "react-native-tvos": "0.72.4-0",
         "react-native-web": "0.19.9",
-        "rnv": "1.0.0-rc.0",
-        "xcode": "2.1.0"
+        "rnv": "1.0.0-rc.0"
     },
     "private": false,
     "publishConfig": {
