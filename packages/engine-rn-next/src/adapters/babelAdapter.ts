@@ -5,7 +5,16 @@ export const withRNVBabel = (cnf: BabelConfig): BabelConfig => {
 
     return {
         retainLines: true,
-        presets: ['module:babel-preset-expo'],
+        presets: [
+            [
+                'module:babel-preset-expo',
+                {
+                    web: {
+                        disableImportExportTransform: false,
+                    },
+                },
+            ],
+        ],
         ...cnf,
         plugins: [
             [
