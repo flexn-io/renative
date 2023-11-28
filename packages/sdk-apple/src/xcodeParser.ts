@@ -123,7 +123,6 @@ const _parseXcodeProject = (c: Context, platform: RnvPlatform) =>
             }
 
             xcodeProj.addTargetAttribute('ProvisioningStyle', provisioningStyle);
-            console.log('provisioningStyle', provisioningStyle)
             xcodeProj.addBuildProperty('CODE_SIGN_STYLE', provisioningStyle);
             xcodeProj.updateBuildProperty('PRODUCT_BUNDLE_IDENTIFIER', appId);
 
