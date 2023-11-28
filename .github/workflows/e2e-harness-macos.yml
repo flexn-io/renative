@@ -1,0 +1,60 @@
+name: E2E Harness App (macOS)
+
+defaults:
+    run:
+        shell: zsh -l {0}
+on:
+    workflow_dispatch:
+    push:
+        branches:
+            - main
+            - 'release/**'
+        paths-ignore:
+            - 'docs/**'
+            - '**/README.md'
+            - '**/lerna.json'
+            - '**/metadata.json'
+            - '**/renative.json'
+            - '**/package.json'
+    pull_request:
+        types: [labeled]
+
+jobs:
+    e2e-harness-macos:
+        if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.label.name == 'e2e-harness-macos' || github.event.label.name == 'e2e' }}
+        runs-on: [self-hosted, macos]
+        steps:
+            - uses: actions/checkout@v2
+            - name: Setup
+              run: |
+                  security unlock-keychain -p ${{ secrets.FLEXN_KEYCHAIN_PASSWORD }} Flexn.keychain
+                  yarn config set network-timeout 300000
+            - name: Bootstrap
+              run: |
+                  yarn bootstrap-clean
+            - name: Build
+              run: |
+                  cd packages/app-harness && yarn build:macos-test
+            - name: E2E
+              run: |
+                  cd packages/app-harness && yarn e2e:macos
+            # Commented because e2e tests would fail due to minion issues
+            # - name: Post message to Slack via Webhook
+            #   if: ${{ github.event_name == 'push' && failure() }}
+            #   uses: slackapi/slack-github-action@v1.23.0
+            #   with:
+            #       payload: |
+            #           {
+            #             "text": "<!here> *Template macOS e2e tests FAILED after* <${{ github.event.pull_request.html_url || github.event.head_commit.url }}|push> :alert:",
+            #             "blocks": [
+            #               {
+            #                 "type": "section",
+            #                 "text": {
+            #                   "type": "mrkdwn",
+            #                   "text": "<!here> *Template macOS e2e tests FAILED after* <${{ github.event.pull_request.html_url || github.event.head_commit.url }}|push> :alert:"
+            #                 }
+            #               }
+            #             ]
+            #           }
+            #   env:
+            #       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
