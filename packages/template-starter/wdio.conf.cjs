@@ -2,8 +2,8 @@ const fs = require('fs');
 const path = require('path');
 
 let customCapabilities = {};
-if (fs.existsSync(path.join(__dirname, '../../../wdio.capabilities.harness.js'))) {
-    const { capabilities } = require('../../../wdio.capabilities.harness');
+if (fs.existsSync(path.join(__dirname, '../../../wdio.capabilities.template.js'))) {
+    const { capabilities } = require('../../../wdio.capabilities.template');
     customCapabilities = capabilities;
 }
 
@@ -15,7 +15,7 @@ const capabilities = {
                 deviceName: 'iPhone 14',
                 platformVersion: '15.5',
                 automationName: 'XCUITest',
-                bundleId: 'renative.harness.test',
+                bundleId: 'renative.helloworld.test',
                 app: 'platformBuilds/template_ios/build/RNVApp/Build/Products/Debug-iphonesimulator/RNVApp.app',
             },
         },
@@ -27,7 +27,7 @@ const capabilities = {
                 deviceName: 'Apple TV',
                 platformVersion: '15.4',
                 automationName: 'XCUITest',
-                bundleId: 'renative.harness.test',
+                bundleId: 'renative.helloworld.test',
                 app: 'platformBuilds/template_tvos/build/RNVAppTVOS/Build/Products/Debug-appletvsimulator/RNVAppTVOS.app',
             },
         },
@@ -39,8 +39,8 @@ const capabilities = {
                 avd: 'Pixel_4_API_29',
                 platformVersion: '10',
                 automationName: 'UiAutomator2',
-                appPackage: 'renative.harness.test',
-                appActivity: 'renative.harness.test.MainActivity',
+                appPackage: 'renative.helloworld.test',
+                appActivity: 'renative.helloworld.test.MainActivity',
                 app: 'platformBuilds/template_android/app/build/outputs/apk/debug/app-debug.apk',
             },
         },
@@ -52,8 +52,8 @@ const capabilities = {
                 avd: 'Android_TV_1080p_API_29',
                 platformVersion: '10',
                 automationName: 'UiAutomator2',
-                appPackage: 'renative.harness.test',
-                appActivity: 'renative.harness.test.MainActivity',
+                appPackage: 'renative.helloworld.test',
+                appActivity: 'renative.helloworld.test.MainActivity',
                 app: 'platformBuilds/template_androidtv/app/build/outputs/apk/debug/app-debug.apk',
             },
         },
