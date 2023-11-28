@@ -29,28 +29,28 @@
             "engine": "engine-rn",
             "npm": {
                 "devDependencies": {
-                    "jetifier": "1.6.5"
+                    "jetifier": "2.0.0"
                 }
             }
         },
         "androidwear": {
             "npm": {
                 "devDependencies": {
-                    "jetifier": "1.6.5"
+                    "jetifier": "2.0.0"
                 }
             }
         },
         "androidtv": {
             "npm": {
                 "devDependencies": {
-                    "jetifier": "1.6.5"
+                    "jetifier": "2.0.0"
                 }
             }
         },
         "firetv": {
             "npm": {
                 "devDependencies": {
-                    "jetifier": "1.6.5"
+                    "jetifier": "2.0.0"
                 }
             }
         }
