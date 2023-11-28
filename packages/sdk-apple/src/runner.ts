@@ -766,7 +766,7 @@ const archiveXcodeProject = (c: Context) => {
 
     const args = ps !== '' ? [...composeXcodeArgsFromCLI(ps), ...p] : p;
 
-    console.log('xcodebuild args', args);
+    logDebug('xcodebuild args', args);
 
     return executeAsync('xcodebuild', {
         rawCommand: { args },
