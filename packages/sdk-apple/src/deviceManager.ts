@@ -1,4 +1,5 @@
 import child_process from 'child_process';
+import { utilities } from 'appium-ios-device';
 import {
     chalk,
     logToSummary,
@@ -12,27 +13,25 @@ import {
     inquirerPrompt,
     RnvPlatform,
 } from '@rnv/core';
-import { AppleDevice } from './types';
+import { AppiumAppleDevice, AppleDevice } from './types';
 
 export const getAppleDevices = async (c: RnvContext, ignoreDevices?: boolean, ignoreSimulators?: boolean) => {
     const { platform } = c;
 
-    logTask('getAppleDevices', `ignoreDevices:${ignoreDevices} ignoreSimulators${ignoreSimulators}`);
+    logTask('getAppleDevices', `ignoreDevices:${ignoreDevices} ignoreSimulators:${ignoreSimulators}`);
 
     const {
         program: { skipTargetCheck },
     } = c;
 
-    let devicesAndSims;
-    let isXcode13 = false;
-    try {
-        // xcode >= 13
-        isXcode13 = true;
-        devicesAndSims = await executeAsync('xcrun xctrace list devices');
-    } catch {
-        // xcode < 13
-        devicesAndSims = await executeAsync('xcrun instruments -s');
-    }
+    const connectedDevicesIds = await utilities.getConnectedDevices();
+    const connectedDevicesArray = await Promise.all(connectedDevicesIds.map(async (id: string) => {
+        const info = await utilities.getDeviceInfo(id);
+        return {
+            udid: id,
+            ...info
+        }
+    }));
     const res = await executeAsync('xcrun simctl list --json');
     const simctl = JSON.parse(res.toString());
     const availableSims: Array<AppleDevice> = [];
@@ -50,14 +49,11 @@ export const getAppleDevices = async (c: RnvContext, ignoreDevices?: boolean, ig
         });
     }
 
-    let parseFunction = _parseIOSDevicesList;
-    if (isXcode13) {
-        parseFunction = _parseNewIOSDevicesList;
-    }
-    const devicesArr = parseFunction(devicesAndSims, platform, ignoreDevices, ignoreSimulators);
+    const devicesArr = _parseNewIOSDevicesList(connectedDevicesArray, platform, ignoreDevices);
 
     const simulatorsArr = _parseIOSDevicesList(availableSims, platform, ignoreDevices, ignoreSimulators);
     let allDevices = [...devicesArr, ...simulatorsArr];
+    console.log('allDevices', allDevices);
 
     if (!skipTargetCheck) {
         // filter watches
@@ -71,55 +67,42 @@ export const getAppleDevices = async (c: RnvContext, ignoreDevices?: boolean, ig
             return false;
         });
     }
+    console.log('allDevices', allDevices);
     return allDevices;
 };
 
 const _parseNewIOSDevicesList = (
-    rawDevices: string | Array<AppleDevice>,
+    rawDevices: Array<AppiumAppleDevice>,
     platform: RnvPlatform,
     ignoreDevices = false
 ) => {
     const devices: Array<AppleDevice> = [];
     if (ignoreDevices) return devices;
-    const decideIcon = (device: AppleDevice) => {
-        const { name, isDevice } = device;
-        switch (platform) {
-            case IOS:
-                if (name?.includes('iPhone') || name?.includes('iPad') || name?.includes('iPod')) {
-                    let icon = 'Phone 📱';
-                    if (name.includes('iPad')) icon = 'Tablet 💊';
-                    return icon;
-                }
-                return undefined;
-            case TVOS:
-                if (name?.includes('TV') && !name?.includes('iPhone') && !name?.includes('iPad')) {
-                    return 'TV 📺';
-                }
-                return undefined;
-            default:
-                if (isDevice) {
-                    return 'Apple Device';
-                }
-                return undefined;
+    const decideIcon = (device: AppiumAppleDevice) => {
+        const { ProductName } = device;
+        if (ProductName?.includes('iPhone') || ProductName?.includes('iPad') || ProductName?.includes('iPod')) {
+            let icon = 'Phone 📱';
+            if (ProductName.includes('iPad')) icon = 'Tablet 💊';
+            return icon;
         }
+        if (ProductName?.includes('TV') && !ProductName?.includes('iPhone') && !ProductName?.includes('iPad')) {
+            return 'TV 📺';
+        }
+        return 'Apple Device';
     };
-    if (typeof rawDevices === 'string') {
-        const lines = rawDevices.split('\n');
-        const devicesOnly: Array<string> = lines.slice(1, lines.indexOf(''));
-        devicesOnly.forEach((device) => {
-            const udid = device.match(/\(([^()]*)\)$/)?.[1];
-            const name = device.split(' (').slice(0, -1).join(' (');
-            const icon = decideIcon({ name, isDevice: true });
-            devices.push({
-                udid,
-                name,
-                icon,
-                isDevice: true,
-            });
-        });
-    }
 
-    return devices;
+    return rawDevices.map((device) => {
+        const { DeviceName, ProductVersion, udid } = device;
+        const version = ProductVersion;
+        const icon = decideIcon(device);
+        return {
+            udid,
+            name: DeviceName,
+            icon,
+            version,
+            isDevice: true,
+        };
+    });
 };
 
 const _parseIOSDevicesList = (
