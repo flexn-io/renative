@@ -112,7 +112,7 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
                 const device = await checkForActiveEmulator(c);
                 return device;
             }
-        } else if (activeDevices.length > 1) {
+        } else if (activeDevices.length >= 1) {
             const devicesString = composeDevicesArray(activeDevices);
             const choices = devicesString;
             const response = await inquirerPrompt({
