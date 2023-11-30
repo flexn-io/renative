@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Text, Image, View, PixelRatio, TouchableOpacity } from 'react-native';
+import { Text, Image, View, PixelRatio, TouchableOpacity, StatusBar } from 'react-native';
 import { Api } from '@rnv/renative';
 import { ICON_LOGO, CONFIG, ThemeProvider, ThemeContext, testProps } from '../config';
 import packageJson from '../../package.json';
@@ -11,7 +11,7 @@ const App = () => (
 );
 
 const AppThemed = () => {
-    const { theme, toggle } = useContext(ThemeContext);
+    const { theme, toggle, dark } = useContext(ThemeContext);
 
     const [pixelRatio, setPixelRatio] = useState(1);
     const [fontScale, setFontScale] = useState(1);
@@ -23,6 +23,10 @@ const AppThemed = () => {
 
     return (
         <View style={theme.styles.container}>
+            <StatusBar
+                backgroundColor={theme.styles.container.backgroundColor}
+                barStyle={dark ? 'light-content' : 'dark-content'}
+            />
             <Image
                 style={theme.styles.image}
                 source={ICON_LOGO}
