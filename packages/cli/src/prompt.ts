@@ -12,7 +12,10 @@ import {
 
 export const inquirerPrompt = async (params: PromptParams): Promise<Record<string, any>> => {
     const c = getContext();
-    if (c.program?.yes) return {};
+    
+    if (c.program?.yes && params.type === 'confirm' && params.name) {
+        return { [params.name]: true };
+    };
 
     const msg = params.logMessage || params.warningMessage || params.message;
     if (c.program?.ci) {
@@ -23,9 +26,9 @@ export const inquirerPrompt = async (params: PromptParams): Promise<Record<strin
         ) {
             logDebug(`defaulting to choice '${params.default}' for prompt '${params.name}'`);
 
-            if (params.name) return Promise.resolve({ [params.name]: params.default });
+            if (params.name) return { [params.name]: params.default };
         }
-        return Promise.reject(`--ci option does not allow prompts. question: ${msg}.`);
+        throw new Error(`--ci option does not allow prompts. question: ${msg}.`);
     }
     if (msg && params.logMessage) logTask(msg, chalk().grey);
     if (msg && params.warningMessage) logWarning(msg);
