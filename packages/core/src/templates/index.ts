@@ -143,6 +143,7 @@ const _configureAppConfigs = async (c: RnvContext) => {
                         }
                     } else if (!appConfig.hidden) {
                         appConfig.common = appConfig.common || {};
+                        //TODO: this needs to use bootstrap_metadata to work properly
                         // appConfig.common.title = c.files.project.config?.defaults?.title;
                         // appConfig.common.id = c.files.project.config?.defaults?.id;
 

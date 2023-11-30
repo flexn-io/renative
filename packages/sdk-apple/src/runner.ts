@@ -706,6 +706,7 @@ const archiveXcodeProject = (c: Context) => {
     const { platform } = c;
 
     const appFolderName = getAppFolderName(c, c.platform);
+    const schemeTarget = getConfigProp(c, platform, 'schemeTarget', 'RNVApp');
     const runScheme = getConfigProp(c, platform, 'runScheme', 'Debug');
     let sdk = getConfigProp(c, platform, 'sdk');
     if (!sdk) {
@@ -736,7 +737,7 @@ const archiveXcodeProject = (c: Context) => {
     }
     if (!ps.includes('-scheme')) {
         p.push('-scheme');
-        p.push(appFolderName);
+        p.push(schemeTarget!);
     }
     if (!ps.includes('-sdk') && sdkArr.length) {
         p.push('-sdk');
