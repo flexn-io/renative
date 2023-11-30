@@ -53,7 +53,6 @@ export const getAppleDevices = async (c: RnvContext, ignoreDevices?: boolean, ig
 
     const simulatorsArr = _parseIOSDevicesList(availableSims, platform, ignoreDevices, ignoreSimulators);
     let allDevices = [...devicesArr, ...simulatorsArr];
-    console.log('allDevices', allDevices);
 
     if (!skipTargetCheck) {
         // filter watches
@@ -67,7 +66,6 @@ export const getAppleDevices = async (c: RnvContext, ignoreDevices?: boolean, ig
             return false;
         });
     }
-    console.log('allDevices', allDevices);
     return allDevices;
 };
 
