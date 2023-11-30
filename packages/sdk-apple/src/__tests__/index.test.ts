@@ -8,15 +8,6 @@ beforeEach(() => {
     createRnvApi();
 });
 
-// jest.mock('appium-ios-device', () => {
-//     return {
-//         utilities: {
-//             getConnectedDevices: jest.fn(() => Promise.resolve(['1234'])),
-//             getDeviceInfo: jest.fn(() => Promise.resolve({ name: 'iPhone 14 Pro Max', isAvailable: true })),
-//         },
-//     };
-// });
-
 const { executeAsync, inquirerPrompt, getContext } = require('@rnv/core');
 
 afterEach(() => {
