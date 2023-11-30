@@ -52,7 +52,7 @@
         "@rnv/engine-rn-next": "1.0.0-rc.0",
         "@rnv/engine-rn-tvos": "1.0.0-rc.0",
         "@rnv/engine-rn-web": "1.0.0-rc.0",
-        "@rnv/template-starter": "1.0.0-rc.0",
+        "@rnv/template-starter": "^1.0.0-rc.0",
         "@types/react": "18.2.22",
         "@types/react-dom": "18.2.7",
         "@types/react-native": "0.72.2",
