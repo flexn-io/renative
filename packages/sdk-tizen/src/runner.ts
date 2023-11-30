@@ -175,10 +175,12 @@ export const buildTizenProject = async (c: RnvContext) => {
         const projectFile = path.join(tDir, '.project');
         const tProjectFile = path.join(tDir, '.tproject');
         const configXml = path.join(tDir, 'config.xml');
+        const icon = path.join(tDir, 'icon.png');
 
         copyFileSync(projectFile, path.join(tBuild, '.project'));
         copyFileSync(tProjectFile, path.join(tBuild, '.tproject'));
         copyFileSync(configXml, path.join(tBuild, 'config.xml'));
+        copyFileSync(icon, path.join(tBuild, 'icon.png'));
 
         await execCLI(c, CLI_TIZEN, `build-web -- ${tBuild} -out ${tIntermediate}`);
         await execCLI(c, CLI_TIZEN, `package -- ${tIntermediate} -s ${certProfile} -t wgt -o ${tOut}`);
