@@ -262,13 +262,6 @@ export const logSummary = (header = 'SUMMARY') => {
         str += printArrIntoBox(plats, 'Supported Platforms: ');
     }
 
-    if (ctx.files?.project?.config?.defaults) {
-        const currentTemplate = ctx.files.project.config?.currentTemplate;
-        if (currentTemplate) {
-            str += printIntoBox(`Master Template: ${_highlightColor(currentTemplate)}`);
-        }
-    }
-
     if (ctx.process) {
         const envString = `${ctx.process.platform} | ${ctx.process.arch} | node v${ctx.process.versions?.node}`;
         str += printIntoBox(`Env Info: ${currentChalk.gray(envString)}`);

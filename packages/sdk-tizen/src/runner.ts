@@ -39,7 +39,7 @@ import { waitForHost } from '@rnv/sdk-utils';
 
 const DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION = `${DEFAULT_CERTIFICATE_NAME}.p12`;
 
-const checkTizenStudioCert = async (c: RnvContext): Promise<boolean> => {
+export const checkTizenStudioCert = async (c: RnvContext): Promise<boolean> => {
     try {
         await execCLI(c, CLI_TIZEN, `security-profiles list -n ${DEFAULTS.certificateProfile}`);
         return true;

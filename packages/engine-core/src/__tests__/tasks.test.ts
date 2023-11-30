@@ -152,6 +152,10 @@ test('Execute task.rnv.new', async () => {
     expect(writeFileSync).toHaveBeenCalledTimes(1);
     expect(writeFileSync).toHaveBeenCalledWith(undefined, {
         currentTemplate: '@rnv/template-starter',
+        common:  {
+            id: "com.test.app",
+            title: "testtitle",
+        },
         defaults: {
             supportedPlatforms: ['android', 'ios', 'web'],
         },
