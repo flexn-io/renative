@@ -7,8 +7,7 @@
         "react": "source:rnv",
         "react-art": "source:rnv",
         "react-dom": "source:rnv",
-        "react-native": "source:rnv",
-        "@react-native-community/cli": "^11.3.8"
+        "react-native": "source:rnv"
     },
     "npm": {
         "devDependencies": {}
@@ -17,45 +16,41 @@
         "ios": {
             "engine": "engine-rn",
             "npm": {
-                "devDependencies": {
-                    "xcode": "2.1.0"
-                }
+                "devDependencies": {}
             }
         },
         "macos": {
             "engine": "engine-rn",
             "npm": {
-                "devDependencies": {
-                    "xcode": "2.1.0"
-                }
+                "devDependencies": {}
             }
         },
         "android": {
             "engine": "engine-rn",
             "npm": {
                 "devDependencies": {
-                    "jetifier": "1.6.5"
+                    "jetifier": "2.0.0"
                 }
             }
         },
         "androidwear": {
             "npm": {
                 "devDependencies": {
-                    "jetifier": "1.6.5"
+                    "jetifier": "2.0.0"
                 }
             }
         },
         "androidtv": {
             "npm": {
                 "devDependencies": {
-                    "jetifier": "1.6.5"
+                    "jetifier": "2.0.0"
                 }
             }
         },
         "firetv": {
             "npm": {
                 "devDependencies": {
-                    "jetifier": "1.6.5"
+                    "jetifier": "2.0.0"
                 }
             }
         }

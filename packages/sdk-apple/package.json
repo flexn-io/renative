@@ -30,15 +30,15 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@react-native-community/cli": "^11.3.8",
-        "@react-native-community/cli-platform-ios": "^11.3.8",
         "@rnv/sdk-react-native": "1.0.0-rc.0",
         "compare-versions": "3.6.0",
         "ios-mobileprovision-finder": "1.1.0",
         "xcode": "2.1.0"
     },
     "peerDependencies": {
-        "@rnv/core": "^1.0.0-rc.0"
+        "@rnv/core": "^1.0.0-rc.0",
+        "@react-native-community/cli": "^11.3.8",
+        "@react-native-community/cli-platform-ios": "^11.3.8"
     },
     "private": false,
     "publishConfig": {
