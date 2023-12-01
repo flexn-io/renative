@@ -401,8 +401,13 @@ export const taskRnvNew = async (c: RnvContext) => {
             return answer[name];
         }
     };
-    const promisessResult = await Promise.all(inputValues.map(validateAndAssign));
-    const [inputAppTitle, inputAppID, inputVersion] = promisessResult;
+    const inputsResult = [];
+    for (const value of inputValues) {
+        const res = await validateAndAssign(value);
+        inputsResult.push(res);
+    }
+
+    const [inputAppTitle, inputAppID, inputVersion] = inputsResult;
 
     //////////
     // if (title && title !== '' && id && id !== '' && appVersion && appVersion !== '') {
