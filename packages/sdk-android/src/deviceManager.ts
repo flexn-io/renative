@@ -469,7 +469,7 @@ const _parseDevicesResult = async (
         }
     }
 
-    if (avdsString) {
+    if (avdsString && !deviceOnly) {
         const avdLines = avdsString.trim().split(/\r?\n/);
         logDebug('_parseDevicesResult 7', { avdLines });
 

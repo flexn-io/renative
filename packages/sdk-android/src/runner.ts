@@ -81,7 +81,7 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
 
     if (!c.platform) return;
 
-    const { target } = c.program;
+    const { target, device } = c.program;
     const { platform } = c;
 
     await resetAdb(c);
@@ -90,13 +90,19 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
         await connectToWifiDevice(c, target);
     }
 
-    const devicesAndEmulators = await getAndroidTargets(c, false, false, c.program.device !== undefined);
+    const devicesAndEmulators = await getAndroidTargets(c, false, false, device !== undefined);
 
     const activeDevices = devicesAndEmulators.filter((d) => d.isActive);
     const inactiveDevices = devicesAndEmulators.filter((d) => !d.isActive);
 
+    console.log('devicesAndEmulators', devicesAndEmulators);
+
     const askWhereToRun = async () => {
         if (activeDevices.length === 0 && inactiveDevices.length > 0) {
+            // No device active and device param is passed, exiting
+            if (c.program.device) {
+                return logError('No active devices found, please connect one or remove the device argument', true)
+            }
             // No device active, but there are emulators created
             const devicesString = composeDevicesArray(inactiveDevices);
             const choices = devicesString;
@@ -126,6 +132,9 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
                 return dev;
             }
         } else {
+            if (c.program.device) {
+                return logError('No active devices found, please connect one or remove the device argument', true)
+            }
             await askForNewEmulator(c, platform);
             const device = await checkForActiveEmulator(c);
             return device;
