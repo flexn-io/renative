@@ -7,8 +7,7 @@
         "react-art": "source:rnv",
         "react-dom": "source:rnv",
         "react-native": "source:rnv",
-        "react-native-web": "source:rnv",
-        "@react-native-community/cli": "^11.3.8"
+        "react-native-web": "source:rnv"
     },
     "npm": {
         "devDependencies": {}
