@@ -11,51 +11,44 @@ const capabilities = {
     ios: [
         {
             platformName: 'iOS',
-            'appium:options': {
-                deviceName: 'iPhone 14',
-                platformVersion: '15.5',
-                automationName: 'XCUITest',
-                bundleId: 'renative.harness.test',
-                app: 'platformBuilds/template_ios/build/RNVApp/Build/Products/Debug-iphonesimulator/RNVApp.app',
-            },
+            'appium:deviceName': 'iPhone 14',
+            'appium:platformVersion': '15.5',
+            'appium:automationName': 'XCUITest',
+            'appium:bundleId': 'renative.harness.test',
+            'appium:app': 'platformBuilds/harness_ios/build/RNVApp/Build/Products/Debug-iphonesimulator/RNVApp.app',
         },
     ],
     tvos: [
         {
             platformName: 'tvOS',
-            'appium:options': {
-                deviceName: 'Apple TV',
-                platformVersion: '15.4',
-                automationName: 'XCUITest',
-                bundleId: 'renative.harness.test',
-                app: 'platformBuilds/template_tvos/build/RNVAppTVOS/Build/Products/Debug-appletvsimulator/RNVAppTVOS.app',
-            },
+            'appium:deviceName': 'Apple TV',
+            'appium:platformVersion': '15.4',
+            'appium:automationName': 'XCUITest',
+            'appium:bundleId': 'renative.harness.test',
+            'appium:app':
+                'platformBuilds/harness_tvos/build/RNVAppTVOS/Build/Products/Debug-appletvsimulator/RNVAppTVOS.app',
         },
     ],
     android: [
         {
             platformName: 'Android',
-            'appium:options': {
-                avd: 'Pixel_4_API_29',
-                platformVersion: '10',
-                automationName: 'UiAutomator2',
-                appPackage: 'renative.harness.test',
-                appActivity: 'renative.harness.test.MainActivity',
-                app: 'platformBuilds/template_android/app/build/outputs/apk/debug/app-debug.apk',
-            },
+            'appium:avd': 'Pixel_4_API_29',
+            'appium:platformVersion': '10',
+            'appium:automationName': 'UiAutomator2',
+            'appium:appPackage': 'renative.harness.test',
+            'appium:appActivity': 'renative.harness.test.MainActivity',
+            'appium:app': 'platformBuilds/harness_android/app/build/outputs/apk/debug/app-debug.apk',
         },
     ],
     androidtv: [
         {
             platformName: 'Android',
-            'appium:options': {
-                avd: 'Android_TV_1080p_API_29',
-                platformVersion: '10',
-                automationName: 'UiAutomator2',
-                appPackage: 'renative.harness.test',
-                appActivity: 'renative.harness.test.MainActivity',
-                app: 'platformBuilds/template_androidtv/app/build/outputs/apk/debug/app-debug.apk',
-            },
+            'appium:avd': 'Android_TV_1080p_API_29',
+            'appium:platformVersion': '10',
+            'appium:automationName': 'UiAutomator2',
+            'appium:appPackage': 'renative.harness.test',
+            'appium:appActivity': 'renative.harness.test.MainActivity',
+            'appium:app': 'platformBuilds/harness_androidtv/app/build/outputs/apk/debug/app-debug.apk',
         },
     ],
     macos: [
@@ -63,7 +56,7 @@ const capabilities = {
             browserName: 'chrome',
             'goog:chromeOptions': {
                 binary: '../../node_modules/electron/dist/Electron.app/Contents/MacOS/Electron',
-                args: ['app=./platformBuilds/template_macos/build'],
+                args: ['app=./platformBuilds/harness_macos/build'],
             },
         },
     ],
@@ -106,7 +99,7 @@ exports.config = {
     // then the current working directory is where your `package.json` resides, so `wdio`
     // will be called from there.
     //
-    specs: ['./test/specs/e2e.cjs'],
+    specs: ['./test/specs/playground.cjs'],
     // Patterns to exclude.
     exclude: [
         // 'path/to/excluded/files'
@@ -182,9 +175,6 @@ exports.config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    ...(process.env.PLATFORM === 'web' && {
-        services: ['selenium-standalone'],
-    }),
     ...(process.env.PLATFORM === 'macos' && {
         services: ['chromedriver'],
     }),

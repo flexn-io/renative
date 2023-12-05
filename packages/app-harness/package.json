@@ -22,11 +22,11 @@
         "build:tvos-test": "npx rnv build -p tvos -s test --packageManager yarn --ci",
         "build:macos-test": "npx rnv build -p macos -s test --packageManager yarn --ci",
         "start:web-test": "npx rnv start -p web -s test --packageManager yarn --ci",
-        "e2e:android": "APPIUM_HOME=./ PLATFORM=android JAVA_HOME=$(/usr/libexec/java_home) npx wdio wdio.conf.cjs",
-        "e2e:androidtv": "APPIUM_HOME=./ PLATFORM=androidtv JAVA_HOME=$(/usr/libexec/java_home) npx wdio wdio.conf.cjs",
-        "e2e:ios": "APPIUM_HOME=./ PLATFORM=ios npx wdio wdio.conf.cjs",
-        "e2e:tvos": "APPIUM_HOME=./ PLATFORM=tvos npx wdio wdio.conf.cjs",
-        "e2e:macos": "PLATFORM=macos ENGINE=electron npx wdio wdio.conf.cjs",
+        "e2e:android": "APPIUM_HOME=./ PLATFORM=android JAVA_HOME=$(/usr/libexec/java_home) wdio wdio.conf.cjs",
+        "e2e:androidtv": "APPIUM_HOME=./ PLATFORM=androidtv JAVA_HOME=$(/usr/libexec/java_home) wdio wdio.conf.cjs",
+        "e2e:ios": "APPIUM_HOME=./ PLATFORM=ios wdio wdio.conf.cjs",
+        "e2e:tvos": "APPIUM_HOME=./ PLATFORM=tvos wdio wdio.conf.cjs",
+        "e2e:macos": "PLATFORM=macos ENGINE=electron wdio wdio.conf.cjs",
         "e2e:web": "PLATFORM=web wdio wdio.conf.cjs",
         "report": "yarn report:generate && yarn report:open",
         "report:generate": "npx allure generate --clean reporting/allure-results -o reporting/allure-report",
@@ -69,8 +69,7 @@
         "jetifier": "1.6.5",
         "metro-react-native-babel-preset": "0.76.8",
         "rnv": "1.0.0-rc.0",
-        "xcode": "2.1.0",
-        "ts-node": "^10.9.1"
+        "xcode": "2.1.0"
     },
     "private": true
 }
