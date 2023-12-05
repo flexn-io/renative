@@ -12,11 +12,5 @@
         ],
         "strictNullChecks": true
     },
-    "include": [
-        "next-env.d.ts",
-        "**/*.ts",
-        "**/*.tsx",
-        "platformBuilds/template_web/.next/types/**/*.ts",
-        "platformBuilds/harness_web/.next/types/**/*.ts"
-    ]
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "platformBuilds/template_web/.next/types/**/*.ts"]
 }
