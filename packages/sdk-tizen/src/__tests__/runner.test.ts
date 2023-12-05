@@ -1,4 +1,4 @@
-import { createRnvApi, createRnvContext, execCLI, getContext } from '@rnv/core';
+import { createRnvApi, createRnvContext, getContext } from '@rnv/core';
 import { configureTizenGlobal, checkTizenStudioCert } from '../runner';
 import path from 'path';
 
