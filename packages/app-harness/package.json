@@ -57,7 +57,7 @@
         "@rnv/engine-rn-next": "1.0.0-rc.1",
         "@rnv/engine-rn-tvos": "1.0.0-rc.1",
         "@rnv/engine-rn-web": "1.0.0-rc.1",
-        "@rnv/template-starter": "1.0.0-rc.1",
+        "@rnv/template-starter": "^1.0.0-rc.1",
         "@types/react": "18.2.22",
         "@types/react-dom": "18.2.7",
         "@types/react-native": "0.72.2",
@@ -67,5 +67,17 @@
         "jetifier": "2.0.0",
         "rnv": "1.0.0-rc.1"
     },
-    "private": true
+    "private": true,
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    }
 }

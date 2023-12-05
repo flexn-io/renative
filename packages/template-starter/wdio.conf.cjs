@@ -12,7 +12,7 @@ const capabilities = {
         {
             platformName: 'iOS',
             'appium:deviceName': 'iPhone 14',
-            'appium:platformVersion': '15.5',
+            'appium:platformVersion': '16.4',
             'appium:automationName': 'XCUITest',
             'appium:bundleId': 'renative.helloworld.test',
             'appium:app': 'platformBuilds/template_ios/build/RNVApp/Build/Products/Debug-iphonesimulator/RNVApp.app',
@@ -22,7 +22,7 @@ const capabilities = {
         {
             platformName: 'tvOS',
             'appium:deviceName': 'Apple TV',
-            'appium:platformVersion': '15.4',
+            'appium:platformVersion': '16.4',
             'appium:automationName': 'XCUITest',
             'appium:bundleId': 'renative.helloworld.test',
             'appium:app':
@@ -43,7 +43,7 @@ const capabilities = {
     androidtv: [
         {
             platformName: 'Android',
-            'appium:avd': 'Android_TV_1080p_API_29',
+            'appium:avd': 'Android_TV_1080p_API_30',
             'appium:platformVersion': '10',
             'appium:automationName': 'UiAutomator2',
             'appium:appPackage': 'renative.helloworld.test',
