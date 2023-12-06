@@ -89,7 +89,7 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
         await connectToWifiDevice(c, target);
     }
 
-    const devicesAndEmulators = await getAndroidTargets(c, !device, device, !!device);
+    const devicesAndEmulators = await getAndroidTargets(c, false, false, !!device);
 
     const activeDevices = devicesAndEmulators.filter((d) => d.isActive);
     const inactiveDevices = devicesAndEmulators.filter((d) => !d.isActive);
