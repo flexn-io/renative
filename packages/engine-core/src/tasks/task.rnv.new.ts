@@ -112,7 +112,6 @@ export const configureGit = async (c: RnvContext) => {
 const _prepareProjectOverview = (c: RnvContext, data: NewProjectData) => {
     data.appTitle = data.inputAppTitle || data.defaultAppTitle;
     data.teamID = '';
-    console.log(data.inputAppID, 'appID');
     data.appID = data.inputAppID ? data.inputAppID.replace(/\s+/g, '-').toLowerCase() : data.appID;
     data.version = data.inputVersion || data.defaultVersion;
     const tempString = `${data.optionTemplates.selectedOption}@${data.optionTemplates.selectedVersion}`;
@@ -326,10 +325,6 @@ export const taskRnvNew = async (c: RnvContext) => {
     // INPUT: Project Title, ID, Version
     // ==================================================
 
-    // let inputAppTitle;
-    // let inputAppID;
-    // let inputVersion;
-
     const validator = {
         validateAppTitle: (val: string) => (typeof val === 'string' && val !== '') || 'Please enter a title',
         validateAppID: (appId: string) =>
@@ -408,46 +403,6 @@ export const taskRnvNew = async (c: RnvContext) => {
     }
 
     const [inputAppTitle, inputAppID, inputVersion] = inputsResult;
-
-    //////////
-    // if (title && title !== '' && id && id !== '' && appVersion && appVersion !== '') {
-    //     inputAppTitle = title;
-    //     inputAppID = id;
-    //     inputVersion = appVersion;
-    // } else {
-    //     const answer1 = await inquirerPrompt({
-    //         name: 'inputAppTitle',
-    //         type: 'input',
-    //         default: data.defaultAppTitle,
-    //         validate: (val) => !!val || 'Please enter a title',
-    //         message: "What's your project Title?",
-    //     });
-    //     const answer2 = await inquirerPrompt({
-    //         name: 'inputAppID',
-    //         type: 'input',
-    //         default: () => {
-    //             data.appID = `com.mycompany.${inputProjectName.replace(/\s+/g, '').toLowerCase()}`;
-    //             return data.appID;
-    //         },
-    //         validate: (appId) =>
-    //             !!appId.match(/^[a-z][a-z0-9_]*(\.[a-z0-9_]+)+[0-9a-z_]$/) ||
-    //             'Please enter a valid appID (com.test.app)',
-    //         message: "What's your App ID?",
-    //     });
-
-    //     const answer3 = await inquirerPrompt({
-    //         name: 'inputVersion',
-    //         type: 'input',
-    //         default: data.defaultVersion,
-    //         validate: (v) =>
-    //             !!semver.valid(semver.coerce(v)) ||
-    //             'Please enter a valid semver version (1.0.0, 42.6.7.9.3-alpha, etc.)',
-    //         message: "What's your Version?",
-    //     });
-    //     inputAppTitle = answer1?.inputAppTitle;
-    //     inputAppID = answer2?.inputAppID;
-    //     inputVersion = answer3?.inputVersion;
-    // }
 
     // ==================================================
     // INPUT: Workspace
