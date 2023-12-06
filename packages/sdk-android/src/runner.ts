@@ -95,8 +95,6 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
     const activeDevices = devicesAndEmulators.filter((d) => d.isActive);
     const inactiveDevices = devicesAndEmulators.filter((d) => !d.isActive);
 
-    console.log('devicesAndEmulators', devicesAndEmulators);
-
     const askWhereToRun = async () => {
         if (activeDevices.length === 0 && inactiveDevices.length > 0) {
             // No device active and device param is passed, exiting
