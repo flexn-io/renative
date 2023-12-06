@@ -1,6 +1,6 @@
 import { createRnvApi, createRnvContext } from '@rnv/core';
 import type { PromptParams } from "@rnv/core";
-import { getDeviceToRunOn } from '../runner';
+import { getIosDeviceToRunOn } from '../runner';
 import { simctlSimJson, xctraceDevices } from '../__mocks__/data';
 
 beforeEach(() => {
@@ -14,7 +14,7 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-describe('getDeviceToRunOn', () => {
+describe('getIosDeviceToRunOn', () => {
   it('should return a device to run on with pick', async () => {
     const ctx = getContext();
 
@@ -39,7 +39,7 @@ describe('getDeviceToRunOn', () => {
     }
     });
 
-    const deviceArgs = await getDeviceToRunOn(ctx);
+    const deviceArgs = await getIosDeviceToRunOn(ctx);
     expect(executeAsync).toHaveBeenCalledTimes(2);
     expect(deviceArgs).toBe('--simulator iPhone\\ 14');
   });
@@ -65,7 +65,7 @@ describe('getDeviceToRunOn', () => {
     }
     });
 
-    const deviceArgs = await getDeviceToRunOn(ctx);
+    const deviceArgs = await getIosDeviceToRunOn(ctx);
     expect(executeAsync).toHaveBeenCalledTimes(2);
     expect(deviceArgs).toBe('--simulator iPhone\\ SE\\ (3rd\\ generation)');
   });
@@ -80,7 +80,7 @@ describe('getDeviceToRunOn', () => {
         .mockReturnValueOnce(Promise.resolve(xctraceDevices))
         .mockReturnValueOnce(Promise.resolve(JSON.stringify(simctlSimJson)));
 
-    const deviceArgs = await getDeviceToRunOn(ctx);
+    const deviceArgs = await getIosDeviceToRunOn(ctx);
     expect(executeAsync).toHaveBeenCalledTimes(2);
     expect(deviceArgs).toContain('--simulator');
     // expect(deviceArgs).toBe('--simulator iPhone\\ 14\\ Plus'); // FIXME: This is failing
