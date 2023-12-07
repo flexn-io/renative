@@ -324,47 +324,85 @@ export const taskRnvNew = async (c: RnvContext) => {
     // ==================================================
     // INPUT: Project Title, ID, Version
     // ==================================================
-    let inputAppTitle;
-    let inputAppID;
-    let inputVersion;
-    if (title && title !== '' && id && id !== '' && appVersion && appVersion !== '') {
-        inputAppTitle = title;
-        inputAppID = id;
-        inputVersion = appVersion;
-    } else {
-        const answer1 = await inquirerPrompt({
+
+    const validator = {
+        validateAppTitle: (val: string) => (typeof val === 'string' && val !== '') || 'Please enter a title',
+        validateAppID: (appId: string) =>
+            (typeof appId === 'string' && !!appId.match(/^[a-z][a-z0-9_]*(\.[a-z0-9_]+)+[0-9a-z_]$/)) ||
+            'Please enter a valid appID (com.test.app)',
+        validateAppVersion: (version: string) =>
+            !!semver.valid(semver.coerce(version)) ||
+            'Please enter a valid semver version (1.0.0, 42.6.7.9.3-alpha, etc.)',
+    };
+
+    const inputValues = [
+        {
+            value: title,
+            validFn: validator.validateAppTitle,
             name: 'inputAppTitle',
-            type: 'input',
-            default: data.defaultAppTitle,
-            validate: (val) => !!val || 'Please enter a title',
+            defaultVal: data.defaultAppTitle,
             message: "What's your project Title?",
-        });
-        const answer2 = await inquirerPrompt({
+            warning: 'Title was not provided',
+        },
+        {
+            value: id,
+            validFn: validator.validateAppID,
             name: 'inputAppID',
-            type: 'input',
-            default: () => {
-                data.appID = `com.mycompany.${inputProjectName.replace(/\s+/g, '').toLowerCase()}`;
+            defaultVal: () => {
+                data.appID = `com.mycompany.${inputProjectName.replace(/[^a-zA-Z0-9]/g, '').toLowerCase()}`;
                 return data.appID;
             },
-            validate: (appId) =>
-                !!appId.match(/^[a-z][a-z0-9_]*(\.[a-z0-9_]+)+[0-9a-z_]$/) ||
-                'Please enter a valid appID (com.test.app)',
             message: "What's your App ID?",
-        });
-
-        const answer3 = await inquirerPrompt({
+            warning: `Command contains invalid appId ${id}`,
+        },
+        {
+            value: appVersion,
+            validFn: validator.validateAppVersion,
             name: 'inputVersion',
-            type: 'input',
-            default: data.defaultVersion,
-            validate: (v) =>
-                !!semver.valid(semver.coerce(v)) ||
-                'Please enter a valid semver version (1.0.0, 42.6.7.9.3-alpha, etc.)',
+            defaultVal: data.defaultVersion,
             message: "What's your Version?",
-        });
-        inputAppTitle = answer1?.inputAppTitle;
-        inputAppID = answer2?.inputAppID;
-        inputVersion = answer3?.inputVersion;
+            warning: 'Command contains invalid appVersion',
+        },
+    ];
+
+    const validateAndAssign = async ({
+        value,
+        validFn,
+        name,
+        defaultVal,
+        message,
+        warning,
+    }: {
+        value: string;
+        validFn: (value: string) => true | string;
+        name: string;
+        defaultVal: (() => string) | string | undefined;
+        message: string;
+        warning: string;
+    }): Promise<string> => {
+        const isValid = validFn(value);
+        if (value && isValid === true) {
+            return value;
+        } else {
+            const warningMessage = typeof isValid === 'string';
+            const answer = await inquirerPrompt({
+                name,
+                type: 'input',
+                default: defaultVal,
+                validate: validFn,
+                message,
+                warningMessage: ci && warningMessage && warning,
+            });
+            return answer[name];
+        }
+    };
+    const inputsResult = [];
+    for (const value of inputValues) {
+        const res = await validateAndAssign(value);
+        inputsResult.push(res);
     }
+
+    const [inputAppTitle, inputAppID, inputVersion] = inputsResult;
 
     // ==================================================
     // INPUT: Workspace
