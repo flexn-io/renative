@@ -118,7 +118,7 @@ const runCocoaPods = async (c: Context) => {
         requiredPodPermissions = Array.from(new Set(requiredPodPermissions));
     }
 
-    // new arch support 
+    // new arch support
     const newArchEnabled = getConfigProp(c, c.platform, 'newArchEnabled', false);
 
     const env: any = {
@@ -204,11 +204,11 @@ export const getIosDeviceToRunOn = async (c: Context) => {
 
     const { device } = c.program;
     let devicesArr: AppleDevice[] = [];
-    if (device === true) {
-        devicesArr = await getAppleDevices(c, false, true);
-    } else {
-        devicesArr = await getAppleDevices(c, true, false);
-    }
+    // if (device === true) {
+    devicesArr = await getAppleDevices(c, false, false);
+    // } else {
+    //     devicesArr = await getAppleDevices(c, true, false);
+    // }
 
     let p = '';
 
@@ -266,8 +266,6 @@ export const getIosDeviceToRunOn = async (c: Context) => {
         } else {
             return Promise.reject(`No ${c.platform} devices connected!`);
         }
-    } else if (device) {
-        p = `--device ${device}`;
     } else if (c.runtime.isTargetTrue) {
         const devices = devicesArr.map((v) => ({
             name: `${v.name} | ${v.icon} | v: ${chalk().green(v.version)} | udid: ${chalk().grey(v.udid)}${
@@ -288,7 +286,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
         }
     } else if (c.runtime.target) {
         // check if the default sim is available
-        const desiredSim = devicesArr.find((d) => d.name === c.runtime.target && !d.isDevice);
+        const desiredSim = devicesArr.find((d) => d.name === c.runtime.target);
         if (!desiredSim) {
             const { sim } = await inquirerPrompt({
                 name: 'sim',
