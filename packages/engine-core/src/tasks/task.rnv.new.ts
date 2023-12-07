@@ -349,7 +349,7 @@ export const taskRnvNew = async (c: RnvContext) => {
             validFn: validator.validateAppID,
             name: 'inputAppID',
             defaultVal: () => {
-                data.appID = `com.mycompany.${inputProjectName.replace(/\s+/g, '').toLowerCase()}`;
+                data.appID = `com.mycompany.${inputProjectName.replace(/[^a-zA-Z0-9]/g, '').toLowerCase()}`;
                 return data.appID;
             },
             message: "What's your App ID?",
