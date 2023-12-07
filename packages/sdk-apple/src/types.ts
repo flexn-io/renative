@@ -18,8 +18,9 @@ export type AppiumAppleDevice = {
     ProductName: string;
     ProductType: string;
     ProductVersion: string;
-    SupportedDeviceFamilies: number[]
-}
+    SupportedDeviceFamilies: number[];
+    DeviceClass?: string;
+};
 
 export type Payload = {
     pluginConfigiOS: {

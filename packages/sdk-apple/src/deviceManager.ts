@@ -25,13 +25,15 @@ export const getAppleDevices = async (c: RnvContext, ignoreDevices?: boolean, ig
     } = c;
 
     const connectedDevicesIds = await utilities.getConnectedDevices();
-    const connectedDevicesArray = await Promise.all(connectedDevicesIds.map(async (id: string) => {
-        const info = await utilities.getDeviceInfo(id);
-        return {
-            udid: id,
-            ...info
-        }
-    }));
+    const connectedDevicesArray = await Promise.all(
+        connectedDevicesIds.map(async (id: string) => {
+            const info = await utilities.getDeviceInfo(id);
+            return {
+                udid: id,
+                ...info,
+            };
+        })
+    );
     const res = await executeAsync('xcrun simctl list --json');
     const simctl = JSON.parse(res.toString());
     const availableSims: Array<AppleDevice> = [];
@@ -77,10 +79,10 @@ const _parseNewIOSDevicesList = (
     const devices: Array<AppleDevice> = [];
     if (ignoreDevices) return devices;
     const decideIcon = (device: AppiumAppleDevice) => {
-        const { ProductName } = device;
+        const { ProductName, DeviceClass } = device;
         if (ProductName?.includes('iPhone') || ProductName?.includes('iPad') || ProductName?.includes('iPod')) {
             let icon = 'Phone 📱';
-            if (ProductName.includes('iPad')) icon = 'Tablet 💊';
+            if (DeviceClass?.includes('iPad')) icon = 'Tablet 💊';
             return icon;
         }
         if (ProductName?.includes('TV') && !ProductName?.includes('iPhone') && !ProductName?.includes('iPad')) {
