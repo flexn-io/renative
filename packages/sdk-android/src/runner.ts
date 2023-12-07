@@ -24,7 +24,6 @@ import {
     logTask,
     logWarning,
     logDebug,
-    logInfo,
     logSuccess,
     logRaw,
     logError,
@@ -81,7 +80,7 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
 
     if (!c.platform) return;
 
-    const { target } = c.program;
+    const { target, device } = c.program;
     const { platform } = c;
 
     await resetAdb(c);
@@ -90,16 +89,22 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
         await connectToWifiDevice(c, target);
     }
 
-    const devicesAndEmulators = await getAndroidTargets(c, false, false, c.program.device !== undefined);
+    const devicesAndEmulators = await getAndroidTargets(c, false, false, !!device);
 
     const activeDevices = devicesAndEmulators.filter((d) => d.isActive);
     const inactiveDevices = devicesAndEmulators.filter((d) => !d.isActive);
 
     const askWhereToRun = async () => {
-        if (activeDevices.length === 0 && inactiveDevices.length > 0) {
-            // No device active, but there are emulators created
-            const devicesString = composeDevicesArray(inactiveDevices);
-            const choices = devicesString;
+        if (activeDevices.length || inactiveDevices.length) {
+            // No device active and device param is passed, exiting
+            if (c.program.device && !activeDevices.length) {
+                return logError('No active devices found, please connect one or remove the device argument', true);
+            }
+
+            const activeString = composeDevicesArray(activeDevices);
+            const inactiveString = composeDevicesArray(inactiveDevices);
+
+            const choices = [...activeString, ...inactiveString];
             const response = await inquirerPrompt({
                 name: 'chosenEmulator',
                 type: 'list',
@@ -108,24 +113,17 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
             });
 
             if (response.chosenEmulator) {
+                const dev = activeDevices.find((d) => d.name === response.chosenEmulator);
+                if (dev) return dev;
+
                 await launchAndroidSimulator(c, response.chosenEmulator, true);
-                const device = await checkForActiveEmulator(c);
+                const device = await checkForActiveEmulator(c, response.chosenEmulator);
                 return device;
             }
-        } else if (activeDevices.length >= 1) {
-            const devicesString = composeDevicesArray(activeDevices);
-            const choices = devicesString;
-            const response = await inquirerPrompt({
-                name: 'chosenEmulator',
-                type: 'list',
-                message: 'Where would you like to run your app?',
-                choices,
-            });
-            if (response.chosenEmulator) {
-                const dev = activeDevices.find((d) => d.name === response.chosenEmulator);
-                return dev;
-            }
         } else {
+            if (c.program.device) {
+                return logError('No active devices found, please connect one or remove the device argument', true);
+            }
             await askForNewEmulator(c, platform);
             const device = await checkForActiveEmulator(c);
             return device;
@@ -138,19 +136,14 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
         const foundDevice = devicesAndEmulators.find((d) => d.udid.includes(target) || d.name.includes(target));
         if (foundDevice) {
             if (foundDevice.isActive) {
-               return foundDevice;
-            } 
+                return foundDevice;
+            }
             await launchAndroidSimulator(c, foundDevice, true);
-            const device = await checkForActiveEmulator(c);
+            const device = await checkForActiveEmulator(c, foundDevice.name);
             return device;
         }
         logDebug('Target not found, asking where to run');
         return askWhereToRun();
-    } else if (activeDevices.length === 1) {
-        // Only one that is active, running on that one
-        const activeDevice = activeDevices[0];
-        logInfo(`Found active device ${activeDevice.name}:${activeDevice.udid}!`);
-        return activeDevice;
     } else if (defaultTarget) {
         // neither a target nor an active device is found, revert to default target if available
         logDebug('Default target used', defaultTarget);
@@ -163,7 +156,7 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
             return askWhereToRun();
         } else if (!foundDevice.isActive) {
             await launchAndroidSimulator(c, foundDevice, true);
-            const device = await checkForActiveEmulator(c);
+            const device = await checkForActiveEmulator(c, foundDevice.name);
             return device;
         }
         return foundDevice;
@@ -172,7 +165,7 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
         logDebug('Target not provided, asking where to run');
         return askWhereToRun();
     }
-}
+};
 
 export const runAndroid = async (c: Context, device: AndroidDevice) => {
     logTask('runAndroid', `target:${device.udid}`);
