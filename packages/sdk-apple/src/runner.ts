@@ -204,11 +204,11 @@ export const getIosDeviceToRunOn = async (c: Context) => {
 
     const { device } = c.program;
     let devicesArr: AppleDevice[] = [];
-    // if (device === true) {
-    devicesArr = await getAppleDevices(c, false, false);
-    // } else {
-    //     devicesArr = await getAppleDevices(c, true, false);
-    // }
+    if (device === true) {
+        devicesArr = await getAppleDevices(c, false, true);
+    } else {
+        devicesArr = await getAppleDevices(c, true, false);
+    }
 
     let p = '';
 
@@ -266,6 +266,8 @@ export const getIosDeviceToRunOn = async (c: Context) => {
         } else {
             return Promise.reject(`No ${c.platform} devices connected!`);
         }
+    } else if (device) {
+        p = `--device ${device}`;
     } else if (c.runtime.isTargetTrue) {
         const devices = devicesArr.map((v) => ({
             name: `${v.name} | ${v.icon} | v: ${chalk().green(v.version)} | udid: ${chalk().grey(v.udid)}${
@@ -286,7 +288,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
         }
     } else if (c.runtime.target) {
         // check if the default sim is available
-        const desiredSim = devicesArr.find((d) => d.name === c.runtime.target);
+        const desiredSim = devicesArr.find((d) => d.name === c.runtime.target && !d.isDevice);
         if (!desiredSim) {
             const { sim } = await inquirerPrompt({
                 name: 'sim',
