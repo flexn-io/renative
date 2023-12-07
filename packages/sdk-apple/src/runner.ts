@@ -118,7 +118,7 @@ const runCocoaPods = async (c: Context) => {
         requiredPodPermissions = Array.from(new Set(requiredPodPermissions));
     }
 
-    // new arch support 
+    // new arch support
     const newArchEnabled = getConfigProp(c, c.platform, 'newArchEnabled', false);
 
     const env: any = {
