@@ -5,17 +5,17 @@ defaults:
         shell: zsh -l {0}
 on:
     workflow_dispatch:
-    push:
-        branches:
-            - main
-            - 'release/**'
-        paths-ignore:
-            - 'docs/**'
-            - '**/README.md'
-            - '**/lerna.json'
-            - '**/metadata.json'
-            - '**/renative.json'
-            - '**/package.json'
+    # push:
+    #     branches:
+    #         - main
+    #         - 'release/**'
+    #     paths-ignore:
+    #         - 'docs/**'
+    #         - '**/README.md'
+    #         - '**/lerna.json'
+    #         - '**/metadata.json'
+    #         - '**/renative.json'
+    #         - '**/package.json'
     pull_request:
         types: [labeled]
 
