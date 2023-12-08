@@ -12,11 +12,10 @@ import {
     ANDROID_WEAR,
     MACOS,
     IOS,
+    TASK_EJECT,
 } from '@rnv/core';
 import { ejectGradleProject } from '@rnv/sdk-android';
 import { ejectXcodeProject } from '@rnv/sdk-apple';
-
-const TASK_EJECT = 'eject';
 
 export const taskRnvEject: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvEject');
@@ -61,7 +60,7 @@ export const taskRnvEject: RnvTaskFn = async (c, _parentTask, originTask) => {
 export default {
     description: 'Eject current project app to self contained native project',
     fn: taskRnvEject,
-    task: 'eject',
+    task: TASK_EJECT,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR],
 };
