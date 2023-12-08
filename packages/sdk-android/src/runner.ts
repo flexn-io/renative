@@ -64,14 +64,12 @@ import {
     composeDevicesArray,
 } from './deviceManager';
 import { CLI_ANDROID_ADB } from './constants';
-import { runReactNativeAndroid } from '@rnv/sdk-react-native';
+import { runReactNativeAndroid, packageReactNativeAndroid } from '@rnv/sdk-react-native';
 
-export const packageAndroid = async (_c: Context) => {
+export const packageAndroid = async (c: Context) => {
     logTask('packageAndroid');
 
-    // TODO disabled for now, doesn't make sense to pack it if gradle does it again and it triggers errors about duplicate resources
-    // return packageReactNativeAndroid(c);
-    return true;
+    return packageReactNativeAndroid(c);
 };
 
 export const getAndroidDeviceToRunOn = async (c: Context) => {

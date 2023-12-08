@@ -171,6 +171,7 @@ export const TASK_APP_CREATE = 'app create';
 export const TASK_WORKSPACE_CONFIGURE = 'workspace configure';
 export const TASK_CONFIGURE_SOFT = 'configureSoft';
 export const TASK_KILL = 'kill';
+export const TASK_EJECT = 'eject';
 
 export const INJECTABLE_CONFIG_PROPS: Array<ConfigPropKey> = [
     'id',
