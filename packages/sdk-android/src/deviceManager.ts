@@ -81,6 +81,7 @@ export const launchAndroidSimulator = async (
         if (isIndependentThread) {
             execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`, {
                 detached: isIndependentThread,
+                silent: true,
             }).catch((err) => {
                 if (err.includes && err.includes('WHPX')) {
                     logWarning(err);
@@ -95,6 +96,7 @@ export const launchAndroidSimulator = async (
         }
         return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`, {
             detached: isIndependentThread,
+            silent: true,
         });
     }
     return Promise.reject('No simulator -t target name specified!');
@@ -467,7 +469,7 @@ const _parseDevicesResult = async (
         }
     }
 
-    if (avdsString) {
+    if (avdsString && !deviceOnly) {
         const avdLines = avdsString.trim().split(/\r?\n/);
         logDebug('_parseDevicesResult 7', { avdLines });
 
@@ -507,7 +509,11 @@ const _parseDevicesResult = async (
                 }
 
                 if (avdDetails) {
-                    devices.push(device);
+                    // exclude duplicate sims (running ones + avdconfig)
+                    const potentialDuplicate = devices.find((v) => v.name === device.name);
+                    if (!potentialDuplicate || potentialDuplicate.isDevice) {
+                        devices.push(device);
+                    }
                 }
             })
         );
@@ -618,7 +624,7 @@ const waitForEmulatorToBeReady = (c: RnvContext, emulator: string) =>
         return res;
     });
 
-export const checkForActiveEmulator = (c: RnvContext) =>
+export const checkForActiveEmulator = (c: RnvContext, emulatorName?: string) =>
     new Promise<AndroidDevice | undefined>((resolve, reject) => {
         logTask('checkForActiveEmulator');
         const { platform } = c;
@@ -637,11 +643,19 @@ export const checkForActiveEmulator = (c: RnvContext) =>
                 running = true;
                 getAndroidTargets(c, false, true, false)
                     .then(async (v) => {
-                        logDebug('Available devices after filtering', v);
-                        if (v.length > 0) {
-                            logSuccess(`Found active emulator! ${chalk().white(v[0].udid)}. Will use it`);
+                        const simsOnly = v.filter((device) => !device.isDevice);
+                        logDebug('Available devices after filtering', simsOnly);
+                        if (emulatorName) {
+                            const found = simsOnly.find((v) => v.name === emulatorName);
+                            if (found) {
+                                logSuccess(`Found active emulator! ${chalk().white(found.udid)}. Will use it`);
+                                clearInterval(poll);
+                                resolve(found);
+                            }
+                        } else if (simsOnly.length > 0) {
+                            logSuccess(`Found active emulator! ${chalk().white(simsOnly[0].udid)}. Will use it`);
                             clearInterval(poll);
-                            resolve(v[0]);
+                            resolve(simsOnly[0]);
                         } else {
                             logRaw(`looking for active emulators: attempt ${attempts}/${maxAttempts}`);
                             attempts++;

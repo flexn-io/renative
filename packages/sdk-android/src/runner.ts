@@ -24,7 +24,6 @@ import {
     logTask,
     logWarning,
     logDebug,
-    logInfo,
     logSuccess,
     logRaw,
     logError,
@@ -54,7 +53,7 @@ import {
 import { parseGradleWrapperSync } from './gradleWrapperParser';
 import { parseValuesStringsSync, injectPluginXmlValuesSync, parseValuesColorsSync } from './xmlValuesParser';
 import { ejectGradleProject } from './ejector';
-import { Context } from './types';
+import { AndroidDevice, Context } from './types';
 import {
     resetAdb,
     getAndroidTargets,
@@ -65,73 +64,67 @@ import {
     composeDevicesArray,
 } from './deviceManager';
 import { CLI_ANDROID_ADB } from './constants';
-import { runReactNativeAndroid } from '@rnv/sdk-react-native';
+import { runReactNativeAndroid, packageReactNativeAndroid } from '@rnv/sdk-react-native';
 
-export const packageAndroid = async (_c: Context) => {
+export const packageAndroid = async (c: Context) => {
     logTask('packageAndroid');
 
-    // TODO disabled for now, doesn't make sense to pack it if gradle does it again and it triggers errors about duplicate resources
-    // return packageReactNativeAndroid(c);
-    return true;
+    return packageReactNativeAndroid(c);
 };
 
-export const runAndroid = async (c: Context) => {
-    const { target } = c.program;
-    const { platform } = c;
+export const getAndroidDeviceToRunOn = async (c: Context) => {
     const defaultTarget = c.runtime.target;
-    logTask('runAndroid', `target:${target} default:${defaultTarget}`);
+    logTask('getAndroidDeviceToRunOn', `default:${defaultTarget}`);
 
-    if (!platform) return;
+    if (!c.platform) return;
+
+    const { target, device } = c.program;
+    const { platform } = c;
 
     await resetAdb(c);
 
-    if (target && net.isIP(target.split(':')[0])) {
+    if (target && typeof target === 'string' && net.isIP(target.split(':')[0])) {
         await connectToWifiDevice(c, target);
     }
 
-    let devicesAndEmulators;
-    try {
-        devicesAndEmulators = await getAndroidTargets(c, false, false, c.program.device !== undefined);
-    } catch (e) {
-        return Promise.reject(e);
-    }
+    const devicesAndEmulators = await getAndroidTargets(c, false, false, !!device);
 
     const activeDevices = devicesAndEmulators.filter((d) => d.isActive);
     const inactiveDevices = devicesAndEmulators.filter((d) => !d.isActive);
 
     const askWhereToRun = async () => {
-        if (activeDevices.length === 0 && inactiveDevices.length > 0) {
-            // No device active, but there are emulators created
-            const devicesString = composeDevicesArray(inactiveDevices);
-            const choices = devicesString;
+        if (activeDevices.length || inactiveDevices.length) {
+            // No device active and device param is passed, exiting
+            if (c.program.device && !activeDevices.length) {
+                return logError('No active devices found, please connect one or remove the device argument', true);
+            }
+
+            const activeString = composeDevicesArray(activeDevices);
+            const inactiveString = composeDevicesArray(inactiveDevices);
+
+            const choices = [...activeString, ...inactiveString];
             const response = await inquirerPrompt({
                 name: 'chosenEmulator',
                 type: 'list',
                 message: 'What emulator would you like to start?',
                 choices,
             });
-            if (response.chosenEmulator) {
-                await launchAndroidSimulator(c, response.chosenEmulator, true);
-                const devices = await checkForActiveEmulator(c);
-                await runReactNativeAndroid(c, platform, devices);
-            }
-        } else if (activeDevices.length > 1) {
-            const devicesString = composeDevicesArray(activeDevices);
-            const choices = devicesString;
-            const response = await inquirerPrompt({
-                name: 'chosenEmulator',
-                type: 'list',
-                message: 'Where would you like to run your app?',
-                choices,
-            });
+
             if (response.chosenEmulator) {
                 const dev = activeDevices.find((d) => d.name === response.chosenEmulator);
-                await runReactNativeAndroid(c, platform, dev);
+                if (dev) return dev;
+
+                await launchAndroidSimulator(c, response.chosenEmulator, true);
+                const device = await checkForActiveEmulator(c, response.chosenEmulator);
+                return device;
             }
         } else {
+            if (c.program.device) {
+                return logError('No active devices found, please connect one or remove the device argument', true);
+            }
             await askForNewEmulator(c, platform);
-            const devices = await checkForActiveEmulator(c);
-            await runReactNativeAndroid(c, platform, devices);
+            const device = await checkForActiveEmulator(c);
+            return device;
         }
     };
 
@@ -141,39 +134,44 @@ export const runAndroid = async (c: Context) => {
         const foundDevice = devicesAndEmulators.find((d) => d.udid.includes(target) || d.name.includes(target));
         if (foundDevice) {
             if (foundDevice.isActive) {
-                await runReactNativeAndroid(c, platform, foundDevice);
-            } else {
-                await launchAndroidSimulator(c, foundDevice, true);
-                const device = await checkForActiveEmulator(c);
-                await runReactNativeAndroid(c, platform, device);
+                return foundDevice;
             }
-        } else {
-            await askWhereToRun();
+            await launchAndroidSimulator(c, foundDevice, true);
+            const device = await checkForActiveEmulator(c, foundDevice.name);
+            return device;
         }
-    } else if (activeDevices.length === 1) {
-        // Only one that is active, running on that one
-        const dv = activeDevices[0];
-        logInfo(`Found device ${dv.name}:${dv.udid}!`);
-        await runReactNativeAndroid(c, platform, dv);
+        logDebug('Target not found, asking where to run');
+        return askWhereToRun();
     } else if (defaultTarget) {
         // neither a target nor an active device is found, revert to default target if available
         logDebug('Default target used', defaultTarget);
         const foundDevice = devicesAndEmulators.find(
             (d) => d.udid.includes(defaultTarget) || d.name.includes(defaultTarget)
         );
+
         if (!foundDevice) {
             logDebug('Target not provided, asking where to run');
-            await askWhereToRun();
-        } else {
+            return askWhereToRun();
+        } else if (!foundDevice.isActive) {
             await launchAndroidSimulator(c, foundDevice, true);
-            const device = await checkForActiveEmulator(c);
-            await runReactNativeAndroid(c, platform, device);
+            const device = await checkForActiveEmulator(c, foundDevice.name);
+            return device;
         }
+        return foundDevice;
     } else {
         // we don't know what to do, ask the user
         logDebug('Target not provided, asking where to run');
-        await askWhereToRun();
+        return askWhereToRun();
     }
+};
+
+export const runAndroid = async (c: Context, device: AndroidDevice) => {
+    logTask('runAndroid', `target:${device.udid}`);
+    const { platform } = c;
+
+    if (!platform) return;
+
+    await runReactNativeAndroid(c, platform, device);
 };
 
 const _checkSigningCerts = async (c: Context) => {

@@ -14,8 +14,8 @@ import {
     executeOrSkipTask,
     shouldSkipTask,
 } from '@rnv/core';
-import { packageAndroid, runAndroid } from '@rnv/sdk-android';
-import { runXcodeProject, getDeviceToRunOn } from '@rnv/sdk-apple';
+import { packageAndroid, runAndroid, getAndroidDeviceToRunOn } from '@rnv/sdk-android';
+import { runXcodeProject, getIosDeviceToRunOn } from '@rnv/sdk-apple';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '@rnv/sdk-react-native';
 
 export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
@@ -34,21 +34,23 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     switch (platform) {
         case ANDROID_TV:
         case FIRE_TV:
+            // eslint-disable-next-line no-case-declarations
+            const runDevice = await getAndroidDeviceToRunOn(c);
             if (!c.program.only) {
                 await startBundlerIfRequired(c, TASK_RUN, originTask);
                 if (bundleAssets) {
                     await packageAndroid(c);
                 }
-                await runAndroid(c);
+                await runAndroid(c, runDevice!);
                 if (!bundleAssets) {
                     logSummary('BUNDLER STARTED');
                 }
                 return waitForBundlerIfRequired(c);
             }
-            return runAndroid(c);
+            return runAndroid(c, runDevice!);
         case TVOS:
             // eslint-disable-next-line no-case-declarations
-            const runDeviceArgs = await getDeviceToRunOn(c);
+            const runDeviceArgs = await getIosDeviceToRunOn(c);
             if (!c.program.only) {
                 await startBundlerIfRequired(c, TASK_RUN, originTask);
                 await runXcodeProject(c, runDeviceArgs);

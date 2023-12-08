@@ -14,6 +14,7 @@ import {
     MACOS,
     IOS,
     getConfigProp,
+    TASK_EJECT,
 } from '@rnv/core';
 import { packageAndroid } from '@rnv/sdk-android';
 import { packageBundleForXcode } from '@rnv/sdk-apple';
@@ -40,7 +41,13 @@ export const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
         case ANDROID_TV:
         case FIRE_TV:
         case ANDROID_WEAR:
-            return packageAndroid(c);
+            // NOTE: react-native v0.73 triggers packaging automatically so we skipping it unless we need to
+            // package it explicitly for tasks where it is not triggered automatically
+
+            if (originTask === TASK_EJECT) {
+                return packageAndroid(c);
+            }
+            return true;
         default:
             logErrorPlatform(c);
             return false;

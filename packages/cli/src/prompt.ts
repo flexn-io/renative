@@ -12,23 +12,32 @@ import {
 
 export const inquirerPrompt = async (params: PromptParams): Promise<Record<string, any>> => {
     const c = getContext();
-    if (c.program?.yes) return {};
+
+    if (c.program?.yes && params.type === 'confirm' && params.name) {
+        return { [params.name]: true };
+    } else if (c.program?.yes && params.type === 'input' && params.name && params.default) {
+        return { [params.name]: typeof params.default === 'function' ? params.default() : params.default };
+    }
 
     const msg = params.logMessage || params.warningMessage || params.message;
     if (c.program?.ci) {
-        if (
-            Array.isArray(params.choices) &&
-            typeof params.default !== 'undefined' &&
-            params.choices.includes(params.default)
-        ) {
-            logDebug(`defaulting to choice '${params.default}' for prompt '${params.name}'`);
+        try {
+            if (
+                Array.isArray(params.choices) &&
+                typeof params.default !== 'undefined' &&
+                params.choices.includes(params.default)
+            ) {
+                logDebug(`defaulting to choice '${params.default}' for prompt '${params.name}'`);
 
-            if (params.name) return Promise.resolve({ [params.name]: params.default });
+                if (params.name) return { [params.name]: params.default };
+            }
+            throw new Error(msg);
+        } catch (error) {
+            logWarning(error instanceof Error ? error.message : error);
         }
-        return Promise.reject(`--ci option does not allow prompts. question: ${msg}.`);
     }
     if (msg && params.logMessage) logTask(msg, chalk().grey);
-    if (msg && params.warningMessage) logWarning(msg);
+    if (msg && params.warningMessage && !c.program.ci) logWarning(msg);
 
     // allow passing in just { type: 'prompt', ... } instead of { type: 'prompt', name: 'prompt', ... }
     const { type, name } = params;
