@@ -214,7 +214,6 @@ export const parseAppBuildGradleSync = (c: Context) => {
     c.payload.pluginConfigAndroid.ndkVersion = getConfigProp(c, platform, 'ndkVersion') || '23.1.7779620';
     c.payload.pluginConfigAndroid.gradleBuildToolsVersion =
         getConfigProp(c, platform, 'gradleBuildToolsVersion') || '4.2.2';
-    c.payload.pluginConfigAndroid.versionCode = getConfigProp(c, platform, 'versionCode') || '1';
     c.payload.pluginConfigAndroid.supportLibVersion = getConfigProp(c, platform, 'supportLibVersion') || '28.0.0';
     c.payload.pluginConfigAndroid.buildToolsVersion = getConfigProp(c, platform, 'buildToolsVersion') || '33.0.0';
     c.payload.pluginConfigAndroid.kotlinVersion = getConfigProp(c, platform, 'kotlinVersion') || '1.4.20';
