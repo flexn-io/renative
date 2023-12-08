@@ -118,14 +118,17 @@ export const parseBuildGradleSync = (c: Context) => {
         },
         {
             pattern: '{{PATH_REACT_NATIVE_CLI_ANDROID}}',
-            override: doResolve('@react-native-community/cli-platform-android', true, {
-                forceForwardPaths: true,
-            }) || '',
+            override:
+                doResolve('@react-native-community/cli-platform-android', true, {
+                    forceForwardPaths: true,
+                }) || '',
         },
         {
             pattern: '{{PATH_HERMESC}}',
-            override: `${doResolve('react-native', true, { forceForwardPaths: true }) || 'react-native'}/sdks/hermesc/${currentOs}-bin/hermesc`,
-        }
+            override: `${
+                doResolve('react-native', true, { forceForwardPaths: true }) || 'react-native'
+            }/sdks/hermesc/${currentOs}-bin/hermesc`,
+        },
     ];
     addSystemInjects(c, injects);
 
@@ -211,6 +214,7 @@ export const parseAppBuildGradleSync = (c: Context) => {
     c.payload.pluginConfigAndroid.ndkVersion = getConfigProp(c, platform, 'ndkVersion') || '23.1.7779620';
     c.payload.pluginConfigAndroid.gradleBuildToolsVersion =
         getConfigProp(c, platform, 'gradleBuildToolsVersion') || '4.2.2';
+    c.payload.pluginConfigAndroid.versionCode = getConfigProp(c, platform, 'versionCode') || '1';
     c.payload.pluginConfigAndroid.supportLibVersion = getConfigProp(c, platform, 'supportLibVersion') || '28.0.0';
     c.payload.pluginConfigAndroid.buildToolsVersion = getConfigProp(c, platform, 'buildToolsVersion') || '33.0.0';
     c.payload.pluginConfigAndroid.kotlinVersion = getConfigProp(c, platform, 'kotlinVersion') || '1.4.20';
@@ -268,7 +272,7 @@ export const parseAppBuildGradleSync = (c: Context) => {
     const storePassword = getConfigProp(c, c.platform, 'storePassword');
     const keyPassword = getConfigProp(c, c.platform, 'keyPassword');
     const minifyEnabled = getConfigProp(c, c.platform, 'minifyEnabled', false);
-    
+
     c.payload.pluginConfigAndroid.store = {
         storeFile: storeFile,
         // keyAlias,
@@ -356,20 +360,19 @@ ${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
     const isMultiApk = getConfigProp(c, platform, 'multipleAPKs', false) === true;
     c.payload.pluginConfigAndroid.multiAPKs = '';
     if (isMultiApk) {
-    // TODO migrate this to gradle.properties + it's enabled by default
-    //     const multiSet = 'Integer.parseInt(Integer.toString(variant.versionCode) + Integer.toString(bavc))';
-    //     c.payload.pluginConfigAndroid.multiAPKs = `
-    //   ext.abiCodes = ["armeabi-v7a": 1, "x86": 2, "arm64-v8a": 3, "x86_64": 4]
-    //   import com.android.build.OutputFile
-
-    //   android.applicationVariants.all { variant ->
-    //     variant.outputs.each { output ->
-    //       def bavc = project.ext.abiCodes.get(output.getFilter(OutputFile.ABI))
-    //       if (bavc != null) {
-    //         output.versionCodeOverride = ${multiSet} + ${versionCodeOffset}
-    //       }
-    //     }
-    //   }`;
+        // TODO migrate this to gradle.properties + it's enabled by default
+        //     const multiSet = 'Integer.parseInt(Integer.toString(variant.versionCode) + Integer.toString(bavc))';
+        //     c.payload.pluginConfigAndroid.multiAPKs = `
+        //   ext.abiCodes = ["armeabi-v7a": 1, "x86": 2, "arm64-v8a": 3, "x86_64": 4]
+        //   import com.android.build.OutputFile
+        //   android.applicationVariants.all { variant ->
+        //     variant.outputs.each { output ->
+        //       def bavc = project.ext.abiCodes.get(output.getFilter(OutputFile.ABI))
+        //       if (bavc != null) {
+        //         output.versionCodeOverride = ${multiSet} + ${versionCodeOffset}
+        //       }
+        //     }
+        //   }`;
     }
 
     // SPLITS
@@ -517,18 +520,20 @@ ${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
         },
         {
             pattern: '{{PATH_REACT_NATIVE_CLI_ANDROID}}',
-            override: doResolve('@react-native-community/cli-platform-android', true, {
-                forceForwardPaths: true,
-            }) || '',
+            override:
+                doResolve('@react-native-community/cli-platform-android', true, {
+                    forceForwardPaths: true,
+                }) || '',
         },
         {
             pattern: '{{PATH_HERMESC}}',
-            override: `${doResolve('react-native', true, { forceForwardPaths: true }) || 'react-native'}/sdks/hermesc/${currentOs}-bin/hermesc`,
-        }
+            override: `${
+                doResolve('react-native', true, { forceForwardPaths: true }) || 'react-native'
+            }/sdks/hermesc/${currentOs}-bin/hermesc`,
+        },
     ];
 
     addSystemInjects(c, injects);
-
     writeCleanFile(
         getBuildFilePath(c, platform, 'app/build.gradle'),
         path.join(appFolder, 'app/build.gradle'),
@@ -615,7 +620,7 @@ export const parseGradlePropertiesSync = (c: Context) => {
         {
             pattern: '{{NEW_ARCH_ENABLED}}',
             override: newArchEnabled ? 'true' : 'false',
-        }
+        },
     ];
 
     addSystemInjects(c, injects);
