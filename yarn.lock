@@ -1819,10 +1819,10 @@
   resolved "https://registry.npmjs.org/@flexn/eslint-config/-/eslint-config-1.0.0.tgz#3337945b66c371005ba7b77a0fc11e0c43b5c2f8"
   integrity sha512-hS3K28xC2PGNJZ9+y7BLMAxuYRqrvmjE9tWWtQOyrmFMfHG+I5PODUJR3B7/NrUVPjIkV+m83HX5aoe68XFh6w==
 
-"@flexn/graybox@1.0.0-feat.11":
-  version "1.0.0-feat.11"
-  resolved "https://registry.yarnpkg.com/@flexn/graybox/-/graybox-1.0.0-feat.11.tgz#cb566f04e6aff034038a508cb312d9b4b0cfc2af"
-  integrity sha512-N1ARxfrGWA6Riy35WiwOb6BSw8XlRPgq03Q86xBWa9oYWJsWoxxZ7ycTPv8nW7zWyM7TvBAlqtS5VOkTrGMkeA==
+"@flexn/graybox@1.0.0-feat.12":
+  version "1.0.0-feat.12"
+  resolved "https://registry.yarnpkg.com/@flexn/graybox/-/graybox-1.0.0-feat.12.tgz#7d4985714b57a0cac58431995e55c777fe37ead7"
+  integrity sha512-GGfsm5YGu9REZXnbx2L+F5NNbQ92uvj826vxpoyHFqZJANmqDHgRtLkjkVYv+o17ZFK7yvFaSQxqWJqbuS8RMQ==
   dependencies:
     "@wdio/allure-reporter" "8.24.2"
     "@wdio/appium-service" "8.24.2"
