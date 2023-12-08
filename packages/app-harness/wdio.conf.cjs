@@ -38,15 +38,6 @@ const capabilities = {
             'appium:appPackage': 'renative.harness.test',
             'appium:appActivity': 'renative.harness.test.MainActivity',
             'appium:app': 'platformBuilds/harness_android/app/build/outputs/apk/debug/app-debug.apk',
-
-            // 'appium:options': {
-            //     avd: 'Pixel_4_API_29',
-            //     platformVersion: '10',
-            //     automationName: 'UiAutomator2',
-            //     appPackage: 'renative.harness.test',
-            //     appActivity: 'renative.harness.test.MainActivity',
-            //     app: 'platformBuilds/harness_android/app/build/outputs/apk/debug/app-debug.apk',
-            // },
         },
     ],
     androidtv: [
@@ -184,9 +175,6 @@ exports.config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    ...(process.env.PLATFORM === 'web' && {
-        services: ['selenium-standalone'],
-    }),
     ...(process.env.PLATFORM === 'macos' && {
         services: ['chromedriver'],
     }),
@@ -205,10 +193,9 @@ exports.config = {
                         ...(process.env.PLATFORM === 'tvos' && {
                             port: 3002,
                         }),
-                        ...(process.env.PLATFORM === 'android' &&
-                            {
-                                //port: 3003,
-                            }),
+                        ...(process.env.PLATFORM === 'android' && {
+                            port: 3003,
+                        }),
                         ...(process.env.PLATFORM === 'androidtv' && {
                             port: 3004,
                         }),
