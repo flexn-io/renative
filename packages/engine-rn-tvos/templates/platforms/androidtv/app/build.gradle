@@ -82,8 +82,8 @@ android {
         applicationId "{{APPLICATION_ID}}"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+       versionCode {{VERSION_CODE}}
+        versionName "{{VERSION_NAME}}"
     }
 
 {{PLUGIN_SPLITS}}

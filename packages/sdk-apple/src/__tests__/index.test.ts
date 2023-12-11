@@ -1,7 +1,7 @@
 import { createRnvApi, createRnvContext } from '@rnv/core';
 import type { PromptParams } from "@rnv/core";
-import { getDeviceToRunOn } from '../runner';
-import { simctlSimJson, xctraceDevices } from '../__mocks__/data';
+import { getIosDeviceToRunOn } from '../runner';
+import { simctlSimJson } from '../__mocks__/data';
 
 beforeEach(() => {
     createRnvContext({ program: { platform: 'ios' } });
@@ -14,16 +14,14 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-describe('getDeviceToRunOn', () => {
+describe('getIosDeviceToRunOn', () => {
   it('should return a device to run on with pick', async () => {
     const ctx = getContext();
 
     // configureRuntimeDefaults isn't called so setting it manually
     ctx.runtime.isTargetTrue = true;
 
-    executeAsync
-        .mockReturnValueOnce(Promise.resolve(xctraceDevices))
-        .mockReturnValueOnce(Promise.resolve(JSON.stringify(simctlSimJson)));
+    executeAsync.mockReturnValueOnce(Promise.resolve(JSON.stringify(simctlSimJson)));
 
     inquirerPrompt.mockImplementation(async ({ type, name, choices }: PromptParams) => {
         if (type === 'confirm') {
@@ -39,17 +37,15 @@ describe('getDeviceToRunOn', () => {
     }
     });
 
-    const deviceArgs = await getDeviceToRunOn(ctx);
-    expect(executeAsync).toHaveBeenCalledTimes(2);
+    const deviceArgs = await getIosDeviceToRunOn(ctx);
+    expect(executeAsync).toHaveBeenCalledTimes(1);
     expect(deviceArgs).toBe('--simulator iPhone\\ 14');
   });
 
   it('should return a device to run on without pick', async () => {
     const ctx = getContext();
 
-    executeAsync
-        .mockReturnValueOnce(Promise.resolve(xctraceDevices))
-        .mockReturnValueOnce(Promise.resolve(JSON.stringify(simctlSimJson)));
+    executeAsync.mockReturnValueOnce(Promise.resolve(JSON.stringify(simctlSimJson)));
 
     inquirerPrompt.mockImplementation(async ({ type, name, choices }: PromptParams) => {
         if (type === 'confirm') {
@@ -65,8 +61,8 @@ describe('getDeviceToRunOn', () => {
     }
     });
 
-    const deviceArgs = await getDeviceToRunOn(ctx);
-    expect(executeAsync).toHaveBeenCalledTimes(2);
+    const deviceArgs = await getIosDeviceToRunOn(ctx);
+    expect(executeAsync).toHaveBeenCalledTimes(1);
     expect(deviceArgs).toBe('--simulator iPhone\\ SE\\ (3rd\\ generation)');
   });
 
@@ -76,12 +72,10 @@ describe('getDeviceToRunOn', () => {
     // configureRuntimeDefaults isn't called so setting it manually
     ctx.runtime.target = 'iPhone 14 Pro Max';
 
-    executeAsync
-        .mockReturnValueOnce(Promise.resolve(xctraceDevices))
-        .mockReturnValueOnce(Promise.resolve(JSON.stringify(simctlSimJson)));
+    executeAsync.mockReturnValueOnce(Promise.resolve(JSON.stringify(simctlSimJson)));
 
-    const deviceArgs = await getDeviceToRunOn(ctx);
-    expect(executeAsync).toHaveBeenCalledTimes(2);
+    const deviceArgs = await getIosDeviceToRunOn(ctx);
+    expect(executeAsync).toHaveBeenCalledTimes(1);
     expect(deviceArgs).toContain('--simulator');
     // expect(deviceArgs).toBe('--simulator iPhone\\ 14\\ Plus'); // FIXME: This is failing
   });

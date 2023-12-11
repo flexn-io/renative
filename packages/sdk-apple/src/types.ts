@@ -9,6 +9,19 @@ export type AppleDevice = {
     isDevice?: boolean;
 };
 
+export type AppiumAppleDevice = {
+    udid: string;
+    CPUArchitecture: string;
+    DeviceName: string;
+    HardwareModel: string;
+    HumanReadableProductVersionString: string;
+    ProductName: string;
+    ProductType: string;
+    ProductVersion: string;
+    SupportedDeviceFamilies: number[];
+    DeviceClass?: string;
+};
+
 export type Payload = {
     pluginConfigiOS: {
         exportOptions: string;

@@ -118,7 +118,7 @@ const runCocoaPods = async (c: Context) => {
         requiredPodPermissions = Array.from(new Set(requiredPodPermissions));
     }
 
-    // new arch support 
+    // new arch support
     const newArchEnabled = getConfigProp(c, c.platform, 'newArchEnabled', false);
 
     const env: any = {
@@ -197,8 +197,8 @@ const copyAppleAssets = (c: Context, platform: RnvPlatform, appFolderName: strin
         resolve();
     });
 
-export const getDeviceToRunOn = async (c: Context) => {
-    logTask('getDeviceToRunOn');
+export const getIosDeviceToRunOn = async (c: Context) => {
+    logTask('getIosDeviceToRunOn');
 
     if (!c.platform) return;
 
@@ -706,6 +706,7 @@ const archiveXcodeProject = (c: Context) => {
     const { platform } = c;
 
     const appFolderName = getAppFolderName(c, c.platform);
+    const schemeTarget = getConfigProp(c, platform, 'schemeTarget', 'RNVApp');
     const runScheme = getConfigProp(c, platform, 'runScheme', 'Debug');
     let sdk = getConfigProp(c, platform, 'sdk');
     if (!sdk) {
@@ -736,7 +737,7 @@ const archiveXcodeProject = (c: Context) => {
     }
     if (!ps.includes('-scheme')) {
         p.push('-scheme');
-        p.push(appFolderName);
+        p.push(schemeTarget!);
     }
     if (!ps.includes('-sdk') && sdkArr.length) {
         p.push('-sdk');

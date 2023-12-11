@@ -11,6 +11,7 @@ import {
     getConfigProp,
     executeOrSkipTask,
     shouldSkipTask,
+    TASK_EJECT,
 } from '@rnv/core';
 import { packageAndroid } from '@rnv/sdk-android';
 import { packageBundleForXcode } from '@rnv/sdk-apple';
@@ -32,7 +33,12 @@ export const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
     switch (platform) {
         case ANDROID_TV:
         case FIRE_TV:
-            return packageAndroid(c);
+            // NOTE: react-native v0.73 triggers packaging automatically so we skipping it unless we need to
+            // package it explicitly for tasks where it is not triggered automatically
+            if (originTask === TASK_EJECT) {
+                return packageAndroid(c);
+            }
+            return true;
         case TVOS:
             return packageBundleForXcode(c);
         default:

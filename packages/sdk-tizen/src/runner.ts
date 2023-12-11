@@ -29,10 +29,24 @@ import {
 import semver from 'semver';
 import { CLI_TIZEN } from './constants';
 
-import { runTizenSimOrDevice, createDevelopTizenCertificate, DEFAULT_CERTIFICATE_NAME } from './deviceManager';
+import {
+    runTizenSimOrDevice,
+    createDevelopTizenCertificate,
+    DEFAULT_CERTIFICATE_NAME,
+    addDevelopTizenCertificate,
+} from './deviceManager';
 import { waitForHost } from '@rnv/sdk-utils';
 
 const DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION = `${DEFAULT_CERTIFICATE_NAME}.p12`;
+
+export const checkTizenStudioCert = async (c: RnvContext): Promise<boolean> => {
+    try {
+        await execCLI(c, CLI_TIZEN, `security-profiles list -n ${DEFAULTS.certificateProfile}`);
+        return true;
+    } catch (e) {
+        return false;
+    }
+};
 
 export const configureTizenGlobal = (c: RnvContext) =>
     new Promise<void>((resolve, reject) => {
@@ -40,14 +54,40 @@ export const configureTizenGlobal = (c: RnvContext) =>
         // Check Tizen Cert
         // if (isPlatformActive(c, TIZEN) || isPlatformActive(c, TIZEN_WATCH)) {
         const tizenAuthorCert = path.join(c.paths.workspace.dir, DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION);
+
         if (fsExistsSync(tizenAuthorCert)) {
-            logDebug(`${DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION} file exists!`);
-            resolve();
+            checkTizenStudioCert(c)
+                .then((certificateExists) => {
+                    if (certificateExists) {
+                        logDebug(`${DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION} file exists in Tizen Studio!`);
+                        resolve();
+                    } else {
+                        logWarning(
+                            `${DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION} file missing in Tizen Studio! Adding an existing...`
+                        );
+                        const certDirPath = c.paths.workspace.dir;
+                        const certFilename = DEFAULT_CERTIFICATE_NAME;
+                        const certPassword = '1234';
+
+                        addDevelopTizenCertificate(c, {
+                            profileName: DEFAULTS.certificateProfile,
+                            certPath: path.join(certDirPath, `${certFilename}.p12`),
+                            certPassword,
+                        })
+                            .then(() => resolve())
+                            .catch((e) => {
+                                reject(e);
+                            });
+                    }
+                })
+                .catch((e) => reject(e));
         } else {
             logWarning(`${DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION} file missing! Creating one for you...`);
             createDevelopTizenCertificate(c)
                 .then(() => resolve())
-                .catch((e) => reject(e));
+                .catch((e) => {
+                    reject(e);
+                });
         }
         // }
     });
@@ -132,13 +172,12 @@ export const buildTizenProject = async (c: RnvContext) => {
         const tIntermediate = path.join(tDir, 'intermediate');
         const tBuild = path.join(tDir, 'build');
 
-        const projectFile = path.join(tDir, '.project');
-        const tProjectFile = path.join(tDir, '.tproject');
-        const configXml = path.join(tDir, 'config.xml');
+        const requiredFiles = ['.project', '.tproject', 'config.xml', 'icon.png'];
 
-        copyFileSync(projectFile, path.join(tBuild, '.project'));
-        copyFileSync(tProjectFile, path.join(tBuild, '.tproject'));
-        copyFileSync(configXml, path.join(tBuild, 'config.xml'));
+        requiredFiles.map((requiredFile) => {
+            const requiredFilePath = path.join(tDir, requiredFile);
+            copyFileSync(requiredFilePath, path.join(tBuild, requiredFile));
+        });
 
         await execCLI(c, CLI_TIZEN, `build-web -- ${tBuild} -out ${tIntermediate}`);
         await execCLI(c, CLI_TIZEN, `package -- ${tIntermediate} -s ${certProfile} -t wgt -o ${tOut}`);
