@@ -26,7 +26,7 @@ const capabilities = {
             'appium:automationName': 'XCUITest',
             'appium:bundleId': 'renative.helloworld.test',
             'appium:app':
-                'platformBuilds/template_tvos/build/RNVAppTVOS/Build/Products/Debug-appletvsimulator/RNVAppTVOS.app',
+                'platformBuilds/template_tvos/build/RNVApp/Build/Products/Debug-appletvsimulator/RNVApp-tvOS.app',
         },
     ],
     android: [

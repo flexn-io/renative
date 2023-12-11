@@ -26,7 +26,7 @@ const capabilities = {
             'appium:automationName': 'XCUITest',
             'appium:bundleId': 'renative.harness.test',
             'appium:app':
-                'platformBuilds/harness_tvos/build/RNVAppTVOS/Build/Products/Debug-appletvsimulator/RNVAppTVOS.app',
+                'platformBuilds/harness_tvos/build/RNVApp/Build/Products/Debug-appletvsimulator/RNVApp-tvOS.app',
         },
     ],
     android: [
