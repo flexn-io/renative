@@ -40,13 +40,16 @@ const generateRandomKey = (length: number) =>
 
 const initializeCryptoDirectory = async (c: RnvContext, sourceFolder: string) => {
     const configDir = path.join(sourceFolder, 'appConfigs');
+    const targetFile = 'renative.private.json';
     mkdirSync(sourceFolder);
     mkdirSync(configDir);
 
+    if (c.paths.project.configPrivateExists) {
+        copyFileSync(c.paths.project.configPrivate, path.join(sourceFolder, targetFile));
+    }
     const appConfigsDirs = await readdirAsync(c.paths.project.appConfigsDir);
 
     appConfigsDirs.forEach(async (item: string) => {
-        const targetFile = 'renative.private.json';
         if (item == targetFile) {
             copyFileSync(path.join(c.paths.project.appConfigsDir, item), path.join(configDir, targetFile));
         }
@@ -92,6 +95,8 @@ const _checkAndConfigureCrypto = async (c: RnvContext) => {
         cnf.crypto = {
             path: `./${location}/privateConfigs.enc`,
         };
+        if (cnf.crypto) c.files.project.config.crypto = cnf.crypto;
+
         writeFileSync(c.paths.project.config, cnf);
     }
 
@@ -172,10 +177,10 @@ export const taskRnvCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask
         const dest = `${getRealPath(c, destRaw, 'crypto.path')}`;
         const destTemp = `${path.join(c.paths.workspace.dir, projectName.replace('/', '-'))}.tgz`;
         const timestamp = new Date().getTime();
-
+        console.log(dest, 'DEST');
         // check if dest folder actually exists
         const destFolder = dest.slice(0, dest.lastIndexOf('/'));
-
+        console.log(destFolder, 'destFolder');
         !fsExistsSync(destFolder) && mkdirSync(destFolder);
 
         await tar.c(

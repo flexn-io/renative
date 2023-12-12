@@ -306,6 +306,8 @@ export interface RnvContextPathObj {
     configsLocal: Array<string>;
     configsPrivate: Array<string>;
     configExists?: boolean;
+    configLocalExists?: boolean;
+    configPrivateExists?: boolean;
     pluginDirs: Array<string>;
     fontsDir: string;
     fontsDirs: Array<string>;
