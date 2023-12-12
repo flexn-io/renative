@@ -177,10 +177,10 @@ export const taskRnvCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask
         const dest = `${getRealPath(c, destRaw, 'crypto.path')}`;
         const destTemp = `${path.join(c.paths.workspace.dir, projectName.replace('/', '-'))}.tgz`;
         const timestamp = new Date().getTime();
-        console.log(dest, 'DEST');
+
         // check if dest folder actually exists
         const destFolder = dest.slice(0, dest.lastIndexOf('/'));
-        console.log(destFolder, 'destFolder');
+
         !fsExistsSync(destFolder) && mkdirSync(destFolder);
 
         await tar.c(
