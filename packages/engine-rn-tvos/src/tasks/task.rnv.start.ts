@@ -1,16 +1,10 @@
 import {
-    getEntryFile,
-    confirmActiveBundler,
     doResolve,
     logErrorPlatform,
-    generateEnvVars,
     executeTask,
     shouldSkipTask,
-    chalk,
     logTask,
     logError,
-    logRaw,
-    logInfo,
     IOS,
     TVOS,
     ANDROID,
@@ -19,10 +13,9 @@ import {
     TASK_START,
     TASK_CONFIGURE_SOFT,
     PARAMS,
-    executeAsync,
     RnvTaskFn,
 } from '@rnv/core';
-import { isBundlerActive } from '@rnv/sdk-react-native';
+import { startReactNative } from '@rnv/sdk-react-native';
 
 const BUNDLER_PLATFORMS: Record<string, string> = {};
 
@@ -51,58 +44,11 @@ export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
         case ANDROID_TV:
         case FIRE_TV:
         case TVOS: {
-            let startCmd = `node ${doResolve('react-native-tvos')}/local-cli/cli.js start --port ${
-                c.runtime.port
-            } --config=metro.config.js`;
-
-            if (c.program.resetHard) {
-                startCmd += ' --reset-cache';
-            } else if (c.program.reset) {
-                startCmd += ' --reset-cache';
-            }
-            if (c.program.resetHard || c.program.reset) {
-                logInfo(
-                    `You passed ${chalk().white('-r')} argument. --reset-cache will be applied to react-native-tvos`
-                );
-            }
-            // logSummary('BUNDLER STARTED');
-            const url = chalk().cyan(
-                `http://${c.runtime.localhost}:${c.runtime.port}/${getEntryFile(c, c.platform)}.bundle?platform=${
-                    BUNDLER_PLATFORMS[platform]
-                }`
-            );
-            logRaw(`
-
-Dev server running at: ${url}
-
-`);
-            if (!parentTask) {
-                const isRunning = await isBundlerActive(c);
-                let resetCompleted = false;
-                if (isRunning) {
-                    resetCompleted = await confirmActiveBundler(c);
-                }
-
-                if (!isRunning || (isRunning && resetCompleted)) {
-                    return executeAsync(c, startCmd, {
-                        stdio: 'inherit',
-                        silent: true,
-                        env: { ...generateEnvVars(c), RCT_NO_LAUNCH_PACKAGER: 1 },
-                    });
-                }
-                if (resetCompleted) {
-                    return executeAsync(c, startCmd, {
-                        stdio: 'inherit',
-                        silent: true,
-                        env: { ...generateEnvVars(c) },
-                    });
-                }
-
-                return true;
-            }
-            executeAsync(c, startCmd, { stdio: 'inherit', silent: true, env: { ...generateEnvVars(c) } })
-                .catch(e => logError(e, true));
-            return true;
+            return startReactNative(c, {
+                waitForBundler: !!parentTask,
+                customCliPath: `${doResolve('react-native-tvos')}/local-cli/cli.js`,
+                metroConfigName: 'metro.config.js',
+            });
         }
         default:
             return logErrorPlatform(c);

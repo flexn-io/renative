@@ -66,7 +66,10 @@ export const packageReactNativeAndroid = async (c: RnvContext) => {
                 `${outputFile}.bundle.map`
             )}`;
         }
-        await executeAsync(c, cmd, { env: { ...generateEnvVars(c) } });
+        await executeAsync(c, cmd, {
+            env: { ...generateEnvVars(c) },
+            printableEnvKeys,
+        });
 
         logInfo('ANDROID PACKAGE FINISHED');
         return true;
@@ -103,13 +106,7 @@ export const runReactNativeAndroid = async (
         //This is required to make rn cli logs visible in rnv executed terminal
         interactive: true,
         stdio: 'inherit',
-        printableEnvKeys: [
-            'RNV_REACT_NATIVE_PATH',
-            'RNV_APP_ID',
-            'RNV_PROJECT_ROOT',
-            'RNV_APP_BUILD_DIR',
-            'RNV_ENGINE_PATH',
-        ],
+        printableEnvKeys,
     });
 };
 
@@ -122,17 +119,20 @@ export const buildReactNativeAndroid = async (c: RnvContext) => {
     const outputAab = getConfigProp(c, platform, 'aab', false);
     const extraGradleParams = getConfigProp(c, platform, 'extraGradleParams', '');
 
-    let command = `npx react-native build-android --mode=${signingConfig} --no-packager --tasks ${outputAab ? 'bundle' : 'assemble'}${signingConfig}`;
+    let command = `npx react-native build-android --mode=${signingConfig} --no-packager --tasks ${
+        outputAab ? 'bundle' : 'assemble'
+    }${signingConfig}`;
 
     if (extraGradleParams) {
         command += ` --extra-params ${extraGradleParams}`;
     }
 
-    await executeAsync(c, command, { 
-        cwd: appFolder, 
+    await executeAsync(c, command, {
+        cwd: appFolder,
         env: {
             ...generateEnvVars(c),
-        }, 
+        },
+        printableEnvKeys,
     });
 
     logSuccess(
