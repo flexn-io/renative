@@ -18,6 +18,7 @@ import {
     RnvContext,
     waitForExecCLI,
     inquirerPrompt,
+    isSystemLinux,
 } from '@rnv/core';
 import { WebosDevice } from './types';
 import {
@@ -42,7 +43,7 @@ export const launchWebOSimulator = (c: RnvContext) => {
     const ePath = path.join(
         webosSdkPath,
         `Emulator/${availableEmulatorVersions?.[0] || 'v4.0.0'}/LG_webOS_TV_Emulator${
-            isSystemWin ? '.exe' : '_RCU.app'
+            isSystemWin ? '.exe' : isSystemLinux ? '.sh' : '_RCU.app'
         }`
     );
 
