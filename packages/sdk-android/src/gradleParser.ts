@@ -610,6 +610,7 @@ export const parseGradlePropertiesSync = (c: Context) => {
     const gradleProperties = 'gradle.properties';
 
     const newArchEnabled = getConfigProp(c, c.platform, 'newArchEnabled', false);
+    const reactNativeEngine = getConfigProp(c, c.platform, 'reactNativeEngine') || 'hermes';
 
     const injects = [
         {
@@ -619,6 +620,10 @@ export const parseGradlePropertiesSync = (c: Context) => {
         {
             pattern: '{{NEW_ARCH_ENABLED}}',
             override: newArchEnabled ? 'true' : 'false',
+        },
+        {
+            pattern: '{{HERMES_ENABLED}}',
+            override: reactNativeEngine === 'hermes' ? 'true' : 'false',
         },
     ];
 

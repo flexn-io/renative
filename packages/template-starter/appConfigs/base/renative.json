@@ -134,7 +134,6 @@
         },
         "android": {
             "entryFile": "index",
-            "reactNativeEngine": "hermes",
             "includedPermissions": [
                 "INTERNET"
             ],
