@@ -15,6 +15,7 @@ import {
     DEFAULTS,
     RnvPlatform,
 } from '@rnv/core';
+import { printableEnvKeys } from './common';
 
 export const packageReactNativeAndroid = async (c: RnvContext) => {
     logTask('packageAndroid');

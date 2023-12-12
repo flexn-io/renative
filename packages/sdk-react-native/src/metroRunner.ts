@@ -17,7 +17,7 @@ import {
     logRaw,
     logTask,
 } from '@rnv/core';
-import { isBundlerActive } from './common';
+import { isBundlerActive, printableEnvKeys } from './common';
 
 const BUNDLER_PLATFORMS: Record<string, string> = {};
 
@@ -87,6 +87,7 @@ Dev server running at: ${url}
                 stdio: 'inherit',
                 silent: true,
                 env: { ...generateEnvVars(c), RCT_NO_LAUNCH_PACKAGER: 1 },
+                printableEnvKeys,
             });
         }
         if (resetCompleted) {
@@ -94,13 +95,17 @@ Dev server running at: ${url}
                 stdio: 'inherit',
                 silent: true,
                 env: { ...generateEnvVars(c) },
+                printableEnvKeys,
             });
         }
 
         return true;
     }
-    executeAsync(c, startCmd, { stdio: 'inherit', silent: true, env: { ...generateEnvVars(c) } }).catch((e) =>
-        logError(e, true)
-    );
+    executeAsync(c, startCmd, {
+        stdio: 'inherit',
+        silent: true,
+        env: { ...generateEnvVars(c) },
+        printableEnvKeys,
+    }).catch((e) => logError(e, true));
     return true;
 };

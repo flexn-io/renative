@@ -1,6 +1,6 @@
 import { executeAsync, getAppFolder, getConfigProp, generateEnvVars, doResolve, logTask, RnvContext } from '@rnv/core';
 import { RnvEnvContext } from '@rnv/core/lib/env/types';
-
+import { printableEnvKeys } from './common';
 import shellQuote from 'shell-quote';
 
 export const packageReactNativeIOS = (c: RnvContext, isDev = false) => {
@@ -41,7 +41,7 @@ export const packageReactNativeIOS = (c: RnvContext, isDev = false) => {
         )}/local-cli/cli.js ${args.join(' ')} --config=${
             c.runtime.runtimeExtraProps?.reactNativeMetroConfigName || 'metro.config.js'
         }`,
-        { env: { ...generateEnvVars(c) } }
+        { env: { ...generateEnvVars(c) }, printableEnvKeys }
     );
 };
 
@@ -68,13 +68,7 @@ export const runReactNativeIOS = async (
         // return executeAsync(c, cmd, { stdio: 'inherit', silent: true });
         return executeAsync(c, cmd, {
             env,
-            printableEnvKeys: [
-                'RNV_REACT_NATIVE_PATH',
-                'RNV_APP_ID',
-                'RNV_PROJECT_ROOT',
-                'RNV_APP_BUILD_DIR',
-                'RNV_ENGINE_PATH',
-            ],
+            printableEnvKeys,
         });
     } catch (e) {
         if (typeof e === 'string') {
