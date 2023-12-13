@@ -19,8 +19,6 @@ const terminateProcesses = (): void => {
         console.log(e);
     }
     runningProcesses.length = 0;
-
-    process.exit(0);
 };
 
 export const run = () => {
@@ -57,12 +55,15 @@ export const run = () => {
 
     process.on('SIGINT', () => {
         terminateProcesses();
+        process.exit(0);
     });
 
     executeRnv({ cmd: cmdValue, subCmd: cmdOption, program, process, spinner: Spinner, prompt: Prompt, logger: Logger })
-        .then(() => logComplete(!getContext().runtime.keepSessionActive))
+        .then(() => {
+            logComplete(!getContext().runtime.keepSessionActive);
+        })
         .catch((e: unknown) => {
-            logError(e);
             terminateProcesses();
+            logError(e, true);
         });
 };
