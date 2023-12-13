@@ -32,13 +32,16 @@ export const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
 
     switch (platform) {
         case ANDROID_TV:
-        case FIRE_TV:
+        case FIRE_TV: {
             // NOTE: react-native v0.73 triggers packaging automatically so we skipping it unless we need to
             // package it explicitly for tasks where it is not triggered automatically
-            if (originTask === TASK_EJECT) {
+            const signingConfig = getConfigProp(c, c.platform, 'signingConfig');
+
+            if (originTask === TASK_EJECT || signingConfig !== 'Release') {
                 return packageAndroid(c);
             }
             return true;
+        }
         case TVOS:
             return packageBundleForXcode(c);
         default:
