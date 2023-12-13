@@ -45,7 +45,7 @@ export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
         case FIRE_TV:
         case TVOS: {
             return startReactNative(c, {
-                waitForBundler: !!parentTask,
+                waitForBundler: !parentTask,
                 customCliPath: `${doResolve('react-native-tvos')}/local-cli/cli.js`,
                 metroConfigName: 'metro.config.js',
             });

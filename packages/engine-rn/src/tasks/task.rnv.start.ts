@@ -41,7 +41,7 @@ export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
         case ANDROID_TV:
         case FIRE_TV:
         case ANDROID_WEAR: {
-            return startReactNative(c, { waitForBundler: !!parentTask });
+            return startReactNative(c, { waitForBundler: !parentTask });
         }
         default:
             return logErrorPlatform(c);

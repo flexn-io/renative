@@ -37,7 +37,7 @@ export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     switch (platform) {
         case MACOS: {
             return startReactNative(c, {
-                waitForBundler: !!parentTask,
+                waitForBundler: !parentTask,
                 customCliPath: `${doResolve('react-native')}/local-cli/cli.js`,
                 metroConfigName: 'metro.config.rnm.js',
             });
