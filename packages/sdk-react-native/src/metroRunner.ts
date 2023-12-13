@@ -49,7 +49,7 @@ export const startReactNative = async (
         startCmd = `npx react-native start`;
     }
 
-    startCmd += `--port ${c.runtime.port}`;
+    startCmd += ` --port ${c.runtime.port}`;
 
     startCmd += ` --no-interactive`;
 
