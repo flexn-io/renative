@@ -48,7 +48,22 @@ test('Execute task.rnv.start', async () => {
     // WHEN
     const result = await taskRnvStart.fn(ctx, 'parent', originTask);
     // THEN
-    expect(executeAsync).toHaveBeenCalledWith(ctx, 'node undefined/local-cli/cli.js start --port undefined --config=metro.config.js', { env: {}, silent: true, stdio: 'inherit' });
+    expect(executeAsync).toHaveBeenCalledWith(
+        ctx,
+        'node undefined/local-cli/cli.js start --port undefined --no-interactive --config=metro.config.js',
+        {
+            env: {},
+            silent: true,
+            stdio: 'inherit',
+            printableEnvKeys: [
+                'RNV_REACT_NATIVE_PATH',
+                'RNV_APP_ID',
+                'RNV_PROJECT_ROOT',
+                'RNV_APP_BUILD_DIR',
+                'RNV_ENGINE_PATH',
+            ],
+        }
+    );
     expect(result).toEqual(true);
 });
 
@@ -59,7 +74,22 @@ test('Execute task.rnv.start with metro failure', async () => {
     // WHEN
     const result = await taskRnvStart.fn(ctx, 'parent', originTask);
     // THEN
-    expect(executeAsync).toHaveBeenCalledWith(ctx, 'node undefined/local-cli/cli.js start --port undefined --config=metro.config.js', { env: {}, silent: true, stdio: 'inherit' });
+    expect(executeAsync).toHaveBeenCalledWith(
+        ctx,
+        'node undefined/local-cli/cli.js start --port undefined --no-interactive --config=metro.config.js',
+        {
+            env: {},
+            silent: true,
+            stdio: 'inherit',
+            printableEnvKeys: [
+                'RNV_REACT_NATIVE_PATH',
+                'RNV_APP_ID',
+                'RNV_PROJECT_ROOT',
+                'RNV_APP_BUILD_DIR',
+                'RNV_ENGINE_PATH',
+            ],
+        }
+    );
     expect(logError).toHaveBeenCalledWith('Metro failed', true);
     expect(result).toEqual(true);
 });
