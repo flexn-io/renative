@@ -545,7 +545,14 @@ const commandExistsSync = (commandName: string) => {
 };
 
 // eslint-disable-next-line no-nested-ternary
-const openCommand = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'start' : 'xdg-open';
+const openCommand =
+    process.platform === 'darwin'
+        ? 'open'
+        : process.platform === 'win32'
+        ? 'start'
+        : process.platform === 'linux'
+        ? ''
+        : 'xdg-open';
 
 export const waitForExecCLI = async (
     c: RnvContext,
