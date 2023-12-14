@@ -7,11 +7,17 @@ if (fs.existsSync(path.join(__dirname, '../../../wdio.capabilities.template.js')
     customCapabilities = capabilities;
 }
 
+const deviceTarget = process.env.DEVICE_TARGET;
+
+if (deviceTarget) {
+    console.log(`Using custom device target: ${deviceTarget}`);
+}
+
 const capabilities = {
     ios: [
         {
             platformName: 'iOS',
-            'appium:deviceName': 'iPhone 14',
+            'appium:deviceName': deviceTarget || 'iPhone 14',
             'appium:platformVersion': '16.4',
             'appium:automationName': 'XCUITest',
             'appium:bundleId': 'renative.helloworld.test',
@@ -21,7 +27,7 @@ const capabilities = {
     tvos: [
         {
             platformName: 'tvOS',
-            'appium:deviceName': 'Apple TV',
+            'appium:deviceName': deviceTarget || 'Apple TV',
             'appium:platformVersion': '16.4',
             'appium:automationName': 'XCUITest',
             'appium:bundleId': 'renative.helloworld.test',
@@ -32,7 +38,7 @@ const capabilities = {
     android: [
         {
             platformName: 'Android',
-            'appium:avd': 'Pixel_4_API_29',
+            'appium:avd': deviceTarget || 'Pixel_4_API_29',
             'appium:platformVersion': '10',
             'appium:automationName': 'UiAutomator2',
             'appium:appPackage': 'renative.helloworld.test',
@@ -43,7 +49,7 @@ const capabilities = {
     androidtv: [
         {
             platformName: 'Android',
-            'appium:avd': 'Android_TV_1080p_API_30',
+            'appium:avd': deviceTarget || 'Android_TV_1080p_API_30',
             'appium:platformVersion': '10',
             'appium:automationName': 'UiAutomator2',
             'appium:appPackage': 'renative.helloworld.test',
