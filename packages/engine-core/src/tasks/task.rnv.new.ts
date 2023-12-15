@@ -303,8 +303,8 @@ export const taskRnvNew = async (c: RnvContext) => {
         inputProjectName = inputProjectNameObj?.inputProjectName;
     }
 
-    data.projectName = inputProjectName;
-    c.paths.project.dir = path.join(c.paths.CURRENT_DIR, data.projectName.replace(/(\s+)/g, '_'));
+    data.projectName = inputProjectName.replace(/(\s+)/g, '_');
+    c.paths.project.dir = path.join(c.paths.CURRENT_DIR, data.projectName);
 
     if (fsExistsSync(c.paths.project.dir)) {
         const { confirm } = await inquirerPrompt({
