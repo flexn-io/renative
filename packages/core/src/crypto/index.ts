@@ -18,7 +18,9 @@ export const getEnvVar = (c: RnvContext) => {
         logError('package.json requires `name` field. cannot generate ENV variables for crypto');
         return;
     }
-    const p1 = c.paths.workspace.dir.split('/').pop()?.replace?.('.', '');
+    const splitDelimiter = isSystemWin ? '\\' : '/';
+
+    const p1 = c.paths.workspace.dir.split(splitDelimiter).pop()?.replace?.('.', '');
     const p2 = c.files.project.package.name.replace('@', '').replace('/', '_').replace(/-/g, '_');
     const envVar = `CRYPTO_${p1}_${p2}`.toUpperCase();
     logDebug('encrypt looking for env var:', envVar);
