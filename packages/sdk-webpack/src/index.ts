@@ -17,15 +17,16 @@ import {
     logRaw,
     logError,
     logSummary,
-    generateEnvVars,
-    getModuleConfigs,
     executeAsync,
     copyFileSync,
     fsExistsSync,
     RnvContext,
     RnvPlatform,
+    CoreEnvVars,
+    Env,
 } from '@rnv/core';
 import { getDevServerHost, openBrowser, waitForHost } from '@rnv/sdk-utils';
+import { EnvVars } from './env';
 
 export const REMOTE_DEBUG_PORT = 8079;
 
@@ -147,7 +148,17 @@ Debugger running at: ${debugUrl}`);
 export const _runWebDevServer = async (c: RnvContext, enableRemoteDebugger?: boolean) => {
     logTask('_runWebDevServer');
     const { debug } = c.program;
-    const env: Record<string, any> = { ...generateEnvVars(c, getModuleConfigs(c)) };
+
+    const env: Env = {
+        ...CoreEnvVars.BASE(),
+        ...CoreEnvVars.RNV_EXTENSIONS(),
+        ...EnvVars.RNV_MODULE_CONFIGS(),
+        ...EnvVars.PUBLIC_URL(),
+        ...EnvVars.RNV_ENTRY_FILE(),
+        ...EnvVars.PORT(),
+        ...EnvVars.WEBPACK_TARGET(),
+        ...EnvVars.RNV_EXTERNAL_PATHS(),
+    };
     Object.keys(env).forEach((v) => {
         process.env[v] = env[v];
     });
@@ -163,14 +174,6 @@ export const _runWebDevServer = async (c: RnvContext, enableRemoteDebugger?: boo
     } catch (e) {
         logError(e);
     }
-
-    process.env.PUBLIC_URL = getConfigProp(c, c.platform, 'webpackConfig')?.publicUrl || '.';
-    process.env.RNV_ENTRY_FILE = getConfigProp(c, c.platform, 'entryFile');
-    process.env.PORT = String(c.runtime.port);
-    if (c.runtime.webpackTarget) {
-        process.env.WEBPACK_TARGET = c.runtime.webpackTarget;
-    }
-    process.env.RNV_EXTERNAL_PATHS = [c.paths.project.assets.dir, c.paths.project.dir].join(',');
 
     const debugObj = { remoteDebuggerActive: false };
     let debugOrder = [_runRemoteDebuggerChii, _runRemoteDebuggerWeinre];
@@ -189,18 +192,19 @@ export const _runWebDevServer = async (c: RnvContext, enableRemoteDebugger?: boo
 export const buildCoreWebpackProject = async (c: RnvContext) => {
     const { debug, debugIp } = c.program;
     logTask('buildCoreWebpackProject');
-    const env: Record<string, any> = { ...generateEnvVars(c, getModuleConfigs(c)) };
+    const env: Record<string, any> = {
+        ...CoreEnvVars.BASE(),
+        ...CoreEnvVars.RNV_EXTENSIONS(),
+        ...EnvVars.RNV_MODULE_CONFIGS(),
+        ...EnvVars.PUBLIC_URL(),
+        ...EnvVars.RNV_ENTRY_FILE(),
+        ...EnvVars.PORT(),
+        ...EnvVars.WEBPACK_TARGET(),
+        ...EnvVars.RNV_EXTERNAL_PATHS(),
+    };
     Object.keys(env).forEach((v) => {
         process.env[v] = env[v];
     });
-
-    process.env.PUBLIC_URL = getConfigProp(c, c.platform, 'webpackConfig')?.publicUrl || '.';
-    process.env.RNV_ENTRY_FILE = getConfigProp(c, c.platform, 'entryFile');
-    process.env.PORT = String(c.runtime.port);
-    if (c.runtime.webpackTarget) {
-        process.env.WEBPACK_TARGET = c.runtime.webpackTarget;
-    }
-    process.env.RNV_EXTERNAL_PATHS = [c.paths.project.assets.dir, c.paths.project.dir].join(',');
 
     if (debug) {
         logInfo(

@@ -16,21 +16,23 @@ import {
     getAppTitle,
     getAppId,
     getAppDescription,
-    generateEnvVars,
     copyAssetsFolder,
     copyBuildsFolder,
     writeCleanFile,
     DEFAULTS,
     OverridesOptions,
+    CoreEnvVars,
 } from '@rnv/core';
 import semver from 'semver';
 
 import { runTizenSimOrDevice, CLI_TIZEN } from '@rnv/sdk-tizen';
 import { CLI_WEBOS_ARES_PACKAGE, runWebosSimOrDevice } from '@rnv/sdk-webos';
+import { EnvVars } from './env';
+
+export const printableEnvKeys = ['LNG_DIST_FOLDER', 'LNG_ENTRY_FILE'];
 
 export const runLightningProject = async (c: RnvContext) => {
     logTask('runLightningProject');
-    const entryFile = getConfigProp(c, c.platform, 'entryFile');
     const { platform } = c;
     const { hosted } = c.program;
     const isHosted = hosted && !getConfigProp(c, platform, 'bundleAssets');
@@ -40,11 +42,12 @@ export const runLightningProject = async (c: RnvContext) => {
             stdio: 'inherit',
             silent: false,
             env: {
-                LNG_BUILD_FOLDER: getPlatformBuildDir(c, true),
-                LNG_ENTRY_FILE: entryFile,
-                LNG_SERVE_PORT: c.runtime.currentPlatform?.defaultPort,
-                ...generateEnvVars(c),
+                ...CoreEnvVars.BASE(),
+                ...EnvVars.LNG_BUILD_FOLDER(),
+                ...EnvVars.LNG_ENTRY_FILE(),
+                ...EnvVars.LNG_SERVE_PORT(),
             },
+            printableEnvKeys,
         });
     } else {
         await buildLightningProject(c);
@@ -66,7 +69,6 @@ export const buildLightningProject = async (c: RnvContext) => {
 
     const certProfile = getConfigProp(c, c.platform, 'certificateProfile') || DEFAULTS.certificateProfile;
 
-    const entryFile = getConfigProp(c, c.platform, 'entryFile');
     const target = getConfigProp(c, platform, 'target', 'es6');
     const tBuild = getPlatformProjectDir(c);
 
@@ -76,10 +78,11 @@ export const buildLightningProject = async (c: RnvContext) => {
         stdio: 'inherit',
         silent: false,
         env: {
-            LNG_DIST_FOLDER: getPlatformBuildDir(c, true),
-            LNG_ENTRY_FILE: entryFile,
-            ...generateEnvVars(c),
+            ...CoreEnvVars.BASE(),
+            ...EnvVars.LNG_DIST_FOLDER(),
+            ...EnvVars.LNG_ENTRY_FILE(),
         },
+        printableEnvKeys,
     });
 
     if (platform === TIZEN) {
