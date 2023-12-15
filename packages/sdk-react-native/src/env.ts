@@ -1,4 +1,5 @@
-import { doResolve, getAppId, getContext, getRelativePath } from '@rnv/core';
+import { doResolve, getAppId, getConfigProp, getContext, getRelativePath } from '@rnv/core';
+import RNPermissionsMap from './rnPermissionsMap';
 
 export const printableEnvKeys = [
     'RNV_REACT_NATIVE_PATH',
@@ -8,6 +9,8 @@ export const printableEnvKeys = [
     'RNV_ENGINE_PATH',
     'RCT_METRO_PORT',
     'RCT_NO_LAUNCH_PACKAGER',
+    'RCT_NEW_ARCH_ENABLED',
+    'REACT_NATIVE_PERMISSIONS_REQUIRED',
 ];
 
 export const EnvVars = {
@@ -32,5 +35,33 @@ export const EnvVars = {
         const ctx = getContext();
 
         return { RNV_APP_ID: getAppId(ctx, ctx.platform) };
+    },
+    REACT_NATIVE_PERMISSIONS_REQUIRED: () => {
+        const ctx = getContext();
+
+        const permissions = ctx.platform === 'ios' ? ctx.buildConfig.permissions?.[ctx.platform] : {};
+
+        let requiredPodPermissions = permissions
+            ? Object.keys(permissions).map((key) => RNPermissionsMap[key]?.podPermissionKey)
+            : '';
+
+        // remove duplicates
+        if (requiredPodPermissions?.length > 0) {
+            requiredPodPermissions = Array.from(new Set(requiredPodPermissions));
+            return { REACT_NATIVE_PERMISSIONS_REQUIRED: requiredPodPermissions };
+        }
+
+        return {};
+    },
+    RCT_NEW_ARCH_ENABLED: () => {
+        const ctx = getContext();
+
+        // new arch support
+        const newArchEnabled = getConfigProp(ctx, ctx.platform, 'newArchEnabled', false);
+
+        if (newArchEnabled) {
+            return { RCT_NEW_ARCH_ENABLED: 1 };
+        }
+        return {};
     },
 };
