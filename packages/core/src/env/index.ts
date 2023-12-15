@@ -13,11 +13,11 @@ export const CoreEnvVars = {
     },
     BASE: () => {
         const ctx = getContext();
-        return generateEnvVars(ctx);
+        return _generateEnvVars(ctx);
     },
 };
 
-export const generateEnvVars = (c: RnvContext) => {
+const _generateEnvVars = (c: RnvContext) => {
     const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');
     const monoRoot = getConfigProp(c, c.platform, 'monoRoot') || '../..';
 

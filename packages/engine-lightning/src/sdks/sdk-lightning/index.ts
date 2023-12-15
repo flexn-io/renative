@@ -47,6 +47,7 @@ export const runLightningProject = async (c: RnvContext) => {
                 ...EnvVars.LNG_ENTRY_FILE(),
                 ...EnvVars.LNG_SERVE_PORT(),
             },
+            printableEnvKeys,
         });
     } else {
         await buildLightningProject(c);
