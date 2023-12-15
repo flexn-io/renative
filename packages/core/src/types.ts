@@ -10,7 +10,7 @@ export type RenativeConfigVersion = string | { version: string };
 
 export type RnvError = any;
 
-export type Env = any;
+export type Env = Record<string, any>;
 
 export type BabelConfig = {
     retainLines?: boolean;

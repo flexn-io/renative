@@ -1,10 +1,50 @@
-import { doResolvePath, getContext, includesPluginPath, parsePlugins, sanitizePluginPath } from '@rnv/core';
+import {
+    doResolvePath,
+    getConfigProp,
+    getContext,
+    includesPluginPath,
+    parsePlugins,
+    sanitizePluginPath,
+} from '@rnv/core';
 import path from 'path';
 
 export type RnvModuleConfig = {
     modulePaths: Array<string>;
     moduleAliases: Record<string, string | undefined>;
     moduleAliasesArray: Array<string>;
+};
+
+export const EnvVars = {
+    RNV_MODULE_CONFIGS: () => {
+        const configs = getModuleConfigs();
+
+        return {
+            RNV_MODULE_PATHS: configs.modulePaths,
+            RNV_MODULE_ALIASES: configs.moduleAliasesArray,
+        };
+    },
+    PUBLIC_URL: () => {
+        const ctx = getContext();
+        return { PUBLIC_URL: getConfigProp(ctx, ctx.platform, 'webpackConfig')?.publicUrl || '.' };
+    },
+    RNV_ENTRY_FILE: () => {
+        const ctx = getContext();
+        return { RNV_ENTRY_FILE: getConfigProp(ctx, ctx.platform, 'entryFile') };
+    },
+    PORT: () => {
+        const ctx = getContext();
+        return { PORT: ctx.runtime.port };
+    },
+    WEBPACK_TARGET: () => {
+        const ctx = getContext();
+        if (ctx.runtime.webpackTarget) {
+            return { WEBPACK_TARGET: ctx.runtime.webpackTarget };
+        }
+    },
+    RNV_EXTERNAL_PATHS: () => {
+        const ctx = getContext();
+        return { RNV_EXTERNAL_PATHS: [ctx.paths.project.assets.dir, ctx.paths.project.dir].join(',') };
+    },
 };
 
 export const getModuleConfigs = (): RnvModuleConfig => {
@@ -71,15 +111,4 @@ export const getModuleConfigs = (): RnvModuleConfig => {
         .filter(Boolean);
 
     return { modulePaths, moduleAliases, moduleAliasesArray };
-};
-
-export const EnvVars = {
-    RNV_MODULE_CONFIGS: () => {
-        const configs = getModuleConfigs();
-
-        return {
-            RNV_MODULE_PATHS: configs.modulePaths,
-            RNV_MODULE_ALIASES: configs.moduleAliasesArray,
-        };
-    },
 };
