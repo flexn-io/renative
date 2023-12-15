@@ -65,6 +65,8 @@ test('Execute task.rnv.start', async () => {
                 'RNV_ENGINE_PATH',
                 'RCT_METRO_PORT',
                 'RCT_NO_LAUNCH_PACKAGER',
+                'RCT_NEW_ARCH_ENABLED',
+                'REACT_NATIVE_PERMISSIONS_REQUIRED',
             ],
         }
     );
@@ -93,6 +95,8 @@ test('Execute task.rnv.start with metro failure', async () => {
                 'RNV_ENGINE_PATH',
                 'RCT_METRO_PORT',
                 'RCT_NO_LAUNCH_PACKAGER',
+                'RCT_NEW_ARCH_ENABLED',
+                'REACT_NATIVE_PERMISSIONS_REQUIRED',
             ],
         }
     );
