@@ -49,6 +49,8 @@ test('Execute task.rnv.start', async () => {
             'RNV_PROJECT_ROOT',
             'RNV_APP_BUILD_DIR',
             'RNV_ENGINE_PATH',
+            'RCT_METRO_PORT',
+            'RCT_NO_LAUNCH_PACKAGER',
         ],
     });
     await expect(taskRnvRun.fn(ctx, undefined, originTask)).resolves.toEqual(true);
@@ -68,6 +70,8 @@ test('Execute task.rnv.start with metro failure', async () => {
             'RNV_PROJECT_ROOT',
             'RNV_APP_BUILD_DIR',
             'RNV_ENGINE_PATH',
+            'RCT_METRO_PORT',
+            'RCT_NO_LAUNCH_PACKAGER',
         ],
     });
     expect(logError).toHaveBeenCalledWith('Metro failed', true);

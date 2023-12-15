@@ -8,7 +8,9 @@ jest.mock('@rnv/core');
 jest.mock('@rnv/sdk-apple');
 
 beforeEach(() => {
-    createRnvContext({ program: { platform: 'tvos' } });
+    createRnvContext({
+        program: { platform: 'tvos' },
+    });
     createRnvApi();
 });
 
@@ -61,6 +63,8 @@ test('Execute task.rnv.start', async () => {
                 'RNV_PROJECT_ROOT',
                 'RNV_APP_BUILD_DIR',
                 'RNV_ENGINE_PATH',
+                'RCT_METRO_PORT',
+                'RCT_NO_LAUNCH_PACKAGER',
             ],
         }
     );
@@ -87,6 +91,8 @@ test('Execute task.rnv.start with metro failure', async () => {
                 'RNV_PROJECT_ROOT',
                 'RNV_APP_BUILD_DIR',
                 'RNV_ENGINE_PATH',
+                'RCT_METRO_PORT',
+                'RCT_NO_LAUNCH_PACKAGER',
             ],
         }
     );
