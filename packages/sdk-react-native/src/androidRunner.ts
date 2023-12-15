@@ -4,7 +4,6 @@ import {
     getAppFolder,
     getConfigProp,
     getEntryFile,
-    generateEnvVars,
     isSystemWin,
     chalk,
     logTask,
@@ -14,8 +13,9 @@ import {
     RnvContext,
     DEFAULTS,
     RnvPlatform,
+    CoreEnvVars,
 } from '@rnv/core';
-import { printableEnvKeys } from './common';
+import { EnvVars, printableEnvKeys } from './env';
 
 export const packageReactNativeAndroid = async (c: RnvContext) => {
     logTask('packageAndroid');
@@ -67,8 +67,9 @@ export const packageReactNativeAndroid = async (c: RnvContext) => {
                 `${outputFile}.bundle.map`
             )}`;
         }
+
         await executeAsync(c, cmd, {
-            env: { ...generateEnvVars(c) },
+            env: { ...CoreEnvVars.BASE(), ...EnvVars.RNV_REACT_NATIVE_PATH(), ...EnvVars.RNV_APP_ID() },
             printableEnvKeys,
         });
 
@@ -100,8 +101,10 @@ export const runReactNativeAndroid = async (
 
     return executeAsync(c, command, {
         env: {
-            RCT_METRO_PORT: c.runtime.port,
-            ...generateEnvVars(c, undefined, undefined, { exludeEnvKeys: ['RNV_EXTENSIONS'] }),
+            ...CoreEnvVars.BASE(),
+            ...EnvVars.RCT_METRO_PORT(),
+            ...EnvVars.RNV_REACT_NATIVE_PATH(),
+            ...EnvVars.RNV_APP_ID(),
         },
         cwd: appFolder,
         //This is required to make rn cli logs visible in rnv executed terminal
@@ -131,7 +134,9 @@ export const buildReactNativeAndroid = async (c: RnvContext) => {
     await executeAsync(c, command, {
         cwd: appFolder,
         env: {
-            ...generateEnvVars(c),
+            ...CoreEnvVars.BASE(),
+            ...EnvVars.RNV_REACT_NATIVE_PATH(),
+            ...EnvVars.RNV_APP_ID(),
         },
         printableEnvKeys,
     });

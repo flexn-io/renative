@@ -16,14 +16,6 @@ import {
 
 let keepRNVRunning = false;
 
-export const printableEnvKeys = [
-    'RNV_REACT_NATIVE_PATH',
-    'RNV_APP_ID',
-    'RNV_PROJECT_ROOT',
-    'RNV_APP_BUILD_DIR',
-    'RNV_ENGINE_PATH',
-];
-
 export const startBundlerIfRequired = async (c: RnvContext, parentTask: string, originTask?: string) => {
     logTask('startBundlerIfRequired');
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');

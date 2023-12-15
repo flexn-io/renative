@@ -17,15 +17,15 @@ import {
     logRaw,
     logError,
     logSummary,
-    generateEnvVars,
-    getModuleConfigs,
     executeAsync,
     copyFileSync,
     fsExistsSync,
     RnvContext,
     RnvPlatform,
+    CoreEnvVars,
 } from '@rnv/core';
 import { getDevServerHost, openBrowser, waitForHost } from '@rnv/sdk-utils';
+import { EnvVars } from './env';
 
 export const REMOTE_DEBUG_PORT = 8079;
 
@@ -147,7 +147,12 @@ Debugger running at: ${debugUrl}`);
 export const _runWebDevServer = async (c: RnvContext, enableRemoteDebugger?: boolean) => {
     logTask('_runWebDevServer');
     const { debug } = c.program;
-    const env: Record<string, any> = { ...generateEnvVars(c, getModuleConfigs(c)) };
+
+    const env: Record<string, any> = {
+        ...CoreEnvVars.BASE(),
+        ...CoreEnvVars.RNV_EXTENSIONS(),
+        ...EnvVars.RNV_MODULE_CONFIGS(),
+    };
     Object.keys(env).forEach((v) => {
         process.env[v] = env[v];
     });
@@ -189,7 +194,11 @@ export const _runWebDevServer = async (c: RnvContext, enableRemoteDebugger?: boo
 export const buildCoreWebpackProject = async (c: RnvContext) => {
     const { debug, debugIp } = c.program;
     logTask('buildCoreWebpackProject');
-    const env: Record<string, any> = { ...generateEnvVars(c, getModuleConfigs(c)) };
+    const env: Record<string, any> = {
+        ...CoreEnvVars.BASE(),
+        ...CoreEnvVars.RNV_EXTENSIONS(),
+        ...EnvVars.RNV_MODULE_CONFIGS(),
+    };
     Object.keys(env).forEach((v) => {
         process.env[v] = env[v];
     });

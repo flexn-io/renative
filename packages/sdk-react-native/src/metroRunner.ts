@@ -2,6 +2,7 @@ import {
     ANDROID,
     ANDROID_TV,
     ANDROID_WEAR,
+    CoreEnvVars,
     FIRE_TV,
     IOS,
     MACOS,
@@ -9,7 +10,6 @@ import {
     chalk,
     confirmActiveBundler,
     executeAsync,
-    generateEnvVars,
     getEntryFile,
     logError,
     logErrorPlatform,
@@ -17,7 +17,8 @@ import {
     logRaw,
     logTask,
 } from '@rnv/core';
-import { isBundlerActive, printableEnvKeys } from './common';
+import { isBundlerActive } from './common';
+import { EnvVars, printableEnvKeys } from './env';
 
 const BUNDLER_PLATFORMS: Record<string, string> = {};
 
@@ -86,7 +87,7 @@ Dev server running at: ${url}
             return executeAsync(c, startCmd, {
                 stdio: 'inherit',
                 silent: true,
-                env: { ...generateEnvVars(c), RCT_NO_LAUNCH_PACKAGER: 1 },
+                env: { ...CoreEnvVars.BASE(), ...CoreEnvVars.RNV_EXTENSIONS(), ...EnvVars.RCT_NO_LAUNCH_PACKAGER() },
                 printableEnvKeys,
             });
         }
@@ -94,7 +95,7 @@ Dev server running at: ${url}
             return executeAsync(c, startCmd, {
                 stdio: 'inherit',
                 silent: true,
-                env: { ...generateEnvVars(c) },
+                env: { ...CoreEnvVars.BASE(), ...CoreEnvVars.RNV_EXTENSIONS() },
                 printableEnvKeys,
             });
         }
@@ -104,7 +105,7 @@ Dev server running at: ${url}
     executeAsync(c, startCmd, {
         stdio: 'inherit',
         silent: true,
-        env: { ...generateEnvVars(c) },
+        env: { ...CoreEnvVars.BASE(), ...CoreEnvVars.RNV_EXTENSIONS() },
         printableEnvKeys,
     }).catch((e) => logError(e, true));
     return true;

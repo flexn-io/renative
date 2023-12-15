@@ -6,7 +6,6 @@ import {
     getConfigProp,
     confirmActiveBundler,
     getPlatformBuildDir,
-    fsExistsSync,
     copyFolderContentsRecursiveSync,
     chalk,
     logTask,
@@ -15,13 +14,14 @@ import {
     logRaw,
     logSummary,
     logSuccess,
-    generateEnvVars,
     copyAssetsFolder,
-    parsePlugins,
-    getModuleConfigs,
     RnvPlatform,
+    CoreEnvVars,
 } from '@rnv/core';
 import { getDevServerHost, openBrowser, waitForHost } from '@rnv/sdk-utils';
+import { EnvVars } from './env';
+
+const printableEnvKeys = ['NODE_ENV', 'NEXT_DIST_DIR', 'RNV_EXTENSIONS', 'RNV_NEXT_TRANSPILE_MODULES'];
 
 export const configureNextIfRequired = async (c: RnvContext) => {
     logTask('configureNextIfRequired');
@@ -115,70 +115,18 @@ const getExportDir = (c: RnvContext) => {
     return outputDir || path.join(getPlatformBuildDir(c)!, 'output');
 };
 
-const _checkPagesDir = async (c: RnvContext) => {
-    const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
-    const distDir = getOutputDir(c);
-    if (pagesDir) {
-        const pagesDirPath = path.join(c.paths.project.dir, pagesDir);
-        if (!fsExistsSync(pagesDirPath)) {
-            logWarning(
-                `You configured custom ${c.platform}pagesDir: ${chalk().white(
-                    pagesDir
-                )} in your renative.json but it is missing at ${chalk().red(pagesDirPath)}`
-            );
-        }
-        return { NEXT_PAGES_DIR: pagesDir, NEXT_DIST_DIR: distDir };
-    }
-    const fallbackPagesDir = 'src/app';
-    logWarning(`You're missing ${c.platform}.pagesDir config. Defaulting to '${fallbackPagesDir}'`);
-
-    const fallbackPagesDirPath = path.join(c.paths.project.dir, fallbackPagesDir);
-    if (!fsExistsSync(fallbackPagesDirPath)) {
-        logWarning(`Folder ${chalk().white(
-            fallbackPagesDir
-        )} is missing. make sure your entry code is located there in order for next to work correctly!
-Alternatively you can configure custom entry folder via ${c.platform}.pagesDir in renative.json`);
-    }
-    return { NEXT_PAGES_DIR: 'src/app', NEXT_DIST_DIR: distDir };
-};
-
-export const getTranspileModules = (c: RnvContext) => {
-    const transModules = getConfigProp(c, c.platform, 'nextTranspileModules') || [];
-
-    parsePlugins(
-        c,
-        c.platform,
-        (plugin, pluginPlat, key) => {
-            const { webpackConfig } = plugin;
-            if (webpackConfig) {
-                transModules.push(key);
-                if (webpackConfig.nextTranspileModules?.length) {
-                    webpackConfig.nextTranspileModules.forEach((module) => {
-                        if (module.startsWith('.')) {
-                            transModules.push(path.join(c.paths.project.dir, module));
-                        } else {
-                            transModules.push(module);
-                        }
-                    });
-                }
-            }
-        },
-        true
-    );
-    return transModules;
-};
-
 export const buildWebNext = async (c: RnvContext) => {
     logTask('buildWebNext');
-
-    const envExt = await _checkPagesDir(c);
 
     await executeAsync(c, 'npx next build', {
         ...process.env,
         env: {
-            ...envExt,
-            ...generateEnvVars(c, getModuleConfigs(c), getTranspileModules(c)),
+            ...CoreEnvVars.BASE(),
+            ...CoreEnvVars.RNV_EXTENSIONS(),
+            ...EnvVars.RNV_NEXT_TRANSPILE_MODULES(),
+            ...EnvVars.NEXT_BASE(),
         },
+        printableEnvKeys,
     });
     logSuccess(`Your build is located in ${chalk().cyan(getOutputDir(c))} .`);
     return true;
@@ -186,8 +134,6 @@ export const buildWebNext = async (c: RnvContext) => {
 
 export const runWebDevServer = async (c: RnvContext) => {
     logTask('runWebDevServer');
-    const env = getConfigProp(c, c.platform, 'environment');
-    const envExt = await _checkPagesDir(c);
 
     const devServerHost = getDevServerHost(c);
 
@@ -201,11 +147,14 @@ Dev server running at: ${url}
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
     return executeAsync(c, `npx next ${bundleAssets ? 'start' : 'dev'} --port ${c.runtime.port}`, {
         env: {
-            NODE_ENV: env || 'development',
-            ...envExt,
-            ...generateEnvVars(c, getModuleConfigs(c), getTranspileModules(c)),
+            ...CoreEnvVars.BASE(),
+            ...CoreEnvVars.RNV_EXTENSIONS(),
+            ...EnvVars.RNV_NEXT_TRANSPILE_MODULES(),
+            ...EnvVars.NEXT_BASE(),
+            ...EnvVars.NODE_ENV(),
         },
         interactive: !c.program?.json,
+        printableEnvKeys,
     });
 };
 
@@ -225,16 +174,17 @@ export const exportWebNext = async (c: RnvContext) => {
 
     logTask('_exportNext');
     const exportDir = getExportDir(c);
-    const env = getConfigProp(c, c.platform, 'environment');
-    const envExt = await _checkPagesDir(c);
 
     await executeAsync(c, `npx next export --outdir ${exportDir}`, {
         ...process.env,
         env: {
-            NODE_ENV: env || 'development',
-            ...envExt,
-            ...generateEnvVars(c, getModuleConfigs(c), getTranspileModules(c)),
+            ...CoreEnvVars.BASE(),
+            ...CoreEnvVars.RNV_EXTENSIONS(),
+            ...EnvVars.RNV_NEXT_TRANSPILE_MODULES(),
+            ...EnvVars.NEXT_BASE(),
+            ...EnvVars.NODE_ENV(),
         },
+        printableEnvKeys,
     });
     logSuccess(`Your export is located in ${chalk().cyan(exportDir)} .`);
 

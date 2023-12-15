@@ -1,6 +1,6 @@
-import { executeAsync, getAppFolder, getConfigProp, generateEnvVars, doResolve, logTask, RnvContext } from '@rnv/core';
+import { executeAsync, getAppFolder, getConfigProp, doResolve, logTask, RnvContext, CoreEnvVars } from '@rnv/core';
 import { RnvEnvContext } from '@rnv/core/lib/env/types';
-import { printableEnvKeys } from './common';
+import { EnvVars, printableEnvKeys } from './env';
 import shellQuote from 'shell-quote';
 
 export const packageReactNativeIOS = (c: RnvContext, isDev = false) => {
@@ -41,7 +41,15 @@ export const packageReactNativeIOS = (c: RnvContext, isDev = false) => {
         )}/local-cli/cli.js ${args.join(' ')} --config=${
             c.runtime.runtimeExtraProps?.reactNativeMetroConfigName || 'metro.config.js'
         }`,
-        { env: { ...generateEnvVars(c) }, printableEnvKeys }
+        {
+            env: {
+                ...CoreEnvVars.BASE(),
+                ...CoreEnvVars.RNV_EXTENSIONS(),
+                ...EnvVars.RNV_REACT_NATIVE_PATH(),
+                ...EnvVars.RNV_APP_ID(),
+            },
+            printableEnvKeys,
+        }
     );
 };
 
@@ -57,10 +65,11 @@ export const runReactNativeIOS = async (
     //     c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'
     // )}/local-cli/cli.js run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
     const cmd = `npx react-native run-ios --scheme=${scheme} --mode=${runScheme} --no-packager ${extraParamsString}`;
-
     const env: RnvEnvContext = {
-        RCT_METRO_PORT: c.runtime.port,
-        ...generateEnvVars(c, undefined, undefined, { exludeEnvKeys: ['RNV_EXTENSIONS'] }),
+        ...CoreEnvVars.BASE(),
+        ...EnvVars.RCT_METRO_PORT(),
+        ...EnvVars.RNV_REACT_NATIVE_PATH(),
+        ...EnvVars.RNV_APP_ID(),
     };
 
     try {

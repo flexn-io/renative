@@ -12,7 +12,6 @@ import {
     commandExistsSync,
     getAppFolder,
     getConfigProp,
-    generateEnvVars,
     isPlatformActive,
     copyAssetsFolder,
     copyBuildsFolder,
@@ -30,6 +29,7 @@ import {
     logRaw,
     inquirerPrompt,
     RnvPlatform,
+    CoreEnvVars,
 } from '@rnv/core';
 import { getAppleDevices } from './deviceManager';
 
@@ -41,9 +41,16 @@ import { parseXcodeProject } from './xcodeParser';
 import { parseXcscheme } from './xcschemeParser';
 import { AppleDevice, Context } from './types';
 import { ObjectEncodingOptions } from 'fs';
-import RNPermissionsMap from './rnPermissionsMap';
 import { packageReactNativeIOS, runReactNativeIOS } from '@rnv/sdk-react-native';
 import { registerDevice } from './fastlane';
+import { EnvVars } from './env';
+
+const printableEnvKeys = [
+    'RCT_NEW_ARCH_ENABLED',
+    'REACT_NATIVE_PERMISSIONS_REQUIRED',
+    'RNV_APP_BUILD_DIR',
+    'RNV_ENGINE_PATH',
+];
 
 export const packageBundleForXcode = (c: Context) => {
     return packageReactNativeIOS(c);
@@ -108,35 +115,13 @@ const runCocoaPods = async (c: Context) => {
         return Promise.reject(`Location ${appFolder} does not exists!`);
     }
     const podsRequired = c.program.updatePods || (await checkIfPodsIsRequired(c));
-    const permissions = c.platform === 'ios' ? c.buildConfig.permissions?.[c.platform] : {};
-    let requiredPodPermissions = permissions
-        ? Object.keys(permissions).map((key) => RNPermissionsMap[key]?.podPermissionKey)
-        : '';
-
-    // remove duplicates
-    if (requiredPodPermissions) {
-        requiredPodPermissions = Array.from(new Set(requiredPodPermissions));
-    }
-
-    // new arch support
-    const newArchEnabled = getConfigProp(c, c.platform, 'newArchEnabled', false);
 
     const env: any = {
         ...process.env,
-        REACT_NATIVE_PERMISSIONS_REQUIRED: requiredPodPermissions,
-        ...generateEnvVars(c),
+        ...CoreEnvVars.BASE(),
+        ...EnvVars.REACT_NATIVE_PERMISSIONS_REQUIRED(),
+        ...EnvVars.RCT_NEW_ARCH_ENABLED(),
     };
-
-    if (newArchEnabled) {
-        env.RCT_NEW_ARCH_ENABLED = 1;
-    }
-
-    const printableEnvKeys = [
-        'RCT_NEW_ARCH_ENABLED',
-        'REACT_NATIVE_PERMISSIONS_REQUIRED',
-        'RNV_APP_BUILD_DIR',
-        'RNV_ENGINE_PATH',
-    ];
 
     if (podsRequired) {
         if (!commandExistsSync('pod')) {
@@ -771,7 +756,7 @@ const archiveXcodeProject = (c: Context) => {
     return executeAsync('xcodebuild', {
         rawCommand: { args },
         env: {
-            ...generateEnvVars(c),
+            ...CoreEnvVars.BASE(),
             RCT_NO_LAUNCH_PACKAGER: true,
         },
     }).then(() => {
