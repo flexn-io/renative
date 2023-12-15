@@ -40,13 +40,34 @@ const generateRandomKey = (length: number) =>
 
 const initializeCryptoDirectory = async (c: RnvContext, sourceFolder: string) => {
     const configDir = path.join(sourceFolder, 'appConfigs');
+    const targetFile = 'renative.private.json';
     mkdirSync(sourceFolder);
     mkdirSync(configDir);
 
+    if (c.paths.project.configPrivateExists) {
+        const options = [
+            'Move renative.private.json into encrypted folder (Recommended)',
+            'Copy renative.private.json into encrypted folder',
+            'Skip',
+        ];
+        const { option } = await inquirerPrompt({
+            name: 'option',
+            type: 'list',
+            choices: options,
+            message: `Found existing private config in your project ${chalk().grey(
+                c.paths.project.configPrivate
+            )}. What to do next?`,
+        });
+        if (option === options[0]) {
+            copyFileSync(c.paths.project.configPrivate, path.join(sourceFolder, targetFile));
+            removeFilesSync([c.paths.project.configPrivate]);
+        } else if (option === options[1]) {
+            copyFileSync(c.paths.project.configPrivate, path.join(sourceFolder, targetFile));
+        }
+    }
     const appConfigsDirs = await readdirAsync(c.paths.project.appConfigsDir);
 
     appConfigsDirs.forEach(async (item: string) => {
-        const targetFile = 'renative.private.json';
         if (item == targetFile) {
             copyFileSync(path.join(c.paths.project.appConfigsDir, item), path.join(configDir, targetFile));
         }
@@ -92,6 +113,8 @@ const _checkAndConfigureCrypto = async (c: RnvContext) => {
         cnf.crypto = {
             path: `./${location}/privateConfigs.enc`,
         };
+        c.files.project.config.crypto = cnf.crypto;
+
         writeFileSync(c.paths.project.config, cnf);
     }
 

@@ -284,9 +284,9 @@ export const parseAppBuildGradleSync = (c: Context) => {
         let keystorePathFull = keystorePath;
         if (keystorePath) {
             if (keystorePath.startsWith('.')) {
-                keystorePathFull = path.join(c.paths.workspace.appConfig.dir, keystorePath);
+                keystorePathFull = path.join(c.paths.workspace.project.dir, keystorePath);
             } else if (!fsExistsSync(keystorePath)) {
-                keystorePathFull = path.join(c.paths.workspace.appConfig.dir, keystorePath);
+                keystorePathFull = path.join(c.paths.workspace.project.dir, keystorePath);
             }
             if (isSystemWin) {
                 keystorePathFull = keystorePathFull.replace(/\\/g, '/');
