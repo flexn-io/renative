@@ -72,9 +72,7 @@ export const startReactNative = async (
         }`
     );
     logRaw(`
-
 Dev server running at: ${url}
-
 `);
     if (waitForBundler) {
         const isRunning = await isBundlerActive(c);
@@ -87,7 +85,13 @@ Dev server running at: ${url}
             return executeAsync(c, startCmd, {
                 stdio: 'inherit',
                 silent: true,
-                env: { ...CoreEnvVars.BASE(), ...CoreEnvVars.RNV_EXTENSIONS(), ...EnvVars.RCT_NO_LAUNCH_PACKAGER() },
+                env: {
+                    ...CoreEnvVars.BASE(),
+                    ...CoreEnvVars.RNV_EXTENSIONS(),
+                    ...EnvVars.RNV_REACT_NATIVE_PATH(),
+                    ...EnvVars.RNV_APP_ID(),
+                    ...EnvVars.RCT_NO_LAUNCH_PACKAGER(),
+                },
                 printableEnvKeys,
             });
         }
@@ -95,7 +99,12 @@ Dev server running at: ${url}
             return executeAsync(c, startCmd, {
                 stdio: 'inherit',
                 silent: true,
-                env: { ...CoreEnvVars.BASE(), ...CoreEnvVars.RNV_EXTENSIONS() },
+                env: {
+                    ...CoreEnvVars.BASE(),
+                    ...CoreEnvVars.RNV_EXTENSIONS(),
+                    ...EnvVars.RNV_REACT_NATIVE_PATH(),
+                    ...EnvVars.RNV_APP_ID(),
+                },
                 printableEnvKeys,
             });
         }
@@ -105,7 +114,12 @@ Dev server running at: ${url}
     executeAsync(c, startCmd, {
         stdio: 'inherit',
         silent: true,
-        env: { ...CoreEnvVars.BASE(), ...CoreEnvVars.RNV_EXTENSIONS() },
+        env: {
+            ...CoreEnvVars.BASE(),
+            ...EnvVars.RNV_REACT_NATIVE_PATH(),
+            ...EnvVars.RNV_APP_ID(),
+            ...CoreEnvVars.RNV_EXTENSIONS(),
+        },
         printableEnvKeys,
     }).catch((e) => logError(e, true));
     return true;

@@ -139,9 +139,7 @@ export const runWebDevServer = async (c: RnvContext) => {
 
     const url = chalk().cyan(`http://${devServerHost}:${c.runtime.port}`);
     logRaw(`
-
 Dev server running at: ${url}
-
 `);
 
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
