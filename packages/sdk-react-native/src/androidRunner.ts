@@ -15,7 +15,7 @@ import {
     RnvPlatform,
     CoreEnvVars,
 } from '@rnv/core';
-import { EnvVars, printableEnvKeys } from './env';
+import { EnvVars } from './env';
 
 export const packageReactNativeAndroid = async (c: RnvContext) => {
     logTask('packageAndroid');
@@ -70,7 +70,6 @@ export const packageReactNativeAndroid = async (c: RnvContext) => {
 
         await executeAsync(c, cmd, {
             env: { ...CoreEnvVars.BASE(), ...EnvVars.RNV_REACT_NATIVE_PATH(), ...EnvVars.RNV_APP_ID() },
-            printableEnvKeys,
         });
 
         logInfo('ANDROID PACKAGE FINISHED');
@@ -110,7 +109,6 @@ export const runReactNativeAndroid = async (
         //This is required to make rn cli logs visible in rnv executed terminal
         interactive: true,
         stdio: 'inherit',
-        printableEnvKeys,
     });
 };
 
@@ -138,7 +136,6 @@ export const buildReactNativeAndroid = async (c: RnvContext) => {
             ...EnvVars.RNV_REACT_NATIVE_PATH(),
             ...EnvVars.RNV_APP_ID(),
         },
-        printableEnvKeys,
     });
 
     logSuccess(

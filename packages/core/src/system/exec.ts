@@ -50,9 +50,8 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
     const mergedOpts = { ...defaultOpts, ...opts };
 
     const printableEnv =
-        opts.env && (c.program.info || c.program.showEnv)
+        opts.env && (c.program.info || c.program.printExec)
             ? Object.keys(opts.env)
-                  //   .filter((v) => printableEnvKeys.includes(v))
                   .map((k) => `${k}=${opts?.env?.[k]}`)
                   .join(' ')
             : null;

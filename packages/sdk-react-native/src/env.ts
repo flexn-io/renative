@@ -1,18 +1,6 @@
 import { doResolve, getAppId, getConfigProp, getContext, getRelativePath } from '@rnv/core';
 import RNPermissionsMap from './rnPermissionsMap';
 
-export const printableEnvKeys = [
-    'RNV_REACT_NATIVE_PATH',
-    'RNV_APP_ID',
-    'RNV_PROJECT_ROOT',
-    'RNV_APP_BUILD_DIR',
-    'RNV_ENGINE_PATH',
-    'RCT_METRO_PORT',
-    'RCT_NO_LAUNCH_PACKAGER',
-    'RCT_NEW_ARCH_ENABLED',
-    'REACT_NATIVE_PERMISSIONS_REQUIRED',
-];
-
 export const EnvVars = {
     RCT_METRO_PORT: () => {
         const ctx = getContext();

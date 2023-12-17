@@ -21,8 +21,6 @@ import {
 import { getDevServerHost, openBrowser, waitForHost } from '@rnv/sdk-utils';
 import { EnvVars } from './env';
 
-const printableEnvKeys = ['NODE_ENV', 'NEXT_DIST_DIR', 'RNV_EXTENSIONS', 'RNV_NEXT_TRANSPILE_MODULES'];
-
 export const configureNextIfRequired = async (c: RnvContext) => {
     logTask('configureNextIfRequired');
 
@@ -125,7 +123,6 @@ export const buildWebNext = async (c: RnvContext) => {
             ...EnvVars.RNV_NEXT_TRANSPILE_MODULES(),
             ...EnvVars.NEXT_BASE(),
         },
-        printableEnvKeys,
     });
     logSuccess(`Your build is located in ${chalk().cyan(getOutputDir(c))} .`);
     return true;
@@ -151,7 +148,6 @@ Dev server running at: ${url}
             ...EnvVars.NODE_ENV(),
         },
         interactive: !c.program?.json,
-        printableEnvKeys,
     });
 };
 
@@ -180,7 +176,6 @@ export const exportWebNext = async (c: RnvContext) => {
             ...EnvVars.NEXT_BASE(),
             ...EnvVars.NODE_ENV(),
         },
-        printableEnvKeys,
     });
     logSuccess(`Your export is located in ${chalk().cyan(exportDir)} .`);
 

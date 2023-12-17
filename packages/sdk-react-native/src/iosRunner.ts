@@ -15,7 +15,7 @@ import {
     logWarning,
 } from '@rnv/core';
 import { RnvEnvContext } from '@rnv/core/lib/env/types';
-import { EnvVars, printableEnvKeys } from './env';
+import { EnvVars } from './env';
 import shellQuote from 'shell-quote';
 import path from 'path';
 import crypto from 'crypto';
@@ -65,7 +65,6 @@ export const packageReactNativeIOS = (c: RnvContext, isDev = false) => {
                 ...EnvVars.RNV_REACT_NATIVE_PATH(),
                 ...EnvVars.RNV_APP_ID(),
             },
-            printableEnvKeys,
         }
     );
 };
@@ -94,7 +93,6 @@ export const runReactNativeIOS = async (
         // return executeAsync(c, cmd, { stdio: 'inherit', silent: true });
         return executeAsync(c, cmd, {
             env,
-            printableEnvKeys,
         });
     } catch (e) {
         if (typeof e === 'string') {
@@ -177,13 +175,10 @@ export const runCocoaPods = async (c: RnvContext) => {
         }
 
         try {
-            await executeAsync(c, 'bundle install', {
-                printableEnvKeys,
-            });
+            await executeAsync(c, 'bundle install');
             await executeAsync(c, 'bundle exec pod install', {
                 cwd: appFolder,
                 env,
-                printableEnvKeys,
             });
         } catch (e: Error | any) {
             const s = e?.toString ? e.toString() : '';
@@ -201,7 +196,6 @@ export const runCocoaPods = async (c: RnvContext) => {
             return executeAsync(c, 'bundle exec pod update', {
                 cwd: appFolder,
                 env,
-                printableEnvKeys,
             })
                 .then(() => updatePodsChecksum(c))
                 .catch((er) => Promise.reject(er));

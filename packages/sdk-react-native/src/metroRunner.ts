@@ -18,7 +18,7 @@ import {
     logTask,
 } from '@rnv/core';
 import { isBundlerActive } from './common';
-import { EnvVars, printableEnvKeys } from './env';
+import { EnvVars } from './env';
 
 const BUNDLER_PLATFORMS: Record<string, string> = {};
 
@@ -92,7 +92,6 @@ Dev server running at: ${url}
                     ...EnvVars.RNV_APP_ID(),
                     ...EnvVars.RCT_NO_LAUNCH_PACKAGER(),
                 },
-                printableEnvKeys,
             });
         }
         if (resetCompleted) {
@@ -105,7 +104,6 @@ Dev server running at: ${url}
                     ...EnvVars.RNV_REACT_NATIVE_PATH(),
                     ...EnvVars.RNV_APP_ID(),
                 },
-                printableEnvKeys,
             });
         }
 
@@ -120,7 +118,6 @@ Dev server running at: ${url}
             ...EnvVars.RNV_APP_ID(),
             ...CoreEnvVars.RNV_EXTENSIONS(),
         },
-        printableEnvKeys,
     }).catch((e) => logError(e, true));
     return true;
 };

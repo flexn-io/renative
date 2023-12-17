@@ -29,8 +29,6 @@ import { runTizenSimOrDevice, CLI_TIZEN } from '@rnv/sdk-tizen';
 import { CLI_WEBOS_ARES_PACKAGE, runWebosSimOrDevice } from '@rnv/sdk-webos';
 import { EnvVars } from './env';
 
-export const printableEnvKeys = ['LNG_DIST_FOLDER', 'LNG_ENTRY_FILE'];
-
 export const runLightningProject = async (c: RnvContext) => {
     logTask('runLightningProject');
     const { platform } = c;
@@ -47,7 +45,6 @@ export const runLightningProject = async (c: RnvContext) => {
                 ...EnvVars.LNG_ENTRY_FILE(),
                 ...EnvVars.LNG_SERVE_PORT(),
             },
-            printableEnvKeys,
         });
     } else {
         await buildLightningProject(c);
@@ -82,7 +79,6 @@ export const buildLightningProject = async (c: RnvContext) => {
             ...EnvVars.LNG_DIST_FOLDER(),
             ...EnvVars.LNG_ENTRY_FILE(),
         },
-        printableEnvKeys,
     });
 
     if (platform === TIZEN) {
