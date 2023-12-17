@@ -10,7 +10,6 @@ import {
     executeRnvCore,
     getConfigProp,
     loadWorkspacesConfigSync,
-    logError,
     logInitialize,
     registerEngine,
 } from '@rnv/core';

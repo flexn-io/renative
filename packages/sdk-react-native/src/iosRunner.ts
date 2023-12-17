@@ -164,8 +164,7 @@ export const runCocoaPods = async (c: RnvContext) => {
     }
     const podsRequired = c.program.updatePods || (await checkIfPodsIsRequired(c));
 
-    const env: any = {
-        ...process.env,
+    const env = {
         ...CoreEnvVars.BASE(),
         ...EnvVars.RNV_REACT_NATIVE_PATH(),
         ...EnvVars.REACT_NATIVE_PERMISSIONS_REQUIRED(),
@@ -179,7 +178,6 @@ export const runCocoaPods = async (c: RnvContext) => {
 
         try {
             await executeAsync(c, 'bundle install', {
-                env: process.env,
                 printableEnvKeys,
             });
             await executeAsync(c, 'bundle exec pod install', {
@@ -198,9 +196,7 @@ export const runCocoaPods = async (c: RnvContext) => {
                 return new Error(`pod install failed with:\n ${s}`);
             }
             logWarning(`pod install is not enough! Let's try pod update! Error:\n ${s}`);
-            await executeAsync(c, 'bundle update', {
-                env: process.env,
-            });
+            await executeAsync(c, 'bundle update');
 
             return executeAsync(c, 'bundle exec pod update', {
                 cwd: appFolder,

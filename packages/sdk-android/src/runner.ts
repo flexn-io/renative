@@ -282,7 +282,6 @@ const _checkSigningCerts = async (c: Context) => {
                     mkdirSync(c.paths.workspace.appConfig.dir);
                     const keytoolCmd = `keytool -genkey -v -keystore ${keystorePath} -alias ${keyAlias} -keypass ${keyPassword} -storepass ${storePassword} -keyalg RSA -keysize 2048 -validity 10000`;
                     await executeAsync(c, keytoolCmd, {
-                        env: process.env,
                         shell: true,
                         stdio: 'inherit',
                         silent: true,

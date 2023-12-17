@@ -119,7 +119,6 @@ export const buildWebNext = async (c: RnvContext) => {
     logTask('buildWebNext');
 
     await executeAsync(c, 'npx next build', {
-        ...process.env,
         env: {
             ...CoreEnvVars.BASE(),
             ...CoreEnvVars.RNV_EXTENSIONS(),
@@ -174,7 +173,6 @@ export const exportWebNext = async (c: RnvContext) => {
     const exportDir = getExportDir(c);
 
     await executeAsync(c, `npx next export --outdir ${exportDir}`, {
-        ...process.env,
         env: {
             ...CoreEnvVars.BASE(),
             ...CoreEnvVars.RNV_EXTENSIONS(),
