@@ -144,7 +144,7 @@
                 },
                 "test": {
                     "signingConfig": "Debug",
-                    "bundleAssets": true
+                    "bundleAssets": false
                 },
                 "canary": {
                     "signingConfig": "Release",

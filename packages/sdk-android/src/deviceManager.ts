@@ -68,7 +68,7 @@ export const launchAndroidSimulator = async (
         const response = await inquirerPrompt({
             name: 'chosenEmulator',
             type: 'list',
-            message: 'What emulator would you like to start?',
+            message: 'What emulator would you like to launch?',
             choices,
         });
         newTarget = response.chosenEmulator;
@@ -118,7 +118,7 @@ export const listAndroidTargets = async (c: RnvContext) => {
     return devices;
 };
 
-type DeviceInfo = { key: string; name: string; value: string; icon: string };
+export type DeviceInfo = { key: string; name: string; value: string; icon: string };
 
 const getDeviceIcon = (device: AndroidDevice) => {
     const { isTV, isTablet, udid, avdConfig, isWear } = device;

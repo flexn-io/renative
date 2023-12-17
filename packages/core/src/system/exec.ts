@@ -47,15 +47,11 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
         defaultOpts.stdio = 'inherit';
         defaultOpts.shell = true;
     }
-
     const mergedOpts = { ...defaultOpts, ...opts };
 
-    const printableEnvKeys = opts.printableEnvKeys || [];
-
-    const env =
-        opts.env && (c.program.info || c.program.showEnv)
+    const printableEnv =
+        opts.env && (c.program.info || c.program.printExec)
             ? Object.keys(opts.env)
-                  .filter((v) => printableEnvKeys.includes(v))
                   .map((k) => `${k}=${opts?.env?.[k]}`)
                   .join(' ')
             : null;
@@ -76,7 +72,15 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
         logMessage = replaceOverridesInString(commandAsString, privateParams, privateMask);
     }
 
-    logMessage = `${env ? `${env} ` : ''}${logMessage}`;
+    if (printableEnv) {
+        let logMsg = `${chalk().grey(printableEnv)} ${logMessage}`;
+        if (opts.cwd) {
+            logMsg = `cd ${opts.cwd} ${chalk().cyan('&&')} ${logMsg}`;
+        }
+        console.log(
+            `${chalk().green('✔')} Full exec command: ${chalk().green('>>>')}\n${logMsg}\n${chalk().green('<<<')}`
+        );
+    }
     logDebug(`_execute: ${logMessage}`);
     const { silent, mono, maxErrorLength, ignoreErrors } = mergedOpts;
     const spinner =

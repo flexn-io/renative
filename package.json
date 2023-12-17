@@ -64,12 +64,6 @@
         "deploy:feat": "yarn pre-publish && npx lerna publish from-package --dist-tag feat && git push --tags origin HEAD",
         "deploy:next": "yarn pre-publish && npx lerna publish from-package --dist-tag next && git push --tags origin HEAD",
         "deploy:prod": "yarn pre-publish && npx lerna publish from-package && git push --tags origin HEAD",
-        "e2e-template-starter-android": "cd packages/template-starter && npx rnv build -p android -s test -c template --packageManager yarn && yarn e2e:android",
-        "e2e-template-starter-androidtv": "cd packages/template-starter && npx rnv build -p androidtv -s test -c template --packageManager yarn && yarn e2e:androidtv",
-        "e2e-template-starter-ios": "cd packages/template-starter && npx rnv build -p ios -s test -c template --packageManager yarn && yarn e2e:ios",
-        "e2e-template-starter-macos": "cd packages/template-starter && npx rnv build -p macos -s test -c template --packageManager yarn && yarn e2e:macos",
-        "e2e-template-starter-tvos": "cd packages/template-starter && npx rnv build -p tvos -s test -c template --packageManager yarn && yarn e2e:tvos",
-        "e2e-template-starter-web": "cd packages/template-starter && npx rnv start -p web -s test -c template --packageManager yarn & sleep 60 && cd packages/template-starter && yarn e2e:web && kill $(lsof -t -i:8080)",
         "link:rnv": "npm r rnv -g && cd packages/rnv && npm link",
         "lint": "npx eslint ./packages",
         "postinstall": "npx lerna link --force-local && npx jetify",
@@ -119,7 +113,8 @@
         "rimraf": "5.0.5",
         "ts-jest": "^27.0.7",
         "typescript": "5.2.2",
-        "typescript-coverage-report": "0.8.0"
+        "typescript-coverage-report": "0.8.0",
+        "ts-node": "^10.9.1"
     },
     "engines": {
         "node": ">=18.0.0",
@@ -148,6 +143,9 @@
             "mini-css-extract-plugin",
             "execa",
             "**/@flexn/plugins",
+            "**/@flexn/graybox",
+            "**/appium-*",
+            "**/@wdio/*",
             "**/@react-native/metro-babel-transformer"
         ]
     },

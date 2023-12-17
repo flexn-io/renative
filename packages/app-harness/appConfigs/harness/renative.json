@@ -4,16 +4,16 @@
     "id": "template",
     "skipBootstrapCopy": true,
     "common": {
-        "id": "renative.helloworld",
+        "id": "renative.harness",
         "title": "ReNative",
         "description": "Cross-platform application project based on ReNative",
         "buildSchemes": {
             "debug": {
-                "id": "renative.helloworld.debug",
+                "id": "renative.harness.debug",
                 "title": "ReNative Debug"
             },
             "test": {
-                "id": "renative.helloworld.test",
+                "id": "renative.harness.test",
                 "title": "ReNative Test"
             }
         },

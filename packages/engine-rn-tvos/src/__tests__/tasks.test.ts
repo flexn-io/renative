@@ -8,7 +8,9 @@ jest.mock('@rnv/core');
 jest.mock('@rnv/sdk-apple');
 
 beforeEach(() => {
-    createRnvContext({ program: { platform: 'tvos' } });
+    createRnvContext({
+        program: { platform: 'tvos' },
+    });
     createRnvApi();
 });
 
@@ -48,7 +50,15 @@ test('Execute task.rnv.start', async () => {
     // WHEN
     const result = await taskRnvStart.fn(ctx, 'parent', originTask);
     // THEN
-    expect(executeAsync).toHaveBeenCalledWith(ctx, 'node undefined/local-cli/cli.js start --port undefined --config=metro.config.js', { env: {}, silent: true, stdio: 'inherit' });
+    expect(executeAsync).toHaveBeenCalledWith(
+        ctx,
+        'node undefined/local-cli/cli.js start --port undefined --no-interactive --config=metro.config.js',
+        {
+            env: {},
+            silent: true,
+            stdio: 'inherit',
+        }
+    );
     expect(result).toEqual(true);
 });
 
@@ -59,7 +69,15 @@ test('Execute task.rnv.start with metro failure', async () => {
     // WHEN
     const result = await taskRnvStart.fn(ctx, 'parent', originTask);
     // THEN
-    expect(executeAsync).toHaveBeenCalledWith(ctx, 'node undefined/local-cli/cli.js start --port undefined --config=metro.config.js', { env: {}, silent: true, stdio: 'inherit' });
+    expect(executeAsync).toHaveBeenCalledWith(
+        ctx,
+        'node undefined/local-cli/cli.js start --port undefined --no-interactive --config=metro.config.js',
+        {
+            env: {},
+            silent: true,
+            stdio: 'inherit',
+        }
+    );
     expect(logError).toHaveBeenCalledWith('Metro failed', true);
     expect(result).toEqual(true);
 });
