@@ -74,7 +74,7 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
     }
 
     if (printableEnv) {
-        let logMsg = `${chalk().grey(printableEnv)}${logMessage}`;
+        let logMsg = `${chalk().grey(printableEnv)} ${logMessage}`;
         if (opts.cwd) {
             logMsg = `cd ${opts.cwd} ${chalk().cyan('&&')} ${logMsg}`;
         }

@@ -1,5 +1,4 @@
 import { buildCoreWebpackProject, configureCoreWebProject, runWebpackServer } from '@rnv/sdk-webpack';
-import { spawn } from 'child_process';
 import path from 'path';
 import {
     RnvContext,
@@ -356,7 +355,7 @@ export const runElectron = async (c: RnvContext) => {
 const _runElectronSimulator = async (c: RnvContext) => {
     logTask(`_runElectronSimulator:${c.platform}`);
     // const appFolder = getAppFolder(c, c.platform);
-    const elc = `${doResolve('electron')}/cli.js`;
+    // const elc = `${doResolve('electron')}/cli.js`;
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets') === true;
     let platformProjectDir = getPlatformProjectDir(c)!;
 
@@ -364,15 +363,15 @@ const _runElectronSimulator = async (c: RnvContext) => {
         platformProjectDir = path.join(getPlatformBuildDir(c)!, 'build');
     }
 
-    const child = spawn('node', [elc, path.join(platformProjectDir, '/main.js')], {
-        detached: true,
-        env: process.env,
+    const cmd = `node ${doResolve('electron')}/cli.js ${path.join(platformProjectDir, '/main.js')}`;
+    await executeAsync(c, cmd, {
+        interactive: true,
         stdio: 'inherit',
-    })
-        .on('close', (code) => process.exit(code || undefined))
-        .on('error', (spawnError) => logError(spawnError));
-
-    child.unref();
+        // silent: true,
+        // env: {
+        //     ...CoreEnvVars.BASE(),
+        // },
+    });
 };
 
 const _generateICNS = (c: RnvContext) =>
