@@ -570,12 +570,6 @@ export const parseGradlePropertiesSync = (c: Context) => {
     const gradleProps = templateAndroid?.gradle_properties;
 
     if (gradleProps) {
-        const enableAndroidX = getConfigProp(c, platform, 'enableAndroidX', true);
-        if (enableAndroidX === true) {
-            gradleProps['android.useAndroidX'] = true;
-            gradleProps['android.enableJetifier'] = true;
-        }
-
         Object.keys(gradleProps).forEach((key) => {
             pluginGradleProperties += `${key}=${gradleProps[key]}\n`;
         });
@@ -598,6 +592,14 @@ export const parseGradlePropertiesSync = (c: Context) => {
         {
             pattern: '{{HERMES_ENABLED}}',
             override: reactNativeEngine === 'hermes' ? 'true' : 'false',
+        },
+        {
+            pattern: '{{ENABLE_JETIFIER}}',
+            override: getConfigProp(c, platform, 'enableJetifier', true) ? 'true' : 'false',
+        },
+        {
+            pattern: '{{ENABLE_ANDROID_X}}',
+            override: getConfigProp(c, platform, 'enableAndroidX', true) ? 'true' : 'false',
         },
     ];
 
