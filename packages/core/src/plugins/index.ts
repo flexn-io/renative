@@ -26,6 +26,7 @@ import { installPackageDependencies } from '../projects/npm';
 import { OverridesOptions, ResolveOptions } from '../system/types';
 import { ConfigFileOverrides, ConfigFilePlugin, ConfigFilePlugins } from '../schema/configFiles/types';
 import { NpmPackageFile } from '../configs/types';
+import { getContext } from '../context/provider';
 
 const _getPluginScope = (plugin: RenativeConfigPlugin | string): RnvPluginScope => {
     if (typeof plugin === 'string') {
@@ -151,6 +152,18 @@ const _getMergedPlugin = (
     return mergedPlugin;
 };
 
+const _applyPackageDependency = (deps: Record<string, string>, key: string, version: string) => {
+    const ctx = getContext();
+    const { resolutions } = ctx.files.project.package;
+    const res = resolutions?.[key];
+    if (res) {
+        logInfo(`Found resolutions override for ${key}@${res}`);
+        deps[key] = res;
+    } else {
+        deps[key] = version;
+    }
+};
+
 export const configurePlugins = async (c: RnvContext) => {
     logTask('configurePlugins');
 
@@ -201,7 +214,7 @@ ${ovMsg}`
                     );
 
                     hasPackageChanged = true;
-                    newDeps[k] = plugin.version;
+                    _applyPackageDependency(newDeps, k, plugin.version);
                 }
             }
         } else if (devDependencies && devDependencies[k]) {
@@ -217,7 +230,7 @@ ${ovMsg}`
                         )}) and plugins.json: v(${chalk().red(plugin.version)}). ${ovMsg}`
                     );
                     hasPackageChanged = true;
-                    newDevDeps[k] = plugin.version;
+                    _applyPackageDependency(newDevDeps, k, plugin.version);
                 }
             }
         } else if (plugin.disabled !== true && plugin.disableNpm !== true) {
@@ -229,7 +242,7 @@ ${ovMsg}`
 
                 hasPackageChanged = true;
                 if (plugin.version) {
-                    newDeps[k] = plugin.version;
+                    _applyPackageDependency(newDeps, k, plugin.version);
                 }
             }
         }
@@ -247,7 +260,7 @@ ${ovMsg}`
                 } else if (!dependencies[npmKey]) {
                     logInfo(`Plugin ${chalk().white(k)} requires npm dependency ${chalk().white(npmKey)}. ${ovMsg}`);
                     if (npmDep) {
-                        newDeps[npmKey] = npmDep;
+                        _applyPackageDependency(newDeps, npmKey, npmDep);
                         hasPackageChanged = true;
                     }
                 } else if (dependencies[npmKey] !== npmDep) {
@@ -257,7 +270,7 @@ ${ovMsg}`
                         )}) => (${chalk().green(npmDep)}) .${ovMsg}`
                     );
                     if (npmDep) {
-                        newDeps[npmKey] = npmDep;
+                        _applyPackageDependency(newDeps, npmKey, npmDep);
                         hasPackageChanged = true;
                     }
                 }
@@ -486,7 +499,7 @@ export const loadPluginTemplates = async (c: RnvContext) => {
                 const plugin = getMergedPlugin(c, dep);
                 if (plugin?.version) {
                     hasPackageChanged = true;
-                    dependencies[dep] = plugin.version;
+                    _applyPackageDependency(dependencies, dep, plugin.version);
                 } else {
                     // Unresolved Plugin
                 }
