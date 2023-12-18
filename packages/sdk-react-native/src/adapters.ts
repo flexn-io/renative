@@ -1,6 +1,9 @@
 import merge from 'deepmerge';
-import type { ConfigT } from 'metro-config';
+import type { ConfigT, InputConfigT } from 'metro-config';
+
 import { getDefaultConfig, mergeConfig } from 'metro-config';
+
+export type InputConfig = InputConfigT;
 
 const getApplicationId = () => {
     const appId = process.env.RNV_APP_ID;
