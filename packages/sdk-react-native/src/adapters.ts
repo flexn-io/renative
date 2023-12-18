@@ -1,6 +1,7 @@
 import merge from 'deepmerge';
-import type { ConfigT } from 'metro-config';
-import { getDefaultConfig, mergeConfig } from 'metro-config';
+import type { ConfigT, InputConfigT } from 'metro-config';
+
+export type InputConfig = InputConfigT;
 
 const getApplicationId = () => {
     const appId = process.env.RNV_APP_ID;
@@ -136,12 +137,12 @@ export const withMetroConfig = (projectRoot: string): ConfigT => {
         },
         watchFolders: [],
     };
+    const { mergeConfig, getDefaultConfig } = require('metro-config');
 
-    return mergeConfig(
-        // @ts-expect-error: `getDefaultConfig` is not typed correctly
-        getDefaultConfig.getDefaultValues(projectRoot),
-        config
-    );
+    return mergeConfig(getDefaultConfig.getDefaultValues(projectRoot), config);
 };
 
-export { mergeConfig };
+export const mergeConfig = (config1: ConfigT, config2: InputConfig) => {
+    const mc = require('metro-config');
+    return mc.mergeConfig(config1, config2);
+};
