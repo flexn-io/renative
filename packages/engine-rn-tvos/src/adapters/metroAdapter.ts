@@ -52,7 +52,7 @@ export const withRNVMetro = (config: InputConfig) => {
 
     const exts: string = env.RNV_EXTENSIONS || '';
 
-    const cnfRnv = {
+    const cnfRnv: InputConfig = {
         cacheStores: [
             new FileStore({
                 root: path.join(os.tmpdir(), 'metro-cache-tvos'),
