@@ -153,6 +153,7 @@ maven { url("${doResolve('jsc-android', true, { forceForwardPaths: true })}/dist
 };
 
 const setReactNativeEngineHermes = (c: Context) => {
+    // TODO review if we need this, IIRC hermes is enabled in gradle.properties and that's it
     c.payload.pluginConfigAndroid.injectReactNativeEngine = `
   maven { url "${doResolve('react-native', true, { forceForwardPaths: true })}/android" }
   maven { url("${doResolve('jsc-android', true, { forceForwardPaths: true })}/dist") }
