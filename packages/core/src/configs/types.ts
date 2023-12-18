@@ -4,6 +4,7 @@ export type NpmPackageFile = {
     dependencies?: Record<string, string>;
     peerDependencies?: Record<string, string>;
     optionalDependencies?: Record<string, string>;
+    resolutions?: Record<string, string>;
     author?: string;
     license?: string;
     description?: string;
