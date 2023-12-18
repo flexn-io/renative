@@ -158,17 +158,6 @@ const setReactNativeEngineHermes = (c: Context) => {
   maven { url("${doResolve('jsc-android', true, { forceForwardPaths: true })}/dist") }
   `;
 
-    c.payload.pluginConfigAndroid.appBuildGradleImplementations += `    debugImplementation files("${doResolve(
-        'hermes-engine',
-        true,
-        { forceForwardPaths: true }
-    )}/android/hermes-debug.aar")\n`;
-    c.payload.pluginConfigAndroid.appBuildGradleImplementations += `    releaseImplementation files("${doResolve(
-        'hermes-engine',
-        true,
-        { forceForwardPaths: true }
-    )}/android/hermes-release.aar")\n`;
-
     c.payload.pluginConfigAndroid.injectHermes = `    enableHermes: true,
 hermesCommand: "{{PATH_HERMES_ENGINE}}/%OS-BIN%/hermes",
 deleteDebugFilesForVariant: { false },
@@ -413,22 +402,6 @@ ${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
     sourceCompatibility 1.8
     targetCompatibility 1.8`;
 
-    // TODO This is temporary ANDROIDX support. whole gradle parser will be refactored in the near future
-    let enableAndroidX = getConfigProp(c, platform, 'enableAndroidX', 'androidx.appcompat:appcompat:1.1.0');
-    if (enableAndroidX === true) {
-        enableAndroidX = 'androidx.appcompat:appcompat:1.1.0';
-    }
-
-    if (enableAndroidX !== false) {
-        c.payload.pluginConfigAndroid.appBuildGradleImplementations += `    implementation "${enableAndroidX}"\n`;
-    } else {
-        c.payload.pluginConfigAndroid.appBuildGradleImplementations +=
-            "    implementation 'com.android.support:appcompat-v7:27.0.2'\n";
-    }
-
-    c.payload.pluginConfigAndroid.appBuildGradleImplementations +=
-        '    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02"\n';
-
     const injects = [
         {
             pattern: '{{PLUGIN_APPLY}}',
@@ -663,7 +636,6 @@ export const injectPluginGradleSync = (
     // if (plugin.packageParams) {
     //     packageParams = plugin.packageParams.join(',');
     // }
-    const keyFixed = key.replace(/\//g, '-').replace(/@/g, '');
     const pathFixed = plugin.path ? `${plugin.path}` : `${key}/android`;
     const skipPathResolutions = pluginRoot.disableNpm;
     let pathAbsolute;
@@ -677,31 +649,8 @@ export const injectPluginGradleSync = (
     }
 
     // APP/BUILD.GRADLE
-    if (plugin.projectName) {
-        if (!plugin.skipLinking && !skipPathResolutions) {
-            c.payload.pluginConfigAndroid.pluginIncludes += `, ':${plugin.projectName}'`;
-            // }').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
-            c.payload.pluginConfigAndroid.pluginPaths += `project(':${plugin.projectName}').projectDir = new File('${pathAbsolute}')\n`;
-        }
-        if (!plugin.skipImplementation) {
-            if (plugin.implementation) {
-                c.payload.pluginConfigAndroid.appBuildGradleImplementations += `${plugin.implementation}\n`;
-            } else {
-                c.payload.pluginConfigAndroid.appBuildGradleImplementations += `    implementation project(':${plugin.projectName}')\n`;
-            }
-        }
-    } else {
-        if (!plugin.skipLinking && !skipPathResolutions) {
-            c.payload.pluginConfigAndroid.pluginIncludes += `, ':${keyFixed}'`;
-            c.payload.pluginConfigAndroid.pluginPaths += `project(':${keyFixed}').projectDir = new File('${pathAbsolute}')\n`;
-        }
-        if (!plugin.skipLinking && !plugin.skipImplementation) {
-            if (plugin.implementation) {
-                c.payload.pluginConfigAndroid.appBuildGradleImplementations += `${plugin.implementation}\n`;
-            } else {
-                c.payload.pluginConfigAndroid.appBuildGradleImplementations += `    implementation project(':${keyFixed}')\n`;
-            }
-        }
+    if (!plugin.skipImplementation && plugin.implementation) {
+        c.payload.pluginConfigAndroid.appBuildGradleImplementations += `${plugin.implementation}\n`;
     }
 
     parseAndroidConfigObject(c, plugin, key);
