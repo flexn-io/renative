@@ -118,16 +118,32 @@ export const generatePlatformTemplatePaths = (c: RnvContext) => {
                     if (originalPath) {
                         if (!pt[platform]) {
                             const pt1 = getRealPath(c, originalPath, 'platformTemplatesDir', originalPath);
-                            if (pt1) result[platform] = pt1;
+                            if (pt1) {
+                                result[platform] = pt1;
+                            } else {
+                                logWarning(`Cannot resolve originalTemplatePlatformsDir: ${originalPath}. SKIPPING...`);
+                            }
                         } else {
                             const pt2 = getRealPath(c, pt[platform], 'platformTemplatesDir', originalPath);
-                            if (pt2) result[platform] = pt2;
+                            if (pt2) {
+                                result[platform] = pt2;
+                            } else {
+                                logWarning(
+                                    `Cannot resolve platformTemplatesDirs[${platform}] with original path: ${originalPath}. SKIPPING...`
+                                );
+                            }
                         }
                     } else {
                         logWarning(
                             `Platform ${chalk().red(platform)} not supported by any registered engine. SKIPPING...`
                         );
                     }
+                } else {
+                    logWarning(
+                        `Could not find active engine for platform: ${chalk().red(
+                            platform
+                        )}. Available engine platforms: ${Object.keys(c.runtime.enginesByPlatform)}`
+                    );
                 }
             }
         });
