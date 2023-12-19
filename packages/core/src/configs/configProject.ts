@@ -138,7 +138,8 @@ export const generatePlatformTemplatePaths = (c: RnvContext) => {
                             `Platform ${chalk().red(platform)} not supported by any registered engine. SKIPPING...`
                         );
                     }
-                } else {
+                } else if (platform === c.platform && c.runtime.currentEngine) {
+                    //NOTE: only log warning if there is already registered engine but cannot be found by platform
                     logWarning(
                         `Could not find active engine for platform: ${chalk().red(
                             platform

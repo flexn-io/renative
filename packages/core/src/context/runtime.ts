@@ -52,6 +52,7 @@ export const configureRuntimeDefaults = async (c: RnvContext) => {
         if (c.buildConfig.defaults?.supportedPlatforms) {
             c.runtime.supportedPlatforms = [];
             c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
+                //TODO: migrate to singular platform engine
                 const engine = getEngineRunnerByPlatform(c, platform);
                 if (engine) {
                     const dir = engine.originalTemplatePlatformsDir;
