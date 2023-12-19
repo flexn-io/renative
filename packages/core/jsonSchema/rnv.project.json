@@ -735,6 +735,14 @@
                   "default": true,
                   "description": "Enables new android X architecture"
                 },
+                "enableJetifier": {
+                  "type": [
+                    "boolean",
+                    "string"
+                  ],
+                  "default": true,
+                  "description": "Enables Jetifier"
+                },
                 "signingConfig": {
                   "type": "string",
                   "default": "Debug",
@@ -1241,6 +1249,9 @@
                       },
                       "enableAndroidX": {
                         "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/enableAndroidX"
+                      },
+                      "enableJetifier": {
+                        "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/enableJetifier"
                       },
                       "signingConfig": {
                         "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/signingConfig"

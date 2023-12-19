@@ -76,7 +76,8 @@
         "sanity": "yarn compile && yarn lint && yarn test",
         "test": "jest",
         "watch": "npx lerna exec yarn watch --parallel",
-        "watch-alt": "npx lerna run compile & npx lerna watch -- lerna run compile"
+        "watch-alt": "npx lerna run compile & npx lerna watch -- lerna run compile",
+        "generateSchema": "npx rnv hooks run -x generateSchema"
     },
     "devDependencies": {
         "@babel/eslint-parser": "7.17.0",

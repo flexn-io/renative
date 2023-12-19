@@ -83,11 +83,10 @@
             "kotlinVersion": "1.7.10",
             "reactNativeEngine": "hermes",
             "enableAndroidX": true,
+            "enableJetifier": true,
             "templateAndroid": {
                 "gradle_properties": {
                     "android.useDeprecatedNdk": true,
-                    "android.enableJetifier": true,
-                    "android.useAndroidX": true,
                     "android.debug.obsoleteApi": true,
                     "org.gradle.jvmargs": "-Xmx3g -XX:MaxPermSize=2048m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8",
                     "org.gradle.daemon": true,
@@ -110,7 +109,9 @@
             "minSdkVersion": 21,
             "extendPlatform": "android",
             "engine": "engine-rn-tvos",
-            "includedPermissions": ["INTERNET"]
+            "includedPermissions": [
+                "INTERNET"
+            ]
         },
         "web": {
             "engine": "engine-rn-next"
