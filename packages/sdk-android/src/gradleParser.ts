@@ -544,6 +544,10 @@ export const parseSettingsGradleSync = (c: Context) => {
             pattern: '{{RN_GRADLE_PLUGIN_LOCATION}}',
             override: rnGradlePluginRelativePath,
         },
+        {
+            pattern: '{{RN_GRADLE_PROJECT_NAME}}',
+            override: c.files.project.config?.projectName.replace('/', '-'),
+        },
     ];
 
     addSystemInjects(c, injects);
