@@ -3541,13 +3541,15 @@
         },
         "react-native-splash-screen": {
             "android": {
-                "mainActivity": {
-                    "createMethods": [
-                        "SplashScreen.show(this)"
-                    ],
-                    "imports": [
-                        "org.devio.rn.splashscreen.SplashScreen"
-                    ]
+                "templateAndroid": {
+                    "MainActivity_java": {
+                        "createMethods": [
+                            "SplashScreen.show(this)"
+                        ],
+                        "imports": [
+                            "org.devio.rn.splashscreen.SplashScreen"
+                        ]
+                    }
                 },
                 "package": "org.devio.rn.splashscreen.SplashScreenReactPackage"
             },

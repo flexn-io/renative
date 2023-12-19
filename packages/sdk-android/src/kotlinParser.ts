@@ -138,7 +138,7 @@ export const parseMainActivitySync = (c: RnvContext) => {
 
     c.payload.pluginConfigAndroid.injectActivityOnCreate =
         mainActivity?.onCreate || 'super.onCreate(savedInstanceState)';
-
+    console.log('pluginConfigAndroid', c.payload.pluginConfigAndroid);
     const injects = [
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
         {
@@ -224,7 +224,7 @@ export const injectPluginKotlinSync = (
         mainActivity.imports.forEach((activityImport) => {
             // Avoid duplicate imports
             if (c.payload.pluginConfigAndroid.pluginActivityImports.indexOf(activityImport) === -1) {
-                c.payload.pluginConfigAndroid.pluginActivityImports += `import ${activityImport}\n`;
+                c.payload.pluginConfigAndroid.pluginActivityImports += `import ${activityImport};\n`;
             }
         });
     }

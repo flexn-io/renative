@@ -17479,6 +17479,11 @@ react-native-gesture-handler@2.13.1:
     lodash "^4.17.21"
     prop-types "^15.7.2"
 
+react-native-splash-screen@3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/react-native-splash-screen/-/react-native-splash-screen-3.3.0.tgz#3af71ed17afe50fee69590a45aec399d071ead02"
+  integrity sha512-rGjt6HkoSXxMqH4SQUJ1gnPQlPJV8+J47+4yhgTIan4bVvAwJhEeJH7wWt9hXSdH4+VfwTS0GTaflj1Tw83IhA==
+
 react-native-tvos@0.72.4-0:
   version "0.72.4-0"
   resolved "https://registry.npmjs.org/react-native-tvos/-/react-native-tvos-0.72.4-0.tgz#beb36bac097e272c0e62c5cfe51cd674c7c2aa57"

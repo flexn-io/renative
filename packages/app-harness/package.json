@@ -45,7 +45,8 @@
         "react-native": "0.72.4",
         "react-native-gesture-handler": "2.13.1",
         "react-native-tvos": "0.72.4-0",
-        "react-native-web": "0.19.9"
+        "react-native-web": "0.19.9",
+        "react-native-splash-screen": "3.3.0"
     },
     "devDependencies": {
         "@flexn/assets-renative-outline": "0.3.2",
@@ -57,7 +58,7 @@
         "@rnv/engine-rn-next": "1.0.0-rc.4",
         "@rnv/engine-rn-tvos": "1.0.0-rc.4",
         "@rnv/engine-rn-web": "1.0.0-rc.4",
-        "@rnv/template-starter": "1.0.0-rc.4",
+        "@rnv/template-starter": "^1.0.0-rc.4",
         "@types/react": "18.2.22",
         "@types/react-dom": "18.2.7",
         "@types/react-native": "0.72.2",
