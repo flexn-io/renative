@@ -70,8 +70,8 @@ export const packageReactNativeAndroid = async (c: RnvContext) => {
 
         await executeAsync(c, cmd, {
             env: {
-                ...CoreEnvVars.RNV_EXTENSIONS(),
                 ...CoreEnvVars.BASE(),
+                ...CoreEnvVars.RNV_EXTENSIONS(),
                 ...EnvVars.RNV_REACT_NATIVE_PATH(),
                 ...EnvVars.RNV_APP_ID(),
             },
@@ -138,6 +138,8 @@ export const buildReactNativeAndroid = async (c: RnvContext) => {
         cwd: appFolder,
         env: {
             ...CoreEnvVars.BASE(),
+            //NOTE: we need extensions here because rn will trigger packaging step in release mode
+            ...CoreEnvVars.RNV_EXTENSIONS(),
             ...EnvVars.RNV_REACT_NATIVE_PATH(),
             ...EnvVars.RNV_APP_ID(),
         },
