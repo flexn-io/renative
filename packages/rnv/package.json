@@ -1,6 +1,6 @@
 {
     "name": "rnv",
-    "version": "1.0.0-rc.3",
+    "version": "1.0.0-rc.4",
     "description": "💻 CLI for ReNative (https://www.npmjs.com/package/renative). Supports `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `Linux",
     "keywords": [
         "android tv",
@@ -71,9 +71,9 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@rnv/cli": "1.0.0-rc.3",
-        "@rnv/core": "1.0.0-rc.3",
-        "@rnv/engine-core": "1.0.0-rc.3",
+        "@rnv/cli": "1.0.0-rc.4",
+        "@rnv/core": "1.0.0-rc.4",
+        "@rnv/engine-core": "1.0.0-rc.4",
         "@sentry/integrations": "7.57.0",
         "@sentry/node": "7.57.0",
         "tslib": "2.5.2"
