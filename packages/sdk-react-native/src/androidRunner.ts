@@ -69,7 +69,12 @@ export const packageReactNativeAndroid = async (c: RnvContext) => {
         }
 
         await executeAsync(c, cmd, {
-            env: { ...CoreEnvVars.BASE(), ...EnvVars.RNV_REACT_NATIVE_PATH(), ...EnvVars.RNV_APP_ID() },
+            env: {
+                ...CoreEnvVars.RNV_EXTENSIONS(),
+                ...CoreEnvVars.BASE(),
+                ...EnvVars.RNV_REACT_NATIVE_PATH(),
+                ...EnvVars.RNV_APP_ID(),
+            },
         });
 
         logInfo('ANDROID PACKAGE FINISHED');
