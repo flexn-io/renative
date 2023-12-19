@@ -523,9 +523,9 @@ export const parseSettingsGradleSync = (c: Context) => {
     const rnCliLocation = doResolve('@react-native-community/cli-platform-android', true, { forceForwardPaths: true });
     const rnGradlePluginLocation = doResolve('@react-native/gradle-plugin', true, { forceForwardPaths: true });
 
-    const rnCliRelativePath = (!!rnCliLocation && path.relative(appFolder, rnCliLocation)) || '';
+    const rnCliRelativePath = (!!rnCliLocation && path.relative(appFolder, rnCliLocation).replace(/\\/g, '/')) || '';
     const rnGradlePluginRelativePath =
-        (!!rnGradlePluginLocation && path.relative(appFolder, rnGradlePluginLocation)) || '';
+        (!!rnGradlePluginLocation && path.relative(appFolder, rnGradlePluginLocation).replace(/\\/g, '/')) || '';
 
     const injects = [
         {
