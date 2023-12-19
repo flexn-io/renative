@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-macos",
-    "version": "1.0.0-rc.4",
+    "version": "1.0.0-rc.5",
     "description": "ReNative Engine to build react-native macOS platform.",
     "keywords": [
         "react-native-macos"
@@ -32,12 +32,12 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@rnv/sdk-apple": "1.0.0-rc.4",
-        "@rnv/sdk-react-native": "1.0.0-rc.4",
+        "@rnv/sdk-apple": "1.0.0-rc.5",
+        "@rnv/sdk-react-native": "1.0.0-rc.5",
         "metro-react-native-babel-preset": "0.76.8"
     },
     "peerDependencies": {
-        "@rnv/core": "^1.0.0-rc.4"
+        "@rnv/core": "^1.0.0-rc.5"
     },
     "private": false,
     "publishConfig": {
