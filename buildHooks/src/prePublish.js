@@ -5,6 +5,7 @@ import fs from 'fs';
 const merge = require('deepmerge');
 
 const VERSIONED_PACKAGES = [
+    'app-harness',
     'rnv',
     'core',
     'build-hooks-git',
