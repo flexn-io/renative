@@ -708,7 +708,6 @@ export const parseAndroidConfigObject = (c: RnvContext, plugin?: RenativeConfigP
         const pluginTemplateAndroid = plugin.templateAndroid;
         const pluginBuildGradle = pluginTemplateAndroid?.app_build_gradle;
         if (pluginBuildGradle) {
-            console.log('plugin', pluginBuildGradle);
             pluginBuildGradle.apply?.forEach((v: string) => {
                 c.payload.pluginConfigAndroid.applyPlugin += `apply ${sanitizePluginPath(v, key)}\n`;
             });
