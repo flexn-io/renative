@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-web",
-    "version": "1.0.0-rc.5",
+    "version": "1.0.0-rc.6",
     "description": "ReNative Engine to build web based platforms with react native support.",
     "keywords": [
         "react-native"
@@ -32,14 +32,14 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@rnv/sdk-tizen": "1.0.0-rc.5",
+        "@rnv/sdk-tizen": "1.0.0-rc.6",
         "@rnv/sdk-utils": "1.0.0-feat-pin-cli.6",
-        "@rnv/sdk-webos": "1.0.0-rc.5",
-        "@rnv/sdk-webpack": "1.0.0-rc.5",
+        "@rnv/sdk-webos": "1.0.0-rc.6",
+        "@rnv/sdk-webpack": "1.0.0-rc.6",
         "metro-react-native-babel-preset": "0.76.8"
     },
     "peerDependencies": {
-        "@rnv/core": "^1.0.0-rc.5"
+        "@rnv/core": "^1.0.0-rc.6"
     },
     "private": false,
     "publishConfig": {

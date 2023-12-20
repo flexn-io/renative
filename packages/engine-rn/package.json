@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn",
-    "version": "1.0.0-rc.5",
+    "version": "1.0.0-rc.6",
     "description": "ReNative Engine to build react-native based platforms.",
     "keywords": [
         "react-native"
@@ -32,13 +32,13 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@rnv/sdk-android": "1.0.0-rc.5",
-        "@rnv/sdk-apple": "1.0.0-rc.5",
-        "@rnv/sdk-react-native": "1.0.0-rc.5",
+        "@rnv/sdk-android": "1.0.0-rc.6",
+        "@rnv/sdk-apple": "1.0.0-rc.6",
+        "@rnv/sdk-react-native": "1.0.0-rc.6",
         "metro-react-native-babel-preset": "0.76.8"
     },
     "peerDependencies": {
-        "@rnv/core": "^1.0.0-rc.5"
+        "@rnv/core": "^1.0.0-rc.6"
     },
     "private": false,
     "publishConfig": {
