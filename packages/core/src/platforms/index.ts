@@ -57,8 +57,14 @@ export const createPlatformBuild = (c: RnvContext, platform: RnvPlatform) =>
 
         if (!platform || !isPlatformSupportedSync(c, platform, undefined, reject)) return;
 
+        const ptDir = c.paths.project.platformTemplatesDirs[platform];
+        if (!ptDir) {
+            logError(`Cannot create platform build: c.paths.project.platformTemplatesDirs[${platform}] is not defined`);
+            return;
+        }
+
         const pPath = getAppFolder(c);
-        const ptPath = path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
+        const ptPath = path.join(ptDir, `${platform}`);
 
         copyFolderContentsRecursiveSync(
             ptPath,
@@ -66,12 +72,15 @@ export const createPlatformBuild = (c: RnvContext, platform: RnvPlatform) =>
             false,
             [path.join(ptPath, '_privateConfig')],
             false,
-            [{
-                pattern: '{{PATH_REACT_NATIVE}}',
-                override: doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native', true, {
-                    forceForwardPaths: true,
-                }) || '',
-            }],
+            [
+                {
+                    pattern: '{{PATH_REACT_NATIVE}}',
+                    override:
+                        doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native', true, {
+                            forceForwardPaths: true,
+                        }) || '',
+                },
+            ],
             getTimestampPathsConfig(c, platform),
             c
         );

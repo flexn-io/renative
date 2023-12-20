@@ -264,19 +264,19 @@ export const parseAppBuildGradleSync = (c: Context) => {
 
     c.payload.pluginConfigAndroid.store = {
         storeFile: storeFile,
-        // keyAlias,
-        // storePassword,
-        // keyPassword,
     };
 
     if (!!storeFile && !!keyAlias && !!storePassword && !!keyPassword) {
         const keystorePath = storeFile;
         let keystorePathFull = keystorePath;
         if (keystorePath) {
-            if (keystorePath.startsWith('.')) {
-                keystorePathFull = path.join(c.paths.workspace.project.dir, keystorePath);
-            } else if (!fsExistsSync(keystorePath)) {
-                keystorePathFull = path.join(c.paths.workspace.project.dir, keystorePath);
+            if (keystorePath.startsWith('.') || !fsExistsSync(keystorePathFull)) {
+                //NOTE: because of merged logic we don't know whether renative.private.json
+                // values come from project or appConfig so we selectively check both
+                keystorePathFull = path.join(c.paths.workspace.appConfig.dir, keystorePath);
+                if (!fsExistsSync(keystorePathFull)) {
+                    keystorePathFull = path.join(c.paths.workspace.project.dir, keystorePath);
+                }
             }
             if (isSystemWin) {
                 keystorePathFull = keystorePathFull.replace(/\\/g, '/');
