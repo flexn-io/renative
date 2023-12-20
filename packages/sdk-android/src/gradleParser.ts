@@ -667,9 +667,9 @@ export const injectPluginGradleSync = (
     }
 };
 
-export const parseAndroidConfigObject = (c: RnvContext, obj?: RenativeConfigPluginPlatform, key = '') => {
+export const parseAndroidConfigObject = (c: RnvContext, plugin?: RenativeConfigPluginPlatform, key = '') => {
     // APP/BUILD.GRADLE
-    const templateAndroid = getConfigProp(c, c.platform, 'templateAndroid');
+    const templateAndroid = plugin?.templateAndroid;
 
     const appBuildGradle = templateAndroid?.app_build_gradle;
     if (appBuildGradle) {
