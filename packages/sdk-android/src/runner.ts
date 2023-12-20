@@ -397,7 +397,10 @@ export const configureProject = async (c: Context) => {
     fsWriteFileSync(path.join(appFolder, `app/src/main/assets/${outputFile}.bundle`), '{}');
 
     // INJECTORS
+    c.payload.currentDevices = [];
+    c.payload.idAdbServerActive = false;
     c.payload.pluginConfigAndroid = {
+        injectActivityOnCreate: '',
         pluginIncludes: "include ':app'",
         pluginPaths: '',
         pluginPackages: 'MainReactPackage(),\n',

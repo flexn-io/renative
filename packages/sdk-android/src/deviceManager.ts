@@ -160,6 +160,7 @@ const _getDeviceAsObject = (device: AndroidDevice): DeviceInfo => {
 
 export const resetAdb = async (c: Context, forceRun?: boolean, ranBefore?: boolean) => {
     if (!c.program.resetAdb && !forceRun) return;
+    if (c.payload.idAdbServerActive) return;
     try {
         if (!ranBefore) await execCLI(c, CLI_ANDROID_ADB, 'kill-server');
     } catch (e) {
@@ -167,6 +168,7 @@ export const resetAdb = async (c: Context, forceRun?: boolean, ranBefore?: boole
     }
     try {
         await execCLI(c, CLI_ANDROID_ADB, 'start-server');
+        c.payload.idAdbServerActive = true;
     } catch (e) {
         if (ranBefore) {
             return Promise.reject(e);
@@ -177,7 +179,19 @@ export const resetAdb = async (c: Context, forceRun?: boolean, ranBefore?: boole
 };
 
 export const getAndroidTargets = async (c: Context, skipDevices: boolean, skipAvds: boolean, deviceOnly = false) => {
-    logTask('getAndroidTargets', `skipDevices:${!!skipDevices} skipAvds:${!!skipAvds} deviceOnly:${!!deviceOnly}`);
+    logTask(
+        'getAndroidTargets',
+        `skipDevices:${!!skipDevices} skipAvds:${!!skipAvds} deviceOnly:${!!deviceOnly} deviceCache:${
+            c.payload.currentDevices.length
+        }`
+    );
+
+    if (c.payload.currentDevices.length > 0) {
+        console.log('SSSSS', c.payload.currentDevices);
+
+        return c.payload.currentDevices;
+    }
+
     // Temp workaround for race conditions receiving devices with offline status
     await new Promise((r) => setTimeout(r, 1000));
 
@@ -191,7 +205,8 @@ export const getAndroidTargets = async (c: Context, skipDevices: boolean, skipAv
         if (!skipAvds) {
             avdResult = await execCLI(c, CLI_ANDROID_EMULATOR, '-list-avds');
         }
-        return _parseDevicesResult(c, devicesResult, avdResult, deviceOnly);
+        c.payload.currentDevices = await _parseDevicesResult(c, devicesResult, avdResult, deviceOnly);
+        return c.payload.currentDevices;
     } catch (e) {
         return Promise.reject(e);
     }
@@ -650,11 +665,15 @@ export const checkForActiveEmulator = (c: Context, emulatorName?: string) =>
                         if (emulatorName) {
                             const found = simsOnly.find((v) => v.name === emulatorName);
                             if (found) {
+                                console.log('WTFFF2', found);
+
                                 logSuccess(`Found active emulator! ${chalk().white(found.udid)}. Will use it`);
                                 clearInterval(poll);
                                 resolve(found);
                             }
                         } else if (simsOnly.length > 0) {
+                            console.log('WTFFF', simsOnly);
+
                             logSuccess(`Found active emulator! ${chalk().white(simsOnly[0].udid)}. Will use it`);
                             clearInterval(poll);
                             resolve(simsOnly[0]);

@@ -2,6 +2,7 @@ import { RenativeConfigPluginPlatform, RnvContext } from '@rnv/core';
 
 export type Payload = {
     currentDevices: AndroidDevice[];
+    idAdbServerActive: boolean;
     pluginConfigAndroid: {
         gradleWrapperVersion: string;
         injectReactNativeEngine: string;
