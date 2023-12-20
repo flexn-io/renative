@@ -2,7 +2,6 @@ import {
     OverridesOptions,
     PlatformKey,
     RenativeConfigPluginPlatform,
-    RnvContext,
     addSystemInjects,
     getAppFolder,
     getAppId,
@@ -118,7 +117,7 @@ export const parseMainApplicationSync = (c: Context) => {
     );
 };
 
-export const parseMainActivitySync = (c: RnvContext) => {
+export const parseMainActivitySync = (c: Context) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
 
@@ -213,7 +212,7 @@ export const parseSplashActivitySync = (c: Context) => {
 };
 
 export const injectPluginKotlinSync = (
-    c: RnvContext,
+    c: Context,
     plugin: RenativeConfigPluginPlatform,
     key: string,
     pkg: string | undefined
@@ -275,7 +274,7 @@ export const injectPluginKotlinSync = (
     }
 };
 
-const _injectPackage = (c: RnvContext, plugin: RenativeConfigPluginPlatform, pkg: string | undefined) => {
+const _injectPackage = (c: Context, plugin: RenativeConfigPluginPlatform, pkg: string | undefined) => {
     if (pkg) {
         c.payload.pluginConfigAndroid.pluginApplicationImports += `import ${pkg}\n`;
     }

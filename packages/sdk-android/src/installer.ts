@@ -18,12 +18,12 @@ import {
     logError,
     logInfo,
     generateBuildConfig,
-    RnvContext,
     inquirerPrompt,
     ConfigFileWorkspace,
 } from '@rnv/core';
 
 import { CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from './constants';
+import { Context } from './types';
 
 type SDKKey = keyof Required<ConfigFileWorkspace>['sdks'];
 
@@ -49,11 +49,11 @@ const SDK_LOCATIONS: Record<string, Array<string>> = {
     ],
 };
 
-const _logSdkWarning = (c: RnvContext) => {
+const _logSdkWarning = (c: Context) => {
     logWarning(`Your ${c.paths.workspace.config} is missing SDK configuration object`);
 };
 
-export const checkAndConfigureAndroidSdks = async (c: RnvContext) => {
+export const checkAndConfigureAndroidSdks = async (c: Context) => {
     const sdk = c.buildConfig?.sdks?.ANDROID_SDK;
     logTask('checkAndConfigureAndroidSdks', `(${sdk})`);
 
@@ -83,9 +83,9 @@ export const checkAndConfigureAndroidSdks = async (c: RnvContext) => {
     c.cli[CLI_ANDROID_SDKMANAGER] = sdkManagerPath;
 };
 
-const _getCurrentSdkPath = (c: RnvContext) => (c.platform ? c.buildConfig?.sdks?.ANDROID_SDK : undefined);
+const _getCurrentSdkPath = (c: Context) => (c.platform ? c.buildConfig?.sdks?.ANDROID_SDK : undefined);
 
-const _isSdkInstalled = (c: RnvContext) => {
+const _isSdkInstalled = (c: Context) => {
     logTask('_isSdkInstalled');
 
     if (!c.platform) return false;
@@ -113,7 +113,7 @@ const _findFolderWithFile = (dir: string, fileToFind: string) => {
     return foundDir;
 };
 
-const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: SDKKey, traverseUntilFoundFile?: string) => {
+const _attemptAutoFix = async (c: Context, sdkPlatform: string, sdkKey: SDKKey, traverseUntilFoundFile?: string) => {
     logTask('_attemptAutoFix');
 
     if (c.program.hosted) {
@@ -180,7 +180,7 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: SDKKe
     return true;
 };
 
-export const checkAndroidSdk = async (c: RnvContext) => {
+export const checkAndroidSdk = async (c: Context) => {
     logTask('checkAndroidSdk');
     if (!_isSdkInstalled(c)) {
         logWarning(

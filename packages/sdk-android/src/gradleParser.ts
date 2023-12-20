@@ -1,7 +1,6 @@
 import {
     OverridesOptions,
     RenativeConfigPluginPlatform,
-    RnvContext,
     RnvPlugin,
     addSystemInjects,
     chalk,
@@ -667,7 +666,7 @@ export const injectPluginGradleSync = (
     }
 };
 
-export const parseAndroidConfigObject = (c: RnvContext, plugin?: RenativeConfigPluginPlatform, key = '') => {
+export const parseAndroidConfigObject = (c: Context, plugin?: RenativeConfigPluginPlatform, key = '') => {
     // APP/BUILD.GRADLE
     const templateAndroid = plugin?.templateAndroid;
 
@@ -756,7 +755,7 @@ export const parseAndroidConfigObject = (c: RnvContext, plugin?: RenativeConfigP
     }
 };
 
-const _fixAndroidLegacy = (c: RnvContext, modulePath: string) => {
+const _fixAndroidLegacy = (c: Context, modulePath: string) => {
     const buildGradle = path.join(c.paths.project.dir, modulePath, 'build.gradle');
 
     if (fsExistsSync(buildGradle)) {

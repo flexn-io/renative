@@ -1,6 +1,5 @@
 import path from 'path';
 import {
-    RnvContext,
     fsExistsSync,
     copyFileSync,
     fsWriteFileSync,
@@ -11,8 +10,9 @@ import {
     doResolvePath,
     parsePlugins,
 } from '@rnv/core';
+import { Context } from './types';
 
-export const ejectGradleProject = async (c: RnvContext) => {
+export const ejectGradleProject = async (c: Context) => {
     const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');
     const monoRoot = getConfigProp(c, c.platform, 'monoRoot');
 

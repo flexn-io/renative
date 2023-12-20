@@ -9,13 +9,12 @@ import {
     IOS,
     TVOS,
     executeAsync,
-    RnvContext,
     inquirerPrompt,
     RnvPlatform,
 } from '@rnv/core';
-import { AppiumAppleDevice, AppleDevice } from './types';
+import { AppiumAppleDevice, AppleDevice, Context } from './types';
 
-export const getAppleDevices = async (c: RnvContext, ignoreDevices?: boolean, ignoreSimulators?: boolean) => {
+export const getAppleDevices = async (c: Context, ignoreDevices?: boolean, ignoreSimulators?: boolean) => {
     const { platform } = c;
 
     logTask('getAppleDevices', `ignoreDevices:${ignoreDevices} ignoreSimulators:${ignoreSimulators}`);
@@ -175,7 +174,7 @@ const _parseIOSDevicesList = (
     return devices;
 };
 
-export const launchAppleSimulator = async (c: RnvContext, target: string) => {
+export const launchAppleSimulator = async (c: Context, target: string) => {
     logTask('launchAppleSimulator', `${target}`);
 
     const devicesArr = await getAppleDevices(c, true);
@@ -224,7 +223,7 @@ const _launchSimulator = async (selectedDevice: AppleDevice) => {
     return true;
 };
 
-export const listAppleDevices = async (c: RnvContext) => {
+export const listAppleDevices = async (c: Context) => {
     logTask('listAppleDevices');
     const { platform } = c;
     const devicesArr = await getAppleDevices(c);

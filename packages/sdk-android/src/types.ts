@@ -1,9 +1,11 @@
 import { RenativeConfigPluginPlatform, RnvContext } from '@rnv/core';
 
 export type Payload = {
+    currentDevices: AndroidDevice[];
     pluginConfigAndroid: {
         gradleWrapperVersion: string;
         injectReactNativeEngine: string;
+        injectActivityOnCreate: string;
         appBuildGradleImplementations: string;
         injectHermes: string;
         pluginApplicationImports: string;
@@ -91,12 +93,3 @@ export type AndroidDevice = {
 };
 
 export type TemplateAndroid = Required<Required<RenativeConfigPluginPlatform>['templateAndroid']>;
-
-// export type AndroidManifestJSONNode = {
-//     tag: string;
-//     'android:name': string;
-//     children?: AndroidManifestJSONNode[];
-// };
-// export type AndroidManifestJSON = AndroidManifestJSONNode & {
-//     package?: string;
-// };

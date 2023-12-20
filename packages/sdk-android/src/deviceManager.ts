@@ -22,14 +22,13 @@ import {
     ANDROID_TV,
     FIRE_TV,
     USER_HOME_DIR,
-    RnvContext,
     waitForExecCLI,
     inquirerPrompt,
     RnvPlatform,
 } from '@rnv/core';
 import { CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from './constants';
 
-import { AndroidDevice } from './types';
+import { AndroidDevice, Context } from './types';
 
 const CHECK_INTEVAL = 5000;
 export const IS_TABLET_ABOVE_INCH = 6.5;
@@ -51,7 +50,7 @@ export const composeDevicesArray = (devices: Array<AndroidDevice>) => {
 };
 
 export const launchAndroidSimulator = async (
-    c: RnvContext,
+    c: Context,
     target: true | { name: string } | string,
     isIndependentThread = false
 ) => {
@@ -105,7 +104,7 @@ export const launchAndroidSimulator = async (
     return Promise.reject('No simulator -t target name specified!');
 };
 
-export const listAndroidTargets = async (c: RnvContext) => {
+export const listAndroidTargets = async (c: Context) => {
     logTask('listAndroidTargets');
     const {
         program: { device },
@@ -159,7 +158,7 @@ const _getDeviceAsObject = (device: AndroidDevice): DeviceInfo => {
     return { key: name, name: deviceString, value: name, icon: deviceIcon };
 };
 
-export const resetAdb = async (c: RnvContext, forceRun?: boolean, ranBefore?: boolean) => {
+export const resetAdb = async (c: Context, forceRun?: boolean, ranBefore?: boolean) => {
     if (!c.program.resetAdb && !forceRun) return;
     try {
         if (!ranBefore) await execCLI(c, CLI_ANDROID_ADB, 'kill-server');
@@ -177,7 +176,7 @@ export const resetAdb = async (c: RnvContext, forceRun?: boolean, ranBefore?: bo
     }
 };
 
-export const getAndroidTargets = async (c: RnvContext, skipDevices: boolean, skipAvds: boolean, deviceOnly = false) => {
+export const getAndroidTargets = async (c: Context, skipDevices: boolean, skipAvds: boolean, deviceOnly = false) => {
     logTask('getAndroidTargets', `skipDevices:${!!skipDevices} skipAvds:${!!skipAvds} deviceOnly:${!!deviceOnly}`);
     // Temp workaround for race conditions receiving devices with offline status
     await new Promise((r) => setTimeout(r, 1000));
@@ -205,7 +204,7 @@ const calculateDeviceDiagonal = (width: number, height: number, density: number)
     return Math.sqrt(widthInches * widthInches + heightInches * heightInches);
 };
 
-const getRunningDeviceProp = async (c: RnvContext, udid: string, prop: string): Promise<string> => {
+const getRunningDeviceProp = async (c: Context, udid: string, prop: string): Promise<string> => {
     // avoid multiple calls to the same device
     if (currentDeviceProps[udid]) {
         // if (!prop) return currentDeviceProps[udid];
@@ -229,7 +228,7 @@ const getRunningDeviceProp = async (c: RnvContext, udid: string, prop: string): 
     return getRunningDeviceProp(c, udid, prop);
 };
 
-const decideIfTVRunning = async (c: RnvContext, device: AndroidDevice) => {
+const decideIfTVRunning = async (c: Context, device: AndroidDevice) => {
     const { udid, model, product } = device;
     const mod = await getRunningDeviceProp(c, udid, 'ro.product.model');
     const name = await getRunningDeviceProp(c, udid, 'ro.product.name');
@@ -255,7 +254,7 @@ const decideIfTVRunning = async (c: RnvContext, device: AndroidDevice) => {
     return isTV;
 };
 
-const decideIfWearRunning = async (c: RnvContext, device: AndroidDevice) => {
+const decideIfWearRunning = async (c: Context, device: AndroidDevice) => {
     const { udid, model, product } = device;
     const fingerprint = await getRunningDeviceProp(c, udid, 'ro.vendor.build.fingerprint');
     const name = await getRunningDeviceProp(c, udid, 'ro.product.vendor.name');
@@ -271,7 +270,7 @@ const decideIfWearRunning = async (c: RnvContext, device: AndroidDevice) => {
     return isWear;
 };
 
-const getDeviceType = async (device: AndroidDevice, c: RnvContext) => {
+const getDeviceType = async (device: AndroidDevice, c: Context) => {
     logDebug('getDeviceType - in', { device });
 
     if (device.udid !== 'unknown') {
@@ -357,7 +356,7 @@ const getDeviceType = async (device: AndroidDevice, c: RnvContext) => {
     return device;
 };
 
-const getAvdDetails = (c: RnvContext, deviceName: string) => {
+const getAvdDetails = (c: Context, deviceName: string) => {
     const { ANDROID_SDK_HOME, ANDROID_AVD_HOME } = process.env;
 
     // .avd dir might be in other place than homedir. (https://developer.android.com/studio/command-line/variables)
@@ -396,7 +395,7 @@ const getAvdDetails = (c: RnvContext, deviceName: string) => {
     return results;
 };
 
-const getEmulatorName = async (c: RnvContext, words: Array<string>) => {
+const getEmulatorName = async (c: Context, words: Array<string>) => {
     const emulator = words[0];
     const port = emulator.split('-')[1];
 
@@ -407,7 +406,7 @@ const getEmulatorName = async (c: RnvContext, words: Array<string>) => {
     return emulatorName;
 };
 
-export const connectToWifiDevice = async (c: RnvContext, target: string) => {
+export const connectToWifiDevice = async (c: Context, target: string) => {
     let connect_str = `connect ${target}`;
 
     if (!target.includes(':')) {
@@ -421,7 +420,7 @@ export const connectToWifiDevice = async (c: RnvContext, target: string) => {
 };
 
 const _parseDevicesResult = async (
-    c: RnvContext,
+    c: Context,
     devicesString: string | undefined,
     avdsString: string | undefined,
     deviceOnly: boolean
@@ -554,7 +553,7 @@ const _getDeviceProp = (arr: Array<string>, prop: string) => {
     return '';
 };
 
-export const askForNewEmulator = async (c: RnvContext, platform: RnvPlatform) => {
+export const askForNewEmulator = async (c: Context, platform: RnvPlatform) => {
     logTask('askForNewEmulator');
     if (!platform) return;
 
@@ -602,7 +601,7 @@ export const askForNewEmulator = async (c: RnvContext, platform: RnvPlatform) =>
     return Promise.reject('Action canceled!');
 };
 
-const _createEmulator = (c: RnvContext, apiVersion: string, emuPlatform: string, emuName: string, arch = 'x86') => {
+const _createEmulator = (c: Context, apiVersion: string, emuPlatform: string, emuName: string, arch = 'x86') => {
     logTask('_createEmulator');
 
     return execCLI(c, CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};${arch}"`)
@@ -619,7 +618,7 @@ const _createEmulator = (c: RnvContext, apiVersion: string, emuPlatform: string,
         .catch((e) => logError(e, true));
 };
 
-const waitForEmulatorToBeReady = (c: RnvContext, emulator: string) =>
+const waitForEmulatorToBeReady = (c: Context, emulator: string) =>
     waitForExecCLI(c, CLI_ANDROID_ADB, `-s ${emulator} shell getprop init.svc.bootanim`, (res) => {
         if (typeof res === 'string') {
             return res.includes('stopped');
@@ -627,7 +626,7 @@ const waitForEmulatorToBeReady = (c: RnvContext, emulator: string) =>
         return res;
     });
 
-export const checkForActiveEmulator = (c: RnvContext, emulatorName?: string) =>
+export const checkForActiveEmulator = (c: Context, emulatorName?: string) =>
     new Promise<AndroidDevice | undefined>((resolve, reject) => {
         logTask('checkForActiveEmulator');
         const { platform } = c;
