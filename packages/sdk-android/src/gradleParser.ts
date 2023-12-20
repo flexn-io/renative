@@ -669,7 +669,7 @@ export const injectPluginGradleSync = (
 
 export const parseAndroidConfigObject = (c: RnvContext, plugin?: RenativeConfigPluginPlatform, key = '') => {
     // APP/BUILD.GRADLE
-    const templateAndroid = getConfigProp(c, c.platform, 'templateAndroid');
+    const templateAndroid = plugin?.templateAndroid;
 
     const appBuildGradle = templateAndroid?.app_build_gradle;
     if (appBuildGradle) {
@@ -698,32 +698,6 @@ export const parseAndroidConfigObject = (c: RnvContext, plugin?: RenativeConfigP
         const afterEvaluate = appBuildGradle?.afterEvaluate;
         if (afterEvaluate) {
             afterEvaluate.forEach((v) => {
-                c.payload.pluginConfigAndroid.appBuildGradleAfterEvaluate += ` ${sanitizePluginPath(v, key)}\n`;
-            });
-        }
-    }
-
-    // APP/BUILD.GRADLE for plugins
-    if (plugin) {
-        const pluginTemplateAndroid = plugin.templateAndroid;
-        const pluginBuildGradle = pluginTemplateAndroid?.app_build_gradle;
-        if (pluginBuildGradle) {
-            pluginBuildGradle.apply?.forEach((v: string) => {
-                c.payload.pluginConfigAndroid.applyPlugin += `apply ${sanitizePluginPath(v, key)}\n`;
-            });
-
-            pluginBuildGradle.defaultConfig?.forEach((v: string) => {
-                c.payload.pluginConfigAndroid.defaultConfig += `${sanitizePluginPath(v, key)}\n`;
-            });
-
-            pluginBuildGradle.implementations?.forEach((v: string) => {
-                c.payload.pluginConfigAndroid.appBuildGradleImplementations += `    implementation ${sanitizePluginPath(
-                    v,
-                    key
-                )}\n`;
-            });
-
-            pluginBuildGradle.afterEvaluate?.forEach((v: string) => {
                 c.payload.pluginConfigAndroid.appBuildGradleAfterEvaluate += ` ${sanitizePluginPath(v, key)}\n`;
             });
         }
