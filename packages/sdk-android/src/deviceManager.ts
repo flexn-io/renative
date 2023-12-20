@@ -55,7 +55,10 @@ export const launchAndroidSimulator = async (
     target: true | { name: string } | string,
     isIndependentThread = false
 ) => {
-    logTask('launchAndroidSimulator', `target:${target} independentThread:${!!isIndependentThread}`);
+    logTask(
+        'launchAndroidSimulator',
+        `target:${typeof target === 'object' ? target?.name : target} independentThread:${!!isIndependentThread}`
+    );
     let newTarget: { name: string } | string;
     if (target === true) {
         const {

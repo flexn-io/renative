@@ -1,4 +1,4 @@
-rootProject.name = "testRNProject"
+rootProject.name = '{{RN_GRADLE_PROJECT_NAME}}'
 apply from: file("{{RN_CLI_LOCATION}}/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
 include ':app'
 includeBuild('{{RN_GRADLE_PLUGIN_LOCATION}}')
