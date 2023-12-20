@@ -194,7 +194,9 @@ export const parseAndroidManifestSync = (c: Context) => {
         // PARSE all standard renative.*.json files in correct mergeOrder
         objArr.forEach((tpl) => {
             const manifestObj = tpl?.AndroidManifest_xml;
-            _mergeNodeParameters(baseManifestFile, manifestObj);
+            if (manifestObj) {
+                _mergeNodeParameters(baseManifestFile, manifestObj);
+            }
             if (manifestObj?.children) {
                 _mergeNodeChildren(baseManifestFile, manifestObj.children);
             }
