@@ -3554,40 +3554,41 @@
                 "package": "org.devio.rn.splashscreen.SplashScreenReactPackage"
             },
             "androidtv": {
-                "mainActivity": {
-                    "createMethods": [
-                        "SplashScreen.show(this)"
-                    ],
-                    "imports": [
-                        "org.devio.rn.splashscreen.SplashScreen"
-                    ]
+               "templateAndroid": {
+                    "MainActivity_java": {
+                        "createMethods": [
+                            "SplashScreen.show(this)"
+                        ],
+                        "imports": [
+                            "org.devio.rn.splashscreen.SplashScreen"
+                        ]
+                    }
                 },
                 "package": "org.devio.rn.splashscreen.SplashScreenReactPackage"
             },
             "firetv": {
-                "mainActivity": {
-                    "createMethods": [
-                        "SplashScreen.show(this)"
-                    ],
-                    "imports": [
-                        "org.devio.rn.splashscreen.SplashScreen"
-                    ]
+                "templateAndroid": {
+                    "MainActivity_java": {
+                        "createMethods": [
+                            "SplashScreen.show(this)"
+                        ],
+                        "imports": [
+                            "org.devio.rn.splashscreen.SplashScreen"
+                        ]
+                    }
                 },
                 "package": "org.devio.rn.splashscreen.SplashScreenReactPackage"
             },
             "ios": {
-                "appDelegateImports": [
-                    "react_native_splash_screen"
-                ],
-                "appDelegateMethods": {
-                    "application": {
-                        "didFinishLaunchingWithOptions": [
-                            "RNSplashScreen.show()"
-                        ]
-                    }
-                },
-                "podName": "react-native-splash-screen"
+            "templateXcode": {
+                "AppDelegate_mm": {
+                    "appDelegateImports": ["RNSplashScreen.h" ],
+                    "methods": ["[RNSplashScreen show]"]
+                    
+                }
             },
+            
+            "podName": "react-native-splash-screen",
             "version": "3.3.0"
         },
         "react-native-sqlite-2": {

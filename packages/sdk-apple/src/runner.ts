@@ -39,6 +39,7 @@ import { AppleDevice, Context } from './types';
 import { ObjectEncodingOptions } from 'fs';
 import { packageReactNativeIOS, runCocoaPods, runReactNativeIOS } from '@rnv/sdk-react-native';
 import { registerDevice } from './fastlane';
+import { parseAppDelegateMm } from './swiftParser';
 
 export const packageBundleForXcode = (c: Context) => {
     return packageReactNativeIOS(c);
@@ -737,6 +738,7 @@ export const configureXcodeProject = async (c: Context) => {
         pluginAppDelegateImports: '',
         pluginAppDelegateMethods: '',
         pluginAppDelegateExtensions: '',
+        methods: [],
         appDelegateMethods: {
             application: {
                 didFinishLaunchingWithOptions: [],
@@ -821,6 +823,7 @@ export const configureXcodeProject = async (c: Context) => {
 
     await copyAssetsFolder(c, platform, appFolderName);
     await copyAppleAssets(c, platform, appFolderName);
+    await parseAppDelegateMm(c, appFolder, appFolderName);
     // await parseAppDelegate(c, platform, appFolder, appFolderName, bundleAssets, bundlerIp);
     await parseExportOptionsPlist(c, platform);
     await parseXcscheme(c, platform);

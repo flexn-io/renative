@@ -59,6 +59,7 @@ const AppDelegateMm = z.object({
         })
     ),
     appDelegateImports: z.optional(z.array(z.string())),
+    methods: z.optional(z.array(z.string())),
     appDelegateExtensions: z.optional(z.array(z.string())),
 });
 

@@ -476,6 +476,8 @@ export const copyAssetsFolder = async (
         validAssetSources.forEach((sourcePath) => {
             copyFolderContentsRecursiveSync(sourcePath, destPath, true, undefined, false, undefined, tsPathsConfig, c);
         });
+
+        //QUESTION
         return;
     }
 

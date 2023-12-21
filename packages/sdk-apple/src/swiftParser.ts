@@ -313,3 +313,50 @@ export const injectPluginSwiftSync = (c: Context, plugin: RenativeConfigPluginPl
         });
     }
 };
+
+export const parseAppDelegateMm = async (c: Context, appFolder: string, appFolderName: string) => {
+    const appDelegateMM = 'AppDelegate.mm';
+    const { platform } = c;
+    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
+        injectPluginAppDelegateMmSync(c, pluginPlat, key);
+    });
+
+    const injects = [
+        { pattern: '{{APPDELEGATE_IMPORTS}}', override: c.payload.pluginConfigiOS.pluginAppDelegateImports },
+        {
+            pattern: '{{APPDELEGATE_METHODS}}',
+            override: c.payload.pluginConfigiOS.pluginAppDelegateMethods,
+        },
+    ];
+    addSystemInjects(c, injects);
+    writeCleanFile(
+        path.join(getAppTemplateFolder(c, platform)!, appFolderName, appDelegateMM),
+        path.join(appFolder, appFolderName, appDelegateMM),
+        injects,
+        undefined,
+        c
+    );
+};
+
+export const injectPluginAppDelegateMmSync = (c: Context, plugin: RenativeConfigPluginPlatform, key: string) => {
+    logDebug(`injectPluginAppDelegateMmSync:${c.platform}:${key}`);
+    const templateXcode = getFlavouredProp(c, plugin, 'templateXcode');
+    const appDelegateImports = templateXcode?.AppDelegate_mm?.appDelegateImports;
+    if (appDelegateImports) {
+        appDelegateImports.forEach((appDelegateImport) => {
+            // Avoid duplicate imports
+            logDebug('appDelegateMmImports add');
+            if (c.payload.pluginConfigiOS.pluginAppDelegateImports.indexOf(appDelegateImport) === -1) {
+                logDebug('appDelegateMmImports add ok');
+                c.payload.pluginConfigiOS.pluginAppDelegateImports += `#import "${appDelegateImport}"\n`;
+            }
+        });
+    }
+
+    const appDelegateMethods = templateXcode?.AppDelegate_mm?.methods;
+
+    if (appDelegateMethods instanceof Array) {
+        c.payload.pluginConfigiOS.methods = appDelegateMethods;
+        c.payload.pluginConfigiOS.pluginAppDelegateMethods = appDelegateMethods.join(';\n') + ';\n';
+    }
+};

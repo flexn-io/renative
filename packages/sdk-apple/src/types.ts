@@ -39,6 +39,7 @@ export type Payload = {
         pluginAppDelegateImports: string;
         pluginAppDelegateMethods: string;
         pluginAppDelegateExtensions: string;
+        methods: Array<string>;
         appDelegateMethods: {
             application: {
                 didFinishLaunchingWithOptions: Array<PayloadAppDelegateMethod>;
