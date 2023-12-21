@@ -648,13 +648,11 @@ export const checkForActiveEmulator = (c: RnvContext, emulatorName?: string) =>
                     .then(async (v) => {
                         const simsOnly = v.filter((device) => !device.isDevice);
                         logDebug('Available devices after filtering', simsOnly);
-                        if (emulatorName) {
-                            const found = simsOnly.find((v) => v.name === emulatorName);
-                            if (found) {
-                                logSuccess(`Found active emulator! ${chalk().white(found.udid)}. Will use it`);
-                                clearInterval(poll);
-                                resolve(found);
-                            }
+                        const found = emulatorName && simsOnly.find((v) => v.name === emulatorName);
+                        if (found) {
+                            logSuccess(`Found active emulator! ${chalk().white(found.udid)}. Will use it`);
+                            clearInterval(poll);
+                            resolve(found);
                         } else if (simsOnly.length > 0) {
                             logSuccess(`Found active emulator! ${chalk().white(simsOnly[0].udid)}. Will use it`);
                             clearInterval(poll);
