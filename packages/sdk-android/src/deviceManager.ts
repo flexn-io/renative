@@ -618,9 +618,7 @@ const _createEmulator = (c: RnvContext, apiVersion: string, emuPlatform: string,
                 c,
                 CLI_ANDROID_AVDMANAGER,
                 `create avd -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};x86"`,
-                {
-                    interactive: true,
-                }
+                ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER
             )
         )
         .catch((e) => logError(e, true));

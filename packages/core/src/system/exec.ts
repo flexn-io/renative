@@ -14,14 +14,7 @@ import { getApi } from '../api/provider';
 
 const { exec, execSync } = require('child_process');
 
-// if (opts.interactive) {
-//     defaultOpts.silent = true;
-//     defaultOpts.stdio = 'inherit';
-//     defaultOpts.shell = true;
-// }
-
 const FIRE_AND_FORGET: ExecOptions = {
-    interactive: false,
     stdio: 'ignore', // Disable child_process output
     detached: true, // Killing rnv command will NOT kill process
     silent: true, // Disable spinner
@@ -30,7 +23,6 @@ const FIRE_AND_FORGET: ExecOptions = {
 
 const INHERIT_OUTPUT_NO_SPINNER: ExecOptions = {
     detached: false, // Killing command will kill process
-    interactive: false, // Interactive shows execa spinner
     silent: true, // silent: true => will not show execa spinner
     stdio: 'inherit', // inherit will print during execution but no details in SUMMARY box
     shell: true, // runs `command` inside of a shell. Uses `/bin/sh` on UNIX and `cmd.exe` on Windows
@@ -39,7 +31,6 @@ const INHERIT_OUTPUT_NO_SPINNER: ExecOptions = {
 
 const SPINNER_FULL_ERROR_SUMMARY: ExecOptions = {
     detached: false, // Killing command will kill process
-    interactive: false, // Interactive shows execa spinner
     silent: false,
     stdio: 'pipe', // pipe will print final error into SUMMARY box but nothing during execution
     shell: true, // runs `command` inside of a shell. Uses `/bin/sh` on UNIX and `cmd.exe` on Windows

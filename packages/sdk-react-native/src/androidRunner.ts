@@ -14,6 +14,7 @@ import {
     DEFAULTS,
     RnvPlatform,
     CoreEnvVars,
+    ExecOptionsPresets,
 } from '@rnv/core';
 import { EnvVars } from './env';
 
@@ -112,8 +113,7 @@ export const runReactNativeAndroid = async (
         },
         cwd: appFolder,
         //This is required to make rn cli logs visible in rnv executed terminal
-        interactive: true,
-        stdio: 'inherit',
+        ...ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER,
     });
 };
 
