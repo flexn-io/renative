@@ -5,7 +5,6 @@ export type Payload = {
         gradleWrapperVersion: string;
         injectReactNativeEngine: string;
         appBuildGradleImplementations: string;
-        injectHermes: string;
         pluginApplicationImports: string;
         reactNativeHostMethods: string;
         packagingOptions: string;

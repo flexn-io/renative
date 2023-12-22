@@ -148,8 +148,6 @@ maven { url("${doResolve('jsc-android', true, { forceForwardPaths: true })}/dist
 `;
 
     c.payload.pluginConfigAndroid.appBuildGradleImplementations += "    implementation 'org.webkit:android-jsc:+'\n";
-
-    c.payload.pluginConfigAndroid.injectHermes = '    enableHermes: false,';
 };
 
 const setReactNativeEngineHermes = (c: Context) => {
@@ -158,11 +156,6 @@ const setReactNativeEngineHermes = (c: Context) => {
   maven { url "${doResolve('react-native', true, { forceForwardPaths: true })}/android" }
   maven { url("${doResolve('jsc-android', true, { forceForwardPaths: true })}/dist") }
   `;
-
-    c.payload.pluginConfigAndroid.injectHermes = `    enableHermes: true,
-hermesCommand: "{{PATH_HERMES_ENGINE}}/%OS-BIN%/hermes",
-deleteDebugFilesForVariant: { false },
-    `;
 };
 
 const setReactNativeEngineV8 = (c: Context) => {
@@ -183,8 +176,6 @@ const setReactNativeEngineV8 = (c: Context) => {
                 getUseDeveloperSupport()
             )
         }`;
-
-    c.payload.pluginConfigAndroid.injectHermes = '    enableHermes: false,';
 
     c.payload.pluginConfigAndroid.packagingOptions += `
     exclude '**/libjsc.so'`;
@@ -468,10 +459,6 @@ ${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
         {
             pattern: '{{PLUGIN_LOCAL_PROPERTIES}}',
             override: c.payload.pluginConfigAndroid.localProperties,
-        },
-        {
-            pattern: '{{INJECT_HERMES}}',
-            override: c.payload.pluginConfigAndroid.injectHermes,
         },
         {
             pattern: '{{PATH_REACT_NATIVE}}',
