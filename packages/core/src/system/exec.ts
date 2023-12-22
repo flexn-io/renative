@@ -105,11 +105,6 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
             logMsg = `cd ${opts.cwd} ${chalk().cyan('&&')} ${logMsg}`;
         }
         logRaw(`${blue2('[ exec ]')} ${blue2('<[')} ${logMsg} ${blue2(']>')}`);
-        // if (printableEnv) {
-
-        // } else {
-        //     logRaw(`${chalk().green('✔')} Executing: ${logMessage}\n`);
-        // }
     }
 
     logDebug(`_execute: ${logMessage}`);
