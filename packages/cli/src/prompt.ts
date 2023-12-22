@@ -13,10 +13,18 @@ import {
 export const inquirerPrompt = async (params: PromptParams): Promise<Record<string, any>> => {
     const c = getContext();
 
-    if (c.program?.yes && params.type === 'confirm' && params.name) {
-        return { [params.name]: true };
-    } else if (c.program?.yes && params.type === 'input' && params.name && params.default) {
-        return { [params.name]: typeof params.default === 'function' ? params.default() : params.default };
+    if (c.program?.yes) {
+        const key = params.name || params.type;
+
+        if (params.type === 'confirm') {
+            return { [key]: true };
+        }
+
+        if (params.default) {
+            return {
+                [key]: typeof params.default === 'function' ? params.default() : params.default,
+            };
+        }
     }
 
     const msg = params.logMessage || params.warningMessage || params.message;
