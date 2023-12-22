@@ -8,7 +8,6 @@ export type ResolveOptions = {
 };
 
 export type ExecOptions = {
-    interactive?: boolean;
     silent?: boolean;
     stdio?: 'pipe' | 'inherit' | 'ignore';
     shell?: boolean;

@@ -332,13 +332,13 @@ export const logTask = (task: string, customChalk?: string | RnvApiChalkFn) => {
 
     let msg = '';
     if (typeof customChalk === 'string') {
-        msg = `${currentChalk.green(`[ task ]${_getCurrentTask()} ${task}`)}${taskCount} ${currentChalk.grey(
+        msg = `${currentChalk.green(`[ task ]${_getCurrentTask()}`)} ${task}${taskCount} ${currentChalk.grey(
             customChalk
         )}`;
     } else if (customChalk) {
         msg = customChalk(`[ task ]${_getCurrentTask()} ${task}${taskCount}`);
     } else {
-        msg = currentChalk.green(`[ task ]${_getCurrentTask()} ${task}${taskCount}`);
+        msg = `${currentChalk.green(`[ task ]${_getCurrentTask()}`)} ${task}${taskCount}`;
     }
 
     console.log(_sanitizePaths(msg));

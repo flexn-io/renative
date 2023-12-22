@@ -14,6 +14,7 @@ import {
     writeCleanFile,
     fsExistsSync,
     chalk,
+    ExecOptionsPresets,
 } from '@rnv/core';
 
 const rootPath = path.join(__dirname, './');
@@ -171,9 +172,10 @@ class Docker {
         const appVersion = files.project.package.version;
 
         logTask('docker:Dockerfile:login');
-        await executeAsync(`echo "${DOCKERHUB_PASS}" | docker login -u "${DOCKERHUB_USER}" --password-stdin`, {
-            interactive: true,
-        });
+        await executeAsync(
+            `echo "${DOCKERHUB_PASS}" | docker login -u "${DOCKERHUB_USER}" --password-stdin`,
+            ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER
+        );
         logTask('docker:Dockerfile:push');
         // tagging for versioning
         await executeAsync(`docker tag ${imageName}:${appVersion} ${imageTag}:${appVersion}`);
