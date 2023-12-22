@@ -17,6 +17,7 @@ import {
     copyAssetsFolder,
     RnvPlatform,
     CoreEnvVars,
+    ExecOptionsPresets,
 } from '@rnv/core';
 import { getDevServerHost, openBrowser, waitForHost } from '@rnv/sdk-utils';
 import { EnvVars } from './env';
@@ -139,6 +140,9 @@ Dev server running at: ${url}
 `);
 
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
+    const opts = !c.program?.json
+        ? ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER
+        : ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY;
     return executeAsync(c, `npx next ${bundleAssets ? 'start' : 'dev'} --port ${c.runtime.port}`, {
         env: {
             ...CoreEnvVars.BASE(),
@@ -147,7 +151,7 @@ Dev server running at: ${url}
             ...EnvVars.NEXT_BASE(),
             ...EnvVars.NODE_ENV(),
         },
-        interactive: !c.program?.json,
+        ...opts,
     });
 };
 

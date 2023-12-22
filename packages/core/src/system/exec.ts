@@ -14,6 +14,36 @@ import { getApi } from '../api/provider';
 
 const { exec, execSync } = require('child_process');
 
+const FIRE_AND_FORGET: ExecOptions = {
+    stdio: 'ignore', // Disable child_process output
+    detached: true, // Killing rnv command will NOT kill process
+    silent: true, // Disable spinner
+    shell: true, // runs `command` inside of a shell. Uses `/bin/sh` on UNIX and `cmd.exe` on Windows
+};
+
+const INHERIT_OUTPUT_NO_SPINNER: ExecOptions = {
+    detached: false, // Killing command will kill process
+    silent: true, // silent: true => will not show execa spinner
+    stdio: 'inherit', // inherit will print during execution but no details in SUMMARY box
+    shell: true, // runs `command` inside of a shell. Uses `/bin/sh` on UNIX and `cmd.exe` on Windows
+    // mono: true,
+};
+
+const SPINNER_FULL_ERROR_SUMMARY: ExecOptions = {
+    detached: false, // Killing command will kill process
+    silent: false,
+    stdio: 'pipe', // pipe will print final error into SUMMARY box but nothing during execution
+    shell: true, // runs `command` inside of a shell. Uses `/bin/sh` on UNIX and `cmd.exe` on Windows
+    mono: false,
+};
+
+export const ExecOptionsPresets = {
+    // Do not await when using FIRE_AND_FORGET option
+    FIRE_AND_FORGET,
+    INHERIT_OUTPUT_NO_SPINNER,
+    SPINNER_FULL_ERROR_SUMMARY,
+} as const;
+
 /**
  *
  * Also accepts the Node's child_process exec/spawn options
@@ -42,11 +72,8 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
         mono: c.program?.mono || c.program?.json,
     };
 
-    if (opts.interactive) {
-        defaultOpts.silent = true;
-        defaultOpts.stdio = 'inherit';
-        defaultOpts.shell = true;
-    }
+    const blue2 = chalk().rgb(50, 50, 255);
+
     const mergedOpts = { ...defaultOpts, ...opts };
 
     const printableEnv =
@@ -72,15 +99,14 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
         logMessage = replaceOverridesInString(commandAsString, privateParams, privateMask);
     }
 
-    if (printableEnv) {
-        let logMsg = `${chalk().grey(printableEnv)} ${logMessage}`;
+    if (c.program.printExec) {
+        let logMsg = printableEnv ? `${chalk().grey(printableEnv)} ${logMessage}` : logMessage;
         if (opts.cwd) {
             logMsg = `cd ${opts.cwd} ${chalk().cyan('&&')} ${logMsg}`;
         }
-        console.log(
-            `${chalk().green('✔')} Full exec command: ${chalk().green('>>>')}\n${logMsg}\n${chalk().green('<<<')}`
-        );
+        logRaw(`${blue2('[ exec ]')} ${blue2('<[')} ${logMsg} ${blue2(']>')}`);
     }
+
     logDebug(`_execute: ${logMessage}`);
     const { silent, mono, maxErrorLength, ignoreErrors } = mergedOpts;
     const spinner =
@@ -89,9 +115,9 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
         getApi()
             .spinner({ text: `Executing: ${logMessage}` })
             .start('');
-    if (opts.interactive) {
-        logRaw(`${chalk().green('✔')} Executing: ${logMessage}\n`);
-    }
+    // if (opts.interactive) {
+    //     logRaw(`${chalk().green('✔')} Executing: ${logMessage}\n`);
+    // }
 
     if (mono) {
         interval = setInterval(() => {
@@ -106,7 +132,10 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
     } else {
         child = execa.command(cleanCommand, mergedOpts);
     }
-    c.runningProcesses.push(child);
+
+    if (!opts.detached) {
+        c.runningProcesses.push(child);
+    }
 
     const MAX_OUTPUT_LENGTH = 200;
 

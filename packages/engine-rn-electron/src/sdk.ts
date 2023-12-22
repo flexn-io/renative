@@ -37,6 +37,7 @@ import {
     MACOS,
     LINUX,
     TASK_EXPORT,
+    ExecOptionsPresets,
 } from '@rnv/core';
 import { FileElectronPackage } from './types';
 import { NpmPackageFile } from '@rnv/core/lib/configs/types';
@@ -364,14 +365,7 @@ const _runElectronSimulator = async (c: RnvContext) => {
     }
 
     const cmd = `node ${doResolve('electron')}/cli.js ${path.join(platformProjectDir, '/main.js')}`;
-    await executeAsync(c, cmd, {
-        interactive: true,
-        stdio: 'inherit',
-        // silent: true,
-        // env: {
-        //     ...CoreEnvVars.BASE(),
-        // },
-    });
+    await executeAsync(c, cmd, ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER);
 };
 
 const _generateICNS = (c: RnvContext) =>
