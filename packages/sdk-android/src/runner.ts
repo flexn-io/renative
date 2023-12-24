@@ -425,7 +425,6 @@ export const configureProject = async (c: Context) => {
         appBuildGradleImplementations: '',
         resourceStrings: [],
         appBuildGradleAfterEvaluate: '',
-        injectHermes: '',
         kotlinVersion: '',
         googleServicesVersion: '',
         buildToolsVersion: '',

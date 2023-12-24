@@ -87,10 +87,6 @@
         "tsc": "tsc --noEmit --composite false",
         "watch": "tsc --watch --preserveWatchOutput --noEmit"
     },
-    "dependencies": {
-        "@lightningjs/sdk": "^5.4.1",
-        "raf": "3.4.1"
-    },
     "devDependencies": {
         "@flexn/assets-renative-outline": "0.3.2",
         "@flexn/graybox": "1.0.0-feat.12",

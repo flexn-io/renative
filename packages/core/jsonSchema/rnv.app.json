@@ -389,19 +389,6 @@
                   "default": "Debug",
                   "description": "Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`"
                 },
-                "reactNativeEngine": {
-                  "type": "string",
-                  "enum": [
-                    "jsc",
-                    "v8-android",
-                    "v8-android-nointl",
-                    "v8-android-jit",
-                    "v8-android-jit-nointl",
-                    "hermes"
-                  ],
-                  "default": "hermes",
-                  "description": "Allows you to define specific native render engine to be used"
-                },
                 "minSdkVersion": {
                   "type": "number",
                   "default": 28,
@@ -489,6 +476,19 @@
                 "newArchEnabled": {
                   "type": "boolean",
                   "description": "Enables new arch for android. Default: false"
+                },
+                "reactNativeEngine": {
+                  "type": "string",
+                  "enum": [
+                    "jsc",
+                    "v8-android",
+                    "v8-android-nointl",
+                    "v8-android-jit",
+                    "v8-android-jit-nointl",
+                    "hermes"
+                  ],
+                  "default": "hermes",
+                  "description": "Allows you to define specific native render engine to be used"
                 },
                 "templateAndroid": {
                   "type": "object",
@@ -897,9 +897,6 @@
                       "signingConfig": {
                         "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/signingConfig"
                       },
-                      "reactNativeEngine": {
-                        "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/reactNativeEngine"
-                      },
                       "minSdkVersion": {
                         "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/minSdkVersion"
                       },
@@ -959,6 +956,9 @@
                       },
                       "newArchEnabled": {
                         "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/newArchEnabled"
+                      },
+                      "reactNativeEngine": {
+                        "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/reactNativeEngine"
                       },
                       "templateAndroid": {
                         "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/templateAndroid"
@@ -1229,6 +1229,9 @@
                     }
                   },
                   "additionalProperties": false
+                },
+                "reactNativeEngine": {
+                  "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/reactNativeEngine"
                 },
                 "templateXcode": {
                   "type": "object",
@@ -1674,6 +1677,9 @@
                       },
                       "exportOptions": {
                         "$ref": "#/definitions/rnv.app/properties/platforms/properties/ios/properties/exportOptions"
+                      },
+                      "reactNativeEngine": {
+                        "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/reactNativeEngine"
                       },
                       "templateXcode": {
                         "$ref": "#/definitions/rnv.app/properties/platforms/properties/ios/properties/templateXcode"
@@ -2626,6 +2632,9 @@
                 "exportOptions": {
                   "$ref": "#/definitions/rnv.app/properties/platforms/properties/ios/properties/exportOptions"
                 },
+                "reactNativeEngine": {
+                  "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/reactNativeEngine"
+                },
                 "templateXcode": {
                   "$ref": "#/definitions/rnv.app/properties/platforms/properties/ios/properties/templateXcode"
                 },
@@ -2831,6 +2840,9 @@
                       "exportOptions": {
                         "$ref": "#/definitions/rnv.app/properties/platforms/properties/ios/properties/exportOptions"
                       },
+                      "reactNativeEngine": {
+                        "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/reactNativeEngine"
+                      },
                       "templateXcode": {
                         "$ref": "#/definitions/rnv.app/properties/platforms/properties/ios/properties/templateXcode"
                       },
@@ -2949,6 +2961,9 @@
                 },
                 "BrowserWindow": {
                   "$ref": "#/definitions/rnv.app/properties/platforms/properties/macos/properties/BrowserWindow"
+                },
+                "reactNativeEngine": {
+                  "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/reactNativeEngine"
                 },
                 "templateVSProject": {
                   "type": "object",
@@ -3170,6 +3185,9 @@
                       },
                       "BrowserWindow": {
                         "$ref": "#/definitions/rnv.app/properties/platforms/properties/macos/properties/BrowserWindow"
+                      },
+                      "reactNativeEngine": {
+                        "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/reactNativeEngine"
                       },
                       "templateVSProject": {
                         "$ref": "#/definitions/rnv.app/properties/platforms/properties/windows/properties/templateVSProject"
