@@ -1556,6 +1556,15 @@
                 "firebaseId": {
                   "type": "string"
                 },
+                "reactNativeEngine": {
+                  "type": "string",
+                  "enum": [
+                    "jsc",
+                    "hermes"
+                  ],
+                  "default": "hermes",
+                  "description": "Allows you to define specific native render engine to be used"
+                },
                 "exportOptions": {
                   "type": "object",
                   "properties": {
@@ -2030,6 +2039,9 @@
                       },
                       "firebaseId": {
                         "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/firebaseId"
+                      },
+                      "reactNativeEngine": {
+                        "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/reactNativeEngine"
                       },
                       "exportOptions": {
                         "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/exportOptions"
@@ -2982,6 +2994,9 @@
                 "firebaseId": {
                   "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/firebaseId"
                 },
+                "reactNativeEngine": {
+                  "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/reactNativeEngine"
+                },
                 "exportOptions": {
                   "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/exportOptions"
                 },
@@ -3186,6 +3201,9 @@
                       },
                       "firebaseId": {
                         "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/firebaseId"
+                      },
+                      "reactNativeEngine": {
+                        "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/reactNativeEngine"
                       },
                       "exportOptions": {
                         "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/exportOptions"

@@ -143,6 +143,11 @@
                     "signingConfig": "Debug",
                     "bundleAssets": false
                 },
+                "debug-jsc": {
+                    "signingConfig": "Debug",
+                    "bundleAssets": false,
+                    "reactNativeEngine": "jsc"
+                },
                 "test": {
                     "signingConfig": "Debug",
                     "bundleAssets": true
@@ -288,6 +293,11 @@
                 "debug": {
                     "bundleAssets": false,
                     "environment": "development"
+                },
+                "debug-engine-rn-web": {
+                    "bundleAssets": false,
+                    "environment": "development",
+                    "engine": "engine-rn-web"
                 },
                 "test": {
                     "bundleAssets": false,
