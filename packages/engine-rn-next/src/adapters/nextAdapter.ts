@@ -58,12 +58,15 @@ export function withRNWNext(nextConfig: NextConfig = {}): NextConfig {
 
 export const withRNVNext = (config: NextConfig) => {
     const cnf = {
+        // can be overwritten by user
+        output: 'export',
+        distDir: process.env.NEXT_DIST_DIR,
+        // end - can be overwritten by user
         ...config,
         images: {
             disableStaticImages: true,
             ...(config?.images || {}),
         },
-        distDir: process.env.NEXT_DIST_DIR,
         webpack: (cfg: Configuration, props: any) => {
             const { isServer } = props;
 

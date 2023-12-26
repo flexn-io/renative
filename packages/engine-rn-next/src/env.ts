@@ -1,13 +1,6 @@
-import {
-    chalk,
-    fsExistsSync,
-    getConfigProp,
-    getContext,
-    getPlatformOutputDir,
-    logWarning,
-    parsePlugins,
-} from '@rnv/core';
+import { chalk, fsExistsSync, getConfigProp, getContext, logWarning, parsePlugins } from '@rnv/core';
 import path from 'path';
+import { getExportDir } from './sdk';
 
 export const EnvVars = {
     RNV_NEXT_TRANSPILE_MODULES: () => {
@@ -58,7 +51,7 @@ const getTranspileModules = () => {
 const _checkPagesDir = () => {
     const c = getContext();
     const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
-    const distDir = getPlatformOutputDir(c);
+    const distDir = getExportDir(c);
     if (pagesDir) {
         const pagesDirPath = path.join(c.paths.project.dir, pagesDir);
         if (!fsExistsSync(pagesDirPath)) {

@@ -40,7 +40,7 @@
     },
     "peerDependencies": {
         "@rnv/core": "^1.0.0-rc.7",
-        "next": "^13",
+        "next": "^14",
         "react": "^18",
         "react-native-web": "~0.18.0",
         "webpack": "^5.64.4"

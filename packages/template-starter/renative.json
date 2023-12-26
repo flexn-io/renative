@@ -109,9 +109,7 @@
             "minSdkVersion": 21,
             "extendPlatform": "android",
             "engine": "engine-rn-tvos",
-            "includedPermissions": [
-                "INTERNET"
-            ]
+            "includedPermissions": ["INTERNET"]
         },
         "web": {
             "engine": "engine-rn-next"
@@ -157,7 +155,7 @@
             "version": "0.72.4"
         },
         "next": {
-            "version": "13.5.2",
+            "version": "14.0.4",
             "disablePluginTemplateOverrides": true
         },
         "react-native-web": {

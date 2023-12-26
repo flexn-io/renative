@@ -109,9 +109,14 @@ const getOutputDir = (c: RnvContext) => {
     return distDir || `platformBuilds/${c.runtime.appId}_${c.platform}/.next`;
 };
 
-const getExportDir = (c: RnvContext) => {
+export const getExportDir = (c: RnvContext) => {
     const outputDir = getConfigProp(c, c.platform, 'exportDir');
-    return outputDir || path.join(getPlatformBuildDir(c)!, 'output');
+    const maybeAbsolutePath = outputDir || path.join(getPlatformBuildDir(c)!, 'output');
+
+    // if path is absolute, make it relative to project root. Next 14 doesn't seem to like absolute paths
+    if (path.isAbsolute(maybeAbsolutePath)) {
+        return path.relative(c.paths.project.dir, maybeAbsolutePath);
+    }
 };
 
 export const buildWebNext = async (c: RnvContext) => {
@@ -162,28 +167,5 @@ export const deployWebNext = () => {
     // DEPRECATED: custom deployers moved to external packages
     // return selectWebToolAndDeploy(c, platform);
 
-    return true;
-};
-
-export const exportWebNext = async (c: RnvContext) => {
-    logTask('exportWebNext');
-    // const { platform } = c;
-
-    logTask('_exportNext');
-    const exportDir = getExportDir(c);
-
-    await executeAsync(c, `npx next export --outdir ${exportDir}`, {
-        env: {
-            ...CoreEnvVars.BASE(),
-            ...CoreEnvVars.RNV_EXTENSIONS(),
-            ...EnvVars.RNV_NEXT_TRANSPILE_MODULES(),
-            ...EnvVars.NEXT_BASE(),
-            ...EnvVars.NODE_ENV(),
-        },
-    });
-    logSuccess(`Your export is located in ${chalk().cyan(exportDir)} .`);
-
-    // DEPRECATED: custom deployers moved to external packages
-    // await selectWebToolAndExport(c, platform);
     return true;
 };
