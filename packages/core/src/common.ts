@@ -340,11 +340,12 @@ export const getAppVersion = (c: RnvContext, platform: RnvPlatform) => {
 
 export const getAppVersionCode = (c: RnvContext, platform: RnvPlatform) => {
     const versionCode = getConfigProp(c, platform, 'versionCode');
+    const isValidVersionCode = Number.isInteger(Number(versionCode)) && Number(versionCode) > 0
 
-    if (versionCode && Number(versionCode) > 0) {
+    if (isValidVersionCode) {
         return versionCode
        
-    }else if(versionCode && Number(versionCode) <= 0){
+    }else if(versionCode && !isValidVersionCode){
         throw new Error(`${chalk().white('versionCode')} should be a positive integer. Check your config `)
     };
 
