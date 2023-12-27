@@ -169,3 +169,22 @@ export const deployWebNext = () => {
 
     return true;
 };
+
+export const exportWebNext = async (c: RnvContext) => {
+    logTask('exportWebNext');
+
+    const exportDir = getExportDir(c);
+
+    await executeAsync(c, `npx next build`, {
+        env: {
+            ...CoreEnvVars.BASE(),
+            ...CoreEnvVars.RNV_EXTENSIONS(),
+            ...EnvVars.RNV_NEXT_TRANSPILE_MODULES(),
+            ...EnvVars.NEXT_BASE(),
+            ...EnvVars.NODE_ENV(),
+        },
+    });
+    logSuccess(`Your export is located in ${chalk().cyan(exportDir)} .`);
+
+    return true;
+};

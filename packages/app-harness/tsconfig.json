@@ -17,6 +17,8 @@
     "**/*.ts",
     "**/*.tsx",
     "platformBuilds/template_web/.next/types/**/*.ts",
-    "platformBuilds/harness_web/.next/types/**/*.ts"
+    "platformBuilds/harness_web/.next/types/**/*.ts",
+    ".next/types/**/*.ts",
+    "platformBuilds/harness_web/output/types/**/*.ts"
   ]
 }
