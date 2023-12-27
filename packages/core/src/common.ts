@@ -340,7 +340,17 @@ export const getAppVersion = (c: RnvContext, platform: RnvPlatform) => {
 
 export const getAppVersionCode = (c: RnvContext, platform: RnvPlatform) => {
     const versionCode = getConfigProp(c, platform, 'versionCode');
-    if (versionCode) return versionCode;
+
+    if (versionCode && Number(versionCode) > 0) {
+        return versionCode
+       
+    }else if(versionCode && Number(versionCode) <= 0){
+        throw new Error(`${chalk().white('versionCode')} should be a positive integer. Check your config `)
+    };
+
+   
+    
+
     const version = getConfigProp(c, platform, 'version') || c.files.project.package?.version;
     if (!version || typeof version !== 'string') {
         logWarning('You are missing version prop in your config. will default to 0');
