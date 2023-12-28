@@ -101,10 +101,10 @@ const _findFolderWithFile = (dir: string, fileToFind: string) => {
         return dir;
     }
     let foundDir;
-    fsReaddirSync(dir).forEach((subDirName) => {
+    fsReaddirSync(dir).forEach((subDirName: string) => {
         // not a directory check
-        if (!fsLstatSync(subDirName).isDirectory()) return;
         const subDir = path.join(dir, subDirName);
+        if (!fsLstatSync(subDir).isDirectory()) return;
         const foundSubDir = _findFolderWithFile(subDir, fileToFind);
         if (foundSubDir) {
             foundDir = foundSubDir;
