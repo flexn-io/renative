@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-next",
-    "version": "0.37.0-feat-eject.14",
+    "version": "0.37.0-feat-eject.15",
     "description": "ReNative Engine to build next based platforms with react native support.",
     "keywords": [
         "nextjs",
@@ -51,14 +51,14 @@
     },
     "peerDependencies": {
         "next": ">=12.0.8",
-        "rnv": "^0.37.0-feat-eject.14"
-    },
-    "resolutions": {
-        "image-size": "^0.6.0"
+        "rnv": "^0.37.0-feat-eject.15"
     },
     "private": false,
     "publishConfig": {
         "access": "public"
+    },
+    "resolutions": {
+        "image-size": "^0.6.0"
     },
     "gitHead": "930edaf234cc321ad9f1e296c5d394e3144845e2"
 }
