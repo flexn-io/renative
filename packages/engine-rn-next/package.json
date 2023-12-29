@@ -33,7 +33,6 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@expo/next-adapter": "3.1.12",
         "ally.js": "1.4.1",
         "better-opn": "1.0.0",
         "next-fonts": "1.5.1",
@@ -56,9 +55,6 @@
     "private": false,
     "publishConfig": {
         "access": "public"
-    },
-    "resolutions": {
-        "image-size": "^0.6.0"
     },
     "gitHead": "930edaf234cc321ad9f1e296c5d394e3144845e2"
 }

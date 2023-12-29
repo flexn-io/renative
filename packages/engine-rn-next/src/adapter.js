@@ -1,4 +1,4 @@
-const { withExpo } = require('@expo/next-adapter');
+// const { withExpo } = require('@expo/next-adapter');
 const withImages = require('next-images');
 // DEPRECATED
 // const withOptimizedImages = require('next-optimized-images');
@@ -76,9 +76,11 @@ export const withRNVNext = (config, opts) => {
     if (opts?.enableOptimizedImages) {
         // enableOptimizedImages DEPRECATED
         // cnf1 = withExpo(withFonts(withOptimizedImages(withTM(cnf))));
-        cnf1 = withExpo(withFonts(withImages(withTM(cnf))));
+        // cnf1 = withExpo(withFonts(withImages(withTM(cnf))));
+        cnf1 = withFonts(withImages(withTM(cnf)));
     } else {
-        cnf1 = withExpo(withFonts(withImages(withTM(cnf))));
+        // cnf1 = withExpo(withFonts(withImages(withTM(cnf))));
+        cnf1 = withFonts(withImages(withTM(cnf)));
     }
     // if (opts?.enableNextCss) {
     // enableNextCss DEPRECATED
