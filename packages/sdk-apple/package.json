@@ -1,6 +1,6 @@
 {
     "name": "@rnv/sdk-apple",
-    "version": "0.37.0-feat-eject.15",
+    "version": "0.37.0-feat-eject.16",
     "description": "ReNative Apple SDK",
     "keywords": [],
     "homepage": "https://github.com/renative-org/renative#readme",
@@ -35,7 +35,7 @@
         "shelljs": "0.8.5"
     },
     "peerDependencies": {
-        "rnv": "^0.37.0-feat-eject.15"
+        "rnv": "^0.37.0-feat-eject.16"
     },
     "private": false,
     "publishConfig": {
