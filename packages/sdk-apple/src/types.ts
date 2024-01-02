@@ -131,8 +131,8 @@ export type ObjectiveCAppDelegate = {
         didDisconnectCarInterfaceController: SwiftMethod;
         didReceiveRemoteNotification: SwiftMethod;
         didFailToRegisterForRemoteNotificationsWithError: SwiftMethod;
-        didReceive: SwiftMethod;
-        didRegister: SwiftMethod;
+        // didReceive: SwiftMethod;
+        requestAuthorizationWithOptions: SwiftMethod;
         didRegisterForRemoteNotificationsWithDeviceToken: SwiftMethod;
     };
     userNotificationCenter: {

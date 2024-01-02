@@ -104,75 +104,75 @@ export const parseAppDelegate = (
                     render: (v) => `${v}`,
                     end: null,
                 },
-                // open: {
-                //     func: 'func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {',
-                //     begin: 'var handled = false',
-                //     render: (v) => `if(!handled) { handled = ${v} }`,
-                //     end: 'return handled',
-                // },
-                // continue: {
-                //     func: 'func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {',
-                //     begin: null,
-                //     render: (v) => `return ${v}`,
-                //     end: null,
-                // },
-                // supportedInterfaceOrientationsFor: {
-                //     func: 'func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {',
-                //     begin: null,
-                //     render: (v) => `return ${v}`,
-                //     end: null,
-                // },
-                // didConnectCarInterfaceController: {
-                //     func: 'func application(_ application: UIApplication, didConnectCarInterfaceController interfaceController: CPInterfaceController, to window: CPWindow) {',
-                //     begin: null,
-                //     render: (v) => `return ${v}`,
-                //     end: null,
-                // },
-                // didDisconnectCarInterfaceController: {
-                //     func: 'func application(_ application: UIApplication, didDisconnectCarInterfaceController interfaceController: CPInterfaceController, from window: CPWindow) {',
-                //     begin: null,
-                //     render: (v) => `return ${v}`,
-                //     end: null,
-                // },
+                open: {
+                    func: '- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options {',
+                    begin: 'BOOL handled = false;',
+                    render: (v) => `if(!handled) { handled = ${v} }`,
+                    end: 'return handled',
+                },
+                continue: {
+                    func: '- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> *restorableObjects))restorationHandler {',
+                    begin: null,
+                    render: (v) => `return ${v}`,
+                    end: null,
+                },
+                supportedInterfaceOrientationsFor: {
+                    func: ' - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {',
+                    begin: null,
+                    render: (v) => `return ${v}`,
+                    end: null,
+                },
+                didConnectCarInterfaceController: { //Deprecated
+                    func: '- (void)application:(UIApplication *)application didConnectCarInterfaceController:(CPInterfaceController *)interfaceController toWindow:(CPWindow *)window {',
+                    begin: null,
+                    render: (v) => `return ${v}`,
+                    end: null,
+                },
+                didDisconnectCarInterfaceController: { //Deprecated
+                    func: '- (void)application:(UIApplication *)application didDisconnectCarInterfaceController:(CPInterfaceController *)interfaceController fromWindow:(CPWindow *)window {',
+                    begin: null,
+                    render: (v) => `return ${v}`,
+                    end: null,
+                },
                 didReceiveRemoteNotification: {
                     func: '- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)notification fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))handler {',
                     begin: null,
                     render: (v) => `${v}`,
                     end: null,
                 },
-                // didFailToRegisterForRemoteNotificationsWithError: {
-                //     func: 'func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {',
-                //     begin: null,
-                //     render: (v) => `${v}`,
-                //     end: null,
-                // },
-                // didReceive: {
+                didFailToRegisterForRemoteNotificationsWithError: { 
+                    func: '- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error; {',
+                    begin: null,
+                    render: (v) => `${v}`,
+                    end: null,
+                },
+                // didReceive: { //Deprecated
                 //     func: 'func application(_ application: UIApplication, didReceive notification: UILocalNotification) {',
                 //     begin: null,
                 //     render: (v) => `${v}`,
                 //     end: null,
                 // },
-                // didRegister: {
-                //     func: 'func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {',
-                //     begin: null,
-                //     render: (v) => `${v}`,
-                //     end: null,
-                // },
-                // didRegisterForRemoteNotificationsWithDeviceToken: {
-                //     func: 'func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {',
-                //     begin: null,
-                //     render: (v) => `${v}`,
-                //     end: null,
-                // },
+                requestAuthorizationWithOptions: {
+                    func: '- (void)requestAuthorizationWithOptions:(UNAuthorizationOptions)options completionHandler:(void (^)(BOOL granted, NSError *error))completionHandler {',
+                    begin: null,
+                    render: (v) => `${v}`,
+                    end: null,
+                },
+                didRegisterForRemoteNotificationsWithDeviceToken: {
+                    func: '- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {',
+                    begin: null,
+                    render: (v) => `${v}`,
+                    end: null,
+                },
             },
-            // userNotificationCenter: {
-            //     willPresent: {
-            //         func: 'func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {',
-            //         begin: null,
-            //         render: (v) => `${v}`,
-            //         end: null,
-            //     },
-            // },
+            userNotificationCenter: {
+                willPresent: {
+                    func: '- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {',
+                    begin: null,
+                    render: (v) => `${v}`,
+                    end: null,
+                },
+            },
         };
 
         const constructMethod = (lines: Array<string>, method: SwiftMethod) => {
