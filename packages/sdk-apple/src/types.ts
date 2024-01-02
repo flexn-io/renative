@@ -119,6 +119,27 @@ export type SwiftAppDelegate = {
     };
 };
 
+export type ObjectiveCAppDelegate = {
+    application: {
+        didFinishLaunchingWithOptions: SwiftMethod;
+        applicationDidBecomeActive: SwiftMethod;
+        sourceURLForBridge: SwiftMethod;
+        open: SwiftMethod;
+        continue: SwiftMethod;
+        supportedInterfaceOrientationsFor: SwiftMethod;
+        didConnectCarInterfaceController: SwiftMethod;
+        didDisconnectCarInterfaceController: SwiftMethod;
+        didReceiveRemoteNotification: SwiftMethod;
+        didFailToRegisterForRemoteNotificationsWithError: SwiftMethod;
+        didReceive: SwiftMethod;
+        didRegister: SwiftMethod;
+        didRegisterForRemoteNotificationsWithDeviceToken: SwiftMethod;
+    };
+    userNotificationCenter: {
+        willPresent: SwiftMethod;
+    };
+};
+
 export type SwiftAppDelegateSubKey = keyof SwiftAppDelegate['application'] &
     keyof SwiftAppDelegate['userNotificationCenter'];
 
