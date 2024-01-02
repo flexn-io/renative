@@ -86,6 +86,7 @@ export const parseAppDelegate = (
                     end: 'return [super application:application didFinishLaunchingWithOptions:launchOptions];',
                 },
                 sourceURLForBridge: {
+                    isRequired: true,
                     func: '- (NSURL *)sourceURLForBridge:(RCTBridge *)bridge {',
                     begin: `
         #if DEBUG
@@ -97,12 +98,12 @@ export const parseAppDelegate = (
                     render: (v) => `${v}`,
                     end: null,
                 },
-                // applicationDidBecomeActive: {
-                //     func: 'func applicationDidBecomeActive(_ application: UIApplication) {',
-                //     begin: null,
-                //     render: (v) => `${v}`,
-                //     end: null,
-                // },
+                applicationDidBecomeActive: {
+                    func: '- (void)applicationDidBecomeActive:(UIApplication *)application {',
+                    begin: null,
+                    render: (v) => `${v}`,
+                    end: null,
+                },
                 // open: {
                 //     func: 'func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {',
                 //     begin: 'var handled = false',
@@ -133,12 +134,12 @@ export const parseAppDelegate = (
                 //     render: (v) => `return ${v}`,
                 //     end: null,
                 // },
-                // didReceiveRemoteNotification: {
-                //     func: 'func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {',
-                //     begin: null,
-                //     render: (v) => `${v}`,
-                //     end: null,
-                // },
+                didReceiveRemoteNotification: {
+                    func: '- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)notification fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))handler {',
+                    begin: null,
+                    render: (v) => `${v}`,
+                    end: null,
+                },
                 // didFailToRegisterForRemoteNotificationsWithError: {
                 //     func: 'func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {',
                 //     begin: null,
@@ -200,7 +201,8 @@ export const parseAppDelegate = (
             const mk2 = Object.keys(method) as Array<SwiftAppDelegateSubKey>;
             mk2.forEach((key2) => {
                 const f = method[key2];
-                const lines: Array<PayloadAppDelegateMethod> = c.payload.pluginConfigiOS.appDelegateMethods[key][key2];
+                const lines: Array<PayloadAppDelegateMethod> =
+                    c.payload.pluginConfigiOS.appDelegateMethods[key][key2] || [];
                 console.log('lines', lines);
                 console.log({ key, key2 });
                 const cleanedLines: Record<string, PayloadAppDelegateMethod> = {};
