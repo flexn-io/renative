@@ -11,6 +11,7 @@ import {
     getEntryFile,
     getGetJsBundleFile,
     getIP,
+    removeDirSync,
     writeCleanFile,
 } from '@rnv/core';
 import { mkdirSync } from 'fs';
@@ -31,6 +32,10 @@ export const parseFlipperSync = (c: Context, scheme: 'debug' | 'release') => {
     const javaPackageArray = appId?.split('.') || [];
 
     const javaPackagePath = `app/src/${scheme}/java/${javaPackageArray.join('/')}`;
+
+    // cleanup potentially existing folders from previous builds with different appId
+    removeDirSync(path.join(appFolder, `app/src/${scheme}/java`));
+
     mkdirSync(path.join(appFolder, javaPackagePath), { recursive: true });
 
     const templatePath = `app/src/${scheme}/java/rnv_template/ReactNativeFlipper.java.tpl`;
