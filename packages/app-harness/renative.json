@@ -4,5 +4,23 @@
     "projectName": "@rnv/app-harness",
     "crypto": {
         "path": "./secrets/privateConfigs.enc"
+    },
+    "plugins": {
+        "react-native-splash-screen": {
+        "ios":{
+            "templateXcode": {
+                "AppDelegate_mm": {
+                    "appDelegateImports": ["RNSplashScreen.h"],
+                    "appDelegateMethods": {
+                        "application": {
+                            "didFinishLaunchingWithOptions": ["[RNSplashScreen show]"]
+                        }
+                    }
+                }
+            },
+            "version": "3.3.0",
+            "podName": "react-native-splash-screen"
+        }
+        }
     }
 }

@@ -81,9 +81,10 @@ export const parseAppDelegate = (
         // You can add your custom initial props in the dictionary below.
         // They will be passed down to the ViewController used by React Native.
         self.initialProps = @{};
+        [super application:application didFinishLaunchingWithOptions:launchOptions];
                 `,
-                    render: (v) => `${v}`,
-                    end: 'return [super application:application didFinishLaunchingWithOptions:launchOptions];',
+                    render: (v) => `${v};`,
+                    end: 'return YES;',
                 },
                 sourceURLForBridge: {
                     isRequired: true,
@@ -95,55 +96,55 @@ export const parseAppDelegate = (
             return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
         #endif
                     `,
-                    render: (v) => `${v}`,
+                    render: (v) => `${v};`,
                     end: null,
                 },
                 applicationDidBecomeActive: {
                     func: '- (void)applicationDidBecomeActive:(UIApplication *)application {',
                     begin: null,
-                    render: (v) => `${v}`,
+                    render: (v) => `${v};`,
                     end: null,
                 },
                 open: {
                     func: '- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options {',
                     begin: 'BOOL handled = false;',
-                    render: (v) => `if(!handled) { handled = ${v} }`,
-                    end: 'return handled',
+                    render: (v) => `if(!handled) { handled = ${v}; }`,
+                    end: 'return handled;',
                 },
                 continue: {
                     func: '- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> *restorableObjects))restorationHandler {',
                     begin: null,
-                    render: (v) => `return ${v}`,
+                    render: (v) => `return ${v};`,
                     end: null,
                 },
                 supportedInterfaceOrientationsFor: {
                     func: ' - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {',
                     begin: null,
-                    render: (v) => `return ${v}`,
+                    render: (v) => `return ${v};`,
                     end: null,
                 },
                 didConnectCarInterfaceController: { //Deprecated
                     func: '- (void)application:(UIApplication *)application didConnectCarInterfaceController:(CPInterfaceController *)interfaceController toWindow:(CPWindow *)window {',
                     begin: null,
-                    render: (v) => `return ${v}`,
+                    render: (v) => `return ${v};`,
                     end: null,
                 },
                 didDisconnectCarInterfaceController: { //Deprecated
                     func: '- (void)application:(UIApplication *)application didDisconnectCarInterfaceController:(CPInterfaceController *)interfaceController fromWindow:(CPWindow *)window {',
                     begin: null,
-                    render: (v) => `return ${v}`,
+                    render: (v) => `return ${v};`,
                     end: null,
                 },
                 didReceiveRemoteNotification: {
                     func: '- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)notification fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))handler {',
                     begin: null,
-                    render: (v) => `${v}`,
+                    render: (v) => `${v};`,
                     end: null,
                 },
                 didFailToRegisterForRemoteNotificationsWithError: { 
                     func: '- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error; {',
                     begin: null,
-                    render: (v) => `${v}`,
+                    render: (v) => `${v};`,
                     end: null,
                 },
                 // didReceive: { //Deprecated
@@ -155,13 +156,13 @@ export const parseAppDelegate = (
                 requestAuthorizationWithOptions: {
                     func: '- (void)requestAuthorizationWithOptions:(UNAuthorizationOptions)options completionHandler:(void (^)(BOOL granted, NSError *error))completionHandler {',
                     begin: null,
-                    render: (v) => `${v}`,
+                    render: (v) => `${v};`,
                     end: null,
                 },
                 didRegisterForRemoteNotificationsWithDeviceToken: {
                     func: '- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {',
                     begin: null,
-                    render: (v) => `${v}`,
+                    render: (v) => `${v};`,
                     end: null,
                 },
             },
@@ -169,7 +170,7 @@ export const parseAppDelegate = (
                 willPresent: {
                     func: '- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {',
                     begin: null,
-                    render: (v) => `${v}`,
+                    render: (v) => `${v};`,
                     end: null,
                 },
             },
@@ -226,7 +227,6 @@ export const parseAppDelegate = (
                 });
             });
         });
-
         injectors.forEach((v) => {
             c.payload.pluginConfigiOS.pluginAppDelegateMethods += constructMethod(v.lines, v.f);
         });
@@ -234,8 +234,8 @@ export const parseAppDelegate = (
         const injects = [
             // { pattern: '{{BUNDLE}}', override: bundle },
             // { pattern: '{{ENTRY_FILE}}', override: entryFile },
-            { pattern: '{{IP}}', override: ip },
-            { pattern: '{{PORT}}', override: newPort },
+            // { pattern: '{{IP}}', override: ip },
+            // { pattern: '{{PORT}}', override: newPort },
             { pattern: '{{BACKGROUND_COLOR}}', override: pluginBgColor },
             {
                 pattern: '{{APPDELEGATE_IMPORTS}}',
@@ -243,11 +243,11 @@ export const parseAppDelegate = (
             },
             {
                 pattern: '{{APPDELEGATE_METHODS}}',
-                override: c.payload.pluginConfigiOS.pluginAppDelegateMethods,
+                override: `${c.payload.pluginConfigiOS.pluginAppDelegateMethods}`,
             },
             {
                 pattern: '{{APPDELEGATE_EXTENSIONS}}',
-                override: c.payload.pluginConfigiOS.pluginAppDelegateExtensions,
+                override: `( ${c.payload.pluginConfigiOS.pluginAppDelegateExtensions} )`,
             },
         ];
 
@@ -273,7 +273,7 @@ export const injectPluginObjectiveCSync = (c: Context, plugin: RenativeConfigPlu
             logDebug('appDelegateImports add');
             if (c.payload.pluginConfigiOS.pluginAppDelegateImports.indexOf(appDelegateImport) === -1) {
                 logDebug('appDelegateImports add ok');
-                c.payload.pluginConfigiOS.pluginAppDelegateImports += `#import ${appDelegateImport}\n`;
+                c.payload.pluginConfigiOS.pluginAppDelegateImports += `#import "${appDelegateImport}"\n`;
             }
         });
     }

@@ -29,9 +29,6 @@
         "backgroundColor": "#111111",
         "fontSources": [
             "{{resolvePackage(react-native-vector-icons)}}/Fonts"
-        ],
-        "assetSources": [
-            "{{resolvePackage(@flexn/assets-renative-outline)}}/assets"
         ]
     },
     "platforms": {
@@ -93,6 +90,9 @@
             "includedPermissions": [
                 "*"
             ],
+            "assetSources": [
+                "{{resolvePackage(@flexn/assets-renative-outline)}}/assets"
+            ],
             "buildSchemes": {
                 "debug": {
                     "runScheme": "Debug",
@@ -116,6 +116,9 @@
             "includedPermissions": [
                 "*"
             ],
+            "assetSources": [
+                "{{resolvePackage(@flexn/assets-renative-outline)}}/assets"
+            ],
             "buildSchemes": {
                 "debug": {
                     "runScheme": "Debug",
@@ -137,6 +140,9 @@
             "reactNativeEngine": "hermes",
             "includedPermissions": [
                 "INTERNET"
+            ],
+            "assetSources": [
+                "{{resolvePackage(@flexn/assets-renative-outline)}}/assets"
             ],
             "buildSchemes": {
                 "debug": {
@@ -173,6 +179,9 @@
             "includedPermissions": [
                 "*"
             ],
+            "assetSources": [
+                "{{resolvePackage(@flexn/assets-renative-outline)}}/assets"
+            ],
             "buildSchemes": {
                 "debug": {
                     "signingConfig": "Debug",
@@ -196,6 +205,9 @@
             "assetFolderPlatform": "android",
             "includedPermissions": [
                 "*"
+            ],
+            "assetSources": [
+                "{{resolvePackage(@flexn/assets-renative-outline)}}/assets"
             ],
             "buildSchemes": {
                 "debug": {
@@ -221,6 +233,9 @@
             "includedPermissions": [
                 "*"
             ],
+            "assetSources": [
+                "{{resolvePackage(@flexn/assets-renative-outline)}}/assets"
+            ],
             "buildSchemes": {
                 "debug": {
                     "signingConfig": "Debug",
@@ -243,6 +258,9 @@
             "certificateProfile": "RNVanillaCert",
             "package": "NkVRhWHJST",
             "id": "NkVRhWHJST.RNVanillaTV",
+            "assetSources": [
+                "{{resolvePackage(@flexn/assets-renative-outline)}}/assets"
+            ],
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false
@@ -259,6 +277,9 @@
             "certificateProfile": "RNVanillaCert",
             "package": "cHIP2fIRQZ",
             "id": "cHIP2fIRQZ.RNVanillaWatch",
+            "assetSources": [
+                "{{resolvePackage(@flexn/assets-renative-outline)}}/assets"
+            ],
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false
@@ -275,6 +296,9 @@
             "certificateProfile": "RNVanillaCert",
             "package": "PauodvCU2r",
             "id": "PauodvCU2r.RNVanillaMobile",
+            "assetSources": [
+                "{{resolvePackage(@flexn/assets-renative-outline)}}/assets"
+            ],
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false
@@ -289,6 +313,9 @@
             "entryFile": "index",
             "pagesDir": "src/pages",
             "devServerHost": "0.0.0.0",
+            "assetSources": [
+                "{{resolvePackage(@flexn/assets-renative-outline)}}/assets"
+            ],
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false,
@@ -319,6 +346,9 @@
             "entryFile": "index",
             "pagesDir": "src/pages",
             "devServerHost": "0.0.0.0",
+            "assetSources": [
+                "{{resolvePackage(@flexn/assets-renative-outline)}}/assets"
+            ],
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false,
@@ -338,6 +368,9 @@
         },
         "webos": {
             "entryFile": "index",
+            "assetSources": [
+                "{{resolvePackage(@flexn/assets-renative-outline)}}/assets"
+            ],
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false
@@ -353,6 +386,9 @@
             "templateVSProject": {
                 "language": "cpp"
             },
+            "assetSources": [
+                "{{resolvePackage(@flexn/assets-renative-outline)}}/assets"
+            ],
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false
@@ -366,6 +402,9 @@
         },
         "linux": {
             "entryFile": "index",
+            "assetSources": [
+                "{{resolvePackage(@flexn/assets-renative-outline)}}/assets"
+            ],
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false
