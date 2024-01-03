@@ -141,9 +141,7 @@
             "includedPermissions": [
                 "INTERNET"
             ],
-            "assetSources": [
-                "{{resolvePackage(@flexn/assets-renative-outline)}}/assets"
-            ],
+           
             "buildSchemes": {
                 "debug": {
                     "signingConfig": "Debug",

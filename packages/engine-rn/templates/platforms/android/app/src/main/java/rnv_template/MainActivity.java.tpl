@@ -1,11 +1,20 @@
 package {{APPLICATION_ID}};
 
+import android.os.Bundle;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
 
+{{PLUGIN_ACTIVITY_IMPORTS}}
+
 public class MainActivity extends ReactActivity {
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    {{PLUGIN_ON_CREATE}};
+    {{INJECT_ON_CREATE}};
+  }
 
   /**
    * Returns the name of the main component registered from JavaScript. This is used to schedule

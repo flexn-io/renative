@@ -7,6 +7,15 @@
     },
     "plugins": {
         "react-native-splash-screen": {
+            "android": {
+                "templateAndroid": {
+                    "MainActivity_java": {
+                        "createMethods": ["SplashScreen.show(this)"],
+                        "imports": ["org.devio.rn.splashscreen.SplashScreen"]
+                    }
+                },
+                "package": "org.devio.rn.splashscreen.SplashScreenReactPackage"
+            },
         "ios":{
             "templateXcode": {
                 "AppDelegate_mm": {
