@@ -1,13 +1,6 @@
-import {
-    chalk,
-    fsExistsSync,
-    getConfigProp,
-    getContext,
-    getPlatformOutputDir,
-    logWarning,
-    parsePlugins,
-} from '@rnv/core';
+import { chalk, fsExistsSync, getConfigProp, getContext, logWarning, parsePlugins } from '@rnv/core';
 import path from 'path';
+import { getExportDir } from './sdk';
 
 export const EnvVars = {
     RNV_NEXT_TRANSPILE_MODULES: () => {
@@ -58,7 +51,9 @@ const getTranspileModules = () => {
 const _checkPagesDir = () => {
     const c = getContext();
     const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
-    const distDir = getPlatformOutputDir(c);
+    const distDir = getExportDir(c);
+    const isExport = c._currentTask === 'export';
+
     if (pagesDir) {
         const pagesDirPath = path.join(c.paths.project.dir, pagesDir);
         if (!fsExistsSync(pagesDirPath)) {
@@ -68,7 +63,7 @@ const _checkPagesDir = () => {
                 )} in your renative.json but it is missing at ${chalk().red(pagesDirPath)}`
             );
         }
-        return { NEXT_PAGES_DIR: pagesDir, NEXT_DIST_DIR: distDir };
+        return { NEXT_PAGES_DIR: pagesDir, NEXT_DIST_DIR: distDir, NEXT_EXPORT: isExport };
     }
     const fallbackPagesDir = 'src/app';
     logWarning(`You're missing ${c.platform}.pagesDir config. Defaulting to '${fallbackPagesDir}'`);
@@ -80,5 +75,5 @@ const _checkPagesDir = () => {
         )} is missing. make sure your entry code is located there in order for next to work correctly!
 Alternatively you can configure custom entry folder via ${c.platform}.pagesDir in renative.json`);
     }
-    return { NEXT_PAGES_DIR: 'src/app', NEXT_DIST_DIR: distDir };
+    return { NEXT_PAGES_DIR: 'src/app', NEXT_DIST_DIR: distDir, NEXT_EXPORT: isExport };
 };
