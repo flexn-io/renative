@@ -43,7 +43,7 @@ import {
     parseMainApplicationSync,
     injectPluginKotlinSync,
     parseFlipperSync,
-} from './kotlinParser';
+} from './javaParser';
 import {
     parseAppBuildGradleSync,
     parseBuildGradleSync,
