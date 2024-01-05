@@ -68,7 +68,7 @@
     },
     "templates": {
         "@rnv/template-starter": {
-            "version": "1.0.0-rc.7"
+            "version": "1.0.0-rc.8"
         }
     },
     "currentTemplate": "@rnv/template-starter",
@@ -157,7 +157,7 @@
             "version": "0.72.4"
         },
         "next": {
-            "version": "13.5.2",
+            "version": "14.0.4",
             "disablePluginTemplateOverrides": true
         },
         "react-native-web": {

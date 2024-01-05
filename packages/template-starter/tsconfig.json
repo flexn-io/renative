@@ -17,6 +17,6 @@
     "**/*.ts",
     "**/*.tsx",
     "platformBuilds/template_web/.next/types/**/*.ts",
-    "/Users/mariuszilguzis/Projects/renative/packages/template-starter/platformBuilds/app_web/types/**/*.ts"
+    ".next/types/**/*.ts"
   ]
 }
