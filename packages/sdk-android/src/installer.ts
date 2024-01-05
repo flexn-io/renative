@@ -146,7 +146,7 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: SDKKe
     }
 
     if (result) {
-        logSuccess(`Found existing ${c.platform} SDK location at ${chalk().white(result)}`);
+        logSuccess(`Found existing ${chalk().white(sdkKey)} location at ${chalk().white(result)}`);
         let confirmSdk = true;
         if (!c.program.ci) {
             const { confirm } = await inquirerPrompt({
