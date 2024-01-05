@@ -27,7 +27,7 @@ export const parseMainApplicationSync = (c: Context) => {
     const { platform } = c;
     const applicationPath = 'app/src/main/java/rnv/MainApplication.kt';
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
-    const bundleDefault = JS_BUNDLE_DEFAULTS[platform];
+    const bundleDefault = JS_BUNDLE_DEFAULTS[platform!];
     const bundleFile: string =
         getGetJsBundleFile(c, platform) || bundleAssets
             ? `"assets://${getEntryFile(c, platform)}.bundle"`
