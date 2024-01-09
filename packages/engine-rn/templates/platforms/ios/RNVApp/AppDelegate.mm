@@ -1,7 +1,7 @@
 #import "AppDelegate.h"
 
 #import <React/RCTBundleURLProvider.h>
-{{APPDELEGATE_IMPORTS}}
+{{APPDELEGATE_MM_IMPORTS}}
 
 @implementation AppDelegate
 

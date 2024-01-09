@@ -30,6 +30,28 @@
             "version": "3.3.0",
             "podName": "react-native-splash-screen"
         }
+        },
+        "react-native-carplay":{
+           "ios": {
+            "templateXcode": {
+                "AppDelegate_h": {
+                    "appDelegateImports": ["CarPlay/CarPlay.h"],
+                    "appDelegateExtensions": ["UIApplicationDelegate", "CPApplicationDelegate"]
+                },
+                "AppDelegate_mm": {
+                    "appDelegateImports": ["RNCarPlay.h"],
+                    "appDelegateMethods": {
+                        "application": {
+                            "didConnectCarInterfaceController": ["[RNCarPlay connectWithInterfaceController:interfaceController window:window]"],
+                            "didDisconnectCarInterfaceController": ["[RNCarPlay disconnect]"]
+                        }
+                    }
+
+                }
+            },
+            "version": "2.3.0",
+            "podName": "react-native-carplay"
+           } 
         }
     }
 }

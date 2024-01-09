@@ -734,10 +734,11 @@ export const configureXcodeProject = async (c: Context) => {
         embeddedFonts: [],
         embeddedFontSources: [],
         ignoreProjectFonts: [],
-        pluginAppDelegateImports: '',
-        pluginAppDelegateMethods: '',
-        pluginAppDelegateExtensions: '',
-        appDelegateMethods: {
+        pluginAppDelegateHImports: '',
+        pluginAppDelegateHExtensions: '',
+        pluginAppDelegateMmImports: '',
+        pluginAppDelegateMmMethods: '',
+        appDelegateMmMethods: {
             application: {
                 didFinishLaunchingWithOptions: [],
                 applicationDidBecomeActive: [],

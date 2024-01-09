@@ -34,13 +34,13 @@ export const parseAppDelegate = (
     appFolder: string,
     appFolderName: string,
     // isBundled = false,
-    ip = 'localhost'
+    
 ) =>
     new Promise<void>((resolve) => {
-        const newPort = c.runtime?.port;
-        logTask('parseAppDelegateSync', `ip:${ip} port:${newPort}`);
-        const appDelegate = 'AppDelegate.mm';
-
+      
+        logTask('parseAppDelegateSync');
+        const appDelegateMm = 'AppDelegate.mm';
+        const appDelegateH = 'AppDelegate.h';
         // const entryFile = getEntryFile(c, platform);
 
         // const forceBundle = getGetJsBundleFile(c, platform);
@@ -126,13 +126,13 @@ export const parseAppDelegate = (
                 didConnectCarInterfaceController: { //Deprecated
                     func: '- (void)application:(UIApplication *)application didConnectCarInterfaceController:(CPInterfaceController *)interfaceController toWindow:(CPWindow *)window {',
                     begin: null,
-                    render: (v) => `return ${v};`,
+                    render: (v) => `${v};`,
                     end: null,
                 },
                 didDisconnectCarInterfaceController: { //Deprecated
                     func: '- (void)application:(UIApplication *)application didDisconnectCarInterfaceController:(CPInterfaceController *)interfaceController fromWindow:(CPWindow *)window {',
                     begin: null,
-                    render: (v) => `return ${v};`,
+                    render: (v) => `${v};`,
                     end: null,
                 },
                 didReceiveRemoteNotification: {
@@ -203,9 +203,8 @@ export const parseAppDelegate = (
             mk2.forEach((key2) => {
                 const f = method[key2];
                 const lines: Array<PayloadAppDelegateMethod> =
-                    c.payload.pluginConfigiOS.appDelegateMethods[key][key2] || [];
-                console.log('lines', lines);
-                console.log({ key, key2 });
+                    c.payload.pluginConfigiOS.appDelegateMmMethods[key][key2] || [];
+
                 const cleanedLines: Record<string, PayloadAppDelegateMethod> = {};
 
                 lines.forEach((l) => {
@@ -228,35 +227,50 @@ export const parseAppDelegate = (
             });
         });
         injectors.forEach((v) => {
-            c.payload.pluginConfigiOS.pluginAppDelegateMethods += constructMethod(v.lines, v.f);
+            c.payload.pluginConfigiOS.pluginAppDelegateMmMethods += constructMethod(v.lines, v.f);
         });
 
-        const injects = [
+        const injectsMm = [
             // { pattern: '{{BUNDLE}}', override: bundle },
             // { pattern: '{{ENTRY_FILE}}', override: entryFile },
             // { pattern: '{{IP}}', override: ip },
             // { pattern: '{{PORT}}', override: newPort },
             { pattern: '{{BACKGROUND_COLOR}}', override: pluginBgColor },
             {
-                pattern: '{{APPDELEGATE_IMPORTS}}',
-                override: c.payload.pluginConfigiOS.pluginAppDelegateImports,
+                pattern: '{{APPDELEGATE_MM_IMPORTS}}',
+                override: c.payload.pluginConfigiOS.pluginAppDelegateMmImports,
             },
             {
                 pattern: '{{APPDELEGATE_METHODS}}',
-                override: `${c.payload.pluginConfigiOS.pluginAppDelegateMethods}`,
+                override: `${c.payload.pluginConfigiOS.pluginAppDelegateMmMethods}`,
+            }
+            
+        ];
+        const injectsH= [
+            {
+                pattern: '{{APPDELEGATE_H_IMPORTS}}',
+                override: c.payload.pluginConfigiOS.pluginAppDelegateHImports,
             },
             {
-                pattern: '{{APPDELEGATE_EXTENSIONS}}',
-                override: `( ${c.payload.pluginConfigiOS.pluginAppDelegateExtensions} )`,
-            },
-        ];
-
-        addSystemInjects(c, injects);
+                pattern: '{{APPDELEGATE_H_EXTENSIONS}}',
+                override: c.payload.pluginConfigiOS.pluginAppDelegateHExtensions ? ` <${c.payload.pluginConfigiOS.pluginAppDelegateHExtensions}>` : '',
+            }
+        ]
+        addSystemInjects(c, injectsMm);
 
         writeCleanFile(
-            path.join(getAppTemplateFolder(c, platform)!, appFolderName, appDelegate),
-            path.join(appFolder, appFolderName, appDelegate),
-            injects,
+            path.join(getAppTemplateFolder(c, platform)!, appFolderName, appDelegateMm),
+            path.join(appFolder, appFolderName, appDelegateMm),
+            injectsMm,
+            undefined,
+            c
+        );
+        addSystemInjects(c, injectsH);
+
+        writeCleanFile(
+            path.join(getAppTemplateFolder(c, platform)!, appFolderName, appDelegateH),
+            path.join(appFolder, appFolderName, appDelegateH),
+            injectsH,
             undefined,
             c
         );
@@ -264,31 +278,29 @@ export const parseAppDelegate = (
     });
 
 export const injectPluginObjectiveCSync = (c: Context, plugin: RenativeConfigPluginPlatform, key: string) => {
-    logDebug(`injectPluginSwiftSync:${c.platform}:${key}`);
+    logDebug(`injectPluginObjectiveCSync:${c.platform}:${key}`);
     const templateXcode = getFlavouredProp(c, plugin, 'templateXcode');
-    const appDelegateImports = templateXcode?.AppDelegate_mm?.appDelegateImports;
-    if (appDelegateImports) {
-        appDelegateImports.forEach((appDelegateImport) => {
-            // Avoid duplicate imports
-            logDebug('appDelegateImports add');
-            if (c.payload.pluginConfigiOS.pluginAppDelegateImports.indexOf(appDelegateImport) === -1) {
-                logDebug('appDelegateImports add ok');
-                c.payload.pluginConfigiOS.pluginAppDelegateImports += `#import "${appDelegateImport}"\n`;
-            }
-        });
+    const appDelegateMmImports = templateXcode?.AppDelegate_mm?.appDelegateImports;
+   
+    if (appDelegateMmImports) {
+        addAppDelegateImports(c,appDelegateMmImports, 'pluginAppDelegateMmImports')
     }
     // if (plugin.appDelegateMethods instanceof Array) {
     //     c.payload.pluginConfigiOS.pluginAppDelegateMethods += `${plugin.appDelegateMethods.join('\n    ')}`;
     // }
+    const appDelegateHhImports = templateXcode?.AppDelegate_h?.appDelegateImports;
+    if (appDelegateHhImports) {
+        addAppDelegateImports(c,appDelegateHhImports, 'pluginAppDelegateHImports')
 
-    const appDelegateExtensions = templateXcode?.AppDelegate_mm?.appDelegateExtensions;
+    }
+    const appDelegateExtensions = templateXcode?.AppDelegate_h?.appDelegateExtensions;
     if (appDelegateExtensions instanceof Array) {
-        appDelegateExtensions.forEach((appDelegateExtension) => {
+        appDelegateExtensions.forEach((appDelegateExtension, idx) => {
             // Avoid duplicate imports
             logDebug('appDelegateExtensions add');
-            if (c.payload.pluginConfigiOS.pluginAppDelegateExtensions.indexOf(appDelegateExtension) === -1) {
+            if (c.payload.pluginConfigiOS.pluginAppDelegateHExtensions.indexOf(appDelegateExtension) === -1) {
                 logDebug('appDelegateExtensions add ok');
-                c.payload.pluginConfigiOS.pluginAppDelegateExtensions += `, ${appDelegateExtension}`;
+                c.payload.pluginConfigiOS.pluginAppDelegateHExtensions += `${appDelegateExtension}${idx < appDelegateExtensions.length -1 ? ", " : ""}`;
             }
         });
     }
@@ -300,7 +312,7 @@ export const injectPluginObjectiveCSync = (c: Context, plugin: RenativeConfigPlu
             const amdk2 = Object.keys(appDelegateMethods[delKey]) as Array<PayloadAppDelegateSubKey>;
             amdk2.forEach((key2) => {
                 const plugArr: Array<RenativeConfigAppDelegateMethod> =
-                    c.payload.pluginConfigiOS.appDelegateMethods[delKey][key2];
+                    c.payload.pluginConfigiOS.appDelegateMmMethods[delKey][key2];
                 if (!plugArr) {
                     logWarning(`appDelegateMethods.${delKey}.${chalk().red(key2)} not supported. SKIPPING.`);
                 } else {
@@ -320,3 +332,15 @@ export const injectPluginObjectiveCSync = (c: Context, plugin: RenativeConfigPlu
         });
     }
 };
+
+export  const addAppDelegateImports=(c:Context,appDelegateImports :string[],target: 'pluginAppDelegateHImports' |"pluginAppDelegateMmImports" )=>{
+    appDelegateImports.forEach((appDelegateImport) => {
+        // Avoid duplicate imports
+        logDebug(`${target.replace('plugin','')} add`);
+        if (c.payload.pluginConfigiOS[target].indexOf(appDelegateImport) === -1) {
+            logDebug(`${target.replace('plugin','')} add ok`);
+            c.payload.pluginConfigiOS[target] += `#import "${appDelegateImport}"\n`;
+        }
+    });
+
+}

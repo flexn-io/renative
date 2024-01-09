@@ -749,6 +749,18 @@
                       "items": {
                         "type": "string"
                       }
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "AppDelegate_h": {
+                  "type": "object",
+                  "properties": {
+                    "appDelegateImports": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
                     },
                     "appDelegateExtensions": {
                       "type": "array",
