@@ -34,7 +34,7 @@ import {
     DEFAULTS,
     RnvPlatform,
     logInfo,
-    removeDirSync,
+    cleanFolder,
 } from '@rnv/core';
 import { parseAndroidManifestSync, injectPluginManifestSync } from './manifestParser';
 import {
@@ -398,7 +398,7 @@ export const configureProject = async (c: Context) => {
     fsWriteFileSync(path.join(appFolder, `app/src/main/assets/${outputFile}.bundle`), '{}');
 
     // cleanup potentially existing folders from previous builds with different appId
-    removeDirSync(path.join(appFolder, 'app/src/main/java'));
+    await cleanFolder(path.join(appFolder, 'app/src/main/java'));
 
     // INJECTORS
     c.payload.pluginConfigAndroid = {
