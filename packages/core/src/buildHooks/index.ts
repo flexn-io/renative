@@ -79,35 +79,33 @@ export const buildHooks = async (c: RnvContext) => {
         }
     }
 
-    if (!c.runtime.isFirstRunAfterNew && !c.files.project.config?.isNew) {
-        if (shouldBuildHook && !c.isBuildHooksReady) {
-            try {
-                logHook('buildHooks', 'Build hooks not complied. BUILDING...');
-                await build({
-                    entryPoints: [`${c.paths.buildHooks.dir}/index.js`],
-                    bundle: true,
-                    platform: 'node',
-                    logLimit: c.program.json ? 0 : 10,
-                    external: [
-                        '@rnv/core', // exclude rnv core from build
-                        ...Object.keys(c.files.project.package.dependencies || {}),
-                        ...Object.keys(c.files.project.package.devDependencies || {}),
-                    ], // exclude everything that's present in node_modules
-                    outfile: `${c.paths.buildHooks.dist.dir}/index.js`,
-                });
-            } catch (e) {
-                // Fail Builds instead of warn when hook fails
-                return Promise.reject(`BUILD_HOOK Failed with error: ${e}`);
-            }
-            c.isBuildHooksReady = true;
+    if (shouldBuildHook && !c.isBuildHooksReady) {
+        try {
+            logHook('buildHooks', 'Build hooks not complied. BUILDING...');
+            await build({
+                entryPoints: [`${c.paths.buildHooks.dir}/index.js`],
+                bundle: true,
+                platform: 'node',
+                logLimit: c.program.json ? 0 : 10,
+                external: [
+                    '@rnv/core', // exclude rnv core from build
+                    ...Object.keys(c.files.project.package.dependencies || {}),
+                    ...Object.keys(c.files.project.package.devDependencies || {}),
+                ], // exclude everything that's present in node_modules
+                outfile: `${c.paths.buildHooks.dist.dir}/index.js`,
+            });
+        } catch (e) {
+            // Fail Builds instead of warn when hook fails
+            return Promise.reject(`BUILD_HOOK Failed with error: ${e}`);
         }
-
-        let h = require(c.paths.buildHooks.dist.index);
-
-        c.buildHooks = h.hooks;
-        c.buildPipes = h.pipes;
-        h = require(c.paths.buildHooks.dist.index);
+        c.isBuildHooksReady = true;
     }
+
+    let h = require(c.paths.buildHooks.dist.index);
+
+    c.buildHooks = h.hooks;
+    c.buildPipes = h.pipes;
+    h = require(c.paths.buildHooks.dist.index);
 
     return true;
 };
