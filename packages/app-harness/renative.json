@@ -27,9 +27,9 @@
                     }
                 }
             },
-            "version": "3.3.0",
             "podName": "react-native-splash-screen"
-        }
+        },
+        "version": "3.3.0"
         },
         "react-native-carplay":{
            "ios": {
@@ -49,9 +49,10 @@
 
                 }
             },
-            "version": "2.3.0",
             "podName": "react-native-carplay"
-           } 
+           },
+           "version": "2.3.0"
+
         }
     }
 }
