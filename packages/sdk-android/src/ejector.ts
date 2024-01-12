@@ -10,6 +10,7 @@ import {
     getConfigProp,
     doResolvePath,
     parsePlugins,
+    PluginCallback,
 } from '@rnv/core';
 
 export const ejectGradleProject = async (c: RnvContext) => {
@@ -113,10 +114,16 @@ export const ejectGradleProject = async (c: RnvContext) => {
 
     const afterEvaluateFix: Array<{ match: string; replace: string }> = [];
 
-    parsePlugins(c, c.platform, (_plugin, pluginPlat, key: string) => {
+    let hasReactNativePlatformCliPluginAdded = false;
+    const reactNativePlatformCliPluginName = `@react-native-community/cli-platform-android`;
+
+    const addPluginToEjectedProject: PluginCallback = (_plugin, pluginPlat, key: string) => {
         const pluginPath = doResolvePath(key);
 
         if (!pluginPath) return;
+        if (key === reactNativePlatformCliPluginName) {
+            hasReactNativePlatformCliPluginAdded = true;
+        }
 
         const extensionsFilter = [
             '.java',
@@ -155,7 +162,15 @@ export const ejectGradleProject = async (c: RnvContext) => {
             extensionsFilter
         );
         copyFileSync(path.join(pluginPath, 'package.json'), path.join(destPath, 'package.json'));
-    });
+    };
+
+    parsePlugins(c, c.platform, addPluginToEjectedProject);
+
+    // Since the above function adds just plugins we need to make sure that the RN-CLI-ANDROID
+    // is added in the ejected project if it's not already there
+    if (!hasReactNativePlatformCliPluginAdded) {
+        addPluginToEjectedProject({}, {}, reactNativePlatformCliPluginName);
+    }
 
     //= ==========
     // app/build.gradle
