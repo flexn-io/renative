@@ -75,6 +75,7 @@ export const packageReactNativeAndroid = async (c: RnvContext) => {
                 ...CoreEnvVars.RNV_EXTENSIONS(),
                 ...EnvVars.RNV_REACT_NATIVE_PATH(),
                 ...EnvVars.RNV_APP_ID(),
+                ...EnvVars.RNV_SKIP_LINKING(),
             },
         });
 

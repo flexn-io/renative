@@ -52,4 +52,26 @@ export const EnvVars = {
         }
         return {};
     },
+    RNV_SKIP_LINKING:()=> {
+        const ctx = getContext();
+        const {platform, buildConfig:{plugins}} = ctx;
+        const platformsToCheck = ['ios', 'tvos', 'android', 'androidwear', 'androidtv', 'firetv', 'macos'];
+
+        if(platform && plugins ){
+            const platformToPush = platform === 'tvos'? 'ios': platform;
+
+            const filteredPlugins = Object.entries(plugins).filter(([_, pluginConfig]) => {
+               return typeof pluginConfig !== 'string' && Object.keys(pluginConfig).some(key => platformsToCheck.includes(key))
+               
+            })
+            .reduce((acc: any, [pluginName]) => {
+                acc.push(pluginName);
+                return acc
+            },[platformToPush]);
+
+            const resultString = `${filteredPlugins.join(', ')}`;
+            return { RNV_SKIP_LINKING: resultString };
+        }
+        return {};
+    }
 };

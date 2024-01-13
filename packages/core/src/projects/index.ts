@@ -1,6 +1,4 @@
 import path from 'path';
-import fs from 'fs';
-import merge from 'deepmerge';
 import {
     getAppFolder,
     getBuildsFolder,
@@ -29,13 +27,13 @@ import {
 import { installPackageDependencies, isYarnInstalled } from './npm';
 import { executeAsync } from '../system/exec';
 
-import { chalk, logTask, logWarning, logDebug, logInfo, getCurrentCommand, logError } from '../logger';
+import { chalk, logTask, logWarning, logDebug, logInfo, getCurrentCommand} from '../logger';
 
 import { configureTemplateFiles, configureEntryPoint } from '../templates';
 import { parseRenativeConfigs } from '../configs';
 import { RnvContext } from '../context/types';
 import { RnvPlatform } from '../types';
-import { ConfigType, ParseFontsCallback } from './types';
+import { ParseFontsCallback } from './types';
 import { inquirerPrompt } from '../api';
 import { upgradeProjectDependencies } from '../configs/configProject';
 import { generateConfigPropInjects } from '../system/injectors';
@@ -603,7 +601,6 @@ export const copyBuildsFolder = (c: RnvContext, platform: RnvPlatform) =>
         copyFolderContentsRecursiveSync(sourcePath0sec, destPath, true, undefined, false, allInjects, tsPathsConfig);
 
         copyTemplatePluginsSync(c);
-        updateRNVConfig(c)
 
         resolve();
     });
@@ -659,58 +656,3 @@ export const cleanPlaformAssets = async (c: RnvContext) => {
     mkdirSync(c.paths.project.assets.runtimeDir);
     return true;
 };
-
-
-export const updateRNVConfig = (c:RnvContext) => {
-    const regex = /withRNVRNConfig\(([\s\S]+?)\)/
-   const currentPlatform = c.platform;
-    const configPath= path.join(c.paths.project.dir, 'react-native.config.js')
-
-    let configContent = '';
-    try {
-        configContent = fs.readFileSync(configPath, 'utf8')
-    } catch (e) {
-        logError(e)
-    }
-    const match = configContent.match(regex);
-    let existingConfig:ConfigType  = {};
-    
-    if(match && match[1]){
-        existingConfig= JSON.parse(match[1]);
-
-     }
-     if(existingConfig?.dependencies){
-        existingConfig.dependencies = {};
-     }
-     const platformsToCheck = ['ios', 'tvos', 'android', 'androidwear', 'androidtv', 'firetv', 'macos'];
-
-     const generatedConfig = {
-        dependencies :{} as Record<string,{platforms:Record<string,null>}>
-     }
-     
-     for (const [pluginName, pluginConfig] of Object.entries(c.buildConfig.plugins || {})) {
-        const pluginKeys = Object.keys(pluginConfig);
-        
-        if( pluginConfig && typeof pluginConfig !== 'string' && pluginKeys.some(prop=>platformsToCheck.includes(prop))  ){
-               if(currentPlatform && !pluginKeys.includes(currentPlatform)){
-                generatedConfig.dependencies[pluginName] = {platforms:{}}
-                    if(currentPlatform === 'tvos' ){
-                        generatedConfig.dependencies[pluginName].platforms.ios= null
-                    }else{
-                        generatedConfig.dependencies[pluginName].platforms[currentPlatform]= null 
-                    }
-
-               }
-        }
-      
-      }
-      const config = merge(generatedConfig, existingConfig);
-      const updatedConfigContent = configContent.replace(regex, `withRNVRNConfig(${JSON.stringify(config, null, 2)})`);
-      
-      try {
-        fs.writeFileSync(configPath,updatedConfigContent, "utf-8")
-      } catch (e) {
-        logError(e)
-      }
-   
-}
