@@ -52,7 +52,7 @@ export const EnvVars = {
         }
         return {};
     },
-    RNV_SKIP_LINKING:()=> {
+    RNV_SKIP_LINKING:()=>{
         const ctx = getContext();
         const {platform, buildConfig:{plugins}} = ctx;
         const platformsToCheck = ['ios', 'tvos', 'android', 'androidwear', 'androidtv', 'firetv', 'macos'];
@@ -64,8 +64,11 @@ export const EnvVars = {
                return typeof pluginConfig !== 'string' && Object.keys(pluginConfig).some(key => platformsToCheck.includes(key))
                
             })
-            .reduce((acc: any, [pluginName]) => {
-                acc.push(pluginName);
+            .reduce((acc:any, [pluginName, pluginConfig]) => {
+                if(!Object.keys(pluginConfig).includes(platform)){
+                    acc.push(pluginName);
+                }
+                
                 return acc
             },[platformToPush]);
 
