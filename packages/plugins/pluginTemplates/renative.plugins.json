@@ -3203,76 +3203,7 @@
             "version": "1.0.2"
         },
         "react-native-permissions": {
-            "android": {
-                "package": "com.zoontek.rnpermissions.RNPermissionsPackage"
-            },
-            "androidtv": {
-                "package": "com.zoontek.rnpermissions.RNPermissionsPackage"
-            },
-            "ios": {
-                "isStatic": true,
-                "podName": "RNPermissions",
-                "staticPods": [
-                    "::startsWith::Permission-"
-                ]
-            },
-            "macos": {
-                "isStatic": true,
-                "podName": "RNPermissions",
-                "staticPods": [
-                    "::startsWith::Permission-"
-                ]
-            },
-            "tvos": {
-                "isStatic": true,
-                "podName": "RNPermissions",
-                "staticPods": [
-                    "::startsWith::Permission-"
-                ]
-            },
-            "version": "3.6.1"
-        },
-        "react-native-permissions-pods": {
-            "ios": {
-                "podNames": [
-                    "Permission-BluetoothPeripheral', :path => '{{PLUGIN_ROOT}}/ios/BluetoothPeripheral",
-                    "Permission-Calendars', :path => '{{PLUGIN_ROOT}}/ios/Calendars",
-                    "Permission-Camera', :path => '{{PLUGIN_ROOT}}/ios/Camera",
-                    "Permission-Contacts', :path => '{{PLUGIN_ROOT}}/ios/Contacts",
-                    "Permission-FaceID', :path => '{{PLUGIN_ROOT}}/ios/FaceID",
-                    "Permission-LocationAlways', :path => '{{PLUGIN_ROOT}}/ios/LocationAlways",
-                    "Permission-LocationWhenInUse', :path => '{{PLUGIN_ROOT}}/ios/LocationWhenInUse",
-                    "Permission-MediaLibrary', :path => '{{PLUGIN_ROOT}}/ios/MediaLibrary",
-                    "Permission-Microphone', :path => '{{PLUGIN_ROOT}}/ios/Microphone",
-                    "Permission-Motion', :path => '{{PLUGIN_ROOT}}/ios/Motion",
-                    "Permission-Notifications', :path => '{{PLUGIN_ROOT}}/ios/Notifications",
-                    "Permission-PhotoLibrary', :path => '{{PLUGIN_ROOT}}/ios/PhotoLibrary",
-                    "Permission-Reminders', :path => '{{PLUGIN_ROOT}}/ios/Reminders",
-                    "Permission-SpeechRecognition', :path => '{{PLUGIN_ROOT}}/ios/SpeechRecognition",
-                    "Permission-StoreKit', :path => '{{PLUGIN_ROOT}}/ios/StoreKit"
-                ]
-            },
-            "macos": {
-                "podNames": [
-                    "Permission-BluetoothPeripheral', :path => '{{PLUGIN_ROOT}}/ios/BluetoothPeripheral",
-                    "Permission-Calendars', :path => '{{PLUGIN_ROOT}}/ios/Calendars",
-                    "Permission-Camera', :path => '{{PLUGIN_ROOT}}/ios/Camera",
-                    "Permission-Contacts', :path => '{{PLUGIN_ROOT}}/ios/Contacts",
-                    "Permission-FaceID', :path => '{{PLUGIN_ROOT}}/ios/FaceID",
-                    "Permission-LocationAlways', :path => '{{PLUGIN_ROOT}}/ios/LocationAlways",
-                    "Permission-LocationWhenInUse', :path => '{{PLUGIN_ROOT}}/ios/LocationWhenInUse",
-                    "Permission-MediaLibrary', :path => '{{PLUGIN_ROOT}}/ios/MediaLibrary",
-                    "Permission-Microphone', :path => '{{PLUGIN_ROOT}}/ios/Microphone",
-                    "Permission-Motion', :path => '{{PLUGIN_ROOT}}/ios/Motion",
-                    "Permission-Notifications', :path => '{{PLUGIN_ROOT}}/ios/Notifications",
-                    "Permission-PhotoLibrary', :path => '{{PLUGIN_ROOT}}/ios/PhotoLibrary",
-                    "Permission-Reminders', :path => '{{PLUGIN_ROOT}}/ios/Reminders",
-                    "Permission-SpeechRecognition', :path => '{{PLUGIN_ROOT}}/ios/SpeechRecognition",
-                    "Permission-StoreKit', :path => '{{PLUGIN_ROOT}}/ios/StoreKit"
-                ]
-            },
-            "no-npm": true,
-            "packageName": "react-native-permissions"
+            "version": "3.10.1"
         },
         "react-native-photo-editor": {
             "android": {

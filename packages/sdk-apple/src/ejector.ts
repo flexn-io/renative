@@ -14,6 +14,7 @@ import {
 } from '@rnv/core';
 import { getAppFolderName } from './common';
 import { Context } from './types';
+import { EnvVars } from '@rnv/sdk-react-native';
 
 export const ejectXcodeProject = async (c: Context) => {
     const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');
@@ -68,9 +69,16 @@ export const ejectXcodeProject = async (c: Context) => {
         const pathNmMatch = `${path.join(rootMonoProjectPath, 'node_modules')}/`;
         const pathNmReplace = './rn_modules/';
 
-        const podfileSanitised = podfileAsString
+        const permissionsMatch = "ENV['REACT_NATIVE_PERMISSIONS_REQUIRED']";
+        const permissionsReplace = EnvVars.REACT_NATIVE_PERMISSIONS_REQUIRED().REACT_NATIVE_PERMISSIONS_REQUIRED;
+
+        let podfileSanitised = podfileAsString
             .replaceAll(pathRnMatch, pathRnReplace)
             .replaceAll(pathNmMatch, pathNmReplace);
+
+        if (podfileSanitised.includes(permissionsMatch) && permissionsReplace) {
+            podfileSanitised = podfileSanitised.replaceAll(permissionsMatch, `'${permissionsReplace.join(',')}'`);
+        }
 
         fsWriteFileSync(podfilePath, podfileSanitised);
     }
