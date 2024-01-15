@@ -18,6 +18,7 @@ import {
     RnvContext,
     inquirerPrompt,
     ExecOptionsPresets,
+    isSystemLinux,
 } from '@rnv/core';
 import { WebosDevice } from './types';
 import {
@@ -41,7 +42,9 @@ export const launchWebOSimulator = (c: RnvContext) => {
 
     const ePath = path.join(
         webosSdkPath,
-        `Simulator/${availableEmulatorVersions?.[0]}/${availableEmulatorVersions?.[0]}${isSystemWin ? '.exe' : '.app'}`
+        `Simulator/${availableEmulatorVersions?.[0]}/${availableEmulatorVersions?.[0]}${
+            isSystemWin ? '.exe' : isSystemLinux ? '.appimage' : '.app'
+        }`
     );
 
     if (!fsExistsSync(ePath)) {
