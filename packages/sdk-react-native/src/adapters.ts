@@ -10,22 +10,23 @@ const getApplicationId = () => {
 
 const getSkipLinkingDeps = () => {
     const skipLinkingEnv = process.env.RNV_SKIP_LINKING;
-    if(skipLinkingEnv){
-        const [ platform, ...plugins] = skipLinkingEnv.split(',').map(item => item.trim());
+    if (skipLinkingEnv) {
+        const plugins = skipLinkingEnv.split(',');
 
         return {
             dependencies: plugins.reduce((acc, plugin) => {
-                acc[`${plugin}`] = {platforms: {
-                    [platform]: null
-                }};
+                acc[`${plugin}`] = {
+                    platforms: {
+                        ios: null,
+                    },
+                };
                 return acc;
-            }, {} as { [plugin: string]: {platforms: { [platform: string]:null}}})
-        }
+            }, {} as { [plugin: string]: { platforms: { ios: null } } }),
+        };
     }
 
     return {};
 };
-
 
 const getAppFolderRelative = () => {
     const pth = process.env.RNV_APP_BUILD_DIR;
@@ -81,7 +82,7 @@ export const withRNVRNConfig = (config: any) => {
         },
     };
 
-    const updatedCnf = merge(cnfRnv, getSkipLinkingDeps())
+    const updatedCnf = merge(cnfRnv, getSkipLinkingDeps());
     const cnf = merge(updatedCnf, config);
     return cnf;
 };

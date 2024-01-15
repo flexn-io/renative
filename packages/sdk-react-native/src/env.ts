@@ -52,29 +52,32 @@ export const EnvVars = {
         }
         return {};
     },
-    RNV_SKIP_LINKING:()=>{
+    RNV_SKIP_LINKING: () => {
         const ctx = getContext();
-        const {platform, buildConfig:{plugins}} = ctx;
-        const platformsToCheck = ['ios', 'tvos', 'android', 'androidwear', 'androidtv', 'firetv', 'macos'];
+        const {
+            platform,
+            buildConfig: { plugins },
+        } = ctx;
+        const platformsToCheck = ['ios', 'tvos'];
 
-        if(platform && plugins ){
-            const platformToPush = platform === 'tvos'? 'ios': platform;
-
-            const filteredPlugins = Object.entries(plugins).filter(([_, pluginConfig]) => {
-               return typeof pluginConfig !== 'string' && Object.keys(pluginConfig).some(key => platformsToCheck.includes(key))
-               
-            })
-            .reduce((acc:any, [pluginName, pluginConfig]) => {
-                if(!Object.keys(pluginConfig).includes(platform)){
+        if (platform && plugins) {
+            const filteredPlugins = Object.entries(plugins)
+                .filter(([_, pluginConfig]) => {
+                    const pluginConfigKeys = Object.keys(pluginConfig);
+                    return (
+                        typeof pluginConfig !== 'string' &&
+                        pluginConfigKeys.some((key) => platformsToCheck.includes(key)) &&
+                        !pluginConfigKeys.includes(platform)
+                    );
+                })
+                .reduce((acc: any, [pluginName]) => {
                     acc.push(pluginName);
-                }
-                
-                return acc
-            },[platformToPush]);
+                    return acc;
+                }, []);
 
             const resultString = `${filteredPlugins.join(', ')}`;
             return { RNV_SKIP_LINKING: resultString };
         }
         return {};
-    }
+    },
 };
