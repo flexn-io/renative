@@ -1,11 +1,22 @@
-import { RnvTaskFn, logErrorPlatform, logTask, WEB, CHROMECAST, TASK_EXPORT, PARAMS, shouldSkipTask } from '@rnv/core';
+import {
+    RnvTaskFn,
+    logErrorPlatform,
+    logTask,
+    WEB,
+    CHROMECAST,
+    TASK_EXPORT,
+    PARAMS,
+    shouldSkipTask,
+    executeOrSkipTask,
+    TASK_BUILD,
+} from '@rnv/core';
 import { exportWebNext } from '../sdk';
 
 export const taskRnvExport: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvExport', `parent:${parentTask}`);
     const { platform } = c;
 
-    // await executeOrSkipTask(c, TASK_BUILD, TASK_EXPORT, originTask);
+    await executeOrSkipTask(c, TASK_BUILD, TASK_EXPORT, originTask);
 
     if (shouldSkipTask(c, TASK_EXPORT, originTask)) return true;
 

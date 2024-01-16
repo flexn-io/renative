@@ -208,10 +208,6 @@ const _configureRenativeConfig = async (c: RnvContext) => {
                 mergedObj.currentTemplate = c.runtime.currentTemplate;
             }
 
-            if (mergedObj.isNew) {
-                c.runtime.isFirstRunAfterNew = true;
-            }
-
             // mergedObj.isNew = null;
             delete mergedObj.isNew;
             delete mergedObj.templateConfig;

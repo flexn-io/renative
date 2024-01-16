@@ -18,6 +18,7 @@
             "android:label": "@string/app_name",
             "android:icon": "@mipmap/ic_launcher",
             "android:roundIcon": "@mipmap/ic_launcher",
+            "android:banner": "@drawable/banner",
             "android:allowBackup": false,
             "android:theme": "@style/AppTheme",
             "children": [
@@ -36,6 +37,10 @@
                                 {
                                     "tag": "action",
                                     "android:name": "android.intent.action.MAIN"
+                                },
+                                {
+                                    "tag": "action",
+                                    "android:name": "android.intent.category.LAUNCHER"
                                 },
                                 {
                                     "tag": "category",

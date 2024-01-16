@@ -110,7 +110,6 @@ export type RnvContextRuntime = {
     versionCheckCompleted: boolean;
     _skipPluginScopeWarnings: boolean;
     skipBuildHooks: boolean;
-    isFirstRunAfterNew: boolean;
     hosted: boolean;
     port: number;
     //OPTIONALS

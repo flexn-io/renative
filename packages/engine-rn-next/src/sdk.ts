@@ -104,19 +104,15 @@ const _runWebBrowser = (
         return resolve();
     });
 
-const getOutputDir = (c: RnvContext) => {
-    const distDir = getConfigProp(c, c.platform, 'outputDir');
-    return distDir || `platformBuilds/${c.runtime.appId}_${c.platform}/.next`;
-};
-
 export const getExportDir = (c: RnvContext) => {
-    const outputDir = getConfigProp(c, c.platform, 'exportDir');
-    const maybeAbsolutePath = outputDir || path.join(getPlatformBuildDir(c)!, 'output');
+    const exportDir = getConfigProp(c, c.platform, 'exportDir');
+    const maybeAbsolutePath = exportDir || path.join(getPlatformBuildDir(c)!, 'output');
 
     // if path is absolute, make it relative to project root. Next 14 doesn't seem to like absolute paths
     if (path.isAbsolute(maybeAbsolutePath)) {
         return path.relative(c.paths.project.dir, maybeAbsolutePath);
     }
+    return maybeAbsolutePath;
 };
 
 export const buildWebNext = async (c: RnvContext) => {
@@ -130,7 +126,7 @@ export const buildWebNext = async (c: RnvContext) => {
             ...EnvVars.NEXT_BASE(),
         },
     });
-    logSuccess(`Your build is located in ${chalk().cyan(getOutputDir(c))} .`);
+    logSuccess(`Your build is located in ${chalk().cyan(getExportDir(c))} .`);
     return true;
 };
 

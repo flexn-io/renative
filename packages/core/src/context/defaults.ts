@@ -38,7 +38,6 @@ const runtime: RnvContext['runtime'] = {
     bundleAssets: false,
     disableReset: false,
     hosted: false,
-    isFirstRunAfterNew: false,
     hasAllEnginesRegistered: false,
     isTargetTrue: false,
     isWSConfirmed: false,
