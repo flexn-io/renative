@@ -102,16 +102,17 @@ const launchAppOnSimulator = async (c: RnvContext, appPath: string) => {
     logTask('launchAppOnSimulator');
 
     const webosSdkPath = getRealPath(c, c.buildConfig?.sdks?.WEBOS_SDK);
-    const simulatorDirPath = path.join(webosSdkPath, 'Simulator');
 
     if (!webosSdkPath) {
         return Promise.reject(`c.buildConfig.sdks.WEBOS_SDK undefined`);
     }
 
+    const simulatorDirPath = path.join(webosSdkPath, 'Simulator');
+
     const webOS_cli_version = await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `-V`);
 
     const regex = /\d+(\.\d+)?/g;
-    const webOS_cli_version_number = Number(webOS_cli_version.match(regex)[0]);
+    const webOS_cli_version_number = Number(webOS_cli_version.match(regex)?.at(0));
     if (webOS_cli_version_number < 1.12) {
         return logError(`Your webOS TV CLI version is ${webOS_cli_version_number}. You need to update it up to >=1.12`);
     }
