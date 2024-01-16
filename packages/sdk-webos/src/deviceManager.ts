@@ -19,6 +19,8 @@ import {
     inquirerPrompt,
     ExecOptionsPresets,
     isSystemLinux,
+    isSystemMac,
+    logError,
 } from '@rnv/core';
 import { WebosDevice } from './types';
 import {
@@ -100,15 +102,24 @@ const launchAppOnSimulator = async (c: RnvContext, appPath: string) => {
     logTask('launchAppOnSimulator');
 
     const webosSdkPath = getRealPath(c, c.buildConfig?.sdks?.WEBOS_SDK);
+    const simulatorDirPath = path.join(webosSdkPath, 'Simulator');
 
     if (!webosSdkPath) {
         return Promise.reject(`c.buildConfig.sdks.WEBOS_SDK undefined`);
     }
 
-    const availableEmulatorVersions = getDirectories(path.join(webosSdkPath, 'Simulator'));
-    console.log(!availableEmulatorVersions.length);
+    const webOS_cli_version = await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `-V`);
+
+    const regex = /\d+(\.\d+)?/g;
+    const webOS_cli_version_number = Number(webOS_cli_version.match(regex)[0]);
+    if (webOS_cli_version_number < 1.12) {
+        return logError(`Your webOS TV CLI version is ${webOS_cli_version_number}. You need to update it up to >=1.12`);
+    }
+
+    const availableEmulatorVersions = getDirectories(simulatorDirPath);
+
     if (!availableEmulatorVersions.length) {
-        return Promise.reject(`Can't find simulator at path: ${path.join(webosSdkPath, 'Simulator')}`);
+        return Promise.reject(`Can't find simulator at path: ${simulatorDirPath}`);
     }
 
     let selectedOption;
@@ -121,10 +132,15 @@ const launchAppOnSimulator = async (c: RnvContext, appPath: string) => {
         }));
     } else {
         selectedOption = availableEmulatorVersions[0];
-        logInfo(`Found simulator ${selectedOption} at path: ${path.join(webosSdkPath, 'Simulator')}`);
+        logInfo(`Found simulator ${selectedOption} at path: ${simulatorDirPath}`);
     }
-    const regex = /[+-]?\d+(\.\d+)?/g;
     const version = selectedOption.match(regex)[0];
+
+    if (isSystemMac) {
+        logInfo(
+            `If you encounter damaged simulator error, run this command line: xattr -c ${simulatorDirPath}/${selectedOption}/${selectedOption}.app`
+        );
+    }
 
     await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `-s ${version} ${appPath}`);
 };
