@@ -263,4 +263,78 @@ describe('Testing getAppVersionCode functions', () => {
         );
         expect(result).toEqual('10000');
     });
+
+    it('should evaluate given versionCode 1 with 1 on android', async () => {
+        const result = getAppVersionCode(
+            {
+                ...BUILD_CONF,
+                files: {
+                    ...BUILD_CONF.files,
+                    project: {
+                        ...BUILD_CONF.files.project,
+                        package: { version: '1' },
+                    },
+                },
+                buildConfig: {
+                    common: {
+                        versionCode: '1',
+                    },
+                },
+            },
+            'android'
+        );
+        expect(result).toEqual('1');
+    });
+
+    it('should throw on given versionCode `string` on android', async () => {
+        expect.assertions(1);
+        try {
+            getAppVersionCode(
+                {
+                    ...BUILD_CONF,
+                    files: {
+                        ...BUILD_CONF.files,
+                        project: {
+                            ...BUILD_CONF.files.project,
+                            package: { version: '1' },
+                        },
+                    },
+                    buildConfig: {
+                        common: {
+                            versionCode: 'something as a string',
+                        },
+                    },
+                },
+                'android'
+            );
+        } catch (e) {
+            expect(e).toEqual(Error(`'versionCode' should be a positive integer. Check your config`));
+        }
+    });
+
+    it('should throw on given versionCode negative on android', async () => {
+        expect.assertions(1);
+        try {
+            getAppVersionCode(
+                {
+                    ...BUILD_CONF,
+                    files: {
+                        ...BUILD_CONF.files,
+                        project: {
+                            ...BUILD_CONF.files.project,
+                            package: { version: '1' },
+                        },
+                    },
+                    buildConfig: {
+                        common: {
+                            versionCode: -1,
+                        },
+                    },
+                },
+                'android'
+            );
+        } catch (e) {
+            expect(e).toEqual(Error(`'versionCode' should be a positive integer. Check your config`));
+        }
+    });
 });

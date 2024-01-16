@@ -361,7 +361,7 @@ export const getAppVersionCode = (c: RnvContext, platform: RnvPlatform) => {
         if (isValidVersionCode) {
             return versionCode;
         } else if (versionCode && !isValidVersionCode) {
-            throw new Error(`${chalk().white('versionCode')} should be a positive integer. Check your config`);
+            throw new Error(`'versionCode' should be a positive integer. Check your config`);
         }
     }
 
