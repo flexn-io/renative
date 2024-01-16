@@ -11,48 +11,48 @@
                 "templateAndroid": {
                     "MainActivity_java": {
                         "createMethods": ["SplashScreen.show(this)"],
-                        "imports": ["org.devio.rn.splashscreen.SplashScreen"]
+                        "imports": ["android.os.Bundle", "org.devio.rn.splashscreen.SplashScreen"]
                     }
                 },
                 "package": "org.devio.rn.splashscreen.SplashScreenReactPackage"
             },
-        "ios":{
-            "templateXcode": {
-                "AppDelegate_mm": {
-                    "appDelegateImports": ["RNSplashScreen.h"],
-                    "appDelegateMethods": {
-                        "application": {
-                            "didFinishLaunchingWithOptions": ["[RNSplashScreen show]"]
+            "ios": {
+                "templateXcode": {
+                    "AppDelegate_mm": {
+                        "appDelegateImports": ["RNSplashScreen.h"],
+                        "appDelegateMethods": {
+                            "application": {
+                                "didFinishLaunchingWithOptions": ["[RNSplashScreen show]"]
+                            }
                         }
                     }
-                }
-            },
-            "podName": "react-native-splash-screen"
-        },
-        "version": "3.3.0"
-        },
-        "react-native-carplay":{
-           "ios": {
-            "templateXcode": {
-                "AppDelegate_h": {
-                    "appDelegateImports": ["CarPlay/CarPlay.h"],
-                    "appDelegateExtensions": ["UIApplicationDelegate", "CPApplicationDelegate"]
                 },
-                "AppDelegate_mm": {
-                    "appDelegateImports": ["RNCarPlay.h"],
-                    "appDelegateMethods": {
-                        "application": {
-                            "didConnectCarInterfaceController": ["[RNCarPlay connectWithInterfaceController:interfaceController window:window]"],
-                            "didDisconnectCarInterfaceController": ["[RNCarPlay disconnect]"]
+                "podName": "react-native-splash-screen"
+            },
+            "version": "3.3.0"
+        },
+        "react-native-carplay": {
+            "ios": {
+                "templateXcode": {
+                    "AppDelegate_h": {
+                        "appDelegateImports": ["CarPlay/CarPlay.h"],
+                        "appDelegateExtensions": ["UIApplicationDelegate", "CPApplicationDelegate"]
+                    },
+                    "AppDelegate_mm": {
+                        "appDelegateImports": ["RNCarPlay.h"],
+                        "appDelegateMethods": {
+                            "application": {
+                                "didConnectCarInterfaceController": [
+                                    "[RNCarPlay connectWithInterfaceController:interfaceController window:window]"
+                                ],
+                                "didDisconnectCarInterfaceController": ["[RNCarPlay disconnect]"]
+                            }
                         }
                     }
-
-                }
+                },
+                "podName": "react-native-carplay"
             },
-            "podName": "react-native-carplay"
-           },
-           "version": "2.3.0"
-
+            "version": "2.3.0"
         }
     }
 }
