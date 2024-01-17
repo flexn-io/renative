@@ -31,6 +31,7 @@ import {
     CLI_WEBOS_ARES_SETUP_DEVICE,
     CLI_WEBOS_ARES_DEVICE_INFO,
 } from './constants';
+import semver from 'semver';
 
 export const launchWebOSimulator = (c: RnvContext) => {
     logTask('launchWebOSimulator');
@@ -111,10 +112,15 @@ const launchAppOnSimulator = async (c: RnvContext, appPath: string) => {
 
     const webOS_cli_version = await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `-V`);
 
-    const regex = /\d+(\.\d+)?/g;
-    const webOS_cli_version_number = Number(webOS_cli_version.match(regex)?.at(0));
-    if (webOS_cli_version_number < 1.12) {
-        return logError(`Your webOS TV CLI version is ${webOS_cli_version_number}. You need to update it up to >=1.12`);
+    const webOS_cli_version_number = semver.coerce(webOS_cli_version);
+
+    if (!webOS_cli_version_number) {
+        return logError(`Couldn't find webOS TV CLI. WebOS TV simulator requires webOS TV CLI 1.12 or higher.`, true);
+    } else if (semver.lt(webOS_cli_version_number, '1.12.0')) {
+        return logError(
+            `WebOS TV simulator requires webOS TV CLI 1.12 or higher. You are using webOS TV CLI ${webOS_cli_version_number}.`,
+            true
+        );
     }
 
     const availableEmulatorVersions = getDirectories(simulatorDirPath);
@@ -135,8 +141,9 @@ const launchAppOnSimulator = async (c: RnvContext, appPath: string) => {
         selectedOption = availableEmulatorVersions[0];
         logInfo(`Found simulator ${selectedOption} at path: ${simulatorDirPath}`);
     }
-    const version = selectedOption.match(regex)[0];
 
+    const regex = /\d+(\.\d+)?/g;
+    const version = selectedOption.match(regex)[0];
     if (isSystemMac) {
         logInfo(
             `If you encounter damaged simulator error, run this command line: xattr -c ${simulatorDirPath}/${selectedOption}/${selectedOption}.app`
