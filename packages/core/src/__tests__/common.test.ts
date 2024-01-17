@@ -327,7 +327,7 @@ describe('Testing getAppVersionCode functions', () => {
                     },
                     buildConfig: {
                         common: {
-                            versionCode: -1,
+                            versionCode: '-1',
                         },
                     },
                 },
@@ -336,5 +336,27 @@ describe('Testing getAppVersionCode functions', () => {
         } catch (e) {
             expect(e).toEqual(Error(`'versionCode' should be a positive integer. Check your config`));
         }
+    });
+
+    it('should evaluate given versionCode 4.4.4 with 4.4.4 on ios', async () => {
+        const result = getAppVersionCode(
+            {
+                ...BUILD_CONF,
+                files: {
+                    ...BUILD_CONF.files,
+                    project: {
+                        ...BUILD_CONF.files.project,
+                        package: { version: '1' },
+                    },
+                },
+                buildConfig: {
+                    common: {
+                        versionCode: '4.4.4',
+                    },
+                },
+            },
+            'ios'
+        );
+        expect(result).toEqual('4.4.4');
     });
 });

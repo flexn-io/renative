@@ -355,14 +355,15 @@ const _androidLikePlatform = (platform: RnvPlatform) =>
 export const getAppVersionCode = (c: RnvContext, platform: RnvPlatform) => {
     const versionCode = getConfigProp(c, platform, 'versionCode');
 
-    // android platforms don't allow versionCode to be a string, only positive integer
-    if (_androidLikePlatform(platform)) {
-        const isValidVersionCode = Number.isInteger(Number(versionCode)) && Number(versionCode) > 0;
-        if (isValidVersionCode) {
-            return versionCode;
-        } else if (versionCode && !isValidVersionCode) {
-            throw new Error(`'versionCode' should be a positive integer. Check your config`);
+    if (versionCode) {
+        // android platforms don't allow versionCode to be a string, only positive integer
+        if (_androidLikePlatform(platform)) {
+            const isValidVersionCode = Number.isInteger(Number(versionCode)) && Number(versionCode) > 0;
+            if (!isValidVersionCode) {
+                throw new Error(`'versionCode' should be a positive integer. Check your config`);
+            }
         }
+        return versionCode;
     }
 
     const version = getConfigProp(c, platform, 'version') || c.files.project.package?.version;
