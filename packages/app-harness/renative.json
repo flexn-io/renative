@@ -6,7 +6,12 @@
         "path": "./secrets/privateConfigs.enc"
     },
     "plugins": {
-        "react-native-permissions": "3.10.1"
+        "react-native-permissions": "3.10.1",
+        "react-native": {
+            "android": {
+                "implementation": "// TEST"
+            }
+        }
     },
     "permissions": {
         "ios": {
