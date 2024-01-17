@@ -4,5 +4,18 @@
     "projectName": "@rnv/app-harness",
     "crypto": {
         "path": "./secrets/privateConfigs.enc"
+    },
+    "plugins": {
+        "react-native-permissions": "3.10.1"
+    },
+    "permissions": {
+        "ios": {
+            "NSCalendarsUsageDescription": {
+                "desc": "Calendars usage description"
+            },
+            "NSContactsUsageDescription": {
+                "desc": "Contacts usage description"
+            }
+        }
     }
 }
