@@ -643,7 +643,7 @@ export const checkForActiveEmulator = (c: RnvContext, emulatorName?: string) =>
         }
 
         let attempts = 1;
-        const maxAttempts = isSystemWin ? 20 : 10;
+        const maxAttempts = isSystemWin ? 25 : 10;
         let running = false;
         const poll = setInterval(() => {
             // Prevent the interval from running until enough promises return to make it stop or we get a result
