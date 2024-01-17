@@ -1874,10 +1874,10 @@
                      }
  
                  }
-             },
-             "version": "2.3.0",
+             } ,
              "podName": "react-native-carplay"
-            } 
+            },
+            "version": "2.3.0"
          },
         "react-native-circular-progress": {
             "version": "1.3.0",
