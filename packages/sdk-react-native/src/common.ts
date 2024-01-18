@@ -78,7 +78,7 @@ export const isBundlerActive = async (c: RnvContext) => {
     }
 };
 
-const poll = (fn: () => Promise<boolean>, timeout = 10000, interval = 1000) => {
+const poll = (fn: () => Promise<boolean>, timeout = 30000, interval = 1000) => {
     const endTime = Number(new Date()) + timeout;
 
     const spinner = getApi().spinner('Waiting for bundler to finish...').start('');

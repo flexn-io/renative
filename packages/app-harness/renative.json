@@ -53,6 +53,17 @@
                 "podName": "react-native-carplay"
             },
             "version": "2.3.0"
+        },
+        "react-native-permissions": "3.10.1"
+    },
+    "permissions": {
+        "ios": {
+            "NSCalendarsUsageDescription": {
+                "desc": "Calendars usage description"
+            },
+            "NSContactsUsageDescription": {
+                "desc": "Contacts usage description"
+            }
         }
     }
 }

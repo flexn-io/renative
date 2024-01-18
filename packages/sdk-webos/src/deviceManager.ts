@@ -16,9 +16,11 @@ import {
     isSystemWin,
     isUrlLocalhost,
     RnvContext,
-    waitForExecCLI,
     inquirerPrompt,
     ExecOptionsPresets,
+    isSystemLinux,
+    isSystemMac,
+    logError,
 } from '@rnv/core';
 import { WebosDevice } from './types';
 import {
@@ -29,6 +31,7 @@ import {
     CLI_WEBOS_ARES_SETUP_DEVICE,
     CLI_WEBOS_ARES_DEVICE_INFO,
 } from './constants';
+import semver from 'semver';
 
 export const launchWebOSimulator = (c: RnvContext) => {
     logTask('launchWebOSimulator');
@@ -38,29 +41,24 @@ export const launchWebOSimulator = (c: RnvContext) => {
         return Promise.reject(`c.buildConfig.sdks.WEBOS_SDK undefined`);
     }
 
-    const availableEmulatorVersions = getDirectories(path.join(webosSdkPath, 'Emulator'));
+    const availableEmulatorVersions = getDirectories(path.join(webosSdkPath, 'Simulator'));
 
     const ePath = path.join(
         webosSdkPath,
-        `Emulator/${availableEmulatorVersions?.[0] || 'v4.0.0'}/LG_webOS_TV_Emulator${
-            isSystemWin ? '.exe' : '_RCU.app'
+        `Simulator/${availableEmulatorVersions?.[0]}/${availableEmulatorVersions?.[0]}${
+            isSystemWin ? '.exe' : isSystemLinux ? '.appimage' : '.app'
         }`
     );
 
     if (!fsExistsSync(ePath)) {
-        return Promise.reject(`Can't find emulator at path: ${ePath}`);
+        return Promise.reject(`Can't find simulator at path: ${ePath}`);
     }
     if (isSystemWin) {
         return executeAsync(c, ePath, { detached: true, stdio: 'ignore' });
     }
+
     return executeAsync(c, `${openCommand} ${ePath}`, { detached: true });
 };
-
-// const startHostedServerIfRequired = (c) => {
-//     if (Context.isWebHostEnabled) {
-//         return rnvStart(c);
-//     }
-// };
 
 const parseDevices = (c: RnvContext, devicesResponse: string): Promise<Array<WebosDevice>> => {
     const linesArray = devicesResponse
@@ -100,6 +98,62 @@ const parseDevices = (c: RnvContext, devicesResponse: string): Promise<Array<Web
     );
 };
 
+// Used for simulator
+const launchAppOnSimulator = async (c: RnvContext, appPath: string) => {
+    logTask('launchAppOnSimulator');
+
+    const webosSdkPath = getRealPath(c, c.buildConfig?.sdks?.WEBOS_SDK);
+
+    if (!webosSdkPath) {
+        return Promise.reject(`c.buildConfig.sdks.WEBOS_SDK undefined`);
+    }
+
+    const simulatorDirPath = path.join(webosSdkPath, 'Simulator');
+
+    const webOS_cli_version = await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `-V`);
+
+    const webOS_cli_version_number = semver.coerce(webOS_cli_version);
+
+    if (!webOS_cli_version_number) {
+        return logError(`Couldn't find webOS TV CLI. WebOS TV simulator requires webOS TV CLI 1.12 or higher.`, true);
+    } else if (semver.lt(webOS_cli_version_number, '1.12.0')) {
+        return logError(
+            `WebOS TV simulator requires webOS TV CLI 1.12 or higher. You are using webOS TV CLI ${webOS_cli_version_number}.`,
+            true
+        );
+    }
+
+    const availableEmulatorVersions = getDirectories(simulatorDirPath);
+
+    if (!availableEmulatorVersions.length) {
+        return Promise.reject(`Can't find simulator at path: ${simulatorDirPath}`);
+    }
+
+    let selectedOption;
+    if (availableEmulatorVersions.length > 1) {
+        ({ selectedOption } = await inquirerPrompt({
+            name: 'selectedOption',
+            type: 'list',
+            choices: availableEmulatorVersions,
+            warningMessage: `Found several installed simulators. Choose which one to use:`,
+        }));
+    } else {
+        selectedOption = availableEmulatorVersions[0];
+        logInfo(`Found simulator ${selectedOption} at path: ${simulatorDirPath}`);
+    }
+
+    const regex = /\d+(\.\d+)?/g;
+    const version = selectedOption.match(regex)[0];
+    if (isSystemMac) {
+        logInfo(
+            `If you encounter damaged simulator error, run this command line: xattr -c ${simulatorDirPath}/${selectedOption}/${selectedOption}.app`
+        );
+    }
+
+    await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `-s ${version} ${appPath}`);
+};
+
+// Used for actual devices
 const installAndLaunchApp = async (c: RnvContext, target: string, appPath: string, tId: string) => {
     try {
         await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${target} ${appPath}`);
@@ -138,17 +192,6 @@ export const listWebOSTargets = async (c: RnvContext) => {
     return true;
 };
 
-const waitForEmulatorToBeReady = async (c: RnvContext) => {
-    const devicesResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D');
-    const devices = await parseDevices(c, devicesResponse);
-    const emulator = devices.filter((d) => !d.isDevice)[0];
-    if (!emulator) throw new Error('No WebOS emulator configured');
-
-    return waitForExecCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, `-d ${emulator.name}`, (res) =>
-        typeof res === 'string' ? res.includes('modelName') : res
-    );
-};
-
 export const runWebosSimOrDevice = async (c: RnvContext) => {
     const { device } = c.program;
 
@@ -162,7 +205,6 @@ export const runWebosSimOrDevice = async (c: RnvContext) => {
         return Promise.reject(`Cannot determine getPlatformProjectDir value`);
     }
     const tOut = path.join(platDir, 'output');
-    const tSim = c.program.target || 'emulator';
     const configFilePath = path.join(tDir, 'appinfo.json');
 
     // logTask(`runWebOS:${target}:${isHosted}`, chalk().grey);
@@ -238,9 +280,7 @@ export const runWebosSimOrDevice = async (c: RnvContext) => {
                 return installAndLaunchApp(c, response.chosenDevice, appPath, tId);
             }
         } else {
-            await launchWebOSimulator(c);
-            await waitForEmulatorToBeReady(c);
-            return installAndLaunchApp(c, tSim, appPath, tId);
+            return launchAppOnSimulator(c, platDir);
         }
     } else {
         // Target specified, using that
