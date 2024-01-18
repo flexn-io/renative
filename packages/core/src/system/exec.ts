@@ -92,10 +92,10 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
     const privateMask = '*******';
     const cleanRawCmd = opts.rawCommand?.args || [];
 
-    cleanCommand += cleanRawCmd.join(' ');
+    cleanCommand += ` ${cleanRawCmd.join(' ')}`;
     let logMessage = cleanCommand;
     const privateParams = mergedOpts.privateParams || [];
-    if (privateParams && Array.isArray(privateParams)) {
+    if (privateParams?.length) {
         logMessage = replaceOverridesInString(commandAsString, privateParams, privateMask);
     }
 
