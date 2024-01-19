@@ -32,7 +32,7 @@ export const parsePodFile = async (c: Context, platform: RnvPlatform) => {
         const templateXcode = getFlavouredProp(c, pluginPlat, 'templateXcode');
 
         const podName = getFlavouredProp(c, pluginPlat, 'podName');
-        if (podName && (pluginPlat.git || pluginPlat.commit || pluginPlat.buildType)) {
+        if (podName && (pluginPlat.git || pluginPlat.commit || pluginPlat.buildType || pluginPlat.version)) {
             pluginInject += _injectPod(podName, pluginPlat, plugin, key);
         }
 
