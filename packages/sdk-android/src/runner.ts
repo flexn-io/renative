@@ -491,8 +491,8 @@ export const configureProject = async (c: Context) => {
     parseValuesColorsSync(c);
     parseAndroidManifestSync(c);
     parseGradlePropertiesSync(c);
-    parseFlipperSync(c, 'debug');
-    parseFlipperSync(c, 'release');
+    // parseFlipperSync(c, 'debug');
+    // parseFlipperSync(c, 'release');
     await _checkSigningCerts(c);
 
     return true;

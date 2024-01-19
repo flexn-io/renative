@@ -33,7 +33,7 @@ export const parseFlipperSync = (c: Context, scheme: 'debug' | 'release') => {
     const javaPackagePath = `app/src/${scheme}/java/${javaPackageArray.join('/')}`;
     mkdirSync(path.join(appFolder, javaPackagePath), { recursive: true });
 
-    const templatePath = `app/src/${scheme}/java/rnv_template/ReactNativeFlipper.java.tpl`;
+    const templatePath = `app/src/${scheme}/java/rnv_template/ReactNativeFlipper.kt`;
     const applicationPath = `${javaPackagePath}/ReactNativeFlipper.java`;
 
     const injects: OverridesOptions = [{ pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) }];
@@ -62,7 +62,7 @@ export const parseMainApplicationSync = (c: Context) => {
     const javaPackagePath = `app/src/main/java/${javaPackageArray.join('/')}`;
     mkdirSync(path.join(appFolder, javaPackagePath), { recursive: true });
 
-    const templatePath = 'app/src/main/java/rnv_template/MainApplication.java.tpl';
+    const templatePath = 'app/src/main/java/rnv_template/MainApplication.kt';
     const applicationPath = `${javaPackagePath}/MainApplication.java`;
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
     const bundleDefault = JS_BUNDLE_DEFAULTS[platform];
@@ -129,7 +129,7 @@ export const parseMainActivitySync = (c: RnvContext) => {
     const javaPackagePath = `app/src/main/java/${javaPackageArray.join('/')}`;
     mkdirSync(path.join(appFolder, javaPackagePath), { recursive: true });
 
-    const templatePath = 'app/src/main/java/rnv_template/MainActivity.java.tpl';
+    const templatePath = 'app/src/main/java/rnv_template/MainActivity.kt';
     const activityPath = `${javaPackagePath}/MainActivity.java`;
 
     const templateAndroid = getConfigProp(c, platform, 'templateAndroid', {});
@@ -180,7 +180,7 @@ export const parseSplashActivitySync = (c: Context) => {
     const appId = getAppId(c, c.platform);
     const javaPackageArray = appId?.split('.') || [];
 
-    const splashTemplatePath = 'app/src/main/java/rnv_template/SplashActivity.java.tpl';
+    const splashTemplatePath = 'app/src/main/java/rnv_template/SplashActivity.kt';
     const splashPath = `app/src/main/java/${javaPackageArray.join('/')}/SplashActivity.java`;
 
     // TODO This is temporary ANDROIDX support. whole kotlin parser will be refactored in the near future
