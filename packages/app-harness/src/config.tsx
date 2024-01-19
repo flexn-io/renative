@@ -1,6 +1,18 @@
 // @ts-ignore
+import { isPlatformIos, isPlatformMacos, isPlatformTvos, isPlatformWeb } from '@rnv/renative';
 import CONFIG from '../platformAssets/renative.runtime.json';
 import '../platformAssets/runtime/fontManager';
+
+export function testProps(testId: string | undefined) {
+    if (!testId) {
+        return;
+    }
+    const isApplePlatform = isPlatformIos || isPlatformTvos || isPlatformMacos;
+    if (isApplePlatform || isPlatformWeb) {
+        return { testID: testId };
+    }
+    return { accessibilityLabel: testId, accessible: true };
+}
 
 if (!global.performance) {
     // @ts-expect-error Performance needs to be typed
