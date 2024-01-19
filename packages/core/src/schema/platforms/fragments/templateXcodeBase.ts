@@ -7,6 +7,7 @@ const Podfile = z
         sources: z.optional(z.array(z.string())),
         podDependencies: z.optional(z.array(z.string())),
         staticPods: z.optional(z.array(z.string())),
+        header: z.optional(z.array(z.string())),
     })
     .describe('Allows to manipulate Podfile');
 

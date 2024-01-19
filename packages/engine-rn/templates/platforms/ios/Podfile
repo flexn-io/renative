@@ -1,3 +1,7 @@
+{{PLUGIN_PODFILE_SOURCES}}
+
+{{PODFILE_HEADER}}
+
 # Resolve react_native_pods.rb with node to allow for hoisting
 def node_require(script)
   # Resolve script with node to allow for hoisting
@@ -41,6 +45,8 @@ end
 target 'RNVApp' do
   config = use_native_modules!
 
+  {{PLUGIN_PATHS}}
+
   # Flags change depending on the env values.
   flags = get_default_flags()
 
@@ -71,5 +77,9 @@ target 'RNVApp' do
       :mac_catalyst_enabled => false
     )
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
+
+    {{INJECT_POST_INSTALL}}
   end
 end
+
+{{PLUGIN_PODFILE_INJECT}}

@@ -61,6 +61,7 @@ export type Payload = {
         podfileSources: string;
         deploymentTarget: string;
         podfileNodeRequire: string;
+        podfileHeader?: string;
     };
     xcodeProj?: {
         id?: string;

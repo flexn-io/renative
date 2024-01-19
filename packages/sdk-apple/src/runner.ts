@@ -724,6 +724,7 @@ export const configureXcodeProject = async (c: Context) => {
     // const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
     // INJECTORS
     c.payload.pluginConfigiOS = {
+        podfileHeader: '',
         podfileNodeRequire: '',
         podfileInject: '',
         podPostInstall: '',
