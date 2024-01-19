@@ -5,7 +5,7 @@ export const DEFAULTS = {
     backgroundColor: '#FFFFFF',
     deploymentTarget: '11.0',
     devServerHost: '127.0.0.1',
-    buildToolsVersion: '30.0.0',
+    buildToolsVersion: '34.0.0',
     gradleWrapperVersion: '6.9.1',
     author: 'Unknown',
     certificateProfile: 'RNVanillaCert',

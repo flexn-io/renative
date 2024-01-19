@@ -190,14 +190,14 @@ export const parseAppBuildGradleSync = (c: Context) => {
 
     // ANDROID PROPS
     c.payload.pluginConfigAndroid.minSdkVersion = getConfigProp(c, platform, 'minSdkVersion') || 24;
-    c.payload.pluginConfigAndroid.targetSdkVersion = getConfigProp(c, platform, 'targetSdkVersion') || 33;
-    c.payload.pluginConfigAndroid.compileSdkVersion = getConfigProp(c, platform, 'compileSdkVersion') || 33;
-    c.payload.pluginConfigAndroid.ndkVersion = getConfigProp(c, platform, 'ndkVersion') || '23.1.7779620';
+    c.payload.pluginConfigAndroid.targetSdkVersion = getConfigProp(c, platform, 'targetSdkVersion') || 34;
+    c.payload.pluginConfigAndroid.compileSdkVersion = getConfigProp(c, platform, 'compileSdkVersion') || 34;
+    c.payload.pluginConfigAndroid.ndkVersion = getConfigProp(c, platform, 'ndkVersion') || '25.1.8937393';
     c.payload.pluginConfigAndroid.gradleBuildToolsVersion =
         getConfigProp(c, platform, 'gradleBuildToolsVersion') || '4.2.2';
     c.payload.pluginConfigAndroid.supportLibVersion = getConfigProp(c, platform, 'supportLibVersion') || '28.0.0';
-    c.payload.pluginConfigAndroid.buildToolsVersion = getConfigProp(c, platform, 'buildToolsVersion') || '33.0.0';
-    c.payload.pluginConfigAndroid.kotlinVersion = getConfigProp(c, platform, 'kotlinVersion') || '1.4.20';
+    c.payload.pluginConfigAndroid.buildToolsVersion = getConfigProp(c, platform, 'buildToolsVersion') || '34.0.0';
+    c.payload.pluginConfigAndroid.kotlinVersion = getConfigProp(c, platform, 'kotlinVersion') || '1.8.0';
     c.payload.pluginConfigAndroid.googleServicesVersion =
         getConfigProp(c, platform, 'googleServicesVersion') || '4.2.0';
 
