@@ -224,7 +224,7 @@ export const injectPluginKotlinSync = (
         mainActivity.imports.forEach((activityImport) => {
             // Avoid duplicate imports
             if (c.payload.pluginConfigAndroid.pluginActivityImports.indexOf(activityImport) === -1) {
-                c.payload.pluginConfigAndroid.pluginActivityImports += `import ${activityImport}\n`;
+                c.payload.pluginConfigAndroid.pluginActivityImports += `import ${activityImport};\n`;
             }
         });
     }
