@@ -110,7 +110,7 @@
         "lerna": "^6.6.2",
         "lint-staged": "12.3.4",
         "madge": "6.1.0",
-        "prettier": "2.3.1",
+        "prettier": "2.8.8",
         "rimraf": "5.0.5",
         "ts-jest": "^27.0.7",
         "ts-node": "^10.9.1",

@@ -17,7 +17,7 @@
         ],
         "packageTemplate": {
             "devDependencies": {
-                "typescript": "4.9.5",
+                "typescript": "5.0.4",
                 "@types/react": "18.2.6",
                 "@types/react-dom": "18.2.6",
                 "@types/react-native": "0.72.3",
