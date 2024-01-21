@@ -79,7 +79,7 @@
             "compileSdkVersion": 34,
             "buildToolsVersion": "34.0.0",
             "gradleBuildToolsVersion": "4.2.2",
-            "gradleWrapperVersion": "8.0.1",
+            "gradleWrapperVersion": "8.3",
             "ndkVersion": "25.1.8937393",
             "kotlinVersion": "1.8.0",
             "reactNativeEngine": "hermes",

@@ -20,8 +20,7 @@ target 'RNVApp' do
   config = use_native_modules!
   platform :ios, '{{PLUGIN_DEPLOYMENT_TARGET}}'
 
-  # Flags change depending on the env values.
-  flags = get_default_flags()
+  
 
   use_react_native!(
     :path => config[:reactNativePath],
@@ -43,8 +42,7 @@ target 'RNVApp-tvOS' do
   config = use_native_modules!
   platform :tvos, '{{PLUGIN_DEPLOYMENT_TARGET}}'
 
-  # Flags change depending on the env values.
-  flags = get_default_flags()
+  
 
   use_react_native!(
     :path => config[:reactNativePath],
@@ -70,5 +68,5 @@ post_install do |installer|
     config[:reactNativePath],
     :mac_catalyst_enabled => false
   )
-  __apply_Xcode_12_5_M1_post_install_workaround(installer)
+  
 end

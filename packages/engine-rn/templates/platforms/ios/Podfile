@@ -41,8 +41,7 @@ end
 target 'RNVApp' do
   config = use_native_modules!
 
-  # Flags change depending on the env values.
-  flags = get_default_flags()
+  
 
   use_react_native!(
     :path => config[:reactNativePath],
@@ -70,6 +69,6 @@ target 'RNVApp' do
       config[:reactNativePath],
       :mac_catalyst_enabled => false
     )
-    __apply_Xcode_12_5_M1_post_install_workaround(installer)
+    
   end
 end
