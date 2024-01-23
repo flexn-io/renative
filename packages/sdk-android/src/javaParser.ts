@@ -142,7 +142,7 @@ export const parseMainActivitySync = (c: RnvContext) => {
     const mainActivity = templateAndroid?.MainActivity_java;
 
     c.payload.pluginConfigAndroid.injectActivityOnCreate =
-        mainActivity?.onCreate || 'super.onCreate(savedInstanceState)';
+        `${mainActivity?.onCreate};` || 'super.onCreate(savedInstanceState)';
 
     const injects = [
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
@@ -217,7 +217,7 @@ export const parseSplashActivitySync = (c: Context) => {
     );
 };
 
-export const injectPluginKotlinSync = (
+export const injectPluginJavaSync = (
     c: RnvContext,
     plugin: RenativeConfigPluginPlatform,
     key: string,
@@ -229,7 +229,7 @@ export const injectPluginKotlinSync = (
         mainActivity.imports.forEach((activityImport) => {
             // Avoid duplicate imports
             if (c.payload.pluginConfigAndroid.pluginActivityImports.indexOf(activityImport) === -1) {
-                c.payload.pluginConfigAndroid.pluginActivityImports += `import ${activityImport}\n`;
+                c.payload.pluginConfigAndroid.pluginActivityImports += `import ${activityImport};\n`;
             }
         });
     }
@@ -242,7 +242,9 @@ export const injectPluginKotlinSync = (
     if (mainActivity) {
         if (mainActivity.createMethods) {
             c.payload.pluginConfigAndroid.pluginActivityCreateMethods += '\n';
-            c.payload.pluginConfigAndroid.pluginActivityCreateMethods += `${mainActivity.createMethods.join('\n    ')}`;
+            mainActivity.createMethods.forEach((method) => {
+                c.payload.pluginConfigAndroid.pluginActivityCreateMethods += `${method};\n`;
+            });
         }
 
         if (mainActivity.resultMethods) {
@@ -270,7 +272,7 @@ export const injectPluginKotlinSync = (
 
     if (mainApplication?.imports) {
         mainApplication.imports.forEach((v) => {
-            c.payload.pluginConfigAndroid.pluginApplicationImports += `import ${v}\n`;
+            c.payload.pluginConfigAndroid.pluginApplicationImports += `import ${v};\n`;
         });
     }
 
