@@ -31,12 +31,12 @@ jobs:
             - name: Bootstrap
               run: |
                   yarn bootstrap-clean
-            - name: Build
+            - name: Run
               run: |
-                  cd packages/app-harness && yarn build:android-test
+                  cd packages/app-harness && yarn run:android-test & sleep 180
             - name: E2E
               run: |
-                  cd packages/app-harness && yarn e2e:android
+                  cd packages/app-harness && yarn e2e:android && kill $(lsof -t -i:8083)
             # Commented because e2e tests would fail due to minion issues
             # - name: Post message to Slack via Webhook
             #   if: ${{ github.event_name == 'push' && failure() }}
