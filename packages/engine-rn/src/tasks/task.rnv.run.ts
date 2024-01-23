@@ -53,6 +53,9 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
         case ANDROID_WEAR:
             // eslint-disable-next-line no-case-declarations
             const runDevice = await getAndroidDeviceToRunOn(c);
+            if (runDevice) {
+                c.runtime.target = runDevice?.name || runDevice?.udid;
+            }
             if (!c.program.only) {
                 await startBundlerIfRequired(c, TASK_RUN, originTask);
                 if (bundleAssets || platform === ANDROID_WEAR) {
