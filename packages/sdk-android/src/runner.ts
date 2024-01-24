@@ -34,6 +34,7 @@ import {
     DEFAULTS,
     RnvPlatform,
     logInfo,
+    cleanFolder,
 } from '@rnv/core';
 import { parseAndroidManifestSync, injectPluginManifestSync } from './manifestParser';
 import {
@@ -42,7 +43,7 @@ import {
     parseMainApplicationSync,
     injectPluginKotlinSync,
     parseFlipperSync,
-} from './kotlinParser';
+} from './javaParser';
 import {
     parseAppBuildGradleSync,
     parseBuildGradleSync,
@@ -395,6 +396,9 @@ export const configureProject = async (c: Context) => {
     // await createJavaPackageFolders(c, appFolder);
     mkdirSync(path.join(appFolder, 'app/src/main/assets'));
     fsWriteFileSync(path.join(appFolder, `app/src/main/assets/${outputFile}.bundle`), '{}');
+
+    // cleanup potentially existing folders from previous builds with different appId
+    await cleanFolder(path.join(appFolder, 'app/src/main/java'));
 
     // INJECTORS
     c.payload.pluginConfigAndroid = {

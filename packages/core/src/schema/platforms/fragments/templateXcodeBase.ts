@@ -60,6 +60,9 @@ const AppDelegateMm = z.object({
         })
     ),
     appDelegateImports: z.optional(z.array(z.string())),
+});
+const AppDelegateH = z.object({
+    appDelegateImports: z.optional(z.array(z.string())),
     appDelegateExtensions: z.optional(z.array(z.string())),
 });
 
@@ -69,6 +72,7 @@ export const TemplateXcodeBaseFragment = {
     Podfile: z.optional(Podfile),
     project_pbxproj: z.optional(XcodeProj),
     AppDelegate_mm: z.optional(AppDelegateMm),
+    AppDelegate_h: z.optional(AppDelegateH),
     Info_plist: z.optional(InfoPlist),
 };
 // .describe('Allows more advanced modifications to Xcode based project template');
