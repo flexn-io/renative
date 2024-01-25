@@ -71,6 +71,18 @@
                     "runScheme": "Debug",
                     "bundleAssets": false
                 },
+                "debug-static-pods": {
+                    "runScheme": "Debug",
+                    "bundleAssets": false,
+                    "enableUserDefinedBuildTypes": true,
+                    "templateXcode": {
+                        "Podfile": {
+                          "sources": [
+                            "https://github.com/CocoaPods/Specs.git"
+                          ]
+                        }
+                    }
+                },
                 "test": {
                     "runScheme": "Debug",
                     "bundleAssets": true,

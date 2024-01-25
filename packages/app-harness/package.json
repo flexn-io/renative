@@ -48,7 +48,8 @@
         "react-native-tvos": "0.72.4-0",
         "react-native-web": "0.19.9",
         "react-native-splash-screen": "3.3.0",
-        "react-native-carplay": "2.3.0"
+        "react-native-carplay": "2.3.0",
+        "@react-native-firebase/app": "18.6.1"
     },
     "devDependencies": {
         "@flexn/assets-renative-outline": "0.3.3",
