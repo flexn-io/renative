@@ -1,6 +1,5 @@
 package {{APPLICATION_ID}}
 
-import {{APPLICATION_ID}}.BuildConfig
 
 import android.app.Application
 import com.facebook.react.PackageList
@@ -14,14 +13,10 @@ import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.react.flipper.ReactNativeFlipper
 import com.facebook.soloader.SoLoader
 
-{{PLUGIN_IMPORTS}}
-
-/**
- * Created by ReNative (https://renative.org)
- */
-
 class MainApplication : Application(), ReactApplication {
-override val reactNativeHost: ReactNativeHost =
+
+  override val reactNativeHost: ReactNativeHost =
+
       object : DefaultReactNativeHost(this) {
         override fun getPackages(): List<ReactPackage> =
             PackageList(this).packages.apply {
@@ -29,7 +24,7 @@ override val reactNativeHost: ReactNativeHost =
               // add(MyReactNativePackage())
             }
 
-        override fun getJSMainModuleName(): String = "{{ENTRY_FILE}}"
+        override fun getJSMainModuleName(): String = "index"
 
         override fun getUseDeveloperSupport(): Boolean = BuildConfig.DEBUG
 
@@ -42,13 +37,13 @@ override val reactNativeHost: ReactNativeHost =
 
   override fun onCreate() {
     super.onCreate()
-{{PLUGIN_DEBUG_SERVER}}
+
     SoLoader.init(this, false)
     if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
       // If you opted-in for the New Architecture, we load the native entry point for this app.
       load()
     }
-{{PLUGIN_ON_CREATE}}
     ReactNativeFlipper.initializeFlipper(this, reactNativeHost.reactInstanceManager)
   }
 }
+

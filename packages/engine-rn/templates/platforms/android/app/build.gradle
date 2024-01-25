@@ -127,7 +127,7 @@ dependencies {
     } else {
         implementation jscFlavor
     }
-{{PLUGIN_IMPLEMENTATIONS}}
+
 }
 
 apply from: file("{{PATH_REACT_NATIVE_CLI_ANDROID}}/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)

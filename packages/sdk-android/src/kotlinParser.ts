@@ -60,11 +60,15 @@ export const parseMainApplicationSync = (c: Context) => {
     const javaPackageArray = appId?.split('.') || [];
 
     const javaPackagePath = `app/src/main/java/${javaPackageArray.join('/')}`;
-    mkdirSync(path.join(appFolder, javaPackagePath), { recursive: true });
+    console.log(javaPackageArray, 'javaPackageArray');
+    console.log(javaPackagePath, 'javaPackagePath');
+    // mkdirSync(path.join(appFolder, javaPackagePath), { recursive: true });
 
     const templatePath = 'app/src/main/java/rnv_template/MainApplication.kt';
-    const applicationPath = `${javaPackagePath}/MainApplication.java`;
+    // const applicationPath = `${javaPackagePath}/MainApplication.java`;
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
+    console.log(templatePath, 'templatePath');
+
     const bundleDefault = JS_BUNDLE_DEFAULTS[platform];
     const bundleFile: string =
         getGetJsBundleFile(c, platform) || bundleAssets
@@ -111,7 +115,7 @@ export const parseMainApplicationSync = (c: Context) => {
 
     writeCleanFile(
         getBuildFilePath(c, platform, templatePath),
-        path.join(appFolder, applicationPath),
+        path.join(appFolder, templatePath),
         injects,
         undefined,
         c
@@ -123,14 +127,9 @@ export const parseMainActivitySync = (c: RnvContext) => {
     const { platform } = c;
 
     const appId = getAppId(c, c.platform);
-    // console.log('appId', appId);
-    const javaPackageArray = appId?.split('.') || [];
-
-    const javaPackagePath = `app/src/main/java/${javaPackageArray.join('/')}`;
-    mkdirSync(path.join(appFolder, javaPackagePath), { recursive: true });
 
     const templatePath = 'app/src/main/java/rnv_template/MainActivity.kt';
-    const activityPath = `${javaPackagePath}/MainActivity.java`;
+
 
     const templateAndroid = getConfigProp(c, platform, 'templateAndroid', {});
 
@@ -167,7 +166,7 @@ export const parseMainActivitySync = (c: RnvContext) => {
 
     writeCleanFile(
         getBuildFilePath(c, platform, templatePath),
-        path.join(appFolder, activityPath),
+        path.join(appFolder, templatePath),
         injects,
         undefined,
         c
@@ -178,10 +177,9 @@ export const parseSplashActivitySync = (c: Context) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
     const appId = getAppId(c, c.platform);
-    const javaPackageArray = appId?.split('.') || [];
+   
 
     const splashTemplatePath = 'app/src/main/java/rnv_template/SplashActivity.kt';
-    const splashPath = `app/src/main/java/${javaPackageArray.join('/')}/SplashActivity.java`;
 
     // TODO This is temporary ANDROIDX support. whole kotlin parser will be refactored in the near future
     const enableAndroidX = getConfigProp(c, platform, 'enableAndroidX', true);
@@ -205,7 +203,7 @@ export const parseSplashActivitySync = (c: Context) => {
 
     writeCleanFile(
         getBuildFilePath(c, platform, splashTemplatePath),
-        path.join(appFolder, splashPath),
+        path.join(appFolder, splashTemplatePath),
         injects,
         undefined,
         c
