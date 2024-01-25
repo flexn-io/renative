@@ -41,7 +41,7 @@ import {
     parseMainActivitySync,
     parseSplashActivitySync,
     parseMainApplicationSync,
-    injectPluginKotlinSync,
+    injectPluginJavaSync,
     parseFlipperSync,
 } from './javaParser';
 import {
@@ -449,7 +449,7 @@ export const configureProject = async (c: Context) => {
     // PLUGINS
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         injectPluginGradleSync(c, plugin, pluginPlat, key);
-        injectPluginKotlinSync(c, pluginPlat, key, pluginPlat.package);
+        injectPluginJavaSync(c, pluginPlat, key, pluginPlat.package);
         injectPluginManifestSync();
         injectPluginXmlValuesSync(c, pluginPlat);
     });
