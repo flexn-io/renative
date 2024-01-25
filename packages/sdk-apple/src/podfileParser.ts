@@ -15,12 +15,10 @@ import {
     includesPluginPath,
     doResolve,
     doResolvePath,
-    executeAsync,
     writeCleanFile,
     RnvPlatform,
     DEFAULTS,
 } from '@rnv/core';
-import compareVersions from 'compare-versions';
 import { Context } from './types';
 
 export const parsePodFile = async (c: Context, platform: RnvPlatform) => {
@@ -131,20 +129,6 @@ export const parsePodFile = async (c: Context, platform: RnvPlatform) => {
     const deploymentTarget = getConfigProp(c, platform, 'deploymentTarget') || DEFAULTS.deploymentTarget;
     c.payload.pluginConfigiOS.deploymentTarget = deploymentTarget;
 
-    // STATIC POD INJECT VERSION
-    c.payload.pluginConfigiOS.staticPodDefinition = 'Pod::BuildType.static_library';
-    if (!c.runtime._skipNativeDepResolutions) {
-        try {
-            const podVersion = await executeAsync(c, 'pod --version');
-            const isPodOld = compareVersions(podVersion, '1.9') < 0;
-            if (isPodOld) {
-                c.payload.pluginConfigiOS.staticPodDefinition = 'Pod::Target::BuildType.static_library';
-            }
-        } catch (e) {
-            // Ignore
-        }
-    }
-
     const injects: OverridesOptions = [
         { pattern: '{{PLUGIN_PATHS}}', override: pluginInject },
         { pattern: '{{PLUGIN_WARNINGS}}', override: podWarnings },
@@ -177,10 +161,6 @@ export const parsePodFile = async (c: Context, platform: RnvPlatform) => {
             override:
                 doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native') ||
                 'UNRESOLVED(react-native)',
-        },
-        {
-            pattern: '{{PLUGIN_STATIC_POD_DEFINITION}}',
-            override: c.payload.pluginConfigiOS.staticPodDefinition,
         },
         {
             pattern: '{{PLUGIN_STATIC_POD_EXTRA_CONDITIONS}}',

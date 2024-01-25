@@ -181,7 +181,7 @@ export const runCocoaPods = async (c: RnvContext) => {
         return Promise.reject(`Location ${appFolder} does not exists!`);
     }
 
-    const option1 = 'Continue with pod action';
+    const option1 = 'Continue with pod action (recommended)';
     const option2 = 'Skip pod action';
     const option3 = "Skip and don't ask again";
 
@@ -190,6 +190,7 @@ export const runCocoaPods = async (c: RnvContext) => {
         type: 'list',
         message: `${checkResult.reason}`,
         choices: [option1, option2, option3],
+        default: option1,
     });
 
     if (selectedOption === option1) {
