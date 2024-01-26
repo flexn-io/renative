@@ -53,6 +53,7 @@ export const taskRnvTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) 
         const { selectedOption } = await inquirerPrompt({
             name: 'selectedOption',
             type: 'list',
+            message: 'Which target to use?',
             choices: options,
         });
 
