@@ -29,6 +29,9 @@
                 },
                 "podName": "react-native-splash-screen"
             },
+            "tvos": {
+                "disabled": true
+            },
             "version": "3.3.0"
         },
         "react-native-carplay": {
@@ -58,8 +61,8 @@
             "version": "2.3.0"
         },
         "react-native-permissions": {
-            "ios": {
-                "podName": "RNPermissions"
+            "tvos": {
+                "disabled": true
             },
             "version": "3.10.1"
         },

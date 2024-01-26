@@ -372,7 +372,8 @@ export const parsePlugins = (
     c: RnvContext,
     platform: RnvPlatform,
     pluginCallback: PluginCallback,
-    ignorePlatformObjectCheck?: boolean
+    ignorePlatformObjectCheck?: boolean,
+    includeDisabledPlugins?: boolean
 ) => {
     logTask('parsePlugins');
     if (c.buildConfig && platform) {
@@ -407,12 +408,12 @@ export const parsePlugins = (
                             //     skipLinking: true,
                             //     disabled: true,
                             // };
+                            //TODO: consider supportedPlatforms for plugins
                             if (ignorePlatformObjectCheck) {
                                 // totalIncludedPlugins++;
                                 handleActivePlugin();
                             } else if (pluginPlat) {
                                 const isPluginDisabled = plugin.disabled === true;
-                                //DEPreCATED
                                 const isPluginPlatDisabled = pluginPlat.disabled === true;
                                 if (!isPluginDisabled && !isPluginPlatDisabled) {
                                     if (plugin.deprecated) {
@@ -424,6 +425,9 @@ export const parsePlugins = (
                                         logInfo(`Plugin ${key} is marked disabled. skipping.`);
                                     } else if (isPluginPlatDisabled) {
                                         logInfo(`Plugin ${key} is marked disabled for platform ${platform} skipping.`);
+                                    }
+                                    if (includeDisabledPlugins) {
+                                        handleActivePlugin();
                                     }
                                 }
                             }
