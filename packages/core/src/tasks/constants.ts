@@ -276,6 +276,9 @@ const PARAM_KEYS_ENUM = {
     resetAdb: {
         description: 'Forces to reset android adb',
     },
+    telemetryDebug: {
+        description: 'If you have telemetry enabled, will print out exactly what is being collected into the console',
+    },
 };
 
 export const PARAM_KEYS = PARAM_KEYS_ENUM as Record<string, RnvTaskParameter>;
