@@ -11,7 +11,7 @@
                 "templateAndroid": {
                     "MainActivity_java": {
                         "createMethods": ["SplashScreen.show(this)"],
-                        "imports": ["android.os.Bundle", "org.devio.rn.splashscreen.SplashScreen"]
+                        "imports": ["org.devio.rn.splashscreen.SplashScreen"]
                     }
                 },
                 "package": "org.devio.rn.splashscreen.SplashScreenReactPackage"
