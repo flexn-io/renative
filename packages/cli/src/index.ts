@@ -34,6 +34,7 @@ export const run = () => {
             cmd += `-${param.shortcut}, `;
         }
         cmd += `--${param.key}`;
+
         if (param.value) {
             if (param.isRequired) {
                 cmd += ` <${param.value}>`;
@@ -46,7 +47,8 @@ export const run = () => {
         program.option(cmd, param.description);
     });
 
-    program.arguments('<cmd> [option]').action((cmd, option) => {
+    // Make both arguments optional un order to allow `$ rnv` top level command
+    program.arguments('[cmd] [option]').action((cmd, option) => {
         cmdValue = cmd;
         cmdOption = option;
     });
