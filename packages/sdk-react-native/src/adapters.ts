@@ -11,11 +11,11 @@ const getApplicationId = () => {
 const getSkipLinkingDeps = () => {
     const skipLinkingEnv = process.env.RNV_SKIP_LINKING;
     if (skipLinkingEnv) {
-        const plugins = skipLinkingEnv.split(',');
+        const plugins = skipLinkingEnv.split(',').map((item) => item.trim());
 
         return {
             dependencies: plugins.reduce((acc, plugin) => {
-                acc[`${plugin}`] = {
+                acc[plugin] = {
                     platforms: {
                         ios: null,
                     },
