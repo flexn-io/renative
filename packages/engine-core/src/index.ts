@@ -38,6 +38,9 @@ import taskRnvTargetList from './tasks/task.rnv.target.list';
 import taskRnvTargetLaunch from './tasks/task.rnv.target.launch';
 import taskRnvLink from './tasks/task.rnv.link';
 import taskRnvUnlink from './tasks/task.rnv.unlink';
+import taskRnvTelemetryStatus from './tasks/task.rnv.telemetry.status';
+import taskRnvTelemetryEnable from './tasks/task.rnv.telemetry.enable';
+import taskRnvTelemetryDisable from './tasks/task.rnv.telemetry.disable';
 
 const Engine: RnvEngine = {
     // initializeRuntimeConfig: () => {
@@ -84,6 +87,9 @@ const Engine: RnvEngine = {
         taskRnvTargetLaunch,
         taskRnvLink,
         taskRnvUnlink,
+        taskRnvTelemetryStatus,
+        taskRnvTelemetryEnable,
+        taskRnvTelemetryDisable,
     ]),
     config: {
         // title: 'Engine Core',
@@ -97,6 +103,7 @@ const Engine: RnvEngine = {
     projectDirName: '',
     // ejectPlatform: null,
     platforms: {},
+    rootPath: __dirname,
 };
 
 export default Engine;

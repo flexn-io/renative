@@ -54,7 +54,8 @@ export class AnalyticsCls {
     }
 
     get isAnalyticsEnabled() {
-        return getContext().buildConfig?.enableAnalytics;
+        const c = getContext();
+        return !c.files.defaultWorkspace.config?.disableTelemetry;
     }
 
     initialize() {

@@ -21,7 +21,11 @@ const SDKsSchema = z
 export const RootWorkspaceSchema = z.object({
     defaultTargets: z.optional(DefaultTargets),
     sdks: z.optional(SDKsSchema),
-    projectTemplates: z.record(z.string(), z.object({})),
+    projectTemplates: z.record(z.string(), z.object({})).optional(),
+    disableTelemetry: z
+        .boolean()
+        .optional()
+        .describe('Opt-out from renative telemetry program. More info at https://renative.org/telemetry'),
     appConfigsPath: z
         .string()
         .optional()
