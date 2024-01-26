@@ -15,7 +15,7 @@ const getSkipLinkingDeps = () => {
 
         return {
             dependencies: plugins.reduce((acc, plugin) => {
-                acc[`${plugin}`] = {
+                acc[plugin] = {
                     platforms: {
                         ios: null,
                     },
