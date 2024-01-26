@@ -16,6 +16,7 @@ import {
     PARAMS,
     executeTask,
     RnvTaskFn,
+    inquirerPrompt,
 } from '@rnv/core';
 import { checkAndConfigureSdks, checkSdk } from '../common';
 
@@ -33,10 +34,32 @@ export const taskRnvTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) 
     await executeTask(c, TASK_WORKSPACE_CONFIGURE, TASK_TARGET_LAUNCH, originTask);
 
     const { platform, program } = c;
-    const target =
-        program.target ||
-        (platform ? c.files.project.configLocal?.defaultTargets?.[platform] : undefined) ||
-        (platform ? c.files.workspace.config?.defaultTargets?.[platform] : undefined);
+    let target = program?.target;
+    const options = [];
+
+    if (platform && !target) {
+        const projectTarget = c.files.project.configLocal?.defaultTargets?.[platform];
+        if (projectTarget) {
+            options.push({ name: `${projectTarget} (project default)`, value: projectTarget });
+        }
+        const workspaceTarget = c.files.workspace.config?.defaultTargets?.[platform];
+
+        if (projectTarget) {
+            options.push({ name: `${workspaceTarget} (global default)`, value: workspaceTarget });
+        }
+
+        options.push({ name: 'Pick from available targets...', value: null });
+
+        const { selectedOption } = await inquirerPrompt({
+            name: 'selectedOption',
+            type: 'list',
+            choices: options,
+        });
+
+        if (selectedOption) {
+            target = selectedOption;
+        }
+    }
 
     await checkSdk(c);
 

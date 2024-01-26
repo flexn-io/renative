@@ -193,7 +193,7 @@ export const launchAppleSimulator = async (c: RnvContext, target: string | boole
         logInfo(`Launching: ${chalk().white(selectedDevice.name)} (use -t to use different target)...`);
         await _launchSimulator(selectedDevice);
         return selectedDevice.name;
-    } else if (target !== true) {
+    } else if (target !== true && target !== undefined) {
         logWarning(`Your specified simulator target ${chalk().white(target)} doesn't exists`);
     }
 
@@ -224,7 +224,7 @@ const _launchSimulator = async (selectedDevice: AppleDevice) => {
         return false;
     }
 
-    await executeAsync(`xcrun simctl boot ${selectedDevice.udid}`, ExecOptionsPresets.FIRE_AND_FORGET);
+    await executeAsync(`xcrun simctl boot ${selectedDevice.udid}`, ExecOptionsPresets.NO_SPINNER_FULL_ERROR_SUMMARY);
     logSuccess(`Succesfully launched ${selectedDevice.name}`);
     return true;
 };
