@@ -145,10 +145,8 @@ const checkIfPodsIsRequired = (c: RnvContext): { result: boolean; reason: string
     if (podChecksum !== combinedChecksum) {
         return { result: true, reason: 'Podfile and/or plugins versions have changed', code: 5 };
     }
-    logInfo(
-        'Pods do not seem like they need to be updated. If you want to update them manually run the same command with "-u" parameter'
-    );
-    return { result: true, reason: 'Podfile.checksum matches current value', code: 6 };
+
+    return { result: false, reason: 'Podfile.checksum matches current value', code: 6 };
 };
 
 const updatePodsChecksum = (c: RnvContext) => {

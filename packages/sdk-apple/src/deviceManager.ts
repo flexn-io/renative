@@ -1,4 +1,3 @@
-import child_process from 'child_process';
 import { utilities } from 'appium-ios-device';
 import {
     chalk,
@@ -12,6 +11,9 @@ import {
     RnvContext,
     inquirerPrompt,
     RnvPlatform,
+    ExecOptionsPresets,
+    logInfo,
+    logSuccess,
 } from '@rnv/core';
 import { AppiumAppleDevice, AppleDevice } from './types';
 
@@ -175,7 +177,7 @@ const _parseIOSDevicesList = (
     return devices;
 };
 
-export const launchAppleSimulator = async (c: RnvContext, target: string) => {
+export const launchAppleSimulator = async (c: RnvContext, target: string | boolean) => {
     logTask('launchAppleSimulator', `${target}`);
 
     const devicesArr = await getAppleDevices(c, true);
@@ -186,12 +188,15 @@ export const launchAppleSimulator = async (c: RnvContext, target: string) => {
             selectedDevice = devicesArr[i];
         }
     }
+
     if (selectedDevice) {
+        logInfo(`Launching: ${chalk().white(selectedDevice.name)} (use -t to use different target)...`);
         await _launchSimulator(selectedDevice);
         return selectedDevice.name;
+    } else if (target !== true) {
+        logWarning(`Your specified simulator target ${chalk().white(target)} doesn't exists`);
     }
 
-    logWarning(`Your specified simulator target ${chalk().white(target)} doesn't exists`);
     const devices = devicesArr.map((v) => ({
         name: `${v.name} | ${v.icon} | v: ${chalk().green(v.version)} | udid: ${chalk().grey(v.udid)}${
             v.isDevice ? chalk().red(' (device)') : ''
@@ -214,13 +219,13 @@ export const launchAppleSimulator = async (c: RnvContext, target: string) => {
 };
 
 const _launchSimulator = async (selectedDevice: AppleDevice) => {
-    try {
-        if (selectedDevice.udid) child_process.spawnSync('xcrun', ['simctl', 'boot', selectedDevice.udid]);
-    } catch (e) {
-        // instruments always fail with 255 because it expects more arguments,
-        // but we want it to only launch the simulator
+    if (!selectedDevice.udid) {
+        logWarning(`Cannot launch simulator: ${selectedDevice.name} . missing udid`);
+        return false;
     }
 
+    await executeAsync(`xcrun simctl boot ${selectedDevice.udid}`, ExecOptionsPresets.FIRE_AND_FORGET);
+    logSuccess(`Succesfully launched ${selectedDevice.name}`);
     return true;
 };
 

@@ -33,7 +33,10 @@ export const taskRnvTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) 
     await executeTask(c, TASK_WORKSPACE_CONFIGURE, TASK_TARGET_LAUNCH, originTask);
 
     const { platform, program } = c;
-    const target = program.target || (platform ? c.files.workspace.config?.defaultTargets?.[platform] : undefined);
+    const target =
+        program.target ||
+        (platform ? c.files.project.configLocal?.defaultTargets?.[platform] : undefined) ||
+        (platform ? c.files.workspace.config?.defaultTargets?.[platform] : undefined);
 
     await checkSdk(c);
 
