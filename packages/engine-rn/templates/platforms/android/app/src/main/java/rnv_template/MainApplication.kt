@@ -1,6 +1,5 @@
 package {{APPLICATION_ID}}
 
-
 import android.app.Application
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
@@ -16,7 +15,6 @@ import com.facebook.soloader.SoLoader
 class MainApplication : Application(), ReactApplication {
 
   override val reactNativeHost: ReactNativeHost =
-
       object : DefaultReactNativeHost(this) {
         override fun getPackages(): List<ReactPackage> =
             PackageList(this).packages.apply {
@@ -37,7 +35,6 @@ class MainApplication : Application(), ReactApplication {
 
   override fun onCreate() {
     super.onCreate()
-
     SoLoader.init(this, false)
     if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
       // If you opted-in for the New Architecture, we load the native entry point for this app.
@@ -46,4 +43,3 @@ class MainApplication : Application(), ReactApplication {
     ReactNativeFlipper.initializeFlipper(this, reactNativeHost.reactInstanceManager)
   }
 }
-
