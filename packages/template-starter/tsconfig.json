@@ -17,6 +17,7 @@
     "**/*.ts",
     "**/*.tsx",
     "platformBuilds/template_web/.next/types/**/*.ts",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "platformBuilds/template_web/output/types/**/*.ts"
   ]
 }
