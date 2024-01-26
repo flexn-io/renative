@@ -406,7 +406,6 @@ export const parsePlugins = (
                             // {
                             //     skipLinking: true,
                             //     disabled: true,
-                            //     enabled: false,
                             // };
                             if (ignorePlatformObjectCheck) {
                                 // totalIncludedPlugins++;
@@ -414,8 +413,7 @@ export const parsePlugins = (
                             } else if (pluginPlat) {
                                 const isPluginDisabled = plugin.disabled === true;
                                 //DEPreCATED
-                                const isPluginPlatDisabled =
-                                    pluginPlat.disabled === true || pluginPlat.enabled === false;
+                                const isPluginPlatDisabled = pluginPlat.disabled === true;
                                 if (!isPluginDisabled && !isPluginPlatDisabled) {
                                     if (plugin.deprecated) {
                                         logWarning(plugin.deprecated);

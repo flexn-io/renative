@@ -52,6 +52,9 @@
                 },
                 "podName": "react-native-carplay"
             },
+            "tvos": {
+                "disabled": true
+            },
             "version": "2.3.0"
         },
         "react-native-permissions": "3.10.1",
