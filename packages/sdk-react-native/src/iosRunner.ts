@@ -121,28 +121,34 @@ const generateCombinedChecksum = () => {
     return combinedChecksum;
 };
 
-const checkIfPodsIsRequired = (c: RnvContext): { result: boolean; reason: string } => {
+const checkIfPodsIsRequired = (c: RnvContext): { result: boolean; reason: string; code: number } => {
     if (c.runtime._skipNativeDepResolutions) {
-        return { result: false, reason: `Command ${getCurrentCommand(true)} explicitly skips pod checks` };
+        return { result: false, reason: `Command ${getCurrentCommand(true)} explicitly skips pod checks`, code: 1 };
     }
     if (c.program.updatePods) {
-        return { result: true, reason: 'You passed --updatePods option' };
+        return { result: true, reason: 'You passed --updatePods option', code: 2 };
     }
     const appFolder = getAppFolder(c);
+
+    const podLockPath = path.join(appFolder, 'Podfile.lock');
+    if (!fsExistsSync(podLockPath)) {
+        return { result: true, reason: 'Podfile.lock does not exist', code: 3 };
+    }
+
     const podChecksumPath = path.join(appFolder, 'Podfile.checksum');
     if (!fsExistsSync(podChecksumPath)) {
-        return { result: true, reason: 'Podfile.checksum does not exist' };
+        return { result: true, reason: 'Podfile.checksum does not exist', code: 4 };
     }
     const podChecksum = fsReadFileSync(podChecksumPath).toString();
     const combinedChecksum = generateCombinedChecksum();
 
     if (podChecksum !== combinedChecksum) {
-        return { result: true, reason: 'Podfile and/or plugins versions have changed' };
+        return { result: true, reason: 'Podfile and/or plugins versions have changed', code: 5 };
     }
     logInfo(
         'Pods do not seem like they need to be updated. If you want to update them manually run the same command with "-u" parameter'
     );
-    return { result: true, reason: 'Podfile.checksum matches current value' };
+    return { result: true, reason: 'Podfile.checksum matches current value', code: 6 };
 };
 
 const updatePodsChecksum = (c: RnvContext) => {
@@ -185,15 +191,7 @@ export const runCocoaPods = async (c: RnvContext) => {
     const option2 = 'Skip pod action';
     const option3 = "Skip and don't ask again";
 
-    const { selectedOption } = await inquirerPrompt({
-        name: 'selectedOption',
-        type: 'list',
-        message: `${checkResult.reason}`,
-        choices: [option1, option2, option3],
-        default: option1,
-    });
-
-    if (selectedOption === option1) {
+    const runPods = async () => {
         await executeAsync(c, 'bundle install');
 
         const env = {
@@ -208,13 +206,37 @@ export const runCocoaPods = async (c: RnvContext) => {
             throw new Error('Cocoapods not installed. Please run `sudo gem install cocoapods`');
         }
 
-        await executeAsync(c, 'bundle exec pod install', {
-            cwd: appFolder,
-            env,
-        });
+        if (c.program.updatePods) {
+            await executeAsync(c, 'bundle exec pod update', {
+                cwd: appFolder,
+                env,
+            });
+        } else {
+            await executeAsync(c, 'bundle exec pod install', {
+                cwd: appFolder,
+                env,
+            });
+        }
 
         updatePodsChecksum(c);
-        return true;
+    };
+
+    if (checkResult.code === 3) {
+        //If Podfile.lock does not exist let's not wait for confirmation
+        logInfo(`${checkResult.reason}. Will execute pod actions...`);
+        return runPods();
+    }
+
+    const { selectedOption } = await inquirerPrompt({
+        name: 'selectedOption',
+        type: 'list',
+        message: `${checkResult.reason}`,
+        choices: [option1, option2, option3],
+        default: option1,
+    });
+
+    if (selectedOption === option1) {
+        return runPods();
     } else if (selectedOption === option2) {
         return false;
     }
