@@ -55,7 +55,7 @@ export class AnalyticsCls {
 
     get isAnalyticsEnabled() {
         const c = getContext();
-        return !c.files.defaultWorkspace.config?.disableTelemetry;
+        return !c.files.defaultWorkspace.config?.disableTelemetry && c.process.env.RNV_TELEMETRY_DISABLED !== '1';
     }
 
     initialize() {

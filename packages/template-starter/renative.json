@@ -109,9 +109,7 @@
             "minSdkVersion": 21,
             "extendPlatform": "android",
             "engine": "engine-rn-tvos",
-            "includedPermissions": [
-                "INTERNET"
-            ]
+            "includedPermissions": ["INTERNET"]
         },
         "web": {
             "engine": "engine-rn-next"
@@ -141,9 +139,7 @@
                 "modulePaths": true
             }
         },
-        "react": "source:rnv",
-        "react-art": "source:rnv",
-        "react-dom": "source:rnv",
+
         "react-native-gesture-handler": {
             "version": "2.13.1",
             "disablePluginTemplateOverrides": false
