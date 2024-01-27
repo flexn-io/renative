@@ -41,7 +41,6 @@ import {
     parseSplashActivitySync,
     parseMainApplicationSync,
     injectPluginKotlinSync,
-    parseFlipperSync,
 } from './kotlinParser';
 import {
     parseAppBuildGradleSync,

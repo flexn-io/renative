@@ -707,7 +707,6 @@ export const overrideFileContents = (dest: string, override: Record<string, stri
                 );
             }
         });
-        console.log(foundRegEx, 'foundRegEx')
         if (!foundRegEx) {
             if (overridePath !== 'REACT_CORE_OVERRIDES') {
                 // We only warn against user defined overrides.

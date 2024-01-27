@@ -8,8 +8,8 @@ buildscript {
         targetSdkVersion = {{TARGET_SDK_VERSION}}
 
         // We use NDK 23 which has both M1 support and is the side-by-side NDK version from AGP.
-         ndkVersion = '{{NDK_VERSION}}'
-         kotlinVersion = '{{INJECT_KOTLIN_VERSION}}'
+        ndkVersion = '{{NDK_VERSION}}'
+        kotlinVersion = '{{INJECT_KOTLIN_VERSION}}'
     }
     repositories {
         google()
@@ -18,5 +18,8 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
     }
 }
+
+apply plugin: "com.facebook.react.rootproject"

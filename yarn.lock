@@ -5106,9 +5106,9 @@
     eslint-visitor-keys "^3.3.0"
 
 "@vitest/snapshot@^1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@vitest/snapshot/-/snapshot-1.2.1.tgz#bd2dcae2322b90bab1660421ff9dae73fc84ecc0"
-  integrity sha512-Tmp/IcYEemKaqAYCS08sh0vORLJkMr0NRV76Gl8sHGxXT5151cITJCET20063wk0Yr/1koQ6dnmP6eEqezmd/Q==
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@vitest/snapshot/-/snapshot-1.2.2.tgz#f56fd575569774968f3eeba9382a166c26201042"
+  integrity sha512-SmGY4saEw1+bwE1th6S/cZmPxz/Q4JWsl7LvbQIky2tKE35US4gd0Mjzqfr84/4OD0tikGWaWdMja/nWL5NIPA==
   dependencies:
     magic-string "^0.30.5"
     pathe "^1.1.1"
@@ -5904,9 +5904,9 @@ appium-adb@^11.0.1:
     teen_process "^2.0.1"
 
 appium-adb@^12.0.0:
-  version "12.0.2"
-  resolved "https://registry.yarnpkg.com/appium-adb/-/appium-adb-12.0.2.tgz#2ba24faf52ab6a7c7505d8f92b0551ae4764ff71"
-  integrity sha512-Zl/iwOZkLMUT1zIL3Aw8Sgf4Jz7EdLBZ5lQtRTrMfDGXCYzxiNQrEQx888Z7Nr114xBtH57h+mP9CVld/xnmZQ==
+  version "12.0.3"
+  resolved "https://registry.yarnpkg.com/appium-adb/-/appium-adb-12.0.3.tgz#36659fd2da64109988480fe206a59be89724b598"
+  integrity sha512-wQ4Zi75lIpQF8Xvh9BW3e87diKiF0Hlgc9yCdS9GyRg2rMUfHA8hOV1JzgpyCYcNAP+nLrZoLDztDvg4Qjnjlg==
   dependencies:
     "@appium/support" "^4.0.0"
     "@devicefarmer/adbkit-apkreader" "^3.2.4"
@@ -5945,9 +5945,9 @@ appium-android-driver@^7.3.0:
     ws "^8.0.0"
 
 appium-chromedriver@^5.5.1, appium-chromedriver@^5.6.5:
-  version "5.6.30"
-  resolved "https://registry.yarnpkg.com/appium-chromedriver/-/appium-chromedriver-5.6.30.tgz#006a2e98e0787095acf70a21b20862314f42f792"
-  integrity sha512-UX/Ma1TPJ9dxCVCHctnrmC8bjnKlYpfMgmIsd5KBfYn4wvALpGgfcL5dxSktey0qU87iFckK0vrcFRwZjQR4gQ==
+  version "5.6.31"
+  resolved "https://registry.yarnpkg.com/appium-chromedriver/-/appium-chromedriver-5.6.31.tgz#0e66e221b143d617a5edb608f1ffa23744452a96"
+  integrity sha512-l2YXM1RPEZridhunIGDKv3lLOHoP88BhdWKLNcHBNzpIVaFO3/46gQVCE+1X7MJQkR3ayjkb7yNxS7oRuJe1FQ==
   dependencies:
     "@appium/base-driver" "^9.1.0"
     "@appium/support" "^4.0.0"
@@ -7001,12 +7001,12 @@ browser-stdout@1.3.1:
   integrity sha512-qhAVI1+Av2X7qelOfAIYwXONood6XlZE/fXaBSmW/T5SzLAmCgzi+eiWE7fUvbHaeNBQH13UftjpXxsfLkMpgw==
 
 browserslist@^4.0.0, browserslist@^4.18.1, browserslist@^4.21.10, browserslist@^4.21.4, browserslist@^4.22.2:
-  version "4.22.2"
-  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.22.2.tgz#704c4943072bd81ea18997f3bd2180e89c77874b"
-  integrity sha512-0UgcrvQmBDvZHFGdYUehrCNIazki7/lUP3kkoi/r3YB2amZbFM9J43ZRkJTXBUZK4gmx56+Sqk9+Vs9mwZx9+A==
+  version "4.22.3"
+  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.22.3.tgz#299d11b7e947a6b843981392721169e27d60c5a6"
+  integrity sha512-UAp55yfwNv0klWNapjs/ktHoguxuQNGnOzxYmfnXIS+8AsRDZkSDxg7R1AX3GKzn078SBI5dzwzj/Yx0Or0e3A==
   dependencies:
-    caniuse-lite "^1.0.30001565"
-    electron-to-chromium "^1.4.601"
+    caniuse-lite "^1.0.30001580"
+    electron-to-chromium "^1.4.648"
     node-releases "^2.0.14"
     update-browserslist-db "^1.0.13"
 
@@ -7315,7 +7315,7 @@ caniuse-api@^3.0.0:
     lodash.memoize "^4.1.2"
     lodash.uniq "^4.5.0"
 
-caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001406, caniuse-lite@^1.0.30001565, caniuse-lite@^1.0.30001578:
+caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001406, caniuse-lite@^1.0.30001578, caniuse-lite@^1.0.30001580:
   version "1.0.30001580"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001580.tgz#e3c76bc6fe020d9007647044278954ff8cd17d1e"
   integrity sha512-mtj5ur2FFPZcCEpXFy8ADXbDACuNFXg6mxVDqp7tqooX6l3zwm+d8EPoeOSIFRDvHs8qu7/SLFOGniULkcH2iA==
@@ -9363,10 +9363,10 @@ electron-publish@24.5.0:
     lazy-val "^1.0.5"
     mime "^2.5.2"
 
-electron-to-chromium@^1.4.601:
-  version "1.4.646"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.646.tgz#2ed74709d854d5501b32936c9feaaee02c7a9ba5"
-  integrity sha512-vThkQ0JuF45qT/20KbRgM56lV7IuGt7SjhawQ719PDHzhP84KAO1WJoaxgCoAffKHK47FmVKP1Fqizx7CwK1SA==
+electron-to-chromium@^1.4.648:
+  version "1.4.648"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.648.tgz#c7b46c9010752c37bb4322739d6d2dd82354fbe4"
+  integrity sha512-EmFMarXeqJp9cUKu/QEciEApn0S/xRcpZWuAm32U7NgoZCimjsilKXHRO9saeEW55eHZagIDg6XTUOv32w9pjg==
 
 electron@26.3.0:
   version "26.3.0"
@@ -10120,9 +10120,9 @@ fastest-levenshtein@^1.0.12:
   integrity sha512-eRnCtTTtGZFpQCwhJiUOuxPQWRXVKYDn0b2PeHfXL6/Zi53SLAzAHfVhVWK2AryC/WH05kGfxhFIPvTF0SXQzg==
 
 fastq@^1.6.0:
-  version "1.16.0"
-  resolved "https://registry.yarnpkg.com/fastq/-/fastq-1.16.0.tgz#83b9a9375692db77a822df081edb6a9cf6839320"
-  integrity sha512-ifCoaXsDrsdkWTtiNJX5uzHDsrck5TzfKKDcuFFTIrrc/BS076qgEIfoIy1VeZqViznfKiysPYTh/QeHtnIsYA==
+  version "1.17.0"
+  resolved "https://registry.yarnpkg.com/fastq/-/fastq-1.17.0.tgz#ca5e1a90b5e68f97fc8b61330d5819b82f5fab03"
+  integrity sha512-zGygtijUMT7jnk3h26kUms3BkSDp4IfIKjmnqI2tvx6nuBfiF1UqOxbnLfzdv+apBy+53oaImsKtMw/xYbW+1w==
   dependencies:
     reusify "^1.0.4"
 
