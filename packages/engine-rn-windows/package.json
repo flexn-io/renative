@@ -41,7 +41,7 @@
     "peerDependencies": {
         "@react-native-community/cli": "*",
         "@rnv/core": "^1.0.0-rc.9",
-        "metro-react-native-babel-preset": "0.76.8",
+        "@react-native/babel-preset": "0.73.19",
         "react-native": "*"
     },
     "private": false,
