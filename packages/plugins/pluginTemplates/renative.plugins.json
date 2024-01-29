@@ -3243,12 +3243,12 @@
                 "package": "ui.photoeditor.RNPhotoEditorPackage"
             },
             "ios": {
-                "podName": "RNPhotoEditor",
+                "podName": "iOSPhotoEditor",
                 "git": "https://github.com/prscX/photo-editor",
                 "commit": "4924e9ec984d25d03644e58aa148282642171de9",
                 "buildType": "dynamic"
             },
-            "version": "1.0.5"
+            "version": "1.0.13"
         },
         "react-native-picker": {
             "android": {

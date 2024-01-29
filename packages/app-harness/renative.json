@@ -95,7 +95,44 @@
                 }
             }
         },
-        "react-native-photo-editor": "source:rnv",
+        "react-native-photo-editor": {
+            "android": {
+                "templateAndroid": {
+                    "AndroidManifest_xml": {
+                        "tag": "manifest",
+                        "android:name": "",
+                        "children": [
+                            {
+                                "tag": "application",
+                                "android:name": ".MainApplication",
+                                "children": [
+                                    {
+                                        "tag": "activity",
+                                        "android:name": "com.ahmedadeltito.photoeditor.PhotoEditorActivity",
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                },
+                "package": "ui.photoeditor.RNPhotoEditorPackage"
+            },
+            "androidtv": {
+                "package": "ui.photoeditor.RNPhotoEditorPackage"
+            },
+            "firetv": {
+                "package": "ui.photoeditor.RNPhotoEditorPackage"
+            },
+            "ios": {
+                "podName": "iOSPhotoEditor",
+                "git": "https://github.com/prscX/photo-editor",
+                "commit": "4924e9ec984d25d03644e58aa148282642171de9",
+                "buildType": "dynamic"
+            },
+            "pluginDependencies": null,
+            "version": "1.0.13"
+        },
         "react-native": {
             "android": {
                 "implementation": "// TEST"
