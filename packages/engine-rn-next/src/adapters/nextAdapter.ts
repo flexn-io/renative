@@ -75,6 +75,9 @@ export const withRNVNext = (config: NextConfig) => {
                     .map((e) => `.${e}`)
                     .filter((ext) => isServer || !ext.includes('server.'));
             }
+            if (typeof config.webpack === 'function') {
+                return config.webpack(cfg, props);
+            }
             return cfg;
         },
     };
