@@ -18,6 +18,7 @@ import { NpmPackageFile } from '../configs/types';
 import { ConfigFileBuildConfig } from '../schema/configFiles/buildConfig';
 import type { ParamKeys } from '../tasks/constants';
 import { ExecaChildProcess } from 'execa';
+import { RnvPlugin } from '../plugins/types';
 
 export type CreateContextOptions = {
     program: RnvContextProgram;
@@ -137,6 +138,8 @@ export type RnvContextRuntime = {
     task?: string;
     selectedWorkspace?: string;
     target?: string;
+    plugins: Record<string, RnvPlugin>;
+    pluginVersions: Record<string, string>;
 };
 
 export type RuntimePropKey = keyof RnvContextRuntime;

@@ -33,7 +33,7 @@ export const initializeTask = async (c: RnvContext, task: string) => {
     executedTasks = {};
 
     getApi().analytics.captureEvent({
-        type: `${task}Project`,
+        type: task,
         platform: c.platform,
     });
 

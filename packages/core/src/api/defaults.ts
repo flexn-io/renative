@@ -18,13 +18,43 @@ const spinner: any = () => ({
     text: '',
 });
 
-const logger: any = {};
+const defaultLog: any = (v: string) => {
+    console.log(`DEFAULT LOGGER: ${v}`);
+};
+const defaultGetString = () => '';
+const defaultGetBool = () => false;
 
 export const generateApiDefaults = (): RnvApi => ({
     isDefault: true,
     doResolve,
     getConfigProp: getConfigProp,
-    logger,
+    logger: {
+        printArrIntoBox: defaultLog,
+        getCurrentCommand: defaultGetString,
+        isInfoEnabled: defaultGetBool,
+        logAndSave: defaultLog,
+        chalk: defaultLog,
+        logAppInfo: defaultLog,
+        logComplete: defaultLog,
+        logDebug: defaultLog,
+        logEnd: defaultLog,
+        logError: defaultLog,
+        logExitTask: defaultLog,
+        logHook: defaultLog,
+        logInfo: defaultLog,
+        logInitialize: defaultLog,
+        logInitTask: defaultLog,
+        logRaw: defaultLog,
+        logSuccess: defaultLog,
+        logSummary: defaultLog,
+        logTask: defaultLog,
+        logToSummary: defaultLog,
+        logWarning: defaultLog,
+        logWelcome: defaultLog,
+        printBoxEnd: defaultLog,
+        printBoxStart: defaultLog,
+        printIntoBox: defaultLog,
+    },
     analytics: {
         captureEvent: () => {
             //NOOP

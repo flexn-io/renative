@@ -192,7 +192,7 @@ export const logSummary = (header = 'SUMMARY') => {
 
     if (_jsonOnly) return;
 
-    if (ctx.paths.project.configExists && !ctx.paths.IS_NPX_MODE) {
+    if (ctx.paths.project.configExists && !ctx.paths.IS_NPX_MODE && !ctx.paths.IS_LINKED) {
         logAndSave(chalk().yellow('You are trying to run global rnv command in your current project.'), true);
         logAndSave(chalk().yellow('This might lead to unexpected behaviour.'), true);
         logAndSave(chalk().yellow('Run your rnv command with npx prefix:'), true);

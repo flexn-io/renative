@@ -33,7 +33,6 @@ export type Payload = {
         podPostInstall: string;
         staticPodExtraConditions: string;
         staticFrameworks: Array<string>;
-        staticPodDefinition: string;
         embeddedFontSources: Array<string>;
         ignoreProjectFonts: Array<string>;
         pluginAppDelegateMmImports: string;
@@ -119,7 +118,6 @@ export type SwiftAppDelegate = {
         willPresent: SwiftMethod;
     };
 };
-
 
 export type ObjectiveCAppDelegate = {
     application: {
