@@ -12,7 +12,7 @@ import { TASK_CONFIGURE_SOFT } from '../constants';
 import { RnvContext } from '../context/types';
 import { RnvTask, RnvTaskMap, TaskItemMap, TaskObj } from './types';
 import { RnvEngine } from '../engines/types';
-import { inquirerPrompt, pressAnyKeyToContinue } from '../api';
+import { inquirerPrompt, inquirerSeparator, pressAnyKeyToContinue } from '../api';
 import { getApi } from '../api/provider';
 import { RenativeConfigTaskKey } from '../schema/types';
 import { checkIfProjectAndNodeModulesExists } from '../projects/dependencyManager';
@@ -41,24 +41,33 @@ export const initializeTask = async (c: RnvContext, task: string) => {
     return true;
 };
 
-const _getTaskOption = ({ taskInstance, hasMultipleSubTasks }: TaskObj) => {
+type TaskOption = { name: string; value: string };
+const _getTaskOption = ({ taskInstance, hasMultipleSubTasks }: TaskObj): TaskOption => {
+    const output = { value: taskInstance.task, name: '' };
     if (hasMultipleSubTasks) {
-        return `${taskInstance.task.split(' ')[0]}...`;
+        output.name = `${taskInstance.task.split(' ')[0]}...`;
+        return output;
     }
     if (taskInstance.description && taskInstance.description !== '') {
-        return `${taskInstance.task.split(' ')[0]} ${chalk().grey(`(${taskInstance.description})`)}`;
+        output.name = `${taskInstance.task.split(' ')[0]} ${chalk().grey(`(${taskInstance.description})`)}`;
+        return output;
     }
-    return `${taskInstance.task.split(' ')[0]}`;
+    output.name = `${taskInstance.task.split(' ')[0]}`;
+    return output;
 };
 
 const _getTaskObj = (taskInstance: RnvTask) => {
-    const key = taskInstance.task.split(' ')[0];
-    let hasMultipleSubTasks = false;
-    if (taskInstance.task.includes(' ')) hasMultipleSubTasks = true;
+    const key = taskInstance.task;
+    const taskNameArr = key.split(' ');
+    let parent: null | string = null;
+    if (taskNameArr.length > 1) {
+        taskNameArr.pop();
+        parent = taskNameArr.join(' ');
+    }
     return {
         key,
         taskInstance,
-        hasMultipleSubTasks,
+        parent,
     };
 };
 
@@ -80,8 +89,10 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
                 suitableTaskInstances[taskObj.key] = taskObj;
             });
 
+            // console.log('SSSSSS', suitableTaskInstances);
+
             const taskInstances = Object.values(suitableTaskInstances);
-            let tasks;
+            let tasks: TaskOption[];
             let defaultCmd: string | undefined = 'new';
             let tasksCommands;
             let filteredTasks;
@@ -94,18 +105,31 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
             } else {
                 tasks = taskInstances.map((v) => _getTaskOption(v)).sort();
                 tasksCommands = taskInstances.map((v) => v.taskInstance.task.split(' ')[0]).sort();
-                defaultCmd = tasks.find((v) => v.startsWith('run'));
+                defaultCmd = tasks.find((v) => v.value.startsWith('run'))?.name;
             }
+            // const prioTasks = ['run', 'build', 'export', 'configure', 'new'];
+            const orderedTasks1 = tasks.sort().filter((v) => !v.name.includes('...'));
+            orderedTasks1.push(inquirerSeparator());
+            const orderedTasks2 = tasks.sort().filter((v) => v.name.includes('...'));
 
-            const { command } = await inquirerPrompt({
+            tasks = orderedTasks1.concat(orderedTasks2);
+            tasks.push(inquirerSeparator());
+
+            // console.log('DJDJDJDJ', tasks);
+
+            const result = await inquirerPrompt({
                 type: 'list',
                 default: defaultCmd,
                 name: 'command',
                 message: `Pick a command${addendum}`,
                 choices: tasks,
                 pageSize: 15,
+                loop: false,
                 logMessage: 'Welcome to the brave new world...',
             });
+            const { command } = result;
+            // console.log('DDDJDKDK', result);
+
             c.command = tasksCommands[tasks.indexOf(command)];
         }
         if (c.command) task = c.command;
