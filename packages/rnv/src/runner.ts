@@ -33,26 +33,21 @@ export const executeRnv = async ({
     prompt: RnvApiPrompt;
     logger: RnvApiLogger;
 }) => {
-    try {
-        // set mono and ci if json is enabled
-        if (program.json) {
-            program.mono = true;
-            program.ci = true;
-        }
-
-        createRnvApi({ spinner, prompt, analytics: Analytics, logger, getConfigProp, doResolve });
-        createRnvContext({ program, process, cmd, subCmd, RNV_HOME_DIR });
-
-        logInitialize();
-        loadWorkspacesConfigSync();
-
-        Analytics.initialize();
-
-        await registerEngine(EngineCore);
-
-        await executeRnvCore();
-    } catch (e) {
-        console.log(e);
-        // logError(e);
+    // set mono and ci if json is enabled
+    if (program.json) {
+        program.mono = true;
+        program.ci = true;
     }
+
+    createRnvApi({ spinner, prompt, analytics: Analytics, logger, getConfigProp, doResolve });
+    createRnvContext({ program, process, cmd, subCmd, RNV_HOME_DIR });
+
+    logInitialize();
+    loadWorkspacesConfigSync();
+
+    Analytics.initialize();
+
+    await registerEngine(EngineCore);
+
+    await executeRnvCore();
 };

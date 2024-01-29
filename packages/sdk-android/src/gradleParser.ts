@@ -148,31 +148,14 @@ maven { url("${doResolve('jsc-android', true, { forceForwardPaths: true })}/dist
 `;
 
     c.payload.pluginConfigAndroid.appBuildGradleImplementations += "    implementation 'org.webkit:android-jsc:+'\n";
-
-    c.payload.pluginConfigAndroid.injectHermes = '    enableHermes: false,';
 };
 
 const setReactNativeEngineHermes = (c: Context) => {
+    // TODO review if we need this, IIRC hermes is enabled in gradle.properties and that's it
     c.payload.pluginConfigAndroid.injectReactNativeEngine = `
   maven { url "${doResolve('react-native', true, { forceForwardPaths: true })}/android" }
   maven { url("${doResolve('jsc-android', true, { forceForwardPaths: true })}/dist") }
   `;
-
-    c.payload.pluginConfigAndroid.appBuildGradleImplementations += `    debugImplementation files("${doResolve(
-        'hermes-engine',
-        true,
-        { forceForwardPaths: true }
-    )}/android/hermes-debug.aar")\n`;
-    c.payload.pluginConfigAndroid.appBuildGradleImplementations += `    releaseImplementation files("${doResolve(
-        'hermes-engine',
-        true,
-        { forceForwardPaths: true }
-    )}/android/hermes-release.aar")\n`;
-
-    c.payload.pluginConfigAndroid.injectHermes = `    enableHermes: true,
-hermesCommand: "{{PATH_HERMES_ENGINE}}/%OS-BIN%/hermes",
-deleteDebugFilesForVariant: { false },
-    `;
 };
 
 const setReactNativeEngineV8 = (c: Context) => {
@@ -193,8 +176,6 @@ const setReactNativeEngineV8 = (c: Context) => {
                 getUseDeveloperSupport()
             )
         }`;
-
-    c.payload.pluginConfigAndroid.injectHermes = '    enableHermes: false,';
 
     c.payload.pluginConfigAndroid.packagingOptions += `
     exclude '**/libjsc.so'`;
@@ -274,19 +255,19 @@ export const parseAppBuildGradleSync = (c: Context) => {
 
     c.payload.pluginConfigAndroid.store = {
         storeFile: storeFile,
-        // keyAlias,
-        // storePassword,
-        // keyPassword,
     };
 
     if (!!storeFile && !!keyAlias && !!storePassword && !!keyPassword) {
         const keystorePath = storeFile;
         let keystorePathFull = keystorePath;
         if (keystorePath) {
-            if (keystorePath.startsWith('.')) {
+            if (keystorePath.startsWith('.') || !fsExistsSync(keystorePathFull)) {
+                //NOTE: because of merged logic we don't know whether renative.private.json
+                // values come from project or appConfig so we selectively check both
                 keystorePathFull = path.join(c.paths.workspace.appConfig.dir, keystorePath);
-            } else if (!fsExistsSync(keystorePath)) {
-                keystorePathFull = path.join(c.paths.workspace.appConfig.dir, keystorePath);
+                if (!fsExistsSync(keystorePathFull)) {
+                    keystorePathFull = path.join(c.paths.workspace.project.dir, keystorePath);
+                }
             }
             if (isSystemWin) {
                 keystorePathFull = keystorePathFull.replace(/\\/g, '/');
@@ -413,22 +394,6 @@ ${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
     sourceCompatibility 1.8
     targetCompatibility 1.8`;
 
-    // TODO This is temporary ANDROIDX support. whole gradle parser will be refactored in the near future
-    let enableAndroidX = getConfigProp(c, platform, 'enableAndroidX', 'androidx.appcompat:appcompat:1.1.0');
-    if (enableAndroidX === true) {
-        enableAndroidX = 'androidx.appcompat:appcompat:1.1.0';
-    }
-
-    if (enableAndroidX !== false) {
-        c.payload.pluginConfigAndroid.appBuildGradleImplementations += `    implementation "${enableAndroidX}"\n`;
-    } else {
-        c.payload.pluginConfigAndroid.appBuildGradleImplementations +=
-            "    implementation 'com.android.support:appcompat-v7:27.0.2'\n";
-    }
-
-    c.payload.pluginConfigAndroid.appBuildGradleImplementations +=
-        '    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02"\n';
-
     const injects = [
         {
             pattern: '{{PLUGIN_APPLY}}',
@@ -496,10 +461,6 @@ ${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
             override: c.payload.pluginConfigAndroid.localProperties,
         },
         {
-            pattern: '{{INJECT_HERMES}}',
-            override: c.payload.pluginConfigAndroid.injectHermes,
-        },
-        {
             pattern: '{{PATH_REACT_NATIVE}}',
             override: doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native', true, {
                 forceForwardPaths: true,
@@ -549,9 +510,9 @@ export const parseSettingsGradleSync = (c: Context) => {
     const rnCliLocation = doResolve('@react-native-community/cli-platform-android', true, { forceForwardPaths: true });
     const rnGradlePluginLocation = doResolve('@react-native/gradle-plugin', true, { forceForwardPaths: true });
 
-    const rnCliRelativePath = (!!rnCliLocation && path.relative(appFolder, rnCliLocation)) || '';
+    const rnCliRelativePath = (!!rnCliLocation && path.relative(appFolder, rnCliLocation).replace(/\\/g, '/')) || '';
     const rnGradlePluginRelativePath =
-        (!!rnGradlePluginLocation && path.relative(appFolder, rnGradlePluginLocation)) || '';
+        (!!rnGradlePluginLocation && path.relative(appFolder, rnGradlePluginLocation).replace(/\\/g, '/')) || '';
 
     const injects = [
         {
@@ -569,6 +530,10 @@ export const parseSettingsGradleSync = (c: Context) => {
         {
             pattern: '{{RN_GRADLE_PLUGIN_LOCATION}}',
             override: rnGradlePluginRelativePath,
+        },
+        {
+            pattern: '{{RN_GRADLE_PROJECT_NAME}}',
+            override: c.files.project.config?.projectName.replace('/', '-'),
         },
     ];
 
@@ -596,12 +561,6 @@ export const parseGradlePropertiesSync = (c: Context) => {
     const gradleProps = templateAndroid?.gradle_properties;
 
     if (gradleProps) {
-        const enableAndroidX = getConfigProp(c, platform, 'enableAndroidX', true);
-        if (enableAndroidX === true) {
-            gradleProps['android.useAndroidX'] = true;
-            gradleProps['android.enableJetifier'] = true;
-        }
-
         Object.keys(gradleProps).forEach((key) => {
             pluginGradleProperties += `${key}=${gradleProps[key]}\n`;
         });
@@ -610,6 +569,7 @@ export const parseGradlePropertiesSync = (c: Context) => {
     const gradleProperties = 'gradle.properties';
 
     const newArchEnabled = getConfigProp(c, c.platform, 'newArchEnabled', false);
+    const reactNativeEngine = getConfigProp(c, c.platform, 'reactNativeEngine') || 'hermes';
 
     const injects = [
         {
@@ -619,6 +579,18 @@ export const parseGradlePropertiesSync = (c: Context) => {
         {
             pattern: '{{NEW_ARCH_ENABLED}}',
             override: newArchEnabled ? 'true' : 'false',
+        },
+        {
+            pattern: '{{HERMES_ENABLED}}',
+            override: reactNativeEngine === 'hermes' ? 'true' : 'false',
+        },
+        {
+            pattern: '{{ENABLE_JETIFIER}}',
+            override: getConfigProp(c, platform, 'enableJetifier', true) ? 'true' : 'false',
+        },
+        {
+            pattern: '{{ENABLE_ANDROID_X}}',
+            override: getConfigProp(c, platform, 'enableAndroidX', true) ? 'true' : 'false',
         },
     ];
 
@@ -658,7 +630,6 @@ export const injectPluginGradleSync = (
     // if (plugin.packageParams) {
     //     packageParams = plugin.packageParams.join(',');
     // }
-    const keyFixed = key.replace(/\//g, '-').replace(/@/g, '');
     const pathFixed = plugin.path ? `${plugin.path}` : `${key}/android`;
     const skipPathResolutions = pluginRoot.disableNpm;
     let pathAbsolute;
@@ -672,31 +643,8 @@ export const injectPluginGradleSync = (
     }
 
     // APP/BUILD.GRADLE
-    if (plugin.projectName) {
-        if (!plugin.skipLinking && !skipPathResolutions) {
-            c.payload.pluginConfigAndroid.pluginIncludes += `, ':${plugin.projectName}'`;
-            // }').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
-            c.payload.pluginConfigAndroid.pluginPaths += `project(':${plugin.projectName}').projectDir = new File('${pathAbsolute}')\n`;
-        }
-        if (!plugin.skipImplementation) {
-            if (plugin.implementation) {
-                c.payload.pluginConfigAndroid.appBuildGradleImplementations += `${plugin.implementation}\n`;
-            } else {
-                c.payload.pluginConfigAndroid.appBuildGradleImplementations += `    implementation project(':${plugin.projectName}')\n`;
-            }
-        }
-    } else {
-        if (!plugin.skipLinking && !skipPathResolutions) {
-            c.payload.pluginConfigAndroid.pluginIncludes += `, ':${keyFixed}'`;
-            c.payload.pluginConfigAndroid.pluginPaths += `project(':${keyFixed}').projectDir = new File('${pathAbsolute}')\n`;
-        }
-        if (!plugin.skipLinking && !plugin.skipImplementation) {
-            if (plugin.implementation) {
-                c.payload.pluginConfigAndroid.appBuildGradleImplementations += `${plugin.implementation}\n`;
-            } else {
-                c.payload.pluginConfigAndroid.appBuildGradleImplementations += `    implementation project(':${keyFixed}')\n`;
-            }
-        }
+    if (!plugin.skipImplementation && plugin.implementation) {
+        c.payload.pluginConfigAndroid.appBuildGradleImplementations += `${plugin.implementation}\n`;
     }
 
     parseAndroidConfigObject(c, plugin, key);
@@ -706,9 +654,9 @@ export const injectPluginGradleSync = (
     }
 };
 
-export const parseAndroidConfigObject = (c: RnvContext, obj?: RenativeConfigPluginPlatform, key = '') => {
+export const parseAndroidConfigObject = (c: RnvContext, plugin?: RenativeConfigPluginPlatform, key = '') => {
     // APP/BUILD.GRADLE
-    const templateAndroid = getConfigProp(c, c.platform, 'templateAndroid');
+    const templateAndroid = plugin?.templateAndroid;
 
     const appBuildGradle = templateAndroid?.app_build_gradle;
     if (appBuildGradle) {

@@ -68,7 +68,7 @@
     },
     "templates": {
         "@rnv/template-starter": {
-            "version": "^1.0.0-rc.3"
+            "version": "1.0.0-rc.9"
         }
     },
     "currentTemplate": "@rnv/template-starter",
@@ -83,11 +83,10 @@
             "kotlinVersion": "1.7.10",
             "reactNativeEngine": "hermes",
             "enableAndroidX": true,
+            "enableJetifier": true,
             "templateAndroid": {
                 "gradle_properties": {
                     "android.useDeprecatedNdk": true,
-                    "android.enableJetifier": true,
-                    "android.useAndroidX": true,
                     "android.debug.obsoleteApi": true,
                     "org.gradle.jvmargs": "-Xmx3g -XX:MaxPermSize=2048m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8",
                     "org.gradle.daemon": true,
@@ -158,7 +157,7 @@
             "version": "0.72.4"
         },
         "next": {
-            "version": "13.5.2",
+            "version": "14.0.4",
             "disablePluginTemplateOverrides": true
         },
         "react-native-web": {

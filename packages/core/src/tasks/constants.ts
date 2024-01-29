@@ -6,8 +6,8 @@ const PARAM_KEYS_ENUM = {
         value: 'value',
         description: 'Show full debug Info',
     },
-    showEnv: {
-        description: 'Show exec commands with env info',
+    printExec: {
+        description: 'Print exec commands in full',
     },
     updatePods: {
         shortcut: 'u',

@@ -1,6 +1,6 @@
 {
     "name": "@rnv/core",
-    "version": "1.0.0-rc.3",
+    "version": "1.0.0-rc.9",
     "description": "RNV Core SDK",
     "keywords": [],
     "homepage": "https://github.com/flexn-io/renative#readme",
@@ -35,7 +35,7 @@
         "detect-port": "1.3.0",
         "esbuild": "^0.12.1",
         "execa": "5.1.1",
-        "ip": "1.1.5",
+        "ip": "1.1.8",
         "kill-port": "1.6.1",
         "lodash.get": "4.4.2",
         "lodash.intersection": "4.4.0",

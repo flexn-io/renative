@@ -108,7 +108,9 @@ export const configureGit = async (c: RnvContext) => {
         }
     }
 };
-
+const checkInputValue = (value: string | boolean): boolean => {
+    return value && typeof value === 'string' && value !== '' ? true : false;
+};
 const _prepareProjectOverview = (c: RnvContext, data: NewProjectData) => {
     data.appTitle = data.inputAppTitle || data.defaultAppTitle;
     data.teamID = '';
@@ -291,20 +293,20 @@ export const taskRnvNew = async (c: RnvContext) => {
 
     let inputProjectName: string;
 
-    if (projectName && projectName !== '') {
+    if (checkInputValue(projectName)) {
         inputProjectName = projectName;
     } else {
         const inputProjectNameObj = await inquirerPrompt({
             name: 'inputProjectName',
             type: 'input',
-            validate: (value) => !!value,
+            validate: (value) => checkInputValue(value),
             message: "What's your project Name? (no spaces, folder based on ID will be created in this directory)",
         });
         inputProjectName = inputProjectNameObj?.inputProjectName;
     }
 
-    data.projectName = inputProjectName;
-    c.paths.project.dir = path.join(c.paths.CURRENT_DIR, data.projectName.replace(/(\s+)/g, '_'));
+    data.projectName = inputProjectName.replace(/(\s+)/g, '_');
+    c.paths.project.dir = path.join(c.paths.CURRENT_DIR, data.projectName);
 
     if (fsExistsSync(c.paths.project.dir)) {
         const { confirm } = await inquirerPrompt({
@@ -326,7 +328,7 @@ export const taskRnvNew = async (c: RnvContext) => {
     // ==================================================
 
     const validator = {
-        validateAppTitle: (val: string) => (typeof val === 'string' && val !== '') || 'Please enter a title',
+        validateAppTitle: (val: string) => checkInputValue(val) || 'Please enter a title',
         validateAppID: (appId: string) =>
             (typeof appId === 'string' && !!appId.match(/^[a-z][a-z0-9_]*(\.[a-z0-9_]+)+[0-9a-z_]$/)) ||
             'Please enter a valid appID (com.test.app)',
@@ -353,7 +355,7 @@ export const taskRnvNew = async (c: RnvContext) => {
                 return data.appID;
             },
             message: "What's your App ID?",
-            warning: `Command contains invalid appId ${id}`,
+            warning: `Command contains invalid appId : ${id}`,
         },
         {
             value: appVersion,
@@ -361,7 +363,7 @@ export const taskRnvNew = async (c: RnvContext) => {
             name: 'inputVersion',
             defaultVal: data.defaultVersion,
             message: "What's your Version?",
-            warning: 'Command contains invalid appVersion',
+            warning: `Command contains invalid appVersion. Please enter a valid semver version (1.0.0, 42.6.7.9.3-alpha, etc.`,
         },
     ];
 
@@ -408,7 +410,7 @@ export const taskRnvNew = async (c: RnvContext) => {
     // INPUT: Workspace
     // ==================================================
     let inputWorkspace;
-    if (workspace && workspace !== '') {
+    if (checkInputValue(workspace)) {
         inputWorkspace = workspace;
     } else if (ci) {
         inputWorkspace = data.defaultWorkspace;
@@ -455,7 +457,7 @@ export const taskRnvNew = async (c: RnvContext) => {
     // data.optionTemplates.keysAsArray.push(customTemplate);
     options.push(customTemplate);
     let selectedInputTemplate;
-    if (projectTemplate && projectTemplate !== '') {
+    if (checkInputValue(projectTemplate)) {
         selectedInputTemplate = projectTemplate;
     } else {
         const { inputTemplate } = await inquirerPrompt({
@@ -481,7 +483,7 @@ export const taskRnvNew = async (c: RnvContext) => {
     data.optionTemplates.selectedOption = selectedInputTemplate;
 
     let inputTemplateVersion;
-    if (templateVersion && templateVersion !== '') {
+    if (checkInputValue(templateVersion)) {
         inputTemplateVersion = templateVersion;
     } else {
         inputTemplateVersion = await listAndSelectNpmVersion(c, data.optionTemplates.selectedOption || '');
@@ -495,6 +497,10 @@ export const taskRnvNew = async (c: RnvContext) => {
 
     // Add rnv to package.json
     await executeAsync(`${isYarnInstalled() ? 'yarn' : 'npm'} add rnv@${c.rnvVersion}`, {
+        cwd: c.paths.project.dir,
+    });
+    // Add pkg-dir to have the correct version before the first run
+    await executeAsync(`${isYarnInstalled() ? 'yarn' : 'npm'} add pkg-dir@7.0.0`, {
         cwd: c.paths.project.dir,
     });
 
@@ -556,7 +562,7 @@ export const taskRnvNew = async (c: RnvContext) => {
     }
 
     let inputSupportedPlatforms;
-    if (platform && platform !== '') {
+    if (checkInputValue(platform)) {
         inputSupportedPlatforms = platform.split(',');
     } else {
         const answer = await inquirerPrompt({

@@ -1,10 +1,31 @@
 import merge from 'deepmerge';
-import type { ConfigT } from 'metro-config';
-import { getDefaultConfig, mergeConfig } from 'metro-config';
+import type { ConfigT, InputConfigT } from 'metro-config';
+
+export type InputConfig = InputConfigT;
 
 const getApplicationId = () => {
     const appId = process.env.RNV_APP_ID;
     return appId;
+};
+
+const getSkipLinkingDeps = () => {
+    const skipLinkingEnv = process.env.RNV_SKIP_LINKING;
+    if (skipLinkingEnv) {
+        const plugins = skipLinkingEnv.split(',');
+
+        return {
+            dependencies: plugins.reduce((acc, plugin) => {
+                acc[`${plugin}`] = {
+                    platforms: {
+                        ios: null,
+                    },
+                };
+                return acc;
+            }, {} as { [plugin: string]: { platforms: { ios: null } } }),
+        };
+    }
+
+    return {};
 };
 
 const getAppFolderRelative = () => {
@@ -61,7 +82,8 @@ export const withRNVRNConfig = (config: any) => {
         },
     };
 
-    const cnf = merge(cnfRnv, config);
+    const updatedCnf = merge(cnfRnv, getSkipLinkingDeps());
+    const cnf = merge(updatedCnf, config);
     return cnf;
 };
 
@@ -136,12 +158,12 @@ export const withMetroConfig = (projectRoot: string): ConfigT => {
         },
         watchFolders: [],
     };
+    const { mergeConfig, getDefaultConfig } = require('metro-config');
 
-    return mergeConfig(
-        // @ts-expect-error: `getDefaultConfig` is not typed correctly
-        getDefaultConfig.getDefaultValues(projectRoot),
-        config
-    );
+    return mergeConfig(getDefaultConfig.getDefaultValues(projectRoot), config);
 };
 
-export { mergeConfig };
+export const mergeConfig = (config1: ConfigT, config2: InputConfig) => {
+    const mc = require('metro-config');
+    return mc.mergeConfig(config1, config2);
+};

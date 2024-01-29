@@ -110,7 +110,6 @@ export type RnvContextRuntime = {
     versionCheckCompleted: boolean;
     _skipPluginScopeWarnings: boolean;
     skipBuildHooks: boolean;
-    isFirstRunAfterNew: boolean;
     hosted: boolean;
     port: number;
     //OPTIONALS
@@ -306,6 +305,8 @@ export interface RnvContextPathObj {
     configsLocal: Array<string>;
     configsPrivate: Array<string>;
     configExists?: boolean;
+    configLocalExists?: boolean;
+    configPrivateExists?: boolean;
     pluginDirs: Array<string>;
     fontsDir: string;
     fontsDirs: Array<string>;

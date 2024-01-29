@@ -9,6 +9,7 @@ import {
     PARAMS,
     executeOrSkipTask,
     shouldSkipTask,
+    TASK_EXPORT,
 } from '@rnv/core';
 import { buildWebNext } from '../sdk';
 
@@ -23,6 +24,10 @@ export const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
     switch (platform) {
         case WEB:
         case CHROMECAST:
+            if (parentTask === TASK_EXPORT) {
+                // build task is not necessary when exporting. They do the same thing, only difference is a next.config.js config flag
+                return true;
+            }
             await buildWebNext(c);
             return;
         default:

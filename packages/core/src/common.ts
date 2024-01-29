@@ -338,9 +338,34 @@ export const getAppVersion = (c: RnvContext, platform: RnvPlatform) => {
     return output;
 };
 
+const _androidLikePlatform = (platform: RnvPlatform) =>
+    ['android', 'androidtv', 'firetv', 'androidwear'].includes(platform!);
+
+/**
+ * Retrieves the version code for the specified platform from the configuration.
+ * If the platform is Android, the version code must be a positive integer.
+ * If the version code is not found or is invalid, it falls back to a default value of '0'.
+ * Otherwise version code is generated based on the version and version code format specified in the configuration.
+ *
+ * @param c - The RnvContext object.
+ * @param platform - The RnvPlatform object.
+ * @returns The version code as a string.
+ * @throws An error if the version code is not a positive integer for Android platforms.
+ */
 export const getAppVersionCode = (c: RnvContext, platform: RnvPlatform) => {
     const versionCode = getConfigProp(c, platform, 'versionCode');
-    if (versionCode) return versionCode;
+
+    if (versionCode) {
+        // android platforms don't allow versionCode to be a string, only positive integer
+        if (_androidLikePlatform(platform)) {
+            const isValidVersionCode = Number.isInteger(Number(versionCode)) && Number(versionCode) > 0;
+            if (!isValidVersionCode) {
+                throw new Error(`'versionCode' should be a positive integer. Check your config`);
+            }
+        }
+        return versionCode;
+    }
+
     const version = getConfigProp(c, platform, 'version') || c.files.project.package?.version;
     if (!version || typeof version !== 'string') {
         logWarning('You are missing version prop in your config. will default to 0');

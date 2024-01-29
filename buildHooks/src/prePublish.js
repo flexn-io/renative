@@ -5,6 +5,7 @@ import fs from 'fs';
 const merge = require('deepmerge');
 
 const VERSIONED_PACKAGES = [
+    'app-harness',
     'rnv',
     'core',
     'build-hooks-git',
@@ -40,44 +41,47 @@ const setPackageVersions = (c, version, versionedPackages) => {
     });
 };
 
-const updateDeps = (pkgConfig, depKey, packageNamesAll, packageConfigs, semVer = '') => {
-    const { pkgFile, rnvFile } = pkgConfig;
+const updatePkgDeps = (pkgConfig, depKey, packageName, packageConfigs, semVer = '') => {
+    const { pkgFile } = pkgConfig;
 
-    packageNamesAll.forEach((v) => {
-        if (pkgFile) {
-            let hasChanges = false;
-            const currVer = pkgFile?.[depKey]?.[v];
-            if (currVer) {
-                const newVer = `${semVer}${packageConfigs[v].pkgFile?.version}`;
+    if (pkgFile) {
+        let hasChanges = false;
+        const currVer = pkgFile?.[depKey]?.[packageName];
+        if (currVer) {
+            const newVer = `${semVer}${packageConfigs[packageName].pkgFile?.version}`;
 
-                if (currVer !== newVer) {
-                    console.log('Found linked dependency to update:', v, currVer, newVer);
-                    hasChanges = true;
-                    pkgFile[depKey][v] = newVer;
-                }
-            }
-            if (hasChanges) {
-                const output = fixPackageObject(pkgFile);
-                writeFileSync(pkgConfig.pkgPath, output, 4, true);
+            if (currVer !== newVer) {
+                console.log('Found linked dependency to update:', packageName, currVer, newVer);
+                hasChanges = true;
+                pkgFile[depKey][packageName] = newVer;
             }
         }
-        if (rnvFile) {
-            let hasRnvChanges = false;
-            const templateVer = rnvFile?.templates?.[v]?.version;
-            if (templateVer) {
-                const newVer = `${semVer}${packageConfigs[v].pkgFile?.version}`;
-                if (templateVer !== newVer) {
-                    console.log('Found linked plugin dependency to update:', v, templateVer, newVer);
-                    hasRnvChanges = true;
-                    rnvFile.templates[v].version = newVer;
-                }
-            }
-            if (hasRnvChanges) {
-                const output = fixPackageObject(rnvFile);
-                writeFileSync(pkgConfig.rnvPath, output, 4, true);
+        if (hasChanges) {
+            const output = fixPackageObject(pkgFile);
+            writeFileSync(pkgConfig.pkgPath, output, 4, true);
+        }
+    }
+};
+
+const updateRenativeDeps = (pkgConfig, packageName, packageConfigs) => {
+    const { rnvFile } = pkgConfig;
+
+    if (rnvFile) {
+        let hasRnvChanges = false;
+        const templateVer = rnvFile?.templates?.[packageName]?.version;
+        if (templateVer) {
+            const newVer = `${packageConfigs[packageName].pkgFile?.version}`;
+            if (templateVer !== newVer) {
+                console.log('Found linked plugin dependency to update:', packageName, templateVer, newVer);
+                hasRnvChanges = true;
+                rnvFile.templates[packageName].version = newVer;
             }
         }
-    });
+        if (hasRnvChanges) {
+            const output = fixPackageObject(rnvFile);
+            writeFileSync(pkgConfig.rnvPath, output, 4, true);
+        }
+    }
 };
 
 export const prePublish = async (c) => {
@@ -149,10 +153,13 @@ export const prePublish = async (c) => {
 
     packageNamesAll.forEach((pkgName) => {
         const pkgConfig = packageConfigs[pkgName];
-        updateDeps(pkgConfig, 'dependencies', packageNamesAll, packageConfigs);
-        updateDeps(pkgConfig, 'devDependencies', packageNamesAll, packageConfigs);
-        updateDeps(pkgConfig, 'optionalDependencies', packageNamesAll, packageConfigs);
-        updateDeps(pkgConfig, 'peerDependencies', packageNamesAll, packageConfigs, '^');
+        packageNamesAll.forEach((v) => {
+            updatePkgDeps(pkgConfig, 'dependencies', v, packageConfigs);
+            updatePkgDeps(pkgConfig, 'devDependencies', v, packageConfigs);
+            updatePkgDeps(pkgConfig, 'optionalDependencies', v, packageConfigs);
+            updatePkgDeps(pkgConfig, 'peerDependencies', v, packageConfigs, '^');
+            updateRenativeDeps(pkgConfig, v, packageConfigs);
+        });
     });
 
     copyFileSync(path.join(c.paths.project.dir, 'README.md'), path.join(pkgDirPath, 'renative/README.md'));

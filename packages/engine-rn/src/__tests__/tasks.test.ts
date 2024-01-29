@@ -39,7 +39,11 @@ test('Execute task.rnv.start', async () => {
     const ctx = getContext();
     executeAsync.mockReturnValue(Promise.resolve('{}'));
     await taskRnvStart.fn(ctx, 'parent', originTask);
-    expect(executeAsync).toHaveBeenCalledWith(ctx, 'npx react-native start --port undefined --no-interactive', { env: {}, silent: true, stdio: 'inherit' });
+    expect(executeAsync).toHaveBeenCalledWith(ctx, 'npx react-native start --port undefined --no-interactive', {
+        env: {},
+        silent: true,
+        stdio: 'inherit',
+    });
     await expect(taskRnvRun.fn(ctx, undefined, originTask)).resolves.toEqual(true);
 });
 
@@ -47,7 +51,11 @@ test('Execute task.rnv.start with metro failure', async () => {
     const ctx = getContext();
     executeAsync.mockReturnValue(new Promise((resolve, reject) => reject('Metro failed')));
     await taskRnvStart.fn(ctx, 'parent', originTask);
-    expect(executeAsync).toHaveBeenCalledWith(ctx, 'npx react-native start --port undefined --no-interactive', { env: {}, silent: true, stdio: 'inherit' });
+    expect(executeAsync).toHaveBeenCalledWith(ctx, 'npx react-native start --port undefined --no-interactive', {
+        env: {},
+        silent: true,
+        stdio: 'inherit',
+    });
     expect(logError).toHaveBeenCalledWith('Metro failed', true);
     await expect(taskRnvRun.fn(ctx, undefined, originTask)).resolves.toEqual(true);
 });

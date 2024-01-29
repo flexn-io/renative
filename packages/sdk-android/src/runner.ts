@@ -33,15 +33,17 @@ import {
     FIRE_TV,
     DEFAULTS,
     RnvPlatform,
+    logInfo,
+    cleanFolder,
 } from '@rnv/core';
 import { parseAndroidManifestSync, injectPluginManifestSync } from './manifestParser';
 import {
     parseMainActivitySync,
     parseSplashActivitySync,
     parseMainApplicationSync,
-    injectPluginKotlinSync,
+    injectPluginJavaSync,
     parseFlipperSync,
-} from './kotlinParser';
+} from './javaParser';
 import {
     parseAppBuildGradleSync,
     parseBuildGradleSync,
@@ -99,23 +101,36 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
                 return logError('No active devices found, please connect one or remove the device argument', true);
             }
 
-            const activeString = composeDevicesArray(activeDevices);
-            const inactiveString = composeDevicesArray(inactiveDevices);
+            const activeDeviceInfoArr = composeDevicesArray(activeDevices);
+            const inactiveDeviceInfoArr = composeDevicesArray(inactiveDevices);
 
-            const choices = [...activeString, ...inactiveString];
-            const response = await inquirerPrompt({
-                name: 'chosenEmulator',
-                type: 'list',
-                message: 'What emulator would you like to start?',
-                choices,
-            });
+            const choices = [...activeDeviceInfoArr, ...inactiveDeviceInfoArr];
 
-            if (response.chosenEmulator) {
-                const dev = activeDevices.find((d) => d.name === response.chosenEmulator);
+            let chosenEmulator: string;
+
+            if (activeDeviceInfoArr.length === 1) {
+                chosenEmulator = activeDeviceInfoArr[0].value;
+                logInfo(`Found only one active emulator: ${chalk().magenta(chosenEmulator)}. Will use it.`);
+            } else if (activeDeviceInfoArr.length === 0 && inactiveDeviceInfoArr.length === 1) {
+                //If we have no active devices and only one AVD available let's just launch it.
+                chosenEmulator = inactiveDeviceInfoArr[0].value;
+                logInfo(`Found only one emulator to launch: ${chalk().magenta(chosenEmulator)}. Will use it.`);
+            } else {
+                const response = await inquirerPrompt({
+                    name: 'chosenEmulator',
+                    type: 'list',
+                    message: 'What emulator would you like to use?',
+                    choices,
+                });
+                chosenEmulator = response?.chosenEmulator;
+            }
+
+            if (chosenEmulator) {
+                const dev = activeDevices.find((d) => d.name === chosenEmulator);
                 if (dev) return dev;
 
-                await launchAndroidSimulator(c, response.chosenEmulator, true);
-                const device = await checkForActiveEmulator(c, response.chosenEmulator);
+                await launchAndroidSimulator(c, chosenEmulator, true);
+                const device = await checkForActiveEmulator(c, chosenEmulator);
                 return device;
             }
         } else {
@@ -268,7 +283,6 @@ const _checkSigningCerts = async (c: Context) => {
                     mkdirSync(c.paths.workspace.appConfig.dir);
                     const keytoolCmd = `keytool -genkey -v -keystore ${keystorePath} -alias ${keyAlias} -keypass ${keyPassword} -storepass ${storePassword} -keyalg RSA -keysize 2048 -validity 10000`;
                     await executeAsync(c, keytoolCmd, {
-                        env: process.env,
                         shell: true,
                         stdio: 'inherit',
                         silent: true,
@@ -383,6 +397,9 @@ export const configureProject = async (c: Context) => {
     mkdirSync(path.join(appFolder, 'app/src/main/assets'));
     fsWriteFileSync(path.join(appFolder, `app/src/main/assets/${outputFile}.bundle`), '{}');
 
+    // cleanup potentially existing folders from previous builds with different appId
+    await cleanFolder(path.join(appFolder, 'app/src/main/java'));
+
     // INJECTORS
     c.payload.pluginConfigAndroid = {
         pluginIncludes: "include ':app'",
@@ -412,7 +429,6 @@ export const configureProject = async (c: Context) => {
         appBuildGradleImplementations: '',
         resourceStrings: [],
         appBuildGradleAfterEvaluate: '',
-        injectHermes: '',
         kotlinVersion: '',
         googleServicesVersion: '',
         buildToolsVersion: '',
@@ -433,7 +449,7 @@ export const configureProject = async (c: Context) => {
     // PLUGINS
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         injectPluginGradleSync(c, plugin, pluginPlat, key);
-        injectPluginKotlinSync(c, pluginPlat, key, pluginPlat.package);
+        injectPluginJavaSync(c, pluginPlat, key, pluginPlat.package);
         injectPluginManifestSync();
         injectPluginXmlValuesSync(c, pluginPlat);
     });

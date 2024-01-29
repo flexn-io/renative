@@ -1,6 +1,5 @@
 import { Env } from '@rnv/core';
-import { withMetroConfig, mergeConfig } from '@rnv/sdk-react-native'
-import { InputConfigT } from 'metro-config';
+import { withMetroConfig, mergeConfig, InputConfig } from '@rnv/sdk-react-native';
 
 const path = require('path');
 const os = require('os');
@@ -31,7 +30,7 @@ function blacklist(additionalBlacklist: RegExp[]) {
     return new RegExp(`(${(additionalBlacklist || []).concat(sharedBlacklist).map(escapeRegExp).join('|')})$`);
 }
 
-export const withRNVMetro = (config: InputConfigT) => {
+export const withRNVMetro = (config: InputConfig) => {
     const projectPath = env.RNV_PROJECT_ROOT || process.cwd();
 
     const defaultConfig = withMetroConfig(projectPath);
@@ -53,7 +52,7 @@ export const withRNVMetro = (config: InputConfigT) => {
 
     const exts: string = env.RNV_EXTENSIONS || '';
 
-    const cnfRnv = {
+    const cnfRnv: InputConfig = {
         cacheStores: [
             new FileStore({
                 root: path.join(os.tmpdir(), 'metro-cache-tvos'),

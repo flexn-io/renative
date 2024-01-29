@@ -18,11 +18,11 @@ export function withRNWNext(nextConfig: NextConfig = {}): NextConfig {
                 'react-native$': 'react-native-web',
                 // Alias internal react-native modules to react-native-web
                 'react-native/Libraries/EventEmitter/RCTDeviceEventEmitter$':
-                    'react-native-web/dist/vendor/react-native/NativeEventEmitter/RCTDeviceEventEmitter',
+                    'react-native-web/dist/vendor/react-native/EventEmitter/RCTDeviceEventEmitter',
                 'react-native/Libraries/vendor/emitter/EventEmitter$':
-                    'react-native-web/dist/vendor/react-native/emitter/EventEmitter',
+                    'react-native-web/dist/vendor/react-native/vendor/emitter/EventEmitter',
                 'react-native/Libraries/EventEmitter/NativeEventEmitter$':
-                    'react-native-web/dist/vendor/react-native/NativeEventEmitter',
+                    'react-native-web/dist/vendor/react-native/EventEmitter/NativeEventEmitter',
             };
 
             config.resolve.extensions = [
@@ -58,12 +58,14 @@ export function withRNWNext(nextConfig: NextConfig = {}): NextConfig {
 
 export const withRNVNext = (config: NextConfig) => {
     const cnf = {
+        // can be overwritten by user
+        distDir: process.env.NEXT_DIST_DIR,
+        // end - can be overwritten by user
         ...config,
         images: {
             disableStaticImages: true,
             ...(config?.images || {}),
         },
-        distDir: process.env.NEXT_DIST_DIR,
         webpack: (cfg: Configuration, props: any) => {
             const { isServer } = props;
 
@@ -81,6 +83,11 @@ export const withRNVNext = (config: NextConfig) => {
             return cfg;
         },
     };
+
+    if (process.env.NEXT_EXPORT === 'true') {
+        cnf.output = 'export';
+    }
+
     let transModules: string[] = [];
 
     const cnf1 = withRNWNext(withFonts(withImages(cnf)));

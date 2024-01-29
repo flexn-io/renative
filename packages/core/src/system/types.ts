@@ -8,7 +8,6 @@ export type ResolveOptions = {
 };
 
 export type ExecOptions = {
-    interactive?: boolean;
     silent?: boolean;
     stdio?: 'pipe' | 'inherit' | 'ignore';
     shell?: boolean;
@@ -26,7 +25,6 @@ export type ExecOptions = {
     detached?: boolean;
     cwd?: string;
     timeout?: number;
-    printableEnvKeys?: Array<string>;
 };
 
 export type ExecCallback = (result: unknown, isError: boolean) => void;

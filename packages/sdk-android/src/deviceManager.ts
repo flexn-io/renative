@@ -26,6 +26,8 @@ import {
     waitForExecCLI,
     inquirerPrompt,
     RnvPlatform,
+    executeAsync,
+    ExecOptionsPresets,
 } from '@rnv/core';
 import { CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from './constants';
 
@@ -55,8 +57,12 @@ export const launchAndroidSimulator = async (
     target: true | { name: string } | string,
     isIndependentThread = false
 ) => {
-    logTask('launchAndroidSimulator', `target:${target} independentThread:${!!isIndependentThread}`);
+    logTask(
+        'launchAndroidSimulator',
+        `target:${typeof target === 'object' ? target?.name : target} independentThread:${!!isIndependentThread}`
+    );
     let newTarget: { name: string } | string;
+
     if (target === true) {
         const {
             program: { device },
@@ -68,7 +74,7 @@ export const launchAndroidSimulator = async (
         const response = await inquirerPrompt({
             name: 'chosenEmulator',
             type: 'list',
-            message: 'What emulator would you like to start?',
+            message: 'What emulator would you like to launch?',
             choices,
         });
         newTarget = response.chosenEmulator;
@@ -78,11 +84,13 @@ export const launchAndroidSimulator = async (
 
     if (newTarget) {
         const actualTarget = typeof newTarget === 'string' ? newTarget : newTarget.name;
+
         if (isIndependentThread) {
-            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`, {
-                detached: isIndependentThread,
-                silent: true,
-            }).catch((err) => {
+            executeAsync(
+                c,
+                `${c.cli[CLI_ANDROID_EMULATOR]} -avd ${actualTarget}`,
+                ExecOptionsPresets.FIRE_AND_FORGET
+            ).catch((err) => {
                 if (err.includes && err.includes('WHPX')) {
                     logWarning(err);
                     return logError(
@@ -94,10 +102,12 @@ export const launchAndroidSimulator = async (
             });
             return Promise.resolve();
         }
-        return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`, {
-            detached: isIndependentThread,
-            silent: true,
-        });
+
+        return executeAsync(
+            c,
+            `${c.cli[CLI_ANDROID_EMULATOR]} -avd ${actualTarget}`,
+            ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY
+        );
     }
     return Promise.reject('No simulator -t target name specified!');
 };
@@ -118,7 +128,7 @@ export const listAndroidTargets = async (c: RnvContext) => {
     return devices;
 };
 
-type DeviceInfo = { key: string; name: string; value: string; icon: string };
+export type DeviceInfo = { key: string; name: string; value: string; icon: string };
 
 const getDeviceIcon = (device: AndroidDevice) => {
     const { isTV, isTablet, udid, avdConfig, isWear } = device;
@@ -608,9 +618,7 @@ const _createEmulator = (c: RnvContext, apiVersion: string, emuPlatform: string,
                 c,
                 CLI_ANDROID_AVDMANAGER,
                 `create avd -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};x86"`,
-                {
-                    interactive: true,
-                }
+                ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER
             )
         )
         .catch((e) => logError(e, true));
@@ -635,7 +643,7 @@ export const checkForActiveEmulator = (c: RnvContext, emulatorName?: string) =>
         }
 
         let attempts = 1;
-        const maxAttempts = isSystemWin ? 20 : 10;
+        const maxAttempts = isSystemWin ? 25 : 10;
         let running = false;
         const poll = setInterval(() => {
             // Prevent the interval from running until enough promises return to make it stop or we get a result
@@ -645,13 +653,11 @@ export const checkForActiveEmulator = (c: RnvContext, emulatorName?: string) =>
                     .then(async (v) => {
                         const simsOnly = v.filter((device) => !device.isDevice);
                         logDebug('Available devices after filtering', simsOnly);
-                        if (emulatorName) {
-                            const found = simsOnly.find((v) => v.name === emulatorName);
-                            if (found) {
-                                logSuccess(`Found active emulator! ${chalk().white(found.udid)}. Will use it`);
-                                clearInterval(poll);
-                                resolve(found);
-                            }
+                        const found = emulatorName && simsOnly.find((v) => v.name === emulatorName);
+                        if (found) {
+                            logSuccess(`Found active emulator! ${chalk().white(found.udid)}. Will use it`);
+                            clearInterval(poll);
+                            resolve(found);
                         } else if (simsOnly.length > 0) {
                             logSuccess(`Found active emulator! ${chalk().white(simsOnly[0].udid)}. Will use it`);
                             clearInterval(poll);

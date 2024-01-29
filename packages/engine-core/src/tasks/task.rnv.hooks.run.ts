@@ -29,10 +29,15 @@ export const taskRnvHooksRun: RnvTaskFn = async (c, _parentTask, originTask) => 
 
     let hookName = c.program?.exeMethod;
     let showHookList = false;
+
     if (!hookName || hookName === true) {
         showHookList = true;
     } else if (!c.buildHooks[hookName]) {
         showHookList = true;
+    }
+
+    if (Object.keys(c.buildHooks).length === 0) {
+        return true;
     }
 
     if (showHookList) {

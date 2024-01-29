@@ -18,6 +18,7 @@ export const withDefaultRNVBabel = (cnf: BabelConfig): BabelConfig => ({
 export const withRNVBabel =
     (cnf: BabelConfig) =>
     (api: BabelApi): BabelConfig => {
+        api.cache(true);
         if (process.env.RNV_ENGINE_PATH && !fs.existsSync(process.env.RNV_ENGINE_PATH)) {
             logInfo(`Path to engine cannot be resolved: ${process.env.RNV_ENGINE_PATH}. Will use default one`);
             api.cache(false);

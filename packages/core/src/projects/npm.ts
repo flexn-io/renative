@@ -28,6 +28,8 @@ export const checkNpxIsInstalled = async () => {
 
 export const areNodeModulesInstalled = () => !!doResolve('resolve', false);
 
+type NpmVersion = { name: string; value: string };
+
 export const listAndSelectNpmVersion = async (c: RnvContext, npmPackage: string) => {
     const templateVersionsStr = await executeAsync(c, `npm view ${npmPackage} versions`);
     const versionArr = templateVersionsStr.replace(/\r?\n|\r|\s|'|\[|\]/g, '').split(',');
@@ -46,9 +48,11 @@ export const listAndSelectNpmVersion = async (c: RnvContext, npmPackage: string)
     });
 
     versionArr.reverse();
-    const validVersions = versionArr.map((v: string) => ({ name: v, value: v }));
+    const validVersions: NpmVersion[] = versionArr.map((v: string) => ({ name: v, value: v }));
 
     let recommendedVersion;
+    const validVersionsStandard: NpmVersion[] = [];
+    const validVersionsHead: NpmVersion[] = [];
     validVersions.forEach((item) => {
         let matchStr = '';
         const matchArr: Array<string> = [];
@@ -58,16 +62,21 @@ export const listAndSelectNpmVersion = async (c: RnvContext, npmPackage: string)
             }
         });
         if (matchArr.length) {
-            matchStr = ` (HEAD: ${matchArr.join(', ')})`;
+            matchStr = ` (@${matchArr.join(', ')})`;
             item.name = `${item.value}${matchStr}`;
             if (matchArr[0] === 'latest') {
                 recommendedVersion = item;
             }
+            validVersionsHead.push(item);
+        } else {
+            validVersionsStandard.push(item);
         }
     });
     if (!recommendedVersion) {
         recommendedVersion = validVersions[0];
     }
+
+    const validVersionsCombined = validVersionsHead.concat(validVersionsStandard);
 
     const { inputTemplateVersion } = await inquirerPrompt({
         name: 'inputTemplateVersion',
@@ -75,7 +84,7 @@ export const listAndSelectNpmVersion = async (c: RnvContext, npmPackage: string)
         message: `What ${npmPackage} version to use?`,
         default: recommendedVersion.value,
         loop: false,
-        choices: validVersions,
+        choices: validVersionsCombined,
     });
 
     return inputTemplateVersion;

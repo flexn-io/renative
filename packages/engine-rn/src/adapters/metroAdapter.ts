@@ -1,6 +1,5 @@
 import { Env } from '@rnv/core';
-import { withMetroConfig, mergeConfig } from '@rnv/sdk-react-native'
-import { InputConfigT } from 'metro-config';
+import { withMetroConfig, mergeConfig, InputConfig } from '@rnv/sdk-react-native';
 
 // TODO merge with packages/engine-rn-macos/src/adapters/metroAdapter.ts and place in @rnv/sdk-react-native
 const path = require('path');
@@ -30,7 +29,7 @@ function blacklist(additionalBlacklist: RegExp[]) {
     return new RegExp(`(${(additionalBlacklist || []).concat(sharedBlacklist).map(escapeRegExp).join('|')})$`);
 }
 
-export const withRNVMetro = (config: InputConfigT): InputConfigT => {
+export const withRNVMetro = (config: InputConfig): InputConfig => {
     const projectPath = env.RNV_PROJECT_ROOT || process.cwd();
 
     const defaultConfig = withMetroConfig(projectPath);

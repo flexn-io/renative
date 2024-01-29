@@ -6,7 +6,6 @@ import {
     getConfigProp,
     confirmActiveBundler,
     getPlatformBuildDir,
-    fsExistsSync,
     copyFolderContentsRecursiveSync,
     chalk,
     logTask,
@@ -15,13 +14,13 @@ import {
     logRaw,
     logSummary,
     logSuccess,
-    generateEnvVars,
     copyAssetsFolder,
-    parsePlugins,
-    getModuleConfigs,
     RnvPlatform,
+    CoreEnvVars,
+    ExecOptionsPresets,
 } from '@rnv/core';
 import { getDevServerHost, openBrowser, waitForHost } from '@rnv/sdk-utils';
+import { EnvVars } from './env';
 
 export const configureNextIfRequired = async (c: RnvContext) => {
     logTask('configureNextIfRequired');
@@ -105,107 +104,55 @@ const _runWebBrowser = (
         return resolve();
     });
 
-const getOutputDir = (c: RnvContext) => {
-    const distDir = getConfigProp(c, c.platform, 'outputDir');
-    return distDir || `platformBuilds/${c.runtime.appId}_${c.platform}/.next`;
-};
+export const getExportDir = (c: RnvContext) => {
+    const exportDir = getConfigProp(c, c.platform, 'exportDir');
+    const maybeAbsolutePath = exportDir || path.join(getPlatformBuildDir(c)!, 'output');
 
-const getExportDir = (c: RnvContext) => {
-    const outputDir = getConfigProp(c, c.platform, 'exportDir');
-    return outputDir || path.join(getPlatformBuildDir(c)!, 'output');
-};
-
-const _checkPagesDir = async (c: RnvContext) => {
-    const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
-    const distDir = getOutputDir(c);
-    if (pagesDir) {
-        const pagesDirPath = path.join(c.paths.project.dir, pagesDir);
-        if (!fsExistsSync(pagesDirPath)) {
-            logWarning(
-                `You configured custom ${c.platform}pagesDir: ${chalk().white(
-                    pagesDir
-                )} in your renative.json but it is missing at ${chalk().red(pagesDirPath)}`
-            );
-        }
-        return { NEXT_PAGES_DIR: pagesDir, NEXT_DIST_DIR: distDir };
+    // if path is absolute, make it relative to project root. Next 14 doesn't seem to like absolute paths
+    if (path.isAbsolute(maybeAbsolutePath)) {
+        return path.relative(c.paths.project.dir, maybeAbsolutePath);
     }
-    const fallbackPagesDir = 'src/app';
-    logWarning(`You're missing ${c.platform}.pagesDir config. Defaulting to '${fallbackPagesDir}'`);
-
-    const fallbackPagesDirPath = path.join(c.paths.project.dir, fallbackPagesDir);
-    if (!fsExistsSync(fallbackPagesDirPath)) {
-        logWarning(`Folder ${chalk().white(
-            fallbackPagesDir
-        )} is missing. make sure your entry code is located there in order for next to work correctly!
-Alternatively you can configure custom entry folder via ${c.platform}.pagesDir in renative.json`);
-    }
-    return { NEXT_PAGES_DIR: 'src/app', NEXT_DIST_DIR: distDir };
-};
-
-export const getTranspileModules = (c: RnvContext) => {
-    const transModules = getConfigProp(c, c.platform, 'nextTranspileModules') || [];
-
-    parsePlugins(
-        c,
-        c.platform,
-        (plugin, pluginPlat, key) => {
-            const { webpackConfig } = plugin;
-            if (webpackConfig) {
-                transModules.push(key);
-                if (webpackConfig.nextTranspileModules?.length) {
-                    webpackConfig.nextTranspileModules.forEach((module) => {
-                        if (module.startsWith('.')) {
-                            transModules.push(path.join(c.paths.project.dir, module));
-                        } else {
-                            transModules.push(module);
-                        }
-                    });
-                }
-            }
-        },
-        true
-    );
-    return transModules;
+    return maybeAbsolutePath;
 };
 
 export const buildWebNext = async (c: RnvContext) => {
     logTask('buildWebNext');
 
-    const envExt = await _checkPagesDir(c);
-
     await executeAsync(c, 'npx next build', {
-        ...process.env,
         env: {
-            ...envExt,
-            ...generateEnvVars(c, getModuleConfigs(c), getTranspileModules(c)),
+            ...CoreEnvVars.BASE(),
+            ...CoreEnvVars.RNV_EXTENSIONS(),
+            ...EnvVars.RNV_NEXT_TRANSPILE_MODULES(),
+            ...EnvVars.NEXT_BASE(),
         },
     });
-    logSuccess(`Your build is located in ${chalk().cyan(getOutputDir(c))} .`);
+    logSuccess(`Your build is located in ${chalk().cyan(getExportDir(c))} .`);
     return true;
 };
 
 export const runWebDevServer = async (c: RnvContext) => {
     logTask('runWebDevServer');
-    const env = getConfigProp(c, c.platform, 'environment');
-    const envExt = await _checkPagesDir(c);
 
     const devServerHost = getDevServerHost(c);
 
     const url = chalk().cyan(`http://${devServerHost}:${c.runtime.port}`);
     logRaw(`
-
 Dev server running at: ${url}
-
 `);
 
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
+    const opts = !c.program?.json
+        ? ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER
+        : ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY;
     return executeAsync(c, `npx next ${bundleAssets ? 'start' : 'dev'} --port ${c.runtime.port}`, {
         env: {
-            NODE_ENV: env || 'development',
-            ...envExt,
-            ...generateEnvVars(c, getModuleConfigs(c), getTranspileModules(c)),
+            ...CoreEnvVars.BASE(),
+            ...CoreEnvVars.RNV_EXTENSIONS(),
+            ...EnvVars.RNV_NEXT_TRANSPILE_MODULES(),
+            ...EnvVars.NEXT_BASE(),
+            ...EnvVars.NODE_ENV(),
         },
-        interactive: !c.program?.json,
+        ...opts,
     });
 };
 
@@ -221,24 +168,19 @@ export const deployWebNext = () => {
 
 export const exportWebNext = async (c: RnvContext) => {
     logTask('exportWebNext');
-    // const { platform } = c;
 
-    logTask('_exportNext');
     const exportDir = getExportDir(c);
-    const env = getConfigProp(c, c.platform, 'environment');
-    const envExt = await _checkPagesDir(c);
 
-    await executeAsync(c, `npx next export --outdir ${exportDir}`, {
-        ...process.env,
+    await executeAsync(c, `npx next build`, {
         env: {
-            NODE_ENV: env || 'development',
-            ...envExt,
-            ...generateEnvVars(c, getModuleConfigs(c), getTranspileModules(c)),
+            ...CoreEnvVars.BASE(),
+            ...CoreEnvVars.RNV_EXTENSIONS(),
+            ...EnvVars.RNV_NEXT_TRANSPILE_MODULES(),
+            ...EnvVars.NEXT_BASE(),
+            ...EnvVars.NODE_ENV(),
         },
     });
     logSuccess(`Your export is located in ${chalk().cyan(exportDir)} .`);
 
-    // DEPRECATED: custom deployers moved to external packages
-    // await selectWebToolAndExport(c, platform);
     return true;
 };

@@ -29,10 +29,11 @@ const populateLinkingInfo = (ctx: RnvContext) => {
     //TODO: find better way to deal with linking?
     ctx.paths.IS_LINKED = path.dirname(ctx.paths.rnv.dir).split(path.sep).pop() === 'packages';
 
-    const npxLoc = '/node_modules/.bin/rnv';
+    const npxLoc = isSystemWin ? '\\rnv\\bin\\index.js' : '/node_modules/.bin/rnv';
     const rnvPath = process.argv[1];
     const rnvExecWorkspaceRoot = rnvPath.split(npxLoc)[0];
-    const isNpxMode = ctx.paths.project.dir.includes(rnvExecWorkspaceRoot);
+
+    const isNpxMode = path.join(ctx.paths.project.dir, 'node_modules').includes(rnvExecWorkspaceRoot);
 
     ctx.paths.IS_NPX_MODE = isNpxMode;
 };

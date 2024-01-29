@@ -84,6 +84,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode {{VERSION_CODE}}
         versionName "{{VERSION_NAME}}"
+{{PLUGIN_ANDROID_DEFAULT_CONFIG}}        
     }
 
 {{PLUGIN_SPLITS}}
@@ -129,6 +130,9 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+{{PLUGIN_IMPLEMENTATIONS}}
 }
 
 apply from: file("{{PATH_REACT_NATIVE_CLI_ANDROID}}/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+
+{{PLUGIN_AFTER_EVALUATE}}

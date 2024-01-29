@@ -4,7 +4,6 @@ import {
     getAppFolder,
     getConfigProp,
     getEntryFile,
-    generateEnvVars,
     isSystemWin,
     chalk,
     logTask,
@@ -14,7 +13,10 @@ import {
     RnvContext,
     DEFAULTS,
     RnvPlatform,
+    CoreEnvVars,
+    ExecOptionsPresets,
 } from '@rnv/core';
+import { EnvVars } from './env';
 
 export const packageReactNativeAndroid = async (c: RnvContext) => {
     logTask('packageAndroid');
@@ -66,7 +68,15 @@ export const packageReactNativeAndroid = async (c: RnvContext) => {
                 `${outputFile}.bundle.map`
             )}`;
         }
-        await executeAsync(c, cmd, { env: { ...generateEnvVars(c) } });
+
+        await executeAsync(c, cmd, {
+            env: {
+                ...CoreEnvVars.BASE(),
+                ...CoreEnvVars.RNV_EXTENSIONS(),
+                ...EnvVars.RNV_REACT_NATIVE_PATH(),
+                ...EnvVars.RNV_APP_ID(),
+            },
+        });
 
         logInfo('ANDROID PACKAGE FINISHED');
         return true;
@@ -96,20 +106,14 @@ export const runReactNativeAndroid = async (
 
     return executeAsync(c, command, {
         env: {
-            RCT_METRO_PORT: c.runtime.port,
-            ...generateEnvVars(c, undefined, undefined, { exludeEnvKeys: ['RNV_EXTENSIONS'] }),
+            ...CoreEnvVars.BASE(),
+            ...EnvVars.RCT_METRO_PORT(),
+            ...EnvVars.RNV_REACT_NATIVE_PATH(),
+            ...EnvVars.RNV_APP_ID(),
         },
         cwd: appFolder,
         //This is required to make rn cli logs visible in rnv executed terminal
-        interactive: true,
-        stdio: 'inherit',
-        printableEnvKeys: [
-            'RNV_REACT_NATIVE_PATH',
-            'RNV_APP_ID',
-            'RNV_PROJECT_ROOT',
-            'RNV_APP_BUILD_DIR',
-            'RNV_ENGINE_PATH',
-        ],
+        ...ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER,
     });
 };
 
@@ -122,17 +126,23 @@ export const buildReactNativeAndroid = async (c: RnvContext) => {
     const outputAab = getConfigProp(c, platform, 'aab', false);
     const extraGradleParams = getConfigProp(c, platform, 'extraGradleParams', '');
 
-    let command = `npx react-native build-android --mode=${signingConfig} --no-packager --tasks ${outputAab ? 'bundle' : 'assemble'}${signingConfig}`;
+    let command = `npx react-native build-android --mode=${signingConfig} --no-packager --tasks ${
+        outputAab ? 'bundle' : 'assemble'
+    }${signingConfig}`;
 
     if (extraGradleParams) {
         command += ` --extra-params ${extraGradleParams}`;
     }
 
-    await executeAsync(c, command, { 
-        cwd: appFolder, 
+    await executeAsync(c, command, {
+        cwd: appFolder,
         env: {
-            ...generateEnvVars(c),
-        }, 
+            ...CoreEnvVars.BASE(),
+            //NOTE: we need extensions here because rn will trigger packaging step in release mode
+            ...CoreEnvVars.RNV_EXTENSIONS(),
+            ...EnvVars.RNV_REACT_NATIVE_PATH(),
+            ...EnvVars.RNV_APP_ID(),
+        },
     });
 
     logSuccess(

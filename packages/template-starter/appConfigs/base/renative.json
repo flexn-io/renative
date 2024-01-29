@@ -134,7 +134,6 @@
         },
         "android": {
             "entryFile": "index",
-            "reactNativeEngine": "hermes",
             "includedPermissions": [
                 "INTERNET"
             ],
@@ -145,7 +144,7 @@
                 },
                 "test": {
                     "signingConfig": "Debug",
-                    "bundleAssets": true
+                    "bundleAssets": false
                 },
                 "canary": {
                     "signingConfig": "Release",
