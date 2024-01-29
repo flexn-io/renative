@@ -3243,7 +3243,6 @@
                 "package": "ui.photoeditor.RNPhotoEditorPackage"
             },
             "ios": {
-                "path": "{{PLUGIN_ROOT}}/ios",
                 "podName": "RNPhotoEditor",
                 "git": "https://github.com/prscX/photo-editor",
                 "commit": "4924e9ec984d25d03644e58aa148282642171de9",
