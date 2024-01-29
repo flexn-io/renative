@@ -1857,28 +1857,38 @@
                 "modulePaths": true
             }
         },
-        "react-native-carplay":{
+        "react-native-carplay": {
             "ios": {
-             "templateXcode": {
-                 "AppDelegate_h": {
-                     "appDelegateImports": ["CarPlay/CarPlay.h"],
-                     "appDelegateExtensions": ["UIApplicationDelegate", "CPApplicationDelegate"]
-                 },
-                 "AppDelegate_mm": {
-                     "appDelegateImports": ["RNCarPlay.h"],
-                     "appDelegateMethods": {
-                         "application": {
-                             "didConnectCarInterfaceController": ["[RNCarPlay connectWithInterfaceController:interfaceController window:window];"],
-                             "didDisconnectCarInterfaceController": ["[RNCarPlay disconnect];"]
-                         }
-                     }
- 
-                 }
-             } ,
-             "podName": "react-native-carplay"
+                "templateXcode": {
+                    "AppDelegate_h": {
+                        "appDelegateImports": [
+                            "CarPlay/CarPlay.h"
+                        ],
+                        "appDelegateExtensions": [
+                            "UIApplicationDelegate",
+                            "CPApplicationDelegate"
+                        ]
+                    },
+                    "AppDelegate_mm": {
+                        "appDelegateImports": [
+                            "RNCarPlay.h"
+                        ],
+                        "appDelegateMethods": {
+                            "application": {
+                                "didConnectCarInterfaceController": [
+                                    "[RNCarPlay connectWithInterfaceController:interfaceController window:window];"
+                                ],
+                                "didDisconnectCarInterfaceController": [
+                                    "[RNCarPlay disconnect];"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "podName": "react-native-carplay"
             },
             "version": "2.3.0"
-         },
+        },
         "react-native-circular-progress": {
             "version": "1.3.0",
             "webpack": {
@@ -3205,19 +3215,24 @@
         },
         "react-native-photo-editor": {
             "android": {
-                "AndroidManifest": {
-                    "children": [
-                        {
-                            "android:name": ".MainApplication",
-                            "children": [
-                                {
-                                    "android:name": "com.ahmedadeltito.photoeditor.PhotoEditorActivity",
-                                    "tag": "activity"
-                                }
-                            ],
-                            "tag": "application"
-                        }
-                    ]
+                "templateAndroid": {
+                    "AndroidManifest_xml": {
+                        "tag": "manifest",
+                        "android:name": "",
+                        "children": [
+                            {
+                                "tag": "application",
+                                "android:name": ".MainApplication",
+                                "children": [
+                                    {
+                                        "tag": "activity",
+                                        "android:name": "com.ahmedadeltito.photoeditor.PhotoEditorActivity",
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    }
                 },
                 "package": "ui.photoeditor.RNPhotoEditorPackage"
             },
@@ -3229,10 +3244,10 @@
             },
             "ios": {
                 "path": "{{PLUGIN_ROOT}}/ios",
-                "podName": "RNPhotoEditor"
-            },
-            "pluginDependencies": {
-                "iOSPhotoEditor": "source:rnv"
+                "podName": "RNPhotoEditor",
+                "git": "https://github.com/prscX/photo-editor",
+                "commit": "4924e9ec984d25d03644e58aa148282642171de9",
+                "buildType": "dynamic"
             },
             "version": "1.0.5"
         },
@@ -3515,7 +3530,6 @@
                         ]
                     }
                 },
-                
                 "podName": "react-native-splash-screen"
             },
             "version": "3.3.0"

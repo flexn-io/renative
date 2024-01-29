@@ -85,7 +85,6 @@ export const parsePodFile = async (c: Context, platform: RnvPlatform) => {
     const podfile = templateXcode?.Podfile;
     if (podfile) {
         const { injectLines, post_install, header, sources } = podfile;
-        console.log('podfile', podfile);
         // INJECT LINES
         if (injectLines) {
             injectLines.forEach((v) => {
