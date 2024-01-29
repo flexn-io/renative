@@ -95,15 +95,7 @@
                 }
             }
         },
-        "react-native-photo-editor": {
-            "version": "1.0.13",
-            "ios": {
-                "podName": "iOSPhotoEditor",
-                "git": "https://github.com/prscX/photo-editor",
-                "commit": "4924e9ec984d25d03644e58aa148282642171de9",
-                "buildType": "dynamic"
-            }
-        },
+        "react-native-photo-editor": "source:rnv",
         "react-native": {
             "android": {
                 "implementation": "// TEST"
