@@ -44,7 +44,7 @@ export const taskRnvTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) 
         }
         const workspaceTarget = c.files.workspace.config?.defaultTargets?.[platform];
 
-        if (projectTarget) {
+        if (workspaceTarget) {
             options.push({ name: `${workspaceTarget} (global default)`, value: workspaceTarget });
         }
 
