@@ -54,33 +54,43 @@ export const logWelcome = () => {
     const ctx = getContext();
     // prettier-ignore
     let str = _defaultColor(`
-┌──────────────────────────────────────────────────────────────────────────────┐
-│                                                                              │
-│        ${currentChalk.red('██████╗')} ███████╗${currentChalk.red('███╗   ██╗')} █████╗ ████████╗██╗${currentChalk.red('██╗   ██╗')}███████╗       │
-│        ${currentChalk.red('██╔══██╗')}██╔════╝${currentChalk.red('████╗  ██║')}██╔══██╗╚══██╔══╝██║${currentChalk.red('██║   ██║')}██╔════╝       │
-│        ${currentChalk.red('██████╔╝')}█████╗  ${currentChalk.red('██╔██╗ ██║')}███████║   ██║   ██║${currentChalk.red('██║   ██║')}█████╗         │
-│        ${currentChalk.red('██╔══██╗')}██╔══╝  ${currentChalk.red('██║╚██╗██║')}██╔══██║   ██║   ██║${currentChalk.red('╚██╗ ██╔╝')}██╔══╝         │
-│        ${currentChalk.red('██║  ██║')}███████╗${currentChalk.red('██║ ╚████║')}██║  ██║   ██║   ██║${currentChalk.red(' ╚████╔╝ ')}███████╗       │
-│        ${currentChalk.red('╚═╝  ╚═╝')}╚══════╝${currentChalk.red('╚═╝  ╚═══╝')}╚═╝  ╚═╝   ╚═╝   ╚═╝${currentChalk.red('  ╚═══╝  ')}╚══════╝       │
-│                                                                              │
+┌─────────────────────────────────────────────────────┐
+│  ${currentChalk.cyan(' _____      _   _       _   _   ')}                   │
+│  ${currentChalk.cyan('|  __ \\    | \\ | |     | | (_)  ')}                   │    
+│  ${currentChalk.cyan('| |__) |___|  \\| | __ _| |_ ___   _____   ')}         │
+│  ${currentChalk.cyan('|  _  // _ | . ` |/ _` | __| \\ \\ / / _ \\ ')}          │
+│  ${currentChalk.cyan('| | \\ |  __| |\\  | (_| | |_| |\\ V |  __/    ')}       │
+│  ${currentChalk.cyan('|_|  \\_\\___|_| \\_|\\__,_|\\__|_| \\_/ \\___|')} 🚀        │
 `);
+    // prettier-ignore
+    //     let str = _defaultColor(`
+    // ┌──────────────────────────────────────────────────────────────────────────────┐
+    // │                                                                              │
+    // │        ${currentChalk.red('██████╗')} ███████╗${currentChalk.red('███╗   ██╗')} █████╗ ████████╗██╗${currentChalk.red('██╗   ██╗')}███████╗       │
+    // │        ${currentChalk.red('██╔══██╗')}██╔════╝${currentChalk.red('████╗  ██║')}██╔══██╗╚══██╔══╝██║${currentChalk.red('██║   ██║')}██╔════╝       │
+    // │        ${currentChalk.red('██████╔╝')}█████╗  ${currentChalk.red('██╔██╗ ██║')}███████║   ██║   ██║${currentChalk.red('██║   ██║')}█████╗         │
+    // │        ${currentChalk.red('██╔══██╗')}██╔══╝  ${currentChalk.red('██║╚██╗██║')}██╔══██║   ██║   ██║${currentChalk.red('╚██╗ ██╔╝')}██╔══╝         │
+    // │        ${currentChalk.red('██║  ██║')}███████╗${currentChalk.red('██║ ╚████║')}██║  ██║   ██║   ██║${currentChalk.red(' ╚████╔╝ ')}███████╗       │
+    // │        ${currentChalk.red('╚═╝  ╚═╝')}╚══════╝${currentChalk.red('╚═╝  ╚═══╝')}╚═╝  ╚═╝   ╚═╝   ╚═╝${currentChalk.red('  ╚═══╝  ')}╚══════╝       │
+    // │                                                                              │
+    // `);
 
     if (ctx.files?.rnv?.package?.version) {
         ctx.rnvVersion = ctx.files.rnv.package.version;
-        str += printIntoBox(`      Version: ${currentChalk.green(ctx.rnvVersion)}`);
+        str += printIntoBox(`Version: ${currentChalk.green(ctx.rnvVersion)}`);
         if (ctx.rnvVersion?.includes?.('alpha')) {
-            str += printIntoBox(`      ${currentChalk.yellow('WARNING: this is a prerelease version.')}`);
+            str += printIntoBox(` ${currentChalk.yellow('WARNING: this is a prerelease version.')}`);
         }
     }
-    str += printIntoBox(`      ${currentChalk.grey('https://renative.org')}`);
-    str += printIntoBox(`      ${ICN_ROCKET} ${currentChalk.yellow('Firing up!...')}`);
-    str += printIntoBox(`      $ ${currentChalk.cyan(getCurrentCommand(true))}`);
+    // str += printIntoBox(`${currentChalk.grey('https://renative.org')}`);
+    // str += printIntoBox(`${ICN_ROCKET} ${currentChalk.yellow('Firing up!...')}`);
+    // str += printIntoBox(`$ ${currentChalk.cyan(getCurrentCommand(true))}`);
     if (ctx.timeStart) {
-        str += printIntoBox(`      Start Time: ${currentChalk.grey(ctx.timeStart.toLocaleString())}`);
+        str += printIntoBox(`Start Time: ${currentChalk.grey(ctx.timeStart.toLocaleString())}`);
     }
-    str += printIntoBox('');
-    str += printBoxEnd();
-    str += '\n';
+    // str += printIntoBox('');
+    str += _defaultColor('└─────────────────────────────────────────────────────┘');
+    // str += '\n';
 
     console.log(str);
 };
@@ -535,7 +545,7 @@ export const printIntoBox = (str: string) => {
 
     const strLenDiff = str.length - stripAnsi(str).length;
     output += _defaultColor(str);
-    const maxLen = 76;
+    const maxLen = 51;
     const len = maxLen - (str.length - strLenDiff);
     if (len > 0) {
         for (let i = 0; i < len; i++) {
@@ -549,6 +559,8 @@ export const printIntoBox = (str: string) => {
     return output;
 };
 
+const boxPadding = 60;
+
 export const printArrIntoBox = (arr: Array<string>, prefix = '') => {
     if (_jsonOnly) return arr.join(',');
 
@@ -556,7 +568,7 @@ export const printArrIntoBox = (arr: Array<string>, prefix = '') => {
     let stringArr = '';
     let i = 0;
     arr.forEach((v) => {
-        const l = i === 0 ? 60 - _defaultColor(prefix).length : 60;
+        const l = i === 0 ? boxPadding - _defaultColor(prefix).length : boxPadding;
         if (stringArr.length > l) {
             if (i === 0 && prefix.length) {
                 output += printIntoBox(`${_defaultColor(prefix)}${_defaultColor(stringArr)}`);
