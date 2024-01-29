@@ -8,6 +8,15 @@ const getApplicationId = () => {
     return appId;
 };
 
+type InactivePluginConfig = {
+    platforms: {
+        ios: null;
+        android: null;
+        macos: null;
+        windows: null;
+    };
+};
+
 const getSkipLinkingDeps = () => {
     const skipLinkingEnv = process.env.RNV_SKIP_LINKING;
 
@@ -18,11 +27,15 @@ const getSkipLinkingDeps = () => {
             dependencies: plugins.reduce((acc, plugin) => {
                 acc[plugin] = {
                     platforms: {
+                        // Add all platforms
                         ios: null,
+                        android: null,
+                        macos: null,
+                        windows: null,
                     },
                 };
                 return acc;
-            }, {} as { [plugin: string]: { platforms: { ios: null } } }),
+            }, {} as { [plugin: string]: InactivePluginConfig }),
         };
 
         return result;
