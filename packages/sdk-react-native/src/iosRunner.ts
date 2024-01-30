@@ -225,10 +225,10 @@ export const runCocoaPods = async (c: RnvContext) => {
                         cwd: appFolder,
                         env,
                     });
+                } else {
+                    // throw the original error if it's not a retryable one
+                    throw e;
                 }
-
-                // throw the original error if it's not a retryable one
-                throw e;
             }
         }
 
