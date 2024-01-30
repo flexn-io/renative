@@ -84,7 +84,7 @@ android {
         applicationId "{{APPLICATION_ID}}"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-       versionCode {{VERSION_CODE}}
+        versionCode {{VERSION_CODE}}
         versionName "{{VERSION_NAME}}"
     }
 
@@ -119,7 +119,6 @@ android {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
-    implementation("com.facebook.react:flipper-integration")
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
