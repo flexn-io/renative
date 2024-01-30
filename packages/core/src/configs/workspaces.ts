@@ -6,7 +6,7 @@ import path from 'path';
 import { chalk, logTask, logDebug, logInfo, logWarning } from '../logger';
 import { RnvContext } from '../context/types';
 import { generateOptions, inquirerPrompt } from '../api';
-import { ConfigFileWorkspaces } from '../schema/configFiles/types';
+import { ConfigFileWorkspace, ConfigFileWorkspaces } from '../schema/configFiles/types';
 
 export const createWorkspace = async (c: RnvContext, workspaceID: string, workspacePath: string) => {
     const cnf = c.files.rnv.configWorkspaces;
@@ -122,5 +122,11 @@ export const loadWorkspacesConfigSync = () => {
             },
         };
         writeFileSync(c.paths.rnv.configWorkspaces, c.files.rnv.configWorkspaces);
+    }
+
+    const defWsPath = c.paths.GLOBAL_RNV_CONFIG;
+
+    if (defWsPath && fsExistsSync(defWsPath)) {
+        c.files.defaultWorkspace.config = readObjectSync<ConfigFileWorkspace>(defWsPath) || {};
     }
 };

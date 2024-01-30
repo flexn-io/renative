@@ -372,7 +372,8 @@ export const parsePlugins = (
     c: RnvContext,
     platform: RnvPlatform,
     pluginCallback: PluginCallback,
-    ignorePlatformObjectCheck?: boolean
+    ignorePlatformObjectCheck?: boolean,
+    includeDisabledPlugins?: boolean
 ) => {
     logTask('parsePlugins');
     if (c.buildConfig && platform) {
@@ -391,33 +392,42 @@ export const parsePlugins = (
 
                         if (plugin) {
                             const pluginPlat = plugin[platform] || {};
+
+                            const handleActivePlugin = () => {
+                                if (pluginCallback) {
+                                    c.runtime.plugins[key] = plugin;
+                                    if (plugin.version) {
+                                        c.runtime.pluginVersions[key] = plugin.version;
+                                    }
+                                    pluginCallback(plugin, pluginPlat, key);
+                                }
+                            };
+
                             // NOTE: we do not want to disable plugin just because object is missing. instead we will let people to do it explicitly
                             // {
                             //     skipLinking: true,
                             //     disabled: true,
-                            //     enabled: false,
                             // };
+                            //TODO: consider supportedPlatforms for plugins
                             if (ignorePlatformObjectCheck) {
                                 // totalIncludedPlugins++;
-                                pluginCallback(plugin, pluginPlat, key);
+                                handleActivePlugin();
                             } else if (pluginPlat) {
                                 const isPluginDisabled = plugin.disabled === true;
-                                //DEPreCATED
-                                const isPluginPlatDisabled =
-                                    pluginPlat.disabled === true || pluginPlat.enabled === false;
+                                const isPluginPlatDisabled = pluginPlat.disabled === true;
                                 if (!isPluginDisabled && !isPluginPlatDisabled) {
                                     if (plugin.deprecated) {
                                         logWarning(plugin.deprecated);
                                     }
-                                    if (pluginCallback) {
-                                        // totalIncludedPlugins++;
-                                        pluginCallback(plugin, pluginPlat, key);
-                                    }
+                                    handleActivePlugin();
                                 } else {
                                     if (isPluginDisabled) {
                                         logInfo(`Plugin ${key} is marked disabled. skipping.`);
                                     } else if (isPluginPlatDisabled) {
                                         logInfo(`Plugin ${key} is marked disabled for platform ${platform} skipping.`);
+                                    }
+                                    if (includeDisabledPlugins) {
+                                        handleActivePlugin();
                                     }
                                 }
                             }

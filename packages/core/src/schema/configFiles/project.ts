@@ -147,8 +147,6 @@ const EnableHookRebuild = z
         'If set to true in `./renative.json` build hooks will be compiled at each rnv command run. If set to `false` (default) rebuild will be triggered only if `dist` folder is missing, `-r` has been passed or you run `rnv hooks run` directly making your rnv commands faster'
     );
 
-const EnableAnalytics = z.boolean().describe('Enable or disable sending analytics to improve ReNative');
-
 const ProjectName = z
     .string()
     .describe(
@@ -226,7 +224,6 @@ const RootProjectBaseFragment = {
     custom: z.optional(Ext),
     enableHookRebuild: z.optional(EnableHookRebuild),
     monoRoot: z.optional(MonoRoot),
-    enableAnalytics: z.optional(EnableAnalytics),
     extendsTemplate: z.optional(ExtendTemplate),
     tasks: z.optional(Tasks),
     integrations: z.optional(Integrations),

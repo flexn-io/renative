@@ -188,11 +188,13 @@ export const loadEnginePluginDeps = async (c: RnvContext, engineConfigs: Array<R
         }
     });
     if (hasAddedPlugins) {
-        const engines = Object.keys(addedPlugins);
-        const allPlugins = Object.keys(originalProjectPlugins);
+        const engineKeys = engineConfigs.map((v) => v.key);
+        const addedPluginsKeys = Object.keys(addedPlugins);
+
+        // const allPlugins = Object.keys(originalProjectPlugins);
         logInfo(
-            `Engines: ${chalk().yellow(engines.join(','))} require plugins ${chalk().white(
-                allPlugins.join(',')
+            `Engines: ${chalk().yellow(engineKeys.join(','))} require plugins ${chalk().white(
+                addedPluginsKeys.join(',')
             )} to be added to ${chalk().white(c.paths.project.config)}`
         );
         const confirm = await inquirerPrompt({
@@ -202,7 +204,7 @@ export const loadEnginePluginDeps = async (c: RnvContext, engineConfigs: Array<R
 If you don't want to use this dependency make sure you remove platform which requires this engine from supportedPlatforms`,
         });
         if (confirm) {
-            logInfo(`Adding ${allPlugins.join(',')}. ...DONE`);
+            logInfo(`Adding ${addedPluginsKeys.join(',')}. ...DONE`);
             // Prepare original file to be decorated (as addon plugins as we can't edit template itself)
             cnf.plugins = originalProjectPlugins;
             writeRenativeConfigFile(c, c.paths.project.config, cnf);
@@ -448,7 +450,6 @@ const _resolvePkgPath = (c: RnvContext, packageName: string) => {
         // In the instances of running linked rnv instead of installed one load local packages
         try {
             let pkgPathLocal = require.resolve(packageName, { paths: [path.join(c.paths.rnv.dir, '..')] });
-            //TODO: this needs to be changed to support ts libs
             pkgPathLocal = pkgPathLocal
                 .replace('/dist/index.js', '')
                 .replace('\\dist\\index.js', '')

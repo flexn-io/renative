@@ -62,7 +62,6 @@ export const PluginBaseFragment = {
     webpackConfig: z.optional(Webpack), //Should this be at root plugin???
     disablePluginTemplateOverrides: z.optional(DisablePluginTemplateOverrides),
     fontSources: z.array(z.string()).optional(),
-    // enabled: z.optional(Enabled), //DEPRECATED => disabled
     // 'no-npm': z.optional(NoNpm),//DEPRECATED => disableNpm
     // plugins: z.optional(PluginDependencies),  //DEPRECATED => pluginDependencies
     // webpack: z.optional(Webpack), //Should this be at root plugin??? // DEPRECATED

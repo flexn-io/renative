@@ -14,7 +14,6 @@
                             "SplashScreen.show(this)"
                         ],
                         "imports": [
-                            "android.os.Bundle",
                             "org.devio.rn.splashscreen.SplashScreen"
                         ]
                     }
@@ -37,6 +36,9 @@
                     }
                 },
                 "podName": "react-native-splash-screen"
+            },
+            "tvos": {
+                "disabled": true
             },
             "version": "3.3.0"
         },
@@ -70,9 +72,11 @@
                 },
                 "podName": "react-native-carplay"
             },
+            "tvos": {
+                "disabled": true
+            },
             "version": "2.3.0"
         },
-        "react-native-permissions": "3.10.1",
         "@react-native-firebase/app": {
             "disablePluginTemplateOverrides": true,
             "version": "18.6.1",
@@ -132,6 +136,12 @@
             },
             "pluginDependencies": null,
             "version": "1.0.13"
+        },
+        "react-native-permissions": {
+            "tvos": {
+                "disabled": true
+            },
+            "version": "3.10.1"
         },
         "react-native": {
             "android": {

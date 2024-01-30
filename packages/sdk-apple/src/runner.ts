@@ -730,7 +730,6 @@ export const configureXcodeProject = async (c: Context) => {
         podPostInstall: '',
         staticPodExtraConditions: '',
         staticFrameworks: [],
-        staticPodDefinition: '',
         exportOptions: '',
         embeddedFonts: [],
         embeddedFontSources: [],

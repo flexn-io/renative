@@ -18,11 +18,11 @@ export function withRNWNext(nextConfig: NextConfig = {}): NextConfig {
                 'react-native$': 'react-native-web',
                 // Alias internal react-native modules to react-native-web
                 'react-native/Libraries/EventEmitter/RCTDeviceEventEmitter$':
-                    'react-native-web/dist/vendor/react-native/NativeEventEmitter/RCTDeviceEventEmitter',
+                    'react-native-web/dist/vendor/react-native/EventEmitter/RCTDeviceEventEmitter',
                 'react-native/Libraries/vendor/emitter/EventEmitter$':
-                    'react-native-web/dist/vendor/react-native/emitter/EventEmitter',
+                    'react-native-web/dist/vendor/react-native/vendor/emitter/EventEmitter',
                 'react-native/Libraries/EventEmitter/NativeEventEmitter$':
-                    'react-native-web/dist/vendor/react-native/NativeEventEmitter',
+                    'react-native-web/dist/vendor/react-native/EventEmitter/NativeEventEmitter',
             };
 
             config.resolve.extensions = [
@@ -76,6 +76,9 @@ export const withRNVNext = (config: NextConfig) => {
                 cfg.resolve.extensions = process.env.RNV_EXTENSIONS.split(',')
                     .map((e) => `.${e}`)
                     .filter((ext) => isServer || !ext.includes('server.'));
+            }
+            if (typeof config.webpack === 'function') {
+                return config.webpack(cfg, props);
             }
             return cfg;
         },

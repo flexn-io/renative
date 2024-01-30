@@ -8,21 +8,37 @@ const getApplicationId = () => {
     return appId;
 };
 
+type InactivePluginConfig = {
+    platforms: {
+        ios: null;
+        android: null;
+        macos: null;
+        windows: null;
+    };
+};
+
 const getSkipLinkingDeps = () => {
     const skipLinkingEnv = process.env.RNV_SKIP_LINKING;
-    if (skipLinkingEnv) {
-        const plugins = skipLinkingEnv.split(',');
 
-        return {
+    if (skipLinkingEnv) {
+        const plugins = skipLinkingEnv.split(',').map((item) => item.trim());
+
+        const result = {
             dependencies: plugins.reduce((acc, plugin) => {
-                acc[`${plugin}`] = {
+                acc[plugin] = {
                     platforms: {
+                        // Add all platforms
                         ios: null,
+                        android: null,
+                        macos: null,
+                        windows: null,
                     },
                 };
                 return acc;
-            }, {} as { [plugin: string]: { platforms: { ios: null } } }),
+            }, {} as { [plugin: string]: InactivePluginConfig }),
         };
+
+        return result;
     }
 
     return {};
