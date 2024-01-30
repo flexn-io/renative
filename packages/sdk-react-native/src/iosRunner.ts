@@ -210,10 +210,26 @@ export const runCocoaPods = async (c: RnvContext) => {
                 env,
             });
         } else {
-            await executeAsync(c, 'bundle exec pod install', {
-                cwd: appFolder,
-                env,
-            });
+            try {
+                await executeAsync(c, 'bundle exec pod install', {
+                    cwd: appFolder,
+                    env,
+                });
+            } catch (e) {
+                const errorString = e?.toString ? e.toString() : '';
+                const retryableError = errorString.includes('could not find compatible versions');
+
+                if (retryableError) {
+                    logInfo('There seems to be some problems with gem repos. Retrying with --repo-update...');
+                    await executeAsync(c, 'bundle exec pod install --repo-update', {
+                        cwd: appFolder,
+                        env,
+                    });
+                }
+
+                // throw the original error if it's not a retryable one
+                throw e;
+            }
         }
 
         updatePodsChecksum(c);
