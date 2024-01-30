@@ -31,7 +31,6 @@ export type Payload = {
         embeddedFonts: Array<string>;
         podfileInject: string;
         podPostInstall: string;
-        staticPodExtraConditions: string;
         staticFrameworks: Array<string>;
         embeddedFontSources: Array<string>;
         ignoreProjectFonts: Array<string>;
