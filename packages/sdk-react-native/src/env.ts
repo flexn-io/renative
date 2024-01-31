@@ -69,7 +69,7 @@ export const EnvVars = {
         );
 
         if (skipPlugins.length > 0) {
-            return { RNV_SKIP_LINKING: skipPlugins.join(', ') };
+            return { RNV_SKIP_LINKING: skipPlugins.join(',') };
         }
 
         return {};

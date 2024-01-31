@@ -377,7 +377,10 @@ export const parsePlugins = (
 ) => {
     logTask('parsePlugins');
     if (c.buildConfig && platform) {
-        const includedPlugins = getConfigProp(c, platform, 'includedPlugins') || [];
+        let includedPlugins = getConfigProp(c, platform, 'includedPlugins');
+        // default to all plugins if it's not defined (null allowed for overrides)
+        if (includedPlugins === undefined) includedPlugins = ['*'];
+
         const excludedPlugins = getConfigProp(c, platform, 'excludedPlugins') || [];
         if (includedPlugins) {
             const { plugins } = c.buildConfig;
@@ -385,7 +388,7 @@ export const parsePlugins = (
                 // let totalIncludedPlugins = 0;
                 Object.keys(plugins).forEach((key) => {
                     if (
-                        (includedPlugins.includes('*') || includedPlugins.includes(key)) &&
+                        (includedPlugins!.includes('*') || includedPlugins!.includes(key)) &&
                         !excludedPlugins.includes(key)
                     ) {
                         const plugin = getMergedPlugin(c, key);
@@ -426,9 +429,6 @@ export const parsePlugins = (
                                     } else if (isPluginPlatDisabled) {
                                         logInfo(`Plugin ${key} is marked disabled for platform ${platform} skipping.`);
                                     }
-                                    if (includeDisabledPlugins) {
-                                        handleActivePlugin();
-                                    }
                                 }
                             }
                         }
@@ -449,6 +449,24 @@ export const parsePlugins = (
                     '{ common: { includedPlugins: [] }}'
                 )} in your ${chalk().white(c.paths.appConfig.config)}. Your app might not work correctly`
             );
+        }
+
+        if (includeDisabledPlugins) {
+            const { plugins } = c.buildConfig;
+            if (plugins) {
+                Object.keys(plugins).forEach((key) => {
+                    const plugin = getMergedPlugin(c, key);
+                    if (plugin) {
+                        const pluginPlat = plugin[platform] || {};
+                        if (plugin.disabled || pluginPlat.disabled || excludedPlugins.includes(key)) {
+                            if (excludedPlugins.includes(key)) {
+                                plugin.disabled = true;
+                            }
+                            pluginCallback(plugin, pluginPlat, key);
+                        }
+                    }
+                });
+            }
         }
     }
 };
