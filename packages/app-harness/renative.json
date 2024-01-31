@@ -6,7 +6,48 @@
         "path": "./secrets/privateConfigs.enc"
     },
     "plugins": {
-        "react-native-permissions": "3.10.1"
+        "react-native-permissions": "3.10.1",
+        "react-native-splash-screen": {
+            "android": {
+                "templateAndroid": {
+                    "MainActivity_java": {
+                        "createMethods": ["SplashScreen.show(this)"],
+                        "imports": ["org.devio.rn.splashscreen.SplashScreen"]
+                    }
+                },
+                "package": "org.devio.rn.splashscreen.SplashScreenReactPackage"
+            },
+            "version": "3.3.0"
+        },
+        "CalendarModule": {
+            "android": {
+                "templateAndroid": {
+                    "MainApplication_java": {
+                        "packages": ["MyAppPackage"]
+                    }
+                },
+                "autoLinking": false
+            }
+        },
+        "react-native-orientation-locker": {
+            "android": {
+                "templateAndroid": {
+                    "MainActivity_java": {
+                        "imports": ["android.content.res.Configuration"],
+                        "methods": [
+                            "override fun onConfigurationChanged(newConfig:Configuration) {",
+                            "  super.onConfigurationChanged(newConfig)",
+                            "  val intent = Intent(\"onConfigurationChanged\")",
+                            "  intent.putExtra(\"newConfig\", newConfig)",
+                            "  this.sendBroadcast(intent)",
+                            "}"
+                        ]
+                    }
+                },
+                "package": "org.wonday.orientation.OrientationPackage"
+            },
+            "version": "1.5.0"
+        }
     },
     "permissions": {
         "ios": {

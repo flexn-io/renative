@@ -459,7 +459,7 @@
                 },
                 "buildToolsVersion": {
                   "type": "string",
-                  "default": "30.0.0",
+                  "default": "34.0.0",
                   "description": "Override android build tools version"
                 },
                 "disableSigning": {
@@ -3341,6 +3341,11 @@
                         "default": false,
                         "description": "Marks plugin platform disabled"
                       },
+                      "autoLinking": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Marks plugin as not able to be autolinked"
+                      },
                       "path": {
                         "type": "string",
                         "description": "Enables you to pass custom path to plugin. If undefined, the default `node_modules/[plugin-name]` will be used."
@@ -3434,6 +3439,9 @@
                       "disabled": {
                         "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/properties/android/properties/disabled"
                       },
+                      "autoLinking": {
+                        "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/properties/android/properties/autoLinking"
+                      },
                       "path": {
                         "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/properties/android/properties/path"
                       },
@@ -3499,6 +3507,9 @@
                       },
                       "disabled": {
                         "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/properties/android/properties/disabled"
+                      },
+                      "autoLinking": {
+                        "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/properties/android/properties/autoLinking"
                       },
                       "path": {
                         "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/properties/android/properties/path"
