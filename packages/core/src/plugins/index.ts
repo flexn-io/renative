@@ -18,7 +18,7 @@ import { chalk, logDebug, logError, logInfo, logSuccess, logTask, logWarning } f
 import { doResolve } from '../system/resolve';
 import { RnvContext } from '../context/types';
 import { PluginCallback, RnvPlugin, RnvPluginScope } from './types';
-import { RenativeConfigPaths, RenativeConfigPlugin } from '../schema/types';
+import { RenativeConfigPaths, RenativeConfigPlugin, RenativeConfigPluginPlatform } from '../schema/types';
 import { RnvPlatform } from '../types';
 import { inquirerPrompt } from '../api';
 import { writeRenativeConfigFile } from '../configs/utils';
@@ -373,7 +373,7 @@ export const parsePlugins = (
     platform: RnvPlatform,
     pluginCallback: PluginCallback,
     ignorePlatformObjectCheck?: boolean,
-    includeDisabledPlugins?: boolean
+    includeDisabledOrExcludedPlugins?: boolean
 ) => {
     logTask('parsePlugins');
     if (c.buildConfig && platform) {
@@ -382,55 +382,61 @@ export const parsePlugins = (
         if (includedPlugins === undefined) includedPlugins = ['*'];
 
         const excludedPlugins = getConfigProp(c, platform, 'excludedPlugins') || [];
+
+        const handleActivePlugin = (plugin: RnvPlugin, pluginPlat: RenativeConfigPluginPlatform, key: string) => {
+            // log deprecated if present
+            if (plugin.deprecated) {
+                logWarning(plugin.deprecated);
+            }
+
+            if (pluginCallback) {
+                c.runtime.plugins[key] = plugin;
+                if (plugin.version) {
+                    c.runtime.pluginVersions[key] = plugin.version;
+                }
+                pluginCallback(plugin, pluginPlat, key);
+            }
+        };
+
         if (includedPlugins) {
             const { plugins } = c.buildConfig;
             if (plugins) {
                 // let totalIncludedPlugins = 0;
                 Object.keys(plugins).forEach((key) => {
+                    const plugin = getMergedPlugin(c, key);
+
+                    if (!plugin) return;
+
                     if (
                         (includedPlugins!.includes('*') || includedPlugins!.includes(key)) &&
                         !excludedPlugins.includes(key)
                     ) {
-                        const plugin = getMergedPlugin(c, key);
+                        const pluginPlat = plugin[platform] || {};
 
-                        if (plugin) {
-                            const pluginPlat = plugin[platform] || {};
+                        // NOTE: we do not want to disable plugin just because object is missing. instead we will let people to do it explicitly
+                        // {
+                        //     skipLinking: true,
+                        //     disabled: true,
+                        // };
+                        //TODO: consider supportedPlatforms for plugins
+                        const isPluginPlatDisabled = pluginPlat.disabled === true;
+                        const isPluginDisabled = plugin.disabled === true;
 
-                            const handleActivePlugin = () => {
-                                if (pluginCallback) {
-                                    c.runtime.plugins[key] = plugin;
-                                    if (plugin.version) {
-                                        c.runtime.pluginVersions[key] = plugin.version;
-                                    }
-                                    pluginCallback(plugin, pluginPlat, key);
-                                }
-                            };
-
-                            // NOTE: we do not want to disable plugin just because object is missing. instead we will let people to do it explicitly
-                            // {
-                            //     skipLinking: true,
-                            //     disabled: true,
-                            // };
-                            //TODO: consider supportedPlatforms for plugins
-                            if (ignorePlatformObjectCheck) {
-                                // totalIncludedPlugins++;
-                                handleActivePlugin();
-                            } else if (pluginPlat) {
-                                const isPluginDisabled = plugin.disabled === true;
-                                const isPluginPlatDisabled = pluginPlat.disabled === true;
-                                if (!isPluginDisabled && !isPluginPlatDisabled) {
-                                    if (plugin.deprecated) {
-                                        logWarning(plugin.deprecated);
-                                    }
-                                    handleActivePlugin();
-                                } else {
-                                    if (isPluginDisabled) {
-                                        logInfo(`Plugin ${key} is marked disabled. skipping.`);
-                                    } else if (isPluginPlatDisabled) {
-                                        logInfo(`Plugin ${key} is marked disabled for platform ${platform} skipping.`);
-                                    }
-                                }
+                        if (ignorePlatformObjectCheck || includeDisabledOrExcludedPlugins) {
+                            if (isPluginDisabled) {
+                                logInfo(`Plugin ${key} is marked disabled. skipping.`);
+                            } else if (isPluginPlatDisabled) {
+                                logInfo(`Plugin ${key} is marked disabled for platform ${platform} skipping.`);
                             }
+                            handleActivePlugin(plugin, pluginPlat, key);
+                        } else if (!isPluginPlatDisabled && !isPluginDisabled) {
+                            handleActivePlugin(plugin, pluginPlat, key);
+                        }
+                    } else if (includeDisabledOrExcludedPlugins) {
+                        const pluginPlat = plugin[platform] || {};
+                        if (excludedPlugins.includes(key)) {
+                            plugin.disabled = true;
+                            handleActivePlugin(plugin, pluginPlat, key);
                         }
                     }
                 });
@@ -451,23 +457,28 @@ export const parsePlugins = (
             );
         }
 
-        if (includeDisabledPlugins) {
-            const { plugins } = c.buildConfig;
-            if (plugins) {
-                Object.keys(plugins).forEach((key) => {
-                    const plugin = getMergedPlugin(c, key);
-                    if (plugin) {
-                        const pluginPlat = plugin[platform] || {};
-                        if (plugin.disabled || pluginPlat.disabled || excludedPlugins.includes(key)) {
-                            if (excludedPlugins.includes(key)) {
-                                plugin.disabled = true;
-                            }
-                            pluginCallback(plugin, pluginPlat, key);
-                        }
-                    }
-                });
-            }
-        }
+        // if (includeDisabledOrExcludedPlugins) {
+        //     const { plugins } = c.buildConfig;
+        //     if (plugins) {
+        //         Object.keys(plugins).forEach((key) => {
+        //             const plugin = getMergedPlugin(c, key);
+        //             if (plugin) {
+        //                 const pluginPlat = plugin[platform] || {};
+        //                 if (
+        //                     plugin.disabled ||
+        //                     // ignore pluginPlat.disabled if ignorePlatformObjectCheck is true, otherwise there will be duplicates in the output. See unit test
+        //                     (pluginPlat.disabled && !ignorePlatformObjectCheck) ||
+        //                     excludedPlugins.includes(key)
+        //                 ) {
+        //                     if (excludedPlugins.includes(key)) {
+        //                         plugin.disabled = true;
+        //                     }
+        //                     handleActivePlugin(plugin, pluginPlat, key);
+        //                 }
+        //             }
+        //         });
+        //     }
+        // }
     }
 };
 
