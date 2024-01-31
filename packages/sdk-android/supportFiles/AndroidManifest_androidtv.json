@@ -25,7 +25,7 @@
                 {
                     "tag": "activity",
                     "android:name": ".SplashActivity",
-                    "android:screenOrientation": "portrait",
+                    "android:screenOrientation": "landscape",
                     "android:noHistory": true,
                     "android:launchMode": "singleTask",
                     "android:theme": "@style/SplashTheme",
@@ -40,7 +40,7 @@
                                 },
                                 {
                                     "tag": "category",
-                                    "android:name": "android.intent.category.LAUNCHER"
+                                    "android:name": "android.intent.category.LEANBACK_LAUNCHER"
                                 }
                             ]
                         }
@@ -59,8 +59,16 @@
                             "tag": "intent-filter",
                             "children": [
                                 {
+                                    "tag": "action",
+                                    "android:name": "android.intent.action.VIEW"
+                                },
+                                {
                                     "tag": "category",
-                                    "android:name": "android.intent.category.LEANBACK_LAUNCHER"
+                                    "android:name": "android.intent.category.DEFAULT"
+                                },
+                                {
+                                    "tag": "category",
+                                    "android:name": "android.intent.category.BROWSABLE"
                                 }
                             ]
                         }
