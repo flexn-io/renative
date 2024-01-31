@@ -29,6 +29,10 @@
         "backgroundColor": "#111111",
         "fontSources": [
             "{{resolvePackage(react-native-vector-icons)}}/Fonts"
+        ],
+        "excludedPlugins": [
+            "@react-native-firebase/app",
+            "react-native-photo-editor"
         ]
     },
     "platforms": {
@@ -78,9 +82,14 @@
                         "Podfile": {
                             "sources": [
                                 "https://github.com/CocoaPods/Specs.git"
+                            ],
+                            "header": [
+                                "plugin 'cocoapods-user-defined-build-types'",
+                                "enable_user_defined_build_types!"
                             ]
                         }
-                    }
+                    },
+                    "excludedPlugins": []
                 },
                 "test": {
                     "runScheme": "Debug",
