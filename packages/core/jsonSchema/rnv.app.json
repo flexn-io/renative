@@ -1230,10 +1230,6 @@
                   },
                   "additionalProperties": false
                 },
-                "enableUserDefinedBuildTypes": {
-                  "type": "boolean",
-                  "description": "Enables user defined build types (https://github.com/joncardasis/cocoapods-user-defined-build-types). Make sure you have cocoapods-user-defined-build-types in your gemfile"
-                },
                 "reactNativeEngine": {
                   "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/reactNativeEngine"
                 },
@@ -1699,9 +1695,6 @@
                       },
                       "exportOptions": {
                         "$ref": "#/definitions/rnv.app/properties/platforms/properties/ios/properties/exportOptions"
-                      },
-                      "enableUserDefinedBuildTypes": {
-                        "$ref": "#/definitions/rnv.app/properties/platforms/properties/ios/properties/enableUserDefinedBuildTypes"
                       },
                       "reactNativeEngine": {
                         "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/reactNativeEngine"
@@ -2657,9 +2650,6 @@
                 "exportOptions": {
                   "$ref": "#/definitions/rnv.app/properties/platforms/properties/ios/properties/exportOptions"
                 },
-                "enableUserDefinedBuildTypes": {
-                  "$ref": "#/definitions/rnv.app/properties/platforms/properties/ios/properties/enableUserDefinedBuildTypes"
-                },
                 "reactNativeEngine": {
                   "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/reactNativeEngine"
                 },
@@ -2867,9 +2857,6 @@
                       },
                       "exportOptions": {
                         "$ref": "#/definitions/rnv.app/properties/platforms/properties/ios/properties/exportOptions"
-                      },
-                      "enableUserDefinedBuildTypes": {
-                        "$ref": "#/definitions/rnv.app/properties/platforms/properties/ios/properties/enableUserDefinedBuildTypes"
                       },
                       "reactNativeEngine": {
                         "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/reactNativeEngine"

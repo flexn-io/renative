@@ -74,12 +74,11 @@
                 "debug-static-pods": {
                     "runScheme": "Debug",
                     "bundleAssets": false,
-                    "enableUserDefinedBuildTypes": true,
                     "templateXcode": {
                         "Podfile": {
-                          "sources": [
-                            "https://github.com/CocoaPods/Specs.git"
-                          ]
+                            "sources": [
+                                "https://github.com/CocoaPods/Specs.git"
+                            ]
                         }
                     }
                 },
@@ -153,7 +152,6 @@
             "includedPermissions": [
                 "INTERNET"
             ],
-           
             "buildSchemes": {
                 "debug": {
                     "signingConfig": "Debug",

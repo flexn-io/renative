@@ -13,7 +13,6 @@ import {
     doResolve,
     writeCleanFile,
     RnvPlatform,
-    logInfo,
     DEFAULTS,
 } from '@rnv/core';
 import { Context } from './types';
@@ -116,15 +115,6 @@ export const parsePodFile = async (c: Context, platform: RnvPlatform) => {
     // DEPLOYMENT TARGET
     const deploymentTarget = getConfigProp(c, platform, 'deploymentTarget') || DEFAULTS.deploymentTarget;
     c.payload.pluginConfigiOS.deploymentTarget = deploymentTarget;
-
-    const enableUserDefinedBuildTypes = getConfigProp(c, platform, 'enableUserDefinedBuildTypes', false);
-    if (enableUserDefinedBuildTypes) {
-        // TODO - properly handle this, even if outside of rn template files
-        logInfo(
-            `user-defined-build-types enabled, make sure you have 'gem 'cocoapods-user-defined-build-types' in your Gemfile`
-        );
-        c.payload.pluginConfigiOS.podfileHeader += `plugin 'cocoapods-user-defined-build-types' \nenable_user_defined_build_types!`;
-    }
 
     const injects: OverridesOptions = [
         { pattern: '{{PLUGIN_PATHS}}', override: pluginInject },

@@ -76,13 +76,6 @@ export const PlatformiOSFragment = {
             provisioningProfiles: z.record(z.string()).optional(),
         })
         .optional(),
-    enableUserDefinedBuildTypes: z
-        .boolean()
-        .optional()
-        .describe(
-            'Enables user defined build types (https://github.com/joncardasis/cocoapods-user-defined-build-types). Make sure you have cocoapods-user-defined-build-types in your gemfile'
-        ),
-
     // systemCapabilities: {
     //     additionalProperties: true,
     //     type: 'object',
