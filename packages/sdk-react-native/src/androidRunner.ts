@@ -98,7 +98,7 @@ export const runReactNativeAndroid = async (
 
     const udid = device?.udid;
 
-    let command = `npx react-native run-android --mode=${signingConfig} --no-packager --main-activity=MainActivity`;
+    let command = `npx react-native run-android --mode=${signingConfig} --no-packager --main-activity=SplashActivity`;
 
     if (udid) {
         command += ` --deviceId=${udid}`;
