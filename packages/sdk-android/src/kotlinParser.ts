@@ -126,10 +126,7 @@ export const parseMainActivitySync = (c: RnvContext) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
 
-    const appId = getAppId(c, c.platform);
-
     const templatePath = 'app/src/main/java/rnv_template/MainActivity.kt';
-
 
     const templateAndroid = getConfigProp(c, platform, 'templateAndroid', {});
 
@@ -176,8 +173,6 @@ export const parseMainActivitySync = (c: RnvContext) => {
 export const parseSplashActivitySync = (c: Context) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
-    const appId = getAppId(c, c.platform);
-   
 
     const splashTemplatePath = 'app/src/main/java/rnv_template/SplashActivity.kt';
 
