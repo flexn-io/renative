@@ -40,14 +40,9 @@ end
 
 target 'RNVApp' do
   config = use_native_modules!
-
   
-
   use_react_native!(
     :path => config[:reactNativePath],
-    # Hermes is now enabled by default. Disable by setting this flag to false.
-    :hermes_enabled => {{HERMES_ENABLED}},
-    :fabric_enabled => flags[:fabric_enabled],
     # Enables Flipper.
     #
     # Note that if you have use_frameworks! enabled, Flipper will not work and
@@ -69,6 +64,5 @@ target 'RNVApp' do
       config[:reactNativePath],
       :mac_catalyst_enabled => false
     )
-    
   end
 end
