@@ -31,7 +31,6 @@ export type Payload = {
         embeddedFonts: Array<string>;
         podfileInject: string;
         podPostInstall: string;
-        staticPodExtraConditions: string;
         staticFrameworks: Array<string>;
         embeddedFontSources: Array<string>;
         ignoreProjectFonts: Array<string>;
@@ -61,6 +60,7 @@ export type Payload = {
         podfileSources: string;
         deploymentTarget: string;
         podfileNodeRequire: string;
+        podfileHeader?: string;
     };
     xcodeProj?: {
         id?: string;

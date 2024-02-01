@@ -10,8 +10,12 @@
             "android": {
                 "templateAndroid": {
                     "MainActivity_java": {
-                        "createMethods": ["SplashScreen.show(this)"],
-                        "imports": ["org.devio.rn.splashscreen.SplashScreen"]
+                        "createMethods": [
+                            "SplashScreen.show(this)"
+                        ],
+                        "imports": [
+                            "org.devio.rn.splashscreen.SplashScreen"
+                        ]
                     }
                 },
                 "package": "org.devio.rn.splashscreen.SplashScreenReactPackage"
@@ -19,10 +23,14 @@
             "ios": {
                 "templateXcode": {
                     "AppDelegate_mm": {
-                        "appDelegateImports": ["RNSplashScreen.h"],
+                        "appDelegateImports": [
+                            "RNSplashScreen.h"
+                        ],
                         "appDelegateMethods": {
                             "application": {
-                                "didFinishLaunchingWithOptions": ["[RNSplashScreen show]"]
+                                "didFinishLaunchingWithOptions": [
+                                    "[RNSplashScreen show]"
+                                ]
                             }
                         }
                     }
@@ -38,17 +46,26 @@
             "ios": {
                 "templateXcode": {
                     "AppDelegate_h": {
-                        "appDelegateImports": ["CarPlay/CarPlay.h"],
-                        "appDelegateExtensions": ["UIApplicationDelegate", "CPApplicationDelegate"]
+                        "appDelegateImports": [
+                            "CarPlay/CarPlay.h"
+                        ],
+                        "appDelegateExtensions": [
+                            "UIApplicationDelegate",
+                            "CPApplicationDelegate"
+                        ]
                     },
                     "AppDelegate_mm": {
-                        "appDelegateImports": ["RNCarPlay.h"],
+                        "appDelegateImports": [
+                            "RNCarPlay.h"
+                        ],
                         "appDelegateMethods": {
                             "application": {
                                 "didConnectCarInterfaceController": [
                                     "[RNCarPlay connectWithInterfaceController:interfaceController window:window]"
                                 ],
-                                "didDisconnectCarInterfaceController": ["[RNCarPlay disconnect]"]
+                                "didDisconnectCarInterfaceController": [
+                                    "[RNCarPlay disconnect]"
+                                ]
                             }
                         }
                     }
@@ -59,6 +76,66 @@
                 "disabled": true
             },
             "version": "2.3.0"
+        },
+        "@react-native-firebase/app": {
+            "disablePluginTemplateOverrides": true,
+            "version": "18.6.1",
+            "ios": {
+                "podNames": [
+                    "pod 'Firebase', :build_type => :static_framework",
+                    "pod 'FirebaseCoreInternal', :build_type => :static_framework",
+                    "pod 'FirebaseCore', :build_type => :static_framework",
+                    "pod 'GoogleUtilities', :build_type => :static_framework",
+                    "pod 'FirebaseStorage', :build_type => :static_framework",
+                    "pod 'FirebaseAppCheckInterop', :build_type => :static_framework",
+                    "pod 'FirebaseAuthInterop', :build_type => :static_framework"
+                ],
+                "templateXcode": {
+                    "Podfile": {
+                        "header": [
+                            "$RNFirebaseAsStaticFramework = true"
+                        ]
+                    }
+                }
+            }
+        },
+        "react-native-photo-editor": {
+            "android": {
+                "templateAndroid": {
+                    "AndroidManifest_xml": {
+                        "tag": "manifest",
+                        "android:name": "",
+                        "children": [
+                            {
+                                "tag": "application",
+                                "android:name": ".MainApplication",
+                                "children": [
+                                    {
+                                        "tag": "activity",
+                                        "android:name": "com.ahmedadeltito.photoeditor.PhotoEditorActivity",
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                },
+                "package": "ui.photoeditor.RNPhotoEditorPackage"
+            },
+            "androidtv": {
+                "package": "ui.photoeditor.RNPhotoEditorPackage"
+            },
+            "firetv": {
+                "package": "ui.photoeditor.RNPhotoEditorPackage"
+            },
+            "ios": {
+                "podName": "iOSPhotoEditor",
+                "git": "https://github.com/prscX/photo-editor",
+                "commit": "4924e9ec984d25d03644e58aa148282642171de9",
+                "buildType": "dynamic"
+            },
+            "pluginDependencies": null,
+            "version": "1.0.13"
         },
         "react-native-permissions": {
             "tvos": {
