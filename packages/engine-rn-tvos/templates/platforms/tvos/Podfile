@@ -10,6 +10,8 @@ require Pod::Executable.execute_command('node', ['-p',
 
 prepare_react_native_project!
 
+flipper_config = FlipperConfiguration.disabled
+
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
   Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
@@ -22,6 +24,11 @@ target 'RNVApp' do
 
   use_react_native!(
     :path => config[:reactNativePath],
+    # Enables Flipper.
+    #
+    # Note that if you have use_frameworks! enabled, Flipper will not work and
+    # you should disable the next line.
+    :flipper_configuration => flipper_config,
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/../.."
   )
@@ -38,6 +45,11 @@ target 'RNVApp-tvOS' do
 
   use_react_native!(
     :path => config[:reactNativePath],
+    # Enables Flipper.
+    #
+    # Note that if you have use_frameworks! enabled, Flipper will not work and
+    # you should disable the next line.
+    :flipper_configuration => flipper_config,
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/../.."
   )

@@ -45,7 +45,7 @@
         "react-native": "0.73.2",
         "react-native-gesture-handler": "2.14.1",
         "react-native-permissions": "3.10.1",
-        "react-native-tvos": "0.73.1-0",
+        "react-native-tvos": "0.73.2-0",
         "react-native-web": "0.19.9"
     },
     "devDependencies": {
