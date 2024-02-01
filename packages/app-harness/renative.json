@@ -26,7 +26,7 @@
                         "packages": ["MyAppPackage"]
                     }
                 },
-                "autoLinking": false
+                "forceLinking": true
             }
         },
         "react-native-orientation-locker": {

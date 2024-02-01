@@ -172,7 +172,6 @@ export const parseMainActivitySync = (c: RnvContext) => {
 export const parseSplashActivitySync = (c: Context) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
-    const appId = getAppId(c, c.platform);
 
     const splashTemplatePath = 'app/src/main/java/rnv_template/SplashActivity.kt';
 
@@ -269,7 +268,7 @@ export const injectPluginKotlinSync = (
 };
 
 const _injectPackage = (c: RnvContext, plugin: RenativeConfigPluginPlatform, pkg: string | undefined) => {
-    if (pkg && plugin?.autoLinking === undefined) {
+    if (pkg && !plugin?.forceLinking) {
         c.payload.pluginConfigAndroid.pluginApplicationImports += `import ${pkg}\n`;
     }
     let packageParams = '';
@@ -277,7 +276,7 @@ const _injectPackage = (c: RnvContext, plugin: RenativeConfigPluginPlatform, pkg
     if (mainApplication?.packageParams) {
         packageParams = mainApplication.packageParams.join(',');
     }
-    if (pkg && plugin?.autoLinking !== undefined && !plugin?.autoLinking) {
+    if (pkg && plugin?.forceLinking) {
         const className = _extractClassName(pkg);
         if (className) {
             c.payload.pluginConfigAndroid.pluginPackages += `add(${className}(${packageParams}));\n`;

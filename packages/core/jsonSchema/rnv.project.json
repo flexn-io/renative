@@ -3700,9 +3700,9 @@
                         "default": false,
                         "description": "Marks plugin platform disabled"
                       },
-                      "autoLinking": {
+                      "forceLinking": {
                         "type": "boolean",
-                        "default": true,
+                        "default": false,
                         "description": "Marks plugin as not able to be autolinked"
                       },
                       "path": {
@@ -3798,8 +3798,8 @@
                       "disabled": {
                         "$ref": "#/definitions/rnv.project/properties/plugins/additionalProperties/anyOf/0/properties/android/properties/disabled"
                       },
-                      "autoLinking": {
-                        "$ref": "#/definitions/rnv.project/properties/plugins/additionalProperties/anyOf/0/properties/android/properties/autoLinking"
+                      "forceLinking": {
+                        "$ref": "#/definitions/rnv.project/properties/plugins/additionalProperties/anyOf/0/properties/android/properties/forceLinking"
                       },
                       "path": {
                         "$ref": "#/definitions/rnv.project/properties/plugins/additionalProperties/anyOf/0/properties/android/properties/path"
@@ -3867,8 +3867,8 @@
                       "disabled": {
                         "$ref": "#/definitions/rnv.project/properties/plugins/additionalProperties/anyOf/0/properties/android/properties/disabled"
                       },
-                      "autoLinking": {
-                        "$ref": "#/definitions/rnv.project/properties/plugins/additionalProperties/anyOf/0/properties/android/properties/autoLinking"
+                      "forceLinking": {
+                        "$ref": "#/definitions/rnv.project/properties/plugins/additionalProperties/anyOf/0/properties/android/properties/forceLinking"
                       },
                       "path": {
                         "$ref": "#/definitions/rnv.project/properties/plugins/additionalProperties/anyOf/0/properties/android/properties/path"
