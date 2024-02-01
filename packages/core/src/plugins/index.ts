@@ -377,9 +377,9 @@ export const parsePlugins = (
 ) => {
     logTask('parsePlugins');
     if (c.buildConfig && platform) {
-        let includedPlugins = getConfigProp(c, platform, 'includedPlugins');
+        const includedPluginsConfig = getConfigProp(c, platform, 'includedPlugins');
         // default to all plugins if it's not defined (null allowed for overrides)
-        if (includedPlugins === undefined) includedPlugins = ['*'];
+        const includedPlugins = includedPluginsConfig === undefined ? ['*'] : includedPluginsConfig;
 
         const excludedPlugins = getConfigProp(c, platform, 'excludedPlugins') || [];
 
@@ -407,7 +407,7 @@ export const parsePlugins = (
                     if (!plugin) return;
 
                     if (
-                        ((includedPlugins as string[]).includes('*') || (includedPlugins as string[]).includes(key)) &&
+                        (includedPlugins.includes('*') || includedPlugins.includes(key)) &&
                         !excludedPlugins.includes(key)
                     ) {
                         const pluginPlat = plugin[platform] || {};
