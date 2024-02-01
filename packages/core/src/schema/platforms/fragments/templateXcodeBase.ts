@@ -4,10 +4,14 @@ const Podfile = z
     .object({
         injectLines: z.optional(z.array(z.string())),
         post_install: z.optional(z.array(z.string())),
-        sources: z.optional(z.array(z.string())),
+        sources: z
+            .optional(z.array(z.string()))
+            .describe('Array of URLs that will be injected on top of the Podfile as sources'),
         podDependencies: z.optional(z.array(z.string())),
         staticPods: z.optional(z.array(z.string())),
-        header: z.optional(z.array(z.string())),
+        header: z
+            .optional(z.array(z.string()))
+            .describe('Array of strings that will be injected on top of the Podfile'),
     })
     .describe('Allows to manipulate Podfile');
 

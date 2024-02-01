@@ -401,14 +401,13 @@ export const parsePlugins = (
         if (includedPlugins) {
             const { plugins } = c.buildConfig;
             if (plugins) {
-                // let totalIncludedPlugins = 0;
                 Object.keys(plugins).forEach((key) => {
                     const plugin = getMergedPlugin(c, key);
 
                     if (!plugin) return;
 
                     if (
-                        (includedPlugins!.includes('*') || includedPlugins!.includes(key)) &&
+                        ((includedPlugins as string[]).includes('*') || (includedPlugins as string[]).includes(key)) &&
                         !excludedPlugins.includes(key)
                     ) {
                         const pluginPlat = plugin[platform] || {};
@@ -456,29 +455,6 @@ export const parsePlugins = (
                 )} in your ${chalk().white(c.paths.appConfig.config)}. Your app might not work correctly`
             );
         }
-
-        // if (includeDisabledOrExcludedPlugins) {
-        //     const { plugins } = c.buildConfig;
-        //     if (plugins) {
-        //         Object.keys(plugins).forEach((key) => {
-        //             const plugin = getMergedPlugin(c, key);
-        //             if (plugin) {
-        //                 const pluginPlat = plugin[platform] || {};
-        //                 if (
-        //                     plugin.disabled ||
-        //                     // ignore pluginPlat.disabled if ignorePlatformObjectCheck is true, otherwise there will be duplicates in the output. See unit test
-        //                     (pluginPlat.disabled && !ignorePlatformObjectCheck) ||
-        //                     excludedPlugins.includes(key)
-        //                 ) {
-        //                     if (excludedPlugins.includes(key)) {
-        //                         plugin.disabled = true;
-        //                     }
-        //                     handleActivePlugin(plugin, pluginPlat, key);
-        //                 }
-        //             }
-        //         });
-        //     }
-        // }
     }
 };
 

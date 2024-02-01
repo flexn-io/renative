@@ -10,7 +10,6 @@ import {
     addSystemInjects,
     logTask,
     parsePlugins,
-    doResolve,
     writeCleanFile,
     RnvPlatform,
     DEFAULTS,
@@ -117,10 +116,10 @@ export const parsePodFile = async (c: Context, platform: RnvPlatform) => {
     c.payload.pluginConfigiOS.deploymentTarget = deploymentTarget;
 
     const injects: OverridesOptions = [
-        { pattern: '{{PLUGIN_PATHS}}', override: pluginInject },
-        { pattern: '{{PLUGIN_WARNINGS}}', override: podWarnings },
+        { pattern: '{{INJECT_PLUGIN_PATHS}}', override: pluginInject },
+        { pattern: '{{INJECT_PLUGIN_WARNINGS}}', override: podWarnings },
         {
-            pattern: '{{PLUGIN_PODFILE_INJECT}}',
+            pattern: '{{INJECT_PLUGIN_PODFILE_INJECT}}',
             override: c.payload.pluginConfigiOS.podfileInject,
         },
         {
@@ -128,37 +127,27 @@ export const parsePodFile = async (c: Context, platform: RnvPlatform) => {
             override: c.payload.pluginConfigiOS.podPostInstall,
         },
         {
-            pattern: '{{PLUGIN_PODFILE_SOURCES}}',
+            pattern: '{{INJECT_PLUGIN_PODFILE_SOURCES}}',
             override: c.payload.pluginConfigiOS.podfileSources,
         },
         {
-            pattern: '{{PLUGIN_DEPLOYMENT_TARGET}}',
+            pattern: '{{INJECT_PLUGIN_DEPLOYMENT_TARGET}}',
             override: c.payload.pluginConfigiOS.deploymentTarget,
         },
         {
-            pattern: '{{PLUGIN_STATIC_FRAMEWORKS}}',
+            pattern: '{{INJECT_PLUGIN_STATIC_FRAMEWORKS}}',
             override: c.payload.pluginConfigiOS.staticFrameworks.join(','),
         },
         {
-            pattern: '{{PATH_JSC_ANDROID}}',
-            override: doResolve('jsc-android') || 'UNRESOLVED(jsc-android)',
-        },
-        {
-            pattern: '{{PATH_REACT_NATIVE}}',
-            override:
-                doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native') ||
-                'UNRESOLVED(react-native)',
-        },
-        {
-            pattern: '{{PLUGIN_NODE_REQUIRE}}',
+            pattern: '{{INJECT_PLUGIN_NODE_REQUIRE}}',
             override: c.payload.pluginConfigiOS.podfileNodeRequire || '',
         },
         {
-            pattern: '{{HERMES_ENABLED}}',
+            pattern: '{{INJECT_HERMES_ENABLED}}',
             override: `${useHermes}`,
         },
         {
-            pattern: '{{PODFILE_HEADER}}',
+            pattern: '{{INJECT_PODFILE_HEADER}}',
             override: c.payload.pluginConfigiOS.podfileHeader,
         },
     ];
