@@ -146,7 +146,6 @@
         "react-native-gesture-handler": {
             "version": "2.14.1",
             "disablePluginTemplateOverrides": true
-
         },
         "@react-native-community/cli-platform-ios": {
             "version": "11.3.7",
@@ -167,7 +166,7 @@
             }
         },
         "react-native-tvos": {
-            "version": "0.73.1-0"
+            "version": "0.73.2-0"
         }
     },
     "permissions": {
