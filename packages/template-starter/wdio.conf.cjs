@@ -21,7 +21,7 @@ const capabilities = {
             'appium:platformVersion': '16.4',
             'appium:automationName': 'XCUITest',
             'appium:bundleId': 'renative.helloworld.test',
-            'appium:app': 'platformBuilds/template_ios/build/RNVApp/Build/Products/Debug-iphonesimulator/RNVApp.app',
+            // 'appium:app': 'platformBuilds/template_ios/build/RNVApp/Build/Products/Debug-iphonesimulator/RNVApp.app',
         },
     ],
     tvos: [
@@ -31,8 +31,8 @@ const capabilities = {
             'appium:platformVersion': '16.4',
             'appium:automationName': 'XCUITest',
             'appium:bundleId': 'renative.helloworld.test',
-            'appium:app':
-                'platformBuilds/template_tvos/build/RNVApp/Build/Products/Debug-appletvsimulator/RNVApp-tvOS.app',
+            // 'appium:app':
+            //     'platformBuilds/template_tvos/build/RNVApp/Build/Products/Debug-appletvsimulator/RNVApp-tvOS.app',
         },
     ],
     android: [
@@ -43,7 +43,7 @@ const capabilities = {
             'appium:automationName': 'UiAutomator2',
             'appium:appPackage': 'renative.helloworld.test',
             'appium:appActivity': 'renative.helloworld.test.MainActivity',
-            'appium:app': 'platformBuilds/template_android/app/build/outputs/apk/debug/app-debug.apk',
+            // 'appium:app': 'platformBuilds/template_android/app/build/outputs/apk/debug/app-debug.apk',
         },
     ],
     androidtv: [
@@ -54,7 +54,7 @@ const capabilities = {
             'appium:automationName': 'UiAutomator2',
             'appium:appPackage': 'renative.helloworld.test',
             'appium:appActivity': 'renative.helloworld.test.MainActivity',
-            'appium:app': 'platformBuilds/template_androidtv/app/build/outputs/apk/debug/app-debug.apk',
+            // 'appium:app': 'platformBuilds/template_androidtv/app/build/outputs/apk/debug/app-debug.apk',
         },
     ],
     macos: [
@@ -105,7 +105,7 @@ exports.config = {
     // then the current working directory is where your `package.json` resides, so `wdio`
     // will be called from there.
     //
-    specs: ['./test/specs/playground.cjs'],
+    specs: ['./test/specs/e2e.cjs'],
     // Patterns to exclude.
     exclude: [
         // 'path/to/excluded/files'

@@ -16,8 +16,8 @@ on:
     #         - '**/metadata.json'
     #         - '**/renative.json'
     #         - '**/package.json'
-    pull_request:
-        types: [labeled]
+    # pull_request:
+    #     types: [labeled]
 
 jobs:
     e2e-harness-androidtv:
@@ -31,12 +31,12 @@ jobs:
             - name: Bootstrap
               run: |
                   yarn bootstrap-clean
-            - name: Build
+            - name: Run
               run: |
-                  cd packages/app-harness && yarn build:androidtv-test
+                  cd packages/app-harness && yarn run:androidtv-test & sleep 180
             - name: E2E
               run: |
-                  cd packages/app-harness && yarn e2e:androidtv
+                  cd packages/app-harness && yarn e2e:androidtv && kill $(lsof -t -i:8084)
             # Commented because e2e tests would fail due to minion issues
             # - name: Post message to Slack via Webhook
             #   if: ${{ github.event_name == 'push' && failure() }}

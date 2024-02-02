@@ -93,7 +93,7 @@
                 },
                 "test": {
                     "runScheme": "Debug",
-                    "bundleAssets": true,
+                    "bundleAssets": false,
                     "sdk": "iphonesimulator"
                 },
                 "release": {
@@ -120,7 +120,7 @@
                 },
                 "test": {
                     "runScheme": "Debug",
-                    "bundleAssets": true,
+                    "bundleAssets": false,
                     "sdk": "appletvsimulator"
                 },
                 "release": {
@@ -173,7 +173,7 @@
                 },
                 "test": {
                     "signingConfig": "Debug",
-                    "bundleAssets": true
+                    "bundleAssets": false
                 },
                 "canary": {
                     "signingConfig": "Release",
@@ -206,7 +206,7 @@
                 },
                 "test": {
                     "signingConfig": "Debug",
-                    "bundleAssets": true
+                    "bundleAssets": false
                 },
                 "release": {
                     "signingConfig": "Release",
@@ -233,7 +233,7 @@
                 },
                 "test": {
                     "signingConfig": "Debug",
-                    "bundleAssets": true
+                    "bundleAssets": false
                 },
                 "release": {
                     "signingConfig": "Release",
@@ -260,7 +260,7 @@
                 },
                 "test": {
                     "signingConfig": "Debug",
-                    "bundleAssets": true
+                    "bundleAssets": false
                 },
                 "release": {
                     "signingConfig": "Release",
