@@ -16,8 +16,8 @@ on:
     #         - '**/metadata.json'
     #         - '**/renative.json'
     #         - '**/package.json'
-    pull_request:
-        types: [labeled]
+    # pull_request:
+    #     types: [labeled]
 
 jobs:
     e2e-harness-ios:
@@ -34,7 +34,7 @@ jobs:
                   yarn bootstrap-clean
             - name: Run
               run: |
-                  cd packages/app-harness && yarn run:ios-test & sleep 3600
+                  cd packages/app-harness && yarn run:ios-test & sleep 1200
             - name: E2E
               run: |
                   cd packages/app-harness && yarn e2e:ios && kill $(lsof -t -i:8082)
