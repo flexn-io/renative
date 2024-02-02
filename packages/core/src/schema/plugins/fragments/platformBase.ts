@@ -3,7 +3,12 @@ import { z } from 'zod';
 // DEPRECATED?
 const Enabled = z.boolean().default(true).describe('Marks plugin platform enabled or disabled');
 const Disabled = z.boolean().default(false).describe('Marks plugin platform disabled');
-const ForceLinking = z.boolean().default(false).describe('Marks plugin as not able to be autolinked');
+const ForceLinking = z
+    .boolean()
+    .default(false)
+    .describe(
+        'Packages that cannot be autolinked yet can still be added to MainApplication PackageList dynamically by setting this to true'
+    );
 const Path = z
     .string()
     .describe(
