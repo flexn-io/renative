@@ -1,6 +1,6 @@
 import {
     OverridesOptions,
-    PlatformKey,
+    // PlatformKey,
     RenativeConfigPluginPlatform,
     RnvContext,
     addSystemInjects,
@@ -9,18 +9,18 @@ import {
     getBuildFilePath,
     getConfigProp,
     getEntryFile,
-    getGetJsBundleFile,
-    getIP,
+    // getGetJsBundleFile,
+    // getIP,
     writeCleanFile,
 } from '@rnv/core';
 import { mkdirSync } from 'fs';
 import path from 'path';
 import { Context } from './types';
 
-const JS_BUNDLE_DEFAULTS: Partial<Record<PlatformKey, string>> = {
-    // Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
-    androidwear: '"assets://index.androidwear.bundle"',
-};
+// const JS_BUNDLE_DEFAULTS: Partial<Record<PlatformKey, string>> = {
+//     // Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
+//     androidwear: '"assets://index.androidwear.bundle"',
+// };
 
 export const parseFlipperSync = (c: Context, scheme: 'debug' | 'release') => {
     const appFolder = getAppFolder(c);
@@ -55,36 +55,33 @@ export const parseMainApplicationSync = (c: Context) => {
 
     if (!platform) return;
 
-    const appId = getAppId(c, c.platform);
+    // const appId = getAppId(c, c.platform);
     // console.log('appId', appId);
-    const javaPackageArray = appId?.split('.') || [];
+    // const javaPackageArray = appId?.split('.') || [];
 
-    const javaPackagePath = `app/src/main/java/${javaPackageArray.join('/')}`;
-    console.log(javaPackageArray, 'javaPackageArray');
-    console.log(javaPackagePath, 'javaPackagePath');
+    // const javaPackagePath = `app/src/main/java/${javaPackageArray.join('/')}`;
     // mkdirSync(path.join(appFolder, javaPackagePath), { recursive: true });
 
     const templatePath = 'app/src/main/java/rnv_template/MainApplication.kt';
     // const applicationPath = `${javaPackagePath}/MainApplication.java`;
-    const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
-    console.log(templatePath, 'templatePath');
+    // const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
 
-    const bundleDefault = JS_BUNDLE_DEFAULTS[platform];
-    const bundleFile: string =
-        getGetJsBundleFile(c, platform) || bundleAssets
-            ? `"assets://${getEntryFile(c, platform)}.bundle"`
-            : bundleDefault || '"super.getJSBundleFile()"';
-    const bundlerIp = getIP() || '10.0.2.2';
-    if (!bundleAssets) {
-        c.payload.pluginConfigAndroid.pluginApplicationDebugServer +=
-            '    var mPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)\n';
-        c.payload.pluginConfigAndroid.pluginApplicationDebugServer += `    mPreferences?.edit()?.putString("debug_http_host", "${bundlerIp}:${c.runtime.port}")?.apply()\n`;
-    }
+    // const bundleDefault = JS_BUNDLE_DEFAULTS[platform];
+    // const bundleFile: string =
+    //     getGetJsBundleFile(c, platform) || bundleAssets
+    //         ? `"assets://${getEntryFile(c, platform)}.bundle"`
+    //         : bundleDefault || '"super.getJSBundleFile()"';
+    // const bundlerIp = getIP() || '10.0.2.2';
+    // if (!bundleAssets) {
+    //     c.payload.pluginConfigAndroid.pluginApplicationDebugServer +=
+    //         '    var mPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)\n';
+    //     c.payload.pluginConfigAndroid.pluginApplicationDebugServer += `    mPreferences?.edit()?.putString("debug_http_host", "${bundlerIp}:${c.runtime.port}")?.apply()\n`;
+    // }
 
     const injects: OverridesOptions = [
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
         { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) || '' },
-        { pattern: '{{GET_JS_BUNDLE_FILE}}', override: bundleFile },
+        // { pattern: '{{GET_JS_BUNDLE_FILE}}', override: bundleFile },
         {
             pattern: '{{PLUGIN_IMPORTS}}',
             override: c.payload.pluginConfigAndroid.pluginApplicationImports,
@@ -269,7 +266,7 @@ export const injectPluginKotlinSync = (
 };
 
 const _injectPackage = (c: RnvContext, plugin: RenativeConfigPluginPlatform, pkg: string | undefined) => {
-    if (pkg) {
+    if (pkg && !plugin?.forceLinking) {
         c.payload.pluginConfigAndroid.pluginApplicationImports += `import ${pkg}\n`;
     }
     let packageParams = '';
@@ -277,11 +274,10 @@ const _injectPackage = (c: RnvContext, plugin: RenativeConfigPluginPlatform, pkg
     if (mainApplication?.packageParams) {
         packageParams = mainApplication.packageParams.join(',');
     }
-
-    if (pkg) {
+    if (pkg && plugin?.forceLinking) {
         const className = _extractClassName(pkg);
         if (className) {
-            c.payload.pluginConfigAndroid.pluginPackages += `${className}(${packageParams}),\n`;
+            c.payload.pluginConfigAndroid.pluginPackages += `add(${className}(${packageParams}));\n`;
         }
     }
 };

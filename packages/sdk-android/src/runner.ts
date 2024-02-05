@@ -399,7 +399,7 @@ export const configureProject = async (c: Context) => {
     c.payload.pluginConfigAndroid = {
         pluginIncludes: "include ':app'",
         pluginPaths: '',
-        pluginPackages: 'MainReactPackage(),\n',
+        pluginPackages: '',
         pluginActivityImports: '',
         pluginActivityMethods: '',
         pluginApplicationImports: '',

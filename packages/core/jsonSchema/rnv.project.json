@@ -818,7 +818,7 @@
                 },
                 "buildToolsVersion": {
                   "type": "string",
-                  "default": "30.0.0",
+                  "default": "34.0.0",
                   "description": "Override android build tools version"
                 },
                 "disableSigning": {
@@ -3700,6 +3700,11 @@
                         "default": false,
                         "description": "Marks plugin platform disabled"
                       },
+                      "forceLinking": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Packages that cannot be autolinked yet can still be added to MainApplication PackageList dynamically by setting this to true"
+                      },
                       "path": {
                         "type": "string",
                         "description": "Enables you to pass custom path to plugin. If undefined, the default `node_modules/[plugin-name]` will be used."
@@ -3793,6 +3798,9 @@
                       "disabled": {
                         "$ref": "#/definitions/rnv.project/properties/plugins/additionalProperties/anyOf/0/properties/android/properties/disabled"
                       },
+                      "forceLinking": {
+                        "$ref": "#/definitions/rnv.project/properties/plugins/additionalProperties/anyOf/0/properties/android/properties/forceLinking"
+                      },
                       "path": {
                         "$ref": "#/definitions/rnv.project/properties/plugins/additionalProperties/anyOf/0/properties/android/properties/path"
                       },
@@ -3858,6 +3866,9 @@
                       },
                       "disabled": {
                         "$ref": "#/definitions/rnv.project/properties/plugins/additionalProperties/anyOf/0/properties/android/properties/disabled"
+                      },
+                      "forceLinking": {
+                        "$ref": "#/definitions/rnv.project/properties/plugins/additionalProperties/anyOf/0/properties/android/properties/forceLinking"
                       },
                       "path": {
                         "$ref": "#/definitions/rnv.project/properties/plugins/additionalProperties/anyOf/0/properties/android/properties/path"
