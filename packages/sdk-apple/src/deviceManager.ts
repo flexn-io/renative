@@ -18,6 +18,10 @@ import {
 import { AppiumAppleDevice, AppleDevice } from './types';
 import { execFileSync } from 'child_process';
 
+const ERROR_MSG = {
+    TARGET_EXISTS: 'Unable to boot device in current state: Booted',
+};
+
 export const getAppleDevices = async (c: RnvContext, ignoreDevices?: boolean, ignoreSimulators?: boolean) => {
     const { platform } = c;
 
@@ -236,7 +240,21 @@ const _launchSimulator = async (selectedDevice: AppleDevice) => {
         selectedDevice.udid,
     ]);
 
-    await executeAsync(`xcrun simctl boot ${selectedDevice.udid}`, ExecOptionsPresets.NO_SPINNER_FULL_ERROR_SUMMARY);
+    try {
+        await executeAsync(
+            `xcrun simctl boot ${selectedDevice.udid}`,
+            ExecOptionsPresets.NO_SPINNER_FULL_ERROR_SUMMARY
+        );
+    } catch (e) {
+        if (typeof e === 'string') {
+            if (e.includes(ERROR_MSG.TARGET_EXISTS)) {
+                logToSummary(`Target with udid ${chalk().red(selectedDevice.udid)} already running. SKIPPING.`);
+                return true;
+            }
+        }
+        return Promise.reject(e);
+    }
+
     logSuccess(`Succesfully launched ${selectedDevice.name}`);
     return true;
 };

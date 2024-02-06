@@ -52,7 +52,7 @@ export const composeDevicesArray = (devices: Array<AndroidDevice>) => {
     return devicesArray;
 };
 
-const EMU_ERROR_MSG = {
+const ERROR_MSG = {
     TARGET_EXISTS: 'Running multiple emulators with the same AVD',
     UNKNOWN_AVD: 'Unknown AVD name',
 };
@@ -118,7 +118,7 @@ export const launchAndroidSimulator = async (
             return true;
         } catch (e) {
             if (typeof e === 'string') {
-                if (e.includes(EMU_ERROR_MSG.UNKNOWN_AVD)) {
+                if (e.includes(ERROR_MSG.UNKNOWN_AVD)) {
                     logWarning(
                         `Target with name ${chalk().red(
                             newTarget
@@ -126,15 +126,12 @@ export const launchAndroidSimulator = async (
                     );
                     await launchAndroidSimulator(c, true, false);
                     return true;
-                } else if (e.includes(EMU_ERROR_MSG.TARGET_EXISTS)) {
+                } else if (e.includes(ERROR_MSG.TARGET_EXISTS)) {
                     logToSummary(`Target with name ${chalk().red(newTarget)} already running. SKIPPING.`);
                     return true;
                 }
-
-                return Promise.reject(e);
-            } else {
-                return Promise.reject(e);
             }
+            return Promise.reject(e);
         }
     }
     return Promise.reject('No simulator -t target name specified!');
