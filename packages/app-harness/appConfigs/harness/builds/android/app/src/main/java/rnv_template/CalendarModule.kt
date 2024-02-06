@@ -1,4 +1,4 @@
-package renative.harness.debug
+package {{APPLICATION_ID}}
 
 import com.facebook.react.bridge.NativeModule
 import com.facebook.react.bridge.ReactApplicationContext

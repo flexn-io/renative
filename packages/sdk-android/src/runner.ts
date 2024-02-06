@@ -36,7 +36,12 @@ import {
     logInfo,
 } from '@rnv/core';
 import { parseAndroidManifestSync, injectPluginManifestSync } from './manifestParser';
-import { parseMainActivitySync, parseSplashActivitySync, parseMainApplicationSync } from './kotlinParser';
+import {
+    parseMainActivitySync,
+    parseSplashActivitySync,
+    parseMainApplicationSync,
+    injectPluginKotlinSync,
+} from './kotlinParser';
 import {
     parseAppBuildGradleSync,
     parseBuildGradleSync,
@@ -439,6 +444,7 @@ export const configureProject = async (c: Context) => {
     // PLUGINS
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         injectPluginGradleSync(c, plugin, pluginPlat, key);
+        injectPluginKotlinSync(c, pluginPlat, key, pluginPlat.package);
         injectPluginManifestSync();
         injectPluginXmlValuesSync(c, pluginPlat);
     });
