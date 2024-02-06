@@ -131,7 +131,7 @@ export const parsePodFile = async (c: Context, platform: RnvPlatform) => {
             override: c.payload.pluginConfigiOS.podfileSources,
         },
         {
-            pattern: '{{PLUGIN_DEPLOYMENT_TARGET}}',
+            pattern: '{{INJECT_PLUGIN_DEPLOYMENT_TARGET}}',
             override: c.payload.pluginConfigiOS.deploymentTarget,
         },
         {
