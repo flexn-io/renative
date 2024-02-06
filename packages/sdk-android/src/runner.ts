@@ -60,7 +60,6 @@ import {
 } from './deviceManager';
 import { CLI_ANDROID_ADB } from './constants';
 import { runReactNativeAndroid, packageReactNativeAndroid } from '@rnv/sdk-react-native';
-import { injectPluginJavaSync } from './javaParser';
 
 export const packageAndroid = async (c: Context) => {
     logTask('packageAndroid');
@@ -440,7 +439,6 @@ export const configureProject = async (c: Context) => {
     // PLUGINS
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         injectPluginGradleSync(c, plugin, pluginPlat, key);
-        injectPluginJavaSync(c, pluginPlat, key, pluginPlat.package);
         injectPluginManifestSync();
         injectPluginXmlValuesSync(c, pluginPlat);
     });
