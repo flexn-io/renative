@@ -153,7 +153,7 @@
             "disableNpm": true
         },
         "react-native": {
-            "version": "0.73.2"
+            "version": "0.73.4"
         },
         "next": {
             "version": "14.0.4",

@@ -1644,7 +1644,7 @@
                 "URL_NAME": "",
                 "URL_SCHEME": ""
             },
-            "version": "0.73.2"
+            "version": "0.73.4"
         },
         "react-native-actionsheet": {
             "version": "2.4.2"
