@@ -499,6 +499,10 @@ export const taskRnvNew = async (c: RnvContext) => {
     await executeAsync(`${isYarnInstalled() ? 'yarn' : 'npm'} add rnv@${c.rnvVersion}`, {
         cwd: c.paths.project.dir,
     });
+    // Add pkg-dir to have the correct version before the first run
+    await executeAsync(`${isYarnInstalled() ? 'yarn' : 'npm'} add pkg-dir@7.0.0`, {
+        cwd: c.paths.project.dir,
+    });
 
     // Check if node_modules folder exists
     if (!fsExistsSync(path.join(c.paths.project.dir, 'node_modules'))) {

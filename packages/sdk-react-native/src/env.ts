@@ -1,4 +1,4 @@
-import { doResolve, getAppId, getConfigProp, getContext, getRelativePath } from '@rnv/core';
+import { doResolve, getAppId, getConfigProp, getContext, getRelativePath, parsePlugins } from '@rnv/core';
 import RNPermissionsMap from './rnPermissionsMap';
 
 export const EnvVars = {
@@ -54,30 +54,24 @@ export const EnvVars = {
     },
     RNV_SKIP_LINKING: () => {
         const ctx = getContext();
-        const {
-            platform,
-            buildConfig: { plugins },
-        } = ctx;
-        const platformsToCheck = ['ios', 'tvos'];
 
-        if (platform && plugins) {
-            const filteredPlugins = Object.entries(plugins)
-                .filter(([_, pluginConfig]) => {
-                    const pluginConfigKeys = Object.keys(pluginConfig);
-                    return (
-                        typeof pluginConfig !== 'string' &&
-                        pluginConfigKeys.some((key) => platformsToCheck.includes(key)) &&
-                        !pluginConfigKeys.includes(platform)
-                    );
-                })
-                .reduce((acc: any, [pluginName]) => {
-                    acc.push(pluginName);
-                    return acc;
-                }, []);
+        const skipPlugins: string[] = [];
+        parsePlugins(
+            ctx,
+            ctx.platform,
+            (plugin, pluginPlat, key) => {
+                if (pluginPlat.disabled || plugin.disabled) {
+                    skipPlugins.push(key);
+                }
+            },
+            false,
+            true
+        );
 
-            const resultString = `${filteredPlugins.join(', ')}`;
-            return { RNV_SKIP_LINKING: resultString };
+        if (skipPlugins.length > 0) {
+            return { RNV_SKIP_LINKING: skipPlugins.join(',') };
         }
+
         return {};
     },
 };

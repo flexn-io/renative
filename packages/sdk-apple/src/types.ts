@@ -31,15 +31,14 @@ export type Payload = {
         embeddedFonts: Array<string>;
         podfileInject: string;
         podPostInstall: string;
-        staticPodExtraConditions: string;
         staticFrameworks: Array<string>;
-        staticPodDefinition: string;
         embeddedFontSources: Array<string>;
         ignoreProjectFonts: Array<string>;
-        pluginAppDelegateImports: string;
-        pluginAppDelegateMethods: string;
-        pluginAppDelegateExtensions: string;
-        appDelegateMethods: {
+        pluginAppDelegateMmImports: string;
+        pluginAppDelegateMmMethods: string;
+        pluginAppDelegateHExtensions: string;
+        pluginAppDelegateHImports: string;
+        appDelegateMmMethods: {
             application: {
                 didFinishLaunchingWithOptions: Array<PayloadAppDelegateMethod>;
                 applicationDidBecomeActive: Array<PayloadAppDelegateMethod>;
@@ -61,6 +60,7 @@ export type Payload = {
         podfileSources: string;
         deploymentTarget: string;
         podfileNodeRequire: string;
+        podfileHeader?: string;
     };
     xcodeProj?: {
         id?: string;
@@ -84,10 +84,10 @@ export type PayloadAppDelegateMethod = {
     weight: number;
 };
 
-export type PayloadAppDelegateKey = keyof Payload['pluginConfigiOS']['appDelegateMethods'];
+export type PayloadAppDelegateKey = keyof Payload['pluginConfigiOS']['appDelegateMmMethods'];
 
-export type PayloadAppDelegateSubKey = keyof Payload['pluginConfigiOS']['appDelegateMethods']['application'] &
-    keyof Payload['pluginConfigiOS']['appDelegateMethods']['userNotificationCenter'];
+export type PayloadAppDelegateSubKey = keyof Payload['pluginConfigiOS']['appDelegateMmMethods']['application'] &
+    keyof Payload['pluginConfigiOS']['appDelegateMmMethods']['userNotificationCenter'];
 
 export type Context = RnvContext<Payload>;
 
@@ -112,6 +112,27 @@ export type SwiftAppDelegate = {
         didFailToRegisterForRemoteNotificationsWithError: SwiftMethod;
         didReceive: SwiftMethod;
         didRegister: SwiftMethod;
+        didRegisterForRemoteNotificationsWithDeviceToken: SwiftMethod;
+    };
+    userNotificationCenter: {
+        willPresent: SwiftMethod;
+    };
+};
+
+export type ObjectiveCAppDelegate = {
+    application: {
+        didFinishLaunchingWithOptions: SwiftMethod;
+        applicationDidBecomeActive: SwiftMethod;
+        sourceURLForBridge: SwiftMethod;
+        open: SwiftMethod;
+        continue: SwiftMethod;
+        supportedInterfaceOrientationsFor: SwiftMethod;
+        didConnectCarInterfaceController: SwiftMethod;
+        didDisconnectCarInterfaceController: SwiftMethod;
+        didReceiveRemoteNotification: SwiftMethod;
+        didFailToRegisterForRemoteNotificationsWithError: SwiftMethod;
+        // didReceive: SwiftMethod;
+        requestAuthorizationWithOptions: SwiftMethod;
         didRegisterForRemoteNotificationsWithDeviceToken: SwiftMethod;
     };
     userNotificationCenter: {

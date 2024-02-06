@@ -1,0 +1,351 @@
+import path from 'path';
+import {
+    RenativeConfigPluginPlatform,
+    // getEntryFile,
+    getAppTemplateFolder,
+    getConfigProp,
+    // getGetJsBundleFile,
+    sanitizeColor,
+    getFlavouredProp,
+    addSystemInjects,
+    chalk,
+    logTask,
+    logDebug,
+    logWarning,
+    parsePlugins,
+    writeCleanFile,
+    RnvPlatform,
+    RenativeConfigAppDelegateMethod,
+} from '@rnv/core';
+import {
+    Context,
+    ObjectiveCAppDelegate,
+    PayloadAppDelegateKey,
+    PayloadAppDelegateMethod,
+    PayloadAppDelegateSubKey,
+    SwiftAppDelegateKey,
+    SwiftAppDelegateSubKey,
+    SwiftMethod,
+} from './types';
+
+export const parseAppDelegate = (
+    c: Context,
+    platform: RnvPlatform,
+    appFolder: string,
+    appFolderName: string
+    // isBundled = false,
+) =>
+    new Promise<void>((resolve) => {
+        logTask('parseAppDelegateSync');
+        const appDelegateMm = 'AppDelegate.mm';
+        const appDelegateH = 'AppDelegate.h';
+        // const entryFile = getEntryFile(c, platform);
+
+        // const forceBundle = getGetJsBundleFile(c, platform);
+        // let bundle;
+        // if (forceBundle) {
+        //     bundle = forceBundle;
+        // } else if (isBundled) {
+        //     bundle = `RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "${entryFile}", fallbackResource: nil)`;
+        // } else {
+        //     bundle = `URL(string: "http://${ip}:${newPort}/${entryFile}.bundle?platform=ios")`;
+        // }
+
+        // PLUGINS
+        parsePlugins(c, platform, (plugin, pluginPlat, key) => {
+            injectPluginObjectiveCSync(c, pluginPlat, key);
+        });
+
+        // BG COLOR
+        // let pluginBgColor = 'vc.view.backgroundColor = UIColor.white';
+        // const UI_COLORS = ['black', 'blue', 'brown', 'clear', 'cyan', 'darkGray', 'gray', 'green', 'lightGray', 'magneta', 'orange', 'purple', 'red', 'white', 'yellow'];
+        // if (backgroundColor) {
+        //     if (UI_COLORS.includes(backgroundColor)) {
+        //         pluginBgColor = `vc.view.backgroundColor = UIColor.${backgroundColor}`;
+        //     } else {
+        //         logWarning(`Your choosen color in renative.json for platform ${chalk().white(platform)} is not supported by UIColor. use one of the predefined ones: ${chalk().white(UI_COLORS.join(','))}`);
+        //     }
+        // }
+
+        const clr = sanitizeColor(getConfigProp(c, platform, 'backgroundColor'), 'backgroundColor').rgbDecimal;
+        const pluginBgColor = `vc.view.backgroundColor = UIColor(red: ${clr[0]}, green: ${clr[1]}, blue: ${clr[2]}, alpha: ${clr[3]})`;
+        const methods: ObjectiveCAppDelegate = {
+            application: {
+                didFinishLaunchingWithOptions: {
+                    isRequired: true,
+                    func: '- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {',
+                    begin: `
+        self.moduleName = @"RNVApp";
+        // You can add your custom initial props in the dictionary below.
+        // They will be passed down to the ViewController used by React Native.
+        self.initialProps = @{};
+        [super application:application didFinishLaunchingWithOptions:launchOptions];
+                `,
+                    render: (v) => `${v};`,
+                    end: 'return YES;',
+                },
+                sourceURLForBridge: {
+                    isRequired: true,
+                    func: '- (NSURL *)sourceURLForBridge:(RCTBridge *)bridge {',
+                    begin: `
+        #if DEBUG
+            return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
+        #else
+            return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+        #endif
+                    `,
+                    render: (v) => `${v};`,
+                    end: null,
+                },
+                applicationDidBecomeActive: {
+                    func: '- (void)applicationDidBecomeActive:(UIApplication *)application {',
+                    begin: null,
+                    render: (v) => `${v};`,
+                    end: null,
+                },
+                open: {
+                    func: '- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options {',
+                    begin: 'BOOL handled = false;',
+                    render: (v) => `if(!handled) { handled = ${v}; }`,
+                    end: 'return handled;',
+                },
+                continue: {
+                    func: '- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> *restorableObjects))restorationHandler {',
+                    begin: null,
+                    render: (v) => `return ${v};`,
+                    end: null,
+                },
+                supportedInterfaceOrientationsFor: {
+                    func: ' - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {',
+                    begin: null,
+                    render: (v) => `return ${v};`,
+                    end: null,
+                },
+                didConnectCarInterfaceController: {
+                    //Deprecated
+                    func: '- (void)application:(UIApplication *)application didConnectCarInterfaceController:(CPInterfaceController *)interfaceController toWindow:(CPWindow *)window {',
+                    begin: null,
+                    render: (v) => `${v};`,
+                    end: null,
+                },
+                didDisconnectCarInterfaceController: {
+                    //Deprecated
+                    func: '- (void)application:(UIApplication *)application didDisconnectCarInterfaceController:(CPInterfaceController *)interfaceController fromWindow:(CPWindow *)window {',
+                    begin: null,
+                    render: (v) => `${v};`,
+                    end: null,
+                },
+                didReceiveRemoteNotification: {
+                    func: '- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)notification fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))handler {',
+                    begin: null,
+                    render: (v) => `${v};`,
+                    end: null,
+                },
+                didFailToRegisterForRemoteNotificationsWithError: {
+                    func: '- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error; {',
+                    begin: null,
+                    render: (v) => `${v};`,
+                    end: null,
+                },
+                // didReceive: { //Deprecated
+                //     func: 'func application(_ application: UIApplication, didReceive notification: UILocalNotification) {',
+                //     begin: null,
+                //     render: (v) => `${v}`,
+                //     end: null,
+                // },
+                requestAuthorizationWithOptions: {
+                    func: '- (void)requestAuthorizationWithOptions:(UNAuthorizationOptions)options completionHandler:(void (^)(BOOL granted, NSError *error))completionHandler {',
+                    begin: null,
+                    render: (v) => `${v};`,
+                    end: null,
+                },
+                didRegisterForRemoteNotificationsWithDeviceToken: {
+                    func: '- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {',
+                    begin: null,
+                    render: (v) => `${v};`,
+                    end: null,
+                },
+            },
+            userNotificationCenter: {
+                willPresent: {
+                    func: '- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {',
+                    begin: null,
+                    render: (v) => `${v};`,
+                    end: null,
+                },
+            },
+        };
+
+        const constructMethod = (lines: Array<string>, method: SwiftMethod) => {
+            let output = '';
+            if (lines.length || method.isRequired) {
+                output += `\n${method.func}\n`;
+                if (method.begin) output += `   ${method.begin}\n`;
+                lines.forEach((v) => {
+                    output += `    ${method.render(v)}\n`;
+                });
+                if (method.end) output += `   ${method.end}\n`;
+                output += '}\n';
+            }
+            return output;
+        };
+
+        // REORDER Injects
+        const injectors: Array<{
+            f: SwiftMethod;
+            lines: Array<string>;
+        }> = [];
+        let cleanedLinesArr;
+        const mk = Object.keys(methods) as Array<SwiftAppDelegateKey>;
+        mk.forEach((key) => {
+            const method = methods[key];
+            const mk2 = Object.keys(method) as Array<SwiftAppDelegateSubKey>;
+            mk2.forEach((key2) => {
+                const f = method[key2];
+                const lines: Array<PayloadAppDelegateMethod> =
+                    c.payload.pluginConfigiOS.appDelegateMmMethods[key][key2] || [];
+
+                const cleanedLines: Record<string, PayloadAppDelegateMethod> = {};
+
+                lines.forEach((l) => {
+                    if (!cleanedLines[l.value]) {
+                        cleanedLines[l.value] = l;
+                    }
+
+                    if (cleanedLines[l.value].weight < l.weight) {
+                        cleanedLines[l.value] = l;
+                    }
+                });
+                cleanedLinesArr = Object.values(cleanedLines)
+                    .sort((a, b) => a.order - b.order)
+                    .map((v) => v.value);
+
+                injectors.push({
+                    f,
+                    lines: cleanedLinesArr,
+                });
+            });
+        });
+        injectors.forEach((v) => {
+            c.payload.pluginConfigiOS.pluginAppDelegateMmMethods += constructMethod(v.lines, v.f);
+        });
+
+        const injectsMm = [
+            // { pattern: '{{BUNDLE}}', override: bundle },
+            // { pattern: '{{ENTRY_FILE}}', override: entryFile },
+            // { pattern: '{{IP}}', override: ip },
+            // { pattern: '{{PORT}}', override: newPort },
+            { pattern: '{{BACKGROUND_COLOR}}', override: pluginBgColor },
+            {
+                pattern: '{{APPDELEGATE_MM_IMPORTS}}',
+                override: c.payload.pluginConfigiOS.pluginAppDelegateMmImports,
+            },
+            {
+                pattern: '{{APPDELEGATE_METHODS}}',
+                override: `${c.payload.pluginConfigiOS.pluginAppDelegateMmMethods}`,
+            },
+        ];
+        const injectsH = [
+            {
+                pattern: '{{APPDELEGATE_H_IMPORTS}}',
+                override: c.payload.pluginConfigiOS.pluginAppDelegateHImports,
+            },
+            {
+                pattern: '{{APPDELEGATE_H_EXTENSIONS}}',
+                override: c.payload.pluginConfigiOS.pluginAppDelegateHExtensions
+                    ? ` <${c.payload.pluginConfigiOS.pluginAppDelegateHExtensions}>`
+                    : '',
+            },
+        ];
+        addSystemInjects(c, injectsMm);
+
+        writeCleanFile(
+            path.join(getAppTemplateFolder(c, platform)!, appFolderName, appDelegateMm),
+            path.join(appFolder, appFolderName, appDelegateMm),
+            injectsMm,
+            undefined,
+            c
+        );
+        addSystemInjects(c, injectsH);
+
+        writeCleanFile(
+            path.join(getAppTemplateFolder(c, platform)!, appFolderName, appDelegateH),
+            path.join(appFolder, appFolderName, appDelegateH),
+            injectsH,
+            undefined,
+            c
+        );
+        resolve();
+    });
+
+export const injectPluginObjectiveCSync = (c: Context, plugin: RenativeConfigPluginPlatform, key: string) => {
+    logDebug(`injectPluginObjectiveCSync:${c.platform}:${key}`);
+    const templateXcode = getFlavouredProp(c, plugin, 'templateXcode');
+    const appDelegateMmImports = templateXcode?.AppDelegate_mm?.appDelegateImports;
+
+    if (appDelegateMmImports) {
+        addAppDelegateImports(c, appDelegateMmImports, 'pluginAppDelegateMmImports');
+    }
+    // if (plugin.appDelegateMethods instanceof Array) {
+    //     c.payload.pluginConfigiOS.pluginAppDelegateMethods += `${plugin.appDelegateMethods.join('\n    ')}`;
+    // }
+    const appDelegateHhImports = templateXcode?.AppDelegate_h?.appDelegateImports;
+    if (appDelegateHhImports) {
+        addAppDelegateImports(c, appDelegateHhImports, 'pluginAppDelegateHImports');
+    }
+    const appDelegateExtensions = templateXcode?.AppDelegate_h?.appDelegateExtensions;
+    if (appDelegateExtensions instanceof Array) {
+        appDelegateExtensions.forEach((appDelegateExtension, idx) => {
+            // Avoid duplicate imports
+            logDebug('appDelegateExtensions add');
+            if (c.payload.pluginConfigiOS.pluginAppDelegateHExtensions.indexOf(appDelegateExtension) === -1) {
+                logDebug('appDelegateExtensions add ok');
+                c.payload.pluginConfigiOS.pluginAppDelegateHExtensions += `${appDelegateExtension}${
+                    idx < appDelegateExtensions.length - 1 ? ', ' : ''
+                }`;
+            }
+        });
+    }
+
+    const appDelegateMethods = templateXcode?.AppDelegate_mm?.appDelegateMethods;
+    if (appDelegateMethods) {
+        const admk = Object.keys(appDelegateMethods) as Array<PayloadAppDelegateKey>;
+        admk.forEach((delKey) => {
+            const amdk2 = Object.keys(appDelegateMethods[delKey]) as Array<PayloadAppDelegateSubKey>;
+            amdk2.forEach((key2) => {
+                const plugArr: Array<RenativeConfigAppDelegateMethod> =
+                    c.payload.pluginConfigiOS.appDelegateMmMethods[delKey][key2];
+                if (!plugArr) {
+                    logWarning(`appDelegateMethods.${delKey}.${chalk().red(key2)} not supported. SKIPPING.`);
+                } else {
+                    const plugVal: Array<RenativeConfigAppDelegateMethod> = appDelegateMethods[delKey][key2];
+                    if (plugVal) {
+                        plugVal.forEach((v) => {
+                            const isString = typeof v === 'string';
+                            plugArr.push({
+                                order: isString ? 0 : v?.order || 0,
+                                value: isString ? v : v?.value,
+                                weight: isString ? 0 : v?.weight || 0,
+                            });
+                        });
+                    }
+                }
+            });
+        });
+    }
+};
+
+export const addAppDelegateImports = (
+    c: Context,
+    appDelegateImports: string[],
+    target: 'pluginAppDelegateHImports' | 'pluginAppDelegateMmImports'
+) => {
+    appDelegateImports.forEach((appDelegateImport) => {
+        // Avoid duplicate imports
+        logDebug(`${target.replace('plugin', '')} add`);
+        if (c.payload.pluginConfigiOS[target].indexOf(appDelegateImport) === -1) {
+            logDebug(`${target.replace('plugin', '')} add ok`);
+            c.payload.pluginConfigiOS[target] += `#import "${appDelegateImport}"\n`;
+        }
+    });
+};

@@ -541,6 +541,12 @@
                       "items": {
                         "type": "string"
                       }
+                    },
+                    "header": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
                     }
                   },
                   "additionalProperties": false,
@@ -757,6 +763,18 @@
                       "items": {
                         "type": "string"
                       }
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "AppDelegate_h": {
+                  "type": "object",
+                  "properties": {
+                    "appDelegateImports": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
                     },
                     "appDelegateExtensions": {
                       "type": "array",
@@ -777,6 +795,14 @@
             },
             "isStatic": {
               "type": "boolean"
+            },
+            "buildType": {
+              "type": "string",
+              "enum": [
+                "dynamic",
+                "static"
+              ],
+              "description": "Build type of the pod"
             }
           },
           "additionalProperties": false

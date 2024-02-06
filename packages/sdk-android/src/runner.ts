@@ -36,12 +36,7 @@ import {
     logInfo,
 } from '@rnv/core';
 import { parseAndroidManifestSync, injectPluginManifestSync } from './manifestParser';
-import {
-    parseMainActivitySync,
-    parseSplashActivitySync,
-    parseMainApplicationSync,
-    injectPluginKotlinSync,
-} from './kotlinParser';
+import { parseMainActivitySync, parseSplashActivitySync, parseMainApplicationSync } from './kotlinParser';
 import {
     parseAppBuildGradleSync,
     parseBuildGradleSync,
@@ -65,6 +60,7 @@ import {
 } from './deviceManager';
 import { CLI_ANDROID_ADB } from './constants';
 import { runReactNativeAndroid, packageReactNativeAndroid } from '@rnv/sdk-react-native';
+import { injectPluginJavaSync } from './javaParser';
 
 export const packageAndroid = async (c: Context) => {
     logTask('packageAndroid');
@@ -444,7 +440,7 @@ export const configureProject = async (c: Context) => {
     // PLUGINS
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         injectPluginGradleSync(c, plugin, pluginPlat, key);
-        injectPluginKotlinSync(c, pluginPlat, key, pluginPlat.package);
+        injectPluginJavaSync(c, pluginPlat, key, pluginPlat.package);
         injectPluginManifestSync();
         injectPluginXmlValuesSync(c, pluginPlat);
     });

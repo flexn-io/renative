@@ -4,7 +4,7 @@ import axios from 'axios';
 import os from 'os';
 import path from 'path';
 
-import { RnvPlatform, getContext } from '@rnv/core';
+import { RnvPlatform, getContext, logRaw } from '@rnv/core';
 //@ts-ignore
 import pkg from '../../package.json';
 import { REDASH_KEY, REDASH_URL, SENTRY_ENDPOINT } from '../constants';
@@ -54,7 +54,8 @@ export class AnalyticsCls {
     }
 
     get isAnalyticsEnabled() {
-        return getContext().buildConfig?.enableAnalytics;
+        const c = getContext();
+        return !c.files.defaultWorkspace.config?.disableTelemetry && c.process.env.RNV_TELEMETRY_DISABLED !== '1';
     }
 
     initialize() {
@@ -101,18 +102,32 @@ export class AnalyticsCls {
                 const { extra = {}, tags = {} } = context;
                 scope.setTags({ ...tags, os: os.platform() });
                 scope.setExtras({ ...extra, fingerprint: machineIdSync() });
-                if (e instanceof Error) {
-                    this.errorFixer.captureException(e);
-                } else if (typeof e === 'string') {
-                    this.errorFixer.captureException(new Error(sanitizeError(e)));
+                const c = getContext();
+                if (c.program.telemetryDebug) {
+                    logRaw(`TELEMETRY EXCEPTION PAYLOAD:
+    ${e}
+                    `);
+                } else {
+                    if (e instanceof Error) {
+                        this.errorFixer.captureException(e);
+                    } else if (typeof e === 'string') {
+                        this.errorFixer.captureException(new Error(sanitizeError(e)));
+                    }
                 }
             });
         }
     }
 
     async captureEvent(e: { type: string; platform?: RnvPlatform; template?: string; platforms?: Array<string> }) {
+        const c = getContext();
         if (this.isAnalyticsEnabled && this.knowItAll) {
-            return this.knowItAll.captureEvent(e);
+            if (c.program.telemetryDebug) {
+                logRaw(`TELEMETRY EVENT PAYLOAD:
+${JSON.stringify(e, null, 2)}
+                `);
+            } else {
+                return this.knowItAll.captureEvent(e);
+            }
         }
         return true;
     }

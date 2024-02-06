@@ -1,3 +1,7 @@
+{{INJECT_PLUGIN_PODFILE_SOURCES}}
+
+{{INJECT_PODFILE_HEADER}}
+
 # Resolve react_native_pods.rb with node to allow for hoisting
 def node_require(script)
   # Resolve script with node to allow for hoisting
@@ -9,7 +13,7 @@ def node_require(script)
 end
 
 node_require('react-native/scripts/react_native_pods.rb')
-{{PLUGIN_NODE_REQUIRE}}
+{{INJECT_PLUGIN_NODE_REQUIRE}}
 
 # RN PERMISSIONS
 permissions_required = ENV['REACT_NATIVE_PERMISSIONS_REQUIRED']
@@ -66,3 +70,5 @@ target 'RNVApp' do
     )
   end
 end
+
+{{INJECT_PLUGIN_PODFILE_INJECT}}

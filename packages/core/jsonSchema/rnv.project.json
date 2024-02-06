@@ -1627,6 +1627,12 @@
                           "items": {
                             "type": "string"
                           }
+                        },
+                        "header": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
                         }
                       },
                       "additionalProperties": false,
@@ -1838,6 +1844,18 @@
                           ],
                           "additionalProperties": false
                         },
+                        "appDelegateImports": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "AppDelegate_h": {
+                      "type": "object",
+                      "properties": {
                         "appDelegateImports": {
                           "type": "array",
                           "items": {
@@ -3843,6 +3861,9 @@
                           "AppDelegate_mm": {
                             "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/templateXcode/properties/AppDelegate_mm"
                           },
+                          "AppDelegate_h": {
+                            "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/templateXcode/properties/AppDelegate_h"
+                          },
                           "Info_plist": {
                             "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/templateXcode/properties/Info_plist"
                           }
@@ -3851,6 +3872,14 @@
                       },
                       "isStatic": {
                         "type": "boolean"
+                      },
+                      "buildType": {
+                        "type": "string",
+                        "enum": [
+                          "dynamic",
+                          "static"
+                        ],
+                        "description": "Build type of the pod"
                       }
                     },
                     "additionalProperties": false

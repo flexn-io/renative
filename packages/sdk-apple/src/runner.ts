@@ -32,7 +32,7 @@ import { getAppleDevices } from './deviceManager';
 import { getAppFolderName } from './common';
 import { parseEntitlementsPlist, parseExportOptionsPlist, parseInfoPlist } from './plistParser';
 import { parsePodFile } from './podfileParser';
-// import { parseAppDelegate } from './swiftParser';
+import { parseAppDelegate } from './objectiveCParser';
 import { parseXcodeProject } from './xcodeParser';
 import { parseXcscheme } from './xcschemeParser';
 import { AppleDevice, Context } from './types';
@@ -724,20 +724,20 @@ export const configureXcodeProject = async (c: Context) => {
     // const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
     // INJECTORS
     c.payload.pluginConfigiOS = {
+        podfileHeader: '',
         podfileNodeRequire: '',
         podfileInject: '',
         podPostInstall: '',
-        staticPodExtraConditions: '',
         staticFrameworks: [],
-        staticPodDefinition: '',
         exportOptions: '',
         embeddedFonts: [],
         embeddedFontSources: [],
         ignoreProjectFonts: [],
-        pluginAppDelegateImports: '',
-        pluginAppDelegateMethods: '',
-        pluginAppDelegateExtensions: '',
-        appDelegateMethods: {
+        pluginAppDelegateHImports: '',
+        pluginAppDelegateHExtensions: '',
+        pluginAppDelegateMmImports: '',
+        pluginAppDelegateMmMethods: '',
+        appDelegateMmMethods: {
             application: {
                 didFinishLaunchingWithOptions: [],
                 applicationDidBecomeActive: [],
@@ -821,7 +821,7 @@ export const configureXcodeProject = async (c: Context) => {
 
     await copyAssetsFolder(c, platform, appFolderName);
     await copyAppleAssets(c, platform, appFolderName);
-    // await parseAppDelegate(c, platform, appFolder, appFolderName, bundleAssets, bundlerIp);
+    await parseAppDelegate(c, platform, appFolder, appFolderName);
     await parseExportOptionsPlist(c, platform);
     await parseXcscheme(c, platform);
     await parsePodFile(c, platform);

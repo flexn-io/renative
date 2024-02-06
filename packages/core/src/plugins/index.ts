@@ -18,7 +18,7 @@ import { chalk, logDebug, logError, logInfo, logSuccess, logTask, logWarning } f
 import { doResolve } from '../system/resolve';
 import { RnvContext } from '../context/types';
 import { PluginCallback, RnvPlugin, RnvPluginScope } from './types';
-import { RenativeConfigPaths, RenativeConfigPlugin } from '../schema/types';
+import { RenativeConfigPaths, RenativeConfigPlugin, RenativeConfigPluginPlatform } from '../schema/types';
 import { RnvPlatform } from '../types';
 import { inquirerPrompt } from '../api';
 import { writeRenativeConfigFile } from '../configs/utils';
@@ -372,55 +372,70 @@ export const parsePlugins = (
     c: RnvContext,
     platform: RnvPlatform,
     pluginCallback: PluginCallback,
-    ignorePlatformObjectCheck?: boolean
+    ignorePlatformObjectCheck?: boolean,
+    includeDisabledOrExcludedPlugins?: boolean
 ) => {
     logTask('parsePlugins');
     if (c.buildConfig && platform) {
-        const includedPlugins = getConfigProp(c, platform, 'includedPlugins') || [];
+        const includedPluginsConfig = getConfigProp(c, platform, 'includedPlugins');
+        // default to all plugins if it's not defined (null allowed for overrides)
+        const includedPlugins = includedPluginsConfig === undefined ? ['*'] : includedPluginsConfig;
+
         const excludedPlugins = getConfigProp(c, platform, 'excludedPlugins') || [];
+
+        const handleActivePlugin = (plugin: RnvPlugin, pluginPlat: RenativeConfigPluginPlatform, key: string) => {
+            // log deprecated if present
+            if (plugin.deprecated) {
+                logWarning(plugin.deprecated);
+            }
+
+            if (pluginCallback) {
+                c.runtime.plugins[key] = plugin;
+                if (plugin.version) {
+                    c.runtime.pluginVersions[key] = plugin.version;
+                }
+                pluginCallback(plugin, pluginPlat, key);
+            }
+        };
+
         if (includedPlugins) {
             const { plugins } = c.buildConfig;
             if (plugins) {
-                // let totalIncludedPlugins = 0;
                 Object.keys(plugins).forEach((key) => {
+                    const plugin = getMergedPlugin(c, key);
+
+                    if (!plugin) return;
+
                     if (
                         (includedPlugins.includes('*') || includedPlugins.includes(key)) &&
                         !excludedPlugins.includes(key)
                     ) {
-                        const plugin = getMergedPlugin(c, key);
+                        const pluginPlat = plugin[platform] || {};
 
-                        if (plugin) {
-                            const pluginPlat = plugin[platform] || {};
-                            // NOTE: we do not want to disable plugin just because object is missing. instead we will let people to do it explicitly
-                            // {
-                            //     skipLinking: true,
-                            //     disabled: true,
-                            //     enabled: false,
-                            // };
-                            if (ignorePlatformObjectCheck) {
-                                // totalIncludedPlugins++;
-                                pluginCallback(plugin, pluginPlat, key);
-                            } else if (pluginPlat) {
-                                const isPluginDisabled = plugin.disabled === true;
-                                //DEPreCATED
-                                const isPluginPlatDisabled =
-                                    pluginPlat.disabled === true || pluginPlat.enabled === false;
-                                if (!isPluginDisabled && !isPluginPlatDisabled) {
-                                    if (plugin.deprecated) {
-                                        logWarning(plugin.deprecated);
-                                    }
-                                    if (pluginCallback) {
-                                        // totalIncludedPlugins++;
-                                        pluginCallback(plugin, pluginPlat, key);
-                                    }
-                                } else {
-                                    if (isPluginDisabled) {
-                                        logInfo(`Plugin ${key} is marked disabled. skipping.`);
-                                    } else if (isPluginPlatDisabled) {
-                                        logInfo(`Plugin ${key} is marked disabled for platform ${platform} skipping.`);
-                                    }
-                                }
+                        // NOTE: we do not want to disable plugin just because object is missing. instead we will let people to do it explicitly
+                        // {
+                        //     skipLinking: true,
+                        //     disabled: true,
+                        // };
+                        //TODO: consider supportedPlatforms for plugins
+                        const isPluginPlatDisabled = pluginPlat.disabled === true;
+                        const isPluginDisabled = plugin.disabled === true;
+
+                        if (ignorePlatformObjectCheck || includeDisabledOrExcludedPlugins) {
+                            if (isPluginDisabled) {
+                                logInfo(`Plugin ${key} is marked disabled. skipping.`);
+                            } else if (isPluginPlatDisabled) {
+                                logInfo(`Plugin ${key} is marked disabled for platform ${platform} skipping.`);
                             }
+                            handleActivePlugin(plugin, pluginPlat, key);
+                        } else if (!isPluginPlatDisabled && !isPluginDisabled) {
+                            handleActivePlugin(plugin, pluginPlat, key);
+                        }
+                    } else if (includeDisabledOrExcludedPlugins) {
+                        const pluginPlat = plugin[platform] || {};
+                        if (excludedPlugins.includes(key)) {
+                            plugin.disabled = true;
+                            handleActivePlugin(plugin, pluginPlat, key);
                         }
                     }
                 });

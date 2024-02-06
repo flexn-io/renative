@@ -6,7 +6,6 @@
         "path": "./secrets/privateConfigs.enc"
     },
     "plugins": {
-        "react-native-permissions": "3.10.1",
         "react-native-splash-screen": {
             "android": {
                 "templateAndroid": {
@@ -17,36 +16,118 @@
                 },
                 "package": "org.devio.rn.splashscreen.SplashScreenReactPackage"
             },
-            "version": "3.3.0"
-        },
-        "CalendarModule": {
-            "android": {
-                "templateAndroid": {
-                    "MainApplication_java": {
-                        "packages": ["MyAppPackage"]
+            "ios": {
+                "templateXcode": {
+                    "AppDelegate_mm": {
+                        "appDelegateImports": ["RNSplashScreen.h"],
+                        "appDelegateMethods": {
+                            "application": {
+                                "didFinishLaunchingWithOptions": ["[RNSplashScreen show]"]
+                            }
+                        }
                     }
                 },
-                "forceLinking": true
+                "podName": "react-native-splash-screen"
+            },
+            "tvos": {
+                "disabled": true
+            },
+            "version": "3.3.0"
+        },
+        "react-native-carplay": {
+            "ios": {
+                "templateXcode": {
+                    "AppDelegate_h": {
+                        "appDelegateImports": ["CarPlay/CarPlay.h"],
+                        "appDelegateExtensions": ["UIApplicationDelegate", "CPApplicationDelegate"]
+                    },
+                    "AppDelegate_mm": {
+                        "appDelegateImports": ["RNCarPlay.h"],
+                        "appDelegateMethods": {
+                            "application": {
+                                "didConnectCarInterfaceController": [
+                                    "[RNCarPlay connectWithInterfaceController:interfaceController window:window]"
+                                ],
+                                "didDisconnectCarInterfaceController": ["[RNCarPlay disconnect]"]
+                            }
+                        }
+                    }
+                },
+                "podName": "react-native-carplay"
+            },
+            "tvos": {
+                "disabled": true
+            },
+            "version": "2.3.0"
+        },
+        "@react-native-firebase/app": {
+            "disablePluginTemplateOverrides": true,
+            "version": "18.6.1",
+            "ios": {
+                "podNames": [
+                    "pod 'Firebase', :build_type => :static_framework",
+                    "pod 'FirebaseCoreInternal', :build_type => :static_framework",
+                    "pod 'FirebaseCore', :build_type => :static_framework",
+                    "pod 'GoogleUtilities', :build_type => :static_framework",
+                    "pod 'FirebaseStorage', :build_type => :static_framework",
+                    "pod 'FirebaseAppCheckInterop', :build_type => :static_framework",
+                    "pod 'FirebaseAuthInterop', :build_type => :static_framework"
+                ],
+                "templateXcode": {
+                    "Podfile": {
+                        "header": ["$RNFirebaseAsStaticFramework = true"]
+                    }
+                }
             }
         },
-        "react-native-orientation-locker": {
+        "react-native-photo-editor": {
             "android": {
                 "templateAndroid": {
-                    "MainActivity_java": {
-                        "imports": ["android.content.res.Configuration"],
-                        "methods": [
-                            "override fun onConfigurationChanged(newConfig:Configuration) {",
-                            "  super.onConfigurationChanged(newConfig)",
-                            "  val intent = Intent(\"onConfigurationChanged\")",
-                            "  intent.putExtra(\"newConfig\", newConfig)",
-                            "  this.sendBroadcast(intent)",
-                            "}"
+                    "AndroidManifest_xml": {
+                        "tag": "manifest",
+                        "android:name": "",
+                        "children": [
+                            {
+                                "tag": "application",
+                                "android:name": ".MainApplication",
+                                "children": [
+                                    {
+                                        "tag": "activity",
+                                        "android:name": "com.ahmedadeltito.photoeditor.PhotoEditorActivity",
+                                        "children": []
+                                    }
+                                ]
+                            }
                         ]
                     }
                 },
-                "package": "org.wonday.orientation.OrientationPackage"
+                "package": "ui.photoeditor.RNPhotoEditorPackage"
             },
-            "version": "1.5.0"
+            "androidtv": {
+                "package": "ui.photoeditor.RNPhotoEditorPackage"
+            },
+            "firetv": {
+                "package": "ui.photoeditor.RNPhotoEditorPackage"
+            },
+            "ios": {
+                "podName": "iOSPhotoEditor",
+                "git": "https://github.com/prscX/photo-editor",
+                "commit": "4924e9ec984d25d03644e58aa148282642171de9",
+                "buildType": "dynamic"
+            },
+            "pluginDependencies": null,
+            "version": "1.0.13"
+        },
+        "react-native-permissions": {
+            "tvos": {
+                "disabled": true
+            },
+            "version": "3.10.1"
+        },
+        "react-native": {
+            "android": {
+                "implementation": "// TEST"
+            }
         }
     },
     "permissions": {

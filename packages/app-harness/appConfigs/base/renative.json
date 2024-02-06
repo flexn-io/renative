@@ -29,6 +29,10 @@
         "backgroundColor": "#111111",
         "fontSources": [
             "{{resolvePackage(react-native-vector-icons)}}/Fonts"
+        ],
+        "excludedPlugins": [
+            "@react-native-firebase/app",
+            "react-native-photo-editor"
         ]
     },
     "platforms": {
@@ -74,9 +78,25 @@
                     "runScheme": "Debug",
                     "bundleAssets": false
                 },
+                "debug-static-pods": {
+                    "runScheme": "Debug",
+                    "bundleAssets": false,
+                    "templateXcode": {
+                        "Podfile": {
+                            "sources": [
+                                "https://github.com/CocoaPods/Specs.git"
+                            ],
+                            "header": [
+                                "plugin 'cocoapods-user-defined-build-types'",
+                                "enable_user_defined_build_types!"
+                            ]
+                        }
+                    },
+                    "excludedPlugins": []
+                },
                 "test": {
                     "runScheme": "Debug",
-                    "bundleAssets": true,
+                    "bundleAssets": false,
                     "sdk": "iphonesimulator"
                 },
                 "release": {
@@ -103,7 +123,7 @@
                 },
                 "test": {
                     "runScheme": "Debug",
-                    "bundleAssets": true,
+                    "bundleAssets": false,
                     "sdk": "appletvsimulator"
                 },
                 "release": {
@@ -156,7 +176,7 @@
                 },
                 "test": {
                     "signingConfig": "Debug",
-                    "bundleAssets": true
+                    "bundleAssets": false
                 },
                 "canary": {
                     "signingConfig": "Release",
@@ -189,7 +209,7 @@
                 },
                 "test": {
                     "signingConfig": "Debug",
-                    "bundleAssets": true
+                    "bundleAssets": false
                 },
                 "release": {
                     "signingConfig": "Release",
@@ -216,7 +236,7 @@
                 },
                 "test": {
                     "signingConfig": "Debug",
-                    "bundleAssets": true
+                    "bundleAssets": false
                 },
                 "release": {
                     "signingConfig": "Release",
@@ -243,7 +263,7 @@
                 },
                 "test": {
                     "signingConfig": "Debug",
-                    "bundleAssets": true
+                    "bundleAssets": false
                 },
                 "release": {
                     "signingConfig": "Release",
@@ -402,6 +422,9 @@
         },
         "linux": {
             "entryFile": "index",
+            "assetSources": [
+                "{{resolvePackage(@flexn/assets-renative-outline)}}/assets"
+            ],
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false

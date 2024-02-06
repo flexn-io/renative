@@ -3,7 +3,7 @@ export const DEFAULTS = {
     minSdkVersion: 0,
     targetSdkVersion: 0,
     backgroundColor: '#FFFFFF',
-    deploymentTarget: '11.0',
+    deploymentTarget: '15.0',
     devServerHost: '127.0.0.1',
     buildToolsVersion: '34.0.0',
     gradleWrapperVersion: '8.3',

@@ -7,6 +7,8 @@ const Commit = z.string().describe('Alternative git commit reference string');
 
 const Version = z.string().describe('Version of pod');
 
+const BuildType = z.enum(['dynamic', 'static']).describe('Build type of the pod');
+
 export const PluginPlatformiOSFragment = {
     git: z.optional(Git),
     commit: z.optional(Commit),
@@ -16,4 +18,5 @@ export const PluginPlatformiOSFragment = {
     staticFrameworks: z.optional(z.array(z.string())),
     templateXcode: z.optional(z.object(TemplateXcodeBaseFragment)),
     isStatic: z.boolean().optional(),
+    buildType: z.optional(BuildType),
 };

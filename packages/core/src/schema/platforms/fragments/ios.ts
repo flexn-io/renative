@@ -76,7 +76,6 @@ export const PlatformiOSFragment = {
             provisioningProfiles: z.record(z.string()).optional(),
         })
         .optional(),
-
     // systemCapabilities: {
     //     additionalProperties: true,
     //     type: 'object',

@@ -21,6 +21,13 @@ const FIRE_AND_FORGET: ExecOptions = {
     shell: true, // runs `command` inside of a shell. Uses `/bin/sh` on UNIX and `cmd.exe` on Windows
 };
 
+const NO_SPINNER_FULL_ERROR_SUMMARY: ExecOptions = {
+    stdio: 'pipe', // pipe will print final error into SUMMARY box but nothing during execution
+    detached: true, // Killing rnv command will NOT kill process
+    silent: true, // Disable spinner
+    shell: true, // runs `command` inside of a shell. Uses `/bin/sh` on UNIX and `cmd.exe` on Windows
+};
+
 const INHERIT_OUTPUT_NO_SPINNER: ExecOptions = {
     detached: false, // Killing command will kill process
     silent: true, // silent: true => will not show execa spinner
@@ -42,6 +49,7 @@ export const ExecOptionsPresets = {
     FIRE_AND_FORGET,
     INHERIT_OUTPUT_NO_SPINNER,
     SPINNER_FULL_ERROR_SUMMARY,
+    NO_SPINNER_FULL_ERROR_SUMMARY,
 } as const;
 
 /**
@@ -92,10 +100,13 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
     const privateMask = '*******';
     const cleanRawCmd = opts.rawCommand?.args || [];
 
-    cleanCommand += cleanRawCmd.join(' ');
+    if (cleanRawCmd.length) {
+        cleanCommand += ` ${cleanRawCmd.join(' ')}`;
+    }
+
     let logMessage = cleanCommand;
     const privateParams = mergedOpts.privateParams || [];
-    if (privateParams && Array.isArray(privateParams)) {
+    if (privateParams?.length) {
         logMessage = replaceOverridesInString(commandAsString, privateParams, privateMask);
     }
 
@@ -190,7 +201,12 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
                 return '';
             }
 
-            let errMessage = parseErrorMessage(err.all, maxErrorLength);
+            let errMessage = '';
+
+            if (!opts.stdio) {
+                //In stdio mode all info received at summary so we want to skip doubles
+                errMessage = parseErrorMessage(err.all, maxErrorLength);
+            }
 
             if (!errMessage) {
                 errMessage = '';
@@ -198,16 +214,20 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
                 errMessage += '\n\n';
             }
 
-            if (err.message) {
+            if (err.stack && !errMessage.includes(err.stack)) {
+                errMessage += `${err.stack}\n\n`;
+            }
+
+            if (err.all && !errMessage.includes(err.all)) {
+                errMessage += `${err.all}\n\n`;
+            }
+
+            if (err.message && !errMessage.includes(err.message)) {
                 errMessage += `${err.message}\n\n`;
             }
 
-            if (err.stderr) {
+            if (err.stderr && !errMessage.includes(err.stderr)) {
                 errMessage += `${err.stderr}\n\n`;
-            }
-
-            if (err.stack) {
-                errMessage += `${err.stack}\n\n`;
             }
 
             errMessage = replaceOverridesInString(errMessage, privateParams, privateMask);
