@@ -16,6 +16,7 @@ import {
     logSuccess,
 } from '@rnv/core';
 import { AppiumAppleDevice, AppleDevice } from './types';
+import { execFileSync } from 'child_process';
 
 export const getAppleDevices = async (c: RnvContext, ignoreDevices?: boolean, ignoreSimulators?: boolean) => {
     const { platform } = c;
@@ -223,6 +224,17 @@ const _launchSimulator = async (selectedDevice: AppleDevice) => {
         logWarning(`Cannot launch simulator: ${selectedDevice.name} . missing udid`);
         return false;
     }
+
+    // We need to have simulator app launched for "xcrun simctl boot" to take effect
+    const developerDir = execFileSync('xcode-select', ['-p'], {
+        encoding: 'utf8',
+    }).trim();
+    execFileSync('open', [
+        `${developerDir}/Applications/Simulator.app`,
+        '--args',
+        '-CurrentDeviceUDID',
+        selectedDevice.udid,
+    ]);
 
     await executeAsync(`xcrun simctl boot ${selectedDevice.udid}`, ExecOptionsPresets.NO_SPINNER_FULL_ERROR_SUMMARY);
     logSuccess(`Succesfully launched ${selectedDevice.name}`);
