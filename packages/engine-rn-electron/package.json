@@ -39,7 +39,7 @@
         "electron": "26.3.0",
         "electron-builder": "24.6.4",
         "electron-notarize": "1.2.2",
-        "@react-native/babel-preset": "0.73.19"
+        "@react-native/babel-preset": "0.73.21"
     },
     "peerDependencies": {
         "@rnv/core": "^1.0.0-rc.11"
