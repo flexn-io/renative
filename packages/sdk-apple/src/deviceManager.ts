@@ -199,7 +199,7 @@ export const launchAppleSimulator = async (c: RnvContext, target: string | boole
         await _launchSimulator(selectedDevice);
         return selectedDevice.name;
     } else if (target !== true && target !== undefined) {
-        logWarning(`Your specified simulator target ${chalk().white(target)} doesn't exists`);
+        logWarning(`Your specified simulator target ${chalk().white(target)} doesn't exist`);
     }
 
     const devices = devicesArr.map((v) => ({

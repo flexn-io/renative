@@ -114,11 +114,11 @@ export const writeCleanFile = (
     // console.log('writeCleanFile', destination);
     const api = getApi();
     if (!fs.existsSync(source)) {
-        logError(`Cannot write file. source path doesn't exists: ${source}`);
+        logError(`Cannot write file. source path doesn't exist: ${source}`);
         return;
     }
     if (!fs.existsSync(destination)) {
-        logDebug(`destination path doesn't exists: ${destination}. will create new one`);
+        logDebug(`destination path doesn't exist: ${destination}. will create new one`);
         // return;
     }
     const ext = path.extname(source);
@@ -164,7 +164,7 @@ export const readCleanFile = (source: string, overrides?: OverridesOptions) => {
     // logTask(`writeCleanFile`)
     // console.log('readCleanFile', source);
     if (!fs.existsSync(source)) {
-        logError(`Cannot read file. source path doesn't exists: ${source}`);
+        logError(`Cannot read file. source path doesn't exist: ${source}`);
         return;
     }
 
@@ -842,7 +842,7 @@ export const copyContentsIfNotExistsRecursiveSync = (src: string, dest: string) 
             }
         }
     }
-}
+};
 
 export default {
     sanitizeDynamicRefs,
@@ -867,5 +867,5 @@ export default {
     getDirectories,
     resolvePackage,
     cleanEmptyFoldersRecursively,
-    copyContentsIfNotExistsRecursiveSync
+    copyContentsIfNotExistsRecursiveSync,
 };
