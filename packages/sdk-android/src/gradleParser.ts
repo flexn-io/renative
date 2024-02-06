@@ -581,7 +581,7 @@ export const parseGradlePropertiesSync = (c: Context) => {
             override: newArchEnabled ? 'true' : 'false',
         },
         {
-            pattern: '{{HERMES_ENABLED}}',
+            pattern: '{{INJECT_HERMES_ENABLED}}',
             override: reactNativeEngine === 'hermes' ? 'true' : 'false',
         },
         {
