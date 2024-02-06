@@ -18,7 +18,7 @@ end
 
 target 'RNVApp' do
   config = use_native_modules!
-  platform :ios, '{{PLUGIN_DEPLOYMENT_TARGET}}'
+  platform :ios, '{{INJECT_PLUGIN_DEPLOYMENT_TARGET}}'
 
   # Flags change depending on the env values.
   flags = get_default_flags()
@@ -26,7 +26,7 @@ target 'RNVApp' do
   use_react_native!(
     :path => config[:reactNativePath],
     # Hermes is now enabled by default. Disable by setting this flag to false.
-    :hermes_enabled => {{HERMES_ENABLED}},
+    :hermes_enabled => {{INJECT_HERMES_ENABLED}},
     :fabric_enabled => flags[:fabric_enabled],
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/../.."
@@ -41,7 +41,7 @@ end
 
 target 'RNVApp-tvOS' do
   config = use_native_modules!
-  platform :tvos, '{{PLUGIN_DEPLOYMENT_TARGET}}'
+  platform :tvos, '{{INJECT_PLUGIN_DEPLOYMENT_TARGET}}'
 
   # Flags change depending on the env values.
   flags = get_default_flags()
@@ -49,7 +49,7 @@ target 'RNVApp-tvOS' do
   use_react_native!(
     :path => config[:reactNativePath],
     # Hermes is now enabled by default. Disable by setting this flag to false.
-    :hermes_enabled => {{HERMES_ENABLED}},
+    :hermes_enabled => {{INJECT_HERMES_ENABLED}},
     :fabric_enabled => flags[:fabric_enabled],
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/../.."
