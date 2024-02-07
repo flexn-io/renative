@@ -87,12 +87,13 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
             let filteredTasks;
             let addendum = '';
             if (!c.paths.project.configExists) {
-                filteredTasks = taskInstances.filter((v) => v.taskInstance.isGlobalScope);
+                filteredTasks = taskInstances.filter((v) => v.taskInstance.isGlobalScope && !v.taskInstance.isPrivate);
                 tasks = filteredTasks.map((v) => _getTaskOption(v)).sort();
                 tasksCommands = filteredTasks.map((v) => v.taskInstance.task.split(' ')[0]).sort();
                 addendum = ' (Not a ReNative project. options will be limited)';
             } else {
-                tasks = taskInstances.map((v) => _getTaskOption(v)).sort();
+                filteredTasks = taskInstances.filter((v) => !v.taskInstance.isPrivate);
+                tasks = filteredTasks.map((v) => _getTaskOption(v)).sort();
                 tasksCommands = taskInstances.map((v) => v.taskInstance.task.split(' ')[0]).sort();
                 defaultCmd = tasks.find((v) => v.startsWith('run'));
             }

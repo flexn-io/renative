@@ -25,9 +25,10 @@ export const taskRnvConfigureSoft: RnvTaskFn = async (c, parentTask, originTask)
 };
 
 export default {
-    description: 'Configure system and project wothout recreating files (used for --only)',
+    description: 'Configure system and project without recreating files (used for --only)',
     fn: taskRnvConfigureSoft,
     task: TASK_CONFIGURE_SOFT,
     params: PARAMS.withBase(),
     platforms: [],
+    isPrivate: true,
 };

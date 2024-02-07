@@ -9,6 +9,7 @@ export type RnvTask = {
     forceBuildHookRebuild?: boolean;
     fn?: RnvTaskFn;
     fnHelp?: RnvTaskFn;
+    isPrivate?: boolean;
 };
 
 export type RnvTaskParameter = {
