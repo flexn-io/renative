@@ -8,11 +8,11 @@ import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.Callback
 
 
-class CalendarModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
-override fun getName() = "CalendarModule"
+class TestNativeModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
+override fun getName() = "TestNativeModule"
 
 @ReactMethod
-fun createCalendarEvent(name: String, location: String, callback:Callback) {
+fun createTestEvent(name: String, location: String, callback:Callback) {
     var result = "Event called with name: $name and location: $location"
     callback.invoke(null, result)
 }

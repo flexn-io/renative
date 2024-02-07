@@ -34,7 +34,7 @@
             },
             "version": "3.3.0"
         },
-        "CalendarModule": {
+        "TestNativeModule": {
             "android": {
                 "templateAndroid": {
                     "MainApplication_java": {
