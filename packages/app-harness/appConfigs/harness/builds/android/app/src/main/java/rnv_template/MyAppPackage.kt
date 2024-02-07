@@ -1,4 +1,4 @@
-package renative.harness.debug
+package {{APPLICATION_ID}}
 
 import android.view.View
 import com.facebook.react.ReactPackage
