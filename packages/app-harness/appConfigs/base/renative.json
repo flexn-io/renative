@@ -70,9 +70,6 @@
             "includedPermissions": [
                 "*"
             ],
-            "assetSources": [
-                "{{resolvePackage(@flexn/assets-renative-outline)}}/assets"
-            ],
             "buildSchemes": {
                 "debug": {
                     "runScheme": "Debug",
