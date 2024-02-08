@@ -88,6 +88,9 @@ export const parseAppDelegate = (
                     isRequired: true,
                     func: '- (NSURL *)sourceURLForBridge:(RCTBridge *)bridge {',
                     begin: `
+            return [self getBundleURL];
+        }
+        - (NSURL *)getBundleURL {
         #if DEBUG
             return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
         #else

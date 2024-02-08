@@ -1,23 +1,24 @@
 {
-  "extends": "@flexn/typescript-config/tsconfig.app.json",
-  "compilerOptions": {
-    "outDir": "./lib",
-    "rootDir": ".",
-    "noImplicitAny": false,
-    // "resolveJsonModule": false
-    "plugins": [
-      {
-        "name": "next"
-      }
+    "extends": "@flexn/typescript-config/tsconfig.app.json",
+    "compilerOptions": {
+        "outDir": "./lib",
+        "rootDir": ".",
+        "noImplicitAny": false,
+        // "resolveJsonModule": false
+        "plugins": [
+            {
+                "name": "next"
+            }
+        ],
+        "strictNullChecks": true
+    },
+    "include": [
+        "next-env.d.ts",
+        "**/*.ts",
+        "**/*.tsx",
+        "platformBuilds/template_web/.next/types/**/*.ts",
+        ".next/types/**/*.ts",
+        "platformBuilds/template_web/output/types/**/*.ts"
     ],
-    "strictNullChecks": true
-  },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "platformBuilds/template_web/.next/types/**/*.ts",
-    ".next/types/**/*.ts",
-    "platformBuilds/template_web/output/types/**/*.ts"
-  ]
+    "exclude": ["**/rn_modules"]
 }

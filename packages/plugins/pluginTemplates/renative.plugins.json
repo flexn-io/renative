@@ -1511,7 +1511,7 @@
             }
         },
         "next": {
-            "version": "14.0.4"
+            "version": "14.1.0"
         },
         "next-seo": "4.28.1",
         "RCTLinkingIOS": {
@@ -2137,7 +2137,9 @@
                         "methods": [
                             "    companion object {\n @JvmStatic \n private val mCallbackManager = CallbackManager.Factory.create() \n fun getCallbackManager(): CallbackManager = mCallbackManager \n}"
                         ],
-                        "imports": ["com.facebook.CallbackManager"]
+                        "imports": [
+                            "com.facebook.CallbackManager"
+                        ]
                     },
                     "strings_xml": {
                         "children": [
@@ -2149,7 +2151,9 @@
                         ]
                     },
                     "app_build_gradle": {
-                        "implementations": ["'com.facebook.android:facebook-android-sdk:[4,5)'"]
+                        "implementations": [
+                            "'com.facebook.android:facebook-android-sdk:[4,5)'"
+                        ]
                     }
                 },
                 "package": "com.facebook.reactnative.androidsdk.FBSDKPackage"

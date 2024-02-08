@@ -1,5 +1,5 @@
 {{PLUGIN_PODFILE_SOURCES}}
-platform :macos, '{{PLUGIN_DEPLOYMENT_TARGET}}'
+platform :macos, '{{INJECT_PLUGIN_DEPLOYMENT_TARGET}}'
 {{PLUGIN_WARNINGS}}
 
 # ReNative: To allow dynamic plugins via flavours autolinking has to be disabled

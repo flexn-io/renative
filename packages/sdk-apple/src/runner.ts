@@ -37,7 +37,7 @@ import { parseXcodeProject } from './xcodeParser';
 import { parseXcscheme } from './xcschemeParser';
 import { AppleDevice, Context } from './types';
 import { ObjectEncodingOptions } from 'fs';
-import { packageReactNativeIOS, runCocoaPods, runReactNativeIOS } from '@rnv/sdk-react-native';
+import { packageReactNativeIOS, runCocoaPods, runReactNativeIOS, EnvVars } from '@rnv/sdk-react-native';
 import { registerDevice } from './fastlane';
 
 export const packageBundleForXcode = (c: Context) => {
@@ -634,6 +634,9 @@ const archiveXcodeProject = (c: Context) => {
         rawCommand: { args },
         env: {
             ...CoreEnvVars.BASE(),
+            ...CoreEnvVars.RNV_EXTENSIONS(),
+            ...EnvVars.RNV_REACT_NATIVE_PATH(),
+            ...EnvVars.RNV_APP_ID(),
             RCT_NO_LAUNCH_PACKAGER: true,
         },
     }).then(() => {

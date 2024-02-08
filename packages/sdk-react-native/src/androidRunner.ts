@@ -128,7 +128,7 @@ export const buildReactNativeAndroid = async (c: RnvContext) => {
     const outputAab = getConfigProp(c, platform, 'aab', false);
     const extraGradleParams = getConfigProp(c, platform, 'extraGradleParams', '');
 
-    let command = `npx react-native build-android --mode=${signingConfig} --no-packager --tasks ${
+    let command = `npx react-native build-android --mode=${signingConfig} --tasks ${
         outputAab ? 'bundle' : 'assemble'
     }${signingConfig}`;
 
