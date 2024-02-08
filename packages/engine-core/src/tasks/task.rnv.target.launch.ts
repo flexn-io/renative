@@ -76,7 +76,7 @@ export const taskRnvTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) 
         case TIZEN:
             return launchTizenSimulator(c, target);
         case WEBOS:
-            return launchWebOSimulator(c);
+            return launchWebOSimulator(c, target);
         case KAIOS:
             return launchKaiOSSimulator(c);
         default:

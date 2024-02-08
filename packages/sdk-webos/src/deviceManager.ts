@@ -33,21 +33,16 @@ import {
 } from './constants';
 import semver from 'semver';
 
-export const launchWebOSimulator = (c: RnvContext) => {
+export const launchWebOSimulator = (c: RnvContext, name: string) => {
     logTask('launchWebOSimulator');
-
     const webosSdkPath = getRealPath(c, c.buildConfig?.sdks?.WEBOS_SDK);
     if (!webosSdkPath) {
         return Promise.reject(`c.buildConfig.sdks.WEBOS_SDK undefined`);
     }
 
-    const availableEmulatorVersions = getDirectories(path.join(webosSdkPath, 'Simulator'));
-
     const ePath = path.join(
         webosSdkPath,
-        `Simulator/${availableEmulatorVersions?.[0]}/${availableEmulatorVersions?.[0]}${
-            isSystemWin ? '.exe' : isSystemLinux ? '.appimage' : '.app'
-        }`
+        `Simulator/${name}/${name}${isSystemWin ? '.exe' : isSystemLinux ? '.appimage' : '.app'}`
     );
 
     if (!fsExistsSync(ePath)) {
@@ -187,6 +182,15 @@ export const listWebOSTargets = async (c: RnvContext) => {
 
     const deviceArray = devices.map((device, i) => ` [${i + 1}]> ${chalk().bold(device.name)} | ${device.device}`);
 
+    const webosSdkPath = getRealPath(c, c.buildConfig?.sdks?.WEBOS_SDK);
+    if (!webosSdkPath) {
+        return Promise.reject(`c.buildConfig.sdks.WEBOS_SDK undefined`);
+    }
+    const availableSimulatorVersions = getDirectories(path.join(webosSdkPath, 'Simulator'));
+    availableSimulatorVersions.map((a) => {
+        deviceArray.push(` [${deviceArray.length + 1}]> ${chalk().bold(a)} | simulator`);
+    });
+
     logToSummary(`WebOS Targets:\n${deviceArray.join('\n')}`);
 
     return true;
@@ -207,13 +211,11 @@ export const runWebosSimOrDevice = async (c: RnvContext) => {
     const tOut = path.join(platDir, 'output');
     const configFilePath = path.join(tDir, 'appinfo.json');
 
-    // logTask(`runWebOS:${target}:${isHosted}`, chalk().grey);
     const cnfg = JSON.parse(fsReadFileSync(configFilePath).toString());
     const tId = cnfg.id;
     const appPath = path.join(tOut, `${tId}_${cnfg.version}_all.ipk`);
 
     // Start the fun
-    // await buildWeb(c);
     await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`);
 
     // List all devices
