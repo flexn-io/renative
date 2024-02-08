@@ -36,7 +36,7 @@
         "@rnv/sdk-utils": "1.0.0-feat-pin-cli.6",
         "@rnv/sdk-webos": "1.0.0-rc.11",
         "@rnv/sdk-webpack": "1.0.0-rc.11",
-        "metro-react-native-babel-preset": "0.76.8"
+        "@react-native/babel-preset": "0.73.21"
     },
     "peerDependencies": {
         "@rnv/core": "^1.0.0-rc.11"

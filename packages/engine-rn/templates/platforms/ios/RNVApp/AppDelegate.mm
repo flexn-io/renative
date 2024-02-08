@@ -7,5 +7,4 @@
 
 {{APPDELEGATE_METHODS}}
 
-
 @end

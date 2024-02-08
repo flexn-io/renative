@@ -5,7 +5,7 @@ export const withRNVBabel = (cnf: BabelConfig): BabelConfig => {
 
     return {
         retainLines: true,
-        presets: ['module:metro-react-native-babel-preset'],
+        presets: ['module:@react-native/babel-preset'],
         ...cnf,
         plugins: [
             [

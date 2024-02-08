@@ -177,7 +177,8 @@ export const exportWebNext = async (c: RnvContext) => {
             ...CoreEnvVars.RNV_EXTENSIONS(),
             ...EnvVars.RNV_NEXT_TRANSPILE_MODULES(),
             ...EnvVars.NEXT_BASE(),
-            ...EnvVars.NODE_ENV(),
+            // building next fails if NODE_ENV is not set to production https://github.com/vercel/next.js/issues/52158
+            NODE_ENV: 'production',
         },
     });
     logSuccess(`Your export is located in ${chalk().cyan(exportDir)} .`);

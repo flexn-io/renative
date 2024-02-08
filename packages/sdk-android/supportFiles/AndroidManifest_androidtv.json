@@ -19,9 +19,33 @@
             "android:icon": "@mipmap/ic_launcher",
             "android:roundIcon": "@mipmap/ic_launcher",
             "android:banner": "@drawable/banner",
-            "android:allowBackup": false,
+            "android:allowBackup": true,
             "android:theme": "@style/AppTheme",
             "children": [
+                {
+                    "tag": "activity",
+                    "android:name": ".SplashActivity",
+                    "android:screenOrientation": "landscape",
+                    "android:noHistory": true,
+                    "android:launchMode": "singleTask",
+                    "android:theme": "@style/SplashTheme",
+                    "android:exported": true,
+                    "children": [
+                        {
+                            "tag": "intent-filter",
+                            "children": [
+                                {
+                                    "tag": "action",
+                                    "android:name": "android.intent.action.MAIN"
+                                },
+                                {
+                                    "tag": "category",
+                                    "android:name": "android.intent.category.LEANBACK_LAUNCHER"
+                                }
+                            ]
+                        }
+                    ]
+                },
                 {
                     "tag": "activity",
                     "android:name": ".MainActivity",
@@ -36,15 +60,15 @@
                             "children": [
                                 {
                                     "tag": "action",
-                                    "android:name": "android.intent.action.MAIN"
-                                },
-                                {
-                                    "tag": "action",
-                                    "android:name": "android.intent.category.LAUNCHER"
+                                    "android:name": "android.intent.action.VIEW"
                                 },
                                 {
                                     "tag": "category",
-                                    "android:name": "android.intent.category.LEANBACK_LAUNCHER"
+                                    "android:name": "android.intent.category.DEFAULT"
+                                },
+                                {
+                                    "tag": "category",
+                                    "android:name": "android.intent.category.BROWSABLE"
                                 }
                             ]
                         }

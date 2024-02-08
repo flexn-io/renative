@@ -27,7 +27,7 @@ import {
 import { installPackageDependencies, isYarnInstalled } from './npm';
 import { executeAsync } from '../system/exec';
 
-import { chalk, logTask, logWarning, logDebug, logInfo, getCurrentCommand} from '../logger';
+import { chalk, logTask, logWarning, logDebug, logInfo, getCurrentCommand } from '../logger';
 
 import { configureTemplateFiles, configureEntryPoint } from '../templates';
 import { parseRenativeConfigs } from '../configs';

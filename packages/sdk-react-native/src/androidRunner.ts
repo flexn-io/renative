@@ -98,7 +98,9 @@ export const runReactNativeAndroid = async (
 
     const udid = device?.udid;
 
-    let command = `npx react-native run-android --mode=${signingConfig} --no-packager`;
+    let command = `npx react-native run-android --mode=${signingConfig} --no-packager --main-activity=${
+        platform === 'androidwear' ? 'MainActivity' : 'SplashActivity'
+    }`;
 
     if (udid) {
         command += ` --deviceId=${udid}`;
@@ -126,7 +128,7 @@ export const buildReactNativeAndroid = async (c: RnvContext) => {
     const outputAab = getConfigProp(c, platform, 'aab', false);
     const extraGradleParams = getConfigProp(c, platform, 'extraGradleParams', '');
 
-    let command = `npx react-native build-android --mode=${signingConfig} --no-packager --tasks ${
+    let command = `npx react-native build-android --mode=${signingConfig} --tasks ${
         outputAab ? 'bundle' : 'assemble'
     }${signingConfig}`;
 

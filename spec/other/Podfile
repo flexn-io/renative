@@ -20,14 +20,11 @@ target 'RNVApp' do
   config = use_native_modules!
   platform :ios, '{{INJECT_PLUGIN_DEPLOYMENT_TARGET}}'
 
-  # Flags change depending on the env values.
-  flags = get_default_flags()
+  
 
   use_react_native!(
     :path => config[:reactNativePath],
-    # Hermes is now enabled by default. Disable by setting this flag to false.
-    :hermes_enabled => flags[:hermes_enabled],
-    :fabric_enabled => flags[:fabric_enabled],
+    
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/../.."
   )
@@ -43,14 +40,11 @@ target 'RNVApp-tvOS' do
   config = use_native_modules!
   platform :tvos, '{{INJECT_PLUGIN_DEPLOYMENT_TARGET}}'
 
-  # Flags change depending on the env values.
-  flags = get_default_flags()
+  
 
   use_react_native!(
     :path => config[:reactNativePath],
-    # Hermes is now enabled by default. Disable by setting this flag to false.
-    :hermes_enabled => flags[:hermes_enabled],
-    :fabric_enabled => flags[:fabric_enabled],
+    
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/../.."
   )
@@ -70,5 +64,5 @@ post_install do |installer|
     config[:reactNativePath],
     :mac_catalyst_enabled => false
   )
-  __apply_Xcode_12_5_M1_post_install_workaround(installer)
+  
 end

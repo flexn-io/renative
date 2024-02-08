@@ -34,16 +34,14 @@ import {
     DEFAULTS,
     RnvPlatform,
     logInfo,
-    cleanFolder,
 } from '@rnv/core';
 import { parseAndroidManifestSync, injectPluginManifestSync } from './manifestParser';
 import {
     parseMainActivitySync,
     parseSplashActivitySync,
     parseMainApplicationSync,
-    injectPluginJavaSync,
-    parseFlipperSync,
-} from './javaParser';
+    injectPluginKotlinSync,
+} from './kotlinParser';
 import {
     parseAppBuildGradleSync,
     parseBuildGradleSync,
@@ -397,14 +395,11 @@ export const configureProject = async (c: Context) => {
     mkdirSync(path.join(appFolder, 'app/src/main/assets'));
     fsWriteFileSync(path.join(appFolder, `app/src/main/assets/${outputFile}.bundle`), '{}');
 
-    // cleanup potentially existing folders from previous builds with different appId
-    await cleanFolder(path.join(appFolder, 'app/src/main/java'));
-
     // INJECTORS
     c.payload.pluginConfigAndroid = {
         pluginIncludes: "include ':app'",
         pluginPaths: '',
-        pluginPackages: 'MainReactPackage(),\n',
+        pluginPackages: '',
         pluginActivityImports: '',
         pluginActivityMethods: '',
         pluginApplicationImports: '',
@@ -449,7 +444,7 @@ export const configureProject = async (c: Context) => {
     // PLUGINS
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         injectPluginGradleSync(c, plugin, pluginPlat, key);
-        injectPluginJavaSync(c, pluginPlat, key, pluginPlat.package);
+        injectPluginKotlinSync(c, pluginPlat, key, pluginPlat.package);
         injectPluginManifestSync();
         injectPluginXmlValuesSync(c, pluginPlat);
     });
@@ -495,8 +490,8 @@ export const configureProject = async (c: Context) => {
     parseValuesColorsSync(c);
     parseAndroidManifestSync(c);
     parseGradlePropertiesSync(c);
-    parseFlipperSync(c, 'debug');
-    parseFlipperSync(c, 'release');
+    // parseFlipperSync(c, 'debug');
+    // parseFlipperSync(c, 'release');
     await _checkSigningCerts(c);
 
     return true;

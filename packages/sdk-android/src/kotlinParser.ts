@@ -1,48 +1,87 @@
-import path from 'path';
 import {
     OverridesOptions,
-    PlatformKey,
+    // PlatformKey,
     RenativeConfigPluginPlatform,
     RnvContext,
+    addSystemInjects,
     getAppFolder,
     getAppId,
     getBuildFilePath,
-    getEntryFile,
-    getGetJsBundleFile,
     getConfigProp,
-    getIP,
-    addSystemInjects,
-    logWarning,
+    getEntryFile,
+    // getGetJsBundleFile,
+    // getIP,
     writeCleanFile,
 } from '@rnv/core';
+import { mkdirSync } from 'fs';
+import path from 'path';
 import { Context } from './types';
 
-const JS_BUNDLE_DEFAULTS: Partial<Record<PlatformKey, string>> = {
-    // Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
-    androidwear: '"assets://index.androidwear.bundle"',
+// const JS_BUNDLE_DEFAULTS: Partial<Record<PlatformKey, string>> = {
+//     // Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
+//     androidwear: '"assets://index.androidwear.bundle"',
+// };
+
+export const parseFlipperSync = (c: Context, scheme: 'debug' | 'release') => {
+    const appFolder = getAppFolder(c);
+    const { platform } = c;
+
+    const appId = getAppId(c, c.platform);
+    // console.log('appId', appId);
+    const javaPackageArray = appId?.split('.') || [];
+
+    const javaPackagePath = `app/src/${scheme}/java/${javaPackageArray.join('/')}`;
+    mkdirSync(path.join(appFolder, javaPackagePath), { recursive: true });
+
+    const templatePath = `app/src/${scheme}/java/rnv_template/ReactNativeFlipper.kt`;
+    const applicationPath = `${javaPackagePath}/ReactNativeFlipper.java`;
+
+    const injects: OverridesOptions = [{ pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) }];
+
+    addSystemInjects(c, injects);
+
+    writeCleanFile(
+        getBuildFilePath(c, platform, templatePath),
+        path.join(appFolder, applicationPath),
+        injects,
+        undefined,
+        c
+    );
 };
 
 export const parseMainApplicationSync = (c: Context) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
-    const applicationPath = 'app/src/main/java/rnv/MainApplication.kt';
-    const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
-    const bundleDefault = JS_BUNDLE_DEFAULTS[platform!];
-    const bundleFile: string =
-        getGetJsBundleFile(c, platform) || bundleAssets
-            ? `"assets://${getEntryFile(c, platform)}.bundle"`
-            : bundleDefault || '"super.getJSBundleFile()"';
-    const bundlerIp = getIP() || '10.0.2.2';
-    if (!bundleAssets) {
-        c.payload.pluginConfigAndroid.pluginApplicationDebugServer +=
-            '    var mPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)\n';
-        c.payload.pluginConfigAndroid.pluginApplicationDebugServer += `    mPreferences?.edit()?.putString("debug_http_host", "${bundlerIp}:${c.runtime.port}")?.apply()\n`;
-    }
+
+    if (!platform) return;
+
+    // const appId = getAppId(c, c.platform);
+    // console.log('appId', appId);
+    // const javaPackageArray = appId?.split('.') || [];
+
+    // const javaPackagePath = `app/src/main/java/${javaPackageArray.join('/')}`;
+    // mkdirSync(path.join(appFolder, javaPackagePath), { recursive: true });
+
+    const templatePath = 'app/src/main/java/rnv_template/MainApplication.kt';
+    // const applicationPath = `${javaPackagePath}/MainApplication.java`;
+    // const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
+
+    // const bundleDefault = JS_BUNDLE_DEFAULTS[platform];
+    // const bundleFile: string =
+    //     getGetJsBundleFile(c, platform) || bundleAssets
+    //         ? `"assets://${getEntryFile(c, platform)}.bundle"`
+    //         : bundleDefault || '"super.getJSBundleFile()"';
+    // const bundlerIp = getIP() || '10.0.2.2';
+    // if (!bundleAssets) {
+    //     c.payload.pluginConfigAndroid.pluginApplicationDebugServer +=
+    //         '    var mPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)\n';
+    //     c.payload.pluginConfigAndroid.pluginApplicationDebugServer += `    mPreferences?.edit()?.putString("debug_http_host", "${bundlerIp}:${c.runtime.port}")?.apply()\n`;
+    // }
 
     const injects: OverridesOptions = [
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
         { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) || '' },
-        { pattern: '{{GET_JS_BUNDLE_FILE}}', override: bundleFile },
+        // { pattern: '{{GET_JS_BUNDLE_FILE}}', override: bundleFile },
         {
             pattern: '{{PLUGIN_IMPORTS}}',
             override: c.payload.pluginConfigAndroid.pluginApplicationImports,
@@ -72,8 +111,8 @@ export const parseMainApplicationSync = (c: Context) => {
     addSystemInjects(c, injects);
 
     writeCleanFile(
-        getBuildFilePath(c, platform, applicationPath),
-        path.join(appFolder, applicationPath),
+        getBuildFilePath(c, platform, templatePath),
+        path.join(appFolder, templatePath),
         injects,
         undefined,
         c
@@ -83,10 +122,12 @@ export const parseMainApplicationSync = (c: Context) => {
 export const parseMainActivitySync = (c: RnvContext) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
-    const activityPath = 'app/src/main/java/rnv/MainActivity.kt';
+
+    const templatePath = 'app/src/main/java/rnv_template/MainActivity.kt';
 
     const templateAndroid = getConfigProp(c, platform, 'templateAndroid', {});
-    const mainActivity = templateAndroid?.MainActivity_java; // TODO ADD KOTLIN WHEN READY
+
+    const mainActivity = templateAndroid?.MainActivity_java;
 
     c.payload.pluginConfigAndroid.injectActivityOnCreate =
         mainActivity?.onCreate || 'super.onCreate(savedInstanceState)';
@@ -118,8 +159,8 @@ export const parseMainActivitySync = (c: RnvContext) => {
     addSystemInjects(c, injects);
 
     writeCleanFile(
-        getBuildFilePath(c, platform, activityPath),
-        path.join(appFolder, activityPath),
+        getBuildFilePath(c, platform, templatePath),
+        path.join(appFolder, templatePath),
         injects,
         undefined,
         c
@@ -129,7 +170,8 @@ export const parseMainActivitySync = (c: RnvContext) => {
 export const parseSplashActivitySync = (c: Context) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
-    const splashPath = 'app/src/main/java/rnv/SplashActivity.kt';
+
+    const splashTemplatePath = 'app/src/main/java/rnv_template/SplashActivity.kt';
 
     // TODO This is temporary ANDROIDX support. whole kotlin parser will be refactored in the near future
     const enableAndroidX = getConfigProp(c, platform, 'enableAndroidX', true);
@@ -151,107 +193,91 @@ export const parseSplashActivitySync = (c: Context) => {
 
     addSystemInjects(c, injects);
 
-    writeCleanFile(getBuildFilePath(c, platform, splashPath), path.join(appFolder, splashPath), injects, undefined, c);
+    writeCleanFile(
+        getBuildFilePath(c, platform, splashTemplatePath),
+        path.join(appFolder, splashTemplatePath),
+        injects,
+        undefined,
+        c
+    );
 };
 
-export const injectPluginKotlinSync = (c: any, plugin: any, key: any, pkg: any) => {
-    if (plugin.activityImports instanceof Array) {
-        plugin.activityImports.forEach((activityImport: any) => {
+export const injectPluginKotlinSync = (
+    c: RnvContext,
+    plugin: RenativeConfigPluginPlatform,
+    key: string,
+    pkg: string | undefined
+) => {
+    const templ = plugin.templateAndroid;
+    const mainActivity = templ?.MainActivity_java;
+    if (mainActivity?.imports) {
+        mainActivity.imports.forEach((activityImport) => {
             // Avoid duplicate imports
             if (c.payload.pluginConfigAndroid.pluginActivityImports.indexOf(activityImport) === -1) {
-                c.payload.pluginConfigAndroid.pluginActivityImports += `import ${activityImport};\n`;
+                c.payload.pluginConfigAndroid.pluginActivityImports += `import ${activityImport}\n`;
             }
         });
     }
 
-    if (plugin.activityMethods instanceof Array) {
+    if (mainActivity?.methods) {
         c.payload.pluginConfigAndroid.pluginActivityMethods += '\n';
-        c.payload.pluginConfigAndroid.pluginActivityMethods += `${plugin.activityMethods.join('\n    ')}`;
+        c.payload.pluginConfigAndroid.pluginActivityMethods += `${mainActivity.methods.join('\n    ')}`;
     }
 
-    const { mainActivity } = plugin;
     if (mainActivity) {
-        if (mainActivity.createMethods instanceof Array) {
+        if (mainActivity.createMethods) {
             c.payload.pluginConfigAndroid.pluginActivityCreateMethods += '\n';
             c.payload.pluginConfigAndroid.pluginActivityCreateMethods += `${mainActivity.createMethods.join('\n    ')}`;
         }
 
-        if (mainActivity.resultMethods instanceof Array) {
+        if (mainActivity.resultMethods) {
             c.payload.pluginConfigAndroid.pluginActivityResultMethods += '\n';
             c.payload.pluginConfigAndroid.pluginActivityResultMethods += `${mainActivity.resultMethods.join('\n    ')}`;
         }
-
-        if (mainActivity.imports instanceof Array) {
-            mainActivity.imports.forEach((v: any) => {
-                c.payload.pluginConfigAndroid.pluginActivityImports += `import ${v}\n`;
-            });
-        }
-
-        if (mainActivity.methods instanceof Array) {
-            c.payload.pluginConfigAndroid.pluginActivityMethods += '\n';
-            c.payload.pluginConfigAndroid.pluginActivityMethods += `${mainActivity.methods.join('\n    ')}`;
-        }
-    }
-
-    if (plugin.imports) {
-        plugin.imports.forEach((v: any) => {
-            c.payload.pluginConfigAndroid.pluginApplicationImports += `import ${v}\n`;
-        });
     }
 
     _injectPackage(c, plugin, pkg);
 
-    if (plugin.MainApplication) {
-        if (plugin.MainApplication.packages) {
-            plugin.MainApplication.packages.forEach((v: any) => {
-                _injectPackage(c, plugin, v);
-            });
-        }
+    const mainApplication = templ?.MainApplication_java;
+
+    if (mainApplication?.packages) {
+        mainApplication.packages.forEach((v) => {
+            _injectPackage(c, plugin, v);
+        });
     }
 
-    const { mainApplication } = plugin;
-    if (mainApplication) {
-        if (mainApplication.createMethods instanceof Array) {
-            c.payload.pluginConfigAndroid.pluginApplicationCreateMethods += '\n';
-            c.payload.pluginConfigAndroid.pluginApplicationCreateMethods += `${mainApplication.createMethods.join(
-                '\n    '
-            )}`;
-        }
-
-        if (mainApplication.imports instanceof Array) {
-            mainApplication.imports.forEach((v: any) => {
-                c.payload.pluginConfigAndroid.pluginApplicationImports += `import ${v}\n`;
-            });
-        }
-
-        if (mainApplication.methods instanceof Array) {
-            c.payload.pluginConfigAndroid.pluginApplicationMethods += '\n';
-            c.payload.pluginConfigAndroid.pluginApplicationMethods += `${mainApplication.methods.join('\n    ')}`;
-        }
+    if (mainApplication?.createMethods) {
+        c.payload.pluginConfigAndroid.pluginApplicationCreateMethods += '\n';
+        c.payload.pluginConfigAndroid.pluginApplicationCreateMethods += `${mainApplication.createMethods.join(
+            '\n    '
+        )}`;
     }
 
-    if (plugin.mainApplicationMethods) {
-        logWarning(
-            `Plugin ${key} in ${c.paths.project.config} is using DEPRECATED "${c.platform}": { MainApplicationMethods }. Use "${c.platform}": { "mainApplication": { "methods": []}} instead`
-        );
-        c.payload.pluginConfigAndroid.pluginApplicationMethods += `\n${plugin.mainApplicationMethods}\n`;
+    if (mainApplication?.imports) {
+        mainApplication.imports.forEach((v) => {
+            c.payload.pluginConfigAndroid.pluginApplicationImports += `import ${v}\n`;
+        });
+    }
+
+    if (mainApplication?.methods) {
+        c.payload.pluginConfigAndroid.pluginApplicationMethods += '\n';
+        c.payload.pluginConfigAndroid.pluginApplicationMethods += `${mainApplication.methods.join('\n    ')}`;
     }
 };
 
 const _injectPackage = (c: RnvContext, plugin: RenativeConfigPluginPlatform, pkg: string | undefined) => {
-    if (pkg) {
+    if (pkg && !plugin?.forceLinking) {
         c.payload.pluginConfigAndroid.pluginApplicationImports += `import ${pkg}\n`;
     }
     let packageParams = '';
-    const mainApplication = plugin.templateAndroid?.MainApplication_java; // TODO ADD KOTLIN WHEN READY
+    const mainApplication = plugin.templateAndroid?.MainApplication_java;
     if (mainApplication?.packageParams) {
         packageParams = mainApplication.packageParams.join(',');
     }
-
-    if (pkg) {
+    if (pkg && plugin?.forceLinking) {
         const className = _extractClassName(pkg);
         if (className) {
-            c.payload.pluginConfigAndroid.pluginPackages += `${className}(${packageParams}),\n`;
+            c.payload.pluginConfigAndroid.pluginPackages += `add(${className}(${packageParams}));\n`;
         }
     }
 };
