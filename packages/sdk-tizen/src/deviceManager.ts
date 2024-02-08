@@ -63,8 +63,25 @@ const formatXMLObject = (
     return {};
 };
 
-export const launchTizenSimulator = (c: RnvContext, name: string) => {
+export const launchTizenSimulator = async (c: RnvContext, name: string | true) => {
     logTask(`launchTizenSimulator:${name}`);
+
+    if (name === true) {
+        const targets = await execCLI(c, CLI_TIZEN_EMULATOR, 'list-vm', {
+            detached: true,
+        });
+        const lines = targets.split('\n');
+        const devicesArray = lines.map((line) => ({ id: line, name: line }));
+        const choices = _composeDevicesString(devicesArray);
+        const { chosenEmulator } = await inquirerPrompt({
+            name: 'chosenEmulator',
+            type: 'list',
+            message: 'What emulator would you like to launch?',
+            choices,
+        });
+
+        name = chosenEmulator;
+    }
 
     if (name) {
         return execCLI(c, CLI_TIZEN_EMULATOR, `launch --name ${name}`, {
@@ -235,7 +252,7 @@ const _waitForEmulatorToBeReady = (c: RnvContext, target: string): Promise<boole
         return res;
     });
 
-const _composeDevicesString = (devices: Array<TizenDevice>) =>
+const _composeDevicesString = (devices: Array<Pick<TizenDevice, 'id' | 'name'>>) =>
     devices.map((device) => ({
         key: device.id,
         name: device.name,
