@@ -28,6 +28,10 @@ const parser = new xml2js.Parser();
 
 export const DEFAULT_CERTIFICATE_NAME = 'tizen_author';
 
+const ERROR_MSG = {
+    UNKNOWN_VM: 'does not match any VM',
+};
+
 type PlatKeyObj = {
     _: string;
     $: {
@@ -63,7 +67,7 @@ const formatXMLObject = (
     return {};
 };
 
-export const launchTizenSimulator = async (c: RnvContext, name: string | true) => {
+export const launchTizenSimulator = async (c: RnvContext, name: string | true): Promise<string> => {
     logTask(`launchTizenSimulator:${name}`);
 
     if (name === true) {
@@ -84,9 +88,18 @@ export const launchTizenSimulator = async (c: RnvContext, name: string | true) =
     }
 
     if (name) {
-        return execCLI(c, CLI_TIZEN_EMULATOR, `launch --name ${name}`, {
-            detached: true,
-        });
+        try {
+            return execCLI(c, CLI_TIZEN_EMULATOR, `launch --name ${name}`, {
+                detached: true,
+            });
+        } catch (e) {
+            if (typeof e === 'string') {
+                if (e.includes(ERROR_MSG.UNKNOWN_VM)) {
+                    logError(`The VM "${name}" does not exist.`);
+                    return launchTizenSimulator(c, true);
+                }
+            }
+        }
     }
     return Promise.reject('No simulator -t target name specified!');
 };
