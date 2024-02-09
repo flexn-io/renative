@@ -21,6 +21,8 @@ import {
     isSystemLinux,
     isSystemMac,
     logError,
+    logSuccess,
+    logWarning,
 } from '@rnv/core';
 import { WebosDevice } from './types';
 import {
@@ -33,21 +35,38 @@ import {
 } from './constants';
 import semver from 'semver';
 
-export const launchWebOSimulator = (c: RnvContext) => {
-    logTask('launchWebOSimulator');
+export const launchWebOSimulator = async (c: RnvContext, target: string) => {
+    logTask('launchWebOSimulator', `${target}`);
 
     const webosSdkPath = getRealPath(c, c.buildConfig?.sdks?.WEBOS_SDK);
     if (!webosSdkPath) {
         return Promise.reject(`c.buildConfig.sdks.WEBOS_SDK undefined`);
     }
+    let selectedOption = target;
 
-    const availableEmulatorVersions = getDirectories(path.join(webosSdkPath, 'Simulator'));
+    const availableSimulatorVersions = getDirectories(path.join(webosSdkPath, 'Simulator'));
+    if (target && !availableSimulatorVersions.includes(selectedOption)) {
+        logWarning(
+            `Target with name ${chalk().red(selectedOption)} does not exist. You can update it here: ${chalk().cyan(
+                c.paths.GLOBAL_RNV_CONFIG
+            )}`
+        );
+        await launchWebOSimulator(c, '');
+        return true;
+    }
+
+    if (!target) {
+        ({ selectedOption } = await inquirerPrompt({
+            name: 'selectedOption',
+            type: 'list',
+            choices: availableSimulatorVersions,
+            message: `Select the simulator you want to launch`,
+        }));
+    }
 
     const ePath = path.join(
         webosSdkPath,
-        `Simulator/${availableEmulatorVersions?.[0]}/${availableEmulatorVersions?.[0]}${
-            isSystemWin ? '.exe' : isSystemLinux ? '.appimage' : '.app'
-        }`
+        `Simulator/${selectedOption}/${selectedOption}${isSystemWin ? '.exe' : isSystemLinux ? '.appimage' : '.app'}`
     );
 
     if (!fsExistsSync(ePath)) {
@@ -57,7 +76,9 @@ export const launchWebOSimulator = (c: RnvContext) => {
         return executeAsync(c, ePath, { detached: true, stdio: 'ignore' });
     }
 
-    return executeAsync(c, `${openCommand} ${ePath}`, { detached: true });
+    await executeAsync(c, `${openCommand} ${ePath}`, { detached: true });
+    logSuccess(`Succesfully launched ${selectedOption}`);
+    return true;
 };
 
 const parseDevices = (c: RnvContext, devicesResponse: string): Promise<Array<WebosDevice>> => {
@@ -187,6 +208,15 @@ export const listWebOSTargets = async (c: RnvContext) => {
 
     const deviceArray = devices.map((device, i) => ` [${i + 1}]> ${chalk().bold(device.name)} | ${device.device}`);
 
+    const webosSdkPath = getRealPath(c, c.buildConfig?.sdks?.WEBOS_SDK);
+    if (!webosSdkPath) {
+        return Promise.reject(`c.buildConfig.sdks.WEBOS_SDK undefined`);
+    }
+    const availableSimulatorVersions = getDirectories(path.join(webosSdkPath, 'Simulator'));
+    availableSimulatorVersions.map((a) => {
+        deviceArray.push(` [${deviceArray.length + 1}]> ${chalk().bold(a)} | simulator`);
+    });
+
     logToSummary(`WebOS Targets:\n${deviceArray.join('\n')}`);
 
     return true;
@@ -207,13 +237,11 @@ export const runWebosSimOrDevice = async (c: RnvContext) => {
     const tOut = path.join(platDir, 'output');
     const configFilePath = path.join(tDir, 'appinfo.json');
 
-    // logTask(`runWebOS:${target}:${isHosted}`, chalk().grey);
     const cnfg = JSON.parse(fsReadFileSync(configFilePath).toString());
     const tId = cnfg.id;
     const appPath = path.join(tOut, `${tId}_${cnfg.version}_all.ipk`);
 
     // Start the fun
-    // await buildWeb(c);
     await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`);
 
     // List all devices
