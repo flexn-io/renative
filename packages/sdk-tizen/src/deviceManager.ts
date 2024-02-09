@@ -32,6 +32,7 @@ export const DEFAULT_CERTIFICATE_NAME = 'tizen_author';
 
 const ERROR_MSG = {
     UNKNOWN_VM: 'does not match any VM',
+    ALREADY_RUNNING: 'is running now',
 };
 
 type PlatKeyObj = {
@@ -102,6 +103,11 @@ export const launchTizenSimulator = async (c: RnvContext, name: string | true): 
                 if (e.includes(ERROR_MSG.UNKNOWN_VM)) {
                     logError(`The VM "${name}" does not exist.`);
                     return launchTizenSimulator(c, true);
+                }
+
+                if (e.includes(ERROR_MSG.ALREADY_RUNNING)) {
+                    logError(`The VM "${name}" is already running.`);
+                    return true;
                 }
             }
         }
