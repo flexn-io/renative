@@ -17,6 +17,8 @@ import {
     waitForExecCLI,
     inquirerPrompt,
     DEFAULTS,
+    executeAsync,
+    ExecOptionsPresets,
 } from '@rnv/core';
 import { CLI_SDB_TIZEN, CLI_TIZEN, CLI_TIZEN_EMULATOR } from './constants';
 
@@ -67,7 +69,7 @@ const formatXMLObject = (
     return {};
 };
 
-export const launchTizenSimulator = async (c: RnvContext, name: string | true): Promise<string> => {
+export const launchTizenSimulator = async (c: RnvContext, name: string | true): Promise<boolean> => {
     logTask(`launchTizenSimulator:${name}`);
 
     if (name === true) {
@@ -89,9 +91,12 @@ export const launchTizenSimulator = async (c: RnvContext, name: string | true): 
 
     if (name) {
         try {
-            return execCLI(c, CLI_TIZEN_EMULATOR, `launch --name ${name}`, {
-                detached: true,
-            });
+            await executeAsync(
+                c,
+                `${c.cli[CLI_TIZEN_EMULATOR]} launch --name ${name}`,
+                ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY
+            );
+            return true;
         } catch (e) {
             if (typeof e === 'string') {
                 if (e.includes(ERROR_MSG.UNKNOWN_VM)) {
