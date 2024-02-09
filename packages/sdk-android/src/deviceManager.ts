@@ -52,11 +52,16 @@ export const composeDevicesArray = (devices: Array<AndroidDevice>) => {
     return devicesArray;
 };
 
+const ERROR_MSG = {
+    TARGET_EXISTS: 'Running multiple emulators with the same AVD',
+    UNKNOWN_AVD: 'Unknown AVD name',
+};
+
 export const launchAndroidSimulator = async (
     c: RnvContext,
     target: true | { name: string } | string,
     isIndependentThread = false
-) => {
+): Promise<boolean> => {
     logTask(
         'launchAndroidSimulator',
         `target:${typeof target === 'object' ? target?.name : target} independentThread:${!!isIndependentThread}`
@@ -93,21 +98,41 @@ export const launchAndroidSimulator = async (
             ).catch((err) => {
                 if (err.includes && err.includes('WHPX')) {
                     logWarning(err);
-                    return logError(
+                    logError(
                         'It seems you do not have the Windows Hypervisor Platform virtualization enabled. Enter windows features in the Windows search box and select Turn Windows features on or off in the search results. In the Windows Features dialog, enable both Hyper-V and Windows Hypervisor Platform.',
                         true
                     );
+                    return false;
                 }
                 logError(err);
             });
-            return Promise.resolve();
+            return true;
         }
 
-        return executeAsync(
-            c,
-            `${c.cli[CLI_ANDROID_EMULATOR]} -avd ${actualTarget}`,
-            ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY
-        );
+        try {
+            await executeAsync(
+                c,
+                `${c.cli[CLI_ANDROID_EMULATOR]} -avd ${actualTarget}`,
+                ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY
+            );
+            return true;
+        } catch (e) {
+            if (typeof e === 'string') {
+                if (e.includes(ERROR_MSG.UNKNOWN_AVD)) {
+                    logWarning(
+                        `Target with name ${chalk().red(
+                            newTarget
+                        )} does not exist. You can update it here: ${chalk().cyan(c.paths.GLOBAL_RNV_CONFIG)}`
+                    );
+                    await launchAndroidSimulator(c, true, false);
+                    return true;
+                } else if (e.includes(ERROR_MSG.TARGET_EXISTS)) {
+                    logToSummary(`Target with name ${chalk().red(newTarget)} already running. SKIPPING.`);
+                    return true;
+                }
+            }
+            return Promise.reject(e);
+        }
     }
     return Promise.reject('No simulator -t target name specified!');
 };

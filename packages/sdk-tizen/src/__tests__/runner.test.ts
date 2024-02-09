@@ -63,7 +63,7 @@ describe('sdk_tizen runner', () => {
             await expect(checkTizenStudioCert(c)).resolves.toBe(true);
             //THEN
         });
-        it("should return false if the certificate profile doesn't exists", async () => {
+        it("should return false if the certificate profile doesn't exist", async () => {
             //GIVEN
             const c = getContext();
             jest.spyOn(require('@rnv/core'), 'execCLI').mockResolvedValueOnce(new Error('Error'));

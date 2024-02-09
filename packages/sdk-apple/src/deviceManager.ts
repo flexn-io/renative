@@ -16,6 +16,11 @@ import {
     logSuccess,
 } from '@rnv/core';
 import { AppiumAppleDevice, AppleDevice } from './types';
+import { execFileSync } from 'child_process';
+
+const ERROR_MSG = {
+    TARGET_EXISTS: 'Unable to boot device in current state: Booted',
+};
 
 export const getAppleDevices = async (c: RnvContext, ignoreDevices?: boolean, ignoreSimulators?: boolean) => {
     const { platform } = c;
@@ -194,7 +199,7 @@ export const launchAppleSimulator = async (c: RnvContext, target: string | boole
         await _launchSimulator(selectedDevice);
         return selectedDevice.name;
     } else if (target !== true && target !== undefined) {
-        logWarning(`Your specified simulator target ${chalk().white(target)} doesn't exists`);
+        logWarning(`Your specified simulator target ${chalk().white(target)} doesn't exist`);
     }
 
     const devices = devicesArr.map((v) => ({
@@ -224,7 +229,32 @@ const _launchSimulator = async (selectedDevice: AppleDevice) => {
         return false;
     }
 
-    await executeAsync(`xcrun simctl boot ${selectedDevice.udid}`, ExecOptionsPresets.NO_SPINNER_FULL_ERROR_SUMMARY);
+    // We need to have simulator app launched for "xcrun simctl boot" to take effect
+    const developerDir = execFileSync('xcode-select', ['-p'], {
+        encoding: 'utf8',
+    }).trim();
+    execFileSync('open', [
+        `${developerDir}/Applications/Simulator.app`,
+        '--args',
+        '-CurrentDeviceUDID',
+        selectedDevice.udid,
+    ]);
+
+    try {
+        await executeAsync(
+            `xcrun simctl boot ${selectedDevice.udid}`,
+            ExecOptionsPresets.NO_SPINNER_FULL_ERROR_SUMMARY
+        );
+    } catch (e) {
+        if (typeof e === 'string') {
+            if (e.includes(ERROR_MSG.TARGET_EXISTS)) {
+                logToSummary(`Target with udid ${chalk().red(selectedDevice.udid)} already running. SKIPPING.`);
+                return true;
+            }
+        }
+        return Promise.reject(e);
+    }
+
     logSuccess(`Succesfully launched ${selectedDevice.name}`);
     return true;
 };
