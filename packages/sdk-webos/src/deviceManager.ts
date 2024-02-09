@@ -21,6 +21,8 @@ import {
     isSystemLinux,
     isSystemMac,
     logError,
+    logSuccess,
+    logWarning,
 } from '@rnv/core';
 import { WebosDevice } from './types';
 import {
@@ -33,16 +35,38 @@ import {
 } from './constants';
 import semver from 'semver';
 
-export const launchWebOSimulator = (c: RnvContext, name: string) => {
-    logTask('launchWebOSimulator');
+export const launchWebOSimulator = async (c: RnvContext, target: string) => {
+    logTask('launchWebOSimulator', `${target}`);
+
     const webosSdkPath = getRealPath(c, c.buildConfig?.sdks?.WEBOS_SDK);
     if (!webosSdkPath) {
         return Promise.reject(`c.buildConfig.sdks.WEBOS_SDK undefined`);
     }
+    let selectedOption = target;
+
+    const availableSimulatorVersions = getDirectories(path.join(webosSdkPath, 'Simulator'));
+    if (target && !availableSimulatorVersions.includes(selectedOption)) {
+        logWarning(
+            `Target with name ${chalk().red(selectedOption)} does not exist. You can update it here: ${chalk().cyan(
+                c.paths.GLOBAL_RNV_CONFIG
+            )}`
+        );
+        await launchWebOSimulator(c, '');
+        return true;
+    }
+
+    if (!target) {
+        ({ selectedOption } = await inquirerPrompt({
+            name: 'selectedOption',
+            type: 'list',
+            choices: availableSimulatorVersions,
+            message: `Select the simulator you want to launch`,
+        }));
+    }
 
     const ePath = path.join(
         webosSdkPath,
-        `Simulator/${name}/${name}${isSystemWin ? '.exe' : isSystemLinux ? '.appimage' : '.app'}`
+        `Simulator/${selectedOption}/${selectedOption}${isSystemWin ? '.exe' : isSystemLinux ? '.appimage' : '.app'}`
     );
 
     if (!fsExistsSync(ePath)) {
@@ -52,7 +76,9 @@ export const launchWebOSimulator = (c: RnvContext, name: string) => {
         return executeAsync(c, ePath, { detached: true, stdio: 'ignore' });
     }
 
-    return executeAsync(c, `${openCommand} ${ePath}`, { detached: true });
+    await executeAsync(c, `${openCommand} ${ePath}`, { detached: true });
+    logSuccess(`Succesfully launched ${selectedOption}`);
+    return true;
 };
 
 const parseDevices = (c: RnvContext, devicesResponse: string): Promise<Array<WebosDevice>> => {
