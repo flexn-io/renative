@@ -1511,7 +1511,7 @@
             }
         },
         "next": {
-            "version": "14.0.4"
+            "version": "14.1.0"
         },
         "next-seo": "4.28.1",
         "RCTLinkingIOS": {
@@ -1644,7 +1644,7 @@
                 "URL_NAME": "",
                 "URL_SCHEME": ""
             },
-            "version": "0.72.4"
+            "version": "0.73.4"
         },
         "react-native-actionsheet": {
             "version": "2.4.2"
@@ -2111,49 +2111,52 @@
         },
         "react-native-fbsdk": {
             "android": {
-                "AndroidManifest": {
-                    "children": [
-                        {
-                            "android:name": ".MainApplication",
-                            "children": [
-                                {
-                                    "android:name": "com.facebook.sdk.ApplicationId",
-                                    "android:value": "@string/facebook_app_id",
-                                    "tag": "meta-data"
-                                }
-                            ],
-                            "tag": "application"
-                        }
-                    ]
+                "templateAndroid": {
+                    "AndroidManifest_xml": {
+                        "children": [
+                            {
+                                "android:name": ".MainApplication",
+                                "children": [
+                                    {
+                                        "android:name": "com.facebook.sdk.ApplicationId",
+                                        "android:value": "@string/facebook_app_id",
+                                        "tag": "meta-data"
+                                    }
+                                ],
+                                "tag": "application"
+                            }
+                        ]
+                    },
+                    "MainActivity_java": {
+                        "createMethods": [],
+                        "resultMethods": [
+                            "MainApplication.getCallbackManager().onActivityResult(requestCode, resultCode, data)"
+                        ]
+                    },
+                    "MainApplication_java": {
+                        "methods": [
+                            "    companion object {\n @JvmStatic \n private val mCallbackManager = CallbackManager.Factory.create() \n fun getCallbackManager(): CallbackManager = mCallbackManager \n}"
+                        ],
+                        "imports": [
+                            "com.facebook.CallbackManager"
+                        ]
+                    },
+                    "strings_xml": {
+                        "children": [
+                            {
+                                "child_value": "{{props.APP_ID}}",
+                                "name": "facebook_app_id",
+                                "tag": "string"
+                            }
+                        ]
+                    },
+                    "app_build_gradle": {
+                        "implementations": [
+                            "'com.facebook.android:facebook-android-sdk:[4,5)'"
+                        ]
+                    }
                 },
-                "implementations": [
-                    "'com.facebook.android:facebook-android-sdk:[4,5)'"
-                ],
-                "imports": [
-                    "com.facebook.CallbackManager"
-                ],
-                "mainActivity": {
-                    "createMethods": [],
-                    "imports": [],
-                    "resultMethods": [
-                        "MainApplication.getCallbackManager().onActivityResult(requestCode, resultCode, data)"
-                    ]
-                },
-                "mainApplication": {
-                    "methods": [
-                        "    companion object {\n @JvmStatic \n private val mCallbackManager = CallbackManager.Factory.create() \n fun getCallbackManager(): CallbackManager = mCallbackManager \n}"
-                    ]
-                },
-                "package": "com.facebook.reactnative.androidsdk.FBSDKPackage",
-                "ResourceStrings": {
-                    "children": [
-                        {
-                            "child_value": "{{props.APP_ID}}",
-                            "name": "facebook_app_id",
-                            "tag": "string"
-                        }
-                    ]
-                }
+                "package": "com.facebook.reactnative.androidsdk.FBSDKPackage"
             },
             "androidtv": {
                 "implementations": [

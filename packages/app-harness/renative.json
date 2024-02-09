@@ -10,12 +10,8 @@
             "android": {
                 "templateAndroid": {
                     "MainActivity_java": {
-                        "createMethods": [
-                            "SplashScreen.show(this)"
-                        ],
-                        "imports": [
-                            "org.devio.rn.splashscreen.SplashScreen"
-                        ]
+                        "createMethods": ["SplashScreen.show(this)"],
+                        "imports": ["org.devio.rn.splashscreen.SplashScreen"]
                     }
                 },
                 "package": "org.devio.rn.splashscreen.SplashScreenReactPackage"
@@ -23,14 +19,10 @@
             "ios": {
                 "templateXcode": {
                     "AppDelegate_mm": {
-                        "appDelegateImports": [
-                            "RNSplashScreen.h"
-                        ],
+                        "appDelegateImports": ["RNSplashScreen.h"],
                         "appDelegateMethods": {
                             "application": {
-                                "didFinishLaunchingWithOptions": [
-                                    "[RNSplashScreen show]"
-                                ]
+                                "didFinishLaunchingWithOptions": ["[RNSplashScreen show]"]
                             }
                         }
                     }
@@ -42,30 +34,31 @@
             },
             "version": "3.3.0"
         },
+        "TestNativeModule": {
+            "android": {
+                "templateAndroid": {
+                    "MainApplication_java": {
+                        "packages": ["MyAppPackage"]
+                    }
+                },
+                "forceLinking": true
+            }
+        },
         "react-native-carplay": {
             "ios": {
                 "templateXcode": {
                     "AppDelegate_h": {
-                        "appDelegateImports": [
-                            "CarPlay/CarPlay.h"
-                        ],
-                        "appDelegateExtensions": [
-                            "UIApplicationDelegate",
-                            "CPApplicationDelegate"
-                        ]
+                        "appDelegateImports": ["CarPlay/CarPlay.h"],
+                        "appDelegateExtensions": ["UIApplicationDelegate", "CPApplicationDelegate"]
                     },
                     "AppDelegate_mm": {
-                        "appDelegateImports": [
-                            "RNCarPlay.h"
-                        ],
+                        "appDelegateImports": ["RNCarPlay.h"],
                         "appDelegateMethods": {
                             "application": {
                                 "didConnectCarInterfaceController": [
                                     "[RNCarPlay connectWithInterfaceController:interfaceController window:window]"
                                 ],
-                                "didDisconnectCarInterfaceController": [
-                                    "[RNCarPlay disconnect]"
-                                ]
+                                "didDisconnectCarInterfaceController": ["[RNCarPlay disconnect]"]
                             }
                         }
                     }
@@ -92,9 +85,7 @@
                 ],
                 "templateXcode": {
                     "Podfile": {
-                        "header": [
-                            "$RNFirebaseAsStaticFramework = true"
-                        ]
+                        "header": ["$RNFirebaseAsStaticFramework = true"]
                     }
                 }
             }

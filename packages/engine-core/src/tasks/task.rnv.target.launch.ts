@@ -48,7 +48,7 @@ export const taskRnvTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) 
             options.push({ name: `${workspaceTarget} (global default)`, value: workspaceTarget });
         }
 
-        options.push({ name: 'Pick from available targets...', value: null });
+        options.push({ name: 'Pick from available targets...', value: true });
 
         const { selectedOption } = await inquirerPrompt({
             name: 'selectedOption',
