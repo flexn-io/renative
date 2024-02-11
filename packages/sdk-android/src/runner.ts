@@ -104,31 +104,31 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
 
             const choices = [...activeDeviceInfoArr, ...inactiveDeviceInfoArr];
 
-            let chosenEmulator: string;
+            let chosenTarget: string;
 
             if (activeDeviceInfoArr.length === 1) {
-                chosenEmulator = activeDeviceInfoArr[0].value;
-                logInfo(`Found only one active emulator: ${chalk().magenta(chosenEmulator)}. Will use it.`);
+                chosenTarget = activeDeviceInfoArr[0].value;
+                logInfo(`Found only one active target: ${chalk().magenta(chosenTarget)}. Will use it.`);
             } else if (activeDeviceInfoArr.length === 0 && inactiveDeviceInfoArr.length === 1) {
                 //If we have no active devices and only one AVD available let's just launch it.
-                chosenEmulator = inactiveDeviceInfoArr[0].value;
-                logInfo(`Found only one emulator to launch: ${chalk().magenta(chosenEmulator)}. Will use it.`);
+                chosenTarget = inactiveDeviceInfoArr[0].value;
+                logInfo(`Found only one target to launch: ${chalk().magenta(chosenTarget)}. Will use it.`);
             } else {
                 const response = await inquirerPrompt({
-                    name: 'chosenEmulator',
+                    name: 'chosenTarget',
                     type: 'list',
-                    message: 'What emulator would you like to use?',
+                    message: 'What target would you like to use?',
                     choices,
                 });
-                chosenEmulator = response?.chosenEmulator;
+                chosenTarget = response?.chosenTarget;
             }
 
-            if (chosenEmulator) {
-                const dev = activeDevices.find((d) => d.name === chosenEmulator);
+            if (chosenTarget) {
+                const dev = activeDevices.find((d) => d.name === chosenTarget);
                 if (dev) return dev;
 
-                await launchAndroidSimulator(c, chosenEmulator, true);
-                const device = await checkForActiveEmulator(c, chosenEmulator);
+                await launchAndroidSimulator(c, chosenTarget, true);
+                const device = await checkForActiveEmulator(c, chosenTarget);
                 return device;
             }
         } else {
