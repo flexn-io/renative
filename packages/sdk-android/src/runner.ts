@@ -83,7 +83,7 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
 
     await resetAdb(c);
 
-    if (target && typeof target === 'string' && net.isIP(target.split(':')[0])) {
+    if (target && isString(target) && net.isIP(target.split(':')[0])) {
         await connectToWifiDevice(c, target);
     }
 
@@ -91,6 +91,9 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
 
     const activeDevices = devicesAndEmulators.filter((d) => d.isActive);
     const inactiveDevices = devicesAndEmulators.filter((d) => !d.isActive);
+    const foundDevice = devicesAndEmulators.find(
+        (d) => d.udid.includes(target) || d.name.includes(target) || d.udid.includes(device) || d.name.includes(device)
+    );
 
     const askWhereToRun = async () => {
         if (activeDevices.length || inactiveDevices.length) {
@@ -98,7 +101,13 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
             if (c.program.device && !activeDevices.length) {
                 return logError('No active devices found, please connect one or remove the device argument', true);
             }
-
+            if (!foundDevice && (isString(target) || isString(device))) {
+                logInfo(
+                    `The target is specified, but no such emulator or device is available: ${chalk().magenta(
+                        isString(target) ? target : device
+                    )}. Will try to find available one`
+                );
+            }
             const activeDeviceInfoArr = composeDevicesArray(activeDevices);
             const inactiveDeviceInfoArr = composeDevicesArray(inactiveDevices);
 
@@ -106,7 +115,7 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
 
             let chosenEmulator: string;
 
-            if (activeDeviceInfoArr.length === 1) {
+            if (activeDeviceInfoArr.length === 1 && !target) {
                 chosenEmulator = activeDeviceInfoArr[0].value;
                 logInfo(`Found only one active emulator: ${chalk().magenta(chosenEmulator)}. Will use it.`);
             } else if (activeDeviceInfoArr.length === 0 && inactiveDeviceInfoArr.length === 1) {
@@ -140,11 +149,9 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
             return device;
         }
     };
-
     if (target) {
         // a target is provided
         logDebug('Target provided', target);
-        const foundDevice = devicesAndEmulators.find((d) => d.udid.includes(target) || d.name.includes(target));
         if (foundDevice) {
             if (foundDevice.isActive) {
                 return foundDevice;
@@ -518,4 +525,7 @@ export const runAndroidLog = async (c: Context) => {
     return child.then((res) => res.stdout).catch((err) => Promise.reject(`Error: ${err}`));
 };
 
+export const isString = (target: boolean | string): boolean => {
+    return typeof target === 'string';
+};
 export { ejectGradleProject };
