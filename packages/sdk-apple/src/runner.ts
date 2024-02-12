@@ -154,7 +154,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
         if (!desiredSim) {
             const { sim } = await inquirerPrompt({
                 name: 'sim',
-                message: `We couldn't find ${c.runtime.target} as a target supported by the current version of your Xcode. Please select another sim`,
+                message: `We couldn't find ${c.runtime.target} as a simulator supported by the current version of your Xcode. Please select another sim`,
                 type: 'list',
                 choices: devicesArr
                     .filter((d) => !d.isDevice)
