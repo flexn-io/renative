@@ -9,6 +9,7 @@ import {
     registerAllPlatformEngines,
 } from '../engines';
 import {
+    DEFAULT_TASK_DESCRIPTIONS,
     TASK_BUILD,
     TASK_CONFIGURE,
     TASK_CONFIGURE_SOFT,
@@ -38,6 +39,9 @@ type TaskOption = {
     asArray?: string[];
     subCommand?: string;
     subTasks?: TaskOption[];
+    description?: string;
+    isGlobalScope?: boolean;
+    isPrivate?: boolean;
 };
 
 export const registerCustomTask = async (_c: RnvContext, task: RnvTask) => {
@@ -67,9 +71,13 @@ const _getTaskOption = ({ taskInstance }: TaskObj): TaskOption => {
         command: '',
         name: '',
         asArray,
+        description: taskInstance.description,
+        isGlobalScope: taskInstance.isGlobalScope,
+        isPrivate: taskInstance.isPrivate,
     };
 
     if (taskInstance.description && taskInstance.description !== '') {
+        output.description = taskInstance.description;
         output.name = `${taskInstance.task} ${chalk().grey(`(${taskInstance.description})`)}`;
     } else {
         output.name = taskInstance.task;
@@ -104,32 +112,35 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
     let task = '';
     if (!specificTask) {
         if (!c.command) {
-            const suitableTaskInstances: Record<string, TaskObj> = {};
+            const suitableTasks: Record<string, TaskOption> = {};
             REGISTERED_ENGINES.forEach((engine) => {
                 Object.values(engine.tasks).forEach((taskInstance) => {
-                    const taskObj = _getTaskObj(taskInstance);
-                    suitableTaskInstances[taskObj.key] = taskObj;
+                    const taskObj = _getTaskOption(_getTaskObj(taskInstance));
+                    if (!suitableTasks[taskObj.value]) {
+                        suitableTasks[taskObj.value] = taskObj;
+                    } else {
+                        // In case of multiple competing tasks (same task name but coming from different engines)
+                        // We try to revert to generic description instead.
+                        taskObj.description = DEFAULT_TASK_DESCRIPTIONS[taskObj.value] || taskObj.description;
+                    }
                 });
             });
             Object.values(CUSTOM_TASKS).forEach((taskInstance) => {
-                const taskObj = _getTaskObj(taskInstance);
-                suitableTaskInstances[taskObj.key] = taskObj;
+                const taskObj = _getTaskOption(_getTaskObj(taskInstance));
+                suitableTasks[taskObj.value] = taskObj;
             });
 
-            const taskInstances = Object.values(suitableTaskInstances);
+            const taskInstances = Object.values(suitableTasks);
             let tasks: TaskOption[];
 
             let defaultCmd: string | undefined = 'new';
-            let filteredTasks;
             let addendum = '';
             if (!c.paths.project.configExists) {
-                filteredTasks = taskInstances.filter((v) => v.taskInstance.isGlobalScope && !v.taskInstance.isPrivate);
-                tasks = filteredTasks.map((v) => _getTaskOption(v)).sort();
+                tasks = taskInstances.filter((v) => v.isGlobalScope && !v.isPrivate).sort();
                 addendum = ' (Not a ReNative project. options will be limited)';
             } else {
-                filteredTasks = taskInstances.filter((v) => !v.taskInstance.isPrivate);
-                tasks = filteredTasks.map((v) => _getTaskOption(v)).sort();
-                defaultCmd = tasks.find((v) => v.value.startsWith('run'))?.name;
+                tasks = taskInstances.filter((v) => !v.isPrivate).sort();
+                defaultCmd = tasks.find((v) => v.value === 'run')?.name;
             }
 
             const commonTasks: TaskOption[] = [];

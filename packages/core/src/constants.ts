@@ -190,3 +190,12 @@ export const INJECTABLE_CONFIG_PROPS: Array<ConfigPropKey> = [
 export const INJECTABLE_RUNTIME_PROPS = ['appId', 'scheme', 'timestamp', 'localhost', 'target', 'port'] as const;
 
 export const REMOTE_DEBUGGER_ENABLED_PLATFORMS = [TIZEN, TIZEN_MOBILE, TIZEN_WATCH];
+
+export const DEFAULT_TASK_DESCRIPTIONS: Record<string, string> = {
+    [TASK_RUN]: 'Run your app on target device or emulator',
+    [TASK_PACKAGE]: 'Package source files into bundle',
+    [TASK_BUILD]: 'Build project binary',
+    [TASK_CONFIGURE]: 'Configure current project',
+    [TASK_START]: 'Starts bundler / server',
+    [TASK_EXPORT]: 'Export the app into deployable binary',
+};

@@ -35,7 +35,7 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: 'Run your app on target device or emulator',
+    description: 'Run your electron app on target device or emulator',
     fn: taskRnvRun,
     task: TASK_RUN,
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),

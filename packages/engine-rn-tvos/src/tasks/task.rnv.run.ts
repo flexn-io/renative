@@ -72,7 +72,7 @@ More info at: https://renative.org/docs/api-cli
 };
 
 const Task = {
-    description: 'Run your app on target device or emulator',
+    description: 'Run your tv app on target device or emulator',
     fn: taskRnvRun,
     fnHelp: taskRnvRunHelp,
     task: TASK_RUN,
