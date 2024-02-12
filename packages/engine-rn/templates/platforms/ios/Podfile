@@ -22,7 +22,7 @@ if permissions_required != '' && permissions_required != nil
   setup_permissions(permissions_required.split(","))
 end
 
-platform :ios, '{{PLUGIN_DEPLOYMENT_TARGET}}'
+platform :ios, '{{INJECT_PLUGIN_DEPLOYMENT_TARGET}}'
 prepare_react_native_project!
 
 # If you are using a `react-native-flipper` your iOS build will fail when `NO_FLIPPER=1` is set.
@@ -52,6 +52,8 @@ target 'RNVApp' do
     # Note that if you have use_frameworks! enabled, Flipper will not work and
     # you should disable the next line.
     :flipper_configuration => flipper_config,
+    # Hermes is now enabled by default. Disable by setting this flag to false.
+    :hermes_enabled => {{INJECT_HERMES_ENABLED}},
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/../.."
   )

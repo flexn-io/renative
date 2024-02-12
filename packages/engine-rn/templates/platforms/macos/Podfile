@@ -1,5 +1,5 @@
 {{PLUGIN_PODFILE_SOURCES}}
-platform :ios, '{{PLUGIN_DEPLOYMENT_TARGET}}'
+platform :ios, '{{INJECT_PLUGIN_DEPLOYMENT_TARGET}}'
 use_frameworks!
 {{PLUGIN_WARNINGS}}
 

@@ -1,12 +1,28 @@
 source 'https://github.com/react-native-tvos/react-native-tvos-podspecs.git'
 source 'https://cdn.cocoapods.org/'
+{{INJECT_PLUGIN_PODFILE_SOURCES}}
+
+{{INJECT_PODFILE_HEADER}}
 
 # Resolve react_native_pods.rb with node to allow for hoisting
-require Pod::Executable.execute_command('node', ['-p',
-  'require.resolve(
-    "react-native-tvos/scripts/react_native_pods.rb",
-    {paths: [process.argv[1]]},
-  )', __dir__]).strip
+def node_require(script)
+  # Resolve script with node to allow for hoisting
+  require Pod::Executable.execute_command('node', ['-p',
+    "require.resolve(
+      '#{script}',
+      {paths: [process.argv[1]]},
+    )", __dir__]).strip
+end
+
+node_require('react-native-tvos/scripts/react_native_pods.rb')
+{{INJECT_PLUGIN_NODE_REQUIRE}}
+
+# RN PERMISSIONS
+permissions_required = ENV['REACT_NATIVE_PERMISSIONS_REQUIRED']
+if permissions_required != '' && permissions_required != nil
+  node_require('react-native-permissions/scripts/setup.rb')
+  setup_permissions(permissions_required.split(","))
+end
 
 prepare_react_native_project!
 
@@ -20,7 +36,7 @@ end
 
 target 'RNVApp' do
   config = use_native_modules!
-  platform :ios, '{{PLUGIN_DEPLOYMENT_TARGET}}'
+  platform :ios, '{{INJECT_PLUGIN_DEPLOYMENT_TARGET}}'
 
   use_react_native!(
     :path => config[:reactNativePath],
@@ -29,6 +45,8 @@ target 'RNVApp' do
     # Note that if you have use_frameworks! enabled, Flipper will not work and
     # you should disable the next line.
     :flipper_configuration => flipper_config,
+    # Hermes is now enabled by default. Disable by setting this flag to false.
+    :hermes_enabled => {{INJECT_HERMES_ENABLED}},
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/../.."
   )
@@ -41,7 +59,7 @@ end
 
 target 'RNVApp-tvOS' do
   config = use_native_modules!
-  platform :tvos, '{{PLUGIN_DEPLOYMENT_TARGET}}'
+  platform :tvos, '{{INJECT_PLUGIN_DEPLOYMENT_TARGET}}'
 
   use_react_native!(
     :path => config[:reactNativePath],
@@ -50,6 +68,8 @@ target 'RNVApp-tvOS' do
     # Note that if you have use_frameworks! enabled, Flipper will not work and
     # you should disable the next line.
     :flipper_configuration => flipper_config,
+    # Hermes is now enabled by default. Disable by setting this flag to false.
+    :hermes_enabled => {{INJECT_HERMES_ENABLED}},
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/../.."
   )
@@ -69,3 +89,5 @@ post_install do |installer|
     :mac_catalyst_enabled => false
   )
 end
+
+{{INJECT_PLUGIN_PODFILE_INJECT}}
