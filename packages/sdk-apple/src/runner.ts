@@ -77,7 +77,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
     if (device === true) {
         if (devicesArr.length === 1) {
             logSuccess(
-                `Found one device connected! device name: ${chalk().white(devicesArr[0].name)} udid: ${chalk().white(
+                `Found one target connected! Target name: ${chalk().white(devicesArr[0].name)} udid: ${chalk().white(
                     devicesArr[0].udid
                 )}`
             );
@@ -117,7 +117,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
 
             const { sim } = await inquirerPrompt({
                 name: 'sim',
-                message: 'Select the device you want to launch on',
+                message: 'Select the target you want to launch on',
                 type: 'list',
                 choices: devices,
             });
@@ -126,7 +126,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
                 return run(sim);
             }
         } else {
-            return Promise.reject(`No ${c.platform} devices connected!`);
+            return Promise.reject(`No ${c.platform} targets connected!`);
         }
     } else if (device) {
         p = `--device ${device}`;
@@ -140,7 +140,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
 
         const { sim } = await inquirerPrompt({
             name: 'sim',
-            message: 'Select the device you want to launch on',
+            message: 'Select the target you want to launch on',
             type: 'list',
             choices: devices,
         });
@@ -154,7 +154,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
         if (!desiredSim) {
             const { sim } = await inquirerPrompt({
                 name: 'sim',
-                message: `We couldn't find ${c.runtime.target} as a device supported by the current version of your Xcode. Please select another sim`,
+                message: `We couldn't find ${c.runtime.target} as a target supported by the current version of your Xcode. Please select another sim`,
                 type: 'list',
                 choices: devicesArr
                     .filter((d) => !d.isDevice)

@@ -83,13 +83,13 @@ export const taskRnvTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) 
             return Promise.reject(
                 `"target launch" command does not support ${chalk().white.bold(
                     platform
-                )} platform yet. You will have to launch the emulator manually. Working on it!`
+                )} platform yet. You will have to launch the target manually. Working on it!`
             );
     }
 };
 
 export default {
-    description: 'Launch specific emulator',
+    description: 'Launch specific target',
     fn: taskRnvTargetLaunch,
     task: 'target launch',
     params: PARAMS.withBase(),

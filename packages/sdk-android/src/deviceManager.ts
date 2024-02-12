@@ -535,7 +535,7 @@ const _parseDevicesResult = async (
                         ? `tasklist | find "avd ${line}"`
                         : `ps x | grep "avd ${line}" | grep -v grep`;
                     child_process.execSync(findProcess);
-                    logDebug('_parseDevicesResult 9 - excluding running emulator');
+                    logDebug('_parseDevicesResult 9 - excluding running target');
                 } catch (e) {
                     if (avdDetails) {
                         //This is edge case scenarion where 'adb devices -l' does not return running emulator even it is in process
