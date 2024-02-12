@@ -77,12 +77,12 @@ export const launchAndroidSimulator = async (
         const devicesString = composeDevicesArray(list);
         const choices = devicesString;
         const response = await inquirerPrompt({
-            name: 'chosenEmulator',
+            name: 'chosenTarget',
             type: 'list',
-            message: 'What emulator would you like to launch?',
+            message: 'What target would you like to launch?',
             choices,
         });
-        newTarget = response.chosenEmulator;
+        newTarget = response.chosenTarget;
     } else {
         newTarget = target;
     }
