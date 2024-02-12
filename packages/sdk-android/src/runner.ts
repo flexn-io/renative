@@ -82,9 +82,10 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
     const { platform } = c;
 
     await resetAdb(c);
+    const targetToConnectWiFi = _isString(target) ? target : device;
 
-    if (target && _isString(target) && net.isIP(target.split(':')[0])) {
-        await connectToWifiDevice(c, target);
+    if (_isString(targetToConnectWiFi) && net.isIP(targetToConnectWiFi.split(':')[0])) {
+        await connectToWifiDevice(c, targetToConnectWiFi);
     }
 
     const devicesAndEmulators = await getAndroidTargets(c, false, false, !!device);
@@ -102,11 +103,10 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
                 return logError('No active devices found, please connect one or remove the device argument', true);
             }
             if (!foundDevice && (_isString(target) || _isString(device))) {
-                return logError(
+                logInfo(
                     `The target is specified, but no such emulator or device is available: ${chalk().magenta(
                         _isString(target) ? target : device
-                    )}`,
-                    true
+                    )}`
                 );
             }
             const activeDeviceInfoArr = composeDevicesArray(activeDevices);
