@@ -8,11 +8,21 @@ import {
     getEngineSubTasks,
     registerAllPlatformEngines,
 } from '../engines';
-import { TASK_CONFIGURE_SOFT } from '../constants';
+import {
+    TASK_BUILD,
+    TASK_CONFIGURE,
+    TASK_CONFIGURE_SOFT,
+    TASK_EXPORT,
+    TASK_HELP,
+    TASK_NEW,
+    TASK_PACKAGE,
+    TASK_RUN,
+    TASK_START,
+} from '../constants';
 import { RnvContext } from '../context/types';
 import { RnvTask, RnvTaskMap, TaskItemMap, TaskObj } from './types';
 import { RnvEngine } from '../engines/types';
-import { inquirerPrompt, pressAnyKeyToContinue } from '../api';
+import { inquirerPrompt, inquirerSeparator, pressAnyKeyToContinue } from '../api';
 import { getApi } from '../api/provider';
 import { RenativeConfigTaskKey } from '../schema/types';
 import { checkIfProjectAndNodeModulesExists } from '../projects/dependencyManager';
@@ -86,6 +96,8 @@ const _getTaskObj = (taskInstance: RnvTask) => {
     };
 };
 
+const COMMON_TASKS = [TASK_RUN, TASK_BUILD, TASK_CONFIGURE, TASK_NEW, TASK_HELP, TASK_PACKAGE, TASK_START, TASK_EXPORT];
+
 export const findSuitableTask = async (c: RnvContext, specificTask?: string): Promise<RnvTask | undefined> => {
     logTask('findSuitableTask');
     const REGISTERED_ENGINES = getRegisteredEngines(c);
@@ -120,6 +132,7 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
                 defaultCmd = tasks.find((v) => v.value.startsWith('run'))?.name;
             }
 
+            const commonTasks: TaskOption[] = [];
             const ungroupedTasks: TaskOption[] = [];
             const groupedTasks: TaskOption[] = [];
             const taskGroups: Record<string, TaskOption> = {};
@@ -127,21 +140,27 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
                 if (task.subCommand) {
                     if (!taskGroups[task.command]) {
                         const groupTask: TaskOption = {
-                            name: `${task.command} ...`,
+                            name: `${task.command}...`,
                             command: task.command,
                             value: task.command,
                         };
                         taskGroups[task.command] = groupTask;
                         groupedTasks.push(groupTask);
                     }
+                } else if (COMMON_TASKS.includes(task.value)) {
+                    commonTasks.push(task);
                 } else {
-                    console.log('DKKDKDK', task);
-
                     ungroupedTasks.push(task);
                 }
             });
 
-            const mergedTasks = [...ungroupedTasks, ...groupedTasks];
+            const mergedTasks = [
+                inquirerSeparator('─────────── Common tasks ───────────'),
+                ...commonTasks,
+                inquirerSeparator('─────────── More tasks ─────────────'),
+                ...ungroupedTasks,
+                ...groupedTasks,
+            ];
 
             const { selectedTask } = await inquirerPrompt({
                 type: 'list',
