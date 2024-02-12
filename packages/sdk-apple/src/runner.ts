@@ -126,7 +126,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
                 return run(chosenDevice);
             }
         } else {
-            return Promise.reject(`No ${c.platform} targets connected!`);
+            return Promise.reject(`No ${c.platform} devices connected!`);
         }
     } else if (device) {
         p = `--device ${device}`;
@@ -140,7 +140,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
 
         const { sim } = await inquirerPrompt({
             name: 'sim',
-            message: 'Select the target you want to launch on',
+            message: 'Select the simulator you want to launch on',
             type: 'list',
             choices: devices,
         });
