@@ -8,6 +8,7 @@ import {
     TASK_PROJECT_CONFIGURE,
     PARAMS,
     RnvTaskFn,
+    RnvTask,
 } from '@rnv/core';
 
 export const taskRnvWorkspaceList: RnvTaskFn = async (c, _parentTask, originTask) => {
@@ -30,7 +31,7 @@ export const taskRnvWorkspaceList: RnvTaskFn = async (c, _parentTask, originTask
     logToSummary(`Workspaces:\n\n${opts.asString}`);
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Show list of all available workspaces',
     fn: taskRnvWorkspaceList,
     task: TASK_WORKSPACE_LIST,
@@ -38,3 +39,5 @@ export default {
     platforms: [],
     isGlobalScope: true,
 };
+
+export default Task;

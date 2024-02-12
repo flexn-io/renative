@@ -35,6 +35,7 @@ import {
     PlatformKey,
     commandExistsSync,
     PromptParams,
+    RnvTask,
 } from '@rnv/core';
 import { ConfigFileProject, ConfigFileTemplate } from '@rnv/core/lib/schema/configFiles/types';
 
@@ -797,7 +798,7 @@ const findEngineKeyById = (c: RnvContext, id: string) => {
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Create new ReNative project',
     fn: taskRnvNew,
     task: 'new',
@@ -805,3 +806,5 @@ export default {
     platforms: [],
     isGlobalScope: true,
 };
+
+export default Task;

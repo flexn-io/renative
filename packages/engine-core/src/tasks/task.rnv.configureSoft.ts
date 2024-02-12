@@ -8,6 +8,7 @@ import {
     isPlatformSupported,
     isBuildSchemeSupported,
     logTask,
+    RnvTask,
 } from '@rnv/core';
 import { checkAndConfigureSdks, checkSdk } from '../common';
 
@@ -24,7 +25,7 @@ export const taskRnvConfigureSoft: RnvTaskFn = async (c, parentTask, originTask)
     return true;
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Configure system and project without recreating files (used for --only)',
     fn: taskRnvConfigureSoft,
     task: TASK_CONFIGURE_SOFT,
@@ -32,3 +33,5 @@ export default {
     platforms: [],
     isPrivate: true,
 };
+
+export default Task;

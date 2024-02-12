@@ -35,6 +35,7 @@ import {
     RnvContext,
     generatePlatformAssetsRuntimeConfig,
     TASK_CRYPTO_DECRYPT,
+    RnvTask,
 } from '@rnv/core';
 
 const checkIsRenativeProject = (c: RnvContext) =>
@@ -136,10 +137,12 @@ export const taskRnvProjectConfigure: RnvTaskFn = async (c, parentTask, originTa
     return true;
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Configure current project',
     fn: taskRnvProjectConfigure,
     task: TASK_PROJECT_CONFIGURE,
     params: PARAMS.withBase(),
     platforms: [],
 };
+
+export default Task;

@@ -7,6 +7,7 @@ import {
     TASK_PROJECT_CONFIGURE,
     PARAMS,
     RnvTaskFn,
+    RnvTask,
 } from '@rnv/core';
 
 export const taskRnvPluginList: RnvTaskFn = async (c, _parentTask, originTask) => {
@@ -22,10 +23,12 @@ export const taskRnvPluginList: RnvTaskFn = async (c, _parentTask, originTask) =
     return true;
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Show list of all available plugins',
     fn: taskRnvPluginList,
     task: 'plugin list',
     params: PARAMS.withBase(),
     platforms: [],
 };
+
+export default Task;

@@ -15,6 +15,7 @@ import {
     PARAMS,
     executeTask,
     RnvTaskFn,
+    RnvTask,
 } from '@rnv/core';
 import { listAndroidTargets } from '@rnv/sdk-android';
 import { listAppleDevices } from '@rnv/sdk-apple';
@@ -54,7 +55,7 @@ export const taskRnvTargetList: RnvTaskFn = async (c, _parentTask, originTask) =
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'List all available devices / emulators for specific platform',
     fn: taskRnvTargetList,
     task: 'target list',
@@ -62,3 +63,5 @@ export default {
     platforms: [],
     isGlobalScope: true,
 };
+
+export default Task;

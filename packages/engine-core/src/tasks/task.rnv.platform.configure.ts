@@ -17,6 +17,7 @@ import {
     TASK_PROJECT_CONFIGURE,
     TASK_INSTALL,
     RnvTaskFn,
+    RnvTask,
 } from '@rnv/core';
 import { checkAndConfigureSdks, checkSdk } from '../common';
 
@@ -55,10 +56,12 @@ export const taskRnvPlatformConfigure: RnvTaskFn = async (c, parentTask, originT
     return true;
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Low-level task used by engines to prepare platformBuilds folder',
     fn: taskRnvPlatformConfigure,
     task: TASK_PLATFORM_CONFIGURE,
     params: PARAMS.withBase(),
     platforms: [],
 };
+
+export default Task;

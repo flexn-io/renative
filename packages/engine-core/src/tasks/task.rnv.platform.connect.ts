@@ -15,6 +15,7 @@ import {
     RnvTaskFn,
     inquirerPrompt,
     PlatformKey,
+    RnvTask,
 } from '@rnv/core';
 
 export const taskRnvPlatformConnect: RnvTaskFn = async (c, _parentTask, originTask) => {
@@ -87,10 +88,12 @@ export const taskRnvPlatformConnect: RnvTaskFn = async (c, _parentTask, originTa
     );
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Connect platform template back to rnv',
     fn: taskRnvPlatformConnect,
     task: TASK_PLATFORM_CONNECT,
     params: PARAMS.withBase(),
     platforms: [],
 };
+
+export default Task;

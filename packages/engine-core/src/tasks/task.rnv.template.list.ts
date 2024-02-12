@@ -7,6 +7,7 @@ import {
     TASK_PROJECT_CONFIGURE,
     PARAMS,
     RnvTaskFn,
+    RnvTask,
 } from '@rnv/core';
 
 export const taskRnvTemplateList: RnvTaskFn = async (c, _parentTask, originTask) => {
@@ -20,12 +21,13 @@ export const taskRnvTemplateList: RnvTaskFn = async (c, _parentTask, originTask)
     return true;
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Show list of available templates',
     fn: taskRnvTemplateList,
     task: 'template list',
     params: PARAMS.withBase(),
     platforms: [],
-    skipPlatforms: true,
     isGlobalScope: true,
 };
+
+export default Task;

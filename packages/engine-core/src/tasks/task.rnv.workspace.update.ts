@@ -1,4 +1,12 @@
-import { logTask, executeTask, TASK_WORKSPACE_UPDATE, TASK_PROJECT_CONFIGURE, PARAMS, RnvTaskFn } from '@rnv/core';
+import {
+    logTask,
+    executeTask,
+    TASK_WORKSPACE_UPDATE,
+    TASK_PROJECT_CONFIGURE,
+    PARAMS,
+    RnvTaskFn,
+    RnvTask,
+} from '@rnv/core';
 
 export const taskRnvWorkspaceUpdate: RnvTaskFn = async (c, _parentTask, originTask) => {
     // TODO: taskRnvWorkspaceUpdate
@@ -9,12 +17,13 @@ export const taskRnvWorkspaceUpdate: RnvTaskFn = async (c, _parentTask, originTa
     return true;
 };
 
-export default {
+const Task: RnvTask = {
     description: '',
     fn: taskRnvWorkspaceUpdate,
     task: TASK_WORKSPACE_UPDATE,
     params: PARAMS.withBase(),
     platforms: [],
-    skipPlatforms: true,
     isGlobalScope: true,
 };
+
+export default Task;

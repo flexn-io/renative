@@ -9,6 +9,7 @@ import {
     TASK_PROJECT_CONFIGURE,
     PARAMS,
     RnvTaskFn,
+    RnvTask,
 } from '@rnv/core';
 
 export const taskRnvWorkspaceAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
@@ -48,7 +49,7 @@ export const taskRnvWorkspaceAdd: RnvTaskFn = async (c, _parentTask, originTask)
     return true;
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Add new workspace',
     fn: taskRnvWorkspaceAdd,
     task: TASK_WORKSPACE_ADD,
@@ -56,3 +57,5 @@ export default {
     platforms: [],
     isGlobalScope: true,
 };
+
+export default Task;

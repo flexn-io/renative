@@ -12,6 +12,7 @@ import {
     fsExistsSync,
     RnvTaskFn,
     validateRenativeProjectSchema,
+    RnvTask,
 } from '@rnv/core';
 
 const configTargets = [
@@ -87,7 +88,7 @@ export const taskRnvDoctor: RnvTaskFn = async (c, parentTask, originTask) => {
     logToSummary(errMsg);
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Checks validity and config health of your project',
     fn: taskRnvDoctor,
     task: TASK_DOCTOR,
@@ -95,3 +96,5 @@ export default {
     platforms: [],
     isGlobalScope: true,
 };
+
+export default Task;

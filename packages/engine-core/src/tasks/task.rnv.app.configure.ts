@@ -19,6 +19,7 @@ import {
     inquirerPrompt,
     RnvContext,
     inquirerSeparator,
+    RnvTask,
 } from '@rnv/core';
 
 const _loadAppConfigIDfromDir = (dirName: string, appConfigsDir: string) => {
@@ -204,10 +205,12 @@ export const taskRnvAppConfigure = async (c: RnvContext) => {
     return true;
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Configure project with specific appConfig',
     fn: taskRnvAppConfigure,
     task: TASK_APP_CONFIGURE,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [],
 };
+
+export default Task;

@@ -10,6 +10,7 @@ import {
     RnvContext,
     RnvTaskFn,
     inquirerPrompt,
+    RnvTask,
 } from '@rnv/core';
 
 const _writeObjectSync = (c: RnvContext, p: string, s: object) => {
@@ -53,10 +54,12 @@ export const taskRnvTemplateAdd: RnvTaskFn = async (c, _parentTask, originTask) 
     return true;
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Install additional template to the project',
     fn: taskRnvTemplateAdd,
     task: 'template add',
     params: PARAMS.withBase(),
     platforms: [],
 };
+
+export default Task;

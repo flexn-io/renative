@@ -17,6 +17,7 @@ import {
     executeTask,
     RnvTaskFn,
     inquirerPrompt,
+    RnvTask,
 } from '@rnv/core';
 import { checkAndConfigureSdks, checkSdk } from '../common';
 
@@ -88,7 +89,7 @@ export const taskRnvTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) 
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Launch specific emulator',
     fn: taskRnvTargetLaunch,
     task: 'target launch',
@@ -96,3 +97,5 @@ export default {
     platforms: [],
     isGlobalScope: true,
 };
+
+export default Task;

@@ -15,6 +15,7 @@ import {
     getApi,
     inquirerPrompt,
     RenativeConfigPlugin,
+    RnvTask,
 } from '@rnv/core';
 
 /* eslint-disable no-await-in-loop */
@@ -101,10 +102,12 @@ export const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) =>
     return true;
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Add selected plugin to the project',
     fn: taskRnvPluginAdd,
     task: 'plugin add',
     params: PARAMS.withBase(),
     platforms: [],
 };
+
+export default Task;
