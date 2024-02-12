@@ -106,7 +106,7 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
                 logInfo(
                     `The target is specified, but no such emulator or device is available: ${chalk().magenta(
                         _isString(target) ? target : device
-                    )}`
+                    )}. Will try to find available one`
                 );
             }
             const activeDeviceInfoArr = composeDevicesArray(activeDevices);
