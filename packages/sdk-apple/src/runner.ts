@@ -77,7 +77,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
     if (device === true) {
         if (devicesArr.length === 1) {
             logSuccess(
-                `Found one target connected! Target name: ${chalk().white(devicesArr[0].name)} udid: ${chalk().white(
+                `Found one device connected! Device name: ${chalk().white(devicesArr[0].name)} udid: ${chalk().white(
                     devicesArr[0].udid
                 )}`
             );
@@ -115,15 +115,15 @@ export const getIosDeviceToRunOn = async (c: Context) => {
                 value: v,
             }));
 
-            const { sim } = await inquirerPrompt({
-                name: 'sim',
-                message: 'Select the target you want to launch on',
+            const { chosenDevice } = await inquirerPrompt({
+                name: 'chosenDevice',
+                message: 'Select the device you want to launch on',
                 type: 'list',
                 choices: devices,
             });
 
-            if (sim) {
-                return run(sim);
+            if (chosenDevice) {
+                return run(chosenDevice);
             }
         } else {
             return Promise.reject(`No ${c.platform} targets connected!`);
