@@ -8,7 +8,7 @@ import {
     getEngineSubTasks,
     registerAllPlatformEngines,
 } from '../engines';
-import { TASK_CONFIGURE_SOFT } from '../constants';
+import { TASK_CONFIGURE_SOFT, TASK_EXPORT, TASK_DEPLOY, TASK_BUILD } from '../constants';
 import { RnvContext } from '../context/types';
 import { RnvTask, RnvTaskMap, TaskItemMap, TaskObj } from './types';
 import { RnvEngine } from '../engines/types';
@@ -222,6 +222,10 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
         if (!c.platform || c.program.platform === true) {
             await _selectPlatform(c, suitableEngines, task);
         }
+        const schemeRequiredTasks = [TASK_BUILD, TASK_DEPLOY, TASK_EXPORT];
+        if (schemeRequiredTasks.includes(c.command)) {
+            c.program.scheme = true;
+        }
         c.runtime.engine = getEngineRunner(c, task, CUSTOM_TASKS, false);
         // Cover scenarios of -p xxxxxxxxx
         if (!c.runtime.engine) {
@@ -343,7 +347,7 @@ export const executeOrSkipTask = async (c: RnvContext, task: string, parentTask:
 
 const ACCEPTED_CONDITIONS = ['platform', 'target', 'appId', 'scheme'] as const;
 
-type ACKey = typeof ACCEPTED_CONDITIONS[number];
+type ACKey = (typeof ACCEPTED_CONDITIONS)[number];
 
 const _logSkip = (task: string) => {
     logInfo(`Original RNV task ${chalk().white(task)} marked to ignore. SKIPPING...`);
