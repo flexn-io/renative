@@ -102,10 +102,11 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
                 return logError('No active devices found, please connect one or remove the device argument', true);
             }
             if (!foundDevice && (isString(target) || isString(device))) {
-                logInfo(
+                return logError(
                     `The target is specified, but no such emulator or device is available: ${chalk().magenta(
                         isString(target) ? target : device
-                    )}. Will try to find available one`
+                    )}`,
+                    true
                 );
             }
             const activeDeviceInfoArr = composeDevicesArray(activeDevices);
