@@ -199,14 +199,3 @@ export const DEFAULT_TASK_DESCRIPTIONS: Record<string, string> = {
     [TASK_START]: 'Starts bundler / server',
     [TASK_EXPORT]: 'Export the app into deployable binary',
 };
-
-export const COMMON_TASKS = [
-    TASK_RUN,
-    TASK_BUILD,
-    TASK_CONFIGURE,
-    TASK_NEW,
-    TASK_HELP,
-    TASK_PACKAGE,
-    TASK_START,
-    TASK_EXPORT,
-];

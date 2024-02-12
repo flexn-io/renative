@@ -8,9 +8,9 @@ import {
     getEngineSubTasks,
     registerAllPlatformEngines,
 } from '../engines';
-import { COMMON_TASKS, DEFAULT_TASK_DESCRIPTIONS, TASK_CONFIGURE_SOFT } from '../constants';
+import { DEFAULT_TASK_DESCRIPTIONS, TASK_CONFIGURE_SOFT } from '../constants';
 import { RnvContext } from '../context/types';
-import { RnvTask, RnvTaskMap, TaskItemMap, TaskObj } from './types';
+import { RnvTask, RnvTaskMap, TaskItemMap, TaskObj, TaskOption } from './types';
 import { RnvEngine } from '../engines/types';
 import { inquirerPrompt, inquirerSeparator, pressAnyKeyToContinue } from '../api';
 import { getApi } from '../api/provider';
@@ -20,18 +20,6 @@ import { checkIfProjectAndNodeModulesExists } from '../projects/dependencyManage
 let executedTasks: Record<string, number> = {};
 
 const CUSTOM_TASKS: RnvTaskMap = {};
-
-type TaskOption = {
-    name: string;
-    value: string;
-    command: string;
-    asArray?: string[];
-    subCommand?: string;
-    subTasks?: TaskOption[];
-    description?: string;
-    isGlobalScope?: boolean;
-    isPrivate?: boolean;
-};
 
 export const registerCustomTask = async (_c: RnvContext, task: RnvTask) => {
     if (task.task) {
@@ -60,6 +48,7 @@ const _getTaskOption = ({ taskInstance }: TaskObj): TaskOption => {
         command: '',
         name: '',
         asArray,
+        isPriorityOrder: taskInstance.isPriorityOrder,
         description: taskInstance.description,
         isGlobalScope: taskInstance.isGlobalScope,
         isPrivate: taskInstance.isPrivate,
@@ -102,13 +91,16 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
             const suitableTasks: Record<string, TaskOption> = {};
             REGISTERED_ENGINES.forEach((engine) => {
                 Object.values(engine.tasks).forEach((taskInstance) => {
-                    const taskObj = _getTaskOption(_getTaskObj(taskInstance));
+                    let taskObj: TaskOption = _getTaskOption(_getTaskObj(taskInstance));
                     if (!suitableTasks[taskObj.value]) {
                         suitableTasks[taskObj.value] = taskObj;
                     } else {
+                        taskObj = suitableTasks[taskObj.value];
                         // In case of multiple competing tasks (same task name but coming from different engines)
                         // We try to revert to generic description instead.
                         taskObj.description = DEFAULT_TASK_DESCRIPTIONS[taskObj.value] || taskObj.description;
+                        // In case of multiple competing tasks we assume they are "commonly used"
+                        taskObj.isPriorityOrder = true;
                     }
                 });
             });
@@ -145,7 +137,7 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
                         taskGroups[task.command] = groupTask;
                         groupedTasks.push(groupTask);
                     }
-                } else if (COMMON_TASKS.includes(task.value)) {
+                } else if (task.isPriorityOrder) {
                     commonTasks.push(task);
                 } else {
                     ungroupedTasks.push(task);

@@ -51,6 +51,7 @@ const Task: RnvTask = {
     params: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,
+    isPriorityOrder: true,
 };
 
 export default Task;
