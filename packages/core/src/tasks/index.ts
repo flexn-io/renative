@@ -18,6 +18,7 @@ import {
     TASK_PACKAGE,
     TASK_RUN,
     TASK_START,
+    TASK_DEPLOY,
 } from '../constants';
 import { RnvContext } from '../context/types';
 import { RnvTask, RnvTaskMap, TaskItemMap, TaskObj } from './types';
@@ -286,6 +287,11 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
         //TODO: special type case for c.platform
         if (!c.platform || c.program.platform === true) {
             await _selectPlatform(c, suitableEngines, task);
+        }
+
+        const schemeRequiredTasks = [TASK_BUILD, TASK_DEPLOY, TASK_EXPORT];
+        if (c.command && schemeRequiredTasks.includes(c.command)) {
+            c.program.scheme = true;
         }
         c.runtime.engine = getEngineRunner(c, task, CUSTOM_TASKS, false);
         // Cover scenarios of -p xxxxxxxxx
