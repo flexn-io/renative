@@ -39,5 +39,5 @@ export type TaskItemMap = Record<
 export type TaskObj = {
     key: string;
     taskInstance: RnvTask;
-    hasMultipleSubTasks?: boolean;
+    // hasMultipleSubTasks?: boolean;
 };

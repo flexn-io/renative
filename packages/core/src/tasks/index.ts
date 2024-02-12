@@ -21,6 +21,8 @@ let executedTasks: Record<string, number> = {};
 
 const CUSTOM_TASKS: RnvTaskMap = {};
 
+type TaskOption = { name: string; value: string; command: string; asArray: string[], subCommand: string; };
+
 export const registerCustomTask = async (_c: RnvContext, task: RnvTask) => {
     if (task.task) {
         CUSTOM_TASKS[task.task] = task;
@@ -41,26 +43,42 @@ export const initializeTask = async (c: RnvContext, task: string) => {
     return true;
 };
 
-const _getTaskOption = ({ taskInstance, hasMultipleSubTasks }: TaskObj) => {
-    if (hasMultipleSubTasks) {
-        return `${taskInstance.task.split(' ')[0]}...`;
-    }
+const _getTaskOption = ({ taskInstance }: TaskObj): TaskOption => {
+    const output = { value: taskInstance.task, name: '', command: '', asArray: taskInstance.task.split(' ') };
+
+    // if (hasMultipleSubTasks) {
+    //     output.name = `${taskInstance.task.split(' ')[0]}...`;
+    //     return output;
+    // }
+
     if (taskInstance.description && taskInstance.description !== '') {
-        return `${taskInstance.task.split(' ')[0]} ${chalk().grey(`(${taskInstance.description})`)}`;
+        output.name = `${taskInstance.task} ${chalk().grey(`(${taskInstance.description})`)}`;
+        // output.lastName = `${output.asArray[0]} ${chalk().grey(`(${taskInstance.description})`)}`;
+
+        return output;
     }
-    return `${taskInstance.task.split(' ')[0]}`;
+    // output.lastName = `${output.asArray[0]}`;
+    output.name = taskInstance.task;
+
+    return output;
 };
 
 const _getTaskObj = (taskInstance: RnvTask) => {
-    const key = taskInstance.task.split(' ')[0];
-    let hasMultipleSubTasks = false;
-    if (taskInstance.task.includes(' ')) hasMultipleSubTasks = true;
+    const key = taskInstance.task;
+    const taskNameArr = key.split(' ');
+    let parent: null | string = null;
+    if (taskNameArr.length > 1) {
+        taskNameArr.pop();
+        parent = taskNameArr.join(' ');
+    }
+
     return {
         key,
         taskInstance,
-        hasMultipleSubTasks,
+        parent,
     };
 };
+
 
 export const findSuitableTask = async (c: RnvContext, specificTask?: string): Promise<RnvTask | undefined> => {
     logTask('findSuitableTask');
@@ -81,33 +99,45 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
             });
 
             const taskInstances = Object.values(suitableTaskInstances);
-            let tasks;
+            let tasks: TaskOption[];
+
             let defaultCmd: string | undefined = 'new';
-            let tasksCommands;
             let filteredTasks;
             let addendum = '';
             if (!c.paths.project.configExists) {
                 filteredTasks = taskInstances.filter((v) => v.taskInstance.isGlobalScope && !v.taskInstance.isPrivate);
                 tasks = filteredTasks.map((v) => _getTaskOption(v)).sort();
-                tasksCommands = filteredTasks.map((v) => v.taskInstance.task.split(' ')[0]).sort();
                 addendum = ' (Not a ReNative project. options will be limited)';
             } else {
                 filteredTasks = taskInstances.filter((v) => !v.taskInstance.isPrivate);
                 tasks = filteredTasks.map((v) => _getTaskOption(v)).sort();
-                tasksCommands = taskInstances.map((v) => v.taskInstance.task.split(' ')[0]).sort();
-                defaultCmd = tasks.find((v) => v.startsWith('run'));
+                defaultCmd = tasks.find((v) => v.value.startsWith('run'))?.name;
             }
 
-            const { command } = await inquirerPrompt({
+            const groupedTasks: TaskOption[] = [];
+            const taskGroups: Record<string, TaskOption> = {};
+            tasks.forEach((task) => {
+                if(task.asArray.length > 1) {
+                    if(!taskGroups[task.asArray[0]]) {
+                        taskGroups[task.asArray[0]] = {
+                            name: 
+                        }
+                    }
+                } else {
+                    groupedTasks.push(task)
+                }
+            })
+
+            const { selectedTask } = await inquirerPrompt({
                 type: 'list',
                 default: defaultCmd,
-                name: 'command',
+                name: 'selectedTask',
                 message: `Pick a command${addendum}`,
                 choices: tasks,
                 pageSize: 15,
                 logMessage: 'Welcome to the brave new world...',
             });
-            c.command = tasksCommands[tasks.indexOf(command)];
+            c.command = selectedTask;
         }
         if (c.command) task = c.command;
         if (c.subCommand) task += ` ${c.subCommand}`;
