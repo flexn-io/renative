@@ -43,7 +43,7 @@ export const taskRnvUnlink: RnvTaskFn = async (c) => {
 };
 
 export default {
-    description: '',
+    description: 'Replaces rnv version in project with original node_modules version',
     fn: taskRnvUnlink,
     task: 'unlink',
     params: PARAMS.withBase(),

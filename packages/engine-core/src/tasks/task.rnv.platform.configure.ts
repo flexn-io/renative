@@ -56,7 +56,7 @@ export const taskRnvPlatformConfigure: RnvTaskFn = async (c, parentTask, originT
 };
 
 export default {
-    description: '',
+    description: 'Low-level task used by engines to prepare platformBuilds folder',
     fn: taskRnvPlatformConfigure,
     task: TASK_PLATFORM_CONFIGURE,
     params: PARAMS.withBase(),

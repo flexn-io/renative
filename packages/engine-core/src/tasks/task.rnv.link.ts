@@ -39,7 +39,7 @@ export const taskRnvLink: RnvTaskFn = async (c, _parentTask, _originalTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Links development version or renative with this project',
     fn: taskRnvLink,
     task: 'link',
     params: PARAMS.withBase(),

@@ -21,7 +21,14 @@ let executedTasks: Record<string, number> = {};
 
 const CUSTOM_TASKS: RnvTaskMap = {};
 
-type TaskOption = { name: string; value: string; command: string; asArray: string[], subCommand: string; };
+type TaskOption = {
+    name: string;
+    value: string;
+    command: string;
+    asArray?: string[];
+    subCommand?: string;
+    subTasks?: TaskOption[];
+};
 
 export const registerCustomTask = async (_c: RnvContext, task: RnvTask) => {
     if (task.task) {
@@ -44,21 +51,21 @@ export const initializeTask = async (c: RnvContext, task: string) => {
 };
 
 const _getTaskOption = ({ taskInstance }: TaskObj): TaskOption => {
-    const output = { value: taskInstance.task, name: '', command: '', asArray: taskInstance.task.split(' ') };
-
-    // if (hasMultipleSubTasks) {
-    //     output.name = `${taskInstance.task.split(' ')[0]}...`;
-    //     return output;
-    // }
+    const asArray = taskInstance.task.split(' ');
+    const output: TaskOption = {
+        value: taskInstance.task,
+        command: '',
+        name: '',
+        asArray,
+    };
 
     if (taskInstance.description && taskInstance.description !== '') {
         output.name = `${taskInstance.task} ${chalk().grey(`(${taskInstance.description})`)}`;
-        // output.lastName = `${output.asArray[0]} ${chalk().grey(`(${taskInstance.description})`)}`;
-
-        return output;
+    } else {
+        output.name = taskInstance.task;
     }
-    // output.lastName = `${output.asArray[0]}`;
-    output.name = taskInstance.task;
+    output.command = asArray[0];
+    output.subCommand = asArray[1];
 
     return output;
 };
@@ -78,7 +85,6 @@ const _getTaskObj = (taskInstance: RnvTask) => {
         parent,
     };
 };
-
 
 export const findSuitableTask = async (c: RnvContext, specificTask?: string): Promise<RnvTask | undefined> => {
     logTask('findSuitableTask');
@@ -114,26 +120,35 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
                 defaultCmd = tasks.find((v) => v.value.startsWith('run'))?.name;
             }
 
+            const ungroupedTasks: TaskOption[] = [];
             const groupedTasks: TaskOption[] = [];
             const taskGroups: Record<string, TaskOption> = {};
             tasks.forEach((task) => {
-                if(task.asArray.length > 1) {
-                    if(!taskGroups[task.asArray[0]]) {
-                        taskGroups[task.asArray[0]] = {
-                            name: 
-                        }
+                if (task.subCommand) {
+                    if (!taskGroups[task.command]) {
+                        const groupTask: TaskOption = {
+                            name: `${task.command} ...`,
+                            command: task.command,
+                            value: task.command,
+                        };
+                        taskGroups[task.command] = groupTask;
+                        groupedTasks.push(groupTask);
                     }
                 } else {
-                    groupedTasks.push(task)
+                    console.log('DKKDKDK', task);
+
+                    ungroupedTasks.push(task);
                 }
-            })
+            });
+
+            const mergedTasks = [...ungroupedTasks, ...groupedTasks];
 
             const { selectedTask } = await inquirerPrompt({
                 type: 'list',
                 default: defaultCmd,
                 name: 'selectedTask',
                 message: `Pick a command${addendum}`,
-                choices: tasks,
+                choices: mergedTasks,
                 pageSize: 15,
                 logMessage: 'Welcome to the brave new world...',
             });
@@ -374,7 +389,7 @@ export const executeOrSkipTask = async (c: RnvContext, task: string, parentTask:
 
 const ACCEPTED_CONDITIONS = ['platform', 'target', 'appId', 'scheme'] as const;
 
-type ACKey = typeof ACCEPTED_CONDITIONS[number];
+type ACKey = (typeof ACCEPTED_CONDITIONS)[number];
 
 const _logSkip = (task: string) => {
     logInfo(`Original RNV task ${chalk().white(task)} marked to ignore. SKIPPING...`);
