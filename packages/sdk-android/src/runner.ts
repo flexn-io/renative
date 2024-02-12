@@ -83,7 +83,7 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
 
     await resetAdb(c);
 
-    if (target && isString(target) && net.isIP(target.split(':')[0])) {
+    if (target && _isString(target) && net.isIP(target.split(':')[0])) {
         await connectToWifiDevice(c, target);
     }
 
@@ -101,10 +101,10 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
             if (c.program.device && !activeDevices.length) {
                 return logError('No active devices found, please connect one or remove the device argument', true);
             }
-            if (!foundDevice && (isString(target) || isString(device))) {
+            if (!foundDevice && (_isString(target) || _isString(device))) {
                 return logError(
                     `The target is specified, but no such emulator or device is available: ${chalk().magenta(
-                        isString(target) ? target : device
+                        _isString(target) ? target : device
                     )}`,
                     true
                 );
@@ -525,7 +525,7 @@ export const runAndroidLog = async (c: Context) => {
     return child.then((res) => res.stdout).catch((err) => Promise.reject(`Error: ${err}`));
 };
 
-export const isString = (target: boolean | string): boolean => {
+const _isString = (target: boolean | string): boolean => {
     return typeof target === 'string';
 };
 export { ejectGradleProject };
