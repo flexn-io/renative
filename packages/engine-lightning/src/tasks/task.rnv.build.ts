@@ -38,3 +38,5 @@ export default {
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [TIZEN, WEBOS],
 };
+
+export default Task;

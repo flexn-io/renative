@@ -15,6 +15,7 @@ import {
     MACOS,
     IOS,
     jetifyIfRequired,
+    RnvTask,
 } from '@rnv/core';
 import { configureGradleProject } from '@rnv/sdk-android';
 import { configureXcodeProject } from '@rnv/sdk-apple';
@@ -53,10 +54,12 @@ export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => 
     return true;
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Configure current project',
     fn: taskRnvConfigure,
     task: 'configure',
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR],
 };
+
+export default Task;

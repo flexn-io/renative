@@ -13,6 +13,7 @@ import {
     ANDROID_WEAR,
     MACOS,
     IOS,
+    RnvTask,
 } from '@rnv/core';
 import { exportXcodeProject } from '@rnv/sdk-apple';
 
@@ -39,10 +40,12 @@ export const taskRnvExport: RnvTaskFn = async (c, parentTask, originTask) => {
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Export the app into deployable binary',
     fn: taskRnvExport,
     task: TASK_EXPORT,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR],
 };
+
+export default Task;

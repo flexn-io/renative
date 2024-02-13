@@ -14,6 +14,7 @@ import {
     ANDROID_WEAR,
     MACOS,
     IOS,
+    RnvTask,
 } from '@rnv/core';
 import { startReactNative } from '@rnv/sdk-react-native';
 
@@ -48,10 +49,12 @@ export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Starts bundler / server',
     fn: taskRnvStart,
     task: TASK_START,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR],
 };
+
+export default Task;

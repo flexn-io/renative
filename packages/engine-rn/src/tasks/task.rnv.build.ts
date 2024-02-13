@@ -14,6 +14,7 @@ import {
     ANDROID_WEAR,
     MACOS,
     IOS,
+    RnvTask,
 } from '@rnv/core';
 import { buildReactNativeAndroid } from '@rnv/sdk-react-native';
 import { buildXcodeProject } from '@rnv/sdk-apple';
@@ -44,10 +45,12 @@ export const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Build project binary',
     fn: taskRnvBuild,
     task: TASK_BUILD,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, MACOS],
 };
+
+export default Task;
