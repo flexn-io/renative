@@ -10,6 +10,7 @@ import {
     PARAMS,
     executeTask,
     shouldSkipTask,
+    RnvTask,
 } from '@rnv/core';
 import { updateProfile } from '@rnv/sdk-apple';
 
@@ -45,11 +46,13 @@ export const taskRnvCryptoUpdateProfiles: RnvTaskFn = async (c, _parentTask, ori
     return Promise.reject(`updateProfiles: Platform ${c.platform} not supported`);
 };
 
-export default {
+const Task: RnvTask = {
     description: '',
     fn: taskRnvCryptoUpdateProfiles,
     task: TASK_CRYPTO_UPDATE_PROFILES,
     params: PARAMS.withBase(),
     platforms: [],
-    skipPlatforms: true,
+    // skipPlatforms: true,
 };
+
+export default Task;

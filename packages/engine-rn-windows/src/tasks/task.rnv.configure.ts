@@ -11,6 +11,7 @@ import {
     configureEntryPoint,
     executeTask,
     shouldSkipTask,
+    RnvTask,
 } from '@rnv/core';
 import { SDKWindows } from '../sdks';
 
@@ -38,10 +39,12 @@ export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => 
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Configure current project',
     fn: taskRnvConfigure,
     task: TASK_CONFIGURE,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [WINDOWS, XBOX],
 };
+
+export default Task;

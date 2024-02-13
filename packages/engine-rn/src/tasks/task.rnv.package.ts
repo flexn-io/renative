@@ -62,7 +62,7 @@ export const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Package source files into bundle',
     fn: taskRnvPackage,
-    task: 'package',
+    task: TASK_PACKAGE,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR],
 };

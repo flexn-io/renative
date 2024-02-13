@@ -7,6 +7,7 @@ import {
     PARAMS,
     executeOrSkipTask,
     shouldSkipTask,
+    RnvTask,
 } from '@rnv/core';
 
 export const taskRnvDeploy: RnvTaskFn = async (c, parentTask, originTask) => {
@@ -20,10 +21,12 @@ export const taskRnvDeploy: RnvTaskFn = async (c, parentTask, originTask) => {
     return true;
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Deploy the binary via selected deployment integeration or build hook',
     fn: taskRnvDeploy,
     task: TASK_DEPLOY,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [MACOS],
 };
+
+export default Task;

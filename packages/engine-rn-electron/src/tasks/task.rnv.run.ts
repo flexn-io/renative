@@ -10,6 +10,7 @@ import {
     PARAMS,
     executeOrSkipTask,
     shouldSkipTask,
+    RnvTask,
 } from '@rnv/core';
 import { runElectron } from '../sdk';
 
@@ -34,10 +35,12 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Run your electron app on your machine',
     fn: taskRnvRun,
     task: TASK_RUN,
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: [MACOS, WINDOWS, LINUX],
 };
+
+export default Task;

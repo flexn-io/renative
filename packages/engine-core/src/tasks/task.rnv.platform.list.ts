@@ -24,7 +24,7 @@ export const taskRnvPlatformList: RnvTaskFn = async (c, _parentTask, originTask)
 const Task: RnvTask = {
     description: 'List all available platforms',
     fn: taskRnvPlatformList,
-    task: 'platform list',
+    task: TASK_PLATFORM_LIST,
     params: PARAMS.withBase(),
     platforms: [],
 };

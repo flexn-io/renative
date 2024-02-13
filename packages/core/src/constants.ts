@@ -133,6 +133,8 @@ export const TASK_PACKAGE = 'package';
 export const TASK_DEPLOY = 'deploy';
 export const TASK_LOG = 'log';
 export const TASK_CLEAN = 'clean';
+export const TASK_LINK = 'link';
+export const TASK_UNLINK = 'unlink';
 export const TASK_INSTALL = 'install';
 export const TASK_PUBLISH = 'publish';
 export const TASK_STATUS = 'status';
@@ -174,6 +176,9 @@ export const TASK_WORKSPACE_CONFIGURE = 'workspace configure';
 export const TASK_CONFIGURE_SOFT = 'configureSoft';
 export const TASK_KILL = 'kill';
 export const TASK_EJECT = 'eject';
+export const TASK_TELEMETRY_DISABLE = 'telemetry disable';
+export const TASK_TELEMETRY_ENABLE = 'telemetry enable';
+export const TASK_TELEMETRY_STATUS = 'telemetry status';
 
 export const INJECTABLE_CONFIG_PROPS: Array<ConfigPropKey> = [
     'id',

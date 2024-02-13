@@ -41,7 +41,7 @@ const Task: RnvTask = {
     description: 'Run your lightning app on target device or emulator',
     fn: taskRnvRun,
     fnHelp: taskRnvRunHelp,
-    task: 'run',
+    task: TASK_RUN,
     // dependencies: {
     //     before: TASK_CONFIGURE,
     // },

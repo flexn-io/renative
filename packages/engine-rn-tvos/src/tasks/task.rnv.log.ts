@@ -9,6 +9,8 @@ import {
     executeTask,
     logErrorPlatform,
     RnvTaskFn,
+    RnvTask,
+    TASK_LOG,
 } from '@rnv/core';
 
 import { runAppleLog } from '@rnv/sdk-apple';
@@ -31,11 +33,13 @@ export const taskRnvLog: RnvTaskFn = async (c, parentTask, originTask) => {
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Attach logger to device or emulator and print out logs',
     fn: taskRnvLog,
-    task: 'log',
+    task: TASK_LOG,
     params: PARAMS.withBase(),
     platforms: [TVOS, ANDROID_TV, FIRE_TV],
     isGlobalScope: true,
 };
+
+export default Task;

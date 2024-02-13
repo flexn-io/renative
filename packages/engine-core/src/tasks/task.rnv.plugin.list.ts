@@ -26,7 +26,7 @@ export const taskRnvPluginList: RnvTaskFn = async (c, _parentTask, originTask) =
 const Task: RnvTask = {
     description: 'Show list of all available plugins',
     fn: taskRnvPluginList,
-    task: 'plugin list',
+    task: TASK_PLUGIN_LIST,
     params: PARAMS.withBase(),
     platforms: [],
 };

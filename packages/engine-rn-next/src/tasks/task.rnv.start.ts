@@ -10,6 +10,7 @@ import {
     PARAMS,
     executeTask,
     shouldSkipTask,
+    RnvTask,
 } from '@rnv/core';
 import { runWebNext } from '../sdk';
 import { openBrowser, waitForHost } from '@rnv/sdk-utils';
@@ -46,10 +47,12 @@ export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Starts bundler / server',
     fn: taskRnvStart,
     task: TASK_START,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [WEB, CHROMECAST],
 };
+
+export default Task;

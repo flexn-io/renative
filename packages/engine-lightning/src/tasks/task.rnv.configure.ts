@@ -8,6 +8,7 @@ import {
     PARAMS,
     executeTask,
     RnvTaskFn,
+    RnvTask,
 } from '@rnv/core';
 import { configureLightningProject } from '../sdks/sdk-lightning';
 
@@ -29,10 +30,10 @@ export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => 
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Configure current project',
     fn: taskRnvConfigure,
-    task: 'configure',
+    task: TASK_CONFIGURE,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [TIZEN, WEBOS],
 };

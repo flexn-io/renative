@@ -48,7 +48,7 @@ export const taskRnvTemplateApply: RnvTaskFn = async (c, _parentTask, originTask
 const Task: RnvTask = {
     description: 'Reset project to specific template',
     fn: taskRnvTemplateApply,
-    task: 'template apply',
+    task: TASK_TEMPLATE_APPLY,
     params: PARAMS.withBase(),
     platforms: [],
 };

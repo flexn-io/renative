@@ -57,7 +57,7 @@ export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => 
 const Task: RnvTask = {
     description: 'Configure current project',
     fn: taskRnvConfigure,
-    task: 'configure',
+    task: TASK_CONFIGURE,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR],
 };

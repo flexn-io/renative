@@ -13,6 +13,7 @@ import {
     logErrorPlatform,
     executeOrSkipTask,
     shouldSkipTask,
+    RnvTask,
 } from '@rnv/core';
 import { packageAndroid, runAndroid, getAndroidDeviceToRunOn } from '@rnv/sdk-android';
 import { runXcodeProject, getIosDeviceToRunOn } from '@rnv/sdk-apple';
@@ -71,14 +72,14 @@ More info at: https://renative.org/docs/api-cli
 `);
 };
 
-const Task = {
+const Task: RnvTask = {
     description: 'Run your tv app on target device or emulator',
     fn: taskRnvRun,
     fnHelp: taskRnvRunHelp,
     task: TASK_RUN,
-    dependencies: {
-        before: TASK_CONFIGURE,
-    },
+    // dependencies: {
+    //     before: TASK_CONFIGURE,
+    // },
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: [TVOS, ANDROID_TV, FIRE_TV],
 };

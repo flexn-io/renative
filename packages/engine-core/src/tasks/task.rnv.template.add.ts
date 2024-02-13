@@ -57,7 +57,7 @@ export const taskRnvTemplateAdd: RnvTaskFn = async (c, _parentTask, originTask) 
 const Task: RnvTask = {
     description: 'Install additional template to the project',
     fn: taskRnvTemplateAdd,
-    task: 'template add',
+    task: TASK_TEMPLATE_ADD,
     params: PARAMS.withBase(),
     platforms: [],
 };

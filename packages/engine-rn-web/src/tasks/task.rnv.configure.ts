@@ -17,6 +17,7 @@ import {
     executeTask,
     shouldSkipTask,
     configureEntryPoint,
+    RnvTask,
 } from '@rnv/core';
 import { configureWebProject, configureChromecastProject } from '@rnv/sdk-webpack';
 import { configureKaiOSProject } from '@rnv/sdk-kaios';
@@ -55,10 +56,12 @@ export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => 
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Configure current project',
     fn: taskRnvConfigure,
     task: TASK_CONFIGURE,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [WEB, WEBTV, TIZEN, WEBOS, TIZEN_MOBILE, TIZEN_WATCH, KAIOS, CHROMECAST],
 };
+
+export default Task;

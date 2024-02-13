@@ -14,6 +14,7 @@ import {
     logInfo,
     RnvTaskFn,
     RnvTask,
+    TASK_WORKSPACE_CONFIGURE,
 } from '@rnv/core';
 
 export const taskRnvWorkspaceConfigure: RnvTaskFn = async (c) => {
@@ -90,7 +91,7 @@ export const taskRnvWorkspaceConfigure: RnvTaskFn = async (c) => {
 const Task: RnvTask = {
     description: '',
     fn: taskRnvWorkspaceConfigure,
-    task: 'workspace configure',
+    task: TASK_WORKSPACE_CONFIGURE,
     params: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,

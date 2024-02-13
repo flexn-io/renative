@@ -15,6 +15,7 @@ import {
     PARAMS,
     executeOrSkipTask,
     shouldSkipTask,
+    RnvTask,
 } from '@rnv/core';
 import { deployWeb } from '@rnv/sdk-webpack';
 
@@ -37,10 +38,12 @@ export const taskRnvDeploy: RnvTaskFn = async (c, parentTask, originTask) => {
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Deploy the binary via selected deployment intgeration or buld hook',
     fn: taskRnvDeploy,
     task: TASK_DEPLOY,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [WEB, WEBTV, TIZEN, WEBOS, TIZEN_MOBILE, TIZEN_WATCH, KAIOS, CHROMECAST],
 };
+
+export default Task;

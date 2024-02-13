@@ -11,6 +11,7 @@ import {
     PARAMS,
     executeOrSkipTask,
     shouldSkipTask,
+    RnvTask,
 } from '@rnv/core';
 import { runXcodeProject } from '@rnv/sdk-apple';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '@rnv/sdk-react-native';
@@ -50,14 +51,14 @@ More info at: https://renative.org/docs/api-cli
 `);
 };
 
-const Task = {
+const Task: RnvTask = {
     description: 'Run your macos app on target device or emulator',
     fn: taskRnvRun,
     fnHelp: taskRnvRunHelp,
     task: TASK_RUN,
-    dependencies: {
-        before: TASK_CONFIGURE,
-    },
+    // dependencies: {
+    //     before: TASK_CONFIGURE,
+    // },
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: [MACOS],
 };

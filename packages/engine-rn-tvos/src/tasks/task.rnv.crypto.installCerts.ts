@@ -10,6 +10,7 @@ import {
     TASK_CRYPTO_INSTALL_CERTS,
     TASK_PROJECT_CONFIGURE,
     PARAMS,
+    RnvTask,
 } from '@rnv/core';
 
 export const taskRnvCryptoInstallCerts: RnvTaskFn = async (c, _parentTask, originTask) => {
@@ -36,11 +37,13 @@ export const taskRnvCryptoInstallCerts: RnvTaskFn = async (c, _parentTask, origi
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: '',
     fn: taskRnvCryptoInstallCerts,
     task: TASK_CRYPTO_INSTALL_CERTS,
     params: PARAMS.withBase(),
     platforms: [],
-    skipPlatforms: true,
+    // skipPlatforms: true,
 };
+
+export default Task;

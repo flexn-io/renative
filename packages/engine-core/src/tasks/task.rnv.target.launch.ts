@@ -92,7 +92,7 @@ export const taskRnvTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) 
 const Task: RnvTask = {
     description: 'Launch specific target',
     fn: taskRnvTargetLaunch,
-    task: 'target launch',
+    task: TASK_TARGET_LAUNCH,
     params: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,

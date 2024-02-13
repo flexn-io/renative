@@ -9,6 +9,7 @@ import {
     TASK_DEBUG,
     executeAsync,
     shouldSkipTask,
+    RnvTask,
 } from '@rnv/core';
 
 export const taskRnvDebug: RnvTaskFn = async (c, parentTask, originTask) => {
@@ -28,10 +29,12 @@ export const taskRnvDebug: RnvTaskFn = async (c, parentTask, originTask) => {
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Debug your app on target device or emulator',
     fn: taskRnvDebug,
-    task: 'debug',
+    task: TASK_DEBUG,
     params: PARAMS.withBase(),
     platforms: [WEB, WEBTV, TIZEN],
 };
+
+export default Task;

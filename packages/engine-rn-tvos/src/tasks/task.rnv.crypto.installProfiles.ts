@@ -14,6 +14,7 @@ import {
     TASK_CRYPTO_INSTALL_PROFILES,
     TASK_PROJECT_CONFIGURE,
     PARAMS,
+    RnvTask,
 } from '@rnv/core';
 
 export const taskRnvCryptoInstallProfiles: RnvTaskFn = async (c, _parentTask, originTask) => {
@@ -50,11 +51,13 @@ export const taskRnvCryptoInstallProfiles: RnvTaskFn = async (c, _parentTask, or
     return true;
 };
 
-export default {
+const Task: RnvTask = {
     description: '',
     fn: taskRnvCryptoInstallProfiles,
     task: TASK_CRYPTO_INSTALL_PROFILES,
     params: PARAMS.withBase(),
     platforms: [],
-    skipPlatforms: true,
+    // skipPlatforms: true,
 };
+
+export default Task;

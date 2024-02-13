@@ -24,7 +24,7 @@ export const taskRnvTemplateList: RnvTaskFn = async (c, _parentTask, originTask)
 const Task: RnvTask = {
     description: 'Show list of available templates',
     fn: taskRnvTemplateList,
-    task: 'template list',
+    task: TASK_TEMPLATE_LIST,
     params: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,

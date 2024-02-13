@@ -105,7 +105,7 @@ export const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) =>
 const Task: RnvTask = {
     description: 'Add selected plugin to the project',
     fn: taskRnvPluginAdd,
-    task: 'plugin add',
+    task: TASK_PLUGIN_ADD,
     params: PARAMS.withBase(),
     platforms: [],
 };

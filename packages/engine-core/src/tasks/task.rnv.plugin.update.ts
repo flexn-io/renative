@@ -52,7 +52,7 @@ export const taskRnvPluginUpdate: RnvTaskFn = async (c, _parentTask, originTask)
 const Task: RnvTask = {
     description: 'Update specific plugin to latest supported version (rnv)',
     fn: taskRnvPluginUpdate,
-    task: 'plugin update',
+    task: TASK_PLUGIN_UPDATE,
     params: PARAMS.withBase(),
     platforms: [],
 };
