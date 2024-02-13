@@ -52,7 +52,7 @@ export const taskRnvCryptoInstallProfiles: RnvTaskFn = async (c, _parentTask, or
 };
 
 const Task: RnvTask = {
-    description: '',
+    description: 'Installs provisioning certificates found in your workspace (mac only)',
     fn: taskRnvCryptoInstallProfiles,
     task: TASK_CRYPTO_INSTALL_PROFILES,
     params: PARAMS.withBase(),

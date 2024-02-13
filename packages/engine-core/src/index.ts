@@ -41,6 +41,7 @@ import taskRnvUnlink from './tasks/task.rnv.unlink';
 import taskRnvTelemetryStatus from './tasks/task.rnv.telemetry.status';
 import taskRnvTelemetryEnable from './tasks/task.rnv.telemetry.enable';
 import taskRnvTelemetryDisable from './tasks/task.rnv.telemetry.disable';
+import taskRnvSwitch from './tasks/task.rnv.switch';
 
 const Engine: RnvEngine = {
     // initializeRuntimeConfig: () => {
@@ -90,6 +91,7 @@ const Engine: RnvEngine = {
         taskRnvTelemetryStatus,
         taskRnvTelemetryEnable,
         taskRnvTelemetryDisable,
+        taskRnvSwitch,
     ]),
     config: {
         // title: 'Engine Core',

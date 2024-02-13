@@ -22,7 +22,7 @@ export const taskRnvCryptoUpdateProfile: RnvTaskFn = async (c, _parentTask, orig
 };
 
 const Task: RnvTask = {
-    description: 'Update provisioning profile',
+    description: 'Update provisioning profile (mac only)',
     fn: taskRnvCryptoUpdateProfile,
     task: TASK_CRYPTO_UPDATE_PROFILE,
     params: PARAMS.withBase(),

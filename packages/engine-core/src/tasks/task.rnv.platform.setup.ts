@@ -31,7 +31,7 @@ export const taskRnvPlatformSetup: RnvTaskFn = async (c, _parentTask, originTask
 };
 
 const Task: RnvTask = {
-    description: '',
+    description: 'Allows you to change supportedPlatforms for your project',
     fn: taskRnvPlatformSetup,
     task: TASK_PLATFORM_SETUP,
     params: PARAMS.withBase(),
