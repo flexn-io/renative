@@ -17,6 +17,8 @@ import {
     waitForExecCLI,
     inquirerPrompt,
     DEFAULTS,
+    executeAsync,
+    ExecOptionsPresets,
 } from '@rnv/core';
 import { CLI_SDB_TIZEN, CLI_TIZEN, CLI_TIZEN_EMULATOR } from './constants';
 
@@ -27,6 +29,11 @@ const xml2js = require('xml2js');
 const parser = new xml2js.Parser();
 
 export const DEFAULT_CERTIFICATE_NAME = 'tizen_author';
+
+const ERROR_MSG = {
+    UNKNOWN_VM: 'does not match any VM',
+    ALREADY_RUNNING: 'is running now',
+};
 
 type PlatKeyObj = {
     _: string;
@@ -63,13 +70,47 @@ const formatXMLObject = (
     return {};
 };
 
-export const launchTizenSimulator = (c: RnvContext, name: string) => {
+export const launchTizenSimulator = async (c: RnvContext, name: string | true): Promise<boolean> => {
     logTask(`launchTizenSimulator:${name}`);
 
-    if (name) {
-        return execCLI(c, CLI_TIZEN_EMULATOR, `launch --name ${name}`, {
+    if (name === true) {
+        const targets = await execCLI(c, CLI_TIZEN_EMULATOR, 'list-vm', {
             detached: true,
         });
+        const lines = targets.split('\n');
+        const devicesArray = lines.map((line) => ({ id: line, name: line }));
+        const choices = _composeDevicesString(devicesArray);
+        const { chosenEmulator } = await inquirerPrompt({
+            name: 'chosenEmulator',
+            type: 'list',
+            message: 'What emulator would you like to launch?',
+            choices,
+        });
+
+        name = chosenEmulator;
+    }
+
+    if (name) {
+        try {
+            await executeAsync(
+                c,
+                `${c.cli[CLI_TIZEN_EMULATOR]} launch --name ${name}`,
+                ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY
+            );
+            return true;
+        } catch (e) {
+            if (typeof e === 'string') {
+                if (e.includes(ERROR_MSG.UNKNOWN_VM)) {
+                    logError(`The VM "${name}" does not exist.`);
+                    return launchTizenSimulator(c, true);
+                }
+
+                if (e.includes(ERROR_MSG.ALREADY_RUNNING)) {
+                    logError(`The VM "${name}" is already running.`);
+                    return true;
+                }
+            }
+        }
     }
     return Promise.reject('No simulator -t target name specified!');
 };
@@ -235,7 +276,7 @@ const _waitForEmulatorToBeReady = (c: RnvContext, target: string): Promise<boole
         return res;
     });
 
-const _composeDevicesString = (devices: Array<TizenDevice>) =>
+const _composeDevicesString = (devices: Array<Pick<TizenDevice, 'id' | 'name'>>) =>
     devices.map((device) => ({
         key: device.id,
         name: device.name,
@@ -371,7 +412,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
         } catch (err) {
             logError(err);
             logWarning(
-                `There is no emulator or device connected! Let's try to launch it. "${chalk().white.bold(
+                `There is no target connected! Let's try to launch it. "${chalk().white.bold(
                     `rnv target launch -p ${platform} -t ${target}`
                 )}"`
             );
@@ -439,7 +480,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
             const { chosenEmulator } = await inquirerPrompt({
                 name: 'chosenEmulator',
                 type: 'list',
-                message: 'On what emulator would you like to run the app?',
+                message: 'On what target would you like to run the app?',
                 choices,
             });
             deviceID = chosenEmulator;

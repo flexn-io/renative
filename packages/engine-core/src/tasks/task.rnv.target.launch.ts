@@ -48,7 +48,7 @@ export const taskRnvTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) 
             options.push({ name: `${workspaceTarget} (global default)`, value: workspaceTarget });
         }
 
-        options.push({ name: 'Pick from available targets...', value: null });
+        options.push({ name: 'Pick from available targets...', value: true });
 
         const { selectedOption } = await inquirerPrompt({
             name: 'selectedOption',
@@ -76,20 +76,20 @@ export const taskRnvTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) 
         case TIZEN:
             return launchTizenSimulator(c, target);
         case WEBOS:
-            return launchWebOSimulator(c);
+            return launchWebOSimulator(c, target);
         case KAIOS:
             return launchKaiOSSimulator(c);
         default:
             return Promise.reject(
                 `"target launch" command does not support ${chalk().white.bold(
                     platform
-                )} platform yet. You will have to launch the emulator manually. Working on it!`
+                )} platform yet. You will have to launch the target manually. Working on it!`
             );
     }
 };
 
 export default {
-    description: 'Launch specific emulator',
+    description: 'Launch specific target',
     fn: taskRnvTargetLaunch,
     task: 'target launch',
     params: PARAMS.withBase(),
