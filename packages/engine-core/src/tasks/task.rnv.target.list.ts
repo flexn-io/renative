@@ -56,7 +56,7 @@ export const taskRnvTargetList: RnvTaskFn = async (c, _parentTask, originTask) =
 };
 
 const Task: RnvTask = {
-    description: 'List all available devices / emulators for specific platform',
+    description: 'List all available targets for specific platform',
     fn: taskRnvTargetList,
     task: 'target list',
     params: PARAMS.withBase(),

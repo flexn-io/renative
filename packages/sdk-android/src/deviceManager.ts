@@ -77,12 +77,12 @@ export const launchAndroidSimulator = async (
         const devicesString = composeDevicesArray(list);
         const choices = devicesString;
         const response = await inquirerPrompt({
-            name: 'chosenEmulator',
+            name: 'chosenTarget',
             type: 'list',
-            message: 'What emulator would you like to launch?',
+            message: 'What target would you like to launch?',
             choices,
         });
-        newTarget = response.chosenEmulator;
+        newTarget = response.chosenTarget;
     } else {
         newTarget = target;
     }
@@ -535,7 +535,7 @@ const _parseDevicesResult = async (
                         ? `tasklist | find "avd ${line}"`
                         : `ps x | grep "avd ${line}" | grep -v grep`;
                     child_process.execSync(findProcess);
-                    logDebug('_parseDevicesResult 9 - excluding running emulator');
+                    logDebug('_parseDevicesResult 9 - excluding running target');
                 } catch (e) {
                     if (avdDetails) {
                         //This is edge case scenarion where 'adb devices -l' does not return running emulator even it is in process

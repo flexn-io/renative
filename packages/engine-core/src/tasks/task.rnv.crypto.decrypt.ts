@@ -74,7 +74,7 @@ export const taskRnvCryptoDecrypt: RnvTaskFn = async (c, parentTask, originTask)
         const wsPath = path.join(c.paths.workspace.dir, projectName);
         const isCryptoReset = c.command === 'crypto' && c.program.reset === true;
 
-        if (c.program.ci !== true && !isCryptoReset) {
+        if (c.program.ci !== true && !isCryptoReset && fsExistsSync(destFolder)) {
             const options = ['Yes - override (recommended)', 'Yes - merge', 'Skip'];
             const { option } = await inquirerPrompt({
                 name: 'option',
