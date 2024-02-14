@@ -96,26 +96,6 @@ module.exports = function (webpackEnv) {
     // Get environment variables to inject into our app.
     const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1));
 
-    // fs.readFile(webpackConfigPath, 'utf8', (err, data) => {
-    //     if (err) {
-    //         console.error('Error reading webpack configuration file:', err);
-    //         return;
-    //     }
-    //     // Find the config object within the file contents
-    //     const match = data.match(/export\s+const\s+config\s*=\s*({[\s\S]*?});/);
-    //     if (match && match[1]) {
-    //         try {
-    //             // Parse the config object
-    //             const config = eval('(' + match[1] + ')');
-    //             console.log(config);
-    //         } catch (e) {
-    //             console.error('Error parsing webpack configuration:', e);
-    //         }
-    //     } else {
-    //         console.error('Webpack configuration object not found in the file.');
-    //     }
-    // });
-
     const shouldUseReactRefresh = env.raw.FAST_REFRESH;
 
     // common function to get style loaders
