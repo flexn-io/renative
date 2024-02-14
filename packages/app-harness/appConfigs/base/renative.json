@@ -393,7 +393,7 @@
                     "bundleAssets": false
                 },
                 "release": {
-                    "bundleAssets": true,
+                    "bundleAssets": false,
                     "bundleIsDev": false
                 }
             }
