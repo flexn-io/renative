@@ -1,4 +1,13 @@
-import { chalk, logTask, logToSummary, PARAMS, RnvTaskFn, writeFileSync } from '@rnv/core';
+import {
+    chalk,
+    logTask,
+    logToSummary,
+    PARAMS,
+    RnvTask,
+    RnvTaskFn,
+    TASK_TELEMETRY_ENABLE,
+    writeFileSync,
+} from '@rnv/core';
 
 export const taskRnvTelemetryEnable: RnvTaskFn = async (c) => {
     logTask('taskRnvTelemetryEnable');
@@ -18,12 +27,13 @@ export const taskRnvTelemetryEnable: RnvTaskFn = async (c) => {
     return true;
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Enables rnv telemetry on your machine',
     fn: taskRnvTelemetryEnable,
-    task: 'telemetry enable',
+    task: TASK_TELEMETRY_ENABLE,
     params: PARAMS.withBase(),
     platforms: [],
-    skipPlatforms: true,
     isGlobalScope: true,
 };
+
+export default Task;

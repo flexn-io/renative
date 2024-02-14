@@ -122,6 +122,8 @@ export const SUPPORTED_PLATFORMS = [
 export const TASK_RUN = 'run';
 export const TASK_CONFIGURE = 'configure';
 export const TASK_DOCTOR = 'doctor';
+export const TASK_NEW = 'new';
+export const TASK_HELP = 'help';
 export const TASK_BUILD = 'build';
 export const TASK_INFO = 'info';
 export const TASK_START = 'start';
@@ -131,6 +133,8 @@ export const TASK_PACKAGE = 'package';
 export const TASK_DEPLOY = 'deploy';
 export const TASK_LOG = 'log';
 export const TASK_CLEAN = 'clean';
+export const TASK_LINK = 'link';
+export const TASK_UNLINK = 'unlink';
 export const TASK_INSTALL = 'install';
 export const TASK_PUBLISH = 'publish';
 export const TASK_STATUS = 'status';
@@ -172,6 +176,9 @@ export const TASK_WORKSPACE_CONFIGURE = 'workspace configure';
 export const TASK_CONFIGURE_SOFT = 'configureSoft';
 export const TASK_KILL = 'kill';
 export const TASK_EJECT = 'eject';
+export const TASK_TELEMETRY_DISABLE = 'telemetry disable';
+export const TASK_TELEMETRY_ENABLE = 'telemetry enable';
+export const TASK_TELEMETRY_STATUS = 'telemetry status';
 
 export const INJECTABLE_CONFIG_PROPS: Array<ConfigPropKey> = [
     'id',
@@ -188,3 +195,12 @@ export const INJECTABLE_CONFIG_PROPS: Array<ConfigPropKey> = [
 export const INJECTABLE_RUNTIME_PROPS = ['appId', 'scheme', 'timestamp', 'localhost', 'target', 'port'] as const;
 
 export const REMOTE_DEBUGGER_ENABLED_PLATFORMS = [TIZEN, TIZEN_MOBILE, TIZEN_WATCH];
+
+export const DEFAULT_TASK_DESCRIPTIONS: Record<string, string> = {
+    [TASK_RUN]: 'Run your app on target device or emulator',
+    [TASK_PACKAGE]: 'Package source files into bundle',
+    [TASK_BUILD]: 'Build project binary',
+    [TASK_CONFIGURE]: 'Configure current project',
+    [TASK_START]: 'Starts bundler / server',
+    [TASK_EXPORT]: 'Export the app into deployable binary',
+};

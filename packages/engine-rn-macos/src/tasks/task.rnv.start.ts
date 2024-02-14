@@ -10,6 +10,7 @@ import {
     TASK_CONFIGURE_SOFT,
     PARAMS,
     RnvTaskFn,
+    RnvTask,
 } from '@rnv/core';
 import { startReactNative } from '@rnv/sdk-react-native';
 
@@ -47,10 +48,12 @@ export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Starts bundler / server',
     fn: taskRnvStart,
     task: TASK_START,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [MACOS],
 };
+
+export default Task;

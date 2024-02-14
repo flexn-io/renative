@@ -8,6 +8,7 @@ import {
     TASK_PROJECT_CONFIGURE,
     PARAMS,
     RnvTaskFn,
+    RnvTask,
 } from '@rnv/core';
 
 export const taskRnvHooksList: RnvTaskFn = async (c, _parentTask, originTask) => {
@@ -30,13 +31,13 @@ export const taskRnvHooksList: RnvTaskFn = async (c, _parentTask, originTask) =>
     return Promise.reject('Your buildHooks object is empty!');
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Get list of all available hooks',
     fn: taskRnvHooksList,
     task: TASK_HOOKS_LIST,
     params: PARAMS.withBase(),
     platforms: [],
-    skipAppConfig: true,
-    skipPlatforms: true,
     forceBuildHookRebuild: true,
 };
+
+export default Task;

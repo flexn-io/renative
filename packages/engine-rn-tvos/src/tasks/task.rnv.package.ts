@@ -12,6 +12,7 @@ import {
     executeOrSkipTask,
     shouldSkipTask,
     TASK_EJECT,
+    RnvTask,
 } from '@rnv/core';
 import { packageAndroid } from '@rnv/sdk-android';
 import { packageBundleForXcode } from '@rnv/sdk-apple';
@@ -50,10 +51,12 @@ export const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Package source files into bundle',
     fn: taskRnvPackage,
-    task: 'package',
+    task: TASK_PACKAGE,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [TVOS, ANDROID_TV, FIRE_TV],
 };
+
+export default Task;

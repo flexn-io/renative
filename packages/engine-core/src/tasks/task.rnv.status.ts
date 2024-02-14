@@ -1,12 +1,14 @@
-import { PARAMS } from '@rnv/core';
+import { PARAMS, RnvTask, TASK_STATUS } from '@rnv/core';
 
 export const taskRnvStatus = async () => Promise.resolve();
 
-export default {
+const Task: RnvTask = {
     description: 'Show current info about the project',
     fn: taskRnvStatus,
-    task: 'status',
+    task: TASK_STATUS,
     params: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,
 };
+
+export default Task;

@@ -12,6 +12,7 @@ import {
     TASK_CONFIGURE,
     PARAMS,
     executeOrSkipTask,
+    RnvTask,
 } from '@rnv/core';
 
 export const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
@@ -22,10 +23,12 @@ export const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
     return true;
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Package source files into bundle',
     fn: taskRnvPackage,
-    task: 'package',
+    task: TASK_PACKAGE,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [WEB, TIZEN, WEBOS, TIZEN_MOBILE, TIZEN_WATCH, KAIOS, CHROMECAST],
 };
+
+export default Task;

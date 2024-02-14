@@ -8,6 +8,7 @@ import {
     TASK_PROJECT_CONFIGURE,
     PARAMS,
     RnvTaskFn,
+    RnvTask,
 } from '@rnv/core';
 
 export const taskRnvPlatformList: RnvTaskFn = async (c, _parentTask, originTask) => {
@@ -20,11 +21,12 @@ export const taskRnvPlatformList: RnvTaskFn = async (c, _parentTask, originTask)
     return true;
 };
 
-export default {
+const Task: RnvTask = {
     description: 'List all available platforms',
     fn: taskRnvPlatformList,
-    task: 'platform list',
+    task: TASK_PLATFORM_LIST,
     params: PARAMS.withBase(),
     platforms: [],
-    skipPlatforms: true,
 };
+
+export default Task;

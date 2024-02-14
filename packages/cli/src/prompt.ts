@@ -51,8 +51,8 @@ export const inquirerPrompt = async (params: PromptParams): Promise<Record<strin
     return resp;
 };
 
-export const inquirerSeparator = () => {
-    return new inquirer.Separator();
+export const inquirerSeparator = (text?: string) => {
+    return new inquirer.Separator(text);
 };
 
 export const pressAnyKeyToContinue = () => {

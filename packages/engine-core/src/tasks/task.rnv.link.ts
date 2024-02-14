@@ -9,6 +9,8 @@ import {
     fsSymlinkSync,
     RnvTaskFn,
     RnvContext,
+    RnvTask,
+    TASK_LINK,
 } from '@rnv/core';
 import { RNV_PACKAGES } from '../constants';
 
@@ -38,12 +40,13 @@ export const taskRnvLink: RnvTaskFn = async (c, _parentTask, _originalTask) => {
     return true;
 };
 
-export default {
-    description: '',
+const Task: RnvTask = {
+    description: 'Links development version or renative with this project',
     fn: taskRnvLink,
-    task: 'link',
+    task: TASK_LINK,
     params: PARAMS.withBase(),
     platforms: [],
-    skipPlatforms: true,
     isGlobalScope: true,
 };
+
+export default Task;

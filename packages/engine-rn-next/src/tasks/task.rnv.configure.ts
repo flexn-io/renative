@@ -9,6 +9,7 @@ import {
     PARAMS,
     executeTask,
     shouldSkipTask,
+    RnvTask,
 } from '@rnv/core';
 import { configureNextIfRequired } from '../sdk';
 
@@ -32,10 +33,12 @@ export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => 
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Configure current project',
     fn: taskRnvConfigure,
     task: TASK_CONFIGURE,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [WEB, CHROMECAST],
 };
+
+export default Task;

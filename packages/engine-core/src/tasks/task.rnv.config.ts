@@ -1,4 +1,4 @@
-import { logTask, PARAMS, RnvTaskFn, executeTask, TASK_CONFIGURE_SOFT, SUPPORTED_PLATFORMS } from '@rnv/core';
+import { logTask, PARAMS, RnvTaskFn, executeTask, TASK_CONFIGURE_SOFT, SUPPORTED_PLATFORMS, RnvTask } from '@rnv/core';
 
 const TASK_CONFIG = 'config';
 
@@ -12,10 +12,12 @@ export const taskRnvConfig: RnvTaskFn = async (c, _, originTask) => {
     return true;
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Display RNV config',
     fn: taskRnvConfig,
     task: TASK_CONFIG,
     params: PARAMS.withBase(),
     platforms: [...SUPPORTED_PLATFORMS],
 };
+
+export default Task;

@@ -21,6 +21,7 @@ import {
     PARAMS,
     RnvContext,
     RnvTaskFn,
+    RnvTask,
 } from '@rnv/core';
 
 const iocane = require('iocane');
@@ -205,11 +206,12 @@ and we will try to help!
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Decrypt encrypted project files into local ~/<wokspace>/<project>/..',
     fn: taskRnvCryptoDecrypt,
     task: TASK_CRYPTO_DECRYPT,
     params: PARAMS.withBase(),
     platforms: [],
-    skipPlatforms: true,
 };
+
+export default Task;

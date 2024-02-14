@@ -9,6 +9,7 @@ import {
     getConfigProp,
     executeOrSkipTask,
     shouldSkipTask,
+    RnvTask,
 } from '@rnv/core';
 import { packageBundleForXcode } from '@rnv/sdk-apple';
 
@@ -35,10 +36,12 @@ export const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Package source files into bundle',
     fn: taskRnvPackage,
-    task: 'package',
+    task: TASK_PACKAGE,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [MACOS],
 };
+
+export default Task;

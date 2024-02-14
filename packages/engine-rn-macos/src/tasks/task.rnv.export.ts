@@ -8,6 +8,7 @@ import {
     PARAMS,
     executeOrSkipTask,
     shouldSkipTask,
+    RnvTask,
 } from '@rnv/core';
 import { exportXcodeProject } from '@rnv/sdk-apple';
 
@@ -27,10 +28,12 @@ export const taskRnvExport: RnvTaskFn = async (c, parentTask, originTask) => {
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Export the app into deployable binary',
     fn: taskRnvExport,
     task: TASK_EXPORT,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [MACOS],
 };
+
+export default Task;

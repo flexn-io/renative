@@ -23,6 +23,7 @@ import {
     executeTask,
     executeOrSkipTask,
     shouldSkipTask,
+    RnvTask,
 } from '@rnv/core';
 import ip from 'ip';
 import path from 'path';
@@ -108,10 +109,12 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Run your app in browser',
     fn: taskRnvRun,
     task: TASK_RUN,
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: [WEB, WEBTV, TIZEN, WEBOS, TIZEN_MOBILE, TIZEN_WATCH, KAIOS, CHROMECAST],
 };
+
+export default Task;

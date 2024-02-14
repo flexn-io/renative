@@ -9,6 +9,7 @@ import {
     executeOrSkipTask,
     shouldSkipTask,
     TASK_RUN,
+    RnvTask,
 } from '@rnv/core';
 import { SDKWindows } from '../sdks';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '@rnv/sdk-react-native';
@@ -38,10 +39,12 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Run your app in a window on desktop',
     fn: taskRnvRun,
     task: TASK_RUN,
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: [WINDOWS, XBOX],
 };
+
+export default Task;

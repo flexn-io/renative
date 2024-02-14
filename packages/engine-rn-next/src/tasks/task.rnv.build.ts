@@ -10,6 +10,7 @@ import {
     executeOrSkipTask,
     shouldSkipTask,
     TASK_EXPORT,
+    RnvTask,
 } from '@rnv/core';
 import { buildWebNext } from '../sdk';
 
@@ -35,10 +36,12 @@ export const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Build project binary',
     fn: taskRnvBuild,
     task: TASK_BUILD,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [WEB, CHROMECAST],
 };
+
+export default Task;

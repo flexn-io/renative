@@ -9,6 +9,7 @@ import {
     TASK_CONFIGURE,
     PARAMS,
     executeOrSkipTask,
+    RnvTask,
 } from '@rnv/core';
 import { runLightningProject } from '../sdks/sdk-lightning';
 
@@ -36,14 +37,14 @@ More info at: https://renative.org/docs/api-cli
 `);
 };
 
-const Task = {
-    description: 'Run your app on target device or emulator',
+const Task: RnvTask = {
+    description: 'Run your lightning app on target device or emulator',
     fn: taskRnvRun,
     fnHelp: taskRnvRunHelp,
-    task: 'run',
-    dependencies: {
-        before: TASK_CONFIGURE,
-    },
+    task: TASK_RUN,
+    // dependencies: {
+    //     before: TASK_CONFIGURE,
+    // },
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: [TIZEN, WEBOS],
 };

@@ -13,6 +13,8 @@ import {
     isSystemWin,
     RnvTaskFn,
     inquirerPrompt,
+    RnvTask,
+    TASK_CLEAN,
 } from '@rnv/core';
 
 function clearWindowsCacheFiles() {
@@ -198,17 +200,22 @@ export const taskRnvClean: RnvTaskFn = async (c) => {
                 logDebug('watchman not installed. skipping');
             }
 
-            await executeAsync(c, 'npx rimraf -I $TMPDIR/metro-* && npx rimraf -I $TMPDIR/react-* && npx rimraf -I $TMPDIR/haste-*');
+            await executeAsync(
+                c,
+                'npx rimraf -I $TMPDIR/metro-* && npx rimraf -I $TMPDIR/react-* && npx rimraf -I $TMPDIR/haste-*'
+            );
         }
     }
     return true;
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Automatically removes all node_modules and lock in your project and its dependencies',
     fn: taskRnvClean,
-    task: 'clean',
+    task: TASK_CLEAN,
     params: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,
 };
+
+export default Task;

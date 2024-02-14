@@ -37,7 +37,7 @@ export type RnvApiPrompt = {
         renderMethod?: PromptRenderFn
     ) => PromptOptions;
     pressAnyKeyToContinue: () => Promise<any>;
-    inquirerSeparator: () => any;
+    inquirerSeparator: (text?: string) => any;
 };
 
 export type RnvContextAnalytics = {

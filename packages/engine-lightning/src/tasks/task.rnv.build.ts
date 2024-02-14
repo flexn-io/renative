@@ -9,6 +9,7 @@ import {
     PARAMS,
     executeOrSkipTask,
     shouldSkipTask,
+    RnvTask,
 } from '@rnv/core';
 import { buildLightningProject } from '../sdks/sdk-lightning';
 
@@ -31,10 +32,12 @@ export const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Build project binary',
     fn: taskRnvBuild,
     task: TASK_BUILD,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [TIZEN, WEBOS],
 };
+
+export default Task;

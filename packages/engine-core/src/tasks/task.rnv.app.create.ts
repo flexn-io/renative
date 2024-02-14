@@ -15,6 +15,7 @@ import {
     logTask,
     TASK_APP_CREATE,
     PARAMS,
+    RnvTask,
 } from '@rnv/core';
 import { ConfigFileApp } from '@rnv/core/lib/schema/configFiles/types';
 
@@ -163,11 +164,12 @@ export const taskRnvAppCreate: RnvTaskFn = async (c) => {
     return true;
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Create new app config',
     fn: taskRnvAppCreate,
     task: TASK_APP_CREATE,
     params: PARAMS.withBase(),
-    skipPlatforms: true,
     platforms: [],
 };
+
+export default Task;

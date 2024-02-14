@@ -10,6 +10,7 @@ import {
     PARAM_KEYS,
     RnvTaskFn,
     inquirerPrompt,
+    RnvTask,
 } from '@rnv/core';
 
 export const taskRnvHooksRun: RnvTaskFn = async (c, _parentTask, originTask) => {
@@ -56,14 +57,14 @@ export const taskRnvHooksRun: RnvTaskFn = async (c, _parentTask, originTask) => 
     return true;
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Run specific build hook',
     fn: taskRnvHooksRun,
     task: TASK_HOOKS_RUN,
     params: PARAMS.withBase([PARAM_KEYS.exeMethod]),
     platforms: [],
-    skipAppConfig: true,
-    skipPlatforms: true,
     forceBuildHookRebuild: true,
     isGlobalScope: true,
 };
+
+export default Task;

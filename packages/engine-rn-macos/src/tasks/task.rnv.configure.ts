@@ -9,6 +9,7 @@ import {
     executeTask,
     shouldSkipTask,
     configureEntryPoint,
+    RnvTask,
 } from '@rnv/core';
 import { configureXcodeProject } from '@rnv/sdk-apple';
 
@@ -34,10 +35,12 @@ export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => 
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Configure current project',
     fn: taskRnvConfigure,
-    task: 'configure',
+    task: TASK_CONFIGURE,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [MACOS],
 };
+
+export default Task;

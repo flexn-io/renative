@@ -8,6 +8,7 @@ import {
     PARAMS,
     RnvTaskFn,
     generatePlatformAssetsRuntimeConfig,
+    RnvTask,
 } from '@rnv/core';
 
 export const taskRnvSwitch: RnvTaskFn = async (c, _parentTask, originTask) => {
@@ -22,10 +23,12 @@ export const taskRnvSwitch: RnvTaskFn = async (c, _parentTask, originTask) => {
     return true;
 };
 
-export default {
+const Task: RnvTask = {
     description: '',
     fn: taskRnvSwitch,
     task: TASK_SWITCH,
     params: PARAMS.withBase(),
     platforms: [],
 };
+
+export default Task;
