@@ -14,6 +14,8 @@ import {
 export const taskRnvSwitch: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvSwitch');
 
+    c.program.appConfigID = true;
+
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_SWITCH, originTask);
 
     await copyRuntimeAssets(c);
@@ -24,7 +26,7 @@ export const taskRnvSwitch: RnvTaskFn = async (c, _parentTask, originTask) => {
 };
 
 const Task: RnvTask = {
-    description: '',
+    description: 'Switch between different app configs in current project',
     fn: taskRnvSwitch,
     task: TASK_SWITCH,
     params: PARAMS.withBase(),

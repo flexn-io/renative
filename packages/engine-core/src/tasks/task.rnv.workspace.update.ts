@@ -18,12 +18,13 @@ export const taskRnvWorkspaceUpdate: RnvTaskFn = async (c, _parentTask, originTa
 };
 
 const Task: RnvTask = {
-    description: '',
+    description: 'TODO: unused task',
     fn: taskRnvWorkspaceUpdate,
     task: TASK_WORKSPACE_UPDATE,
     params: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,
+    isPrivate: true,
 };
 
 export default Task;

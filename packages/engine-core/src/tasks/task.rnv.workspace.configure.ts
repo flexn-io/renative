@@ -89,7 +89,7 @@ export const taskRnvWorkspaceConfigure: RnvTaskFn = async (c) => {
 };
 
 const Task: RnvTask = {
-    description: '',
+    description: 'Preconfigures your current workspace defined via "workspaceID" prop in renative config file',
     fn: taskRnvWorkspaceConfigure,
     task: TASK_WORKSPACE_CONFIGURE,
     params: PARAMS.withBase(),

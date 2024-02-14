@@ -38,7 +38,7 @@ export const taskRnvCryptoInstallCerts: RnvTaskFn = async (c, _parentTask, origi
 };
 
 const Task: RnvTask = {
-    description: '',
+    description: 'Installs certificates into keychain (mac only)',
     fn: taskRnvCryptoInstallCerts,
     task: TASK_CRYPTO_INSTALL_CERTS,
     params: PARAMS.withBase(),
