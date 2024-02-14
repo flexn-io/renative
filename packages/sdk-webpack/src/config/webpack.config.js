@@ -13,6 +13,8 @@ const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
+
+const { merge } = require('webpack-merge');
 // const ESLintPlugin = require('eslint-webpack-plugin');
 
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
@@ -81,6 +83,8 @@ const sassModuleRegex = /\.module\.(scss|sass)$/;
 module.exports = function (webpackEnv) {
     const isEnvDevelopment = webpackEnv === 'development';
     const isEnvProduction = webpackEnv === 'production';
+    const cnfPath = path.join(paths.appPath, 'webpack.config.js');
+    const cnf = fs.existsSync(cnfPath) ? require(cnfPath) : {};
 
     // Variable used for enabling profiling in Production
     // passed into alias object. Uses a flag if passed into the build command
@@ -91,6 +95,26 @@ module.exports = function (webpackEnv) {
     // Omit trailing slash as %PUBLIC_URL%/xyz looks better than %PUBLIC_URL%xyz.
     // Get environment variables to inject into our app.
     const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1));
+
+    // fs.readFile(webpackConfigPath, 'utf8', (err, data) => {
+    //     if (err) {
+    //         console.error('Error reading webpack configuration file:', err);
+    //         return;
+    //     }
+    //     // Find the config object within the file contents
+    //     const match = data.match(/export\s+const\s+config\s*=\s*({[\s\S]*?});/);
+    //     if (match && match[1]) {
+    //         try {
+    //             // Parse the config object
+    //             const config = eval('(' + match[1] + ')');
+    //             console.log(config);
+    //         } catch (e) {
+    //             console.error('Error parsing webpack configuration:', e);
+    //         }
+    //     } else {
+    //         console.error('Webpack configuration object not found in the file.');
+    //     }
+    // });
 
     const shouldUseReactRefresh = env.raw.FAST_REFRESH;
 
@@ -174,7 +198,7 @@ module.exports = function (webpackEnv) {
         return loaders;
     };
 
-    return {
+    const config = {
         target: [process.env.WEBPACK_TARGET || 'browserslist'], // browserslist | electron-main ...
         mode: isEnvProduction ? 'production' : isEnvDevelopment && 'development',
         // Stop compilation early in production
@@ -396,9 +420,12 @@ module.exports = function (webpackEnv) {
                                     //         runtime: hasJsxRuntime ? 'automatic' : 'classic',
                                     //     },
                                     // ],
-                                    ["@babel/preset-react", {
-                                        "runtime": "automatic"
-                                    }]
+                                    [
+                                        '@babel/preset-react',
+                                        {
+                                            runtime: 'automatic',
+                                        },
+                                    ],
                                 ],
 
                                 plugins: [
@@ -425,9 +452,12 @@ module.exports = function (webpackEnv) {
                                 compact: false,
                                 // presets: [[require.resolve('babel-preset-react-app/dependencies'), { helpers: true }]],
                                 presets: [
-                                    ["@babel/preset-react", {
-                                        "runtime": "automatic"
-                                    }]
+                                    [
+                                        '@babel/preset-react',
+                                        {
+                                            runtime: 'automatic',
+                                        },
+                                    ],
                                 ],
                                 cacheDirectory: true,
                                 // See #6846 for context on why cacheCompression is disabled
@@ -694,4 +724,6 @@ module.exports = function (webpackEnv) {
         // our own hints via the FileSizeReporter
         performance: false,
     };
+    const updatedCnf = merge(config, cnf);
+    return updatedCnf;
 };
