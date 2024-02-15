@@ -109,6 +109,7 @@ export const runReactNativeAndroid = async (
     return executeAsync(c, command, {
         env: {
             ...CoreEnvVars.BASE(),
+            ...CoreEnvVars.RNV_EXTENSIONS(),
             ...EnvVars.RCT_METRO_PORT(),
             ...EnvVars.RNV_REACT_NATIVE_PATH(),
             ...EnvVars.RNV_APP_ID(),
