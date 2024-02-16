@@ -2313,11 +2313,11 @@
                 },
                 "outputDir": {
                   "type": "string",
-                  "description": "Custom output directory used by nextjs equivalent to \"npx next build\" with custom outputDir. Use relative paths"
+                  "description": "Custom output directory used by nextjs equivalent to `npx next build` with custom outputDir. Use relative paths"
                 },
                 "exportDir": {
                   "type": "string",
-                  "description": "Custom export directory used by nextjs equivalent to \"npx next export --outdir <exportDir>\". Use relative paths"
+                  "description": "Custom export directory used by nextjs equivalent to `npx next export --outdir <exportDir>`. Use relative paths"
                 },
                 "nextTranspileModules": {
                   "type": "array",
