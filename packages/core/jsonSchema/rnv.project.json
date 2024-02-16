@@ -303,7 +303,7 @@
           "description": "List of engines available in this project"
         },
         "custom": {
-          "description": "Object ysed to extend your renative with custom props. This allows renative json schema to be validated"
+          "description": "Object used to extend your renative with custom props. This allows renative json schema to be validated"
         },
         "enableHookRebuild": {
           "type": "boolean",

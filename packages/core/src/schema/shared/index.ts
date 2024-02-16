@@ -16,7 +16,7 @@ export const HexColor = z.string().min(4).max(9).regex(/^#/);
 export const Ext = z
     .any()
     .describe(
-        'Object ysed to extend your renative with custom props. This allows renative json schema to be validated'
+        'Object used to extend your renative with custom props. This allows renative json schema to be validated'
     );
 
 export const ExtendTemplate = z
