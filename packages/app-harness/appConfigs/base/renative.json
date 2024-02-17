@@ -131,6 +131,7 @@
             }
         },
         "macos": {
+            "engine": "engine-rn-tauri",
             "entryFile": "index",
             "provisioningStyle": "Automatic",
             "includedPermissions": [

@@ -16,6 +16,7 @@ export enum Engine {
     generic = 'generic',
     lightning = 'engine-lightning',
     rn_electron = 'engine-rn-electron',
+    rn_tauri = 'engine-rn-tauri',
     rn_macos = 'engine-rn-macos',
     rn_next = 'engine-rn-next',
     rn_tvos = 'engine-rn-tvos',

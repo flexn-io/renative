@@ -37,6 +37,10 @@ export const RNV_PACKAGES = [
         folderName: 'engine-rn-electron',
     },
     {
+        packageName: '@rnv/engine-rn-tauri',
+        folderName: 'engine-rn-tauri',
+    },
+    {
         packageName: '@rnv/engine-rn-windows',
         folderName: 'engine-rn-windows',
     },

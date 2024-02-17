@@ -40,6 +40,10 @@
         "@rnv/engine-rn-windows": {
             "version": "1.0.0-rc.11",
             "id": "engine-rn-windows"
+        },
+        "@rnv/engine-rn-tauri": {
+            "version": "1.0.0-rc.11",
+            "id": "engine-rn-tauri"
         }
     },
     "integrationTemplates": {

@@ -5,13 +5,26 @@
     "crypto": {
         "path": "./secrets/privateConfigs.enc"
     },
+    "engines": {
+        "@rnv/engine-lightning": "source:rnv",
+        "@rnv/engine-rn": "source:rnv",
+        "@rnv/engine-rn-electron": "source:rnv",
+        "@rnv/engine-rn-next": "source:rnv",
+        "@rnv/engine-rn-tvos": "source:rnv",
+        "@rnv/engine-rn-web": "source:rnv",
+        "@rnv/engine-rn-tauri": "source:rnv"
+    },
     "plugins": {
         "react-native-splash-screen": {
             "android": {
                 "templateAndroid": {
                     "MainActivity_java": {
-                        "createMethods": ["SplashScreen.show(this)"],
-                        "imports": ["org.devio.rn.splashscreen.SplashScreen"]
+                        "createMethods": [
+                            "SplashScreen.show(this)"
+                        ],
+                        "imports": [
+                            "org.devio.rn.splashscreen.SplashScreen"
+                        ]
                     }
                 },
                 "package": "org.devio.rn.splashscreen.SplashScreenReactPackage"
@@ -19,10 +32,14 @@
             "ios": {
                 "templateXcode": {
                     "AppDelegate_mm": {
-                        "appDelegateImports": ["RNSplashScreen.h"],
+                        "appDelegateImports": [
+                            "RNSplashScreen.h"
+                        ],
                         "appDelegateMethods": {
                             "application": {
-                                "didFinishLaunchingWithOptions": ["[RNSplashScreen show]"]
+                                "didFinishLaunchingWithOptions": [
+                                    "[RNSplashScreen show]"
+                                ]
                             }
                         }
                     }
@@ -38,7 +55,9 @@
             "android": {
                 "templateAndroid": {
                     "MainApplication_java": {
-                        "packages": ["MyAppPackage"]
+                        "packages": [
+                            "MyAppPackage"
+                        ]
                     }
                 },
                 "forceLinking": true
@@ -48,17 +67,26 @@
             "ios": {
                 "templateXcode": {
                     "AppDelegate_h": {
-                        "appDelegateImports": ["CarPlay/CarPlay.h"],
-                        "appDelegateExtensions": ["UIApplicationDelegate", "CPApplicationDelegate"]
+                        "appDelegateImports": [
+                            "CarPlay/CarPlay.h"
+                        ],
+                        "appDelegateExtensions": [
+                            "UIApplicationDelegate",
+                            "CPApplicationDelegate"
+                        ]
                     },
                     "AppDelegate_mm": {
-                        "appDelegateImports": ["RNCarPlay.h"],
+                        "appDelegateImports": [
+                            "RNCarPlay.h"
+                        ],
                         "appDelegateMethods": {
                             "application": {
                                 "didConnectCarInterfaceController": [
                                     "[RNCarPlay connectWithInterfaceController:interfaceController window:window]"
                                 ],
-                                "didDisconnectCarInterfaceController": ["[RNCarPlay disconnect]"]
+                                "didDisconnectCarInterfaceController": [
+                                    "[RNCarPlay disconnect]"
+                                ]
                             }
                         }
                     }
@@ -85,7 +113,9 @@
                 ],
                 "templateXcode": {
                     "Podfile": {
-                        "header": ["$RNFirebaseAsStaticFramework = true"]
+                        "header": [
+                            "$RNFirebaseAsStaticFramework = true"
+                        ]
                     }
                 }
             }

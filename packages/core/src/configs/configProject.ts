@@ -13,6 +13,7 @@ const SYNCED_DEPS = [
     '@rnv/engine-lightning',
     '@rnv/engine-rn-web',
     '@rnv/engine-rn-electron',
+    '@rnv/engine-rn-tauri',
     '@rnv/engine-rn-macos',
     '@rnv/engine-rn-windows',
     '@rnv/engine-rn-tvos',

@@ -1,0 +1,35 @@
+{
+    "$schema": "../../.rnv/schema/rnv.engine.json",
+    "id": "engine-rn-tauri",
+    "engineExtension": "rnt",
+    "overview": "React native based engine with web transpiler provided by react-native-web and native desktop wrapper provided by electron",
+    "plugins": {
+        "react": "source:rnv",
+        "react-art": "source:rnv",
+        "react-dom": "source:rnv",
+        "react-native": "source:rnv",
+        "react-native-web": "source:rnv"
+    },
+    "npm": {
+        "devDependencies": {
+            "@tauri-apps/cli": "1.5.9"
+        }
+    },
+    "platforms": {
+        "macos": {
+            "npm": {
+                "devDependencies": {}
+            }
+        },
+        "windows": {
+            "npm": {
+                "devDependencies": {}
+            }
+        },
+        "linux": {
+            "npm": {
+                "devDependencies": {}
+            }
+        }
+    }
+}

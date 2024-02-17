@@ -35,6 +35,7 @@ export const isEngineRnWindows = engine === Engine.rn_windows;
 export const isEngineRnNext = engine === Engine.rn_next;
 export const isEngineRnWeb = engine === Engine.rn_web;
 export const isEngineRn = engine === Engine.rn;
+export const isEngineTauri = engine === Engine.rn_tauri;
 
 export const isBrowser = () => factor === FormFactor.browser;
 export const isDesktop = () => factor === FormFactor.desktop;

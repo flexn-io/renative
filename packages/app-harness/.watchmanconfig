@@ -7,6 +7,7 @@
         "../engine-lightning",
         "../engine-rn",
         "../engine-rn-electron",
+        "../engine-rn-tauri",
         "../engine-rn-macos",
         "../engine-rn-next",
         "../engine-rn-tvos",

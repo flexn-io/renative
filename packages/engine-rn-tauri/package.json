@@ -1,0 +1,50 @@
+{
+    "name": "@rnv/engine-rn-tauri",
+    "version": "1.0.0-rc.11",
+    "description": "ReNative Engine to build electron based platforms with react native support.",
+    "keywords": [
+        "electron",
+        "react-native"
+    ],
+    "homepage": "https://github.com/flexn-io/renative#readme",
+    "bugs": {
+        "url": "https://github.com/flexn-io/renative/issues"
+    },
+    "license": "MIT",
+    "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
+    "contributors": [],
+    "files": [
+        "LICENSE",
+        "lib",
+        "renative.engine.json",
+        "templates"
+    ],
+    "main": "lib/index.js",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/flexn-io/renative.git"
+    },
+    "scripts": {
+        "build": "yarn clean && yarn compile",
+        "clean": "rimraf -I ./lib && rimraf -I tsconfig.tsbuildinfo",
+        "compile": "tsc -b tsconfig.json",
+        "compile:prod": "tsc -b tsconfig.json",
+        "prepublishOnly": "yarn clean && yarn compile:prod",
+        "watch": "tsc --watch --preserveWatchOutput"
+    },
+    "dependencies": {
+        "@rnv/sdk-react-native": "1.0.0-rc.11",
+        "@rnv/sdk-utils": "1.0.0-feat-pin-cli.6",
+        "@rnv/sdk-webpack": "1.0.0-rc.11",
+        "@tauri-apps/cli": "1.5.9",
+        "@react-native/babel-preset": "0.73.21"
+    },
+    "peerDependencies": {
+        "@rnv/core": "^1.0.0-rc.11"
+    },
+    "private": false,
+    "publishConfig": {
+        "access": "public"
+    },
+    "gitHead": "48ef244c6ec2e206cbfd72fe8770d8dc03387591"
+}

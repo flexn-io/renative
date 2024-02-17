@@ -159,6 +159,7 @@ export const _runWebDevServer = async (c: RnvContext, enableRemoteDebugger?: boo
         ...EnvVars.WEBPACK_TARGET(),
         ...EnvVars.RNV_EXTERNAL_PATHS(),
     };
+    console.log('env', env);
     Object.keys(env).forEach((v) => {
         process.env[v] = env[v];
     });
