@@ -8,6 +8,7 @@ import {
     TASK_PROJECT_CONFIGURE,
     PARAMS,
     RnvTaskFn,
+    RnvTask,
 } from '@rnv/core';
 
 export const taskRnvHooksPipes: RnvTaskFn = async (c, _parentTask, originTask) => {
@@ -21,12 +22,12 @@ export const taskRnvHooksPipes: RnvTaskFn = async (c, _parentTask, originTask) =
     logRaw(`Pipes:\n${pipeOpts.asString}`);
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Get the list of all available pipes',
     fn: taskRnvHooksPipes,
     task: TASK_HOOKS_PIPES,
     params: PARAMS.withBase(),
     platforms: [],
-    skipAppConfig: true,
-    skipPlatforms: true,
 };
+
+export default Task;

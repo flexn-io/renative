@@ -2,6 +2,7 @@ import {
     PARAMS,
     PlatformKey,
     RnvContext,
+    RnvTask,
     RnvTaskFn,
     TASK_APP_CONFIGURE,
     TASK_KILL,
@@ -65,7 +66,7 @@ ${usedPorts.map((v) => chalk().white(`> ${v.port} (${v.platform})`)).join('\n')}
     return true;
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Kills all the processes related to this project',
     fn: taskRnvKill,
     task: TASK_KILL,
@@ -73,3 +74,5 @@ export default {
     platforms: [],
     isGlobalScope: true,
 };
+
+export default Task;

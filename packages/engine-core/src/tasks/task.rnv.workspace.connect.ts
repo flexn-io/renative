@@ -8,6 +8,7 @@ import {
     TASK_PROJECT_CONFIGURE,
     PARAMS,
     RnvTaskFn,
+    RnvTask,
 } from '@rnv/core';
 
 export const taskRnvWorkspaceConnect: RnvTaskFn = async (c, _parentTask, originTask) => {
@@ -33,7 +34,7 @@ export const taskRnvWorkspaceConnect: RnvTaskFn = async (c, _parentTask, originT
     logRaw(selectedWS);
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Connect project with selected workspace',
     fn: taskRnvWorkspaceConnect,
     task: TASK_WORKSPACE_CONNECT,
@@ -41,3 +42,5 @@ export default {
     platforms: [],
     isGlobalScope: true,
 };
+
+export default Task;

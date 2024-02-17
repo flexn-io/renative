@@ -9,6 +9,7 @@ import {
     TASK_EXPORT,
     TASK_DEPLOY,
     executeOrSkipTask,
+    RnvTask,
 } from '@rnv/core';
 import { SDKWindows } from '../sdks';
 
@@ -33,10 +34,12 @@ export const taskRnvDeploy: RnvTaskFn = async (c, parentTask, originTask) => {
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Deploy the binary via selected deployment intgeration or buld hook',
     fn: taskRnvDeploy,
     task: TASK_DEPLOY,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [WINDOWS, XBOX],
 };
+
+export default Task;

@@ -16,6 +16,7 @@ import {
     TASK_RUN,
     getConfigProp,
     logSummary,
+    RnvTask,
 } from '@rnv/core';
 import { packageAndroid, runAndroid, getAndroidDeviceToRunOn } from '@rnv/sdk-android';
 import { runXcodeProject, getIosDeviceToRunOn } from '@rnv/sdk-apple';
@@ -79,14 +80,14 @@ More info at: https://renative.org/docs/api-cli
 `);
 };
 
-const Task = {
-    description: 'Run your app on target device or emulator',
+const Task: RnvTask = {
+    description: 'Run your rn app on target device or emulator',
     fn: taskRnvRun,
     fnHelp: taskRnvRunHelp,
     task: TASK_RUN,
-    dependencies: {
-        before: TASK_CONFIGURE,
-    },
+    // dependencies: {
+    //     before: TASK_CONFIGURE,
+    // },
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: [IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR],
 };

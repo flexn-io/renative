@@ -7,6 +7,7 @@ import {
     executeTask,
     RnvTaskFn,
     inquirerPrompt,
+    RnvTask,
 } from '@rnv/core';
 
 export const taskRnvPlatformSetup: RnvTaskFn = async (c, _parentTask, originTask) => {
@@ -29,11 +30,12 @@ export const taskRnvPlatformSetup: RnvTaskFn = async (c, _parentTask, originTask
     updateProjectPlatforms(c, inputSupportedPlatforms);
 };
 
-export default {
-    description: '',
+const Task: RnvTask = {
+    description: 'Allows you to change supportedPlatforms for your project',
     fn: taskRnvPlatformSetup,
     task: TASK_PLATFORM_SETUP,
     params: PARAMS.withBase(),
     platforms: [],
-    skipPlatforms: true,
 };
+
+export default Task;

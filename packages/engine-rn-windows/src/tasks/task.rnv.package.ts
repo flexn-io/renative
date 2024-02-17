@@ -10,6 +10,7 @@ import {
     shouldSkipTask,
     getConfigProp,
     TASK_PACKAGE,
+    RnvTask,
 } from '@rnv/core';
 import { SDKWindows } from '../sdks';
 
@@ -39,10 +40,12 @@ export const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Package source files into bundle',
     fn: taskRnvPackage,
-    task: 'package',
+    task: TASK_PACKAGE,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [WINDOWS, XBOX],
 };
+
+export default Task;

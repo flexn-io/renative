@@ -13,6 +13,7 @@ import {
     MACOS,
     IOS,
     TASK_EJECT,
+    RnvTask,
 } from '@rnv/core';
 import { ejectGradleProject } from '@rnv/sdk-android';
 import { ejectXcodeProject } from '@rnv/sdk-apple';
@@ -57,10 +58,12 @@ export const taskRnvEject: RnvTaskFn = async (c, _parentTask, originTask) => {
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Eject current project app to self contained native project',
     fn: taskRnvEject,
     task: TASK_EJECT,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR],
 };
+
+export default Task;

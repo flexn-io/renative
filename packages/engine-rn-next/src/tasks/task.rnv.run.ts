@@ -9,6 +9,7 @@ import {
     PARAMS,
     executeOrSkipTask,
     shouldSkipTask,
+    RnvTask,
 } from '@rnv/core';
 import { runWebNext } from '../sdk';
 
@@ -30,10 +31,12 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Run your app in browser',
     fn: taskRnvRun,
     task: TASK_RUN,
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: [WEB, CHROMECAST],
 };
+
+export default Task;

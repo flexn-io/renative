@@ -9,6 +9,7 @@ import {
     PARAMS,
     RnvTaskFn,
     inquirerPrompt,
+    RnvTask,
 } from '@rnv/core';
 
 export const taskRnvTemplateApply: RnvTaskFn = async (c, _parentTask, originTask) => {
@@ -44,10 +45,12 @@ export const taskRnvTemplateApply: RnvTaskFn = async (c, _parentTask, originTask
     return true;
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Reset project to specific template',
     fn: taskRnvTemplateApply,
-    task: 'template apply',
+    task: TASK_TEMPLATE_APPLY,
     params: PARAMS.withBase(),
     platforms: [],
 };
+
+export default Task;

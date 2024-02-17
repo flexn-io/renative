@@ -8,11 +8,11 @@ import {
     getEngineSubTasks,
     registerAllPlatformEngines,
 } from '../engines';
-import { TASK_CONFIGURE_SOFT } from '../constants';
+import { DEFAULT_TASK_DESCRIPTIONS, TASK_CONFIGURE_SOFT } from '../constants';
 import { RnvContext } from '../context/types';
-import { RnvTask, RnvTaskMap, TaskItemMap, TaskObj } from './types';
+import { RnvTask, RnvTaskMap, TaskItemMap, TaskObj, TaskOption } from './types';
 import { RnvEngine } from '../engines/types';
-import { inquirerPrompt, pressAnyKeyToContinue } from '../api';
+import { inquirerPrompt, inquirerSeparator, pressAnyKeyToContinue } from '../api';
 import { getApi } from '../api/provider';
 import { RenativeConfigTaskKey } from '../schema/types';
 import { checkIfProjectAndNodeModulesExists } from '../projects/dependencyManager';
@@ -41,24 +41,44 @@ export const initializeTask = async (c: RnvContext, task: string) => {
     return true;
 };
 
-const _getTaskOption = ({ taskInstance, hasMultipleSubTasks }: TaskObj) => {
-    if (hasMultipleSubTasks) {
-        return `${taskInstance.task.split(' ')[0]}...`;
-    }
+const _getTaskOption = ({ taskInstance }: TaskObj): TaskOption => {
+    const asArray = taskInstance.task.split(' ');
+    const output: TaskOption = {
+        value: taskInstance.task,
+        command: '',
+        name: '',
+        asArray,
+        isPriorityOrder: taskInstance.isPriorityOrder,
+        description: taskInstance.description,
+        isGlobalScope: taskInstance.isGlobalScope,
+        isPrivate: taskInstance.isPrivate,
+    };
+
     if (taskInstance.description && taskInstance.description !== '') {
-        return `${taskInstance.task.split(' ')[0]} ${chalk().grey(`(${taskInstance.description})`)}`;
+        output.description = taskInstance.description;
+        output.name = `${taskInstance.task} ${chalk().grey(`(${taskInstance.description})`)}`;
+    } else {
+        output.name = taskInstance.task;
     }
-    return `${taskInstance.task.split(' ')[0]}`;
+    output.command = asArray[0];
+    output.subCommand = asArray[1];
+
+    return output;
 };
 
 const _getTaskObj = (taskInstance: RnvTask) => {
-    const key = taskInstance.task.split(' ')[0];
-    let hasMultipleSubTasks = false;
-    if (taskInstance.task.includes(' ')) hasMultipleSubTasks = true;
+    const key = taskInstance.task;
+    const taskNameArr = key.split(' ');
+    let parent: null | string = null;
+    if (taskNameArr.length > 1) {
+        taskNameArr.pop();
+        parent = taskNameArr.join(' ');
+    }
+
     return {
         key,
         taskInstance,
-        hasMultipleSubTasks,
+        parent,
     };
 };
 
@@ -68,45 +88,80 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
     let task = '';
     if (!specificTask) {
         if (!c.command) {
-            const suitableTaskInstances: Record<string, TaskObj> = {};
+            const suitableTasks: Record<string, TaskOption> = {};
             REGISTERED_ENGINES.forEach((engine) => {
                 Object.values(engine.tasks).forEach((taskInstance) => {
-                    const taskObj = _getTaskObj(taskInstance);
-                    suitableTaskInstances[taskObj.key] = taskObj;
+                    let taskObj: TaskOption = _getTaskOption(_getTaskObj(taskInstance));
+                    if (!suitableTasks[taskObj.value]) {
+                        suitableTasks[taskObj.value] = taskObj;
+                    } else {
+                        taskObj = suitableTasks[taskObj.value];
+                        // In case of multiple competing tasks (same task name but coming from different engines)
+                        // We try to revert to generic description instead.
+                        taskObj.description = DEFAULT_TASK_DESCRIPTIONS[taskObj.value] || taskObj.description;
+                        // In case of multiple competing tasks we assume they are "commonly used"
+                        taskObj.isPriorityOrder = true;
+                    }
                 });
             });
             Object.values(CUSTOM_TASKS).forEach((taskInstance) => {
-                const taskObj = _getTaskObj(taskInstance);
-                suitableTaskInstances[taskObj.key] = taskObj;
+                const taskObj = _getTaskOption(_getTaskObj(taskInstance));
+                suitableTasks[taskObj.value] = taskObj;
             });
 
-            const taskInstances = Object.values(suitableTaskInstances);
-            let tasks;
+            const taskInstances = Object.values(suitableTasks);
+            let tasks: TaskOption[];
+
             let defaultCmd: string | undefined = 'new';
-            let tasksCommands;
-            let filteredTasks;
             let addendum = '';
             if (!c.paths.project.configExists) {
-                filteredTasks = taskInstances.filter((v) => v.taskInstance.isGlobalScope);
-                tasks = filteredTasks.map((v) => _getTaskOption(v)).sort();
-                tasksCommands = filteredTasks.map((v) => v.taskInstance.task.split(' ')[0]).sort();
+                tasks = taskInstances.filter((v) => v.isGlobalScope && !v.isPrivate).sort();
                 addendum = ' (Not a ReNative project. options will be limited)';
             } else {
-                tasks = taskInstances.map((v) => _getTaskOption(v)).sort();
-                tasksCommands = taskInstances.map((v) => v.taskInstance.task.split(' ')[0]).sort();
-                defaultCmd = tasks.find((v) => v.startsWith('run'));
+                tasks = taskInstances.filter((v) => !v.isPrivate).sort();
+                defaultCmd = tasks.find((v) => v.value === 'run')?.name;
             }
 
-            const { command } = await inquirerPrompt({
+            const commonTasks: TaskOption[] = [];
+            const ungroupedTasks: TaskOption[] = [];
+            const groupedTasks: TaskOption[] = [];
+            const taskGroups: Record<string, TaskOption> = {};
+            tasks.forEach((task) => {
+                if (task.subCommand) {
+                    if (!taskGroups[task.command]) {
+                        const groupTask: TaskOption = {
+                            name: `${task.command}...`,
+                            command: task.command,
+                            value: task.command,
+                        };
+                        taskGroups[task.command] = groupTask;
+                        groupedTasks.push(groupTask);
+                    }
+                } else if (task.isPriorityOrder) {
+                    commonTasks.push(task);
+                } else {
+                    ungroupedTasks.push(task);
+                }
+            });
+
+            const mergedTasks = [
+                inquirerSeparator('─────────── Common tasks ───────────'),
+                ...commonTasks,
+                inquirerSeparator('─────────── More tasks ─────────────'),
+                ...ungroupedTasks,
+                ...groupedTasks,
+            ];
+
+            const { selectedTask } = await inquirerPrompt({
                 type: 'list',
                 default: defaultCmd,
-                name: 'command',
+                name: 'selectedTask',
                 message: `Pick a command${addendum}`,
-                choices: tasks,
+                choices: mergedTasks,
                 pageSize: 15,
                 logMessage: 'Welcome to the brave new world...',
             });
-            c.command = tasksCommands[tasks.indexOf(command)];
+            c.command = selectedTask;
         }
         if (c.command) task = c.command;
         if (c.subCommand) task += ` ${c.subCommand}`;
@@ -343,7 +398,7 @@ export const executeOrSkipTask = async (c: RnvContext, task: string, parentTask:
 
 const ACCEPTED_CONDITIONS = ['platform', 'target', 'appId', 'scheme'] as const;
 
-type ACKey = typeof ACCEPTED_CONDITIONS[number];
+type ACKey = (typeof ACCEPTED_CONDITIONS)[number];
 
 const _logSkip = (task: string) => {
     logInfo(`Original RNV task ${chalk().white(task)} marked to ignore. SKIPPING...`);

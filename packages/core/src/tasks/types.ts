@@ -9,6 +9,21 @@ export type RnvTask = {
     forceBuildHookRebuild?: boolean;
     fn?: RnvTaskFn;
     fnHelp?: RnvTaskFn;
+    isPrivate?: boolean;
+    isPriorityOrder?: boolean;
+};
+
+export type TaskOption = {
+    name: string;
+    value: string;
+    command: string;
+    asArray?: string[];
+    subCommand?: string;
+    subTasks?: TaskOption[];
+    description?: string;
+    isGlobalScope?: boolean;
+    isPrivate?: boolean;
+    isPriorityOrder?: boolean;
 };
 
 export type RnvTaskParameter = {
@@ -38,5 +53,5 @@ export type TaskItemMap = Record<
 export type TaskObj = {
     key: string;
     taskInstance: RnvTask;
-    hasMultipleSubTasks?: boolean;
+    // hasMultipleSubTasks?: boolean;
 };

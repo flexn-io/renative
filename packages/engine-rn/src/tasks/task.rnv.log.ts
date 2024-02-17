@@ -11,6 +11,8 @@ import {
     IOS,
     TASK_WORKSPACE_CONFIGURE,
     TASK_PROJECT_CONFIGURE,
+    RnvTask,
+    TASK_LOG,
 } from '@rnv/core';
 import { runAndroidLog, checkAndConfigureAndroidSdks } from '@rnv/sdk-android';
 import { runAppleLog } from '@rnv/sdk-apple';
@@ -36,11 +38,13 @@ export const taskRnvLog: RnvTaskFn = async (c, parentTask, originTask) => {
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Attach logger to device or emulator and print out logs',
     fn: taskRnvLog,
-    task: 'log',
+    task: TASK_LOG,
     params: PARAMS.withBase(),
     platforms: [IOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR],
     isGlobalScope: true,
 };
+
+export default Task;

@@ -25,6 +25,7 @@ import {
     RnvContext,
     RnvTaskFn,
     copyFileSync,
+    RnvTask,
 } from '@rnv/core';
 import { statSync } from 'fs';
 
@@ -230,11 +231,12 @@ export const taskRnvCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Encrypts secure files from ~/<wokspace>/<project>/.. to project',
     fn: taskRnvCryptoEncrypt,
     task: TASK_CRYPTO_ENCRYPT,
     params: PARAMS.withBase(),
     platforms: [],
-    skipPlatforms: true,
 };
+
+export default Task;

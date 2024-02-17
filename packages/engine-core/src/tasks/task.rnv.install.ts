@@ -5,6 +5,8 @@ import {
     logTask,
     logInfo,
     RnvTaskFn,
+    RnvTask,
+    TASK_INSTALL,
 } from '@rnv/core';
 
 export const taskRnvInstall: RnvTaskFn = async (c, parentTask, _) => {
@@ -28,11 +30,12 @@ export const taskRnvInstall: RnvTaskFn = async (c, parentTask, _) => {
     return true;
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Install package node_modules via yarn or npm',
     fn: taskRnvInstall,
-    task: 'install',
+    task: TASK_INSTALL,
     params: PARAMS.withBase(),
     platforms: [],
-    skipPlatforms: true,
 };
+
+export default Task;

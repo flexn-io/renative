@@ -10,6 +10,8 @@ import {
     fsLstatSync,
     RnvTaskFn,
     RnvContext,
+    RnvTask,
+    TASK_UNLINK,
 } from '@rnv/core';
 import { RNV_PACKAGES } from '../constants';
 
@@ -42,12 +44,13 @@ export const taskRnvUnlink: RnvTaskFn = async (c) => {
     return true;
 };
 
-export default {
-    description: '',
+const Task: RnvTask = {
+    description: 'Replaces rnv version in project with original node_modules version',
     fn: taskRnvUnlink,
-    task: 'unlink',
+    task: TASK_UNLINK,
     params: PARAMS.withBase(),
     platforms: [],
-    skipPlatforms: true,
     isGlobalScope: true,
 };
+
+export default Task;

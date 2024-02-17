@@ -412,7 +412,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
         } catch (err) {
             logError(err);
             logWarning(
-                `There is no emulator or device connected! Let's try to launch it. "${chalk().white.bold(
+                `There is no target connected! Let's try to launch it. "${chalk().white.bold(
                     `rnv target launch -p ${platform} -t ${target}`
                 )}"`
             );
@@ -480,7 +480,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
             const { chosenEmulator } = await inquirerPrompt({
                 name: 'chosenEmulator',
                 type: 'list',
-                message: 'On what emulator would you like to run the app?',
+                message: 'On what target would you like to run the app?',
                 choices,
             });
             deviceID = chosenEmulator;

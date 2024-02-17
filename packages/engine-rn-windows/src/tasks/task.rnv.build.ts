@@ -9,6 +9,7 @@ import {
     PARAMS,
     logTask,
     shouldSkipTask,
+    RnvTask,
 } from '@rnv/core';
 import { ruWindowsProject } from '../sdks/sdk-windows';
 
@@ -29,10 +30,12 @@ export const taskRnvBuild: RnvTaskFn = async (c, _parentTask, originTask) => {
     }
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Build project binary',
     fn: taskRnvBuild,
     task: TASK_BUILD,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [WINDOWS, XBOX],
 };
+
+export default Task;

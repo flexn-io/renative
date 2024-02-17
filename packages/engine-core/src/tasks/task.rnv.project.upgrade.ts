@@ -15,6 +15,7 @@ import {
     fsExistsSync,
     readObjectSync,
     RnvTaskFn,
+    RnvTask,
 } from '@rnv/core';
 import { NpmPackageFile } from '@rnv/core/lib/configs/types';
 import { ConfigFileProject } from '@rnv/core/lib/schema/configFiles/types';
@@ -74,13 +75,13 @@ export const taskRnvProjectUpgrade: RnvTaskFn = async (c, _parentTask, originTas
     return true;
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Upgrade or downgrade RNV dependencies in your ReNative project',
     fn: taskRnvProjectUpgrade,
     task: TASK_PROJECT_UPGRADE,
     params: PARAMS.withBase(),
     platforms: [],
-    skipAppConfig: true,
-    skipPlatforms: true,
     isGlobalScope: true,
 };
+
+export default Task;
