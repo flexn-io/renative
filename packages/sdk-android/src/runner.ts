@@ -106,7 +106,7 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
 
             let chosenEmulator: string;
 
-            if (activeDeviceInfoArr.length === 1) {
+            if (activeDeviceInfoArr.length === 1 && inactiveDeviceInfoArr.length === 0) {
                 chosenEmulator = activeDeviceInfoArr[0].value;
                 logInfo(`Found only one active emulator: ${chalk().magenta(chosenEmulator)}. Will use it.`);
             } else if (activeDeviceInfoArr.length === 0 && inactiveDeviceInfoArr.length === 1) {
