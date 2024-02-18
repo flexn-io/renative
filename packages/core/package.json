@@ -12,7 +12,8 @@
     "contributors": [],
     "files": [
         "LICENSE",
-        "lib"
+        "lib",
+        "jsonSchema"
     ],
     "main": "lib/index.js",
     "repository": {

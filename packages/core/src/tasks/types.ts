@@ -11,6 +11,7 @@ export type RnvTask = {
     fnHelp?: RnvTaskFn;
     isPrivate?: boolean;
     isPriorityOrder?: boolean;
+    ignoreEngines?: boolean;
 };
 
 export type TaskOption = {
