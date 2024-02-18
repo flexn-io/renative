@@ -11,7 +11,6 @@ import {
     logInfo,
     logDebug,
     fsWriteFileSync,
-    commandExistsSync,
     getContext,
     getCurrentCommand,
     inquirerPrompt,
@@ -199,10 +198,6 @@ export const runCocoaPods = async (c: RnvContext) => {
             ...EnvVars.RCT_NEW_ARCH_ENABLED(),
             ...EnvVars.RNV_SKIP_LINKING(),
         };
-
-        if (!commandExistsSync('pod')) {
-            throw new Error('Cocoapods not installed. Please run `sudo gem install cocoapods`');
-        }
 
         if (c.program.updatePods) {
             await executeAsync(c, 'bundle exec pod update', {
