@@ -862,7 +862,7 @@
           "$ref": "#/definitions/rnv.plugin/properties/tizen"
         },
         "custom": {
-          "description": "Object ysed to extend your renative with custom props. This allows renative json schema to be validated"
+          "description": "Object used to extend your renative with custom props. This allows renative json schema to be validated"
         },
         "$schema": {
           "type": "string",

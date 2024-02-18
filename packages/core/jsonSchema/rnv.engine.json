@@ -5,7 +5,7 @@
       "type": "object",
       "properties": {
         "custom": {
-          "description": "Object ysed to extend your renative with custom props. This allows renative json schema to be validated"
+          "description": "Object used to extend your renative with custom props. This allows renative json schema to be validated"
         },
         "id": {
           "type": "string",

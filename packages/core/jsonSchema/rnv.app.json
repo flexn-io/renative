@@ -9,7 +9,7 @@
           "description": "ID of the app in `./appConfigs/[APP_ID]/renative.json`. MUST match APP_ID name of the folder"
         },
         "custom": {
-          "description": "Object ysed to extend your renative with custom props. This allows renative json schema to be validated"
+          "description": "Object used to extend your renative with custom props. This allows renative json schema to be validated"
         },
         "hidden": {
           "type": "boolean",
@@ -2313,11 +2313,11 @@
                 },
                 "outputDir": {
                   "type": "string",
-                  "description": "Custom output directory used by nextjs equivalent to \"npx next build\" with custom outputDir. Use relative paths"
+                  "description": "Custom output directory used by nextjs equivalent to `npx next build` with custom outputDir. Use relative paths"
                 },
                 "exportDir": {
                   "type": "string",
-                  "description": "Custom export directory used by nextjs equivalent to \"npx next export --outdir <exportDir>\". Use relative paths"
+                  "description": "Custom export directory used by nextjs equivalent to `npx next export --outdir <exportDir>`. Use relative paths"
                 },
                 "nextTranspileModules": {
                   "type": "array",

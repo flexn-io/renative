@@ -232,7 +232,7 @@ export const taskRnvCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask
 };
 
 const Task: RnvTask = {
-    description: 'Encrypts secure files from ~/<wokspace>/<project>/.. to project',
+    description: 'Encrypts secure files from `~/<wokspace>/<project>/..` to project',
     fn: taskRnvCryptoEncrypt,
     task: TASK_CRYPTO_ENCRYPT,
     params: PARAMS.withBase(),
