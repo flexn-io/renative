@@ -27,7 +27,7 @@ const { Logger } = require('rnv');
 const paths = require('../config/paths');
 // const configFactory = require('../config/webpack.config');
 // const configFactory = require('react-scripts/config/webpack.config.js');
-const configFactory = getMergedConfig(require('../config/webpack.config'), paths.appPath);
+const config = getMergedConfig(require('../config/webpack.config')('development'), paths.appPath);
 
 const createDevServerConfig = require('../config/webpackDevServer.config');
 const getClientEnvironment = require('../config/env');
@@ -58,9 +58,6 @@ export default async () =>
             Logger.logInfo(`Learn more here: ${chalk.yellow('https://cra.link/advanced-config')}`);
             Logger.logInfo();
         }
-
-        const config = configFactory('development');
-        console.log(config, 'CONFIG');
         const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
         const appName = require(paths.appPackageJson).name;
 

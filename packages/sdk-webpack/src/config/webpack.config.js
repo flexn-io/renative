@@ -14,7 +14,6 @@ const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 
-const { merge } = require('webpack-merge');
 // const ESLintPlugin = require('eslint-webpack-plugin');
 
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
@@ -83,8 +82,6 @@ const sassModuleRegex = /\.module\.(scss|sass)$/;
 module.exports = function (webpackEnv) {
     const isEnvDevelopment = webpackEnv === 'development';
     const isEnvProduction = webpackEnv === 'production';
-    const cnfPath = path.join(paths.appPath, 'webpack.config.js');
-    const cnf = fs.existsSync(cnfPath) ? require(cnfPath) : {};
 
     // Variable used for enabling profiling in Production
     // passed into alias object. Uses a flag if passed into the build command
@@ -178,7 +175,7 @@ module.exports = function (webpackEnv) {
         return loaders;
     };
 
-    const config = {
+    return {
         target: [process.env.WEBPACK_TARGET || 'browserslist'], // browserslist | electron-main ...
         mode: isEnvProduction ? 'production' : isEnvDevelopment && 'development',
         // Stop compilation early in production
@@ -704,6 +701,4 @@ module.exports = function (webpackEnv) {
         // our own hints via the FileSizeReporter
         performance: false,
     };
-    const updatedCnf = merge(config, cnf);
-    return updatedCnf;
 };
