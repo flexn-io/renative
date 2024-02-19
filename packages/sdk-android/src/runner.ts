@@ -116,7 +116,7 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
 
             let chosenTarget: string;
 
-             if (activeDeviceInfoArr.length === 1 && !target) {
+            if (activeDeviceInfoArr.length === 1 && !target) {
                 chosenTarget = activeDeviceInfoArr[0].value;
                 logInfo(`Found only one active target: ${chalk().magenta(chosenTarget)}. Will use it.`);
             } else if (activeDeviceInfoArr.length === 0 && inactiveDeviceInfoArr.length === 1 && !target) {
@@ -526,7 +526,7 @@ export const runAndroidLog = async (c: Context) => {
     return child.then((res) => res.stdout).catch((err) => Promise.reject(`Error: ${err}`));
 };
 
-const _isString = (target: boolean | string): boolean => {
+const _isString = (target: boolean | string | undefined): boolean => {
     return typeof target === 'string';
 };
 export { ejectGradleProject };

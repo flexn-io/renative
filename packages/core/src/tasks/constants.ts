@@ -287,7 +287,10 @@ type ParamKeysType = typeof PARAM_KEYS_ENUM;
 
 type ProgramOptionsKey = keyof ParamKeysType;
 
-export type ParamKeys = Partial<Record<ProgramOptionsKey, any>>;
+//TODO: make this properly typed
+type ParamType = any; //boolean | string | undefined
+
+export type ParamKeys = Partial<Record<ProgramOptionsKey, ParamType>>;
 
 (Object.keys(PARAM_KEYS) as ProgramOptionsKey[]).forEach((k) => {
     PARAM_KEYS[k].key = k;
