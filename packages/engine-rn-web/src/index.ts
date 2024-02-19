@@ -1,5 +1,5 @@
 import { generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
-import { withRNVBabel } from './adapter';
+import { withRNVBabel, withRNV } from './adapter';
 //@ts-ignore
 import CNF from '../renative.engine.json';
 import taskRnvRun from './tasks/task.rnv.run';
@@ -77,6 +77,6 @@ const Engine: RnvEngine = {
     },
 };
 
-export { withRNVBabel };
+export { withRNVBabel, withRNV };
 
 export default Engine;

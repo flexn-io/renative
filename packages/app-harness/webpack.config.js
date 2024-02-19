@@ -1,6 +1,8 @@
 const webpack = require('webpack'); //to access built-in plugins
 
-module.exports = {
+const { withRNV } = require('@rnv/engine-rn-web');
+
+module.exports = withRNV({
     resolve: {
         alias: {
             'my-module': 'some_path',
@@ -8,4 +10,4 @@ module.exports = {
         modules: ['test_modules'],
     },
     plugins: [new webpack.ProgressPlugin()],
-};
+});

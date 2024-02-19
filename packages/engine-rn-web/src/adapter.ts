@@ -1,6 +1,9 @@
 import { BabelConfig } from '@rnv/core';
+process.env.NODE_ENV = 'development';
+const configFactory = require('react-scripts/config/webpack.config.js');
+const { merge } = require('webpack-merge');
 
-export const withRNVBabel = (cnf: BabelConfig): BabelConfig => {
+const withRNVBabel = (cnf: BabelConfig): BabelConfig => {
     const plugins = cnf?.plugins || [];
 
     return {
@@ -18,3 +21,13 @@ export const withRNVBabel = (cnf: BabelConfig): BabelConfig => {
         ],
     };
 };
+
+const withRNVWebpack = (cnf: any) => {
+    const config = configFactory('development');
+    console.log(config, 'CONFIG_DEF');
+    return cnf;
+};
+
+const withRNV = withRNVWebpack;
+
+export { withRNV, withRNVBabel };

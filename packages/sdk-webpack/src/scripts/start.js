@@ -23,6 +23,8 @@ const semver = require('semver');
 const { Logger } = require('rnv');
 const paths = require('../config/paths');
 const configFactory = require('../config/webpack.config');
+// const configFactory = require('react-scripts/config/webpack.config.js');
+
 const createDevServerConfig = require('../config/webpackDevServer.config');
 const getClientEnvironment = require('../config/env');
 
@@ -54,6 +56,7 @@ export default async () =>
         }
 
         const config = configFactory('development');
+        console.log(config, 'CONFIG');
         const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
         const appName = require(paths.appPackageJson).name;
 
