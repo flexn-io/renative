@@ -148,6 +148,12 @@ const exportTauri = async (c: RnvContext) => {
     logTask('exportTauri');
 
     const platformBuildDir = getPlatformBuildDir(c)!;
+
+    // before we export we need to take all the app files out of gitignore
+    // see https://github.com/tauri-apps/tauri/issues/3527#issuecomment-1046846533, https://github.com/tauri-apps/tauri/issues/7427
+    // TODO
+
+    const gitIgnorePath = path.join(platformBuildDir, '.gitignore');
     const cmd = `npx @tauri-apps/cli build`;
     await executeAsync(c, cmd, { cwd: platformBuildDir, ...ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY });
 
