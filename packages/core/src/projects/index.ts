@@ -612,12 +612,13 @@ export const versionCheck = async (c: RnvContext) => {
         return true;
     }
     c.runtime.rnvVersionRunner = c.files.rnv?.package?.version || 'unknown';
-    c.runtime.rnvVersionProject = c.files.project?.package?.devDependencies?.rnv || 'unknown';
+    c.runtime.rnvVersionProject =
+        c.files.project?.package?.devDependencies?.rnv || c.files.project?.package?.dependencies?.rnv || 'unknown';
     logTask(
         `versionCheck:rnvRunner:${c.runtime.rnvVersionRunner},rnvProject:${c.runtime.rnvVersionProject}`,
         chalk().grey
     );
-    if (c.runtime.rnvVersionRunner && c.runtime.rnvVersionProject && c.runtime.rnvVersionRunner !== 'unknown') {
+    if (c.runtime.rnvVersionRunner && c.runtime.rnvVersionProject) {
         if (c.runtime.rnvVersionRunner !== c.runtime.rnvVersionProject && !c.program.skipRnvCheck) {
             const recCmd = chalk().white(`$ npx ${getCurrentCommand(true)}`);
             const actionNoUpdate = 'Continue and skip updating package.json';
