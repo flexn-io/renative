@@ -232,6 +232,10 @@ export const runWebosSimOrDevice = async (c: RnvContext) => {
     }
 
     const tDir = getPlatformProjectDir(c);
+
+    if (!tDir) {
+        return Promise.reject(`Cannot determine getPlatformProjectDir value`);
+    }
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
     const appLocation = bundleAssets ? path.join(tDir, 'build') : tDir;
 

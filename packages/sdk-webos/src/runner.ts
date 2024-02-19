@@ -63,6 +63,10 @@ export const runWebOS = async (c: RnvContext) => {
         await buildCoreWebpackProject(c);
 
         const appPath = getPlatformBuildDir(c);
+
+        if (!appPath) {
+            throw new Error('Failed to resolve appPath');
+        }
         // Copying required files to build folder, webpack doesn't have them in the build folder
         const requiredFiles = ['appinfo.json', 'splashBackground.png', 'largeIcon.png', 'icon.png'];
 
