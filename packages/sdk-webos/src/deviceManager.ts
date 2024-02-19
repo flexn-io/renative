@@ -35,7 +35,6 @@ import {
     CLI_WEBOS_ARES_DEVICE_INFO,
 } from './constants';
 import semver from 'semver';
-import { copyFileSync, existsSync } from 'fs';
 
 export const launchWebOSimulator = async (c: RnvContext, target: string) => {
     logTask('launchWebOSimulator', `${target}`);
@@ -125,22 +124,7 @@ const parseDevices = (c: RnvContext, devicesResponse: string): Promise<Array<Web
 const launchAppOnSimulator = async (c: RnvContext, appPath: string) => {
     logTask('launchAppOnSimulator');
 
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
     const webosSdkPath = getRealPath(c, c.buildConfig?.sdks?.WEBOS_SDK);
-
-    const appLocation = bundleAssets ? path.join(appPath, 'build') : appPath;
-
-    if (bundleAssets) {
-        // Copying required files to build folder, webpack doesn't have them in the build folder
-        const requiredFiles = ['appinfo.json', 'splashBackground.png', 'largeIcon.png', 'icon.png'];
-
-        requiredFiles.map((requiredFile) => {
-            const requiredFilePath = path.join(appPath, requiredFile);
-            if (existsSync(requiredFilePath)) {
-                copyFileSync(requiredFilePath, path.join(appPath, 'build', requiredFile));
-            }
-        });
-    }
 
     if (!webosSdkPath) {
         return Promise.reject(`c.buildConfig.sdks.WEBOS_SDK undefined`);
@@ -188,7 +172,7 @@ const launchAppOnSimulator = async (c: RnvContext, appPath: string) => {
         );
     }
 
-    await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `-s ${version} ${appLocation}`);
+    await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `-s ${version} ${appPath}`);
 };
 
 // Used for actual devices
@@ -248,18 +232,21 @@ export const runWebosSimOrDevice = async (c: RnvContext) => {
     }
 
     const tDir = getPlatformProjectDir(c);
-    if (!tDir) {
-        return Promise.reject(`Cannot determine getPlatformProjectDir value`);
+    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
+    const appLocation = bundleAssets ? path.join(tDir, 'build') : tDir;
+
+    if (!appLocation) {
+        return Promise.reject(`Cannot determine appLocation value`);
     }
     const tOut = path.join(platDir, 'output');
-    const configFilePath = path.join(tDir, 'appinfo.json');
+    const configFilePath = path.join(appLocation, 'appinfo.json');
 
     const cnfg = JSON.parse(fsReadFileSync(configFilePath).toString());
     const tId = cnfg.id;
     const appPath = path.join(tOut, `${tId}_${cnfg.version}_all.ipk`);
 
     // Start the fun
-    await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`);
+    await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${appLocation} -n`);
 
     // List all devices
     const devicesResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D');
@@ -325,7 +312,7 @@ export const runWebosSimOrDevice = async (c: RnvContext) => {
                 return installAndLaunchApp(c, response.chosenDevice, appPath, tId);
             }
         } else {
-            return launchAppOnSimulator(c, platDir);
+            return launchAppOnSimulator(c, appLocation);
         }
     } else {
         // Target specified, using that
