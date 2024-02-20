@@ -116,7 +116,7 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
 
             let chosenTarget: string;
 
-             if (activeDeviceInfoArr.length === 1 && !target) {
+            if (activeDeviceInfoArr.length === 1 && inactiveDeviceInfoArr.length === 0 && !target) {
                 chosenTarget = activeDeviceInfoArr[0].value;
                 logInfo(`Found only one active target: ${chalk().magenta(chosenTarget)}. Will use it.`);
             } else if (activeDeviceInfoArr.length === 0 && inactiveDeviceInfoArr.length === 1 && !target) {
