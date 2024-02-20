@@ -172,6 +172,9 @@ const launchAppOnSimulator = async (c: RnvContext, appPath: string) => {
     }
 
     await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `-s ${version} ${appPath}`);
+    logInfo(
+        `Launched app on webOS TV simulator ${selectedOption}. If you do not see the app opening please close the simulator and try again.`
+    );
 };
 
 // Used for actual devices
