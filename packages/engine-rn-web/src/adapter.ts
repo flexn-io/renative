@@ -1,6 +1,7 @@
 import { BabelConfig } from '@rnv/core';
+import { withRNVWebpack } from '@rnv/sdk-webpack';
 
-export const withRNVBabel = (cnf: BabelConfig): BabelConfig => {
+const withRNVBabel = (cnf: BabelConfig): BabelConfig => {
     const plugins = cnf?.plugins || [];
 
     return {
@@ -18,3 +19,7 @@ export const withRNVBabel = (cnf: BabelConfig): BabelConfig => {
         ],
     };
 };
+
+const withRNV = withRNVWebpack;
+
+export { withRNV, withRNVBabel };

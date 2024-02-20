@@ -61,7 +61,8 @@
         "src",
         "static",
         "tsconfig.json",
-        "typings"
+        "typings",
+        "webpack.config.js"
     ],
     "repository": {
         "type": "git",

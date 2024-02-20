@@ -13,6 +13,7 @@ const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
+
 // const ESLintPlugin = require('eslint-webpack-plugin');
 
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
@@ -396,9 +397,12 @@ module.exports = function (webpackEnv) {
                                     //         runtime: hasJsxRuntime ? 'automatic' : 'classic',
                                     //     },
                                     // ],
-                                    ["@babel/preset-react", {
-                                        "runtime": "automatic"
-                                    }]
+                                    [
+                                        '@babel/preset-react',
+                                        {
+                                            runtime: 'automatic',
+                                        },
+                                    ],
                                 ],
 
                                 plugins: [
@@ -425,9 +429,12 @@ module.exports = function (webpackEnv) {
                                 compact: false,
                                 // presets: [[require.resolve('babel-preset-react-app/dependencies'), { helpers: true }]],
                                 presets: [
-                                    ["@babel/preset-react", {
-                                        "runtime": "automatic"
-                                    }]
+                                    [
+                                        '@babel/preset-react',
+                                        {
+                                            runtime: 'automatic',
+                                        },
+                                    ],
                                 ],
                                 cacheDirectory: true,
                                 // See #6846 for context on why cacheCompression is disabled
