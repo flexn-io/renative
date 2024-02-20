@@ -15,11 +15,9 @@ export const withRNVWebpack = (cnf: Configuration) => {
     return config;
 };
 
-// type GetConfig = (mode: string) => Configuration;
-
 export const getMergedConfig = (rootConfig: Configuration, appPath: string) => {
     // RNV-ADDITION
-    // const rootConfig = getConfig('development');
+
     const projectConfig = require(path.join(appPath, 'webpack.config'));
     const rootPlugins = rootConfig.plugins?.map((plugin) => plugin?.constructor.name) as string[];
 

@@ -27,6 +27,8 @@ import {
 } from '@rnv/core';
 import { getDevServerHost, openBrowser, waitForHost } from '@rnv/sdk-utils';
 import { EnvVars } from './env';
+import { withRNVWebpack } from './adapter';
+export { withRNVWebpack };
 
 export const REMOTE_DEBUG_PORT = 8079;
 
