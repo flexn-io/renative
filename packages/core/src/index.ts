@@ -34,6 +34,7 @@ export * from './tasks/constants';
 
 export * from './schema';
 export * from './schema/defaults';
+export * from './schema/schemaManager';
 export * from './context/runtime';
 export * from './templates';
 export * from './integrations';

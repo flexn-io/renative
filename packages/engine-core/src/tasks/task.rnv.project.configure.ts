@@ -36,6 +36,7 @@ import {
     generatePlatformAssetsRuntimeConfig,
     TASK_CRYPTO_DECRYPT,
     RnvTask,
+    generateLocalJsonSchemas,
 } from '@rnv/core';
 
 const checkIsRenativeProject = (c: RnvContext) =>
@@ -61,6 +62,7 @@ export const taskRnvProjectConfigure: RnvTaskFn = async (c, parentTask, originTa
     await checkAndMigrateProject();
     await updateRenativeConfigs(c);
     await checkIsRenativeProject(c);
+    await generateLocalJsonSchemas();
     // await checkAndCreateProjectPackage(c);
     await executeTask(c, TASK_WORKSPACE_CONFIGURE, TASK_PROJECT_CONFIGURE, originTask);
 
