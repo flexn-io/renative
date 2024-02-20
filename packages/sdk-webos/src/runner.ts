@@ -31,6 +31,7 @@ import semver from 'semver';
 import { runWebosSimOrDevice } from './deviceManager';
 import { CLI_WEBOS_ARES_PACKAGE } from './constants';
 import { waitForHost } from '@rnv/sdk-utils';
+import { fsExistsSync } from '@rnv/core';
 
 export const runWebOS = async (c: RnvContext) => {
     const { hosted } = c.program;
@@ -45,10 +46,9 @@ export const runWebOS = async (c: RnvContext) => {
             const resetCompleted = await confirmActiveBundler(c);
             c.runtime.skipActiveServerCheck = !resetCompleted;
         }
+        logTask('runWebOS', `target:${target} hosted:${!!isHosted}`);
+        return;
     }
-
-    logTask('runWebOS', `target:${target} hosted:${!!isHosted}`);
-    if (isHosted) return;
 
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
 
@@ -61,6 +61,21 @@ export const runWebOS = async (c: RnvContext) => {
 
     if (bundleAssets) {
         await buildCoreWebpackProject(c);
+
+        const appPath = getPlatformBuildDir(c);
+
+        if (!appPath) {
+            throw new Error('Failed to resolve appPath');
+        }
+        // Copying required files to build folder, webpack doesn't have them in the build folder
+        const requiredFiles = ['appinfo.json', 'splashBackground.png', 'largeIcon.png', 'icon.png'];
+
+        requiredFiles.map((requiredFile) => {
+            const requiredFilePath = path.join(appPath, requiredFile);
+            if (fsExistsSync(requiredFilePath)) {
+                copyFileSync(requiredFilePath, path.join(appPath, 'build', requiredFile));
+            }
+        });
         await runWebosSimOrDevice(c);
     } else {
         const isPortActive = await checkPortInUse(c, platform, c.runtime.port);

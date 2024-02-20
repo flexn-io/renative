@@ -23,6 +23,7 @@ import {
     logError,
     logSuccess,
     logWarning,
+    getConfigProp,
 } from '@rnv/core';
 import { WebosDevice } from './types';
 import {
@@ -234,18 +235,25 @@ export const runWebosSimOrDevice = async (c: RnvContext) => {
     }
 
     const tDir = getPlatformProjectDir(c);
+
     if (!tDir) {
         return Promise.reject(`Cannot determine getPlatformProjectDir value`);
     }
+    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
+    const appLocation = bundleAssets ? path.join(tDir, 'build') : tDir;
+
+    if (!appLocation) {
+        return Promise.reject(`Cannot determine appLocation value`);
+    }
     const tOut = path.join(platDir, 'output');
-    const configFilePath = path.join(tDir, 'appinfo.json');
+    const configFilePath = path.join(appLocation, 'appinfo.json');
 
     const cnfg = JSON.parse(fsReadFileSync(configFilePath).toString());
     const tId = cnfg.id;
     const appPath = path.join(tOut, `${tId}_${cnfg.version}_all.ipk`);
 
     // Start the fun
-    await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`);
+    await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${appLocation} -n`);
 
     // List all devices
     const devicesResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D');
@@ -311,7 +319,7 @@ export const runWebosSimOrDevice = async (c: RnvContext) => {
                 return installAndLaunchApp(c, response.chosenDevice, appPath, tId);
             }
         } else {
-            return launchAppOnSimulator(c, platDir);
+            return launchAppOnSimulator(c, appLocation);
         }
     } else {
         // Target specified, using that
