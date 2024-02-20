@@ -32,6 +32,7 @@ renative.build.json
 renative.runtime.json
 rnv-config.local.json
 metro.config.local.js
+.rnv
 
 
 vendor/

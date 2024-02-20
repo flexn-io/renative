@@ -1,16 +1,14 @@
-import path from 'path';
 import { getContext } from '../context/provider';
-import { logTask } from '../logger';
-import { fsExistsSync } from '../system/fs';
+import { logInfo, logTask } from '../logger';
+import { fsExistsSync, mkdirSync } from '../system/fs';
 
 export const generateLocalJsonSchemas = async () => {
     logTask('generateLocalJsonSchemas');
     const ctx = getContext();
-    const dotRnvPath = path.join(ctx.paths.project.dir, '.rnv');
-    console.log('DKJDKLDJLDKDJAA', dotRnvPath);
 
-    if (fsExistsSync(dotRnvPath)) {
-        console.log('DKJDKLDJLDKDJ');
+    if (!fsExistsSync(ctx.paths.project.dotRnvDir)) {
+        logInfo(`.rnv folder missing. CREATING...DONE`);
+        mkdirSync(ctx.paths.project.dotRnvDir);
     }
     return true;
 };

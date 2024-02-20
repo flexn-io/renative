@@ -260,6 +260,7 @@ export type RnvContextPaths = {
         appConfigsDirs: Array<string>;
         appConfigsDirNames: Array<string>;
         dir: string;
+        dotRnvDir: string;
         nodeModulesDir: string;
         srcDir?: string;
         package?: string;

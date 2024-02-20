@@ -169,6 +169,7 @@ export const generateContextDefaults = (): RnvContext => ({
             appConfigsDirs: [],
             appConfigsDirNames: [],
             dir: '',
+            dotRnvDir: '',
             platformTemplatesDirs: {},
             nodeModulesDir: '',
         },

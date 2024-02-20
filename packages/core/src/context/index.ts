@@ -117,6 +117,7 @@ Make sure all your rnv dependencies are of same version and you are executing wi
     c.paths.project.srcDir = path.join(c.paths.project.dir, 'src');
     c.paths.project.appConfigsDir = path.join(c.paths.project.dir, 'appConfigs');
     c.paths.project.package = path.join(c.paths.project.dir, 'package.json');
+    c.paths.project.dotRnvDir = path.join(c.paths.project.dir, '.rnv');
     // c.paths.project.npmLinkPolyfill = path.join(
     //     c.paths.project.dir,
     //     'npm_link_polyfill.json'
