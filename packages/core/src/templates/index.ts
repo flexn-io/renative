@@ -45,20 +45,10 @@ const _applyTemplate = async (c: RnvContext) => {
 
     if (c.runtime.selectedTemplate) {
         _cleanProjectTemplateSync(c);
-        // if (isMonorepo()) {
-        //     // @todo - have the templates report their absolute locations
-        //     c.paths.template.dir = path.join(
-        //         getMonorepoRoot(),
-        //         'packages',
-        //         c.runtime.selectedTemplate
-        //     );
-        // } else {
+
         c.paths.template.dir = doResolve(c.runtime.selectedTemplate) || 'Error: unresolved';
-        // c.paths.template.dir = path.join(c.paths.project.nodeModulesDir, c.runtime.selectedTemplate);
-        // }
     } else {
         c.paths.template.dir = doResolve(c.buildConfig.currentTemplate) || 'Error: unresolved';
-        // c.paths.template.dir = path.join(c.paths.project.nodeModulesDir, c.buildConfig.currentTemplate);
     }
 
     if (c.paths.template.dir) {
@@ -66,10 +56,6 @@ const _applyTemplate = async (c: RnvContext) => {
 
         c.paths.template.config = path.join(c.paths.template.dir, RENATIVE_CONFIG_NAME);
     }
-
-    // if (fsExistsSync(c.paths.template.config)) {
-    //     c.files.template.config = readObjectSync(c.paths.template.config);
-    // }
 
     if (!fsExistsSync(c.paths.template.configTemplate)) {
         logWarning(

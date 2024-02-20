@@ -418,21 +418,6 @@ export const getAppVersionCode = (c: RnvContext, platform: RnvPlatform) => {
     return output;
 };
 
-export const isMonorepo = () => {
-    try {
-        fsExistsSync(path.resolve(__dirname, '../../../../lerna.json'));
-        return true;
-    } catch (_err) {
-        return false;
-    }
-};
-
-export const getMonorepoRoot = () => {
-    if (isMonorepo()) {
-        return path.resolve(__dirname, '../../../..');
-    }
-};
-
 export const getBuildsFolder = (c: RnvContext, platform: RnvPlatform, customPath?: string) => {
     const pp = customPath || c.paths.appConfig.dir;
     // if (!fsExistsSync(pp)) {
