@@ -18,12 +18,14 @@ import {
     logDebug,
     getConfigProp,
     getPlatformProjectDir,
-    existBuildsOverrideForTargetPathSync,
     writeCleanFile,
     executeTask,
     executeOrSkipTask,
     shouldSkipTask,
     RnvTask,
+    getAppFolder,
+    getBuildsFolder,
+    fsExistsSync,
 } from '@rnv/core';
 import ip from 'ip';
 import path from 'path';
@@ -31,6 +33,29 @@ import { runChromecast, runWebpackServer } from '@rnv/sdk-webpack';
 import { runTizen } from '@rnv/sdk-tizen';
 import { runWebOS } from '@rnv/sdk-webos';
 import { runKaiOSProject } from '@rnv/sdk-kaios';
+
+const existBuildsOverrideForTargetPathSync = (c: RnvContext, destPath: string) => {
+    const appFolder = getAppFolder(c);
+    const relativePath = path.relative(appFolder, destPath);
+    let result = false;
+
+    const pathsToCheck: Array<string> = [];
+
+    if (c.paths.appConfig.dirs) {
+        c.paths.appConfig.dirs.forEach((v) => {
+            const bf = getBuildsFolder(c, c.platform, v);
+            if (bf) pathsToCheck.push();
+        });
+    }
+
+    for (let i = 0; i < pathsToCheck.length; i++) {
+        if (fsExistsSync(path.join(pathsToCheck[i], relativePath))) {
+            result = true;
+            break;
+        }
+    }
+    return result;
+};
 
 const _configureHostedIfRequired = async (c: RnvContext) => {
     logTask('_configureHostedIfRequired');

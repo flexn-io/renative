@@ -74,7 +74,6 @@ Make sure all your rnv dependencies are of same version and you are executing wi
     c.command = ctx?.cmd || c.command;
     c.subCommand = ctx?.subCmd || c.subCommand;
     c.isSystemWin = isSystemWin;
-    // c.platformDefaults = PLATFORMS;
 
     c.paths.rnv.dir = ctx?.RNV_HOME_DIR || c.paths.rnv.dir;
 
@@ -106,6 +105,8 @@ Make sure all your rnv dependencies are of same version and you are executing wi
     }
 
     generateContextPaths(c.paths.project, c.paths.CURRENT_DIR, c.program.configName);
+
+    // TODO: generate solution root
 
     populateLinkingInfo(c);
 

@@ -13,6 +13,12 @@ import { RnvPlatform } from './types';
 import { ConfigFileBuildConfig } from './schema/configFiles/buildConfig';
 import { GetConfigPropFn } from './api/types';
 
+type Plat = Required<Required<ConfigFileBuildConfig>['platforms']>[PlatformKey];
+type PlatPropKey = keyof Plat;
+type BuildSchemePropKey = keyof Required<Plat>['buildSchemes'][string];
+type CommonPropKey = keyof ConfigFileBuildConfig['common'];
+type BuildConfigPropKey = keyof ConfigFileBuildConfig;
+
 export const getTimestampPathsConfig = (c: RnvContext, platform: RnvPlatform): TimestampPathsConfig | undefined => {
     let timestampBuildFiles: Array<string> = [];
     const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
@@ -34,6 +40,7 @@ export const addSystemInjects = (c: RnvContext, injects: OverridesOptions) => {
     }
 };
 
+//TODO: make this as part of an advanced descriptor validation
 export const sanitizeColor = (val: string | undefined, key: string) => {
     if (!val) {
         logWarning(`You are missing ${chalk().white(key)} in your renative config. will use default #FFFFFF instead`);
@@ -52,29 +59,6 @@ export const sanitizeColor = (val: string | undefined, key: string) => {
         rgbDecimal: rgb.map((v: number) => (v > 1 ? Math.round((v / 255) * 10) / 10 : v)),
         hex,
     };
-};
-
-export const existBuildsOverrideForTargetPathSync = (c: RnvContext, destPath: string) => {
-    const appFolder = getAppFolder(c);
-    const relativePath = path.relative(appFolder, destPath);
-    let result = false;
-
-    const pathsToCheck: Array<string> = [];
-
-    if (c.paths.appConfig.dirs) {
-        c.paths.appConfig.dirs.forEach((v) => {
-            const bf = getBuildsFolder(c, c.platform, v);
-            if (bf) pathsToCheck.push();
-        });
-    }
-
-    for (let i = 0; i < pathsToCheck.length; i++) {
-        if (fsExistsSync(path.join(pathsToCheck[i], relativePath))) {
-            result = true;
-            break;
-        }
-    }
-    return result;
 };
 
 export const confirmActiveBundler = async (c: RnvContext) => {
@@ -196,12 +180,6 @@ export const getConfigProp: GetConfigPropFn = <T extends ConfigPropKey>(
     return _getConfigProp<T>(c, platform, key, defaultVal, c.buildConfig);
 };
 
-type Plat = Required<Required<ConfigFileBuildConfig>['platforms']>[PlatformKey];
-type PlatPropKey = keyof Plat;
-type BuildSchemePropKey = keyof Required<Plat>['buildSchemes'][string];
-type CommonPropKey = keyof ConfigFileBuildConfig['common'];
-type BuildConfigPropKey = keyof ConfigFileBuildConfig;
-
 export const _getConfigProp = <T extends ConfigPropKey>(
     c: RnvContext,
     platform: RnvPlatform,
@@ -240,42 +218,6 @@ export const _getConfigProp = <T extends ConfigPropKey>(
     if (result === undefined) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
 
     return result as ConfigProp[T];
-};
-
-export const getConfigPropArray = <T extends ConfigPropKey>(c: RnvContext, platform: RnvPlatform, key: T) => {
-    const result: Array<ConfigProp[T]> = [];
-    const configArr = [
-        c.files.defaultWorkspace.config,
-        c.files.rnv.projectTemplates.config,
-        // { plugins: extraPlugins },
-        // { pluginTemplates },
-        c.files.workspace.config,
-        c.files.workspace.configPrivate,
-        c.files.workspace.configLocal,
-        c.files.workspace.project.config,
-        c.files.workspace.project.configPrivate,
-        c.files.workspace.project.configLocal,
-        ...c.files.workspace.appConfig.configs,
-        ...c.files.workspace.appConfig.configsPrivate,
-        ...c.files.workspace.appConfig.configsLocal,
-        c.files.project.config,
-        c.files.project.configPrivate,
-        c.files.project.configLocal,
-        ...c.files.appConfig.configs,
-        ...c.files.appConfig.configsPrivate,
-        ...c.files.appConfig.configsLocal,
-    ];
-    configArr.forEach((config) => {
-        if (config) {
-            //TODO: this is bit of a hack. _getConfigProp expectes already merged obj needs to be redone
-            const val = _getConfigProp(c, platform, key, null, config as ConfigFileBuildConfig);
-            if (val) {
-                result.push(val);
-            }
-        }
-    });
-
-    return result;
 };
 
 export const getAppId = (c: RnvContext, platform: RnvPlatform) => {
