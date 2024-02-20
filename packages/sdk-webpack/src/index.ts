@@ -5,7 +5,6 @@ import {
     isPlatformActive,
     copyBuildsFolder,
     copyAssetsFolder,
-    checkPortInUse,
     getConfigProp,
     confirmActiveBundler,
     getPlatformProjectDir,
@@ -25,7 +24,7 @@ import {
     CoreEnvVars,
     Env,
 } from '@rnv/core';
-import { getDevServerHost, openBrowser, waitForHost } from '@rnv/sdk-utils';
+import { checkPortInUse, getDevServerHost, openBrowser, waitForHost } from '@rnv/sdk-utils';
 import { EnvVars } from './env';
 import { withRNVWebpack } from './adapter';
 export { withRNVWebpack };

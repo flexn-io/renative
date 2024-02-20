@@ -7,13 +7,13 @@ import {
     TASK_APP_CONFIGURE,
     TASK_KILL,
     chalk,
-    checkPortInUse,
     configureRuntimeDefaults,
     executeTask,
     inquirerPrompt,
     logSuccess,
     logTask,
 } from '@rnv/core';
+import { checkPortInUse } from '@rnv/sdk-utils';
 import killPort from 'kill-port';
 
 export const taskRnvKill: RnvTaskFn = async (c, _parentTask, originTask) => {

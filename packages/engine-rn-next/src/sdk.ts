@@ -2,7 +2,6 @@ import path from 'path';
 import {
     RnvContext,
     executeAsync,
-    checkPortInUse,
     getConfigProp,
     confirmActiveBundler,
     getPlatformBuildDir,
@@ -19,7 +18,7 @@ import {
     CoreEnvVars,
     ExecOptionsPresets,
 } from '@rnv/core';
-import { getDevServerHost, openBrowser, waitForHost } from '@rnv/sdk-utils';
+import { checkPortInUse, getDevServerHost, openBrowser, waitForHost } from '@rnv/sdk-utils';
 import { EnvVars } from './env';
 
 export const configureNextIfRequired = async (c: RnvContext) => {

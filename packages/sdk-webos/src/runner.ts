@@ -7,7 +7,6 @@ import {
     getPlatformProjectDir,
     getAppVersion,
     getConfigProp,
-    checkPortInUse,
     confirmActiveBundler,
     addSystemInjects,
     chalk,
@@ -30,7 +29,7 @@ import {
 import semver from 'semver';
 import { runWebosSimOrDevice } from './deviceManager';
 import { CLI_WEBOS_ARES_PACKAGE } from './constants';
-import { waitForHost } from '@rnv/sdk-utils';
+import { checkPortInUse, waitForHost } from '@rnv/sdk-utils';
 import { fsExistsSync } from '@rnv/core';
 
 export const runWebOS = async (c: RnvContext) => {
