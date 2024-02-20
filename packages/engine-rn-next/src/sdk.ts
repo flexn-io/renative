@@ -3,7 +3,6 @@ import {
     RnvContext,
     executeAsync,
     getConfigProp,
-    confirmActiveBundler,
     getPlatformBuildDir,
     copyFolderContentsRecursiveSync,
     chalk,
@@ -18,7 +17,7 @@ import {
     CoreEnvVars,
     ExecOptionsPresets,
 } from '@rnv/core';
-import { checkPortInUse, getDevServerHost, openBrowser, waitForHost } from '@rnv/sdk-utils';
+import { checkPortInUse, confirmActiveBundler, getDevServerHost, openBrowser, waitForHost } from '@rnv/sdk-utils';
 import { EnvVars } from './env';
 
 export const configureNextIfRequired = async (c: RnvContext) => {

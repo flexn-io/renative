@@ -1,6 +1,7 @@
 import path from 'path';
-import { getConfigProp, getAppId, chalk, logTask, logWarning, logSuccess, executeAsync, IOS } from '@rnv/core';
+import { getConfigProp, chalk, logTask, logWarning, logSuccess, executeAsync, IOS } from '@rnv/core';
 import { Context } from './types';
+import { getAppId } from '@rnv/sdk-utils';
 
 export const registerDevice = async (c: Context) => {
     logTask(`registerDevice:${c.platform}`);

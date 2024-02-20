@@ -5,9 +5,7 @@ import {
     REMOTE_DEBUGGER_ENABLED_PLATFORMS,
     RnvContext,
     getPlatformProjectDir,
-    getAppVersion,
     getConfigProp,
-    confirmActiveBundler,
     addSystemInjects,
     chalk,
     logTask,
@@ -19,9 +17,6 @@ import {
     copyAssetsFolder,
     copyBuildsFolder,
     getPlatformBuildDir,
-    getAppId,
-    getAppTitle,
-    getAppDescription,
     copyFileSync,
     DEFAULTS,
     OverridesOptions,
@@ -29,7 +24,15 @@ import {
 import semver from 'semver';
 import { runWebosSimOrDevice } from './deviceManager';
 import { CLI_WEBOS_ARES_PACKAGE } from './constants';
-import { checkPortInUse, waitForHost } from '@rnv/sdk-utils';
+import {
+    checkPortInUse,
+    waitForHost,
+    getAppVersion,
+    confirmActiveBundler,
+    getAppId,
+    getAppTitle,
+    getAppDescription,
+} from '@rnv/sdk-utils';
 import { fsExistsSync } from '@rnv/core';
 
 export const runWebOS = async (c: RnvContext) => {

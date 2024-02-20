@@ -8,9 +8,7 @@ import {
     MACOS,
     RnvContext,
     chalk,
-    confirmActiveBundler,
     executeAsync,
-    getEntryFile,
     logError,
     logErrorPlatform,
     logInfo,
@@ -19,6 +17,7 @@ import {
 } from '@rnv/core';
 import { isBundlerActive } from './common';
 import { EnvVars } from './env';
+import { confirmActiveBundler, getEntryFile } from '@rnv/sdk-utils';
 
 const BUNDLER_PLATFORMS: Record<string, string> = {};
 

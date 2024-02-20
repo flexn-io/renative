@@ -3,7 +3,6 @@ import {
     executeAsync,
     getAppFolder,
     getConfigProp,
-    getEntryFile,
     isSystemWin,
     chalk,
     logTask,
@@ -17,6 +16,7 @@ import {
     ExecOptionsPresets,
 } from '@rnv/core';
 import { EnvVars } from './env';
+import { getEntryFile } from '@rnv/sdk-utils';
 
 export const packageReactNativeAndroid = async (c: RnvContext) => {
     logTask('packageAndroid');

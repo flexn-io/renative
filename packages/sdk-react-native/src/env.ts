@@ -1,5 +1,6 @@
-import { doResolve, getAppId, getConfigProp, getContext, getRelativePath, parsePlugins } from '@rnv/core';
+import { doResolve, getConfigProp, getContext, getRelativePath, parsePlugins } from '@rnv/core';
 import RNPermissionsMap from './rnPermissionsMap';
+import { getAppId } from '@rnv/sdk-utils';
 
 export const EnvVars = {
     RCT_METRO_PORT: () => {

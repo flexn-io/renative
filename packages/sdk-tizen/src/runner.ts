@@ -5,9 +5,7 @@ import {
     REMOTE_DEBUGGER_ENABLED_PLATFORMS,
     RnvContext,
     getPlatformProjectDir,
-    getAppVersion,
     getConfigProp,
-    confirmActiveBundler,
     addSystemInjects,
     chalk,
     logTask,
@@ -34,7 +32,7 @@ import {
     DEFAULT_CERTIFICATE_NAME,
     addDevelopTizenCertificate,
 } from './deviceManager';
-import { checkPortInUse, waitForHost } from '@rnv/sdk-utils';
+import { checkPortInUse, waitForHost, getAppVersion, confirmActiveBundler } from '@rnv/sdk-utils';
 
 const DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION = `${DEFAULT_CERTIFICATE_NAME}.p12`;
 

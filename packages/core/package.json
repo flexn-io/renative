@@ -35,8 +35,6 @@
         "deepmerge": "3.2.0",
         "esbuild": "^0.12.1",
         "execa": "5.1.1",
-        "ip": "1.1.8",
-        "kill-port": "1.6.1",
         "lodash.get": "4.4.2",
         "lodash.intersection": "4.4.0",
         "lodash.set": "4.3.2",

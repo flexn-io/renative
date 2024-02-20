@@ -15,14 +15,7 @@ import {
     copyFileSync,
     getPlatformProjectDir,
     getPlatformBuildDir,
-    getAppVersion,
-    getAppTitle,
-    getAppId,
-    getAppDescription,
-    getAppAuthor,
-    getAppLicense,
     getConfigProp,
-    confirmActiveBundler,
     addSystemInjects,
     doResolve,
     chalk,
@@ -40,7 +33,17 @@ import {
 } from '@rnv/core';
 import { FileElectronPackage } from './types';
 import { NpmPackageFile } from '@rnv/core/lib/configs/types';
-import { checkPortInUse, waitForHost } from '@rnv/sdk-utils';
+import {
+    checkPortInUse,
+    waitForHost,
+    getAppVersion,
+    getAppTitle,
+    getAppId,
+    getAppDescription,
+    getAppAuthor,
+    getAppLicense,
+    confirmActiveBundler,
+} from '@rnv/sdk-utils';
 
 export const configureElectronProject = async (c: RnvContext, exitOnFail?: boolean) => {
     logTask('configureElectronProject');

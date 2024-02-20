@@ -6,7 +6,6 @@ import {
     fsExistsSync,
     fsWriteFileSync,
     getAppFolder,
-    getAppId,
     getConfigProp,
     getFlavouredProp,
     inquirerPrompt,
@@ -21,6 +20,7 @@ import path from 'path';
 import { getAppFolderName } from './common';
 import { parseProvisioningProfiles } from './provisionParser';
 import { Context } from './types';
+import { getAppId } from '@rnv/sdk-utils';
 
 export const parseXcodeProject = async (c: Context) => {
     logTask('parseXcodeProject');
