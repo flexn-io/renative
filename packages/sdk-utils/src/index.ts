@@ -1,6 +1,7 @@
-import { DEFAULTS, RnvContext, getConfigProp, logTask } from '@rnv/core';
+import { DEFAULTS, RnvContext, RnvPlatform, getConfigProp, logTask } from '@rnv/core';
 import axios from 'axios';
 import open from 'better-opn';
+import detectPort from 'detect-port';
 
 export const getValidLocalhost = (value: string, localhost: string) => {
     if (!value) return localhost;
@@ -64,3 +65,19 @@ export const waitForHost = async (c: RnvContext, suffix = 'assets/bundle.js') =>
         }, CHECK_INTEVAL);
     });
 };
+
+export const checkPortInUse = (c: RnvContext, platform: RnvPlatform, port: number) =>
+    new Promise((resolve, reject) => {
+        if (port === undefined || port === null) {
+            resolve(false);
+            return;
+        }
+        detectPort(port, (err: string, availablePort: string) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            const result = port !== parseInt(availablePort, 10);
+            resolve(result);
+        });
+    });

@@ -1,5 +1,4 @@
 import colorString from 'color-string';
-import detectPort from 'detect-port';
 import ip from 'ip';
 import killPort from 'kill-port';
 import path from 'path';
@@ -380,22 +379,6 @@ export const getBuildsFolder = (c: RnvContext, platform: RnvPlatform, customPath
 
 export const getIP = () => ip.address();
 
-export const checkPortInUse = (c: RnvContext, platform: RnvPlatform, port: number) =>
-    new Promise((resolve, reject) => {
-        if (port === undefined || port === null) {
-            resolve(false);
-            return;
-        }
-        detectPort(port, (err: string, availablePort: string) => {
-            if (err) {
-                reject(err);
-                return;
-            }
-            const result = port !== parseInt(availablePort, 10);
-            resolve(result);
-        });
-    });
-
 export const getFlavouredProp = <T, K extends keyof T>(c: RnvContext, obj: T, key: K): T[K] | undefined => {
     if (!key || !obj || typeof key !== 'string') return undefined;
     const keyScoped = `${key}@${c.runtime.scheme}` as K;
@@ -447,5 +430,4 @@ export default {
     getAppLicense,
     getConfigProp,
     getIP,
-    checkPortInUse,
 };
