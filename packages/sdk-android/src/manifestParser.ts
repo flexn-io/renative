@@ -2,7 +2,6 @@ import path from 'path';
 import {
     getAppFolder,
     getAppId,
-    getBuildFilePath,
     getConfigProp,
     getFlavouredProp,
     addSystemInjects,
@@ -23,6 +22,7 @@ import {
     ConfigFileBuildConfig,
 } from '@rnv/core';
 import { Context } from './types';
+import { getBuildFilePath } from '@rnv/sdk-utils';
 
 const PROHIBITED_DUPLICATE_TAGS = ['intent-filter'];
 const SYSTEM_TAGS = ['tag', 'children'];

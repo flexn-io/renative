@@ -387,34 +387,7 @@ export const getFlavouredProp = <T, K extends keyof T>(c: RnvContext, obj: T, ke
     return obj[key];
 };
 
-export const getBuildFilePath = (
-    c: RnvContext,
-    platform: RnvPlatform,
-    filePath: string,
-    altTemplateFolder?: string
-) => {
-    // P1 => platformTemplates
-    let sp = path.join(altTemplateFolder || getAppTemplateFolder(c, platform)!, filePath);
-    // P2 => appConfigs/base + @buildSchemes
-    const sp2bf = getBuildsFolder(c, platform, c.paths.project.appConfigBase.dir);
-    if (sp2bf) {
-        const sp2 = path.join(sp2bf, filePath);
-        if (fsExistsSync(sp2)) sp = sp2;
-    }
-
-    // P3 => appConfigs + @buildSchemes
-    const sp3bf = getBuildsFolder(c, platform);
-
-    if (sp3bf) {
-        const sp3 = path.join(sp3bf, filePath);
-        if (fsExistsSync(sp3)) sp = sp3;
-    }
-
-    return sp;
-};
-
 export default {
-    getBuildFilePath,
     getBuildsFolder,
     getAppFolder,
     getAppTemplateFolder,

@@ -3,7 +3,6 @@ import {
     RenativeConfigPluginPlatform,
     getAppFolder,
     getAppTitle,
-    getBuildFilePath,
     getConfigProp,
     sanitizeColor,
     addSystemInjects,
@@ -11,6 +10,7 @@ import {
     writeCleanFile,
 } from '@rnv/core';
 import { Context } from './types';
+import { getBuildFilePath } from '@rnv/sdk-utils';
 
 export const parseValuesStringsSync = (c: Context) => {
     const appFolder = getAppFolder(c);

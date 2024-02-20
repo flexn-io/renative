@@ -13,7 +13,6 @@ import {
     getAppId,
     getAppVersion,
     getAppVersionCode,
-    getBuildFilePath,
     getConfigProp,
     includesPluginPath,
     isSystemWin,
@@ -25,6 +24,7 @@ import {
 } from '@rnv/core';
 import path from 'path';
 import { Context } from './types';
+import { getBuildFilePath } from '@rnv/sdk-utils';
 
 const currentOs = process.platform === 'darwin' ? 'osx' : process.platform === 'win32' ? 'win64' : 'linux64';
 
