@@ -161,7 +161,6 @@ export const _runWebDevServer = async (c: RnvContext, enableRemoteDebugger?: boo
         ...EnvVars.WEBPACK_TARGET(),
         ...EnvVars.RNV_EXTERNAL_PATHS(),
     };
-    console.log(env, 'ENV');
 
     Object.keys(env).forEach((v) => {
         process.env[v] = env[v];
@@ -190,7 +189,6 @@ export const _runWebDevServer = async (c: RnvContext, enableRemoteDebugger?: boo
     }
 
     const start = require('./scripts/start').default;
-    // const start = require('react-scripts/scripts/start');
     await start();
 };
 

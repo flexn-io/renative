@@ -74,8 +74,7 @@
         "webpack-dev-server": "^4.7.4",
         "webpack-manifest-plugin": "^4.0.2",
         "workbox-webpack-plugin": "6.5.4",
-        "webpack-merge": "5.10.0",
-        "react-scripts": "5.0.1"
+        "webpack-merge": "5.10.0"
     },
     "peerDependencies": {
         "@rnv/core": "^1.0.0-rc.11"
