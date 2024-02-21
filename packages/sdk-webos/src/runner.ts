@@ -6,7 +6,6 @@ import {
     RnvContext,
     getPlatformProjectDir,
     getConfigProp,
-    addSystemInjects,
     chalk,
     logTask,
     logError,
@@ -16,10 +15,10 @@ import {
     writeCleanFile,
     copyAssetsFolder,
     copyBuildsFolder,
-    getPlatformBuildDir,
     copyFileSync,
     DEFAULTS,
     OverridesOptions,
+    getAppFolder,
 } from '@rnv/core';
 import semver from 'semver';
 import { runWebosSimOrDevice } from './deviceManager';
@@ -32,6 +31,7 @@ import {
     getAppId,
     getAppTitle,
     getAppDescription,
+    addSystemInjects,
 } from '@rnv/sdk-utils';
 import { fsExistsSync } from '@rnv/core';
 

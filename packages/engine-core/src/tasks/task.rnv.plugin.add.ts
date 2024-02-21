@@ -7,7 +7,6 @@ import {
     chalk,
     logSuccess,
     logTask,
-    getPluginList,
     resolvePluginDependants,
     executeTask,
     RnvTaskFn,
@@ -17,6 +16,7 @@ import {
     RenativeConfigPlugin,
     RnvTask,
 } from '@rnv/core';
+import { getPluginList } from '../plugins';
 
 /* eslint-disable no-await-in-loop */
 export const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) => {

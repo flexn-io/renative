@@ -14,9 +14,7 @@ import {
     writeCleanFile,
     copyFileSync,
     getPlatformProjectDir,
-    getPlatformBuildDir,
     getConfigProp,
-    addSystemInjects,
     doResolve,
     chalk,
     logTask,
@@ -30,6 +28,7 @@ import {
     LINUX,
     TASK_EXPORT,
     ExecOptionsPresets,
+    getAppFolder,
 } from '@rnv/core';
 import { FileElectronPackage } from './types';
 import { NpmPackageFile } from '@rnv/core/lib/configs/types';
@@ -43,6 +42,7 @@ import {
     getAppAuthor,
     getAppLicense,
     confirmActiveBundler,
+    addSystemInjects,
 } from '@rnv/sdk-utils';
 
 export const configureElectronProject = async (c: RnvContext, exitOnFail?: boolean) => {

@@ -3,7 +3,6 @@ import {
     RenativeConfigPluginPlatform,
     RnvContext,
     RnvPlugin,
-    addSystemInjects,
     chalk,
     doResolve,
     doResolvePath,
@@ -21,7 +20,7 @@ import {
 } from '@rnv/core';
 import path from 'path';
 import { Context } from './types';
-import { getBuildFilePath, getAppId, getAppVersion, getAppVersionCode } from '@rnv/sdk-utils';
+import { getBuildFilePath, getAppId, getAppVersion, getAppVersionCode, addSystemInjects } from '@rnv/sdk-utils';
 
 const currentOs = process.platform === 'darwin' ? 'osx' : process.platform === 'win32' ? 'win64' : 'linux64';
 

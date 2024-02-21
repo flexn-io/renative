@@ -1,4 +1,4 @@
-import { getConfigProp, getContext, getPlatformBuildDir } from '@rnv/core';
+import { getAppFolder, getConfigProp, getContext } from '@rnv/core';
 
 export const EnvVars = {
     LNG_BUILD_FOLDER: () => {

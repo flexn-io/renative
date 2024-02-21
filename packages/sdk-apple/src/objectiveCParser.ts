@@ -1,13 +1,8 @@
 import path from 'path';
 import {
     RenativeConfigPluginPlatform,
-    // getEntryFile,
-    getAppTemplateFolder,
     getConfigProp,
-    // getGetJsBundleFile,
-    sanitizeColor,
     getFlavouredProp,
-    addSystemInjects,
     chalk,
     logTask,
     logDebug,
@@ -27,6 +22,7 @@ import {
     SwiftAppDelegateSubKey,
     SwiftMethod,
 } from './types';
+import { addSystemInjects, getAppTemplateFolder, sanitizeColor } from '@rnv/sdk-utils';
 
 export const parseAppDelegate = (
     c: Context,

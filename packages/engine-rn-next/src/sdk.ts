@@ -3,7 +3,6 @@ import {
     RnvContext,
     executeAsync,
     getConfigProp,
-    getPlatformBuildDir,
     copyFolderContentsRecursiveSync,
     chalk,
     logTask,
@@ -16,6 +15,7 @@ import {
     RnvPlatform,
     CoreEnvVars,
     ExecOptionsPresets,
+    getAppFolder,
 } from '@rnv/core';
 import { checkPortInUse, confirmActiveBundler, getDevServerHost, openBrowser, waitForHost } from '@rnv/sdk-utils';
 import { EnvVars } from './env';

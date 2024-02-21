@@ -20,8 +20,8 @@ export * from './configs/configLocal';
 export * from './configs/engines';
 export * from './configs/configProject';
 export * from './configs/platformAssets';
-export * from './configs/pluginTemplates';
 export * from './configs/templates';
+export * from './configs/configProp';
 export * from './configs/utils';
 
 export * from './projects';

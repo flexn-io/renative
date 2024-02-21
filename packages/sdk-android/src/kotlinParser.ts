@@ -2,7 +2,6 @@ import {
     OverridesOptions,
     RenativeConfigPluginPlatform,
     RnvContext,
-    addSystemInjects,
     getAppFolder,
     getConfigProp,
     writeCleanFile,
@@ -10,7 +9,7 @@ import {
 import { mkdirSync } from 'fs';
 import path from 'path';
 import { Context } from './types';
-import { getBuildFilePath, getEntryFile, getAppId } from '@rnv/sdk-utils';
+import { getBuildFilePath, getEntryFile, getAppId, addSystemInjects } from '@rnv/sdk-utils';
 
 // const JS_BUNDLE_DEFAULTS: Partial<Record<PlatformKey, string>> = {
 //     // Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler

@@ -8,7 +8,6 @@ import {
     execCLI,
     openCommand,
     getPlatformProjectDir,
-    getPlatformBuildDir,
     chalk,
     logToSummary,
     logTask,
@@ -24,6 +23,7 @@ import {
     logSuccess,
     logWarning,
     getConfigProp,
+    getAppFolder,
 } from '@rnv/core';
 import { WebosDevice } from './types';
 import {
@@ -231,7 +231,7 @@ export const runWebosSimOrDevice = async (c: RnvContext) => {
 
     const platDir = getAppFolder(c);
     if (!platDir) {
-        return Promise.reject(`Cannot determine getPlatformBuildDir value`);
+        return Promise.reject(`Cannot determine getAppFolder value`);
     }
 
     const tDir = getPlatformProjectDir(c);

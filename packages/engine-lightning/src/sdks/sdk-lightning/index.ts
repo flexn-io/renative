@@ -8,9 +8,7 @@ import {
     executeAsync,
     execCLI,
     RnvContext,
-    getPlatformBuildDir,
     getConfigProp,
-    addSystemInjects,
     getPlatformProjectDir,
     copyAssetsFolder,
     copyBuildsFolder,
@@ -18,12 +16,13 @@ import {
     DEFAULTS,
     OverridesOptions,
     CoreEnvVars,
+    getAppFolder,
 } from '@rnv/core';
 import semver from 'semver';
 
 import { runTizenSimOrDevice, CLI_TIZEN } from '@rnv/sdk-tizen';
 import { CLI_WEBOS_ARES_PACKAGE, runWebosSimOrDevice } from '@rnv/sdk-webos';
-import { getAppVersion, getAppTitle, getAppId, getAppDescription } from '@rnv/sdk-utils';
+import { getAppVersion, getAppTitle, getAppId, getAppDescription, addSystemInjects } from '@rnv/sdk-utils';
 import { EnvVars } from './env';
 
 export const runLightningProject = async (c: RnvContext) => {

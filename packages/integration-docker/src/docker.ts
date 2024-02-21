@@ -8,13 +8,13 @@ import {
     executeAsync,
     commandExistsSync,
     getConfigProp,
-    getPlatformBuildDir,
     copyFolderRecursiveSync,
     cleanFolder,
     writeCleanFile,
     fsExistsSync,
     chalk,
     ExecOptionsPresets,
+    getAppFolder,
 } from '@rnv/core';
 
 const rootPath = path.join(__dirname, './');

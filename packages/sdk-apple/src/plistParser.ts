@@ -8,7 +8,6 @@ import {
     getAppFolder,
     getConfigProp,
     getFlavouredProp,
-    addSystemInjects,
     logTask,
     logError,
     logWarning,
@@ -21,7 +20,7 @@ import {
 } from '@rnv/core';
 import { getAppFolderName } from './common';
 import { Context, FilePlistJSON } from './types';
-import { getAppTitle, getAppVersion, getAppVersionCode, getBuildFilePath } from '@rnv/sdk-utils';
+import { addSystemInjects, getAppTitle, getAppVersion, getAppVersionCode, getBuildFilePath } from '@rnv/sdk-utils';
 
 export const parseExportOptionsPlist = (c: Context, platform: RnvPlatform) =>
     new Promise<void>((resolve) => {

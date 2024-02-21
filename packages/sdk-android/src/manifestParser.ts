@@ -3,7 +3,6 @@ import {
     getAppFolder,
     getConfigProp,
     getFlavouredProp,
-    addSystemInjects,
     logTask,
     logError,
     logWarning,
@@ -21,7 +20,7 @@ import {
     ConfigFileBuildConfig,
 } from '@rnv/core';
 import { Context } from './types';
-import { getBuildFilePath, getAppId } from '@rnv/sdk-utils';
+import { getBuildFilePath, getAppId, addSystemInjects } from '@rnv/sdk-utils';
 
 const PROHIBITED_DUPLICATE_TAGS = ['intent-filter'];
 const SYSTEM_TAGS = ['tag', 'children'];
