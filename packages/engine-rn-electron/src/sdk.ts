@@ -82,7 +82,7 @@ const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
 
         if (!engine || !platform) return;
 
-        const platformBuildDir = getPlatformBuildDir(c)!;
+        const platformBuildDir = getAppFolder(c)!;
         const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
         const electronConfigPath = path.join(platformBuildDir, 'electronConfig.json');
         const packagePath = path.join(platformBuildDir, 'package.json');
@@ -261,7 +261,7 @@ const buildElectron = async (c: RnvContext) => {
     await buildCoreWebpackProject(c);
     // Webpack 5 deletes build folder but does not copy package json
 
-    const platformBuildDir = getPlatformBuildDir(c)!;
+    const platformBuildDir = getAppFolder(c)!;
 
     // workaround: electron-builder fails export in npx mode due to trying install node_modules. we trick it not to do that
     mkdirSync(path.join(platformBuildDir, 'build', 'node_modules'));
@@ -288,7 +288,7 @@ const buildElectron = async (c: RnvContext) => {
 const exportElectron = async (c: RnvContext) => {
     logTask('exportElectron');
 
-    const platformBuildDir = getPlatformBuildDir(c)!;
+    const platformBuildDir = getAppFolder(c)!;
     const buildPath = path.join(platformBuildDir, 'build', 'release');
 
     if (fsExistsSync(buildPath)) {
@@ -363,7 +363,7 @@ const _runElectronSimulator = async (c: RnvContext) => {
     let platformProjectDir = getPlatformProjectDir(c)!;
 
     if (bundleAssets) {
-        platformProjectDir = path.join(getPlatformBuildDir(c)!, 'build');
+        platformProjectDir = path.join(getAppFolder(c)!, 'build');
     }
 
     const cmd = `node ${doResolve('electron')}/cli.js ${path.join(platformProjectDir, '/main.js')}`;

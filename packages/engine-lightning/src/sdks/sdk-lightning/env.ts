@@ -4,7 +4,7 @@ export const EnvVars = {
     LNG_BUILD_FOLDER: () => {
         const ctx = getContext();
 
-        return { LNG_BUILD_FOLDER: getPlatformBuildDir(ctx, true) };
+        return { LNG_BUILD_FOLDER: getAppFolder(ctx, true) };
     },
     LNG_ENTRY_FILE: () => {
         const ctx = getContext();
@@ -20,6 +20,6 @@ export const EnvVars = {
     },
     LNG_DIST_FOLDER: () => {
         const ctx = getContext();
-        return { LNG_DIST_FOLDER: getPlatformBuildDir(ctx, true) };
+        return { LNG_DIST_FOLDER: getAppFolder(ctx, true) };
     },
 };

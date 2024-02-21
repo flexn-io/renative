@@ -31,12 +31,10 @@
     "dependencies": {
         "@flexn/plugins": "1.0.9",
         "ajv": "7.0.0-beta.0",
-        "color-string": "1.9.0",
         "deepmerge": "3.2.0",
         "esbuild": "^0.12.1",
         "execa": "5.1.1",
         "lodash.get": "4.4.2",
-        "lodash.intersection": "4.4.0",
         "lodash.set": "4.3.2",
         "ncp": "2.0.0",
         "netcat": "1.4.0",

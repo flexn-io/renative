@@ -24,8 +24,8 @@ import {
     shouldSkipTask,
     RnvTask,
     getAppFolder,
-    getBuildsFolder,
     fsExistsSync,
+    getAppConfigBuildsFolder,
 } from '@rnv/core';
 import ip from 'ip';
 import path from 'path';
@@ -43,7 +43,7 @@ const existBuildsOverrideForTargetPathSync = (c: RnvContext, destPath: string) =
 
     if (c.paths.appConfig.dirs) {
         c.paths.appConfig.dirs.forEach((v) => {
-            const bf = getBuildsFolder(c, c.platform, v);
+            const bf = getAppConfigBuildsFolder(c, c.platform, v);
             if (bf) pathsToCheck.push();
         });
     }

@@ -229,7 +229,7 @@ export const listWebOSTargets = async (c: RnvContext) => {
 export const runWebosSimOrDevice = async (c: RnvContext) => {
     const { device } = c.program;
 
-    const platDir = getPlatformBuildDir(c);
+    const platDir = getAppFolder(c);
     if (!platDir) {
         return Promise.reject(`Cannot determine getPlatformBuildDir value`);
     }

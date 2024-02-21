@@ -1,6 +1,5 @@
-import { chalk, getBuildsFolder, inquirerPrompt, logWarning } from '@rnv/core';
+import { OverridesOptions, chalk, getAppConfigBuildsFolder, inquirerPrompt, logWarning } from '@rnv/core';
 import { fsExistsSync } from '@rnv/core';
-import { getAppTemplateFolder } from '@rnv/core';
 import { DEFAULTS, RnvContext, RnvPlatform, getConfigProp, logTask } from '@rnv/core';
 import axios from 'axios';
 import open from 'better-opn';
@@ -8,6 +7,7 @@ import detectPort from 'detect-port';
 import killPort from 'kill-port';
 import path from 'path';
 import ip from 'ip';
+import colorString from 'color-string';
 
 export const getValidLocalhost = (value: string, localhost: string) => {
     if (!value) return localhost;
@@ -97,14 +97,14 @@ export const getBuildFilePath = (
     // P1 => platformTemplates
     let sp = path.join(altTemplateFolder || getAppTemplateFolder(c, platform)!, filePath);
     // P2 => appConfigs/base + @buildSchemes
-    const sp2bf = getBuildsFolder(c, platform, c.paths.project.appConfigBase.dir);
+    const sp2bf = getAppConfigBuildsFolder(c, platform, c.paths.project.appConfigBase.dir);
     if (sp2bf) {
         const sp2 = path.join(sp2bf, filePath);
         if (fsExistsSync(sp2)) sp = sp2;
     }
 
     // P3 => appConfigs + @buildSchemes
-    const sp3bf = getBuildsFolder(c, platform);
+    const sp3bf = getAppConfigBuildsFolder(c, platform);
 
     if (sp3bf) {
         const sp3 = path.join(sp3bf, filePath);
@@ -281,3 +281,35 @@ export const confirmActiveBundler = async (c: RnvContext) => {
 };
 
 export const getIP = () => ip.address();
+
+export const getAppTemplateFolder = (c: RnvContext, platform: RnvPlatform) =>
+    platform ? path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`) : undefined;
+
+export const addSystemInjects = (c: RnvContext, injects: OverridesOptions) => {
+    if (!c.systemPropsInjects) c.systemPropsInjects = [];
+    if (injects) {
+        injects.forEach((item) => {
+            c.systemPropsInjects.push(item);
+        });
+    }
+};
+
+export const sanitizeColor = (val: string | undefined, key: string) => {
+    if (!val) {
+        logWarning(`You are missing ${chalk().white(key)} in your renative config. will use default #FFFFFF instead`);
+        return {
+            rgb: [255, 255, 255, 1],
+            rgbDecimal: [1, 1, 1, 1],
+            hex: '#FFFFFF',
+        };
+    }
+
+    const rgb = colorString.get.rgb(val);
+    const hex = colorString.to.hex(rgb);
+
+    return {
+        rgb,
+        rgbDecimal: rgb.map((v: number) => (v > 1 ? Math.round((v / 255) * 10) / 10 : v)),
+        hex,
+    };
+};

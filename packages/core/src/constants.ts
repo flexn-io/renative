@@ -1,6 +1,6 @@
 // PLATFORM
 import { homedir } from 'os';
-import { ConfigPropKey } from './schema/types';
+import type { ConfigPropKey } from './schema/types';
 
 export const USER_HOME_DIR = homedir();
 

@@ -64,7 +64,7 @@ export const runWebOS = async (c: RnvContext) => {
     if (bundleAssets) {
         await buildCoreWebpackProject(c);
 
-        const appPath = getPlatformBuildDir(c);
+        const appPath = getAppFolder(c);
 
         if (!appPath) {
             throw new Error('Failed to resolve appPath');
@@ -118,7 +118,7 @@ export const buildWebOSProject = async (c: RnvContext) => {
 
     if (!c.program.hosted) {
         const tDir = path.join(getPlatformProjectDir(c)!, 'build');
-        const tOut = path.join(getPlatformBuildDir(c)!, 'output');
+        const tOut = path.join(getAppFolder(c)!, 'output');
 
         const appinfoSrc = path.join(getPlatformProjectDir(c)!, 'appinfo.json');
         const appinfoDest = path.join(tDir, 'appinfo.json');

@@ -94,7 +94,7 @@ export const buildLightningProject = async (c: RnvContext) => {
 export const configureLightningProject = async (c: RnvContext) => {
     logTask('configureLightningProject');
     const { platform } = c;
-    c.runtime.platformBuildsProjectPath = `${getPlatformBuildDir(c)}`;
+    c.runtime.platformBuildsProjectPath = `${getAppFolder(c)}`;
     if (!isPlatformActive(c, platform)) {
         return;
     }
