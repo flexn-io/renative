@@ -29,10 +29,10 @@ export type CreateContextOptions = {
 };
 
 export type RnvContextProgram = ParamKeys & {
-    args: string[];
-    rawArgs: string[];
-    option: (cmd: string, desc: string) => void;
-    parse: (arg: string[]) => void;
+    args?: string[];
+    rawArgs?: string[];
+    option?: (cmd: string, desc: string) => void;
+    parse?: (arg: string[]) => void;
 };
 
 export interface RnvContext<Payload = any> {

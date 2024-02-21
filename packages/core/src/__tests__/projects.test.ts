@@ -2,7 +2,8 @@ import { copyAssetsFolder } from '../projects';
 import { getContext } from '../context/provider';
 import { RnvPlatform } from '../types';
 import * as platformsModule from '../platforms';
-import * as commonModule from '../common';
+import * as configPropModule from '../configs/configProp';
+
 import { logWarning } from '../logger';
 import path from 'path';
 
@@ -46,7 +47,7 @@ describe('copyAssetsFolder', () => {
     it('shows warning when assetSources is declared but actual folder is missing', async () => {
         //GIVEN
         const spy = jest
-            .spyOn(commonModule, 'getConfigProp')
+            .spyOn(configPropModule, 'getConfigProp')
             .mockReturnValueOnce('web')
             .mockReturnValueOnce(['./MOCK_PATH']);
         (platformsModule.isPlatformActive as jest.Mock<boolean>).mockReturnValue(true);
