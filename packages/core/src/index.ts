@@ -12,7 +12,6 @@ export * from './buildHooks';
 export * from './migrator';
 
 export * from './configs';
-export * from './configs/buildSchemes';
 export * from './configs/buildConfig';
 export * from './configs/workspaces';
 export * from './configs/appConfigs';
