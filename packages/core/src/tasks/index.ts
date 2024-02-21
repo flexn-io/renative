@@ -321,9 +321,9 @@ const _populateExtraParameters = (c: RnvContext, task: RnvTask) => {
                     cmd += ` [${param.value}]`;
                 }
             }
-            c.program.option(cmd, param.description);
+            c.program.option?.(cmd, param.description);
         });
-        c.program.parse(process.argv);
+        c.program.parse?.(process.argv);
     }
 };
 

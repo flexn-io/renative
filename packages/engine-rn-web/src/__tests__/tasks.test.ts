@@ -1,4 +1,4 @@
-import { createRnvApi, createRnvContext, getContext } from '@rnv/core';
+import { createRnvApi, createRnvContext, getContext, getPlatformProjectDir } from '@rnv/core';
 import taskRnvRun from '../tasks/task.rnv.run';
 import { runWebpackServer } from '@rnv/sdk-webpack';
 import { runTizen } from '@rnv/sdk-tizen';
@@ -20,7 +20,7 @@ test('Execute task.rnv.run -p web', async () => {
     const ctx = getContext();
     ctx.platform = 'web';
     //WHEN
-    await taskRnvRun.fn(ctx);
+    await taskRnvRun.fn?.(ctx);
     //THEN
     expect(runWebpackServer).toHaveBeenCalled();
 });
@@ -29,10 +29,9 @@ test('Execute task.rnv.run -p tizen', async () => {
     //GIVEN
     const ctx = getContext();
     ctx.platform = 'tizen';
-    const { getPlatformProjectDir } = require('@rnv/core');
-    getPlatformProjectDir.mockReturnValue('');
+    (getPlatformProjectDir as jest.Mock<string>).mockReturnValue('');
     //WHEN
-    await taskRnvRun.fn(ctx);
+    await taskRnvRun.fn?.(ctx);
     //THEN
     expect(runTizen).toHaveBeenCalled();
 });

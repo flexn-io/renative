@@ -2,6 +2,7 @@ import { createRnvContext } from '../context';
 import { getContext } from '../context/provider';
 
 jest.mock('fs');
+jest.mock('process');
 jest.mock('../logger/index.ts');
 
 describe('Context tests', () => {

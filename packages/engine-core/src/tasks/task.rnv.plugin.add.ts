@@ -24,7 +24,7 @@ export const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) =>
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLUGIN_ADD, originTask);
 
-    const selPluginKey = c.program.rawArgs[4];
+    const selPluginKey = c.program.rawArgs?.[4];
 
     const o = getPluginList(c);
 

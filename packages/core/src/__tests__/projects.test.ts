@@ -7,20 +7,7 @@ import * as configPropModule from '../configs/configProp';
 import { logWarning } from '../logger';
 import path from 'path';
 
-jest.mock('../logger/index.ts', () => {
-    return {
-        logTask: jest.fn(),
-        logWarning: jest.fn(),
-        logInfo: jest.fn(),
-        logError: jest.fn(),
-
-        chalk: () => ({
-            red: (v) => v,
-            white: (v) => v,
-            blue: (v) => v,
-        }),
-    };
-});
+jest.mock('../logger/index.ts');
 
 jest.mock('../platforms', () => ({
     isPlatformActive: jest.fn() as jest.Mock<boolean>,

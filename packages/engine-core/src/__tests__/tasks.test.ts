@@ -28,7 +28,7 @@ test('Execute task.rnv.platform.list', async () => {
     //GIVEN
     const ctx = getContext();
     //WHEN
-    await expect(taskRnvPlatformList.fn(ctx)).resolves.toEqual(true);
+    await expect(taskRnvPlatformList.fn?.(ctx)).resolves.toEqual(true);
     //THEN
     expect(executeTask).toHaveBeenCalledWith(ctx, 'project configure', 'platform list', undefined);
 });
@@ -37,7 +37,7 @@ test('Execute task.rnv.platform.configure', async () => {
     //GIVEN
     const ctx = getContext();
     //WHEN
-    await expect(taskRnvPlatformConfigure.fn(ctx)).resolves.toEqual(true);
+    await expect(taskRnvPlatformConfigure.fn?.(ctx)).resolves.toEqual(true);
     //THEN
     expect(executeTask).toHaveBeenCalledWith(ctx, 'project configure', 'platform configure', undefined);
 });
@@ -47,7 +47,7 @@ test('Execute task.rnv.kill', async () => {
     const ctx = getContext();
     ctx.paths.project.configExists = true;
     //WHEN
-    await expect(taskRnvKill.fn(ctx)).resolves.toEqual(true);
+    await expect(taskRnvKill.fn?.(ctx)).resolves.toEqual(true);
     //THEN
     expect(executeTask).toHaveBeenCalledWith(ctx, 'app configure', 'kill', undefined);
 });
@@ -61,7 +61,7 @@ test('Execute task.rnv.clean', async () => {
     );
     ctx.program.ci = false;
     //WHEN
-    await expect(taskRnvClean.fn(ctx)).resolves.toEqual(true);
+    await expect(taskRnvClean.fn?.(ctx)).resolves.toEqual(true);
     //THEN
     expect(removeDirs).toHaveBeenCalledTimes(3);
     expect(executeAsync).toHaveBeenCalledWith(ctx, 'watchman watch-del-all');
@@ -147,14 +147,14 @@ test('Execute task.rnv.new', async () => {
     ctx.program.templateVersion = '1.0.0-canary.7';
     ctx.program.projectTemplate = '@rnv/template-starter';
     //WHEN
-    await expect(taskRnvNew.fn(ctx)).resolves.toEqual(true);
+    await expect(taskRnvNew.fn?.(ctx)).resolves.toEqual(true);
     //THEN
     expect(writeFileSync).toHaveBeenCalledTimes(1);
     expect(writeFileSync).toHaveBeenCalledWith(undefined, {
         currentTemplate: '@rnv/template-starter',
-        common:  {
-            id: "com.test.app",
-            title: "testtitle",
+        common: {
+            id: 'com.test.app',
+            title: 'testtitle',
         },
         defaults: {
             supportedPlatforms: ['android', 'ios', 'web'],
