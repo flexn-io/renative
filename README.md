@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://renative.org">
-    <img src="https://renative.org/img/renative-logo-framed.png?raw=true" height="128" width="128">
+    <img src="https://renative.org/img/renative-logo-framed.png?raw=true" height="128" width="128" />
     <h1 align="center">ReNative</h1>
   </a>
   <p align="center">Unified Development Platform</p>
@@ -10,13 +10,13 @@
 
 <p align="center">
   <a aria-label="NPM version" href="https://www.npmjs.com/package/renative">
-    <img alt="" src="https://img.shields.io/npm/v/renative.svg?style=for-the-badge&labelColor=000000">
+    <img alt="" src="https://img.shields.io/npm/v/renative.svg?style=for-the-badge&labelColor=000000" />
   </a>
   <a aria-label="License" href="https://github.com/flexn-io/renative/blob/main/license.md">
-    <img alt="" src="https://img.shields.io/npm/l/renative.svg?style=for-the-badge&labelColor=000000">
+    <img alt="" src="https://img.shields.io/npm/l/renative.svg?style=for-the-badge&labelColor=000000" />
   </a>
   <a aria-label="Join the community on GitHub" href="https://github.com/flexn-io/renative/discussions">
-    <img alt="" src="https://img.shields.io/badge/Join%20the%20community-blueviolet.svg?style=for-the-badge&logo=ReNative&labelColor=000000&logoWidth=20">
+    <img alt="" src="https://img.shields.io/badge/Join%20the%20community-blueviolet.svg?style=for-the-badge&logo=ReNative&labelColor=000000&logoWidth=20" />
   </a>
 </p>
 
@@ -67,4 +67,4 @@ Thanks to all contributors [[Contribute]](CONTRIBUTING.md).
 
 Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/renative#backer)]
 
-<a href="https://opencollective.com/renative#backers" target="_blank"><img src="https://opencollective.com/renative/backers.svg?width=890"></a>
+<a href="https://opencollective.com/renative#backers" target="_blank"><img src="https://opencollective.com/renative/backers.svg?width=890" /></a>

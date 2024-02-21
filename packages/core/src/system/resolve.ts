@@ -16,7 +16,7 @@ import type { DoResolveFn, ResolveOptions } from './types';
  *
  * @param {*} aPath - package name. e.g. 'file:../rel/path', 'react-native', 'react-native/android', '@react-native-community/masked-view/android'
  * @param {*} mandatory - whether it throws
- * @param {*} options - docs - https://tinyurl.com/r9sfpf7 && {keepSuffix: boolean}
+ * @param {*} options - docs - https://tinyurl.com/r9sfpf7 && `{keepSuffix: boolean}`
  */
 export const doResolve: DoResolveFn = (aPath, mandatory = true, options = {}) => {
     if (!aPath) return undefined;
