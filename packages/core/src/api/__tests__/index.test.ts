@@ -1,7 +1,7 @@
-import { createRnvApi, inquirerPrompt, inquirerSeparator } from '../api';
+import { createRnvApi, inquirerPrompt, inquirerSeparator } from '../index';
 
 jest.mock('fs');
-jest.mock('../logger');
+jest.mock('../../logger');
 
 describe('Api tests', () => {
     beforeAll(() => {

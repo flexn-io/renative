@@ -1,14 +1,14 @@
-import { createPlatformBuild } from '../platforms';
-import { createRnvApi } from '../api';
-import { createRnvContext } from '../context';
-import { sanitizeDynamicProps, getRelativePath } from '../system/fs';
-import { RnvPlatform } from '../types';
-import { getContext } from '../context/provider';
-import { doResolve } from '../system/resolve';
+import { createPlatformBuild } from '../../platforms';
+import { createRnvApi } from '../../api';
+import { createRnvContext } from '../../context';
+import { sanitizeDynamicProps, getRelativePath, copyFolderContentsRecursiveSync } from '../fs';
+import { RnvPlatform } from '../../types';
+import { getContext } from '../../context/provider';
+import { doResolve } from '../resolve';
 
-jest.mock('../logger');
-jest.mock('../system/fs', () => {
-    const original = jest.requireActual('../system/fs');
+jest.mock('../../logger');
+jest.mock('../fs', () => {
+    const original = jest.requireActual('../fs');
 
     return {
         ...original,
@@ -142,7 +142,6 @@ describe('createPlatformBuild', () => {
     const c = getContext();
     c.runtime.availablePlatforms = ['ios', 'android'];
     c.paths.project.platformTemplatesDirs[platform] = '/path/to/pt';
-    const { copyFolderContentsRecursiveSync } = require('../system/fs');
 
     it('should copy platform template files to app folder', async () => {
         // WHEN

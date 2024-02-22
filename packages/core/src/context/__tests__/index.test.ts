@@ -1,9 +1,9 @@
-import { createRnvContext } from '../context';
-import { getContext } from '../context/provider';
+import { createRnvContext } from '../index';
+import { getContext } from '../provider';
 
 jest.mock('fs');
 jest.mock('process');
-jest.mock('../logger');
+jest.mock('../../logger');
 
 describe('Context tests', () => {
     beforeAll(() => {
