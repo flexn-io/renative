@@ -1,5 +1,5 @@
 import { getEngineRunnerByPlatform } from '../engines';
-import { isSystemWin } from '../utils/utils';
+import { isSystemWin } from '../system/isSystem';
 import { getRealPath } from '../system/fs';
 import { logTask } from '../logger';
 import { RnvContext, RnvContextPlatform } from './types';

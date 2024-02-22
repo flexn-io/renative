@@ -3,7 +3,7 @@ import { fsExistsSync } from './system/fs';
 import { chalk, logError, logWarning } from './logger';
 import type { RnvContext } from './context/types';
 import type { TimestampPathsConfig } from './system/types';
-import { RnvPlatform } from './types';
+import type { RnvPlatform } from './types';
 import { getConfigProp } from './configs/configProp';
 
 export const getTimestampPathsConfig = (c: RnvContext, platform: RnvPlatform): TimestampPathsConfig | undefined => {

@@ -15,7 +15,7 @@ import {
 
 import path from 'path';
 import { mkdirSync } from 'fs';
-import { isSystemWin } from '../utils/utils';
+import { isSystemWin } from '../system/isSystem';
 
 export const generateContextPaths = (pathObj: RnvContextPathObj, dir: string, configName?: string) => {
     pathObj.dir = dir;

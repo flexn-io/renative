@@ -36,8 +36,7 @@ export * from './system/resolve';
 export * from './logger';
 export * from './logger/defaults';
 
-export * from './utils/is';
-export * from './utils/utils';
+export * from './system/isSystem';
 
 export * from './api';
 export * from './api/provider';
