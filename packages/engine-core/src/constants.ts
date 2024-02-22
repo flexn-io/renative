@@ -2,7 +2,7 @@ export const RNV_PACKAGES = [
     {
         packageName: '@rnv/renative',
         folderName: 'renative',
-        skipLinking: true,
+        skipLinking: false,
     },
     {
         packageName: '@rnv/core',
