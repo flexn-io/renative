@@ -7,13 +7,12 @@ import * as configPropModule from '../configs/configProp';
 import { logWarning } from '../logger';
 import path from 'path';
 
+jest.mock('fs');
+jest.mock('path');
 jest.mock('../logger/index.ts');
 
 jest.mock('../platforms', () => ({
-    isPlatformActive: jest.fn() as jest.Mock<boolean>,
-}));
-jest.mock('path', () => ({
-    join: jest.fn(),
+    isPlatformActive: jest.fn(),
 }));
 
 describe('copyAssetsFolder', () => {
@@ -25,7 +24,7 @@ describe('copyAssetsFolder', () => {
     });
 
     it('should exit when platform is not active', async () => {
-        (platformsModule.isPlatformActive as jest.Mock<boolean>).mockReturnValue(false);
+        jest.mocked(platformsModule.isPlatformActive).mockReturnValue(false);
         const result = await copyAssetsFolder(c, platform);
 
         expect(platformsModule.isPlatformActive).toHaveBeenCalled();
@@ -37,10 +36,8 @@ describe('copyAssetsFolder', () => {
             .spyOn(configPropModule, 'getConfigProp')
             .mockReturnValueOnce('web')
             .mockReturnValueOnce(['./MOCK_PATH']);
-        (platformsModule.isPlatformActive as jest.Mock<boolean>).mockReturnValue(true);
 
-        // (path.join as jest.Mock<string>).mockReturnValue('MOST_JOINED_PATH');
-
+        jest.spyOn(platformsModule, 'isPlatformActive').mockReturnValue(true);
         jest.spyOn(path, 'join').mockReturnValue('MOCK_JOINED_PATH');
 
         //WHEN

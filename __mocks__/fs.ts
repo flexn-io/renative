@@ -1,6 +1,5 @@
 // __mocks__/fs.ts
-const path = require('path');
-
+import path from 'path';
 const fs: any = jest.createMockFromModule('fs');
 
 let mockFiles = Object.create(null);

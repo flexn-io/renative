@@ -29,7 +29,7 @@ test('Execute task.rnv.run -p tizen', async () => {
     //GIVEN
     const ctx = getContext();
     ctx.platform = 'tizen';
-    (getPlatformProjectDir as jest.Mock<string>).mockReturnValue('');
+    jest.mocked(getPlatformProjectDir).mockReturnValue('');
     //WHEN
     await taskRnvRun.fn?.(ctx);
     //THEN

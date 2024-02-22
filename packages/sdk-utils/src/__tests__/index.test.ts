@@ -56,8 +56,6 @@ describe('getDevServerHost', () => {
     });
 });
 
-jest.mock('../logger/index.ts');
-
 // TO TEST:
 // 0.0.4
 // 1.2.3
