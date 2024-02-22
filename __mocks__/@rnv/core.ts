@@ -264,7 +264,7 @@ rnvcore.copyFolderContentsRecursiveSync = jest.fn();
 
 rnvcore.getConfigProp = (c, platform, key) => configPropMocks[key];
 rnvcore.confirmActiveBundler = () => null;
-rnvcore.getAppFolder = () => null;
+rnvcore.getAppFolder = jest.fn();
 
 rnvcore.logToSummary = jest.fn();
 rnvcore.logTask = jest.fn();

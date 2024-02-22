@@ -444,12 +444,10 @@ export const copyAssetsFolder = async (
     const assetSources = getConfigProp(c, platform, 'assetSources') || [];
 
     const validAssetSources: Array<string> = [];
-    // console.log('SKSKSK', assetFolderPlatform, assetSources);
 
     if (assetFolderPlatform) {
         assetSources.forEach((v) => {
             const assetsPath = path.join(_resolvePackage(c, v), assetFolderPlatform);
-            console.log('SLLS', assetsPath, fsExistsSync(assetsPath));
 
             if (fsExistsSync(assetsPath)) {
                 validAssetSources.push(assetsPath);

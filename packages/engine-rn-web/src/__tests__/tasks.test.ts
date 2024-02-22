@@ -1,9 +1,10 @@
-import { createRnvApi, createRnvContext, getContext, getPlatformProjectDir } from '@rnv/core';
+import { createRnvApi, createRnvContext, getAppFolder, getContext, getPlatformProjectDir } from '@rnv/core';
 import taskRnvRun from '../tasks/task.rnv.run';
 import { runWebpackServer } from '@rnv/sdk-webpack';
 import { runTizen } from '@rnv/sdk-tizen';
 
 jest.mock('fs');
+jest.mock('path');
 jest.mock('axios');
 jest.mock('@rnv/core');
 jest.mock('process');
@@ -16,10 +17,16 @@ beforeEach(() => {
     createRnvApi();
 });
 
+afterEach(() => {
+    jest.clearAllMocks();
+});
+
 test('Execute task.rnv.run -p web', async () => {
     //GIVEN
     const ctx = getContext();
     ctx.platform = 'web';
+
+    jest.mocked(getAppFolder).mockReturnValueOnce('MOCKED_PATH');
     //WHEN
     await taskRnvRun.fn?.(ctx);
     //THEN

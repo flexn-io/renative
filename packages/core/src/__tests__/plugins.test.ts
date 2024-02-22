@@ -3,30 +3,19 @@ import { createRnvApi } from '../api';
 import { createRnvContext } from '../context';
 import { generateContextDefaults } from '../context/defaults';
 
-jest.mock('../logger/index.ts', () => {
-    return {
-        logTask: jest.fn(),
-        logDebug: jest.fn(),
-        logError: jest.fn(),
-        logWarning: jest.fn(),
-        logInfo: jest.fn(),
-        chalk: () => ({
-            red: jest.fn(),
-            white: jest.fn(),
-        }),
-    };
+jest.mock('../logger/index.ts');
+
+beforeEach(() => {
+    createRnvContext();
+    createRnvApi();
+});
+
+afterEach(() => {
+    // jest.resetAllMocks();
+    jest.clearAllMocks();
 });
 
 describe('parsePlugins', () => {
-    beforeAll(() => {
-        createRnvContext();
-        createRnvApi();
-    });
-
-    beforeEach(() => {
-        jest.resetAllMocks();
-    });
-
     it('should parse plugins correctly', () => {
         // GIVEN
         const c = generateContextDefaults();
@@ -141,7 +130,9 @@ describe('parsePlugins', () => {
             },
         };
         const platform = 'tvos';
-        const pluginCallback = jest.fn((...rest) => console.log('callback called', rest));
+        const pluginCallback = jest.fn(() => {
+            // console.log('callback called', rest)
+        });
         const ignorePlatformObjectCheck = true;
         const includeDisabledPlugins = true;
 

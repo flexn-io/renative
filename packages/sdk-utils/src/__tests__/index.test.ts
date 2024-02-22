@@ -10,7 +10,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
 });
 
 describe('Test getValidLocalhost', () => {
@@ -196,6 +196,7 @@ describe('Test getAppVersionCode', () => {
         // GIVEN
         jest.mocked(getConfigProp).mockReturnValueOnce(undefined); //versionCode
         jest.mocked(getConfigProp).mockReturnValueOnce('1'); //version
+        jest.mocked(getConfigProp).mockReturnValueOnce(undefined); //versionCodeFormat
         // WHEN
         const result = getAppVersionCode(getContext(), 'ios');
         // THEN
@@ -215,13 +216,12 @@ describe('Test getAppVersionCode', () => {
     it('should throw on given versionCode `string` on android', async () => {
         // GIVEN
         jest.mocked(getConfigProp).mockReturnValueOnce('something as a string'); //versionCode
-        jest.mocked(getConfigProp).mockReturnValueOnce('1'); //version
         expect.assertions(1);
         try {
             // WHEN
             getAppVersionCode(getContext(), 'android');
         } catch (e) {
-            // THEWN
+            // THEN
             expect(e).toEqual(Error(`'versionCode' should be a positive integer. Check your config`));
         }
     });
@@ -229,13 +229,12 @@ describe('Test getAppVersionCode', () => {
     it('should throw on given versionCode negative on android', async () => {
         // GIVEN
         jest.mocked(getConfigProp).mockReturnValueOnce('-1'); //versionCode
-        jest.mocked(getConfigProp).mockReturnValueOnce('1'); //version
         expect.assertions(1);
         try {
             // WHEN
             getAppVersionCode(getContext(), 'android');
         } catch (e) {
-            // THEWN
+            // THEN
             expect(e).toEqual(Error(`'versionCode' should be a positive integer. Check your config`));
         }
     });
@@ -243,7 +242,6 @@ describe('Test getAppVersionCode', () => {
     it('should evaluate given versionCode 4.4.4 with 4.4.4 on ios', async () => {
         // GIVEN
         jest.mocked(getConfigProp).mockReturnValueOnce('4.4.4'); //versionCode
-        jest.mocked(getConfigProp).mockReturnValueOnce('1'); //version
         // WHEN
         const result = getAppVersionCode(getContext(), 'ios');
         // THEN

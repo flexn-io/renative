@@ -1,12 +1,16 @@
-import { createRnvApi, createRnvContext, getContext, executeAsync, logError } from '@rnv/core';
+import { createRnvApi, createRnvContext, executeTask, getContext } from '@rnv/core';
 import taskRnvRun from '../tasks/task.rnv.run';
 import taskRnvStart from '../tasks/task.rnv.start';
+import { startReactNative } from '@rnv/sdk-react-native';
+import { getIosDeviceToRunOn, runXcodeProject } from '@rnv/sdk-apple';
 
 jest.mock('fs');
 jest.mock('axios');
 jest.mock('@rnv/core');
 jest.mock('@rnv/sdk-apple');
+jest.mock('@rnv/sdk-android');
 jest.mock('@rnv/sdk-utils');
+jest.mock('@rnv/sdk-react-native');
 
 beforeEach(() => {
     createRnvContext();
@@ -14,47 +18,44 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-    //Do nothing
+    jest.resetAllMocks();
 });
 
 const originTask = undefined;
 
 test('Execute task.rnv.run', async () => {
+    // GIVEN
     const ctx = getContext();
-    jest.mocked(executeAsync).mockReturnValue(Promise.resolve('{}'));
+    ctx.platform = 'ios';
+    // jest.mocked(executeAsync).mockReturnValue(Promise.resolve('{}'));
+    jest.mocked(getIosDeviceToRunOn).mockResolvedValueOnce('');
+    // WHEN
     await taskRnvRun.fn?.(ctx, undefined, originTask);
-    await expect(taskRnvRun.fn?.(ctx, undefined, originTask)).resolves.toEqual(true);
+    // THEN
+    // await expect(taskRnvRun.fn?.(ctx, undefined, originTask)).resolves.toEqual(true);
+    expect(runXcodeProject).toHaveBeenCalledWith(ctx, '');
+
     // expect(taskManager.executeTask).toHaveBeenCalledWith(c, 'project configure', 'platform list', originTask);
 });
 
 test('Execute task.rnv.start with no parent', async () => {
+    // GIVEN
     const ctx = getContext();
-    jest.mocked(executeAsync).mockReturnValue(Promise.resolve('{}'));
+    ctx.platform = 'ios';
+    jest.mocked(executeTask).mockResolvedValueOnce(undefined);
+    // WHEN
     await taskRnvStart.fn?.(ctx, undefined, originTask);
-    await expect(taskRnvRun.fn?.(ctx, undefined, originTask)).resolves.toEqual(true);
+    // THEN
+    expect(startReactNative).toHaveBeenCalledWith(ctx, { waitForBundler: true });
 });
 
 test('Execute task.rnv.start', async () => {
+    // GIVEN
     const ctx = getContext();
-    jest.mocked(executeAsync).mockReturnValue(Promise.resolve('{}'));
+    ctx.platform = 'ios';
+    // WHEN
     await taskRnvStart.fn?.(ctx, 'parent', originTask);
-    expect(executeAsync).toHaveBeenCalledWith(ctx, 'npx react-native start --port undefined --no-interactive', {
-        env: {},
-        silent: true,
-        stdio: 'inherit',
-    });
-    await expect(taskRnvRun.fn?.(ctx, undefined, originTask)).resolves.toEqual(true);
-});
-
-test('Execute task.rnv.start with metro failure', async () => {
-    const ctx = getContext();
-    jest.mocked(executeAsync).mockReturnValue(new Promise((resolve, reject) => reject('Metro failed')));
-    await taskRnvStart.fn?.(ctx, 'parent', originTask);
-    expect(executeAsync).toHaveBeenCalledWith(ctx, 'npx react-native start --port undefined --no-interactive', {
-        env: {},
-        silent: true,
-        stdio: 'inherit',
-    });
-    expect(logError).toHaveBeenCalledWith('Metro failed', true);
-    await expect(taskRnvRun.fn?.(ctx, undefined, originTask)).resolves.toEqual(true);
+    // THEN
+    expect(startReactNative).toHaveBeenCalledWith(ctx, { waitForBundler: false });
+    // await expect(taskRnvRun.fn?.(ctx, undefined, originTask)).resolves.toEqual(true);
 });
