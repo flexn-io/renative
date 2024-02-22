@@ -348,7 +348,9 @@ export const addAppDelegateImports = (
         logDebug(`${target.replace('plugin', '')} add`);
         if (c.payload.pluginConfigiOS[target].indexOf(appDelegateImport) === -1) {
             logDebug(`${target.replace('plugin', '')} add ok`);
-            c.payload.pluginConfigiOS[target] += `#import "${appDelegateImport}"\n`;
+            c.payload.pluginConfigiOS[target] += appDelegateImport.startsWith('<')
+                ? `#import ${appDelegateImport}\n`
+                : `#import "${appDelegateImport}"\n`;
         }
     });
 };
