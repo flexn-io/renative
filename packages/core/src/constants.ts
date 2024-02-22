@@ -1,8 +1,4 @@
 // PLATFORM
-import { homedir } from 'os';
-
-export const USER_HOME_DIR = homedir();
-
 export const ANDROID = 'android';
 export const ANDROID_AUTO = 'androidauto';
 export const ANDROID_TV = 'androidtv';

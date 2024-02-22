@@ -6,16 +6,7 @@ import { RnvPlatform } from '../types';
 import { getContext } from '../context/provider';
 import { doResolve } from '../system/resolve';
 
-jest.mock('../logger/index.ts', () => {
-    return {
-        logTask: jest.fn(),
-        logDebug: jest.fn(),
-        chalk: () => ({
-            red: jest.fn(),
-            white: jest.fn(),
-        }),
-    };
-});
+jest.mock('../logger');
 
 jest.mock('../system/fs.ts', () => {
     const original = jest.requireActual('../system/fs.ts');
@@ -23,8 +14,8 @@ jest.mock('../system/fs.ts', () => {
     return {
         ...original,
         copyFolderContentsRecursiveSync: jest.fn(),
-    }
-})
+    };
+});
 
 describe('sanitizeDynamicProps', () => {
     beforeAll(() => {
@@ -129,21 +120,21 @@ describe('sanitizeDynamicProps', () => {
 });
 
 describe('getRelativePath', () => {
-  it('returns the correct relative path when path is a subdirectory', () => {
-    const from = '/Users/user/some/path/packages/core/src';
-    const to = '/Users/user/some/path/packages/core/src/system/fs.ts';
-    const expected = './system/fs.ts';
-    const result = getRelativePath(from, to);
-    expect(result).toEqual(expected);
-  });
+    it('returns the correct relative path when path is a subdirectory', () => {
+        const from = '/Users/user/some/path/packages/core/src';
+        const to = '/Users/user/some/path/packages/core/src/system/fs.ts';
+        const expected = './system/fs.ts';
+        const result = getRelativePath(from, to);
+        expect(result).toEqual(expected);
+    });
 
-  it('returns the correct relative path when path is a parent directory', () => {
-    const from = '/Users/user/some/path/packages/core/src/system/fs.ts';
-    const to = '/Users/user/some/path/packages/core/src';
-    const expected = '../..';
-    const result = getRelativePath(from, to);
-    expect(result).toEqual(expected);
-  });
+    it('returns the correct relative path when path is a parent directory', () => {
+        const from = '/Users/user/some/path/packages/core/src/system/fs.ts';
+        const to = '/Users/user/some/path/packages/core/src';
+        const expected = '../..';
+        const result = getRelativePath(from, to);
+        expect(result).toEqual(expected);
+    });
 });
 
 describe('createPlatformBuild', () => {
@@ -155,12 +146,8 @@ describe('createPlatformBuild', () => {
     const { copyFolderContentsRecursiveSync } = require('../system/fs');
 
     it('should copy platform template files to app folder', async () => {
-        
         // WHEN
-        await createPlatformBuild(
-            c,
-            platform,
-        );
+        await createPlatformBuild(c, platform);
 
         // THEN
         expect(copyFolderContentsRecursiveSync).toHaveBeenCalledWith(
@@ -172,9 +159,10 @@ describe('createPlatformBuild', () => {
             [
                 {
                     pattern: '{{PATH_REACT_NATIVE}}',
-                    override: doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native', true, {
-                    forceForwardPaths: true,
-                }) || '',
+                    override:
+                        doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native', true, {
+                            forceForwardPaths: true,
+                        }) || '',
                 },
             ],
             undefined,

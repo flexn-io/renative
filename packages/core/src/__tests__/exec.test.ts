@@ -3,7 +3,7 @@ import { createRnvContext } from '../context';
 import { generateContextDefaults } from '../context/defaults';
 import { executeAsync, commandExistsSync, commandExists } from '../system/exec';
 
-jest.mock('../logger/index.ts', () => {
+jest.mock('../logger', () => {
     return {
         logTask: jest.fn(),
         logDebug: jest.fn(),

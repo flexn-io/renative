@@ -1,4 +1,4 @@
-jest.mock('../logger/index.ts');
+jest.mock('../logger');
 
 jest.mock('../tasks/index.ts', () => ({
     initializeTask: jest.fn(),

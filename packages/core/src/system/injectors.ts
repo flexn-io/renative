@@ -1,4 +1,4 @@
-import { getConfigProp } from '../configs/configProp';
+import { getConfigProp } from '../context/contextProps';
 import { getContext } from '../context/provider';
 import { ConfigPropKey } from '../schema/types';
 import { OverridesOptions } from './types';

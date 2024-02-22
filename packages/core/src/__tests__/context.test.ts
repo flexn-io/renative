@@ -3,7 +3,7 @@ import { getContext } from '../context/provider';
 
 jest.mock('fs');
 jest.mock('process');
-jest.mock('../logger/index.ts');
+jest.mock('../logger');
 
 describe('Context tests', () => {
     beforeAll(() => {

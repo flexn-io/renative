@@ -3,7 +3,7 @@ import { createRnvApi } from '../api';
 import { createRnvContext } from '../context';
 import { generateContextDefaults } from '../context/defaults';
 
-jest.mock('../logger/index.ts');
+jest.mock('../logger');
 
 beforeEach(() => {
     createRnvContext();
