@@ -14,7 +14,6 @@ import {
     isTemplateInstalled,
     fsExistsSync,
     fsMkdirSync,
-    checkCrypto,
     checkAndMigrateProject,
     TASK_INSTALL,
     TASK_PROJECT_CONFIGURE,
@@ -38,6 +37,7 @@ import {
     RnvTask,
     generateLocalJsonSchemas,
 } from '@rnv/core';
+import { checkCrypto } from '../crypto';
 
 const checkIsRenativeProject = async (c: RnvContext) => {
     if (!c.paths.project.configExists) {

@@ -13,8 +13,6 @@ import {
     fsExistsSync,
     fsReadFileSync,
     inquirerPrompt,
-    getEnvVar,
-    getEnvExportCmd,
     executeTask,
     TASK_CRYPTO_DECRYPT,
     TASK_PROJECT_CONFIGURE,
@@ -23,6 +21,7 @@ import {
     RnvTaskFn,
     RnvTask,
 } from '@rnv/core';
+import { getEnvExportCmd, getEnvVar } from '../crypto';
 
 const iocane = require('iocane');
 

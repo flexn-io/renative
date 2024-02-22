@@ -45,7 +45,6 @@ export * from './api/provider';
 export * from './constants';
 export * from './env';
 export * from './doctor';
-export * from './crypto';
 export * from './common';
 export * from './templates';
 export * from './integrations';
