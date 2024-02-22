@@ -41,7 +41,7 @@ export const initializeTask = async (c: RnvContext, task: string) => {
     return true;
 };
 
-const _getTaskOption = ({ taskInstance }: TaskObj): TaskOption => {
+const _getTaskOption = ({ taskInstance }: TaskObj, provider?: string): TaskOption => {
     const asArray = taskInstance.task.split(' ');
     const output: TaskOption = {
         value: taskInstance.task,
@@ -52,6 +52,7 @@ const _getTaskOption = ({ taskInstance }: TaskObj): TaskOption => {
         description: taskInstance.description,
         isGlobalScope: taskInstance.isGlobalScope,
         isPrivate: taskInstance.isPrivate,
+        params: taskInstance.params,
     };
 
     if (taskInstance.description && taskInstance.description !== '') {
@@ -62,6 +63,10 @@ const _getTaskOption = ({ taskInstance }: TaskObj): TaskOption => {
     }
     output.command = asArray[0];
     output.subCommand = asArray[1];
+
+    if (provider) {
+        output.provider = provider;
+    }
 
     return output;
 };
@@ -82,32 +87,40 @@ const _getTaskObj = (taskInstance: RnvTask) => {
     };
 };
 
+export const getAllSuitableTasks = (c: RnvContext): Record<string, TaskOption> => {
+    const REGISTERED_ENGINES = getRegisteredEngines(c);
+    const suitableTasks: Record<string, TaskOption> = {};
+    REGISTERED_ENGINES.forEach((engine) => {
+        Object.values(engine.tasks).forEach((taskInstance) => {
+            console.log('taskInstance', taskInstance);
+            let taskObj: TaskOption = _getTaskOption(_getTaskObj(taskInstance), engine?.config?.id);
+            if (!suitableTasks[taskObj.value]) {
+                suitableTasks[taskObj.value] = taskObj;
+            } else {
+                taskObj = suitableTasks[taskObj.value];
+                // In case of multiple competing tasks (same task name but coming from different engines)
+                // We try to revert to generic description instead.
+                taskObj.description = DEFAULT_TASK_DESCRIPTIONS[taskObj.value] || taskObj.description;
+                // In case of multiple competing tasks we assume they are "commonly used"
+                taskObj.isPriorityOrder = true;
+            }
+        });
+    });
+    Object.values(CUSTOM_TASKS).forEach((taskInstance) => {
+        const taskObj = _getTaskOption(_getTaskObj(taskInstance), 'custom');
+        suitableTasks[taskObj.value] = taskObj;
+    });
+
+    return suitableTasks;
+};
+
 export const findSuitableTask = async (c: RnvContext, specificTask?: string): Promise<RnvTask | undefined> => {
     logTask('findSuitableTask');
     const REGISTERED_ENGINES = getRegisteredEngines(c);
     let task = '';
     if (!specificTask) {
         if (!c.command) {
-            const suitableTasks: Record<string, TaskOption> = {};
-            REGISTERED_ENGINES.forEach((engine) => {
-                Object.values(engine.tasks).forEach((taskInstance) => {
-                    let taskObj: TaskOption = _getTaskOption(_getTaskObj(taskInstance));
-                    if (!suitableTasks[taskObj.value]) {
-                        suitableTasks[taskObj.value] = taskObj;
-                    } else {
-                        taskObj = suitableTasks[taskObj.value];
-                        // In case of multiple competing tasks (same task name but coming from different engines)
-                        // We try to revert to generic description instead.
-                        taskObj.description = DEFAULT_TASK_DESCRIPTIONS[taskObj.value] || taskObj.description;
-                        // In case of multiple competing tasks we assume they are "commonly used"
-                        taskObj.isPriorityOrder = true;
-                    }
-                });
-            });
-            Object.values(CUSTOM_TASKS).forEach((taskInstance) => {
-                const taskObj = _getTaskOption(_getTaskObj(taskInstance));
-                suitableTasks[taskObj.value] = taskObj;
-            });
+            const suitableTasks = getAllSuitableTasks(c);
 
             const taskInstances = Object.values(suitableTasks);
             let tasks: TaskOption[];

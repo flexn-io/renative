@@ -243,12 +243,12 @@ const PARAM_KEYS_ENUM = {
     provisioningStyle: {
         value: 'value',
         isRequired: true,
-        description: 'Set provisioningStyle <Automatic | Manual>',
+        description: 'Set provisioningStyle (Automatic | Manual)',
     },
     codeSignIdentity: {
         value: 'value',
         isRequired: true,
-        description: 'Set codeSignIdentity ie <iPhone Distribution>',
+        description: 'Set codeSignIdentity (ie iPhone Distribution)',
     },
     provisionProfileSpecifier: {
         value: 'value',
