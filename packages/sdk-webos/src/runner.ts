@@ -2,7 +2,6 @@ import { buildCoreWebpackProject, configureCoreWebProject, runWebpackServer } fr
 import path from 'path';
 import {
     execCLI,
-    REMOTE_DEBUGGER_ENABLED_PLATFORMS,
     RnvContext,
     getPlatformProjectDir,
     getConfigProp,
@@ -32,6 +31,7 @@ import {
     getAppTitle,
     getAppDescription,
     addSystemInjects,
+    REMOTE_DEBUGGER_ENABLED_PLATFORMS,
 } from '@rnv/sdk-utils';
 import { fsExistsSync } from '@rnv/core';
 

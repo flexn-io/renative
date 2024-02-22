@@ -15,13 +15,12 @@ import {
     CHROMECAST,
     TASK_START,
     TASK_CONFIGURE,
-    REMOTE_DEBUGGER_ENABLED_PLATFORMS,
     PARAMS,
     executeTask,
     shouldSkipTask,
     RnvTask,
 } from '@rnv/core';
-import { openBrowser, waitForHost } from '@rnv/sdk-utils';
+import { REMOTE_DEBUGGER_ENABLED_PLATFORMS, openBrowser, waitForHost } from '@rnv/sdk-utils';
 
 export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;

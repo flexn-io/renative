@@ -1,4 +1,13 @@
-import { OverridesOptions, chalk, getAppConfigBuildsFolder, inquirerPrompt, logWarning } from '@rnv/core';
+import {
+    OverridesOptions,
+    TIZEN,
+    TIZEN_MOBILE,
+    TIZEN_WATCH,
+    chalk,
+    getAppConfigBuildsFolder,
+    inquirerPrompt,
+    logWarning,
+} from '@rnv/core';
 import { fsExistsSync } from '@rnv/core';
 import { DEFAULTS, RnvContext, RnvPlatform, getConfigProp, logTask } from '@rnv/core';
 import axios from 'axios';
@@ -8,6 +17,8 @@ import killPort from 'kill-port';
 import path from 'path';
 import ip from 'ip';
 import colorString from 'color-string';
+
+export const REMOTE_DEBUGGER_ENABLED_PLATFORMS = [TIZEN, TIZEN_MOBILE, TIZEN_WATCH];
 
 export const getValidLocalhost = (value: string, localhost: string) => {
     if (!value) return localhost;
@@ -312,4 +323,13 @@ export const sanitizeColor = (val: string | undefined, key: string) => {
         rgbDecimal: rgb.map((v: number) => (v > 1 ? Math.round((v / 255) * 10) / 10 : v)),
         hex,
     };
+};
+
+export const isUrlLocalhost = (value: string) => {
+    if (value?.includes) {
+        if (value.includes('localhost')) return true;
+        if (value.includes('0.0.0.0')) return true;
+        if (value.includes('127.0.0.1')) return true;
+    }
+    return false;
 };
