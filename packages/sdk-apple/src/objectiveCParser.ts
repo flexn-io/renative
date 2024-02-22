@@ -139,13 +139,13 @@ export const parseAppDelegate = (
                     end: null,
                 },
                 didReceiveRemoteNotification: {
-                    func: '- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)notification fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))handler {',
+                    func: '- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler {',
                     begin: null,
                     render: (v) => `${v};`,
                     end: null,
                 },
                 didFailToRegisterForRemoteNotificationsWithError: {
-                    func: '- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error; {',
+                    func: '- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {',
                     begin: null,
                     render: (v) => `${v};`,
                     end: null,
