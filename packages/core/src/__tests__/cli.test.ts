@@ -1,11 +1,5 @@
 jest.mock('../logger');
-
-jest.mock('../tasks/index.ts', () => ({
-    initializeTask: jest.fn(),
-    findSuitableTask: () => {
-        //Do nothing
-    },
-}));
+jest.mock('../tasks');
 
 const itShouldResolve = (cmd) => {
     it(`${cmd} should resolve`, () => shouldResolve());

@@ -3,15 +3,7 @@ import { createRnvContext } from '../context';
 import { generateContextDefaults } from '../context/defaults';
 import { executeAsync, commandExistsSync, commandExists } from '../system/exec';
 
-jest.mock('../logger', () => {
-    return {
-        logTask: jest.fn(),
-        logDebug: jest.fn(),
-        chalk: () => ({
-            rgb: jest.fn(),
-        }),
-    };
-});
+jest.mock('../logger');
 
 describe('Testing exec functions', () => {
     beforeAll(() => {

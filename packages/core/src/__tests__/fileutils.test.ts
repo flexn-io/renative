@@ -7,9 +7,8 @@ import { getContext } from '../context/provider';
 import { doResolve } from '../system/resolve';
 
 jest.mock('../logger');
-
-jest.mock('../system/fs.ts', () => {
-    const original = jest.requireActual('../system/fs.ts');
+jest.mock('../system/fs', () => {
+    const original = jest.requireActual('../system/fs');
 
     return {
         ...original,
