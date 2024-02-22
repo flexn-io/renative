@@ -9,6 +9,7 @@ jest.mock('@rnv/core');
 jest.mock('process');
 jest.mock('@rnv/sdk-webpack');
 jest.mock('@rnv/sdk-tizen');
+jest.mock('@rnv/sdk-utils');
 
 beforeEach(() => {
     createRnvContext();

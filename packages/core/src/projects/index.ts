@@ -449,7 +449,7 @@ export const copyAssetsFolder = async (
     const assetSources = getConfigProp(c, platform, 'assetSources') || [];
 
     const validAssetSources: Array<string> = [];
-    console.log('SKSKSK', assetFolderPlatform, assetSources);
+    // console.log('SKSKSK', assetFolderPlatform, assetSources);
 
     if (assetFolderPlatform) {
         assetSources.forEach((v) => {
