@@ -1,4 +1,5 @@
-import { getAppFolder, getConfigProp } from '../common';
+import { getAppFolder } from '../common';
+import { getConfigProp } from '../configs/configProp';
 import { ANDROID_TV, FIRE_TV, TVOS } from '../constants';
 import { getContext } from '../context/provider';
 import { RnvContext } from '../context/types';

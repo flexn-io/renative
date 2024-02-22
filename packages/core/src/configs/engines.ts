@@ -1,8 +1,8 @@
-import { getConfigProp } from '../common';
 import { RnvContext } from '../context/types';
 import { RnvEngineTemplate, RnvEngineTemplateMap } from '../engines/types';
 import { logWarning } from '../logger';
 import { RnvPlatform } from '../types';
+import { getConfigProp } from './configProp';
 
 const _getMergedEngineConfigs = (c: RnvContext) => {
     const engines = c.buildConfig?.engines;

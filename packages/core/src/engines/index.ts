@@ -2,7 +2,6 @@ import path from 'path';
 import { fsExistsSync, readObjectSync, writeFileSync } from '../system/fs';
 import { installPackageDependencies } from '../projects/npm';
 import { logDebug, logTask, chalk, logInfo, logWarning, logError } from '../logger';
-import { getConfigProp } from '../common';
 import { doResolve } from '../system/resolve';
 import { configurePlugins } from '../plugins';
 import { RnvContext } from '../context/types';
@@ -15,6 +14,7 @@ import { writeRenativeConfigFile } from '../configs/utils';
 import { checkAndCreateProjectPackage } from '../projects/package';
 import { getEngineTemplateByPlatform } from '../configs/engines';
 import { ConfigFileEngine } from '../schema/configFiles/types';
+import { getConfigProp } from '../configs/configProp';
 
 const ENGINE_CORE = 'engine-core';
 

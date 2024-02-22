@@ -3,7 +3,6 @@ import { RENATIVE_CONFIG_NAME, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constant
 import {
     copyFolderContentsRecursiveSync,
     copyFileSync,
-    writeFileSync,
     removeDirsSync,
     removeFilesSync,
     mergeObjects,
@@ -14,7 +13,6 @@ import {
     removeDirSync,
 } from '../system/fs';
 import { chalk, logError, logInfo, logWarning, logTask, logDebug } from '../logger';
-import { getConfigProp } from '../common';
 import { loadFileExtended } from '../configs';
 import { doResolve } from '../system/resolve';
 import { RnvContext } from '../context/types';
@@ -26,6 +24,7 @@ import { writeRenativeConfigFile } from '../configs/utils';
 import { checkIfProjectAndNodeModulesExists } from '../projects/dependencyManager';
 import { ConfigFileApp, ConfigFileProject, ConfigFileTemplate } from '../schema/configFiles/types';
 import { PlatformKey } from '../schema/types';
+import { getConfigProp } from '../configs/configProp';
 
 const _cleanProjectTemplateSync = (c: RnvContext) => {
     logTask('_cleanProjectTemplateSync');

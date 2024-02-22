@@ -3,7 +3,7 @@ import { fsExistsSync, fsReadFileSync, fsReaddirSync, fsWriteFileSync } from '..
 import path from 'path';
 import { RnvApi } from './types';
 import { doResolve } from '../system/resolve';
-import { getConfigProp } from '../common';
+import { getConfigProp } from '../configs/configProp';
 
 const spinner: any = () => ({
     start: () => {

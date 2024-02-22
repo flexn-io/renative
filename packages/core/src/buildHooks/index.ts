@@ -2,10 +2,10 @@ import path from 'path';
 import { build } from 'esbuild';
 import { logDebug, logError, logHook, logInfo } from '../logger';
 import { fsExistsSync, copyFolderContentsRecursiveSync } from '../system/fs';
-import { getConfigProp } from '../common';
 import { doResolve } from '../system/resolve';
 import { RnvContext } from '../context/types';
 import { inquirerPrompt } from '../api';
+import { getConfigProp } from '../configs/configProp';
 
 export const executePipe = async (c: RnvContext, key: string) => {
     logHook('executePipe', c?.program?.json ? key : `('${key}')`);

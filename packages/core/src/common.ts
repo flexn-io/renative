@@ -51,5 +51,3 @@ export const getAppConfigBuildsFolder = (c: RnvContext, platform: RnvPlatform, c
     if (fsExistsSync(p)) return p;
     return path.join(pp, `builds/${platform}`);
 };
-
-export { getConfigProp };

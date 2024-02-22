@@ -1,7 +1,7 @@
 import { sanitizeDynamicProps, mergeObjects, fsExistsSync, writeFileSync } from '../system/fs';
-import { getConfigProp } from '../common';
 import { logTask } from '../logger';
 import { RnvContext } from '../context/types';
+import { getConfigProp } from './configProp';
 
 export const generatePlatformAssetsRuntimeConfig = async (c: RnvContext) => {
     logTask('generateRuntimeConfig');

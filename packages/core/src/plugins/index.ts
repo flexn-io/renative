@@ -1,6 +1,6 @@
 import merge from 'deepmerge';
 import path from 'path';
-import { getAppConfigBuildsFolder, getAppFolder, getConfigProp } from '../common';
+import { getAppConfigBuildsFolder, getAppFolder } from '../common';
 import { parseRenativeConfigs } from '../configs';
 import { RENATIVE_CONFIG_PLUGINS_NAME } from '../constants';
 import { configureFonts } from '../projects';
@@ -27,6 +27,7 @@ import { OverridesOptions, ResolveOptions } from '../system/types';
 import { ConfigFileOverrides, ConfigFilePlugin, ConfigFilePlugins } from '../schema/configFiles/types';
 import { NpmPackageFile } from '../configs/types';
 import { getContext } from '../context/provider';
+import { getConfigProp } from '../configs/configProp';
 
 const _getPluginScope = (plugin: RenativeConfigPlugin | string): RnvPluginScope => {
     if (typeof plugin === 'string') {

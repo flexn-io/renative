@@ -1,4 +1,4 @@
-import { getConfigProp } from '../common';
+import { getConfigProp } from '../configs/configProp';
 import { INJECTABLE_CONFIG_PROPS, INJECTABLE_RUNTIME_PROPS } from '../constants';
 import { getContext } from '../context/provider';
 import { OverridesOptions } from './types';

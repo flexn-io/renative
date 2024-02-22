@@ -1,11 +1,5 @@
 import path from 'path';
-import {
-    getAppConfigBuildsFolder,
-    getAppFolder,
-    getConfigProp,
-    getPlatformProjectDir,
-    getTimestampPathsConfig,
-} from '../common';
+import { getAppConfigBuildsFolder, getAppFolder, getPlatformProjectDir, getTimestampPathsConfig } from '../common';
 import { RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
 import { isPlatformActive } from '../platforms';
 import { copyTemplatePluginsSync, parsePlugins } from '../plugins';
@@ -36,6 +30,7 @@ import { inquirerPrompt } from '../api';
 import { upgradeProjectDependencies } from '../configs/configProject';
 import { generateConfigPropInjects } from '../system/injectors';
 import { ConfigFileApp, ConfigFileEngine, ConfigFileProject, ConfigFileTemplate } from '../schema/configFiles/types';
+import { getConfigProp } from '../configs/configProp';
 
 export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
     logTask('checkAndBootstrapIfRequired');
