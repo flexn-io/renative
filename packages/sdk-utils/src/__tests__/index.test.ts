@@ -1,10 +1,24 @@
 import { getValidLocalhost, getDevServerHost, getAppVersionCode } from '../';
-import { DEFAULTS, createRnvApi, createRnvContext, getContext, generateContextDefaults } from '@rnv/core';
+import {
+    DEFAULTS,
+    createRnvApi,
+    createRnvContext,
+    getContext,
+    generateContextDefaults,
+    getConfigProp,
+} from '@rnv/core';
+
+jest.mock('@rnv/core');
+jest.mock('path');
 
 const BUILD_CONF = generateContextDefaults();
-BUILD_CONF.runtime.scheme = 'debug';
 
-describe('getValidLocalhost', () => {
+beforeEach(() => {
+    createRnvContext();
+    createRnvApi();
+});
+
+describe('Test getValidLocalhost', () => {
     it('should return passed localhost when value is falsy', () => {
         const result = getValidLocalhost('', 'localhost');
         expect(result).toBe('localhost');
@@ -25,14 +39,7 @@ describe('getValidLocalhost', () => {
     });
 });
 
-describe('getDevServerHost', () => {
-    beforeAll(() => {
-        createRnvContext();
-        createRnvApi();
-    });
-
-    beforeEach(() => jest.clearAllMocks());
-
+describe('Test getDevServerHost', () => {
     it('should return DEFAULTS.devServerHost when devServerHost is not defined', () => {
         const c = getContext();
         c.runtime.localhost = '0.0.0.0 ';
@@ -56,84 +63,35 @@ describe('getDevServerHost', () => {
     });
 });
 
-// TO TEST:
-// 0.0.4
-// 1.2.3
-// 10.20.30
-// 1.1.2-prerelease+meta
-// 1.1.2+meta
-// 1.1.2+meta-valid
-// 1.0.0-alpha
-// 1.0.0-beta
-// 1.0.0-alpha.beta
-// 1.0.0-alpha.beta.1
-// 1.0.0-alpha.1
-// 1.0.0-alpha0.valid
-// 1.0.0-alpha.0valid
-// 1.0.0-alpha-a.b-c-somethinglong+build.1-aef.1-its-okay
-// 1.0.0-rc.1+build.1
-// 2.0.0-rc.1+build.123
-// 1.2.3-beta
-// 10.2.3-DEV-SNAPSHOT
-// 1.2.3-SNAPSHOT-123
-// 1.0.0
-// 2.0.0
-// 1.1.7
-// 2.0.0+build.1848
-// 2.0.1-alpha.1227
-// 1.0.0-alpha+beta
-// 1.2.3----RC-SNAPSHOT.12.9.1--.12+788
-// 1.2.3----R-S.12.9.1--.12+meta
-// 1.2.3----RC-SNAPSHOT.12.9.1--.12
-// 1.0.0+0.build.1-rc.10000aaa-kk-0.1
-// 99999999999999999999999.999999999999999999.99999999999999999
-// 1.0.0-0A.is.legal
-
-describe('Testing getAppVersionCode functions', () => {
-    beforeAll(() => {
-        createRnvContext();
-        createRnvApi();
-    });
-
+describe('Test getAppVersionCode', () => {
     it('should evaluate 1.2.3', async () => {
-        const c = getContext();
-        c.files.project.package.version = '1.2.3';
-        const result = getAppVersionCode(c, 'ios');
+        // GIVEN
+        jest.mocked(getConfigProp).mockReturnValueOnce(undefined); //versionCode
+        jest.mocked(getConfigProp).mockReturnValueOnce('1.2.3'); //version
+        // WHEN
+        const result = getAppVersionCode(getContext(), 'ios');
+        // THEN
         expect(result).toEqual('10203');
     });
 
     it('should evaluate 1.2.3 with 00.00.00.00.00', async () => {
-        const result = getAppVersionCode(
-            {
-                ...BUILD_CONF,
-                buildConfig: { common: { versionCodeFormat: '00.00.00.00.00' } },
-                files: {
-                    ...BUILD_CONF.files,
-                    project: {
-                        ...BUILD_CONF.files.project,
-                        package: { version: '1.2.3' },
-                    },
-                },
-            },
-            'ios'
-        );
+        // GIVEN
+        jest.mocked(getConfigProp).mockReturnValueOnce(undefined); //versionCode
+        jest.mocked(getConfigProp).mockReturnValueOnce('1.2.3'); //version
+        jest.mocked(getConfigProp).mockReturnValueOnce('00.00.00.00.00'); //versionCodeFormat
+        // WHEN
+        const result = getAppVersionCode(getContext(), 'ios');
+        // THEN
         expect(result).toEqual('102030000');
     });
 
     it('should evaluate 2.0.0+build.1848', async () => {
-        const result = getAppVersionCode(
-            {
-                ...BUILD_CONF,
-                files: {
-                    ...BUILD_CONF.files,
-                    project: {
-                        ...BUILD_CONF.files.project,
-                        package: { version: '2.0.0+build.1848' },
-                    },
-                },
-            },
-            'ios'
-        );
+        // GIVEN
+        jest.mocked(getConfigProp).mockReturnValueOnce(undefined); //versionCode
+        jest.mocked(getConfigProp).mockReturnValueOnce('2.0.0+build.1848'); //version
+        // WHEN
+        const result = getAppVersionCode(getContext(), 'ios');
+        // THEN
         expect(result).toEqual('2000018');
     });
 
@@ -407,3 +365,36 @@ describe('Testing getAppVersionCode functions', () => {
         expect(result).toEqual('4.4.4');
     });
 });
+
+// TO TEST:
+// 0.0.4
+// 1.2.3
+// 10.20.30
+// 1.1.2-prerelease+meta
+// 1.1.2+meta
+// 1.1.2+meta-valid
+// 1.0.0-alpha
+// 1.0.0-beta
+// 1.0.0-alpha.beta
+// 1.0.0-alpha.beta.1
+// 1.0.0-alpha.1
+// 1.0.0-alpha0.valid
+// 1.0.0-alpha.0valid
+// 1.0.0-alpha-a.b-c-somethinglong+build.1-aef.1-its-okay
+// 1.0.0-rc.1+build.1
+// 2.0.0-rc.1+build.123
+// 1.2.3-beta
+// 10.2.3-DEV-SNAPSHOT
+// 1.2.3-SNAPSHOT-123
+// 1.0.0
+// 2.0.0
+// 1.1.7
+// 2.0.0+build.1848
+// 2.0.1-alpha.1227
+// 1.0.0-alpha+beta
+// 1.2.3----RC-SNAPSHOT.12.9.1--.12+788
+// 1.2.3----R-S.12.9.1--.12+meta
+// 1.2.3----RC-SNAPSHOT.12.9.1--.12
+// 1.0.0+0.build.1-rc.10000aaa-kk-0.1
+// 99999999999999999999999.999999999999999999.99999999999999999
+// 1.0.0-0A.is.legal
