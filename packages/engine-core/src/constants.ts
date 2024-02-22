@@ -1,6 +1,6 @@
 export const RNV_PACKAGES = [
     {
-        packageName: 'renative',
+        packageName: '@rnv/renative',
         folderName: 'renative',
         skipLinking: true,
     },
