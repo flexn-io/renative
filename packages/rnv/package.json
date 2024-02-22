@@ -76,6 +76,7 @@
         "@rnv/engine-core": "1.0.0-rc.11",
         "@sentry/integrations": "7.57.0",
         "@sentry/node": "7.57.0",
+        "node-machine-id": "^1.1.12",
         "tslib": "2.5.2"
     },
     "private": false,

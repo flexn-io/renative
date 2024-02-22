@@ -1,7 +1,22 @@
 import { getConfigProp } from '../configs/configProp';
-import { INJECTABLE_CONFIG_PROPS, INJECTABLE_RUNTIME_PROPS } from '../constants';
 import { getContext } from '../context/provider';
+import { ConfigPropKey } from '../schema/types';
 import { OverridesOptions } from './types';
+
+const INJECTABLE_RUNTIME_PROPS = ['appId', 'scheme', 'timestamp', 'localhost', 'target', 'port'] as const;
+
+const INJECTABLE_CONFIG_PROPS: Array<ConfigPropKey> = [
+    'id',
+    'title',
+    'entryFile',
+    'backgroundColor',
+    'scheme',
+    'teamID',
+    'provisioningStyle',
+    'bundleAssets',
+    'multipleAPKs',
+    'pagesDir',
+];
 
 export const generateConfigPropInjects = () => {
     const ctx = getContext();

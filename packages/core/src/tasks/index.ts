@@ -8,7 +8,6 @@ import {
     getEngineSubTasks,
     registerAllPlatformEngines,
 } from '../engines';
-import { DEFAULT_TASK_DESCRIPTIONS, TASK_CONFIGURE_SOFT } from '../constants';
 import { RnvContext } from '../context/types';
 import { RnvTask, RnvTaskMap, TaskItemMap, TaskObj, TaskOption } from './types';
 import { RnvEngine } from '../engines/types';
@@ -16,6 +15,7 @@ import { inquirerPrompt, inquirerSeparator, pressAnyKeyToContinue } from '../api
 import { getApi } from '../api/provider';
 import { RenativeConfigTaskKey } from '../schema/types';
 import { checkIfProjectAndNodeModulesExists } from '../projects/dependencyManager';
+import { DEFAULT_TASK_DESCRIPTIONS, TASK_CONFIGURE_SOFT } from './constants';
 
 let executedTasks: Record<string, number> = {};
 

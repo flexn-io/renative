@@ -13,7 +13,6 @@ import {
     logTask,
     logInfo,
     isSystemWin,
-    isUrlLocalhost,
     RnvContext,
     inquirerPrompt,
     ExecOptionsPresets,
@@ -35,6 +34,7 @@ import {
     CLI_WEBOS_ARES_DEVICE_INFO,
 } from './constants';
 import semver from 'semver';
+import { isUrlLocalhost } from '@rnv/sdk-utils';
 
 export const launchWebOSimulator = async (c: RnvContext, target: string) => {
     logTask('launchWebOSimulator', `${target}`);
