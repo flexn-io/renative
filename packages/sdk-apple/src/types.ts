@@ -55,6 +55,7 @@ export type Payload = {
             };
             userNotificationCenter: {
                 willPresent: Array<PayloadAppDelegateMethod>;
+                didReceiveNotificationResponse: Array<PayloadAppDelegateMethod>;
             };
         };
         podfileSources: string;
@@ -122,6 +123,7 @@ export type SwiftAppDelegate = {
 export type ObjectiveCAppDelegate = {
     application: {
         didFinishLaunchingWithOptions: SwiftMethod;
+        didReceiveNotificationResponse: SwiftMethod;
         applicationDidBecomeActive: SwiftMethod;
         sourceURLForBridge: SwiftMethod;
         open: SwiftMethod;
@@ -137,6 +139,7 @@ export type ObjectiveCAppDelegate = {
     };
     userNotificationCenter: {
         willPresent: SwiftMethod;
+        didReceiveNotificationResponse: SwiftMethod;
     };
 };
 

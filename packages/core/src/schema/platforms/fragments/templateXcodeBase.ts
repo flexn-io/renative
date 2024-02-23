@@ -60,6 +60,7 @@ const AppDelegateMm = z.object({
             }),
             userNotificationCenter: z.object({
                 willPresent: z.array(AppDelegateMethod),
+                didReceiveNotificationResponse: z.array(AppDelegateMethod),
             }),
         })
     ),

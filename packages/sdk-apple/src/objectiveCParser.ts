@@ -176,6 +176,12 @@ export const parseAppDelegate = (
                     render: (v) => `${v};`,
                     end: null,
                 },
+                didReceiveNotificationResponse: {
+                    func: '- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response  withCompletionHandler:(void (^)(void))completionHandler {',
+                    begin: null,
+                    render: (v) => `${v};`,
+                    end: null,
+                },
             },
         };
 

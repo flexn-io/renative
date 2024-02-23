@@ -757,6 +757,7 @@ export const configureXcodeProject = async (c: Context) => {
             },
             userNotificationCenter: {
                 willPresent: [],
+                didReceiveNotificationResponse: [],
             },
         },
         podfileSources: '',
