@@ -1,9 +1,9 @@
-import { parsePlugins } from '../plugins';
-import { createRnvApi } from '../api';
-import { createRnvContext } from '../context';
-import { generateContextDefaults } from '../context/defaults';
+import { parsePlugins } from '..';
+import { createRnvApi } from '../../api';
+import { createRnvContext } from '../../context';
+import { generateContextDefaults } from '../../context/defaults';
 
-jest.mock('../logger');
+jest.mock('../../logger');
 
 beforeEach(() => {
     createRnvContext();
