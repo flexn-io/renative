@@ -15,13 +15,6 @@ end
 node_require('react-native/scripts/react_native_pods.rb')
 {{INJECT_PLUGIN_NODE_REQUIRE}}
 
-# RN PERMISSIONS
-permissions_required = ENV['REACT_NATIVE_PERMISSIONS_REQUIRED']
-if permissions_required != '' && permissions_required != nil
-  node_require('react-native-permissions/scripts/setup.rb')
-  setup_permissions(permissions_required.split(","))
-end
-
 platform :ios, '{{INJECT_PLUGIN_DEPLOYMENT_TARGET}}'
 prepare_react_native_project!
 
