@@ -113,7 +113,7 @@
             "includedPermissions": ["INTERNET"]
         },
         "web": {
-            "engine": "engine-rn-web"
+            "engine": "engine-rn-next"
         },
         "tvos": {
             "engine": "engine-rn-tvos",
