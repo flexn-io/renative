@@ -11,8 +11,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-    // jest.resetAllMocks();
-    jest.clearAllMocks();
+    jest.resetAllMocks();
 });
 
 describe('parsePlugins', () => {

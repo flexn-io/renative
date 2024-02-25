@@ -18,7 +18,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
 });
 
 test('Execute task.rnv.run -p web', async () => {

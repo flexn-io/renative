@@ -72,7 +72,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
         devicesArr = await getAppleDevices(c, true, false);
     }
 
-    let p = '';
+    let p;
 
     if (device === true) {
         if (devicesArr.length === 1) {
@@ -144,6 +144,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
             type: 'list',
             choices: devices,
         });
+
         c.runtime.target = sim.name;
         if (c.runtime.target) {
             p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
@@ -151,6 +152,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
     } else if (c.runtime.target) {
         // check if the default sim is available
         const desiredSim = devicesArr.find((d) => d.name === c.runtime.target && !d.isDevice);
+
         if (!desiredSim) {
             const { sim } = await inquirerPrompt({
                 name: 'sim',

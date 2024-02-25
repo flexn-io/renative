@@ -32,6 +32,8 @@ export const getAppleDevices = async (c: RnvContext, ignoreDevices?: boolean, ig
     } = c;
 
     const connectedDevicesIds = await utilities.getConnectedDevices();
+    console.log('SSSSSSS', connectedDevicesIds);
+
     const connectedDevicesArray = await Promise.all(
         connectedDevicesIds.map(async (id: string) => {
             const info = await utilities.getDeviceInfo(id);
@@ -41,6 +43,7 @@ export const getAppleDevices = async (c: RnvContext, ignoreDevices?: boolean, ig
             };
         })
     );
+
     const res = await executeAsync('xcrun simctl list --json');
     const simctl = JSON.parse(res.toString());
     const availableSims: Array<AppleDevice> = [];
@@ -97,6 +100,7 @@ const _parseNewIOSDevicesList = (
         }
         return 'Apple Device';
     };
+    console.log('SSSSSSS2', rawDevices);
 
     return rawDevices.map((device) => {
         const { DeviceName, ProductVersion, udid } = device;
@@ -201,6 +205,7 @@ export const launchAppleSimulator = async (c: RnvContext, target: string | boole
     } else if (target !== true && target !== undefined) {
         logWarning(`Your specified simulator target ${chalk().white(target)} doesn't exist`);
     }
+    console.log('SSSSSSS3', devicesArr);
 
     const devices = devicesArr.map((v) => ({
         name: `${v.name} | ${v.icon} | v: ${chalk().green(v.version)} | udid: ${chalk().grey(v.udid)}${
