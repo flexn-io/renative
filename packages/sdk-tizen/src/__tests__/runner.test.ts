@@ -24,7 +24,6 @@ describe('configureTizenGlobal', () => {
         //GIVEN
         const c = getContext();
         jest.mocked(fsExistsSync).mockReturnValueOnce(true);
-        // jest.spyOn(require('../runner'), 'checkTizenStudioCert').mockResolvedValueOnce(true);
         //WHEN
         await expect(configureTizenGlobal(c)).resolves.toBeUndefined();
         //THEN
@@ -35,7 +34,6 @@ describe('configureTizenGlobal', () => {
         const c = getContext();
         jest.mocked(fsExistsSync).mockReturnValueOnce(true);
         jest.mocked(addDevelopTizenCertificate).mockResolvedValueOnce(undefined);
-        // jest.spyOn(require('../runner'), 'checkTizenStudioCert').mockResolvedValueOnce(false);
         //WHEN
         await expect(configureTizenGlobal(c)).resolves.toBeUndefined();
         //THEN

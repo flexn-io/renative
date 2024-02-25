@@ -10,11 +10,6 @@ type Context = {
 
 const rnvcore: any = jest.createMockFromModule('@rnv/core');
 
-const configPropMocks = {
-    scheme: 'debug',
-    bundleAssets: false,
-};
-
 const _chalkCols: any = {
     white: (v) => v,
     green: (v) => v,
@@ -262,11 +257,9 @@ rnvcore.fsExistsSync = jest.fn();
 rnvcore.fsReaddirSync = () => [];
 rnvcore.getRealPath = () => '';
 rnvcore.copyFolderContentsRecursiveSync = jest.fn();
-
-rnvcore.getConfigProp = (c, platform, key) => configPropMocks[key];
+rnvcore.getConfigProp = jest.fn();
 rnvcore.confirmActiveBundler = () => null;
 rnvcore.getAppFolder = jest.fn();
-
 rnvcore.logToSummary = jest.fn();
 rnvcore.logTask = jest.fn();
 rnvcore.logDebug = jest.fn();
@@ -276,9 +269,7 @@ rnvcore.logWarning = jest.fn();
 rnvcore.logSuccess = jest.fn();
 rnvcore.logSummary = jest.fn();
 rnvcore.chalk = () => _chalkMono;
-
 rnvcore.inquirerPrompt = jest.fn();
-
 rnvcore.getPlatformProjectDir = jest.fn();
 
 rnvcore.createRnvContext = (ctx?: Context) => {

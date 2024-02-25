@@ -7,9 +7,13 @@ import {
     getAppConfigBuildsFolder,
     inquirerPrompt,
     logWarning,
+    DEFAULTS,
+    RnvContext,
+    RnvPlatform,
+    getConfigProp,
+    logTask,
+    fsExistsSync,
 } from '@rnv/core';
-import { fsExistsSync } from '@rnv/core';
-import { DEFAULTS, RnvContext, RnvPlatform, getConfigProp, logTask } from '@rnv/core';
 import axios from 'axios';
 import open from 'better-opn';
 import detectPort from 'detect-port';
