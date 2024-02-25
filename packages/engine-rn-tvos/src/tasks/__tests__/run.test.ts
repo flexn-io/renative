@@ -1,5 +1,5 @@
 import { createRnvApi, createRnvContext, getContext } from '@rnv/core';
-import taskRnvRun from '../tasks/task.rnv.run';
+import taskRnvRun from '../task.rnv.run';
 import { getIosDeviceToRunOn, runXcodeProject } from '@rnv/sdk-apple';
 
 jest.mock('@rnv/core');

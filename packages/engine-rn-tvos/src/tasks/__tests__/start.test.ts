@@ -1,5 +1,5 @@
 import { createRnvApi, createRnvContext, getContext, logError, doResolve, executeTask } from '@rnv/core';
-import taskRnvStart from '../tasks/task.rnv.start';
+import taskRnvStart from '../task.rnv.start';
 import { startReactNative } from '@rnv/sdk-react-native';
 
 jest.mock('@rnv/core');
