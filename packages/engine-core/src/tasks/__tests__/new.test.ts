@@ -1,23 +1,10 @@
-import {
-    createRnvApi,
-    createRnvContext,
-    executeAsync,
-    executeTask,
-    getContext,
-    removeDirs,
-    writeFileSync,
-} from '@rnv/core';
-import taskRnvClean from '../tasks/task.rnv.clean';
-import taskRnvKill from '../tasks/task.rnv.kill';
-import taskRnvNew from '../tasks/task.rnv.new';
-import taskRnvPlatformConfigure from '../tasks/task.rnv.platform.configure';
-import taskRnvPlatformList from '../tasks/task.rnv.platform.list';
+import { createRnvApi, createRnvContext, getContext, writeFileSync } from '@rnv/core';
+import taskRnvNew from '../task.rnv.new';
 
-jest.mock('fs');
-jest.mock('child_process');
 jest.mock('@rnv/core');
-jest.mock('inquirer');
+jest.mock('lodash.set');
 jest.mock('path');
+jest.mock('semver');
 
 beforeEach(() => {
     createRnvContext();
@@ -26,53 +13,6 @@ beforeEach(() => {
 
 afterEach(() => {
     jest.resetAllMocks();
-});
-
-test('Execute task.rnv.platform.list', async () => {
-    //GIVEN
-    const ctx = getContext();
-    //WHEN
-    await expect(taskRnvPlatformList.fn?.(ctx)).resolves.toEqual(true);
-    //THEN
-    expect(executeTask).toHaveBeenCalledWith(ctx, 'project configure', 'platform list', undefined);
-});
-
-test('Execute task.rnv.platform.configure', async () => {
-    //GIVEN
-    const ctx = getContext();
-    //WHEN
-    await expect(taskRnvPlatformConfigure.fn?.(ctx)).resolves.toEqual(true);
-    //THEN
-    expect(executeTask).toHaveBeenCalledWith(ctx, 'project configure', 'platform configure', undefined);
-});
-
-test('Execute task.rnv.kill', async () => {
-    //GIVEN
-    const ctx = getContext();
-    ctx.paths.project.configExists = true;
-    //WHEN
-    await expect(taskRnvKill.fn?.(ctx)).resolves.toEqual(true);
-    //THEN
-    expect(executeTask).toHaveBeenCalledWith(ctx, 'app configure', 'kill', undefined);
-});
-
-test('Execute task.rnv.clean', async () => {
-    //GIVEN
-    const ctx = getContext();
-    const { inquirerPrompt } = require('@rnv/core');
-    inquirerPrompt.mockReturnValue(
-        Promise.resolve({ confirm: true, confirmBuilds: true, confirmLocals: true, confirmCache: true })
-    );
-    ctx.program.ci = false;
-    //WHEN
-    await expect(taskRnvClean.fn?.(ctx)).resolves.toEqual(true);
-    //THEN
-    expect(removeDirs).toHaveBeenCalledTimes(3);
-    expect(executeAsync).toHaveBeenCalledWith(ctx, 'watchman watch-del-all');
-    expect(executeAsync).toHaveBeenCalledWith(
-        ctx,
-        'npx rimraf -I $TMPDIR/metro-* && npx rimraf -I $TMPDIR/react-* && npx rimraf -I $TMPDIR/haste-*'
-    );
 });
 
 test('Execute task.rnv.new', async () => {
