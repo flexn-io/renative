@@ -13,9 +13,13 @@ jest.mock('../deviceManager', () => {
     };
 });
 
-beforeAll(() => {
+beforeEach(() => {
     createRnvContext();
     createRnvApi();
+});
+
+afterEach(() => {
+    jest.resetAllMocks();
 });
 
 describe('getAndroidDeviceToRunOn', () => {

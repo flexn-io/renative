@@ -1,4 +1,15 @@
-import { createRnvApi, createRnvContext, getContext, writeFileSync } from '@rnv/core';
+import {
+    createRnvApi,
+    createRnvContext,
+    fsExistsSync,
+    getContext,
+    writeFileSync,
+    inquirerPrompt,
+    getWorkspaceOptions,
+    getTemplateOptions,
+    checkAndCreateGitignore,
+    commandExistsSync,
+} from '@rnv/core';
 import taskRnvNew from '../task.rnv.new';
 
 jest.mock('@rnv/core');
@@ -18,18 +29,12 @@ afterEach(() => {
 test('Execute task.rnv.new', async () => {
     //GIVEN
     const ctx = getContext();
-    const {
-        inquirerPrompt,
-        getWorkspaceOptions,
-        getTemplateOptions,
-        checkAndCreateGitignore,
-        commandExistsSync,
-    } = require('@rnv/core');
 
-    checkAndCreateGitignore.mockReturnValue(Promise.resolve(true));
-    commandExistsSync.mockReturnValue(true);
+    jest.mocked(checkAndCreateGitignore).mockReturnValue(Promise.resolve(true));
+    jest.mocked(commandExistsSync).mockReturnValue(true);
+    jest.mocked(fsExistsSync).mockReturnValue(true);
 
-    inquirerPrompt.mockReturnValue(
+    jest.mocked(inquirerPrompt).mockReturnValue(
         Promise.resolve({
             inputProjectName: 'test',
             confirm: true,
@@ -45,10 +50,10 @@ test('Execute task.rnv.new', async () => {
         })
     );
 
-    getWorkspaceOptions.mockReturnValue({
+    jest.mocked(getWorkspaceOptions).mockReturnValue({
         keysAsArray: ['company', 'rnv'],
         valuesAsArray: [{ path: '/Users/someuser/.rnv' }, { path: '/Users/someuser/.company' }],
-        keysAsObject: { rnv: true, company: true },
+        keysAsObject: { rnv: 'rnv', company: 'company' },
         valuesAsObject: {
             rnv: { path: '/Users/someuser/.rnv' },
             company: { path: '/Users/someuser/.company' },
@@ -60,7 +65,7 @@ test('Execute task.rnv.new', async () => {
         ],
     });
 
-    getTemplateOptions.mockReturnValue({
+    jest.mocked(getTemplateOptions).mockReturnValue({
         keysAsArray: ['@flexn/create-template-starter', '@rnv/template-starter'],
         valuesAsArray: [
             { description: "Multiplatform 'hello world' template" },
@@ -69,8 +74,8 @@ test('Execute task.rnv.new', async () => {
             },
         ],
         keysAsObject: {
-            '@rnv/template-starter': true,
-            '@flexn/create-template-starter': true,
+            '@rnv/template-starter': '@rnv/template-starter',
+            '@flexn/create-template-starter': '@flexn/create-template-starter',
         },
         valuesAsObject: {
             '@rnv/template-starter': { description: "Multiplatform 'hello world' template" },

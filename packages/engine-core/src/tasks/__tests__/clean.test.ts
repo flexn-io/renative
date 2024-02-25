@@ -1,4 +1,12 @@
-import { createRnvApi, createRnvContext, executeAsync, getContext, removeDirs } from '@rnv/core';
+import {
+    createRnvApi,
+    createRnvContext,
+    executeAsync,
+    fsExistsSync,
+    getContext,
+    inquirerPrompt,
+    removeDirs,
+} from '@rnv/core';
 import taskRnvClean from '../task.rnv.clean';
 
 jest.mock('@rnv/core');
@@ -16,10 +24,10 @@ afterEach(() => {
 test('Execute task.rnv.clean', async () => {
     //GIVEN
     const ctx = getContext();
-    const { inquirerPrompt } = require('@rnv/core');
-    inquirerPrompt.mockReturnValue(
+    jest.mocked(inquirerPrompt).mockReturnValue(
         Promise.resolve({ confirm: true, confirmBuilds: true, confirmLocals: true, confirmCache: true })
     );
+    jest.mocked(fsExistsSync).mockReturnValue(true);
     ctx.program.ci = false;
     //WHEN
     await expect(taskRnvClean.fn?.(ctx)).resolves.toEqual(true);

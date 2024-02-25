@@ -258,7 +258,7 @@ rnvcore.shouldSkipTask = () => false;
 rnvcore.generatePlatformChoices = () => [];
 rnvcore.executeAsync = jest.fn();
 rnvcore.removeDirs = jest.fn();
-rnvcore.fsExistsSync = () => true;
+rnvcore.fsExistsSync = jest.fn();
 rnvcore.fsReaddirSync = () => [];
 rnvcore.getRealPath = () => '';
 rnvcore.copyFolderContentsRecursiveSync = jest.fn();
