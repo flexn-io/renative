@@ -1,6 +1,5 @@
 {{INJECT_PLUGIN_PODFILE_SOURCES}}
 
-{{INJECT_PODFILE_HEADER}}
 
 # Resolve react_native_pods.rb with node to allow for hoisting
 def node_require(script)
@@ -12,8 +11,8 @@ def node_require(script)
     )", __dir__]).strip
 end
 
+{{INJECT_PODFILE_HEADER}}
 node_require('react-native/scripts/react_native_pods.rb')
-{{INJECT_PLUGIN_NODE_REQUIRE}}
 
 platform :ios, '{{INJECT_PLUGIN_DEPLOYMENT_TARGET}}'
 prepare_react_native_project!

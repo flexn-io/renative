@@ -43,17 +43,12 @@ export const parsePodFile = async (c: Context, platform: RnvPlatform) => {
 
         const podfile = templateXcode?.Podfile;
         if (podfile) {
-            const { injectLines, post_install, header, sources, nodeScripts } = podfile;
+            const { injectLines, post_install, header, sources } = podfile;
 
             // INJECT LINES
             if (injectLines) {
                 injectLines.forEach((v) => {
                     c.payload.pluginConfigiOS.podfileInject += `${v}\n`;
-                });
-            }
-            if (nodeScripts) {
-                nodeScripts.forEach((v) => {
-                    c.payload.pluginConfigiOS.podfileNodeRequire += `${v}\n`;
                 });
             }
             if (post_install) {

@@ -132,7 +132,7 @@
             "ios": {
                 "templateXcode": {
                     "Podfile": {
-                        "nodeScripts": ["node_require('react-native-permissions/scripts/setup.rb')"],
+                        "header": ["node_require('react-native-permissions/scripts/setup.rb')"],
                         "injectLines": ["setup_permissions([{{props.PERMISSIONS}}])"]
                     }
                 }
