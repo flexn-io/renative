@@ -1,6 +1,7 @@
+import path from 'path';
 import { getContext } from '../context/provider';
 import { logInfo, logTask } from '../logger';
-import { fsExistsSync, mkdirSync } from '../system/fs';
+import { copyFolderContentsRecursiveSync, fsExistsSync, mkdirSync } from '../system/fs';
 
 export const generateLocalJsonSchemas = async () => {
     logTask('generateLocalJsonSchemas');
@@ -10,5 +11,14 @@ export const generateLocalJsonSchemas = async () => {
         logInfo(`.rnv folder missing. CREATING...DONE`);
         mkdirSync(ctx.paths.project.dotRnvDir);
     }
+
+    const schemaDestDir = path.join(ctx.paths.project.dotRnvDir, 'schema');
+    if (!fsExistsSync(schemaDestDir)) {
+        logInfo(`.rnv/schemas folder missing. CREATING...DONE`);
+        mkdirSync(schemaDestDir);
+    }
+
+    const schemaSourceDir = path.join(__dirname, '../../jsonSchema');
+    copyFolderContentsRecursiveSync(schemaSourceDir, schemaDestDir);
     return true;
 };
