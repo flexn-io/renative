@@ -57,7 +57,8 @@
             "tizenwatch",
             "tizenmobile",
             "kaios",
-            "chromecast"
+            "chromecast",
+            "linux"
         ],
         "defaultCommandSchemes": {
             "run": "debug",
