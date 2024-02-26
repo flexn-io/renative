@@ -5,18 +5,18 @@ import {
     shouldSkipTask,
     logTask,
     logError,
-    MACOS,
     TASK_START,
     TASK_CONFIGURE_SOFT,
     PARAMS,
     RnvTaskFn,
     RnvTask,
+    PlatformKey,
 } from '@rnv/core';
 import { startReactNative } from '@rnv/sdk-react-native';
 
-const BUNDLER_PLATFORMS: Record<string, string> = {};
+const BUNDLER_PLATFORMS: Partial<Record<PlatformKey, PlatformKey>> = {};
 
-BUNDLER_PLATFORMS[MACOS] = MACOS;
+BUNDLER_PLATFORMS['macos'] = 'macos';
 
 export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
@@ -36,7 +36,7 @@ export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_START, originTask)) return true;
 
     switch (platform) {
-        case MACOS: {
+        case 'macos': {
             return startReactNative(c, {
                 waitForBundler: !parentTask,
                 customCliPath: `${doResolve('react-native')}/local-cli/cli.js`,
@@ -53,7 +53,7 @@ const Task: RnvTask = {
     fn: taskRnvStart,
     task: TASK_START,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [MACOS],
+    platforms: ['macos'],
 };
 
 export default Task;

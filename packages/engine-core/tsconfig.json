@@ -7,5 +7,5 @@
         "lib": ["ES2021.String"]
     },
     "include": ["./src/**/*", "./src/**/*.json", "./types.d.ts", "./package.json"],
-    "exclude": ["node_modules", "./src/__tests__"]
+    "exclude": ["node_modules", "src/tasks/__tests__"]
 }

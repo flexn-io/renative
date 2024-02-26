@@ -1,9 +1,9 @@
-import { parsePlugins } from '../plugins';
-import { createRnvApi } from '../api';
-import { createRnvContext } from '../context';
-import { generateContextDefaults } from '../context/defaults';
+import { parsePlugins } from '..';
+import { createRnvApi } from '../../api';
+import { createRnvContext } from '../../context';
+import { generateContextDefaults } from '../../context/defaults';
 
-jest.mock('../logger/index.ts');
+jest.mock('../../logger');
 
 beforeEach(() => {
     createRnvContext();
@@ -11,8 +11,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-    // jest.resetAllMocks();
-    jest.clearAllMocks();
+    jest.resetAllMocks();
 });
 
 describe('parsePlugins', () => {

@@ -7,12 +7,6 @@ import {
     TASK_EXPORT,
     executeOrSkipTask,
     shouldSkipTask,
-    ANDROID,
-    ANDROID_TV,
-    FIRE_TV,
-    ANDROID_WEAR,
-    MACOS,
-    IOS,
     RnvTask,
 } from '@rnv/core';
 import { exportXcodeProject } from '@rnv/sdk-apple';
@@ -26,13 +20,12 @@ export const taskRnvExport: RnvTaskFn = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_EXPORT, originTask)) return true;
 
     switch (platform) {
-        case IOS:
-        case MACOS:
+        case 'ios':
+        case 'macos':
             return exportXcodeProject(c);
-        case ANDROID:
-        case ANDROID_TV:
-        case FIRE_TV:
-        case ANDROID_WEAR:
+        case 'android':
+        case 'androidtv':
+        case 'androidwear':
             // Android Platforms don't need extra export step
             return true;
         default:
@@ -45,7 +38,7 @@ const Task: RnvTask = {
     fn: taskRnvExport,
     task: TASK_EXPORT,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR],
+    platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],
 };
 
 export default Task;

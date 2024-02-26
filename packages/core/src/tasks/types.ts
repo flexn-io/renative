@@ -1,10 +1,11 @@
 import type { RnvContext } from '../context/types';
+import type { PlatformKey } from '../schema/types';
 
 export type RnvTask = {
     task: string;
     params: Array<RnvTaskParameter>;
     isGlobalScope?: boolean;
-    platforms: Array<string>;
+    platforms: Array<PlatformKey>;
     description: string;
     forceBuildHookRebuild?: boolean;
     fn?: RnvTaskFn;

@@ -1,19 +1,17 @@
-import { copyAssetsFolder } from '../projects';
-import { RnvPlatform } from '../types';
-import { logWarning } from '../logger';
+import { copyAssetsFolder } from '..';
+import { RnvPlatform } from '../../types';
+import { logWarning } from '../../logger';
 import path from 'path';
-import { getConfigProp } from '../configs/configProp';
-import { isPlatformActive } from '../platforms';
-import { getTimestampPathsConfig } from '../common';
-import { generateContextDefaults } from '../context/defaults';
+import { isPlatformActive } from '../../platforms';
+import { getTimestampPathsConfig, getConfigProp } from '../../context/contextProps';
+import { generateContextDefaults } from '../../context/defaults';
 
 jest.mock('fs');
 jest.mock('path');
-jest.mock('../logger/index.ts');
-jest.mock('../context/provider');
-jest.mock('../common.ts');
-jest.mock('../configs/configProp');
-jest.mock('../platforms/index.ts');
+jest.mock('../../logger/index');
+jest.mock('../../context/provider');
+jest.mock('../../context/contextProps');
+jest.mock('../../platforms/index');
 
 afterEach(() => {
     jest.clearAllMocks();

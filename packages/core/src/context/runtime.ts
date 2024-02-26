@@ -1,10 +1,10 @@
 import { getEngineRunnerByPlatform } from '../engines';
-import { isSystemWin } from '../utils/utils';
+import { isSystemWin } from '../system/is';
 import { getRealPath } from '../system/fs';
 import { logTask } from '../logger';
 import { RnvContext, RnvContextPlatform } from './types';
 import { generateRuntimePropInjects } from '../system/injectors';
-import { getConfigProp } from '../configs/configProp';
+import { getConfigProp } from './contextProps';
 
 export const configureRuntimeDefaults = async (c: RnvContext) => {
     c.runtime.appId = c.files.project?.configLocal?._meta?.currentAppConfigId;

@@ -2,7 +2,13 @@ import { getValidLocalhost, getDevServerHost, getAppVersionCode } from '../';
 import { DEFAULTS, createRnvApi, createRnvContext, getContext, getConfigProp } from '@rnv/core';
 
 jest.mock('@rnv/core');
+jest.mock('axios');
+jest.mock('better-opn');
+jest.mock('detect-port');
+jest.mock('kill-port');
 jest.mock('path');
+jest.mock('ip');
+jest.mock('color-string');
 
 beforeEach(() => {
     createRnvContext();
@@ -46,7 +52,7 @@ describe('Test getDevServerHost', () => {
         // GIVEN
         const c = getContext();
         c.runtime.localhost = '0.0.0.0 ';
-        jest.spyOn(require('@rnv/core'), 'getConfigProp').mockReturnValue(undefined);
+        jest.mocked(getConfigProp).mockReturnValue(undefined);
         // WHEN
         const result = getDevServerHost(c);
         // THEN
@@ -56,8 +62,7 @@ describe('Test getDevServerHost', () => {
         // GIVEN
         const c = getContext();
         c.runtime.localhost = '0.0.0.0';
-        jest.spyOn(require('@rnv/core'), 'getConfigProp').mockReturnValue('localhost');
-        jest.spyOn(require('../'), 'getValidLocalhost').mockReturnValue('0.0.0.0');
+        jest.mocked(getConfigProp).mockReturnValue('localhost');
         // WHEN
         const result = getDevServerHost(c);
         // THEN

@@ -3,14 +3,6 @@ import {
     logErrorPlatform,
     copySharedPlatforms,
     logTask,
-    WEB,
-    WEBTV,
-    TIZEN,
-    WEBOS,
-    TIZEN_MOBILE,
-    TIZEN_WATCH,
-    KAIOS,
-    CHROMECAST,
     TASK_PLATFORM_CONFIGURE,
     TASK_CONFIGURE,
     PARAMS,
@@ -38,18 +30,18 @@ export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => 
     }
 
     switch (c.platform) {
-        case WEB:
-        case WEBTV:
+        case 'web':
+        case 'webtv':
             return configureWebProject(c);
-        case TIZEN:
-        case TIZEN_MOBILE:
-        case TIZEN_WATCH:
+        case 'tizen':
+        case 'tizenmobile':
+        case 'tizenwatch':
             return configureTizenProject(c);
-        case WEBOS:
+        case 'webos':
             return configureWebOSProject(c);
-        case CHROMECAST:
+        case 'chromecast':
             return configureChromecastProject(c);
-        case KAIOS:
+        case 'kaios':
             return configureKaiOSProject(c);
         default:
             return logErrorPlatform(c);
@@ -61,7 +53,7 @@ const Task: RnvTask = {
     fn: taskRnvConfigure,
     task: TASK_CONFIGURE,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [WEB, WEBTV, TIZEN, WEBOS, TIZEN_MOBILE, TIZEN_WATCH, KAIOS, CHROMECAST],
+    platforms: ['web', 'webtv', 'tizen', 'webos', 'tizenmobile', 'tizenwatch', 'kaios', 'chromecast'],
 };
 
 export default Task;

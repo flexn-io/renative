@@ -1,9 +1,6 @@
 import {
     RnvTaskFn,
     logTask,
-    MACOS,
-    WINDOWS,
-    LINUX,
     TASK_EXPORT,
     TASK_DEPLOY,
     PARAMS,
@@ -28,7 +25,7 @@ const Task: RnvTask = {
     fn: taskRnvDeploy,
     task: TASK_DEPLOY,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [MACOS, WINDOWS, LINUX],
+    platforms: ['macos', 'windows', 'linux'],
 };
 
 export default Task;

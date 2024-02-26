@@ -3,7 +3,6 @@ import {
     logTask,
     TASK_EXPORT,
     TASK_DEPLOY,
-    MACOS,
     PARAMS,
     executeOrSkipTask,
     shouldSkipTask,
@@ -26,7 +25,7 @@ const Task: RnvTask = {
     fn: taskRnvDeploy,
     task: TASK_DEPLOY,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [MACOS],
+    platforms: ['macos'],
 };
 
 export default Task;

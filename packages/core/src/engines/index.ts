@@ -14,7 +14,7 @@ import { writeRenativeConfigFile } from '../configs/utils';
 import { checkAndCreateProjectPackage } from '../projects/package';
 import { getEngineTemplateByPlatform } from '../configs/engines';
 import { ConfigFileEngine } from '../schema/configFiles/types';
-import { getConfigProp } from '../configs/configProp';
+import { getConfigProp } from '../context/contextProps';
 
 const ENGINE_CORE = 'engine-core';
 

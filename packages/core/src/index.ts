@@ -4,6 +4,7 @@ export * from './context';
 export * from './context/runtime';
 export * from './context/defaults';
 export * from './context/provider';
+export * from './context/contextProps';
 
 export * from './configs';
 export * from './configs/buildConfig';
@@ -14,7 +15,7 @@ export * from './configs/engines';
 export * from './configs/configProject';
 export * from './configs/platformAssets';
 export * from './configs/templates';
-export * from './configs/configProp';
+export * from './context/contextProps';
 export * from './configs/utils';
 
 export * from './projects';
@@ -31,13 +32,11 @@ export * from './schema/schemaManager';
 
 export * from './system/exec';
 export * from './system/fs';
+export * from './system/is';
 export * from './system/resolve';
 
 export * from './logger';
 export * from './logger/defaults';
-
-export * from './utils/is';
-export * from './utils/utils';
 
 export * from './api';
 export * from './api/provider';
@@ -45,7 +44,6 @@ export * from './api/provider';
 export * from './constants';
 export * from './env';
 export * from './doctor';
-export * from './common';
 export * from './templates';
 export * from './integrations';
 export * from './runner';

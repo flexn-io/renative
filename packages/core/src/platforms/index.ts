@@ -1,7 +1,7 @@
 import path from 'path';
 import { chalk, logTask, logError, logWarning } from '../logger';
 import { cleanFolder, copyFolderContentsRecursiveSync } from '../system/fs';
-import { getTimestampPathsConfig, getAppFolder } from '../common';
+import { getTimestampPathsConfig, getAppFolder } from '../context/contextProps';
 import { SUPPORTED_PLATFORMS } from '../constants';
 import type { RnvContext } from '../context/types';
 import { generateOptions, inquirerPrompt } from '../api';

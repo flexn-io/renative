@@ -2,9 +2,6 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    TVOS,
-    ANDROID_TV,
-    FIRE_TV,
     TASK_BUILD,
     TASK_PACKAGE,
     TASK_EXPORT,
@@ -25,10 +22,10 @@ export const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_BUILD, originTask)) return true;
 
     switch (platform) {
-        case ANDROID_TV:
-        case FIRE_TV:
+        case 'androidtv':
+        case 'firetv':
             return buildReactNativeAndroid(c);
-        case TVOS:
+        case 'tvos':
             if (parentTask === TASK_EXPORT) {
                 // build task is not necessary when exporting ios
                 return true;
@@ -44,7 +41,7 @@ const Task: RnvTask = {
     fn: taskRnvBuild,
     task: TASK_BUILD,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [TVOS, ANDROID_TV, FIRE_TV],
+    platforms: ['tvos', 'androidtv', 'firetv'],
 };
 
 export default Task;

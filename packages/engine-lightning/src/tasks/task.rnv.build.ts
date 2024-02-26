@@ -2,8 +2,6 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    TIZEN,
-    WEBOS,
     TASK_BUILD,
     TASK_CONFIGURE,
     PARAMS,
@@ -23,8 +21,8 @@ export const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_BUILD, originTask)) return true;
 
     switch (platform) {
-        case TIZEN:
-        case WEBOS:
+        case 'tizen':
+        case 'webos':
             await buildLightningProject(c);
             return;
         default:
@@ -37,7 +35,7 @@ const Task: RnvTask = {
     fn: taskRnvBuild,
     task: TASK_BUILD,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [TIZEN, WEBOS],
+    platforms: ['tizen', 'webos'],
 };
 
 export default Task;

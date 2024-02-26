@@ -8,7 +8,6 @@ import {
     logTask,
     logInfo,
     logSuccess,
-    ANDROID_WEAR,
     RnvContext,
     DEFAULTS,
     RnvPlatform,
@@ -26,7 +25,7 @@ export const packageReactNativeAndroid = async (c: RnvContext) => {
 
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets', false) === true;
 
-    if (!bundleAssets && platform !== ANDROID_WEAR) {
+    if (!bundleAssets && platform !== 'androidwear') {
         logInfo(`bundleAssets in scheme ${chalk().white(c.runtime.scheme)} marked false. SKIPPING PACKAGING...`);
         return true;
     }

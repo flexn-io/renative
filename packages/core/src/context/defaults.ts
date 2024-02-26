@@ -1,5 +1,9 @@
 import type { RnvContext, RnvContextPathObj } from './types';
 
+import { homedir } from 'os';
+
+export const USER_HOME_DIR = homedir();
+
 export const generateRnvConfigPathObj = (): RnvContextPathObj => {
     return {
         configs: [],

@@ -1,11 +1,6 @@
 import {
-    ANDROID,
-    ANDROID_TV,
-    ANDROID_WEAR,
     CoreEnvVars,
-    FIRE_TV,
-    IOS,
-    MACOS,
+    PlatformKey,
     RnvContext,
     chalk,
     executeAsync,
@@ -19,14 +14,14 @@ import { isBundlerActive } from './common';
 import { EnvVars } from './env';
 import { confirmActiveBundler, getEntryFile } from '@rnv/sdk-utils';
 
-const BUNDLER_PLATFORMS: Record<string, string> = {};
+const BUNDLER_PLATFORMS: Partial<Record<PlatformKey, PlatformKey>> = {};
 
-BUNDLER_PLATFORMS[IOS] = IOS;
-BUNDLER_PLATFORMS[MACOS] = IOS;
-BUNDLER_PLATFORMS[ANDROID] = ANDROID;
-BUNDLER_PLATFORMS[ANDROID_TV] = ANDROID;
-BUNDLER_PLATFORMS[FIRE_TV] = ANDROID;
-BUNDLER_PLATFORMS[ANDROID_WEAR] = ANDROID;
+BUNDLER_PLATFORMS['ios'] = 'ios';
+BUNDLER_PLATFORMS['macos'] = 'ios';
+BUNDLER_PLATFORMS['android'] = 'android';
+BUNDLER_PLATFORMS['androidtv'] = 'android';
+BUNDLER_PLATFORMS['firetv'] = 'android';
+BUNDLER_PLATFORMS['androidwear'] = 'android';
 
 export const startReactNative = async (
     c: RnvContext,

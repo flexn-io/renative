@@ -6,12 +6,6 @@ import {
     executeOrSkipTask,
     shouldSkipTask,
     TASK_PACKAGE,
-    ANDROID,
-    ANDROID_TV,
-    FIRE_TV,
-    ANDROID_WEAR,
-    MACOS,
-    IOS,
     TASK_EJECT,
     RnvTask,
 } from '@rnv/core';
@@ -25,10 +19,9 @@ export const taskRnvEject: RnvTaskFn = async (c, _parentTask, originTask) => {
     c.runtime._platformBuildsSuffix = '_eject';
 
     switch (platform) {
-        case ANDROID:
-        case ANDROID_TV:
-        case FIRE_TV:
-        case ANDROID_WEAR:
+        case 'android':
+        case 'androidtv':
+        case 'androidwear':
             c.runtime._platformBuildsSuffix = '_eject/android';
             break;
         default:
@@ -42,14 +35,13 @@ export const taskRnvEject: RnvTaskFn = async (c, _parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_EJECT, originTask)) return true;
 
     switch (platform) {
-        case IOS:
-        case MACOS:
+        case 'ios':
+        case 'macos':
             await ejectXcodeProject(c);
             return true;
-        case ANDROID:
-        case ANDROID_TV:
-        case FIRE_TV:
-        case ANDROID_WEAR:
+        case 'android':
+        case 'androidtv':
+        case 'androidwear':
             await ejectGradleProject(c);
             return true;
         default:
@@ -63,7 +55,7 @@ const Task: RnvTask = {
     fn: taskRnvEject,
     task: TASK_EJECT,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR],
+    platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],
 };
 
 export default Task;

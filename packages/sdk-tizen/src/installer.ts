@@ -1,8 +1,5 @@
 import path from 'path';
 import {
-    TIZEN,
-    TIZEN_MOBILE,
-    TIZEN_WATCH,
     USER_HOME_DIR,
     isSystemWin,
     getRealPath,
@@ -115,9 +112,9 @@ export const checkTizenSdk = async (c: RnvContext) => {
         );
 
         switch (c.platform) {
-            case TIZEN:
-            case TIZEN_MOBILE:
-            case TIZEN_WATCH:
+            case 'tizen':
+            case 'tizenmobile':
+            case 'tizenwatch':
                 return _attemptAutoFix(c);
             default:
                 return true;

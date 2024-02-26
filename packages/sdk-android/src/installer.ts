@@ -1,9 +1,5 @@
 import path from 'path';
 import {
-    ANDROID,
-    ANDROID_TV,
-    FIRE_TV,
-    ANDROID_WEAR,
     USER_HOME_DIR,
     isSystemWin,
     getRealPath,
@@ -190,10 +186,10 @@ export const checkAndroidSdk = async (c: RnvContext) => {
         );
 
         switch (c.platform) {
-            case ANDROID:
-            case ANDROID_TV:
-            case FIRE_TV:
-            case ANDROID_WEAR:
+            case 'android':
+            case 'androidtv':
+            case 'firetv':
+            case 'androidwear':
                 await _attemptAutoFix(c, 'android', 'ANDROID_SDK');
                 return _attemptAutoFix(c, 'android-ndk', 'ANDROID_NDK', 'source.properties');
             default:

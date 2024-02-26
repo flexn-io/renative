@@ -1,7 +1,7 @@
 import { fsExistsSync, fsReadFileSync } from '../system/fs';
 import { RENATIVE_CONFIG_LOCAL_NAME, RENATIVE_CONFIG_PRIVATE_NAME } from '../constants';
 import { CreateContextOptions, RnvContext, RnvContextPathObj } from './types';
-import { generateContextDefaults } from './defaults';
+import { USER_HOME_DIR, generateContextDefaults } from './defaults';
 
 import {
     RENATIVE_CONFIG_NAME,
@@ -9,13 +9,11 @@ import {
     RENATIVE_CONFIG_WORKSPACES_NAME,
     RENATIVE_CONFIG_PLUGINS_NAME,
     RENATIVE_CONFIG_TEMPLATES_NAME,
-    // PLATFORMS,
-    USER_HOME_DIR,
 } from '../constants';
 
 import path from 'path';
 import { mkdirSync } from 'fs';
-import { isSystemWin } from '../utils/utils';
+import { isSystemWin } from '../system/is';
 
 export const generateContextPaths = (pathObj: RnvContextPathObj, dir: string, configName?: string) => {
     pathObj.dir = dir;

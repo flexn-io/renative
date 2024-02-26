@@ -3,9 +3,6 @@ import {
     jetifyIfRequired,
     logErrorPlatform,
     logTask,
-    TVOS,
-    ANDROID_TV,
-    FIRE_TV,
     TASK_PLATFORM_CONFIGURE,
     TASK_CONFIGURE,
     PARAMS,
@@ -30,12 +27,12 @@ export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => 
     }
 
     switch (c.platform) {
-        case ANDROID_TV:
-        case FIRE_TV:
+        case 'androidtv':
+        case 'firetv':
             await configureGradleProject(c);
             await jetifyIfRequired(c);
             return true;
-        case TVOS:
+        case 'tvos':
             await configureXcodeProject(c);
             return true;
         default:
@@ -49,7 +46,7 @@ const Task: RnvTask = {
     fn: taskRnvConfigure,
     task: TASK_CONFIGURE,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [TVOS, ANDROID_TV, FIRE_TV],
+    platforms: ['tvos', 'androidtv', 'firetv'],
 };
 
 export default Task;
