@@ -18,9 +18,9 @@ import {
     PayloadAppDelegateKey,
     PayloadAppDelegateMethod,
     PayloadAppDelegateSubKey,
-    SwiftAppDelegateKey,
-    SwiftAppDelegateSubKey,
-    SwiftMethod,
+    ObjectiveCAppDelegateKey,
+    ObjectiveCAppDelegateSubKey,
+    ObjectiveCMethod,
 } from './types';
 import { addSystemInjects, getAppTemplateFolder, sanitizeColor } from '@rnv/sdk-utils';
 
@@ -135,13 +135,13 @@ export const parseAppDelegate = (
                     end: null,
                 },
                 didReceiveRemoteNotification: {
-                    func: '- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)notification fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))handler {',
+                    func: '- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler {',
                     begin: null,
                     render: (v) => `${v};`,
                     end: null,
                 },
                 didFailToRegisterForRemoteNotificationsWithError: {
-                    func: '- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error; {',
+                    func: '- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {',
                     begin: null,
                     render: (v) => `${v};`,
                     end: null,
@@ -172,10 +172,16 @@ export const parseAppDelegate = (
                     render: (v) => `${v};`,
                     end: null,
                 },
+                didReceiveNotificationResponse: {
+                    func: '- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response  withCompletionHandler:(void (^)(void))completionHandler {',
+                    begin: null,
+                    render: (v) => `${v};`,
+                    end: null,
+                },
             },
         };
 
-        const constructMethod = (lines: Array<string>, method: SwiftMethod) => {
+        const constructMethod = (lines: Array<string>, method: ObjectiveCMethod) => {
             let output = '';
             if (lines.length || method.isRequired) {
                 output += `\n${method.func}\n`;
@@ -191,14 +197,14 @@ export const parseAppDelegate = (
 
         // REORDER Injects
         const injectors: Array<{
-            f: SwiftMethod;
+            f: ObjectiveCMethod;
             lines: Array<string>;
         }> = [];
         let cleanedLinesArr;
-        const mk = Object.keys(methods) as Array<SwiftAppDelegateKey>;
+        const mk = Object.keys(methods) as Array<ObjectiveCAppDelegateKey>;
         mk.forEach((key) => {
             const method = methods[key];
-            const mk2 = Object.keys(method) as Array<SwiftAppDelegateSubKey>;
+            const mk2 = Object.keys(method) as Array<ObjectiveCAppDelegateSubKey>;
             mk2.forEach((key2) => {
                 const f = method[key2];
                 const lines: Array<PayloadAppDelegateMethod> =
@@ -344,7 +350,9 @@ export const addAppDelegateImports = (
         logDebug(`${target.replace('plugin', '')} add`);
         if (c.payload.pluginConfigiOS[target].indexOf(appDelegateImport) === -1) {
             logDebug(`${target.replace('plugin', '')} add ok`);
-            c.payload.pluginConfigiOS[target] += `#import "${appDelegateImport}"\n`;
+            c.payload.pluginConfigiOS[target] += appDelegateImport.trim().startsWith('<')
+                ? `#import ${appDelegateImport}\n`
+                : `#import "${appDelegateImport}"\n`;
         }
     });
 };

@@ -55,6 +55,7 @@ export type Payload = {
             };
             userNotificationCenter: {
                 willPresent: Array<PayloadAppDelegateMethod>;
+                didReceiveNotificationResponse: Array<PayloadAppDelegateMethod>;
             };
         };
         podfileSources: string;
@@ -90,8 +91,7 @@ export type PayloadAppDelegateSubKey = keyof Payload['pluginConfigiOS']['appDele
     keyof Payload['pluginConfigiOS']['appDelegateMmMethods']['userNotificationCenter'];
 
 export type Context = RnvContext<Payload>;
-
-export type SwiftMethod = {
+export type ObjectiveCMethod = {
     isRequired?: boolean;
     func: string;
     begin: string | null;
@@ -99,51 +99,60 @@ export type SwiftMethod = {
     end: string | null;
 };
 
-export type SwiftAppDelegate = {
-    application: {
-        didFinishLaunchingWithOptions: SwiftMethod;
-        applicationDidBecomeActive: SwiftMethod;
-        open: SwiftMethod;
-        continue: SwiftMethod;
-        supportedInterfaceOrientationsFor: SwiftMethod;
-        didConnectCarInterfaceController: SwiftMethod;
-        didDisconnectCarInterfaceController: SwiftMethod;
-        didReceiveRemoteNotification: SwiftMethod;
-        didFailToRegisterForRemoteNotificationsWithError: SwiftMethod;
-        didReceive: SwiftMethod;
-        didRegister: SwiftMethod;
-        didRegisterForRemoteNotificationsWithDeviceToken: SwiftMethod;
-    };
-    userNotificationCenter: {
-        willPresent: SwiftMethod;
-    };
-};
+// export type SwiftMethod = {
+//     isRequired?: boolean;
+//     func: string;
+//     begin: string | null;
+//     render: (v: string) => string;
+//     end: string | null;
+// };
+
+// export type SwiftAppDelegate = {
+//     application: {
+//         didFinishLaunchingWithOptions: SwiftMethod;
+//         applicationDidBecomeActive: SwiftMethod;
+//         open: SwiftMethod;
+//         continue: SwiftMethod;
+//         supportedInterfaceOrientationsFor: SwiftMethod;
+//         didConnectCarInterfaceController: SwiftMethod;
+//         didDisconnectCarInterfaceController: SwiftMethod;
+//         didReceiveRemoteNotification: SwiftMethod;
+//         didFailToRegisterForRemoteNotificationsWithError: SwiftMethod;
+//         didReceive: SwiftMethod;
+//         didRegister: SwiftMethod;
+//         didRegisterForRemoteNotificationsWithDeviceToken: SwiftMethod;
+//     };
+//     userNotificationCenter: {
+//         willPresent: SwiftMethod;
+//     };
+// };
 
 export type ObjectiveCAppDelegate = {
     application: {
-        didFinishLaunchingWithOptions: SwiftMethod;
-        applicationDidBecomeActive: SwiftMethod;
-        sourceURLForBridge: SwiftMethod;
-        open: SwiftMethod;
-        continue: SwiftMethod;
-        supportedInterfaceOrientationsFor: SwiftMethod;
-        didConnectCarInterfaceController: SwiftMethod;
-        didDisconnectCarInterfaceController: SwiftMethod;
-        didReceiveRemoteNotification: SwiftMethod;
-        didFailToRegisterForRemoteNotificationsWithError: SwiftMethod;
-        // didReceive: SwiftMethod;
-        requestAuthorizationWithOptions: SwiftMethod;
-        didRegisterForRemoteNotificationsWithDeviceToken: SwiftMethod;
+        didFinishLaunchingWithOptions: ObjectiveCMethod;
+        applicationDidBecomeActive: ObjectiveCMethod;
+        sourceURLForBridge: ObjectiveCMethod;
+        open: ObjectiveCMethod;
+        continue: ObjectiveCMethod;
+        supportedInterfaceOrientationsFor: ObjectiveCMethod;
+        didConnectCarInterfaceController: ObjectiveCMethod;
+        didDisconnectCarInterfaceController: ObjectiveCMethod;
+        didReceiveRemoteNotification: ObjectiveCMethod;
+        didFailToRegisterForRemoteNotificationsWithError: ObjectiveCMethod;
+        // didReceive: ObjectiveCMethod;
+        requestAuthorizationWithOptions: ObjectiveCMethod;
+        didRegisterForRemoteNotificationsWithDeviceToken: ObjectiveCMethod;
     };
     userNotificationCenter: {
-        willPresent: SwiftMethod;
+        willPresent: ObjectiveCMethod;
+        didReceiveNotificationResponse: ObjectiveCMethod;
     };
 };
 
-export type SwiftAppDelegateSubKey = keyof SwiftAppDelegate['application'] &
-    keyof SwiftAppDelegate['userNotificationCenter'];
+export type ObjectiveCAppDelegateSubKey = keyof ObjectiveCAppDelegate['application'] &
+    keyof ObjectiveCAppDelegate['userNotificationCenter'];
 
-export type SwiftAppDelegateKey = keyof SwiftAppDelegate;
+export type ObjectiveCAppDelegateKey = keyof ObjectiveCAppDelegate;
 
 export type TemplateXcode = Required<Required<RenativeConfigPluginPlatform>['templateXcode']>;
 
