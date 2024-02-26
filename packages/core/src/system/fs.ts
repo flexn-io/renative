@@ -12,7 +12,7 @@ import { getApi } from '../api/provider';
 import { getContext } from '../context/provider';
 import { matchRegEx } from './regEx';
 import type { ConfigPropKey } from '../schema/types';
-import lGet from 'lodash.get';
+import lGet from 'lodash/get';
 
 export const fsWriteFileSync = (dest: string | undefined, data: string, options?: fs.WriteFileOptions) => {
     // if (dest && dest.includes('renative.json')) {

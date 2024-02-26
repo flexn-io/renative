@@ -1,4 +1,4 @@
-import lGet from 'lodash.get';
+import lGet from 'lodash/get';
 import {
     chalk,
     logTask,

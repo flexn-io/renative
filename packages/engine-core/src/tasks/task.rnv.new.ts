@@ -1,4 +1,4 @@
-import lSet from 'lodash.set';
+import lSet from 'lodash/set';
 import path from 'path';
 import semver from 'semver';
 import {

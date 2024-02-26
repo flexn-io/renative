@@ -38,7 +38,7 @@
         "iocane": "4.0.0",
         "kill-port": "1.6.1",
         "tar": "4.4.19",
-        "lodash.intersection": "4.4.0"
+        "lodash": "4.17.21"
     },
     "peerDependencies": {
         "@rnv/core": "^1.0.0-rc.11"
