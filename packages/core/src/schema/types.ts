@@ -7,7 +7,7 @@ import type { _RootAppBaseSchemalType } from './configFiles/app';
 import type { _RootProjectBaseSchemaType } from './configFiles/project';
 import type { _AndroidManifestType, _ManifestChildWithChildrenType } from './platforms/fragments/templateAndroidBase';
 import type { _MergedPlatformPrivateObjectType } from './configFiles/private';
-import { ConfigFileBuildConfig } from './configFiles/buildConfig';
+import type { ConfigFileBuildConfig } from './configFiles/buildConfig';
 
 //===============================
 // NORMALIZED (MERGED+NORMALIZED)
