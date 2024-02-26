@@ -19,12 +19,12 @@ import {
     fsExistsSync,
     getAppConfigBuildsFolder,
 } from '@rnv/core';
-import ip from 'ip';
 import path from 'path';
 import { runChromecast, runWebpackServer } from '@rnv/sdk-webpack';
 import { runTizen } from '@rnv/sdk-tizen';
 import { runWebOS } from '@rnv/sdk-webos';
 import { runKaiOSProject } from '@rnv/sdk-kaios';
+import { getIP } from '@rnv/sdk-utils';
 
 const existBuildsOverrideForTargetPathSync = (c: RnvContext, destPath: string) => {
     const appFolder = getAppFolder(c);
@@ -57,7 +57,7 @@ const _configureHostedIfRequired = async (c: RnvContext) => {
 
     if (!bundleAssets && !existBuildsOverrideForTargetPathSync(c, path.join(getPlatformProjectDir(c)!, 'index.html'))) {
         logDebug('Running hosted build');
-        const ipAddress = c.program.hostIp || ip.address();
+        const ipAddress = c.program.hostIp || getIP();
 
         if (c.runtime.currentEngine?.rootPath) {
             writeCleanFile(
