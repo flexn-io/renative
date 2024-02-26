@@ -27,6 +27,8 @@ import {
 } from '@rnv/core';
 import { getDevServerHost, openBrowser, waitForHost } from '@rnv/sdk-utils';
 import { EnvVars } from './env';
+import { withRNVWebpack } from './adapter';
+export { withRNVWebpack };
 
 export const REMOTE_DEBUG_PORT = 8079;
 
@@ -159,6 +161,7 @@ export const _runWebDevServer = async (c: RnvContext, enableRemoteDebugger?: boo
         ...EnvVars.WEBPACK_TARGET(),
         ...EnvVars.RNV_EXTERNAL_PATHS(),
     };
+
     Object.keys(env).forEach((v) => {
         process.env[v] = env[v];
     });
