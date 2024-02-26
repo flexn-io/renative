@@ -26,7 +26,7 @@ export type TaskOption = {
     isGlobalScope?: boolean;
     isPrivate?: boolean;
     isPriorityOrder?: boolean;
-    provider?: string;
+    providers: string[];
     params?: Array<RnvTaskParameter>;
 };
 
