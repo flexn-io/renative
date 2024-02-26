@@ -6,7 +6,6 @@ import execa, { ExecaChildProcess } from 'execa';
 import NClient from 'netcat/client';
 import { chalk, logDebug, logRaw, logError } from '../logger';
 import { fsExistsSync } from './fs';
-import { replaceOverridesInString } from '../utils/utils';
 import { RnvContext } from '../context/types';
 import { ExecCallback, ExecOptions } from './types';
 import { getContext } from '../context/provider';
@@ -51,6 +50,18 @@ export const ExecOptionsPresets = {
     SPINNER_FULL_ERROR_SUMMARY,
     NO_SPINNER_FULL_ERROR_SUMMARY,
 } as const;
+
+const replaceOverridesInString = (string: string | undefined, overrides: Array<string>, mask: string) => {
+    if (!string) return '';
+    let replacedString = string;
+    if (overrides?.length && replacedString?.replace) {
+        overrides.forEach((v) => {
+            const regEx = new RegExp(v, 'g');
+            replacedString = replacedString.replace(regEx, mask);
+        });
+    }
+    return replacedString;
+};
 
 /**
  *

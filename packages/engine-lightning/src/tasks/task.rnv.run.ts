@@ -3,8 +3,6 @@ import {
     logErrorPlatform,
     logTask,
     logRaw,
-    TIZEN,
-    WEBOS,
     TASK_RUN,
     TASK_CONFIGURE,
     PARAMS,
@@ -23,8 +21,8 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     await executeOrSkipTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
 
     switch (platform) {
-        case TIZEN:
-        case WEBOS:
+        case 'tizen':
+        case 'webos':
             return runLightningProject(c);
         default:
             return logErrorPlatform(c);
@@ -46,7 +44,7 @@ const Task: RnvTask = {
     //     before: TASK_CONFIGURE,
     // },
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
-    platforms: [TIZEN, WEBOS],
+    platforms: ['tizen', 'webos'],
 };
 
 export default Task;

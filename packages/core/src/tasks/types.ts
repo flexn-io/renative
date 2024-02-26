@@ -1,16 +1,18 @@
 import type { RnvContext } from '../context/types';
+import type { PlatformKey } from '../schema/types';
 
 export type RnvTask = {
     task: string;
     params: Array<RnvTaskParameter>;
     isGlobalScope?: boolean;
-    platforms: Array<string>;
+    platforms: Array<PlatformKey>;
     description: string;
     forceBuildHookRebuild?: boolean;
     fn?: RnvTaskFn;
     fnHelp?: RnvTaskFn;
     isPrivate?: boolean;
     isPriorityOrder?: boolean;
+    ignoreEngines?: boolean;
 };
 
 export type TaskOption = {
@@ -24,6 +26,8 @@ export type TaskOption = {
     isGlobalScope?: boolean;
     isPrivate?: boolean;
     isPriorityOrder?: boolean;
+    provider?: string;
+    params?: Array<RnvTaskParameter>;
 };
 
 export type RnvTaskParameter = {

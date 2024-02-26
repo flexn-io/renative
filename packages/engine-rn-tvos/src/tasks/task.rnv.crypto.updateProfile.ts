@@ -5,7 +5,6 @@ import {
     logTask,
     TASK_CRYPTO_UPDATE_PROFILE,
     TASK_PROJECT_CONFIGURE,
-    TVOS,
     PARAMS,
     RnvTask,
 } from '@rnv/core';
@@ -26,7 +25,7 @@ const Task: RnvTask = {
     fn: taskRnvCryptoUpdateProfile,
     task: TASK_CRYPTO_UPDATE_PROFILE,
     params: PARAMS.withBase(),
-    platforms: [TVOS],
+    platforms: ['tvos'],
     // skipPlatforms: true,
 };
 

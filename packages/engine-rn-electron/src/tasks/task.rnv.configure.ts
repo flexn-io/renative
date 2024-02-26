@@ -3,9 +3,6 @@ import {
     logErrorPlatform,
     copySharedPlatforms,
     logTask,
-    MACOS,
-    WINDOWS,
-    LINUX,
     TASK_PLATFORM_CONFIGURE,
     TASK_CONFIGURE,
     PARAMS,
@@ -32,9 +29,9 @@ export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => 
     }
 
     switch (c.platform) {
-        case MACOS:
-        case WINDOWS:
-        case LINUX:
+        case 'macos':
+        case 'windows':
+        case 'linux':
             return configureElectronProject(c);
         default:
             return logErrorPlatform(c);
@@ -46,7 +43,7 @@ const Task: RnvTask = {
     fn: taskRnvConfigure,
     task: TASK_CONFIGURE,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [MACOS, WINDOWS, LINUX],
+    platforms: ['macos', 'windows', 'linux'],
 };
 
 export default Task;

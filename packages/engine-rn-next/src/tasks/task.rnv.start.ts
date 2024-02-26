@@ -3,8 +3,6 @@ import {
     logErrorPlatform,
     logTask,
     logError,
-    WEB,
-    CHROMECAST,
     TASK_START,
     TASK_CONFIGURE,
     PARAMS,
@@ -38,8 +36,8 @@ export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
         return logError('This platform does not support hosted mode', true);
     }
     switch (platform) {
-        case WEB:
-        case CHROMECAST:
+        case 'web':
+        case 'chromecast':
             c.runtime.shouldOpenBrowser = false;
             return runWebNext(c);
         default:
@@ -52,7 +50,7 @@ const Task: RnvTask = {
     fn: taskRnvStart,
     task: TASK_START,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [WEB, CHROMECAST],
+    platforms: ['web', 'chromecast'],
 };
 
 export default Task;

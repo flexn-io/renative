@@ -1,12 +1,10 @@
 import {
-    IOS,
     RnvPlatform,
     chalk,
     doResolve,
     fsExistsSync,
     fsWriteFileSync,
     getAppFolder,
-    getAppId,
     getConfigProp,
     getFlavouredProp,
     inquirerPrompt,
@@ -21,6 +19,7 @@ import path from 'path';
 import { getAppFolderName } from './common';
 import { parseProvisioningProfiles } from './provisionParser';
 import { Context } from './types';
+import { getAppId } from '@rnv/sdk-utils';
 
 export const parseXcodeProject = async (c: Context) => {
     logTask('parseXcodeProject');
@@ -126,7 +125,7 @@ const _parseXcodeProject = (c: Context, platform: RnvPlatform) =>
             xcodeProj.addBuildProperty('CODE_SIGN_STYLE', provisioningStyle);
             xcodeProj.updateBuildProperty('PRODUCT_BUNDLE_IDENTIFIER', appId);
 
-            if (platform === IOS) {
+            if (platform === 'ios') {
                 xcodeProj.updateBuildProperty('IPHONEOS_DEPLOYMENT_TARGET', deploymentTarget);
             }
 

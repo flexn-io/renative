@@ -2,7 +2,6 @@ import path from 'path';
 import { executeAsync, commandExistsSync } from '../system/exec';
 import { fsExistsSync, invalidatePodsChecksum, removeDirs, writeFileSync } from '../system/fs';
 import { logTask, logWarning, logError, logInfo, logDebug, logSuccess } from '../logger';
-import { ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR } from '../constants';
 import { doResolve } from '../system/resolve';
 import { RnvContext } from '../context/types';
 import { inquirerPrompt } from '../api';
@@ -188,10 +187,10 @@ export const installPackageDependencies = async (c: RnvContext, failOnError = fa
         const plats = c.files.project.config?.defaults?.supportedPlatforms;
         if (
             Array.isArray(plats) &&
-            (plats.includes(ANDROID) ||
-                plats.includes(ANDROID_TV) ||
-                plats.includes(FIRE_TV) ||
-                plats.includes(ANDROID_WEAR))
+            (plats.includes('android') ||
+                plats.includes('androidtv') ||
+                plats.includes('firetv') ||
+                plats.includes('androidwear'))
         ) {
             if (!c.files.project.configLocal) {
                 c.files.project.configLocal = {};

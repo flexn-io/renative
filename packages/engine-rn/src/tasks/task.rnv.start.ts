@@ -8,12 +8,6 @@ import {
     TASK_START,
     TASK_CONFIGURE_SOFT,
     logError,
-    ANDROID,
-    ANDROID_TV,
-    FIRE_TV,
-    ANDROID_WEAR,
-    MACOS,
-    IOS,
     RnvTask,
 } from '@rnv/core';
 import { startReactNative } from '@rnv/sdk-react-native';
@@ -36,12 +30,12 @@ export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_START, originTask)) return true;
 
     switch (platform) {
-        case IOS:
-        case MACOS:
-        case ANDROID:
-        case ANDROID_TV:
-        case FIRE_TV:
-        case ANDROID_WEAR: {
+        case 'ios':
+        case 'macos':
+        case 'android':
+        case 'androidtv':
+        case 'firetv':
+        case 'androidwear': {
             return startReactNative(c, { waitForBundler: !parentTask });
         }
         default:
@@ -54,7 +48,7 @@ const Task: RnvTask = {
     fn: taskRnvStart,
     task: TASK_START,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR],
+    platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],
 };
 
 export default Task;

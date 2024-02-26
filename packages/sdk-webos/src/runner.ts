@@ -2,14 +2,9 @@ import { buildCoreWebpackProject, configureCoreWebProject, runWebpackServer } fr
 import path from 'path';
 import {
     execCLI,
-    REMOTE_DEBUGGER_ENABLED_PLATFORMS,
     RnvContext,
     getPlatformProjectDir,
-    getAppVersion,
     getConfigProp,
-    checkPortInUse,
-    confirmActiveBundler,
-    addSystemInjects,
     chalk,
     logTask,
     logError,
@@ -19,18 +14,26 @@ import {
     writeCleanFile,
     copyAssetsFolder,
     copyBuildsFolder,
-    getPlatformBuildDir,
-    getAppId,
-    getAppTitle,
-    getAppDescription,
     copyFileSync,
     DEFAULTS,
     OverridesOptions,
+    getAppFolder,
 } from '@rnv/core';
 import semver from 'semver';
 import { runWebosSimOrDevice } from './deviceManager';
 import { CLI_WEBOS_ARES_PACKAGE } from './constants';
-import { waitForHost } from '@rnv/sdk-utils';
+import {
+    checkPortInUse,
+    waitForHost,
+    getAppVersion,
+    confirmActiveBundler,
+    getAppId,
+    getAppTitle,
+    getAppDescription,
+    addSystemInjects,
+    REMOTE_DEBUGGER_ENABLED_PLATFORMS,
+} from '@rnv/sdk-utils';
+import { fsExistsSync } from '@rnv/core';
 
 export const runWebOS = async (c: RnvContext) => {
     const { hosted } = c.program;
@@ -45,10 +48,9 @@ export const runWebOS = async (c: RnvContext) => {
             const resetCompleted = await confirmActiveBundler(c);
             c.runtime.skipActiveServerCheck = !resetCompleted;
         }
+        logTask('runWebOS', `target:${target} hosted:${!!isHosted}`);
+        return;
     }
-
-    logTask('runWebOS', `target:${target} hosted:${!!isHosted}`);
-    if (isHosted) return;
 
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
 
@@ -61,6 +63,21 @@ export const runWebOS = async (c: RnvContext) => {
 
     if (bundleAssets) {
         await buildCoreWebpackProject(c);
+
+        const appPath = getAppFolder(c);
+
+        if (!appPath) {
+            throw new Error('Failed to resolve appPath');
+        }
+        // Copying required files to build folder, webpack doesn't have them in the build folder
+        const requiredFiles = ['appinfo.json', 'splashBackground.png', 'largeIcon.png', 'icon.png'];
+
+        requiredFiles.map((requiredFile) => {
+            const requiredFilePath = path.join(appPath, requiredFile);
+            if (fsExistsSync(requiredFilePath)) {
+                copyFileSync(requiredFilePath, path.join(appPath, 'build', requiredFile));
+            }
+        });
         await runWebosSimOrDevice(c);
     } else {
         const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
@@ -101,7 +118,7 @@ export const buildWebOSProject = async (c: RnvContext) => {
 
     if (!c.program.hosted) {
         const tDir = path.join(getPlatformProjectDir(c)!, 'build');
-        const tOut = path.join(getPlatformBuildDir(c)!, 'output');
+        const tOut = path.join(getAppFolder(c)!, 'output');
 
         const appinfoSrc = path.join(getPlatformProjectDir(c)!, 'appinfo.json');
         const appinfoDest = path.join(tDir, 'appinfo.json');

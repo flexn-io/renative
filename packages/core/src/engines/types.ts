@@ -1,9 +1,10 @@
 import { ConfigFileEngine } from '../schema/configFiles/types';
+import type { PlatformKey } from '../schema/types';
 import type { RnvTaskMap } from '../tasks/types';
 
 export type RnvEngine = {
     originalTemplatePlatformsDir?: string;
-    platforms: Record<string, RnvEnginePlatform>;
+    platforms: Partial<Record<PlatformKey, RnvEnginePlatform>>;
     config: ConfigFileEngine;
     tasks: RnvTaskMap;
     rootPath?: string;

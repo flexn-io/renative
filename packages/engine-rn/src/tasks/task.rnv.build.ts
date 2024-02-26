@@ -8,12 +8,6 @@ import {
     executeOrSkipTask,
     shouldSkipTask,
     TASK_PACKAGE,
-    ANDROID,
-    ANDROID_TV,
-    FIRE_TV,
-    ANDROID_WEAR,
-    MACOS,
-    IOS,
     RnvTask,
 } from '@rnv/core';
 import { buildReactNativeAndroid } from '@rnv/sdk-react-native';
@@ -28,13 +22,13 @@ export const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_BUILD, originTask)) return true;
 
     switch (platform) {
-        case ANDROID:
-        case ANDROID_TV:
-        case FIRE_TV:
-        case ANDROID_WEAR:
+        case 'android':
+        case 'androidtv':
+        case 'firetv':
+        case 'androidwear':
             return buildReactNativeAndroid(c);
-        case IOS:
-        case MACOS:
+        case 'ios':
+        case 'macos':
             if (parentTask === TASK_EXPORT) {
                 // build task is not necessary when exporting ios
                 return true;
@@ -50,7 +44,7 @@ const Task: RnvTask = {
     fn: taskRnvBuild,
     task: TASK_BUILD,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, MACOS],
+    platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],
 };
 
 export default Task;

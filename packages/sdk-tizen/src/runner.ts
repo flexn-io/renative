@@ -2,14 +2,9 @@ import { buildCoreWebpackProject, configureCoreWebProject, runWebpackServer } fr
 import path from 'path';
 import {
     execCLI,
-    REMOTE_DEBUGGER_ENABLED_PLATFORMS,
     RnvContext,
     getPlatformProjectDir,
-    getAppVersion,
     getConfigProp,
-    checkPortInUse,
-    confirmActiveBundler,
-    addSystemInjects,
     chalk,
     logTask,
     logDebug,
@@ -35,7 +30,14 @@ import {
     DEFAULT_CERTIFICATE_NAME,
     addDevelopTizenCertificate,
 } from './deviceManager';
-import { waitForHost } from '@rnv/sdk-utils';
+import {
+    checkPortInUse,
+    waitForHost,
+    getAppVersion,
+    confirmActiveBundler,
+    addSystemInjects,
+    REMOTE_DEBUGGER_ENABLED_PLATFORMS,
+} from '@rnv/sdk-utils';
 
 const DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION = `${DEFAULT_CERTIFICATE_NAME}.p12`;
 

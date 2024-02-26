@@ -7,7 +7,7 @@
         "@rnv/engine-rn-tvos": "source:rnv",
         "@rnv/engine-rn-web": "source:rnv"
     },
-    "$schema": "../../.rnv/schema/rnv.project.json",
+    "$schema": ".rnv/schema/rnv.project.json",
     "isTemplate": true,
     "projectName": "@rnv/template-starter",
     "enableHookRebuild": false,

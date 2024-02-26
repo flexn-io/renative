@@ -16,7 +16,6 @@ import {
     executeAsync,
     getAppFolder,
     getConfigProp,
-    getEntryFile,
     isPlatformActive,
     isSystemWin,
     updateRenativeConfigs,
@@ -27,13 +26,10 @@ import {
     logSuccess,
     logRaw,
     logError,
-    ANDROID_WEAR,
-    ANDROID,
-    ANDROID_TV,
-    FIRE_TV,
     DEFAULTS,
     RnvPlatform,
     logInfo,
+    PlatformKey,
 } from '@rnv/core';
 import { parseAndroidManifestSync, injectPluginManifestSync } from './manifestParser';
 import {
@@ -65,6 +61,7 @@ import {
 } from './deviceManager';
 import { CLI_ANDROID_ADB } from './constants';
 import { runReactNativeAndroid, packageReactNativeAndroid } from '@rnv/sdk-react-native';
+import { getEntryFile } from '@rnv/sdk-utils';
 
 export const packageAndroid = async (c: Context) => {
     logTask('packageAndroid');
@@ -232,7 +229,7 @@ const _checkSigningCerts = async (c: Context) => {
             const platforms = c.files.workspace.appConfig.configPrivate?.platforms || {};
 
             if (c.files.workspace.appConfig.configPrivate) {
-                const platCandidates = [ANDROID_WEAR, ANDROID_TV, ANDROID, FIRE_TV] as const;
+                const platCandidates: PlatformKey[] = ['androidwear', 'androidtv', 'android', 'firetv'];
 
                 platCandidates.forEach((v) => {
                     if (c.files.workspace.appConfig.configPrivate?.platforms?.[v]) {
@@ -526,7 +523,7 @@ export const runAndroidLog = async (c: Context) => {
     return child.then((res) => res.stdout).catch((err) => Promise.reject(`Error: ${err}`));
 };
 
-const _isString = (target: boolean | string): boolean => {
+const _isString = (target: boolean | string | undefined): boolean => {
     return typeof target === 'string';
 };
 export { ejectGradleProject };

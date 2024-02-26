@@ -1,7 +1,7 @@
 import { fsExistsSync, fsReadFileSync } from '../system/fs';
 import { RENATIVE_CONFIG_LOCAL_NAME, RENATIVE_CONFIG_PRIVATE_NAME } from '../constants';
 import { CreateContextOptions, RnvContext, RnvContextPathObj } from './types';
-import { generateContextDefaults } from './defaults';
+import { USER_HOME_DIR, generateContextDefaults } from './defaults';
 
 import {
     RENATIVE_CONFIG_NAME,
@@ -9,13 +9,11 @@ import {
     RENATIVE_CONFIG_WORKSPACES_NAME,
     RENATIVE_CONFIG_PLUGINS_NAME,
     RENATIVE_CONFIG_TEMPLATES_NAME,
-    // PLATFORMS,
-    USER_HOME_DIR,
 } from '../constants';
 
 import path from 'path';
 import { mkdirSync } from 'fs';
-import { isSystemWin } from '../utils/utils';
+import { isSystemWin } from '../system/is';
 
 export const generateContextPaths = (pathObj: RnvContextPathObj, dir: string, configName?: string) => {
     pathObj.dir = dir;
@@ -74,7 +72,6 @@ Make sure all your rnv dependencies are of same version and you are executing wi
     c.command = ctx?.cmd || c.command;
     c.subCommand = ctx?.subCmd || c.subCommand;
     c.isSystemWin = isSystemWin;
-    // c.platformDefaults = PLATFORMS;
 
     c.paths.rnv.dir = ctx?.RNV_HOME_DIR || c.paths.rnv.dir;
 
@@ -107,6 +104,8 @@ Make sure all your rnv dependencies are of same version and you are executing wi
 
     generateContextPaths(c.paths.project, c.paths.CURRENT_DIR, c.program.configName);
 
+    // TODO: generate solution root
+
     populateLinkingInfo(c);
 
     c.paths.buildHooks.dir = path.join(c.paths.project.dir, 'buildHooks/src');
@@ -117,6 +116,7 @@ Make sure all your rnv dependencies are of same version and you are executing wi
     c.paths.project.srcDir = path.join(c.paths.project.dir, 'src');
     c.paths.project.appConfigsDir = path.join(c.paths.project.dir, 'appConfigs');
     c.paths.project.package = path.join(c.paths.project.dir, 'package.json');
+    c.paths.project.dotRnvDir = path.join(c.paths.project.dir, '.rnv');
     // c.paths.project.npmLinkPolyfill = path.join(
     //     c.paths.project.dir,
     //     'npm_link_polyfill.json'

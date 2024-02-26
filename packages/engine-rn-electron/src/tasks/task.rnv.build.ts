@@ -1,9 +1,6 @@
 import {
     RnvTaskFn,
     logTask,
-    MACOS,
-    WINDOWS,
-    LINUX,
     TASK_BUILD,
     TASK_PACKAGE,
     PARAMS,
@@ -23,9 +20,9 @@ export const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_BUILD, originTask)) return true;
 
     switch (platform) {
-        case MACOS:
-        case WINDOWS:
-        case LINUX:
+        case 'macos':
+        case 'windows':
+        case 'linux':
             await buildElectron(c);
             return;
         default:
@@ -38,7 +35,7 @@ const Task: RnvTask = {
     fn: taskRnvBuild,
     task: TASK_BUILD,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [MACOS, WINDOWS, LINUX],
+    platforms: ['macos', 'windows', 'linux'],
 };
 
 export default Task;

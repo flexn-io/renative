@@ -1,6 +1,6 @@
 import merge from 'deepmerge';
 import path from 'path';
-import { getAppFolder, getBuildsFolder, getConfigProp } from '../common';
+import { getAppConfigBuildsFolder, getAppFolder } from '../context/contextProps';
 import { parseRenativeConfigs } from '../configs';
 import { RENATIVE_CONFIG_PLUGINS_NAME } from '../constants';
 import { configureFonts } from '../projects';
@@ -27,6 +27,7 @@ import { OverridesOptions, ResolveOptions } from '../system/types';
 import { ConfigFileOverrides, ConfigFilePlugin, ConfigFilePlugins } from '../schema/configFiles/types';
 import { NpmPackageFile } from '../configs/types';
 import { getContext } from '../context/provider';
+import { getConfigProp } from '../context/contextProps';
 
 const _getPluginScope = (plugin: RenativeConfigPlugin | string): RnvPluginScope => {
     if (typeof plugin === 'string') {
@@ -888,12 +889,12 @@ export const copyTemplatePluginsSync = (c: RnvContext) => {
         }
         // FOLDER MERGES FROM PROJECT CONFIG PLUGIN
         // if (c.paths.rnv.pluginTemplates.dir) {
-        //     const sourcePathRnvPlugin = getBuildsFolder(c, platform, path.join(c.paths.rnv.pluginTemplates.dir, key));
+        //     const sourcePathRnvPlugin = getAppConfigBuildsFolder(c, platform, path.join(c.paths.rnv.pluginTemplates.dir, key));
         //     copyFolderContentsRecursiveSync(sourcePathRnvPlugin, destPath, true, undefined, false, objectInject);
         // }
 
         // FOLDER MERGES FROM PROJECT CONFIG PLUGIN
-        const sourcePath3 = getBuildsFolder(
+        const sourcePath3 = getAppConfigBuildsFolder(
             c,
             platform,
             path.join(c.paths.project.appConfigBase.dir, `plugins/${key}`)
@@ -901,7 +902,7 @@ export const copyTemplatePluginsSync = (c: RnvContext) => {
         copyFolderContentsRecursiveSync(sourcePath3, destPath, true, undefined, false, objectInject);
 
         // FOLDER MERGES FROM PROJECT CONFIG PLUGIN (PRIVATE)
-        const sourcePath3sec = getBuildsFolder(
+        const sourcePath3sec = getAppConfigBuildsFolder(
             c,
             platform,
             path.join(c.paths.workspace.project.appConfigBase.dir, `plugins/${key}`)
@@ -909,11 +910,11 @@ export const copyTemplatePluginsSync = (c: RnvContext) => {
         copyFolderContentsRecursiveSync(sourcePath3sec, destPath, true, undefined, false, objectInject);
 
         // FOLDER MERGES FROM APP CONFIG PLUGIN
-        const sourcePath2 = getBuildsFolder(c, platform, path.join(c.paths.appConfig.dir, `plugins/${key}`));
+        const sourcePath2 = getAppConfigBuildsFolder(c, platform, path.join(c.paths.appConfig.dir, `plugins/${key}`));
         copyFolderContentsRecursiveSync(sourcePath2, destPath, true, undefined, false, objectInject);
 
         // FOLDER MERGES FROM APP CONFIG PLUGIN (PRIVATE)
-        const sourcePath2sec = getBuildsFolder(
+        const sourcePath2sec = getAppConfigBuildsFolder(
             c,
             platform,
             path.join(c.paths.workspace.appConfig.dir, `plugins/${key}`)
@@ -925,7 +926,7 @@ export const copyTemplatePluginsSync = (c: RnvContext) => {
             if (pathKey !== 'rnv') {
                 const pluginTemplatePath = c.paths.rnv.pluginTemplates.dirs[pathKey];
 
-                const sourcePath4sec = getBuildsFolder(c, platform, path.join(pluginTemplatePath, key));
+                const sourcePath4sec = getAppConfigBuildsFolder(c, platform, path.join(pluginTemplatePath, key));
                 copyFolderContentsRecursiveSync(sourcePath4sec, destPath, true, undefined, false, objectInject);
             }
         });

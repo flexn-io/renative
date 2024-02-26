@@ -2,7 +2,6 @@ import path from 'path';
 import { fsExistsSync, readObjectSync, writeFileSync } from '../system/fs';
 import { installPackageDependencies } from '../projects/npm';
 import { logDebug, logTask, chalk, logInfo, logWarning, logError } from '../logger';
-import { getConfigProp } from '../common';
 import { doResolve } from '../system/resolve';
 import { configurePlugins } from '../plugins';
 import { RnvContext } from '../context/types';
@@ -15,6 +14,7 @@ import { writeRenativeConfigFile } from '../configs/utils';
 import { checkAndCreateProjectPackage } from '../projects/package';
 import { getEngineTemplateByPlatform } from '../configs/engines';
 import { ConfigFileEngine } from '../schema/configFiles/types';
+import { getConfigProp } from '../context/contextProps';
 
 const ENGINE_CORE = 'engine-core';
 
@@ -22,7 +22,6 @@ export const registerEngine = async (engine: RnvEngine, platform?: RnvPlatform, 
     const c = getContext();
     logTask(`registerEngine:${engine.config.id}`);
     c.runtime.enginesById[engine.config.id] = engine;
-    // engine.initializeRuntimeConfig(c);
 
     c.runtime.enginesByIndex.push(engine);
     if (engConfig?.packageName) {
@@ -85,7 +84,7 @@ export const generateEngineTasks = (taskArr: Array<RnvTask>) => {
 
 export const configureEngines = async (c: RnvContext) => {
     logTask('configureEngines');
-    // const { engines } = c.files.project.config;
+
     const engines = _getFilteredEngines(c);
     const devDependencies = c.files.project.package.devDependencies || {};
     c.files.project.package.devDependencies = devDependencies;
@@ -174,7 +173,6 @@ export const loadEnginePluginDeps = async (c: RnvContext, engineConfigs: Array<R
         if (engPlugins) {
             const projectPlugins = c.files.project.config?.plugins;
             // Comparing original config causes engine think that template is not extended with additional deps
-            // const projectPlugins = c.files.project.config_original.plugins;
             if (projectPlugins) {
                 Object.keys(engPlugins).forEach((k) => {
                     if (!projectPlugins[k]) {
@@ -191,7 +189,6 @@ export const loadEnginePluginDeps = async (c: RnvContext, engineConfigs: Array<R
         const engineKeys = engineConfigs.map((v) => v.key);
         const addedPluginsKeys = Object.keys(addedPlugins);
 
-        // const allPlugins = Object.keys(originalProjectPlugins);
         logInfo(
             `Engines: ${chalk().yellow(engineKeys.join(','))} require plugins ${chalk().white(
                 addedPluginsKeys.join(',')
@@ -291,9 +288,7 @@ export const loadEnginePackageDeps = async (c: RnvContext, engineConfigs: Array<
             }
         });
     });
-    // if (addedDeps.length > 0) {
-    //     await installPackageDependencies(c);
-    // }
+
     return addedDeps.length;
 };
 

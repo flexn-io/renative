@@ -1,14 +1,13 @@
 import { getEngineRunnerByPlatform } from '../engines';
-import { isSystemWin } from '../utils/utils';
+import { isSystemWin } from '../system/is';
 import { getRealPath } from '../system/fs';
-import { getConfigProp } from '../common';
 import { logTask } from '../logger';
 import { RnvContext, RnvContextPlatform } from './types';
 import { generateRuntimePropInjects } from '../system/injectors';
+import { getConfigProp } from './contextProps';
 
 export const configureRuntimeDefaults = async (c: RnvContext) => {
     c.runtime.appId = c.files.project?.configLocal?._meta?.currentAppConfigId;
-    // c.runtime.appConfigDir = c.files.project?.configLocal?._meta?.currentAppConfigDir || null;
 
     logTask('configureRuntimeDefaults', `appId:${c.runtime.appId}`);
 
@@ -48,7 +47,6 @@ export const configureRuntimeDefaults = async (c: RnvContext) => {
         const { hosted } = c.program;
         c.runtime.hosted = hosted && c.runtime.currentPlatform?.isWebHosted;
 
-        // c.runtime.devServer = `http://${ip.address()}:${c.runtime.port}`;
         if (c.buildConfig.defaults?.supportedPlatforms) {
             c.runtime.supportedPlatforms = [];
             c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
