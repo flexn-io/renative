@@ -3,12 +3,12 @@ import {
     logTask,
     getTemplateOptions,
     executeTask,
-    TASK_TEMPLATE_LIST,
     TASK_PROJECT_CONFIGURE,
     PARAMS,
     RnvTaskFn,
     RnvTask,
 } from '@rnv/core';
+import { TASK_TEMPLATE_LIST } from '../constants';
 
 export const taskRnvTemplateList: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvTemplateList');

@@ -1,6 +1,5 @@
 import {
     RnvContext,
-    TASK_CRYPTO_DECRYPT,
     chalk,
     executeTask,
     fsExistsSync,
@@ -13,6 +12,9 @@ import {
     logWarning,
 } from '@rnv/core';
 import path from 'path';
+
+export const TASK_CRYPTO_ENCRYPT = 'crypto encrypt';
+export const TASK_CRYPTO_DECRYPT = 'crypto decrypt';
 
 export const getEnvExportCmd = (envVar: string, key: string) => {
     if (isSystemWin) {

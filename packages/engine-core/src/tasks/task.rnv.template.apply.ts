@@ -3,14 +3,13 @@ import {
     applyTemplate,
     getInstalledTemplateOptions,
     executeTask,
-    TASK_TEMPLATE_APPLY,
     TASK_PROJECT_CONFIGURE,
-    TASK_APP_CONFIGURE,
     PARAMS,
     RnvTaskFn,
     inquirerPrompt,
     RnvTask,
 } from '@rnv/core';
+import { TASK_APP_CONFIGURE, TASK_TEMPLATE_APPLY } from '../constants';
 
 export const taskRnvTemplateApply: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvTemplateApply', `template: ${c.program.template}`);
