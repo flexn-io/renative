@@ -53,6 +53,7 @@ const _getTaskOption = ({ taskInstance }: TaskObj, provider?: string): TaskOptio
         isGlobalScope: taskInstance.isGlobalScope,
         isPrivate: taskInstance.isPrivate,
         params: taskInstance.params,
+        providers: [],
     };
 
     if (taskInstance.description && taskInstance.description !== '') {
@@ -65,7 +66,7 @@ const _getTaskOption = ({ taskInstance }: TaskObj, provider?: string): TaskOptio
     output.subCommand = asArray[1];
 
     if (provider) {
-        output.provider = provider;
+        output.providers.push(provider);
     }
 
     return output;
@@ -90,18 +91,20 @@ const _getTaskObj = (taskInstance: RnvTask) => {
 export const getAllSuitableTasks = (c: RnvContext): Record<string, TaskOption> => {
     const REGISTERED_ENGINES = getRegisteredEngines(c);
     const suitableTasks: Record<string, TaskOption> = {};
+
     REGISTERED_ENGINES.forEach((engine) => {
         Object.values(engine.tasks).forEach((taskInstance) => {
             let taskObj: TaskOption = _getTaskOption(_getTaskObj(taskInstance), engine?.config?.id);
             if (!suitableTasks[taskObj.value]) {
                 suitableTasks[taskObj.value] = taskObj;
             } else {
-                taskObj = suitableTasks[taskObj.value];
                 // In case of multiple competing tasks (same task name but coming from different engines)
+                taskObj = suitableTasks[taskObj.value];
                 // We try to revert to generic description instead.
                 taskObj.description = DEFAULT_TASK_DESCRIPTIONS[taskObj.value] || taskObj.description;
                 // In case of multiple competing tasks we assume they are "commonly used"
                 taskObj.isPriorityOrder = true;
+                taskObj.providers.push(engine?.config?.id);
             }
         });
     });
@@ -145,6 +148,7 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
                             name: `${task.command}...`,
                             command: task.command,
                             value: task.command,
+                            providers: [],
                         };
                         taskGroups[task.command] = groupTask;
                         groupedTasks.push(groupTask);
