@@ -23,9 +23,9 @@ import {
     PayloadAppDelegateKey,
     PayloadAppDelegateMethod,
     PayloadAppDelegateSubKey,
-    SwiftAppDelegateKey,
-    SwiftAppDelegateSubKey,
-    SwiftMethod,
+    ObjectiveCAppDelegateKey,
+    ObjectiveCAppDelegateSubKey,
+    ObjectiveCMethod,
 } from './types';
 
 export const parseAppDelegate = (
@@ -185,7 +185,7 @@ export const parseAppDelegate = (
             },
         };
 
-        const constructMethod = (lines: Array<string>, method: SwiftMethod) => {
+        const constructMethod = (lines: Array<string>, method: ObjectiveCMethod) => {
             let output = '';
             if (lines.length || method.isRequired) {
                 output += `\n${method.func}\n`;
@@ -201,14 +201,14 @@ export const parseAppDelegate = (
 
         // REORDER Injects
         const injectors: Array<{
-            f: SwiftMethod;
+            f: ObjectiveCMethod;
             lines: Array<string>;
         }> = [];
         let cleanedLinesArr;
-        const mk = Object.keys(methods) as Array<SwiftAppDelegateKey>;
+        const mk = Object.keys(methods) as Array<ObjectiveCAppDelegateKey>;
         mk.forEach((key) => {
             const method = methods[key];
-            const mk2 = Object.keys(method) as Array<SwiftAppDelegateSubKey>;
+            const mk2 = Object.keys(method) as Array<ObjectiveCAppDelegateSubKey>;
             mk2.forEach((key2) => {
                 const f = method[key2];
                 const lines: Array<PayloadAppDelegateMethod> =
