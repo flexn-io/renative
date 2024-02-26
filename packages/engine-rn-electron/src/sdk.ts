@@ -24,8 +24,6 @@ import {
     logInfo,
     copyBuildsFolder,
     copyAssetsFolder,
-    MACOS,
-    LINUX,
     TASK_EXPORT,
     ExecOptionsPresets,
     getAppFolder,
@@ -60,7 +58,7 @@ export const configureElectronProject = async (c: RnvContext, exitOnFail?: boole
         c,
         platform,
         undefined,
-        (platform === MACOS || platform === LINUX) && fsExistsSync(iconsetPath) ? _generateICNS : undefined
+        (platform === 'macos' || platform === 'linux') && fsExistsSync(iconsetPath) ? _generateICNS : undefined
     );
 
     await configureCoreWebProject();
@@ -132,7 +130,7 @@ const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
             height: 800,
             webPreferences: { nodeIntegration: true, enableRemoteModule: true, contextIsolation: false },
             icon:
-                (platform === MACOS || platform === LINUX) && !fsExistsSync(pngIconPath)
+                (platform === 'macos' || platform === 'linux') && !fsExistsSync(pngIconPath)
                     ? path.join(platformProjectDir, 'resources', 'icon.icns')
                     : path.join(platformProjectDir, 'resources', 'icon.png'),
         };
@@ -213,7 +211,7 @@ const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
             mac?: Record<string, string | boolean>;
             mas?: Record<string, string | boolean>;
         } = {};
-        if (platform === MACOS) {
+        if (platform === 'macos') {
             macConfig.mac = {
                 entitlements: path.join(platformProjectDir, 'entitlements.mac.plist'),
                 entitlementsInherit: path.join(platformProjectDir, 'entitlements.mac.plist'),

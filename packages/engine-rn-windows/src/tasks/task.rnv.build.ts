@@ -3,8 +3,6 @@ import {
     executeOrSkipTask,
     TASK_PACKAGE,
     TASK_BUILD,
-    XBOX,
-    WINDOWS,
     logErrorPlatform,
     PARAMS,
     logTask,
@@ -22,8 +20,8 @@ export const taskRnvBuild: RnvTaskFn = async (c, _parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_BUILD, originTask)) return true;
 
     switch (platform) {
-        case XBOX:
-        case WINDOWS:
+        case 'xbox':
+        case 'windows':
             return ruWindowsProject(c, { release: true, launch: false, deploy: false, logging: false });
         default:
             return logErrorPlatform(c);
@@ -35,7 +33,7 @@ const Task: RnvTask = {
     fn: taskRnvBuild,
     task: TASK_BUILD,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [WINDOWS, XBOX],
+    platforms: ['windows', 'xbox'],
 };
 
 export default Task;

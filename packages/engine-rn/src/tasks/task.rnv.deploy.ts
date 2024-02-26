@@ -5,12 +5,6 @@ import {
     TASK_EXPORT,
     executeOrSkipTask,
     shouldSkipTask,
-    ANDROID,
-    ANDROID_TV,
-    FIRE_TV,
-    ANDROID_WEAR,
-    MACOS,
-    IOS,
     TASK_DEPLOY,
     RnvTask,
 } from '@rnv/core';
@@ -31,7 +25,7 @@ const Task: RnvTask = {
     fn: taskRnvDeploy,
     task: TASK_DEPLOY,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR],
+    platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],
 };
 
 export default Task;

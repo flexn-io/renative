@@ -2,7 +2,6 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    MACOS,
     TASK_BUILD,
     TASK_PACKAGE,
     TASK_EXPORT,
@@ -22,7 +21,7 @@ export const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_BUILD, originTask)) return true;
 
     switch (platform) {
-        case MACOS:
+        case 'macos':
             if (parentTask === TASK_EXPORT) {
                 // build task is not necessary when exporting macos
                 return true;
@@ -38,7 +37,7 @@ const Task: RnvTask = {
     fn: taskRnvBuild,
     task: TASK_BUILD,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [MACOS],
+    platforms: ['macos'],
 };
 
 export default Task;

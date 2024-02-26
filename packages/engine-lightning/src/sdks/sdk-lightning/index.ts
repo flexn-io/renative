@@ -1,6 +1,5 @@
 import path from 'path';
 import {
-    TIZEN,
     isPlatformActive,
     chalk,
     logTask,
@@ -44,7 +43,7 @@ export const runLightningProject = async (c: RnvContext) => {
         });
     } else {
         await buildLightningProject(c);
-        if (platform === TIZEN) {
+        if (platform === 'tizen') {
             await runTizenSimOrDevice(c);
         } else {
             await runWebosSimOrDevice(c);
@@ -77,7 +76,7 @@ export const buildLightningProject = async (c: RnvContext) => {
         },
     });
 
-    if (platform === TIZEN) {
+    if (platform === 'tizen') {
         await execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`);
 
         logSuccess(`Your WGT package is located in ${chalk().cyan(tOut)} .`);
@@ -117,7 +116,7 @@ const _configureProject = (c: RnvContext) =>
         const appName = getConfigProp(c, c.platform, 'appName') || '';
 
         const injects: OverridesOptions =
-            platform === TIZEN
+            platform === 'tizen'
                 ? [
                       { pattern: '{{PACKAGE}}', override: pkg },
                       { pattern: '{{ID}}', override: id },
@@ -139,7 +138,7 @@ const _configureProject = (c: RnvContext) =>
 
         addSystemInjects(c, injects);
 
-        const configFile = platform === TIZEN ? 'config.xml' : 'appinfo.json';
+        const configFile = platform === 'tizen' ? 'config.xml' : 'appinfo.json';
         const file = path.join(getPlatformProjectDir(c)!, configFile);
         writeCleanFile(file, file, injects, undefined, c);
 

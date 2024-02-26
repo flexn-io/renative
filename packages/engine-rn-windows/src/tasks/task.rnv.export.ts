@@ -1,8 +1,6 @@
 import {
     logErrorPlatform,
     logTask,
-    WINDOWS,
-    XBOX,
     PARAMS,
     RnvTaskFn,
     TASK_BUILD,
@@ -26,8 +24,8 @@ export const taskRnvExport: RnvTaskFn = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_EXPORT, originTask)) return true;
 
     switch (platform) {
-        case XBOX:
-        case WINDOWS:
+        case 'xbox':
+        case 'windows':
             await clearWindowsTemporaryFiles(c);
             return packageWindowsApp(c);
         default:
@@ -40,7 +38,7 @@ const Task: RnvTask = {
     fn: taskRnvExport,
     task: TASK_EXPORT,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [WINDOWS, XBOX],
+    platforms: ['windows', 'xbox'],
 };
 
 export default Task;

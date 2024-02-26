@@ -1,9 +1,6 @@
 import {
     RnvTaskFn,
-    TVOS,
     TASK_RUN,
-    ANDROID_TV,
-    FIRE_TV,
     TASK_CONFIGURE,
     PARAMS,
     getConfigProp,
@@ -33,8 +30,8 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
 
     switch (platform) {
-        case ANDROID_TV:
-        case FIRE_TV:
+        case 'androidtv':
+        case 'firetv':
             // eslint-disable-next-line no-case-declarations
             const runDevice = await getAndroidDeviceToRunOn(c);
             if (!c.program.only) {
@@ -49,7 +46,7 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
                 return waitForBundlerIfRequired(c);
             }
             return runAndroid(c, runDevice!);
-        case TVOS:
+        case 'tvos':
             // eslint-disable-next-line no-case-declarations
             const runDeviceArgs = await getIosDeviceToRunOn(c);
             if (!c.program.only) {
@@ -81,7 +78,7 @@ const Task: RnvTask = {
     //     before: TASK_CONFIGURE,
     // },
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
-    platforms: [TVOS, ANDROID_TV, FIRE_TV],
+    platforms: ['tvos', 'androidtv', 'firetv'],
 };
 
 export default Task;

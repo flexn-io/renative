@@ -1,14 +1,6 @@
 import {
     RnvContext,
     RnvTaskFn,
-    WEB,
-    WEBTV,
-    TIZEN,
-    WEBOS,
-    TIZEN_MOBILE,
-    TIZEN_WATCH,
-    KAIOS,
-    CHROMECAST,
     TASK_RUN,
     TASK_START,
     TASK_CONFIGURE,
@@ -106,25 +98,25 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_RUN, originTask)) return true;
 
     switch (platform) {
-        case WEB:
-        case WEBTV:
+        case 'web':
+        case 'webtv':
             c.runtime.shouldOpenBrowser = true;
             return runWebpackServer(c);
-        case TIZEN:
-        case TIZEN_MOBILE:
-        case TIZEN_WATCH:
+        case 'tizen':
+        case 'tizenmobile':
+        case 'tizenwatch':
             if (!c.program.only) {
                 await _configureHostedIfRequired(c);
             }
             return runTizen(c, target);
-        case WEBOS:
+        case 'webos':
             if (!c.program.only) {
                 await _configureHostedIfRequired(c);
             }
             return runWebOS(c);
-        case KAIOS:
+        case 'kaios':
             return runKaiOSProject(c);
-        case CHROMECAST:
+        case 'chromecast':
             if (!c.program.only) {
                 await _configureHostedIfRequired(c);
             }
@@ -139,7 +131,7 @@ const Task: RnvTask = {
     fn: taskRnvRun,
     task: TASK_RUN,
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
-    platforms: [WEB, WEBTV, TIZEN, WEBOS, TIZEN_MOBILE, TIZEN_WATCH, KAIOS, CHROMECAST],
+    platforms: ['web', 'webtv', 'tizen', 'webos', 'tizenmobile', 'tizenwatch', 'kaios', 'chromecast'],
 };
 
 export default Task;

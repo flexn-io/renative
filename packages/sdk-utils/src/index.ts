@@ -1,8 +1,5 @@
 import {
     OverridesOptions,
-    TIZEN,
-    TIZEN_MOBILE,
-    TIZEN_WATCH,
     chalk,
     getAppConfigBuildsFolder,
     inquirerPrompt,
@@ -13,6 +10,7 @@ import {
     getConfigProp,
     logTask,
     fsExistsSync,
+    PlatformKey,
 } from '@rnv/core';
 import axios from 'axios';
 import open from 'better-opn';
@@ -22,7 +20,7 @@ import path from 'path';
 import ip from 'ip';
 import colorString from 'color-string';
 
-export const REMOTE_DEBUGGER_ENABLED_PLATFORMS = [TIZEN, TIZEN_MOBILE, TIZEN_WATCH];
+export const REMOTE_DEBUGGER_ENABLED_PLATFORMS: PlatformKey[] = ['tizen', 'tizenmobile', 'tizenwatch'];
 
 export const getValidLocalhost = (value: string, localhost: string) => {
     if (!value) return localhost;

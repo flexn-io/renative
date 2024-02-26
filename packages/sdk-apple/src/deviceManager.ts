@@ -5,8 +5,6 @@ import {
     logTask,
     logWarning,
     logDebug,
-    IOS,
-    TVOS,
     executeAsync,
     RnvContext,
     inquirerPrompt,
@@ -71,10 +69,10 @@ export const getAppleDevices = async (c: RnvContext, ignoreDevices?: boolean, ig
         allDevices = allDevices.filter((d) => !d.version?.includes('watchOS'));
         // filter other platforms
         allDevices = allDevices.filter((d) => {
-            if (platform === IOS && (d.icon?.includes('Phone') || d.icon?.includes('Tablet'))) {
+            if (platform === 'ios' && (d.icon?.includes('Phone') || d.icon?.includes('Tablet'))) {
                 return true;
             }
-            if (platform === TVOS && d.icon?.includes('TV')) return true;
+            if (platform === 'tvos' && d.icon?.includes('TV')) return true;
             return false;
         });
     }
@@ -126,14 +124,14 @@ const _parseIOSDevicesList = (
     const decideIcon = (device: AppleDevice) => {
         const { name, isDevice } = device;
         switch (platform) {
-            case IOS:
+            case 'ios':
                 if (name?.includes('iPhone') || name?.includes('iPad') || name?.includes('iPod')) {
                     let icon = 'Phone 📱';
                     if (name.includes('iPad')) icon = 'Tablet 💊';
                     return icon;
                 }
                 return undefined;
-            case TVOS:
+            case 'tvos':
                 if (name?.includes('TV') && !name?.includes('iPhone') && !name?.includes('iPad')) {
                     return 'TV 📺';
                 }

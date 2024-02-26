@@ -26,13 +26,10 @@ import {
     logSuccess,
     logRaw,
     logError,
-    ANDROID_WEAR,
-    ANDROID,
-    ANDROID_TV,
-    FIRE_TV,
     DEFAULTS,
     RnvPlatform,
     logInfo,
+    PlatformKey,
 } from '@rnv/core';
 import { parseAndroidManifestSync, injectPluginManifestSync } from './manifestParser';
 import {
@@ -232,7 +229,7 @@ const _checkSigningCerts = async (c: Context) => {
             const platforms = c.files.workspace.appConfig.configPrivate?.platforms || {};
 
             if (c.files.workspace.appConfig.configPrivate) {
-                const platCandidates = [ANDROID_WEAR, ANDROID_TV, ANDROID, FIRE_TV] as const;
+                const platCandidates: PlatformKey[] = ['androidwear', 'androidtv', 'android', 'firetv'];
 
                 platCandidates.forEach((v) => {
                     if (c.files.workspace.appConfig.configPrivate?.platforms?.[v]) {

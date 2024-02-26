@@ -5,14 +5,6 @@ import {
     logErrorPlatform,
     logTask,
     logError,
-    WEB,
-    WEBTV,
-    TIZEN,
-    WEBOS,
-    TIZEN_MOBILE,
-    TIZEN_WATCH,
-    KAIOS,
-    CHROMECAST,
     TASK_START,
     TASK_CONFIGURE,
     PARAMS,
@@ -46,12 +38,12 @@ export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     const isWeinreEnabled = REMOTE_DEBUGGER_ENABLED_PLATFORMS.includes(platform) && !bundleAssets && !hosted;
 
     switch (platform) {
-        case WEB:
-        case WEBTV:
-        case TIZEN:
-        case WEBOS:
-        case TIZEN_MOBILE:
-        case TIZEN_WATCH:
+        case 'web':
+        case 'webtv':
+        case 'tizen':
+        case 'webos':
+        case 'tizenmobile':
+        case 'tizenwatch':
             // c.runtime.keepSessionActive = true;
             return runWebpackServer(c, isWeinreEnabled);
         default:
@@ -67,7 +59,7 @@ const Task: RnvTask = {
     fn: taskRnvStart,
     task: TASK_START,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [WEB, WEBTV, TIZEN, WEBOS, TIZEN_MOBILE, TIZEN_WATCH, KAIOS, CHROMECAST],
+    platforms: ['web', 'webtv', 'tizen', 'webos', 'tizenmobile', 'tizenwatch', 'kaios', 'chromecast'],
 };
 
 export default Task;

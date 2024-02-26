@@ -4,9 +4,6 @@ import {
     logErrorPlatform,
     logTask,
     logError,
-    MACOS,
-    WINDOWS,
-    LINUX,
     TASK_START,
     TASK_CONFIGURE,
     PARAMS,
@@ -36,9 +33,9 @@ export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_START, originTask)) return true;
 
     switch (platform) {
-        case MACOS:
-        case WINDOWS:
-        case LINUX:
+        case 'macos':
+        case 'windows':
+        case 'linux':
             return runWebpackServer(c);
         default:
             return logErrorPlatform(c);
@@ -50,7 +47,7 @@ const Task: RnvTask = {
     fn: taskRnvStart,
     task: TASK_START,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [MACOS, WINDOWS, LINUX],
+    platforms: ['macos', 'windows', 'linux'],
 };
 
 export default Task;

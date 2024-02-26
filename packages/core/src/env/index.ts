@@ -1,5 +1,4 @@
 import { getAppFolder, getConfigProp } from '../context/contextProps';
-import { ANDROID_TV, FIRE_TV, TVOS } from '../constants';
 import { getContext } from '../context/provider';
 import { RnvContext } from '../context/types';
 import { getRelativePath } from '../system/fs';
@@ -28,7 +27,7 @@ const _generateEnvVars = (c: RnvContext) => {
         RNV_IS_MONOREPO: isMonorepo,
         RNV_MONO_ROOT: isMonorepo ? path.join(c.paths.project.dir, monoRoot) : c.paths.project.dir,
         RNV_ENGINE: c.runtime.engine?.config.id,
-        RNV_IS_NATIVE_TV: c.platform ? [TVOS, ANDROID_TV, FIRE_TV].includes(c.platform) : false,
+        RNV_IS_NATIVE_TV: c.platform ? ['tvos', 'androidtv', 'firetv'].includes(c.platform) : false,
     };
 
     return envConfig;

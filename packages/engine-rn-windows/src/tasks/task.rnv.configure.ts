@@ -2,8 +2,6 @@ import {
     logErrorPlatform,
     copySharedPlatforms,
     logTask,
-    WINDOWS,
-    XBOX,
     TASK_PLATFORM_CONFIGURE,
     TASK_CONFIGURE,
     PARAMS,
@@ -31,8 +29,8 @@ export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => 
     }
 
     switch (c.platform) {
-        case XBOX:
-        case WINDOWS:
+        case 'xbox':
+        case 'windows':
             return configureWindowsProject(c);
         default:
             return logErrorPlatform(c);
@@ -44,7 +42,7 @@ const Task: RnvTask = {
     fn: taskRnvConfigure,
     task: TASK_CONFIGURE,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [WINDOWS, XBOX],
+    platforms: ['windows', 'xbox'],
 };
 
 export default Task;

@@ -8,12 +8,6 @@ import {
     configureEntryPoint,
     executeTask,
     shouldSkipTask,
-    ANDROID,
-    ANDROID_TV,
-    FIRE_TV,
-    ANDROID_WEAR,
-    MACOS,
-    IOS,
     jetifyIfRequired,
     RnvTask,
 } from '@rnv/core';
@@ -34,14 +28,14 @@ export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => 
     }
 
     switch (c.platform) {
-        case IOS:
-        case MACOS:
+        case 'ios':
+        case 'macos':
             await configureXcodeProject(c);
             break;
-        case ANDROID:
-        case ANDROID_TV:
-        case FIRE_TV:
-        case ANDROID_WEAR:
+        case 'android':
+        case 'androidtv':
+        case 'firetv':
+        case 'androidwear':
             await configureGradleProject(c);
             await jetifyIfRequired(c);
             break;
@@ -59,7 +53,7 @@ const Task: RnvTask = {
     fn: taskRnvConfigure,
     task: TASK_CONFIGURE,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR],
+    platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],
 };
 
 export default Task;

@@ -2,9 +2,6 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    WEB,
-    WEBTV,
-    TIZEN,
     PARAMS,
     TASK_DEBUG,
     executeAsync,
@@ -20,9 +17,9 @@ export const taskRnvDebug: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
 
     switch (platform) {
-        case WEB:
-        case WEBTV:
-        case TIZEN:
+        case 'web':
+        case 'webtv':
+        case 'tizen':
             return executeAsync(c, 'npx weinre --boundHost -all-');
         default:
             logErrorPlatform(c);
@@ -34,7 +31,7 @@ const Task: RnvTask = {
     fn: taskRnvDebug,
     task: TASK_DEBUG,
     params: PARAMS.withBase(),
-    platforms: [WEB, WEBTV, TIZEN],
+    platforms: ['web', 'webtv', 'tizen'],
 };
 
 export default Task;

@@ -1,4 +1,4 @@
-import { RnvTaskFn, logErrorPlatform, logTask, WEB, CHROMECAST, PARAMS, RnvTask, TASK_DEBUG } from '@rnv/core';
+import { RnvTaskFn, logErrorPlatform, logTask, PARAMS, RnvTask, TASK_DEBUG } from '@rnv/core';
 
 export const taskRnvDebug: RnvTaskFn = async (c, parentTask) => {
     logTask('taskRnvDebug', `parent:${parentTask}`);
@@ -15,7 +15,7 @@ const Task: RnvTask = {
     fn: taskRnvDebug,
     task: TASK_DEBUG,
     params: PARAMS.withBase(),
-    platforms: [WEB, CHROMECAST],
+    platforms: ['web', 'chromecast'],
 };
 
 export default Task;

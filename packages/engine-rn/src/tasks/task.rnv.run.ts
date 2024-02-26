@@ -7,12 +7,6 @@ import {
     executeOrSkipTask,
     shouldSkipTask,
     logRaw,
-    ANDROID,
-    ANDROID_TV,
-    FIRE_TV,
-    ANDROID_WEAR,
-    MACOS,
-    IOS,
     TASK_RUN,
     getConfigProp,
     logSummary,
@@ -35,8 +29,8 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
 
     switch (platform) {
-        case IOS:
-        case MACOS:
+        case 'ios':
+        case 'macos':
             // eslint-disable-next-line no-case-declarations
             const runDeviceArgs = await getIosDeviceToRunOn(c);
             if (!c.program.only) {
@@ -48,10 +42,10 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
                 return waitForBundlerIfRequired(c);
             }
             return runXcodeProject(c, runDeviceArgs);
-        case ANDROID:
-        case ANDROID_TV:
-        case FIRE_TV:
-        case ANDROID_WEAR:
+        case 'android':
+        case 'androidtv':
+        case 'firetv':
+        case 'androidwear':
             // eslint-disable-next-line no-case-declarations
             const runDevice = await getAndroidDeviceToRunOn(c);
             if (runDevice) {
@@ -59,7 +53,7 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
             }
             if (!c.program.only) {
                 await startBundlerIfRequired(c, TASK_RUN, originTask);
-                if (bundleAssets || platform === ANDROID_WEAR) {
+                if (bundleAssets || platform === 'androidwear') {
                     await packageAndroid(c);
                 }
                 await runAndroid(c, runDevice!);
@@ -89,7 +83,7 @@ const Task: RnvTask = {
     //     before: TASK_CONFIGURE,
     // },
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
-    platforms: [IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR],
+    platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],
 };
 
 export default Task;

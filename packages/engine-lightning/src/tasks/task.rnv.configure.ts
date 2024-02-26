@@ -1,8 +1,6 @@
 import {
     logErrorPlatform,
     logTask,
-    TIZEN,
-    WEBOS,
     TASK_PLATFORM_CONFIGURE,
     TASK_CONFIGURE,
     PARAMS,
@@ -22,8 +20,8 @@ export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => 
     }
 
     switch (c.platform) {
-        case TIZEN:
-        case WEBOS:
+        case 'tizen':
+        case 'webos':
             return configureLightningProject(c);
         default:
             return logErrorPlatform(c);
@@ -35,7 +33,7 @@ const Task: RnvTask = {
     fn: taskRnvConfigure,
     task: TASK_CONFIGURE,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [TIZEN, WEBOS],
+    platforms: ['tizen', 'webos'],
 };
 
 export default Task;
