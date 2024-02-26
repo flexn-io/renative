@@ -92,7 +92,6 @@ export const getAllSuitableTasks = (c: RnvContext): Record<string, TaskOption> =
     const suitableTasks: Record<string, TaskOption> = {};
     REGISTERED_ENGINES.forEach((engine) => {
         Object.values(engine.tasks).forEach((taskInstance) => {
-            console.log('taskInstance', taskInstance);
             let taskObj: TaskOption = _getTaskOption(_getTaskObj(taskInstance), engine?.config?.id);
             if (!suitableTasks[taskObj.value]) {
                 suitableTasks[taskObj.value] = taskObj;
