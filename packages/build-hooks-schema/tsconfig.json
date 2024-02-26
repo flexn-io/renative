@@ -3,5 +3,7 @@
     "compilerOptions": {
         "outDir": "./lib",
         "rootDir": "./src"
-    }
+    },
+    "include": ["./src/**/*", "./src/**/*.json", "./types.d.ts"],
+    "exclude": ["node_modules", "./src/**/*.test.ts"]
 }

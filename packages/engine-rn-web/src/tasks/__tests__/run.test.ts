@@ -1,5 +1,5 @@
 import { createRnvApi, createRnvContext, getAppFolder, getContext, getPlatformProjectDir } from '@rnv/core';
-import taskRnvRun from '../tasks/task.rnv.run';
+import taskRnvRun from '../task.rnv.run';
 import { runWebpackServer } from '@rnv/sdk-webpack';
 import { runTizen } from '@rnv/sdk-tizen';
 
