@@ -2,11 +2,11 @@ import {
     RnvTaskFn,
     logTask,
     PARAMS,
-    WEB,
     TASK_EXPORT,
     executeOrSkipTask,
     initializeTask,
     findSuitableTask,
+    RnvTask,
 } from '@rnv/core';
 import Docker from '../docker';
 
@@ -26,10 +26,12 @@ export const taskRnvDockerExport: RnvTaskFn = async (c, parentTask, originTask) 
     return true;
 };
 
-export default {
+const Task: RnvTask = {
     description: 'Exports your project to docker image',
     fn: taskRnvDockerExport,
     task: 'docker export',
     params: PARAMS.withBase(),
-    platforms: [WEB],
+    platforms: ['web'],
 };
+
+export default Task;

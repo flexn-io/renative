@@ -31,6 +31,7 @@
     },
     "dependencies": {
         "@rnv/sdk-react-native": "1.0.0-rc.11",
+        "@rnv/sdk-utils": "1.0.0-rc.11",
         "appium-ios-device": "2.7.10",
         "ios-mobileprovision-finder": "1.1.0",
         "xcode": "2.1.0"

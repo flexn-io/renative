@@ -1,5 +1,5 @@
 {
-    "$schema": "../../.rnv/schema/rnv.project.json",
+    "$schema": ".rnv/schema/rnv.project.json",
     "extendsTemplate": "@rnv/template-starter/renative.json",
     "projectName": "@rnv/app-harness",
     "crypto": {

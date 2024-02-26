@@ -4,7 +4,6 @@ import {
     logTask,
     executeTask,
     chalk,
-    confirmActiveBundler,
     TASK_START,
     getConfigProp,
     RnvContext,
@@ -13,6 +12,7 @@ import {
     parseFonts,
     getApi,
 } from '@rnv/core';
+import { confirmActiveBundler } from '@rnv/sdk-utils';
 
 let keepRNVRunning = false;
 

@@ -1,8 +1,10 @@
 /* eslint-disable global-require */
 
 // Do this as the first thing so that any code reading it knows the right env.
-
-import { logError, logInfo, logWarning} from '@rnv/core';
+// RNV-ADDITION
+import { getMergedConfig } from '../adapter';
+// RNV-ADDITION
+import { logError, logInfo, logWarning } from '@rnv/core';
 
 process.env.BABEL_ENV = 'production';
 process.env.NODE_ENV = 'production';
@@ -31,7 +33,9 @@ const printBuildError = require('react-dev-utils/printBuildError');
 // browserslist defaults.
 const { checkBrowsers } = require('react-dev-utils/browsersHelper');
 const paths = require('../config/paths');
-const configFactory = require('../config/webpack.config');
+// const configFactory = require('../config/webpack.config');
+// eslint-disable-next-line no-undef
+const config = getMergedConfig(require('../config/webpack.config')('production'), paths.appPath);
 
 const { measureFileSizesBeforeBuild } = FileSizeReporter;
 const { printFileSizesAfterBuild } = FileSizeReporter;
@@ -52,7 +56,6 @@ const argv = process.argv.slice(2);
 const writeStatsJson = argv.indexOf('--stats') !== -1;
 
 // Generate configuration
-const config = configFactory('production');
 
 export default async () =>
     checkBrowsers(paths.appPath, isInteractive)
@@ -79,7 +82,7 @@ export default async () =>
                         )} to learn more about each warning.`
                     );
                     logInfo(`To ignore, add ${chalk.cyan('// eslint-disable-next-line')} to the line before.\n`);
-                } 
+                }
 
                 logInfo('File sizes after gzip:\n');
                 printFileSizesAfterBuild(

@@ -6,11 +6,11 @@ import {
     executeTask,
     configureRuntimeDefaults,
     isPlatformSupported,
-    isBuildSchemeSupported,
     logTask,
     RnvTask,
 } from '@rnv/core';
 import { checkAndConfigureSdks, checkSdk } from '../common';
+import { isBuildSchemeSupported } from '../buildSchemes';
 
 export const taskRnvConfigureSoft: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigureSoft');

@@ -1,15 +1,4 @@
-import {
-    ANDROID,
-    ANDROID_TV,
-    ANDROID_WEAR,
-    FIRE_TV,
-    logTask,
-    RnvContext,
-    TIZEN,
-    TIZEN_MOBILE,
-    TIZEN_WATCH,
-    WEBOS,
-} from '@rnv/core';
+import { logTask, RnvContext } from '@rnv/core';
 import { checkAndConfigureAndroidSdks, checkAndroidSdk } from '@rnv/sdk-android';
 import { checkAndConfigureTizenSdks, checkTizenSdk } from '@rnv/sdk-tizen';
 import { checkAndConfigureWebosSdks, checkWebosSdk } from '@rnv/sdk-webos';
@@ -18,16 +7,16 @@ export const checkAndConfigureSdks = async (c: RnvContext) => {
     logTask('checkAndConfigureSdks');
 
     switch (c.platform) {
-        case ANDROID:
-        case ANDROID_TV:
-        case FIRE_TV:
-        case ANDROID_WEAR:
+        case 'android':
+        case 'androidtv':
+        case 'firetv':
+        case 'androidwear':
             return checkAndConfigureAndroidSdks(c);
-        case TIZEN:
-        case TIZEN_MOBILE:
-        case TIZEN_WATCH:
+        case 'tizen':
+        case 'tizenmobile':
+        case 'tizenwatch':
             return checkAndConfigureTizenSdks(c);
-        case WEBOS:
+        case 'webos':
             return checkAndConfigureWebosSdks(c);
         default:
             return true;
@@ -38,16 +27,16 @@ export const checkSdk = async (c: RnvContext) => {
     logTask('checkSdk');
 
     switch (c.platform) {
-        case ANDROID:
-        case ANDROID_TV:
-        case FIRE_TV:
-        case ANDROID_WEAR:
+        case 'android':
+        case 'androidtv':
+        case 'firetv':
+        case 'androidwear':
             return checkAndroidSdk(c);
-        case TIZEN:
-        case TIZEN_MOBILE:
-        case TIZEN_WATCH:
+        case 'tizen':
+        case 'tizenmobile':
+        case 'tizenwatch':
             return checkTizenSdk(c);
-        case WEBOS:
+        case 'webos':
             return checkWebosSdk(c);
         default:
             return true;

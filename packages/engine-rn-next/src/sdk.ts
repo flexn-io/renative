@@ -2,10 +2,7 @@ import path from 'path';
 import {
     RnvContext,
     executeAsync,
-    checkPortInUse,
     getConfigProp,
-    confirmActiveBundler,
-    getPlatformBuildDir,
     copyFolderContentsRecursiveSync,
     chalk,
     logTask,
@@ -18,8 +15,9 @@ import {
     RnvPlatform,
     CoreEnvVars,
     ExecOptionsPresets,
+    getAppFolder,
 } from '@rnv/core';
-import { getDevServerHost, openBrowser, waitForHost } from '@rnv/sdk-utils';
+import { checkPortInUse, confirmActiveBundler, getDevServerHost, openBrowser, waitForHost } from '@rnv/sdk-utils';
 import { EnvVars } from './env';
 
 export const configureNextIfRequired = async (c: RnvContext) => {
@@ -27,7 +25,7 @@ export const configureNextIfRequired = async (c: RnvContext) => {
 
     if (!c.platform) return;
 
-    c.runtime.platformBuildsProjectPath = `${getPlatformBuildDir(c)}`;
+    c.runtime.platformBuildsProjectPath = `${getAppFolder(c)}`;
 
     await copyAssetsFolder(c, c.platform);
 
@@ -106,7 +104,7 @@ const _runWebBrowser = (
 
 export const getExportDir = (c: RnvContext) => {
     const exportDir = getConfigProp(c, c.platform, 'exportDir');
-    const maybeAbsolutePath = exportDir || path.join(getPlatformBuildDir(c)!, 'output');
+    const maybeAbsolutePath = exportDir || path.join(getAppFolder(c)!, 'output');
 
     // if path is absolute, make it relative to project root. Next 14 doesn't seem to like absolute paths
     if (path.isAbsolute(maybeAbsolutePath)) {

@@ -27,6 +27,7 @@ const VERSIONED_PACKAGES = [
     'sdk-kaios',
     'sdk-tizen',
     'sdk-webos',
+    'sdk-utils',
     'renative',
 ];
 

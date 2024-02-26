@@ -2,9 +2,6 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    TVOS,
-    ANDROID_TV,
-    FIRE_TV,
     TASK_BUILD,
     TASK_EXPORT,
     PARAMS,
@@ -23,11 +20,11 @@ export const taskRnvExport: RnvTaskFn = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_EXPORT, originTask)) return true;
 
     switch (platform) {
-        case ANDROID_TV:
-        case FIRE_TV:
+        case 'androidtv':
+        case 'firetv':
             // Android Platforms don't need extra export step
             return true;
-        case TVOS:
+        case 'tvos':
             return exportXcodeProject(c);
         default:
             return logErrorPlatform(c);
@@ -39,7 +36,7 @@ const Task: RnvTask = {
     fn: taskRnvExport,
     task: TASK_EXPORT,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [TVOS, ANDROID_TV, FIRE_TV],
+    platforms: ['tvos', 'androidtv', 'firetv'],
 };
 
 export default Task;

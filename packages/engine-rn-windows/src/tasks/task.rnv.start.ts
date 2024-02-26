@@ -1,8 +1,6 @@
 import {
     logErrorPlatform,
     logTask,
-    WINDOWS,
-    XBOX,
     PARAMS,
     RnvTaskFn,
     executeTask,
@@ -12,13 +10,14 @@ import {
     TASK_CONFIGURE_SOFT,
     logError,
     RnvTask,
+    PlatformKey,
 } from '@rnv/core';
 import { startReactNative } from '@rnv/sdk-react-native';
 
-const BUNDLER_PLATFORMS: Record<string, string> = {};
+const BUNDLER_PLATFORMS: Partial<Record<PlatformKey, PlatformKey>> = {};
 
-BUNDLER_PLATFORMS[WINDOWS] = WINDOWS;
-BUNDLER_PLATFORMS[XBOX] = WINDOWS;
+BUNDLER_PLATFORMS['windows'] = 'windows';
+BUNDLER_PLATFORMS['xbox'] = 'windows';
 
 export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
@@ -38,8 +37,8 @@ export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_START, originTask)) return true;
 
     switch (platform) {
-        case XBOX:
-        case WINDOWS: {
+        case 'xbox':
+        case 'windows': {
             return startReactNative(c, {
                 waitForBundler: !!parentTask,
                 customCliPath: `${doResolve('react-native')}/local-cli/cli.js`,
@@ -56,7 +55,7 @@ const Task: RnvTask = {
     fn: taskRnvStart,
     task: TASK_START,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [WINDOWS, XBOX],
+    platforms: ['windows', 'xbox'],
 };
 
 export default Task;

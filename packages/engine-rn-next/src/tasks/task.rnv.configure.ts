@@ -2,8 +2,6 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    WEB,
-    CHROMECAST,
     TASK_PLATFORM_CONFIGURE,
     TASK_CONFIGURE,
     PARAMS,
@@ -25,8 +23,8 @@ export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => 
     }
 
     switch (c.platform) {
-        case WEB:
-        case CHROMECAST:
+        case 'web':
+        case 'chromecast':
             return configureNextIfRequired(c);
         default:
             return logErrorPlatform(c);
@@ -38,7 +36,7 @@ const Task: RnvTask = {
     fn: taskRnvConfigure,
     task: TASK_CONFIGURE,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [WEB, CHROMECAST],
+    platforms: ['web', 'chromecast'],
 };
 
 export default Task;

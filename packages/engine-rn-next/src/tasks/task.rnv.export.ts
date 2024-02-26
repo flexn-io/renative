@@ -2,8 +2,6 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    WEB,
-    CHROMECAST,
     TASK_EXPORT,
     PARAMS,
     shouldSkipTask,
@@ -22,8 +20,8 @@ export const taskRnvExport: RnvTaskFn = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_EXPORT, originTask)) return true;
 
     switch (platform) {
-        case WEB:
-        case CHROMECAST:
+        case 'web':
+        case 'chromecast':
             return exportWebNext(c);
         default:
             logErrorPlatform(c);
@@ -35,7 +33,7 @@ const Task: RnvTask = {
     fn: taskRnvExport,
     task: TASK_EXPORT,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [WEB, CHROMECAST],
+    platforms: ['web', 'chromecast'],
 };
 
 export default Task;

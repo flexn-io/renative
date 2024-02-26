@@ -1,6 +1,5 @@
 import path from 'path';
 import {
-    TIZEN,
     isPlatformActive,
     chalk,
     logTask,
@@ -8,25 +7,21 @@ import {
     executeAsync,
     execCLI,
     RnvContext,
-    getPlatformBuildDir,
     getConfigProp,
-    addSystemInjects,
-    getAppVersion,
     getPlatformProjectDir,
-    getAppTitle,
-    getAppId,
-    getAppDescription,
     copyAssetsFolder,
     copyBuildsFolder,
     writeCleanFile,
     DEFAULTS,
     OverridesOptions,
     CoreEnvVars,
+    getAppFolder,
 } from '@rnv/core';
 import semver from 'semver';
 
 import { runTizenSimOrDevice, CLI_TIZEN } from '@rnv/sdk-tizen';
 import { CLI_WEBOS_ARES_PACKAGE, runWebosSimOrDevice } from '@rnv/sdk-webos';
+import { getAppVersion, getAppTitle, getAppId, getAppDescription, addSystemInjects } from '@rnv/sdk-utils';
 import { EnvVars } from './env';
 
 export const runLightningProject = async (c: RnvContext) => {
@@ -48,7 +43,7 @@ export const runLightningProject = async (c: RnvContext) => {
         });
     } else {
         await buildLightningProject(c);
-        if (platform === TIZEN) {
+        if (platform === 'tizen') {
             await runTizenSimOrDevice(c);
         } else {
             await runWebosSimOrDevice(c);
@@ -81,7 +76,7 @@ export const buildLightningProject = async (c: RnvContext) => {
         },
     });
 
-    if (platform === TIZEN) {
+    if (platform === 'tizen') {
         await execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`);
 
         logSuccess(`Your WGT package is located in ${chalk().cyan(tOut)} .`);
@@ -97,7 +92,7 @@ export const buildLightningProject = async (c: RnvContext) => {
 export const configureLightningProject = async (c: RnvContext) => {
     logTask('configureLightningProject');
     const { platform } = c;
-    c.runtime.platformBuildsProjectPath = `${getPlatformBuildDir(c)}`;
+    c.runtime.platformBuildsProjectPath = `${getAppFolder(c)}`;
     if (!isPlatformActive(c, platform)) {
         return;
     }
@@ -121,7 +116,7 @@ const _configureProject = (c: RnvContext) =>
         const appName = getConfigProp(c, c.platform, 'appName') || '';
 
         const injects: OverridesOptions =
-            platform === TIZEN
+            platform === 'tizen'
                 ? [
                       { pattern: '{{PACKAGE}}', override: pkg },
                       { pattern: '{{ID}}', override: id },
@@ -143,7 +138,7 @@ const _configureProject = (c: RnvContext) =>
 
         addSystemInjects(c, injects);
 
-        const configFile = platform === TIZEN ? 'config.xml' : 'appinfo.json';
+        const configFile = platform === 'tizen' ? 'config.xml' : 'appinfo.json';
         const file = path.join(getPlatformProjectDir(c)!, configFile);
         writeCleanFile(file, file, injects, undefined, c);
 

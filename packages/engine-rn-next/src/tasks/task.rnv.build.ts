@@ -2,8 +2,6 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    WEB,
-    CHROMECAST,
     TASK_BUILD,
     TASK_PACKAGE,
     PARAMS,
@@ -23,8 +21,8 @@ export const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_BUILD, originTask)) return true;
 
     switch (platform) {
-        case WEB:
-        case CHROMECAST:
+        case 'web':
+        case 'chromecast':
             if (parentTask === TASK_EXPORT) {
                 // build task is not necessary when exporting. They do the same thing, only difference is a next.config.js config flag
                 return true;
@@ -41,7 +39,7 @@ const Task: RnvTask = {
     fn: taskRnvBuild,
     task: TASK_BUILD,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [WEB, CHROMECAST],
+    platforms: ['web', 'chromecast'],
 };
 
 export default Task;

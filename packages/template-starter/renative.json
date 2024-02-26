@@ -7,7 +7,7 @@
         "@rnv/engine-rn-tvos": "source:rnv",
         "@rnv/engine-rn-web": "source:rnv"
     },
-    "$schema": "../../.rnv/schema/rnv.project.json",
+    "$schema": ".rnv/schema/rnv.project.json",
     "isTemplate": true,
     "projectName": "@rnv/template-starter",
     "enableHookRebuild": false,
@@ -57,7 +57,8 @@
             "tizenwatch",
             "tizenmobile",
             "kaios",
-            "chromecast"
+            "chromecast",
+            "linux"
         ],
         "defaultCommandSchemes": {
             "run": "debug",
@@ -110,9 +111,7 @@
             "minSdkVersion": 21,
             "extendPlatform": "android",
             "engine": "engine-rn-tvos",
-            "includedPermissions": [
-                "INTERNET"
-            ]
+            "includedPermissions": ["INTERNET"]
         },
         "web": {
             "engine": "engine-rn-next"

@@ -1,15 +1,4 @@
-import {
-    RnvTaskFn,
-    logTask,
-    MACOS,
-    WINDOWS,
-    LINUX,
-    TASK_PACKAGE,
-    TASK_CONFIGURE,
-    PARAMS,
-    executeOrSkipTask,
-    RnvTask,
-} from '@rnv/core';
+import { RnvTaskFn, logTask, TASK_PACKAGE, TASK_CONFIGURE, PARAMS, executeOrSkipTask, RnvTask } from '@rnv/core';
 
 export const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvPackage', `parent:${parentTask}`);
@@ -25,7 +14,7 @@ const Task: RnvTask = {
     fn: taskRnvPackage,
     task: TASK_PACKAGE,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [MACOS, WINDOWS, LINUX],
+    platforms: ['macos', 'windows', 'linux'],
 };
 
 export default Task;

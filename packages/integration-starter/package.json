@@ -1,6 +1,6 @@
 {
     "name": "@rnv/integration-starter",
-    "version": "1.0.0-feat-pin-cli.6",
+    "version": "1.0.0-rc.11",
     "description": "ReNative Example Integration",
     "keywords": [
         "renative",

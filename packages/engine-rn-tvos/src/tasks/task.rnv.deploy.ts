@@ -3,9 +3,6 @@ import {
     logTask,
     TASK_EXPORT,
     TASK_DEPLOY,
-    ANDROID_TV,
-    FIRE_TV,
-    TVOS,
     PARAMS,
     executeOrSkipTask,
     shouldSkipTask,
@@ -28,7 +25,7 @@ const Task: RnvTask = {
     fn: taskRnvDeploy,
     task: TASK_DEPLOY,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [TVOS, ANDROID_TV, FIRE_TV],
+    platforms: ['tvos', 'androidtv', 'firetv'],
 };
 
 export default Task;

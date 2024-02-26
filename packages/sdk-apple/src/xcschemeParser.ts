@@ -1,15 +1,8 @@
 import path from 'path';
-import {
-    getAppFolder,
-    getAppTemplateFolder,
-    addSystemInjects,
-    getConfigProp,
-    logTask,
-    writeCleanFile,
-    RnvPlatform,
-} from '@rnv/core';
+import { getAppFolder, getConfigProp, logTask, writeCleanFile, RnvPlatform } from '@rnv/core';
 import { getAppFolderName } from './common';
 import { Context } from './types';
+import { addSystemInjects, getAppTemplateFolder } from '@rnv/sdk-utils';
 
 // const xml2js = require('xml2js');
 // const parser = new xml2js.Parser();

@@ -2,15 +2,6 @@ import {
     isPlatformSupported,
     chalk,
     logTask,
-    IOS,
-    ANDROID,
-    TVOS,
-    TIZEN,
-    WEBOS,
-    ANDROID_TV,
-    FIRE_TV,
-    ANDROID_WEAR,
-    KAIOS,
     TASK_WORKSPACE_CONFIGURE,
     TASK_TARGET_LAUNCH,
     PARAMS,
@@ -66,19 +57,19 @@ export const taskRnvTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) 
     await checkSdk(c);
 
     switch (platform) {
-        case ANDROID:
-        case ANDROID_TV:
-        case FIRE_TV:
-        case ANDROID_WEAR:
+        case 'android':
+        case 'androidtv':
+        case 'firetv':
+        case 'androidwear':
             return launchAndroidSimulator(c, target);
-        case IOS:
-        case TVOS:
+        case 'ios':
+        case 'tvos':
             return launchAppleSimulator(c, target);
-        case TIZEN:
+        case 'tizen':
             return launchTizenSimulator(c, target);
-        case WEBOS:
+        case 'webos':
             return launchWebOSimulator(c, target);
-        case KAIOS:
+        case 'kaios':
             return launchKaiOSSimulator(c);
         default:
             return Promise.reject(

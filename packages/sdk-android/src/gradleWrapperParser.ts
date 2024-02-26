@@ -3,14 +3,13 @@ import {
     getAppFolder,
     logTask,
     getConfigProp,
-    addSystemInjects,
     writeCleanFile,
-    getBuildFilePath,
     copyFolderContentsRecursiveSync,
     fsChmodSync,
     DEFAULTS,
 } from '@rnv/core';
 import { Context } from './types';
+import { addSystemInjects, getBuildFilePath } from '@rnv/sdk-utils';
 
 const GRADLE_SOURCE_PATH = path.join(__dirname, '../templates/gradleProject');
 

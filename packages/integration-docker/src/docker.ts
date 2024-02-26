@@ -8,13 +8,13 @@ import {
     executeAsync,
     commandExistsSync,
     getConfigProp,
-    getPlatformBuildDir,
     copyFolderRecursiveSync,
     cleanFolder,
     writeCleanFile,
     fsExistsSync,
     chalk,
     ExecOptionsPresets,
+    getAppFolder,
 } from '@rnv/core';
 
 const rootPath = path.join(__dirname, './');
@@ -29,12 +29,12 @@ class Docker {
         const { c } = this;
         const { runtime, platform, files } = c;
         let outputDir = 'output';
-        let projectBuildWeb = path.join(getPlatformBuildDir(c)!, outputDir);
+        let projectBuildWeb = path.join(getAppFolder(c)!, outputDir);
         if (!fsExistsSync(projectBuildWeb)) {
             outputDir = 'project';
-            projectBuildWeb = path.join(getPlatformBuildDir(c)!, outputDir);
+            projectBuildWeb = path.join(getAppFolder(c)!, outputDir);
         }
-        const dockerDestination = path.join(getPlatformBuildDir(c)!, 'export', 'docker');
+        const dockerDestination = path.join(getAppFolder(c)!, 'export', 'docker');
 
         const dockerFile = path.join(rootPath, '../Dockerfile');
         const nginxConfFile = path.join(rootPath, '../nginx/default.conf');
@@ -92,7 +92,7 @@ class Docker {
         const imageName = runtime.appId?.toLowerCase();
         const appVersion = files.project.package.version;
 
-        const dockerDestination = path.join(getPlatformBuildDir(c)!, 'export', 'docker');
+        const dockerDestination = path.join(getAppFolder(c)!, 'export', 'docker');
         const dockerSaveFile = path.join(dockerDestination, `${imageName}_${appVersion}.tar`);
 
         logTask('docker:Dockerfile:build');

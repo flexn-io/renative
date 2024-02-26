@@ -5,7 +5,6 @@ import {
     executeTask,
     shouldSkipTask,
     chalk,
-    IOS,
     RnvContext,
     listAppConfigsFoldersSync,
     TASK_PROJECT_CONFIGURE,
@@ -37,7 +36,7 @@ export const taskRnvCryptoUpdateProfiles: RnvTaskFn = async (c, _parentTask, ori
     if (shouldSkipTask(c, TASK_CRYPTO_UPDATE_PROFILES, originTask)) return true;
 
     switch (c.platform) {
-        case IOS:
+        case 'ios':
             await _updateProfiles(c);
             break;
         default:
@@ -51,7 +50,7 @@ const Task: RnvTask = {
     fn: taskRnvCryptoUpdateProfiles,
     task: TASK_CRYPTO_UPDATE_PROFILES,
     params: PARAMS.withBase(),
-    platforms: [],
+    platforms: ['ios'],
     // skipPlatforms: true,
 };
 

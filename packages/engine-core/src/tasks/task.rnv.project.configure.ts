@@ -14,7 +14,6 @@ import {
     isTemplateInstalled,
     fsExistsSync,
     fsMkdirSync,
-    checkCrypto,
     checkAndMigrateProject,
     TASK_INSTALL,
     TASK_PROJECT_CONFIGURE,
@@ -36,32 +35,37 @@ import {
     generatePlatformAssetsRuntimeConfig,
     TASK_CRYPTO_DECRYPT,
     RnvTask,
+    generateLocalJsonSchemas,
 } from '@rnv/core';
+import { checkCrypto } from '../crypto';
 
-const checkIsRenativeProject = (c: RnvContext) =>
-    new Promise((resolve, reject) => {
-        if (!c.paths.project.configExists) {
-            return reject(
-                `This directory is not ReNative project. Project config ${chalk().white(
-                    c.paths.project.config
-                )} is missing!. You can create new project with ${chalk().white('rnv new')}`
-            );
-        }
+const checkIsRenativeProject = async (c: RnvContext) => {
+    if (!c.paths.project.configExists) {
+        return Promise.reject(
+            `This directory is not ReNative project. Project config ${chalk().white(
+                c.paths.project.config
+            )} is missing!. You can create new project with ${chalk().white('rnv new')}`
+        );
+    }
+    return true;
+};
 
-        return resolve(true);
-    });
-
-export const taskRnvProjectConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
-    logTask('taskRnvProjectConfigure');
-
+const configurePlatformBuilds = async (c: RnvContext) => {
     if (c.paths.project.builds.dir && !fsExistsSync(c.paths.project.builds.dir)) {
         logInfo(`Creating folder ${c.paths.project.builds.dir} ...DONE`);
         fsMkdirSync(c.paths.project.builds.dir);
     }
+};
+
+export const taskRnvProjectConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
+    logTask('taskRnvProjectConfigure');
+
+    await configurePlatformBuilds(c);
     await checkAndMigrateProject();
     await updateRenativeConfigs(c);
     await checkIsRenativeProject(c);
-    // await checkAndCreateProjectPackage(c);
+    await generateLocalJsonSchemas();
+
     await executeTask(c, TASK_WORKSPACE_CONFIGURE, TASK_PROJECT_CONFIGURE, originTask);
 
     if (c.program.only && !!parentTask) {

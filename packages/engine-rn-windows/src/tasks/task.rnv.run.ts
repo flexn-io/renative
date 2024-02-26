@@ -1,8 +1,6 @@
 import {
     logErrorPlatform,
     logTask,
-    WINDOWS,
-    XBOX,
     TASK_CONFIGURE,
     PARAMS,
     RnvTaskFn,
@@ -28,8 +26,8 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_RUN, originTask)) return true;
 
     switch (platform) {
-        case XBOX:
-        case WINDOWS:
+        case 'xbox':
+        case 'windows':
             await clearWindowsTemporaryFiles(c);
             await startBundlerIfRequired(c, TASK_RUN, originTask);
             await ruWindowsProject(c);
@@ -44,7 +42,7 @@ const Task: RnvTask = {
     fn: taskRnvRun,
     task: TASK_RUN,
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
-    platforms: [WINDOWS, XBOX],
+    platforms: ['windows', 'xbox'],
 };
 
 export default Task;
