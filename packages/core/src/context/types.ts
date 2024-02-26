@@ -95,7 +95,7 @@ export type RnvContextRuntime = {
     missingEnginePlugins: Record<string, string>;
     supportedPlatforms: Array<RnvContextPlatform>;
     runtimeExtraProps: Record<string, string>;
-    availablePlatforms: Array<string>;
+    availablePlatforms: Array<PlatformKey>;
     platform: RnvPlatform;
     isTargetTrue: boolean;
     bundleAssets: boolean;

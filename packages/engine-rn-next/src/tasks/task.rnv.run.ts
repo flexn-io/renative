@@ -2,8 +2,6 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    WEB,
-    CHROMECAST,
     TASK_RUN,
     TASK_CONFIGURE,
     PARAMS,
@@ -22,8 +20,8 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_RUN, originTask)) return true;
 
     switch (platform) {
-        case WEB:
-        case CHROMECAST:
+        case 'web':
+        case 'chromecast':
             c.runtime.shouldOpenBrowser = true;
             return runWebNext(c);
         default:
@@ -36,7 +34,7 @@ const Task: RnvTask = {
     fn: taskRnvRun,
     task: TASK_RUN,
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
-    platforms: [WEB, CHROMECAST],
+    platforms: ['web', 'chromecast'],
 };
 
 export default Task;

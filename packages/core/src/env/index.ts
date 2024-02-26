@@ -41,11 +41,11 @@ const _getPlatformExtensions = (c: RnvContext, excludeServer = false, addDotPref
     const { platforms } = engine;
 
     if (addDotPrefix) {
-        output = platforms[c.platform].extensions
+        output = platforms[c.platform]?.extensions
             .map((v) => `.${v}`)
             .filter((ext) => !excludeServer || !ext.includes('server.'));
     } else {
-        output = platforms[c.platform].extensions.filter((ext) => !excludeServer || !ext.includes('server.'));
+        output = platforms[c.platform]?.extensions.filter((ext) => !excludeServer || !ext.includes('server.'));
     }
-    return output;
+    return output || [];
 };

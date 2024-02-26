@@ -8,12 +8,12 @@ import {
     getEngineSubTasks,
     registerAllPlatformEngines,
 } from '../engines';
-import { RnvContext } from '../context/types';
-import { RnvTask, RnvTaskMap, TaskItemMap, TaskObj, TaskOption } from './types';
-import { RnvEngine } from '../engines/types';
+import type { RnvContext } from '../context/types';
+import type { RnvTask, RnvTaskMap, TaskItemMap, TaskObj, TaskOption } from './types';
+import type { RnvEngine } from '../engines/types';
 import { inquirerPrompt, inquirerSeparator, pressAnyKeyToContinue } from '../api';
 import { getApi } from '../api/provider';
-import { RenativeConfigTaskKey } from '../schema/types';
+import type { PlatformKey, RenativeConfigTaskKey } from '../schema/types';
 import { checkIfProjectAndNodeModulesExists } from '../projects/dependencyManager';
 import { DEFAULT_TASK_DESCRIPTIONS, TASK_CONFIGURE_SOFT } from './constants';
 
@@ -315,7 +315,8 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
         task = specificTask;
         c.runtime.engine = getEngineRunner(c, task);
     }
-    c.runtime.availablePlatforms = Object.keys(c.runtime.engine?.platforms || []);
+    const plats = c.runtime.engine?.platforms || [];
+    c.runtime.availablePlatforms = Object.keys(plats) as PlatformKey[];
     return getEngineTask(task, c.runtime.engine?.tasks);
 };
 
@@ -341,7 +342,7 @@ const _populateExtraParameters = (c: RnvContext, task: RnvTask) => {
 };
 
 const _selectPlatform = async (c: RnvContext, suitableEngines: Array<RnvEngine>, task: string) => {
-    const supportedPlatforms: Record<string, true> = {};
+    const supportedPlatforms: Partial<Record<PlatformKey, true>> = {};
     suitableEngines.forEach((engine) => {
         getEngineTask(task, engine.tasks)?.platforms.forEach((plat) => {
             supportedPlatforms[plat] = true;
