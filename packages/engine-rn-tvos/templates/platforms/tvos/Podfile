@@ -2,8 +2,6 @@ source 'https://github.com/react-native-tvos/react-native-tvos-podspecs.git'
 source 'https://cdn.cocoapods.org/'
 {{INJECT_PLUGIN_PODFILE_SOURCES}}
 
-{{INJECT_PODFILE_HEADER}}
-
 # Resolve react_native_pods.rb with node to allow for hoisting
 def node_require(script)
   # Resolve script with node to allow for hoisting
@@ -14,15 +12,8 @@ def node_require(script)
     )", __dir__]).strip
 end
 
+{{INJECT_PODFILE_HEADER}}
 node_require('react-native-tvos/scripts/react_native_pods.rb')
-{{INJECT_PLUGIN_NODE_REQUIRE}}
-
-# RN PERMISSIONS
-permissions_required = ENV['REACT_NATIVE_PERMISSIONS_REQUIRED']
-if permissions_required != '' && permissions_required != nil
-  node_require('react-native-permissions/scripts/setup.rb')
-  setup_permissions(permissions_required.split(","))
-end
 
 prepare_react_native_project!
 
