@@ -3,17 +3,26 @@ import { Button, Text, View } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import NewModuleButton from './NewModuleButton';
 import { OrientationLocker, PORTRAIT, LANDSCAPE } from 'react-native-orientation-locker';
-import { isPlatformAndroid } from '@rnv/renative';
+import { isPlatformAndroid, isPlatformIos } from '@rnv/renative';
+import { request, PERMISSIONS } from 'react-native-permissions';
 
 const App = () => {
     const [showVideo, setShowVideo] = useState(false);
     useEffect(() => {
         SplashScreen.hide();
     }, []);
+
+    const requestPermission = () => {
+        request(PERMISSIONS.IOS.CONTACTS).then((result) => {
+            console.log(result);
+        });
+    };
+
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <Text>ReNative Harness</Text>
             <Text>{`hermes: ${typeof HermesInternal === 'object' && HermesInternal !== null ? 'yes' : 'no'}`}</Text>
+            {isPlatformIos && <Button onPress={requestPermission} title="Request permissions" />}
             {isPlatformAndroid ? (
                 <>
                     <NewModuleButton />

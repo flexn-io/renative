@@ -129,10 +129,22 @@
             "version": "1.0.13"
         },
         "react-native-permissions": {
+            "ios": {
+                "templateXcode": {
+                    "Podfile": {
+                        "header": ["node_require('react-native-permissions/scripts/setup.rb')"],
+                        "injectLines": ["setup_permissions([{{props.PERMISSIONS}}])"]
+                    }
+                }
+            },
             "tvos": {
                 "disabled": true
             },
-            "version": "3.10.1"
+            "version": "4.1.4",
+            "props": {
+                "PERMISSIONS": "'Calendars', 'Contacts'"
+            },
+            "disablePluginTemplateOverrides": true
         },
         "react-native": {
             "android": {
@@ -140,6 +152,7 @@
             }
         }
     },
+
     "permissions": {
         "ios": {
             "NSCalendarsUsageDescription": {
