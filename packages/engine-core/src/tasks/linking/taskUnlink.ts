@@ -12,7 +12,7 @@ import {
     RnvContext,
     RnvTask,
 } from '@rnv/core';
-import { RNV_PACKAGES, TASK_UNLINK } from './common';
+import { RNV_PACKAGES, TASK_UNLINK } from './constants';
 
 const _unlinkPackage = (c: RnvContext, key: string) => {
     const rnvPath = path.join(c.paths.project.nodeModulesDir, key);

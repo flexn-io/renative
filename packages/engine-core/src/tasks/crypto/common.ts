@@ -12,9 +12,7 @@ import {
     logWarning,
 } from '@rnv/core';
 import path from 'path';
-
-export const TASK_CRYPTO_ENCRYPT = 'crypto encrypt';
-export const TASK_CRYPTO_DECRYPT = 'crypto decrypt';
+import { TASK_CRYPTO_DECRYPT } from './constants';
 
 export const getEnvExportCmd = (envVar: string, key: string) => {
     if (isSystemWin) {

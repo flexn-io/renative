@@ -14,13 +14,14 @@ import {
     fsReadFileSync,
     inquirerPrompt,
     executeTask,
-    TASK_PROJECT_CONFIGURE,
     PARAMS,
     RnvContext,
     RnvTaskFn,
     RnvTask,
 } from '@rnv/core';
-import { TASK_CRYPTO_DECRYPT, getEnvExportCmd, getEnvVar } from './common';
+import { getEnvExportCmd, getEnvVar } from './common';
+import { TASK_PROJECT_CONFIGURE } from '../project/constants';
+import { TASK_CRYPTO_DECRYPT } from './constants';
 
 const iocane = require('iocane');
 

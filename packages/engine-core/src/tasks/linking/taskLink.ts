@@ -11,7 +11,7 @@ import {
     RnvContext,
     RnvTask,
 } from '@rnv/core';
-import { RNV_PACKAGES, TASK_LINK } from './common';
+import { RNV_PACKAGES, TASK_LINK } from './constants';
 
 const _linkPackage = (c: RnvContext, key: string, folder: string) => {
     const rnvPath = path.join(c.paths.project.nodeModulesDir, key);
