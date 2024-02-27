@@ -134,6 +134,37 @@
             },
             "version": "3.10.1"
         },
+        "@react-native-community/push-notification-ios": {
+            "ios": {
+                "templateXcode": {
+                    "AppDelegate_h": {
+                        "appDelegateExtensions": ["UNUserNotificationCenterDelegate"],
+                        "appDelegateImports": ["<UserNotifications/UNUserNotificationCenter.h>"]
+                    },
+                    "AppDelegate_mm": {
+                        "appDelegateImports": ["<UserNotifications/UserNotifications.h>", "<RNCPushNotificationIOS.h>"],
+                        "appDelegateMethods": {
+                            "application": {
+                                "didFinishLaunchingWithOptions": [
+                                    "UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter]",
+                                    "center.delegate = self"
+                                ],
+                                "didRegisterForRemoteNotificationsWithDeviceToken": [
+                                    "[RNCPushNotificationIOS didRegisterForRemoteNotificationsWithDeviceToken:deviceToken]"
+                                ],
+                                "didReceiveRemoteNotification": [
+                                    "[RNCPushNotificationIOS didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler]"
+                                ],
+                                "didFailToRegisterForRemoteNotificationsWithError": [
+                                    "[RNCPushNotificationIOS didFailToRegisterForRemoteNotificationsWithError:error]"
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            "version": "1.11.0"
+        },
         "react-native": {
             "android": {
                 "implementation": "// TEST"
