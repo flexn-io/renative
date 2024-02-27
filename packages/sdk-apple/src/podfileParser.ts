@@ -50,7 +50,6 @@ export const parsePodFile = async (c: Context, platform: RnvPlatform) => {
                     c.payload.pluginConfigiOS.podfileInject += `${v}\n`;
                 });
             }
-
             if (post_install) {
                 post_install.forEach((v) => {
                     c.payload.pluginConfigiOS.podPostInstall += `${v}\n`;
