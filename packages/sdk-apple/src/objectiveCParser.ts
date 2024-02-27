@@ -304,18 +304,18 @@ export const injectPluginObjectiveCSync = (c: Context, plugin: RenativeConfigPlu
     }
     const appDelegateExtensions = templateXcode?.AppDelegate_h?.appDelegateExtensions;
     if (appDelegateExtensions instanceof Array) {
-        appDelegateExtensions.forEach((appDelegateExtension, idx) => {
+        appDelegateExtensions.forEach((appDelegateExtension) => {
             // Avoid duplicate imports
             logDebug('appDelegateExtensions add');
             if (c.payload.pluginConfigiOS.pluginAppDelegateHExtensions.indexOf(appDelegateExtension) === -1) {
                 logDebug('appDelegateExtensions add ok');
-                c.payload.pluginConfigiOS.pluginAppDelegateHExtensions += `${appDelegateExtension}${
-                    idx < appDelegateExtensions.length - 1 ? ', ' : ''
-                }`;
+                c.payload.pluginConfigiOS.pluginAppDelegateHExtensions += c.payload.pluginConfigiOS
+                    .pluginAppDelegateHExtensions.length
+                    ? `${', '}${appDelegateExtension}`
+                    : `${appDelegateExtension}`;
             }
         });
     }
-
     const appDelegateMethods = templateXcode?.AppDelegate_mm?.appDelegateMethods;
     if (appDelegateMethods) {
         const admk = Object.keys(appDelegateMethods) as Array<PayloadAppDelegateKey>;
