@@ -4,13 +4,13 @@ import {
     logTask,
     logWarning,
     executeTask,
-    TASK_PLUGIN_UPDATE,
-    TASK_PROJECT_CONFIGURE,
     PARAMS,
     RnvTaskFn,
     inquirerPrompt,
     RnvTask,
 } from '@rnv/core';
+import { TASK_PROJECT_CONFIGURE } from '../project/constants';
+import { TASK_PLUGIN_UPDATE } from './constants';
 
 export const taskRnvPluginUpdate: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvPluginUpdate');

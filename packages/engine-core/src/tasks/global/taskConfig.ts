@@ -1,4 +1,5 @@
-import { logTask, PARAMS, RnvTaskFn, executeTask, TASK_CONFIGURE_SOFT, SUPPORTED_PLATFORMS, RnvTask } from '@rnv/core';
+import { logTask, PARAMS, RnvTaskFn, executeTask, SUPPORTED_PLATFORMS, RnvTask } from '@rnv/core';
+import { TASK_CONFIGURE_SOFT } from './constants';
 
 const TASK_CONFIG = 'config';
 

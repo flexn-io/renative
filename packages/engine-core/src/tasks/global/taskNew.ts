@@ -36,10 +36,10 @@ import {
     commandExistsSync,
     PromptParams,
     RnvTask,
-    TASK_NEW,
     ConfigFileProject,
     ConfigFileTemplate,
 } from '@rnv/core';
+import { TASK_NEW } from './constants';
 
 type NewProjectData = {
     appTitle?: string;

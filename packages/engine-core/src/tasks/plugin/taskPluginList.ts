@@ -1,14 +1,7 @@
-import {
-    logTask,
-    logToSummary,
-    executeTask,
-    TASK_PLUGIN_LIST,
-    TASK_PROJECT_CONFIGURE,
-    PARAMS,
-    RnvTaskFn,
-    RnvTask,
-} from '@rnv/core';
+import { logTask, logToSummary, executeTask, PARAMS, RnvTaskFn, RnvTask } from '@rnv/core';
 import { getPluginList } from '../../plugins';
+import { TASK_PROJECT_CONFIGURE } from '../project/constants';
+import { TASK_PLUGIN_LIST } from './constants';
 
 export const taskRnvPluginList: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvPluginList');

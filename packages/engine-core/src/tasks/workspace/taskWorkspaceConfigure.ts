@@ -14,8 +14,8 @@ import {
     logInfo,
     RnvTaskFn,
     RnvTask,
-    TASK_WORKSPACE_CONFIGURE,
 } from '@rnv/core';
+import { TASK_WORKSPACE_CONFIGURE } from './constants';
 
 export const taskRnvWorkspaceConfigure: RnvTaskFn = async (c) => {
     logTask('taskRnvWorkspaceConfigure');

@@ -4,8 +4,6 @@ import {
     logTask,
     logToSummary,
     PARAMS,
-    TASK_DOCTOR,
-    TASK_APP_CONFIGURE,
     executeTask,
     configureRuntimeDefaults,
     readObjectSync,
@@ -14,6 +12,8 @@ import {
     validateRenativeProjectSchema,
     RnvTask,
 } from '@rnv/core';
+import { TASK_APP_CONFIGURE } from '../app/constants';
+import { TASK_DOCTOR } from './constants';
 
 const configTargets = [
     'workspace.config',

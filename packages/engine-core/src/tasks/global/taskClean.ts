@@ -14,8 +14,8 @@ import {
     RnvTaskFn,
     inquirerPrompt,
     RnvTask,
-    TASK_CLEAN,
 } from '@rnv/core';
+import { TASK_CLEAN } from './constants';
 
 function clearWindowsCacheFiles() {
     const opts = {

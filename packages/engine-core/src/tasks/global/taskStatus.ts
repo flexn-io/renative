@@ -1,4 +1,5 @@
-import { PARAMS, RnvTask, TASK_STATUS } from '@rnv/core';
+import { PARAMS, RnvTask } from '@rnv/core';
+import { TASK_STATUS } from './constants';
 
 export const taskRnvStatus = async () => Promise.resolve();
 

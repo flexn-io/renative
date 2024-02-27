@@ -15,7 +15,8 @@ import { inquirerPrompt, inquirerSeparator, pressAnyKeyToContinue } from '../api
 import { getApi } from '../api/provider';
 import type { PlatformKey, RenativeConfigTaskKey } from '../schema/types';
 import { checkIfProjectAndNodeModulesExists } from '../projects/dependencyManager';
-import { DEFAULT_TASK_DESCRIPTIONS, TASK_CONFIGURE_SOFT } from './constants';
+import { DEFAULT_TASK_DESCRIPTIONS } from './constants';
+import { getContext } from '../context/provider';
 
 let executedTasks: Record<string, number> = {};
 
@@ -405,12 +406,35 @@ To avoid that test your task code against parentTask and avoid executing same ta
     logExitTask(`${prt}<= ${task}`);
 };
 
+/**
+ * @deprecated Use executeDependantTask instead
+ */
 export const executeOrSkipTask = async (c: RnvContext, task: string, parentTask: string, originTask?: string) => {
     if (!c.program.only) {
         return executeTask(c, task, parentTask, originTask);
     }
+    return executeTask(c, 'configureSoft', parentTask, originTask);
+};
 
-    return executeTask(c, TASK_CONFIGURE_SOFT, parentTask, originTask);
+export const executeDependantTask = async ({
+    task,
+    parentTask,
+    originTask,
+    alternativeTask,
+}: {
+    task: string;
+    parentTask: string;
+    originTask?: string;
+    alternativeTask?: string;
+}) => {
+    const ctx = getContext();
+    if (!ctx.program.only) {
+        return executeTask(ctx, task, parentTask, originTask);
+    }
+    if (alternativeTask) {
+        return executeTask(ctx, alternativeTask, parentTask, originTask);
+    }
+    return true;
 };
 
 const ACCEPTED_CONDITIONS = ['platform', 'target', 'appId', 'scheme'] as const;

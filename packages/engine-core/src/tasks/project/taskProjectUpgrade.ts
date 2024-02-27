@@ -1,8 +1,6 @@
 import path from 'path';
 import fs from 'fs';
 import {
-    TASK_PROJECT_UPGRADE,
-    TASK_PROJECT_CONFIGURE,
     PARAMS,
     logTask,
     logInfo,
@@ -19,6 +17,7 @@ import {
 } from '@rnv/core';
 import { NpmPackageFile } from '@rnv/core/lib/configs/types';
 import { ConfigFileProject } from '@rnv/core/lib/schema/configFiles/types';
+import { TASK_PROJECT_CONFIGURE, TASK_PROJECT_UPGRADE } from './constants';
 
 export const taskRnvProjectUpgrade: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvProjectUpgrade');

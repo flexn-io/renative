@@ -1,15 +1,6 @@
-import {
-    logToSummary,
-    logTask,
-    generateOptions,
-    buildHooks,
-    executeTask,
-    TASK_HOOKS_LIST,
-    TASK_PROJECT_CONFIGURE,
-    PARAMS,
-    RnvTaskFn,
-    RnvTask,
-} from '@rnv/core';
+import { logToSummary, logTask, generateOptions, buildHooks, executeTask, PARAMS, RnvTaskFn, RnvTask } from '@rnv/core';
+import { TASK_PROJECT_CONFIGURE } from '../project/constants';
+import { TASK_HOOKS_LIST } from './constants';
 
 export const taskRnvHooksList: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvHooksList');
