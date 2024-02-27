@@ -139,16 +139,11 @@
                 "templateXcode": {
                     "AppDelegate_h": {
                         "appDelegateExtensions": ["UNUserNotificationCenterDelegate"],
-                        "appDelegateImports": ["<UserNotifications/UNUserNotificationCenter.h>"]
+                        "appDelegateImports": ["<UserNotifications/UserNotifications.h>", "<RNCPushNotificationIOS.h>"]
                     },
                     "AppDelegate_mm": {
-                        "appDelegateImports": ["<UserNotifications/UserNotifications.h>", "<RNCPushNotificationIOS.h>"],
                         "appDelegateMethods": {
                             "application": {
-                                "didFinishLaunchingWithOptions": [
-                                    "UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter]",
-                                    "center.delegate = self"
-                                ],
                                 "didRegisterForRemoteNotificationsWithDeviceToken": [
                                     "[RNCPushNotificationIOS didRegisterForRemoteNotificationsWithDeviceToken:deviceToken]"
                                 ],
@@ -157,6 +152,18 @@
                                 ],
                                 "didFailToRegisterForRemoteNotificationsWithError": [
                                     "[RNCPushNotificationIOS didFailToRegisterForRemoteNotificationsWithError:error]"
+                                ],
+                                "didFinishLaunchingWithOptions": [
+                                    "UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter]",
+                                    "center.delegate = self"
+                                ]
+                            },
+                            "userNotificationCenter": {
+                                "willPresent": [
+                                    "completionHandler(UNNotificationPresentationOptionSound | UNNotificationPresentationOptionAlert | UNNotificationPresentationOptionBadge)"
+                                ],
+                                "didReceiveNotificationResponse": [
+                                    "[RNCPushNotificationIOS didReceiveNotificationResponse:response]"
                                 ]
                             }
                         }
