@@ -3,16 +3,46 @@ import { Button, Text, View } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import NewModuleButton from './NewModuleButton';
 import { OrientationLocker, PORTRAIT, LANDSCAPE } from 'react-native-orientation-locker';
-import { isPlatformAndroid } from '@rnv/renative';
+import { isPlatformAndroid, isPlatformIos } from '@rnv/renative';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
 
 const App = () => {
     const [showVideo, setShowVideo] = useState(false);
     useEffect(() => {
         SplashScreen.hide();
     }, []);
+
+    useEffect(() => {
+        console.log(isPlatformIos, 'isPlatformIos');
+        if (!isPlatformIos) return;
+        PushNotificationIOS.addEventListener('notification', onRemoteNotification);
+        PushNotificationIOS.addEventListener('register', onRegistered);
+
+        return () => {
+            PushNotificationIOS.removeEventListener('notification');
+            PushNotificationIOS.removeEventListener('register');
+        };
+    });
+
+    const onRegistered = (deviceToken) => {
+        console.log(`Device Token: ${deviceToken}`);
+    };
+    const onRemoteNotification = (notification) => {
+        const isClicked = notification.getData().userInteraction === 1;
+
+        if (isClicked) {
+            // Navigate user to another screen
+        } else {
+            // Do something else with push notification
+        }
+        // Use the appropriate result based on what you needed to do for this notification
+        const result = PushNotificationIOS.FetchResult.NoData;
+        notification.finish(result);
+    };
+
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>ReNative Harness</Text>
+            <Text>ReNative Harness !!</Text>
             <Text>{`hermes: ${typeof HermesInternal === 'object' && HermesInternal !== null ? 'yes' : 'no'}`}</Text>
             {isPlatformAndroid ? (
                 <>

@@ -139,9 +139,10 @@
                 "templateXcode": {
                     "AppDelegate_h": {
                         "appDelegateExtensions": ["UNUserNotificationCenterDelegate"],
-                        "appDelegateImports": ["<UserNotifications/UserNotifications.h>", "<RNCPushNotificationIOS.h>"]
+                        "appDelegateImports": ["<UserNotifications/UserNotifications.h>"]
                     },
                     "AppDelegate_mm": {
+                        "appDelegateImports": ["<RNCPushNotificationIOS.h>"],
                         "appDelegateMethods": {
                             "application": {
                                 "didRegisterForRemoteNotificationsWithDeviceToken": [
