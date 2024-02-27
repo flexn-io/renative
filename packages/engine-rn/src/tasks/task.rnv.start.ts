@@ -6,11 +6,11 @@ import {
     executeTask,
     shouldSkipTask,
     TASK_START,
-    TASK_CONFIGURE_SOFT,
     logError,
     RnvTask,
 } from '@rnv/core';
 import { startReactNative } from '@rnv/sdk-react-native';
+import { TASK_CONFIGURE_SOFT } from './constants';
 
 export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;

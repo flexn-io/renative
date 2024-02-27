@@ -8,11 +8,11 @@ import {
     shouldSkipTask,
     TASK_PACKAGE,
     getConfigProp,
-    TASK_EJECT,
     RnvTask,
 } from '@rnv/core';
 import { packageAndroid } from '@rnv/sdk-android';
 import { packageBundleForXcode } from '@rnv/sdk-apple';
+import { TASK_EJECT } from './constants';
 
 export const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvPackage', `parent:${parentTask}`);

@@ -1,7 +1,6 @@
 import {
     logErrorPlatform,
     logTask,
-    TASK_PLATFORM_CONFIGURE,
     TASK_CONFIGURE,
     PARAMS,
     RnvTaskFn,
@@ -14,6 +13,7 @@ import {
 import { configureGradleProject } from '@rnv/sdk-android';
 import { configureXcodeProject } from '@rnv/sdk-apple';
 import { configureFonts } from '@rnv/sdk-react-native';
+import { TASK_PLATFORM_CONFIGURE } from './constants';
 
 export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure');

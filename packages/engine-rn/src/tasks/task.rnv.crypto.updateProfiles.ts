@@ -7,11 +7,10 @@ import {
     chalk,
     RnvContext,
     listAppConfigsFoldersSync,
-    TASK_PROJECT_CONFIGURE,
-    TASK_CRYPTO_UPDATE_PROFILES,
     RnvTask,
 } from '@rnv/core';
 import { updateProfile } from '@rnv/sdk-apple';
+import { TASK_CRYPTO_UPDATE_PROFILES, TASK_PROJECT_CONFIGURE } from './constants';
 
 const _updateProfile = (c: RnvContext, v: string) =>
     new Promise<void>((resolve, reject) => {
