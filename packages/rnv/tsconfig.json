@@ -5,5 +5,5 @@
         "rootDir": "./src",
         "resolveJsonModule": false
     },
-    "exclude": ["**/__tests__/*", "./lib/**/*"]
+    "exclude": ["./src/**/*.test.ts", "./lib/**/*"]
 }

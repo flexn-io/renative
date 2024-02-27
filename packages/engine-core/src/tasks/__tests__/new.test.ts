@@ -13,7 +13,7 @@ import {
 import taskRnvNew from '../task.rnv.new';
 
 jest.mock('@rnv/core');
-jest.mock('lodash.set');
+jest.mock('lodash/set');
 jest.mock('path');
 jest.mock('semver');
 
