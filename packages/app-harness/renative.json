@@ -146,6 +146,45 @@
             },
             "disablePluginTemplateOverrides": true
         },
+        "@react-native-community/push-notification-ios": {
+            "ios": {
+                "templateXcode": {
+                    "AppDelegate_h": {
+                        "appDelegateExtensions": ["UNUserNotificationCenterDelegate"],
+                        "appDelegateImports": ["<UserNotifications/UNUserNotificationCenter.h>", "<UserNotifications/UserNotifications.h>"]
+                    },
+                    "AppDelegate_mm": {
+                        "appDelegateImports": ["<RNCPushNotificationIOS.h>"],
+                        "appDelegateMethods": {
+                            "application": {
+                                "didRegisterForRemoteNotificationsWithDeviceToken": [
+                                    "[RNCPushNotificationIOS didRegisterForRemoteNotificationsWithDeviceToken:deviceToken]"
+                                ],
+                                "didReceiveRemoteNotification": [
+                                    "[RNCPushNotificationIOS didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler]"
+                                ],
+                                "didFailToRegisterForRemoteNotificationsWithError": [
+                                    "[RNCPushNotificationIOS didFailToRegisterForRemoteNotificationsWithError:error]"
+                                ],
+                                "didFinishLaunchingWithOptions": [
+                                    "UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter]",
+                                    "center.delegate = self"
+                                ]
+                            },
+                            "userNotificationCenter": {
+                                "willPresent": [
+                                    "completionHandler(UNNotificationPresentationOptionSound | UNNotificationPresentationOptionAlert | UNNotificationPresentationOptionBadge)"
+                                ],
+                                "didReceiveNotificationResponse": [
+                                    "[RNCPushNotificationIOS didReceiveNotificationResponse:response]"
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            "version": "1.11.0"
+        },
         "react-native": {
             "android": {
                 "implementation": "// TEST"

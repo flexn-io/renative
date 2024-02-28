@@ -84,6 +84,7 @@ export const runReactNativeIOS = async (
     const cmd = `npx react-native run-ios --scheme=${scheme} --mode=${runScheme} --no-packager ${extraParamsString}`;
     const env: RnvEnvContext = {
         ...CoreEnvVars.BASE(),
+        ...CoreEnvVars.RNV_EXTENSIONS(),
         ...EnvVars.RCT_METRO_PORT(),
         ...EnvVars.RNV_REACT_NATIVE_PATH(),
         ...EnvVars.RNV_APP_ID(),
