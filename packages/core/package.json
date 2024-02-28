@@ -1,6 +1,6 @@
 {
     "name": "@rnv/core",
-    "version": "1.0.0-rc.11",
+    "version": "1.0.0-rc.12",
     "description": "RNV Core SDK",
     "keywords": [],
     "homepage": "https://github.com/flexn-io/renative#readme",
@@ -12,8 +12,8 @@
     "contributors": [],
     "files": [
         "LICENSE",
-        "lib",
-        "jsonSchema"
+        "jsonSchema",
+        "lib"
     ],
     "main": "lib/index.js",
     "repository": {

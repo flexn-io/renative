@@ -69,7 +69,7 @@
     },
     "templates": {
         "@rnv/template-starter": {
-            "version": "1.0.0-rc.11"
+            "version": "1.0.0-rc.12"
         }
     },
     "currentTemplate": "@rnv/template-starter",
@@ -111,7 +111,9 @@
             "minSdkVersion": 21,
             "extendPlatform": "android",
             "engine": "engine-rn-tvos",
-            "includedPermissions": ["INTERNET"]
+            "includedPermissions": [
+                "INTERNET"
+            ]
         },
         "web": {
             "engine": "engine-rn-next"
