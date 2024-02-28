@@ -139,7 +139,7 @@
                 "templateXcode": {
                     "AppDelegate_h": {
                         "appDelegateExtensions": ["UNUserNotificationCenterDelegate"],
-                        "appDelegateImports": ["<UserNotifications/UserNotifications.h>"]
+                        "appDelegateImports": ["<UserNotifications/UNUserNotificationCenter.h>", "<UserNotifications/UserNotifications.h>"]
                     },
                     "AppDelegate_mm": {
                         "appDelegateImports": ["<RNCPushNotificationIOS.h>"],

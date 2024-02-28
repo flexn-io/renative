@@ -15,18 +15,26 @@ const App = () => {
     useEffect(() => {
         console.log(isPlatformIos, 'isPlatformIos');
         if (!isPlatformIos) return;
+        PushNotificationIOS.requestPermissions();
         PushNotificationIOS.addEventListener('notification', onRemoteNotification);
         PushNotificationIOS.addEventListener('register', onRegistered);
+        PushNotificationIOS.addEventListener('registrationError', onError);
 
         return () => {
             PushNotificationIOS.removeEventListener('notification');
             PushNotificationIOS.removeEventListener('register');
+            PushNotificationIOS.removeEventListener('registrationError');
         };
     });
 
     const onRegistered = (deviceToken) => {
         console.log(`Device Token: ${deviceToken}`);
     };
+
+    const onError = (error) => {
+        console.log(`Error on notification register: ${error}`);
+    };
+
     const onRemoteNotification = (notification) => {
         const isClicked = notification.getData().userInteraction === 1;
 
