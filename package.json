@@ -86,7 +86,7 @@
         "@flexn/typescript-config": "1.0.0",
         "@rnv/build-hooks-git": "1.0.0-rc.11",
         "@rnv/core": "1.0.0-rc.11",
-        "@types/jest": "~27.0.2",
+        "@types/jest": "^29.5.12",
         "@types/kill-port": "2.0.0",
         "@types/lodash.get": "4.4.7",
         "@types/lodash.intersection": "4.4.7",

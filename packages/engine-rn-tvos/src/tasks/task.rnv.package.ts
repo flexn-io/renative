@@ -2,9 +2,6 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    TVOS,
-    ANDROID_TV,
-    FIRE_TV,
     TASK_PACKAGE,
     TASK_CONFIGURE,
     PARAMS,
@@ -32,8 +29,8 @@ export const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_PACKAGE, originTask)) return true;
 
     switch (platform) {
-        case ANDROID_TV:
-        case FIRE_TV: {
+        case 'androidtv':
+        case 'firetv': {
             // NOTE: react-native v0.73 triggers packaging automatically so we skipping it unless we need to
             // package it explicitly for tasks where it is not triggered automatically
             const signingConfig = getConfigProp(c, c.platform, 'signingConfig');
@@ -43,7 +40,7 @@ export const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
             }
             return true;
         }
-        case TVOS:
+        case 'tvos':
             return packageBundleForXcode(c);
         default:
             logErrorPlatform(c);
@@ -56,7 +53,7 @@ const Task: RnvTask = {
     fn: taskRnvPackage,
     task: TASK_PACKAGE,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [TVOS, ANDROID_TV, FIRE_TV],
+    platforms: ['tvos', 'androidtv', 'firetv'],
 };
 
 export default Task;

@@ -1,3 +1,6 @@
+// RNV-ADDITION
+import { getMergedConfig } from '../adapter';
+// RNV-ADDITION
 // Do this as the first thing so that any code reading it knows the right env.
 process.env.BABEL_ENV = 'development';
 process.env.NODE_ENV = 'development';
@@ -22,7 +25,10 @@ const { createCompiler, prepareProxy, prepareUrls } = require('react-dev-utils/W
 const semver = require('semver');
 const { Logger } = require('rnv');
 const paths = require('../config/paths');
-const configFactory = require('../config/webpack.config');
+// const configFactory = require('../config/webpack.config');
+// const configFactory = require('react-scripts/config/webpack.config.js');
+const config = getMergedConfig(require('../config/webpack.config')('development'), paths.appPath);
+
 const createDevServerConfig = require('../config/webpackDevServer.config');
 const getClientEnvironment = require('../config/env');
 
@@ -52,8 +58,6 @@ export default async () =>
             Logger.logInfo(`Learn more here: ${chalk.yellow('https://cra.link/advanced-config')}`);
             Logger.logInfo();
         }
-
-        const config = configFactory('development');
         const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
         const appName = require(paths.appPackageJson).name;
 

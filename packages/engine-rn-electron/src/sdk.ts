@@ -14,17 +14,7 @@ import {
     writeCleanFile,
     copyFileSync,
     getPlatformProjectDir,
-    getPlatformBuildDir,
-    getAppVersion,
-    getAppTitle,
-    getAppId,
-    getAppDescription,
-    getAppAuthor,
-    getAppLicense,
     getConfigProp,
-    checkPortInUse,
-    confirmActiveBundler,
-    addSystemInjects,
     doResolve,
     chalk,
     logTask,
@@ -34,14 +24,24 @@ import {
     logInfo,
     copyBuildsFolder,
     copyAssetsFolder,
-    MACOS,
-    LINUX,
     TASK_EXPORT,
     ExecOptionsPresets,
+    getAppFolder,
 } from '@rnv/core';
 import { FileElectronPackage } from './types';
 import { NpmPackageFile } from '@rnv/core/lib/configs/types';
-import { waitForHost } from '@rnv/sdk-utils';
+import {
+    checkPortInUse,
+    waitForHost,
+    getAppVersion,
+    getAppTitle,
+    getAppId,
+    getAppDescription,
+    getAppAuthor,
+    getAppLicense,
+    confirmActiveBundler,
+    addSystemInjects,
+} from '@rnv/sdk-utils';
 
 export const configureElectronProject = async (c: RnvContext, exitOnFail?: boolean) => {
     logTask('configureElectronProject');
@@ -58,7 +58,7 @@ export const configureElectronProject = async (c: RnvContext, exitOnFail?: boole
         c,
         platform,
         undefined,
-        (platform === MACOS || platform === LINUX) && fsExistsSync(iconsetPath) ? _generateICNS : undefined
+        (platform === 'macos' || platform === 'linux') && fsExistsSync(iconsetPath) ? _generateICNS : undefined
     );
 
     await configureCoreWebProject();
@@ -80,7 +80,7 @@ const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
 
         if (!engine || !platform) return;
 
-        const platformBuildDir = getPlatformBuildDir(c)!;
+        const platformBuildDir = getAppFolder(c)!;
         const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
         const electronConfigPath = path.join(platformBuildDir, 'electronConfig.json');
         const packagePath = path.join(platformBuildDir, 'package.json');
@@ -130,7 +130,7 @@ const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
             height: 800,
             webPreferences: { nodeIntegration: true, enableRemoteModule: true, contextIsolation: false },
             icon:
-                (platform === MACOS || platform === LINUX) && !fsExistsSync(pngIconPath)
+                (platform === 'macos' || platform === 'linux') && !fsExistsSync(pngIconPath)
                     ? path.join(platformProjectDir, 'resources', 'icon.icns')
                     : path.join(platformProjectDir, 'resources', 'icon.png'),
         };
@@ -211,7 +211,7 @@ const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
             mac?: Record<string, string | boolean>;
             mas?: Record<string, string | boolean>;
         } = {};
-        if (platform === MACOS) {
+        if (platform === 'macos') {
             macConfig.mac = {
                 entitlements: path.join(platformProjectDir, 'entitlements.mac.plist'),
                 entitlementsInherit: path.join(platformProjectDir, 'entitlements.mac.plist'),
@@ -259,7 +259,7 @@ const buildElectron = async (c: RnvContext) => {
     await buildCoreWebpackProject(c);
     // Webpack 5 deletes build folder but does not copy package json
 
-    const platformBuildDir = getPlatformBuildDir(c)!;
+    const platformBuildDir = getAppFolder(c)!;
 
     // workaround: electron-builder fails export in npx mode due to trying install node_modules. we trick it not to do that
     mkdirSync(path.join(platformBuildDir, 'build', 'node_modules'));
@@ -286,7 +286,7 @@ const buildElectron = async (c: RnvContext) => {
 const exportElectron = async (c: RnvContext) => {
     logTask('exportElectron');
 
-    const platformBuildDir = getPlatformBuildDir(c)!;
+    const platformBuildDir = getAppFolder(c)!;
     const buildPath = path.join(platformBuildDir, 'build', 'release');
 
     if (fsExistsSync(buildPath)) {
@@ -361,7 +361,7 @@ const _runElectronSimulator = async (c: RnvContext) => {
     let platformProjectDir = getPlatformProjectDir(c)!;
 
     if (bundleAssets) {
-        platformProjectDir = path.join(getPlatformBuildDir(c)!, 'build');
+        platformProjectDir = path.join(getAppFolder(c)!, 'build');
     }
 
     const cmd = `node ${doResolve('electron')}/cli.js ${path.join(platformProjectDir, '/main.js')}`;

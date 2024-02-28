@@ -4,11 +4,6 @@ import {
     PARAMS,
     RnvTaskFn,
     executeTask,
-    ANDROID,
-    ANDROID_TV,
-    FIRE_TV,
-    ANDROID_WEAR,
-    IOS,
     TASK_WORKSPACE_CONFIGURE,
     TASK_PROJECT_CONFIGURE,
     RnvTask,
@@ -25,13 +20,13 @@ export const taskRnvLog: RnvTaskFn = async (c, parentTask, originTask) => {
     await executeTask(c, TASK_WORKSPACE_CONFIGURE, TASK_PROJECT_CONFIGURE, originTask);
 
     switch (c.platform) {
-        case ANDROID:
-        case ANDROID_TV:
-        case FIRE_TV:
-        case ANDROID_WEAR:
+        case 'android':
+        case 'androidtv':
+        case 'firetv':
+        case 'androidwear':
             await checkAndConfigureAndroidSdks(c);
             return runAndroidLog(c);
-        case IOS:
+        case 'ios':
             return runAppleLog(c);
         default:
             return logErrorPlatform(c);
@@ -43,7 +38,7 @@ const Task: RnvTask = {
     fn: taskRnvLog,
     task: TASK_LOG,
     params: PARAMS.withBase(),
-    platforms: [IOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR],
+    platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],
     isGlobalScope: true,
 };
 

@@ -29,13 +29,13 @@ export type CreateContextOptions = {
 };
 
 export type RnvContextProgram = ParamKeys & {
-    args: string[];
-    rawArgs: string[];
-    option: (cmd: string, desc: string) => void;
-    parse: (arg: string[]) => void;
+    args?: string[];
+    rawArgs?: string[];
+    option?: (cmd: string, desc: string) => void;
+    parse?: (arg: string[]) => void;
 };
 
-export interface RnvContext<Payload = any> {
+export type RnvContext<Payload = any> = {
     program: RnvContextProgram;
     /**
      * Extra payload object used by 3rd party (ie @rnv/sdk-apple) to decorate context with extra typed information
@@ -78,7 +78,7 @@ export interface RnvContext<Payload = any> {
     timeStart: Date;
     timeEnd: Date;
     isDefault: boolean;
-}
+};
 
 export type RnvContextBuildConfig = Partial<ConfigFileBuildConfig> & {
     _meta?: {
@@ -95,7 +95,7 @@ export type RnvContextRuntime = {
     missingEnginePlugins: Record<string, string>;
     supportedPlatforms: Array<RnvContextPlatform>;
     runtimeExtraProps: Record<string, string>;
-    availablePlatforms: Array<string>;
+    availablePlatforms: Array<PlatformKey>;
     platform: RnvPlatform;
     isTargetTrue: boolean;
     bundleAssets: boolean;
@@ -174,7 +174,7 @@ export type RnvContextFiles = {
     appConfig: RnvContextFileObj<ConfigFileApp>;
 };
 
-export interface RnvContextFileObj<T> {
+export type RnvContextFileObj<T> = {
     config?: T;
     config_original?: T;
     configLocal?: ConfigFileLocal;
@@ -182,7 +182,7 @@ export interface RnvContextFileObj<T> {
     configs: Array<T>;
     configsLocal: Array<ConfigFileLocal>;
     configsPrivate: Array<ConfigFilePrivate>;
-}
+};
 
 export type RnvContextPaths = {
     GLOBAL_RNV_CONFIG: string;
@@ -260,6 +260,7 @@ export type RnvContextPaths = {
         appConfigsDirs: Array<string>;
         appConfigsDirNames: Array<string>;
         dir: string;
+        dotRnvDir: string;
         nodeModulesDir: string;
         srcDir?: string;
         package?: string;
@@ -297,7 +298,7 @@ export type RnvContextPaths = {
     appConfigBase: string;
 };
 
-export interface RnvContextPathObj {
+export type RnvContextPathObj = {
     dir: string;
     config: string;
     configLocal: string;
@@ -313,14 +314,14 @@ export interface RnvContextPathObj {
     pluginDirs: Array<string>;
     fontsDir: string;
     fontsDirs: Array<string>;
-}
+};
 
-export interface RnvContextPlatform {
+export type RnvContextPlatform = {
     platform: PlatformKey;
     isConnected: boolean;
     engine?: RnvEngine;
     port?: number;
     isValid?: boolean;
-}
+};
 
 export type RnvContextFileKey = 'config' | 'configLocal' | 'configPrivate';

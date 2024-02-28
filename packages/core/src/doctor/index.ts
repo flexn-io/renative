@@ -1,8 +1,39 @@
 import { writeFileSync, readObjectSync } from '../system/fs';
-import { PACKAGE_JSON_FILEDS } from '../constants';
 import { chalk, logWarning } from '../logger';
 import { RnvContext } from '../context/types';
 import { NpmPackageFile } from '../configs/types';
+
+const PACKAGE_JSON_FILEDS = [
+    'name',
+    'version',
+    'description',
+    'keywords',
+    'homepage',
+    'bugs',
+    'license',
+    'author',
+    'contributors',
+    'files',
+    'main',
+    'browser',
+    'bin',
+    'man',
+    'directories',
+    'repository',
+    'scripts',
+    'config',
+    'dependencies',
+    'devDependencies',
+    'peerDependencies',
+    'bundledDependencies',
+    'optionalDependencies',
+    'engines',
+    'engineStrict',
+    'os',
+    'cpu',
+    'private',
+    'publishConfig',
+];
 
 const getSortedObject = (obj: unknown) => {
     if (obj !== null && typeof obj === 'object' && !Array.isArray(obj)) {

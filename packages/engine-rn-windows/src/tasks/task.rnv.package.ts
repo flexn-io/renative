@@ -1,8 +1,6 @@
 import {
     logErrorPlatform,
     logTask,
-    WINDOWS,
-    XBOX,
     TASK_CONFIGURE,
     PARAMS,
     RnvTaskFn,
@@ -31,8 +29,8 @@ export const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_PACKAGE, originTask)) return true;
 
     switch (platform) {
-        case XBOX:
-        case WINDOWS:
+        case 'xbox':
+        case 'windows':
             return packageBundleForWindows(c);
         default:
             logErrorPlatform(c);
@@ -45,7 +43,7 @@ const Task: RnvTask = {
     fn: taskRnvPackage,
     task: TASK_PACKAGE,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [WINDOWS, XBOX],
+    platforms: ['windows', 'xbox'],
 };
 
 export default Task;

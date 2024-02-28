@@ -5,7 +5,7 @@ import type { DoResolveFn } from '../system/types';
 import type { RnvPlatform } from '../types';
 import fs from 'fs';
 
-export interface RnvApi {
+export type RnvApi = {
     isDefault: boolean;
     spinner: RnvApiSpinner;
     prompt: RnvApiPrompt;
@@ -19,7 +19,7 @@ export interface RnvApi {
     path: typeof path;
     doResolve: DoResolveFn;
     getConfigProp: GetConfigPropFn;
-}
+};
 
 export type RnvApiSpinner = (msg: string | { text: string }) => {
     start: RnvApiSpinner;

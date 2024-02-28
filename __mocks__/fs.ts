@@ -1,6 +1,5 @@
 // __mocks__/fs.ts
-const path = require('path');
-
+import path from 'path';
 const fs: any = jest.createMockFromModule('fs');
 
 let mockFiles = Object.create(null);
@@ -24,5 +23,6 @@ function readdirSync(directoryPath) {
 fs.__setMockFiles = __setMockFiles;
 fs.readdirSync = readdirSync;
 fs.readFileSync = () => '{}';
+fs.copyFolderContentsRecursiveSync = jest.fn();
 
 module.exports = fs;

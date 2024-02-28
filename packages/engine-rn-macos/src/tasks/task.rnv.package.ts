@@ -2,7 +2,6 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    MACOS,
     TASK_PACKAGE,
     TASK_CONFIGURE,
     PARAMS,
@@ -28,7 +27,7 @@ export const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_PACKAGE, originTask)) return true;
 
     switch (platform) {
-        case MACOS:
+        case 'macos':
             return packageBundleForXcode(c);
         default:
             logErrorPlatform(c);
@@ -41,7 +40,7 @@ const Task: RnvTask = {
     fn: taskRnvPackage,
     task: TASK_PACKAGE,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [MACOS],
+    platforms: ['macos'],
 };
 
 export default Task;

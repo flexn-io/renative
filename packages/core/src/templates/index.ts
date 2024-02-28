@@ -3,7 +3,6 @@ import { RENATIVE_CONFIG_NAME, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constant
 import {
     copyFolderContentsRecursiveSync,
     copyFileSync,
-    writeFileSync,
     removeDirsSync,
     removeFilesSync,
     mergeObjects,
@@ -14,7 +13,6 @@ import {
     removeDirSync,
 } from '../system/fs';
 import { chalk, logError, logInfo, logWarning, logTask, logDebug } from '../logger';
-import { getConfigProp } from '../common';
 import { loadFileExtended } from '../configs';
 import { doResolve } from '../system/resolve';
 import { RnvContext } from '../context/types';
@@ -26,6 +24,7 @@ import { writeRenativeConfigFile } from '../configs/utils';
 import { checkIfProjectAndNodeModulesExists } from '../projects/dependencyManager';
 import { ConfigFileApp, ConfigFileProject, ConfigFileTemplate } from '../schema/configFiles/types';
 import { PlatformKey } from '../schema/types';
+import { getConfigProp } from '../context/contextProps';
 
 const _cleanProjectTemplateSync = (c: RnvContext) => {
     logTask('_cleanProjectTemplateSync');
@@ -45,20 +44,10 @@ const _applyTemplate = async (c: RnvContext) => {
 
     if (c.runtime.selectedTemplate) {
         _cleanProjectTemplateSync(c);
-        // if (isMonorepo()) {
-        //     // @todo - have the templates report their absolute locations
-        //     c.paths.template.dir = path.join(
-        //         getMonorepoRoot(),
-        //         'packages',
-        //         c.runtime.selectedTemplate
-        //     );
-        // } else {
+
         c.paths.template.dir = doResolve(c.runtime.selectedTemplate) || 'Error: unresolved';
-        // c.paths.template.dir = path.join(c.paths.project.nodeModulesDir, c.runtime.selectedTemplate);
-        // }
     } else {
         c.paths.template.dir = doResolve(c.buildConfig.currentTemplate) || 'Error: unresolved';
-        // c.paths.template.dir = path.join(c.paths.project.nodeModulesDir, c.buildConfig.currentTemplate);
     }
 
     if (c.paths.template.dir) {
@@ -66,10 +55,6 @@ const _applyTemplate = async (c: RnvContext) => {
 
         c.paths.template.config = path.join(c.paths.template.dir, RENATIVE_CONFIG_NAME);
     }
-
-    // if (fsExistsSync(c.paths.template.config)) {
-    //     c.files.template.config = readObjectSync(c.paths.template.config);
-    // }
 
     if (!fsExistsSync(c.paths.template.configTemplate)) {
         logWarning(

@@ -2,14 +2,6 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    WEB,
-    WEBTV,
-    TIZEN,
-    WEBOS,
-    TIZEN_MOBILE,
-    TIZEN_WATCH,
-    KAIOS,
-    CHROMECAST,
     TASK_EXPORT,
     TASK_DEPLOY,
     PARAMS,
@@ -29,9 +21,9 @@ export const taskRnvDeploy: RnvTaskFn = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_DEPLOY, originTask)) return true;
 
     switch (platform) {
-        case WEB:
-        case WEBTV:
-        case CHROMECAST:
+        case 'web':
+        case 'webtv':
+        case 'chromecast':
             return deployWeb();
         default:
             logErrorPlatform(c);
@@ -43,7 +35,7 @@ const Task: RnvTask = {
     fn: taskRnvDeploy,
     task: TASK_DEPLOY,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [WEB, WEBTV, TIZEN, WEBOS, TIZEN_MOBILE, TIZEN_WATCH, KAIOS, CHROMECAST],
+    platforms: ['web', 'webtv', 'tizen', 'webos', 'tizenmobile', 'tizenwatch', 'kaios', 'chromecast'],
 };
 
 export default Task;

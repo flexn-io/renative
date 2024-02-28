@@ -3,9 +3,6 @@ import path from 'path';
 import {
     RnvContext,
     getPlatformProjectDir,
-    getAppTitle,
-    getAppDescription,
-    getAppAuthor,
     fsWriteFileSync,
     fsReadFileSync,
     logTask,
@@ -14,6 +11,8 @@ import {
     copyAssetsFolder,
 } from '@rnv/core';
 import { launchKaiOSSimulator } from './deviceManager';
+
+import { getAppAuthor, getAppDescription, getAppTitle } from '@rnv/sdk-utils';
 
 export const configureKaiOSProject = async (c: RnvContext) => {
     logTask('configureKaiOSProject');

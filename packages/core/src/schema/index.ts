@@ -10,4 +10,6 @@ export { RootTemplateSchema } from './configFiles/template';
 export { RootTemplatesSchema } from './configFiles/templates';
 export { RootIntegrationSchema } from './configFiles/integration';
 
+export { ConfigFileBuildConfig } from './configFiles/buildConfig';
+
 export * from './validators';

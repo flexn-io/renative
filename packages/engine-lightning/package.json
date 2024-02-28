@@ -32,10 +32,11 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@lightningjs/cli": "2.12.0",
-        "@lightningjs/sdk": "5.4.1",
+        "@lightningjs/cli": "2.13.0",
+        "@lightningjs/sdk": "5.5.1",
         "@rnv/sdk-tizen": "1.0.0-rc.11",
-        "@rnv/sdk-webos": "1.0.0-rc.11"
+        "@rnv/sdk-webos": "1.0.0-rc.11",
+        "@rnv/sdk-utils": "1.0.0-rc.11"
     },
     "peerDependencies": {
         "@rnv/core": "^1.0.0-rc.11"

@@ -5,24 +5,20 @@ import {
     shouldSkipTask,
     logTask,
     logError,
-    IOS,
-    TVOS,
-    ANDROID,
-    ANDROID_TV,
-    FIRE_TV,
     TASK_START,
     TASK_CONFIGURE_SOFT,
     PARAMS,
     RnvTaskFn,
     RnvTask,
+    PlatformKey,
 } from '@rnv/core';
 import { startReactNative } from '@rnv/sdk-react-native';
 
-const BUNDLER_PLATFORMS: Record<string, string> = {};
+const BUNDLER_PLATFORMS: Partial<Record<PlatformKey, PlatformKey>> = {};
 
-BUNDLER_PLATFORMS[TVOS] = IOS;
-BUNDLER_PLATFORMS[ANDROID_TV] = ANDROID;
-BUNDLER_PLATFORMS[FIRE_TV] = ANDROID;
+BUNDLER_PLATFORMS['tvos'] = 'ios';
+BUNDLER_PLATFORMS['androidtv'] = 'android';
+BUNDLER_PLATFORMS['firetv'] = 'android';
 
 export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
@@ -42,9 +38,9 @@ export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_START, originTask)) return true;
 
     switch (platform) {
-        case ANDROID_TV:
-        case FIRE_TV:
-        case TVOS: {
+        case 'androidtv':
+        case 'firetv':
+        case 'tvos': {
             return startReactNative(c, {
                 waitForBundler: !parentTask,
                 customCliPath: `${doResolve('react-native-tvos')}/local-cli/cli.js`,
@@ -61,7 +57,7 @@ const Task: RnvTask = {
     fn: taskRnvStart,
     task: TASK_START,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [TVOS, ANDROID_TV, FIRE_TV],
+    platforms: ['tvos', 'androidtv', 'firetv'],
 };
 
 export default Task;

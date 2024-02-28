@@ -2,19 +2,11 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    WEB,
-    TIZEN,
-    WEBOS,
-    TIZEN_MOBILE,
-    TIZEN_WATCH,
-    KAIOS,
-    CHROMECAST,
     TASK_BUILD,
     TASK_EXPORT,
     PARAMS,
     executeOrSkipTask,
     shouldSkipTask,
-    WEBTV,
     RnvTask,
 } from '@rnv/core';
 import { exportWeb } from '@rnv/sdk-webpack';
@@ -29,15 +21,15 @@ export const taskRnvExport: RnvTaskFn = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_EXPORT, originTask)) return true;
 
     switch (platform) {
-        case WEB:
+        case 'web':
             return exportWeb();
-        case TIZEN:
-        case TIZEN_WATCH:
-        case TIZEN_MOBILE:
-        case WEBOS:
-        case KAIOS:
-        case WEBTV:
-        case CHROMECAST:
+        case 'tizen':
+        case 'tizenwatch':
+        case 'tizenmobile':
+        case 'webos':
+        case 'kaios':
+        case 'webtv':
+        case 'chromecast':
             return true;
         default:
             logErrorPlatform(c);
@@ -49,7 +41,7 @@ const Task: RnvTask = {
     fn: taskRnvExport,
     task: TASK_EXPORT,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [WEB, TIZEN, WEBOS, TIZEN_MOBILE, TIZEN_WATCH, KAIOS, CHROMECAST],
+    platforms: ['web', 'tizen', 'webos', 'tizenmobile', 'tizenwatch', 'kaios', 'chromecast'],
 };
 
 export default Task;

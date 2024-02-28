@@ -5,7 +5,6 @@ import {
     logTask,
     logSummary,
     logRaw,
-    MACOS,
     TASK_RUN,
     TASK_CONFIGURE,
     PARAMS,
@@ -30,7 +29,7 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
 
     switch (platform) {
-        case MACOS:
+        case 'macos':
             if (!c.program.only) {
                 await startBundlerIfRequired(c, TASK_RUN, originTask);
                 await runXcodeProject(c);
@@ -60,7 +59,7 @@ const Task: RnvTask = {
     //     before: TASK_CONFIGURE,
     // },
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
-    platforms: [MACOS],
+    platforms: ['macos'],
 };
 
 export default Task;

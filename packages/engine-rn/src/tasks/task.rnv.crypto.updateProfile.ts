@@ -4,7 +4,6 @@ import {
     RnvTaskFn,
     executeTask,
     shouldSkipTask,
-    IOS,
     TASK_PROJECT_CONFIGURE,
     TASK_CRYPTO_UPDATE_PROFILE,
     RnvTask,
@@ -26,7 +25,7 @@ const Task: RnvTask = {
     fn: taskRnvCryptoUpdateProfile,
     task: TASK_CRYPTO_UPDATE_PROFILE,
     params: PARAMS.withBase(),
-    platforms: [IOS],
+    platforms: ['ios'],
     // skipPlatforms: true,
 };
 

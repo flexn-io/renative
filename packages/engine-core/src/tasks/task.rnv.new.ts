@@ -1,4 +1,4 @@
-import lSet from 'lodash.set';
+import lSet from 'lodash/set';
 import path from 'path';
 import semver from 'semver';
 import {
@@ -37,8 +37,9 @@ import {
     PromptParams,
     RnvTask,
     TASK_NEW,
+    ConfigFileProject,
+    ConfigFileTemplate,
 } from '@rnv/core';
-import { ConfigFileProject, ConfigFileTemplate } from '@rnv/core/lib/schema/configFiles/types';
 
 type NewProjectData = {
     appTitle?: string;

@@ -1,18 +1,8 @@
 import path from 'path';
 import {
-    isObject,
-    isArray,
-    isBool,
-    isString,
-    isNumber,
     getAppFolder,
-    getAppVersion,
-    getAppTitle,
-    getAppVersionCode,
     getConfigProp,
-    getBuildFilePath,
     getFlavouredProp,
-    addSystemInjects,
     logTask,
     logError,
     logWarning,
@@ -25,6 +15,13 @@ import {
 } from '@rnv/core';
 import { getAppFolderName } from './common';
 import { Context, FilePlistJSON } from './types';
+import { addSystemInjects, getAppTitle, getAppVersion, getAppVersionCode, getBuildFilePath } from '@rnv/sdk-utils';
+
+const isBool = (value: unknown) => typeof value === 'boolean';
+const isNumber = (value: unknown) => typeof value === 'number' && Number.isFinite(value);
+const isString = (value: unknown) => typeof value === 'string' || value instanceof String;
+const isArray = (value: unknown) => value && typeof value === 'object' && value.constructor === Array;
+const isObject = (value: unknown) => value && typeof value === 'object' && value.constructor === Object;
 
 export const parseExportOptionsPlist = (c: Context, platform: RnvPlatform) =>
     new Promise<void>((resolve) => {

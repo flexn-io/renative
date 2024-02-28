@@ -17,10 +17,6 @@ import {
     logDebug,
     logSuccess,
     logRaw,
-    ANDROID_WEAR,
-    ANDROID,
-    ANDROID_TV,
-    FIRE_TV,
     USER_HOME_DIR,
     RnvContext,
     waitForExecCLI,
@@ -28,6 +24,7 @@ import {
     RnvPlatform,
     executeAsync,
     ExecOptionsPresets,
+    PlatformKey,
 } from '@rnv/core';
 import { CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from './constants';
 
@@ -563,11 +560,11 @@ const _parseDevicesResult = async (
             if (skipTargetCheck) return true; // return everything if skipTargetCheck is used
             if (device.isNotEligibleAndroid) return false;
             const matches =
-                (platform === ANDROID && device.isTablet) ||
-                (platform === ANDROID_WEAR && device.isWear) ||
-                (platform === ANDROID_TV && device.isTV) ||
-                (platform === FIRE_TV && device.isTV) ||
-                (platform === ANDROID && device.isMobile);
+                (platform === 'android' && device.isTablet) ||
+                (platform === 'androidwear' && device.isWear) ||
+                (platform === 'androidtv' && device.isTV) ||
+                (platform === 'firetv' && device.isTV) ||
+                (platform === 'android' && device.isMobile);
             logDebug('getDeviceType - filter', {
                 device,
                 matches,
@@ -690,7 +687,8 @@ export const checkForActiveEmulator = (c: RnvContext, emulatorName?: string) =>
                         } else {
                             logRaw(`looking for active emulators: attempt ${attempts}/${maxAttempts}`);
                             attempts++;
-                            if ([ANDROID_TV, FIRE_TV, ANDROID_WEAR].includes(platform) && attempts === 2) {
+                            const check: PlatformKey[] = ['androidtv', 'firetv', 'androidwear'];
+                            if (check.includes(platform) && attempts === 2) {
                                 await resetAdb(c, true); // from time to time adb reports a recently started atv emu as being offline. Restarting adb fixes it
                             }
                             if (attempts > maxAttempts) {

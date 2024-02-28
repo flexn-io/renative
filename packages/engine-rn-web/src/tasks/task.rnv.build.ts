@@ -2,14 +2,6 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    WEB,
-    WEBTV,
-    TIZEN,
-    WEBOS,
-    TIZEN_MOBILE,
-    TIZEN_WATCH,
-    KAIOS,
-    CHROMECAST,
     TASK_BUILD,
     TASK_PACKAGE,
     PARAMS,
@@ -35,20 +27,20 @@ export const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_BUILD, originTask)) return true;
 
     switch (platform) {
-        case WEB:
-        case WEBTV:
-        case CHROMECAST:
+        case 'web':
+        case 'webtv':
+        case 'chromecast':
             await buildWeb(c);
             return;
-        case KAIOS:
+        case 'kaios':
             await buildKaiOSProject(c);
             return;
-        case TIZEN:
-        case TIZEN_MOBILE:
-        case TIZEN_WATCH:
+        case 'tizen':
+        case 'tizenmobile':
+        case 'tizenwatch':
             await buildTizenProject(c);
             return;
-        case WEBOS:
+        case 'webos':
             await buildWebOSProject(c);
             return;
         default:
@@ -61,7 +53,7 @@ const Task: RnvTask = {
     fn: taskRnvBuild,
     task: TASK_BUILD,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [WEB, WEBTV, TIZEN, WEBOS, TIZEN_MOBILE, TIZEN_WATCH, KAIOS, CHROMECAST],
+    platforms: ['web', 'webtv', 'tizen', 'webos', 'tizenmobile', 'tizenwatch', 'kaios', 'chromecast'],
 };
 
 export default Task;

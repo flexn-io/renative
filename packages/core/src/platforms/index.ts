@@ -1,7 +1,7 @@
 import path from 'path';
 import { chalk, logTask, logError, logWarning } from '../logger';
 import { cleanFolder, copyFolderContentsRecursiveSync } from '../system/fs';
-import { getTimestampPathsConfig, getPlatformBuildDir, getAppFolder } from '../common';
+import { getTimestampPathsConfig, getAppFolder } from '../context/contextProps';
 import { SUPPORTED_PLATFORMS } from '../constants';
 import type { RnvContext } from '../context/types';
 import { generateOptions, inquirerPrompt } from '../api';
@@ -196,7 +196,7 @@ export const copySharedPlatforms = (c: RnvContext) =>
         if (c.platform) {
             copyFolderContentsRecursiveSync(
                 path.resolve(c.paths.project.platformTemplatesDirs[c.platform], '_shared'),
-                getPlatformBuildDir(c)
+                getAppFolder(c)
             );
         }
 

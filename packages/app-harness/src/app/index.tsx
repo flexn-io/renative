@@ -5,6 +5,7 @@ import NewModuleButton from './NewModuleButton';
 import { OrientationLocker, PORTRAIT, LANDSCAPE } from 'react-native-orientation-locker';
 import { isPlatformAndroid, isPlatformIos } from '@rnv/renative';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import { request, PERMISSIONS } from 'react-native-permissions';
 
 const App = () => {
     const [showVideo, setShowVideo] = useState(false);
@@ -25,6 +26,12 @@ const App = () => {
             PushNotificationIOS.removeEventListener('registrationError');
         };
     });
+
+    const requestPermission = () => {
+        request(PERMISSIONS.IOS.CONTACTS).then((result) => {
+            console.log(result);
+        });
+    };
 
     const onRegistered = (deviceToken) => {
         console.log(`Device Token: ${deviceToken}`);
@@ -51,6 +58,7 @@ const App = () => {
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <Text>ReNative Harness !!</Text>
             <Text>{`hermes: ${typeof HermesInternal === 'object' && HermesInternal !== null ? 'yes' : 'no'}`}</Text>
+            {isPlatformIos && <Button onPress={requestPermission} title="Request permissions" />}
             {isPlatformAndroid ? (
                 <>
                     <NewModuleButton />

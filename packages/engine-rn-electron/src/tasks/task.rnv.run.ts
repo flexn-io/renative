@@ -2,9 +2,6 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    MACOS,
-    WINDOWS,
-    LINUX,
     TASK_RUN,
     TASK_CONFIGURE,
     PARAMS,
@@ -26,9 +23,9 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_RUN, originTask)) return true;
 
     switch (platform) {
-        case MACOS:
-        case WINDOWS:
-        case LINUX:
+        case 'macos':
+        case 'windows':
+        case 'linux':
             return runElectron(c);
         default:
             return logErrorPlatform(c);
@@ -40,7 +37,7 @@ const Task: RnvTask = {
     fn: taskRnvRun,
     task: TASK_RUN,
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
-    platforms: [MACOS, WINDOWS, LINUX],
+    platforms: ['macos', 'windows', 'linux'],
 };
 
 export default Task;

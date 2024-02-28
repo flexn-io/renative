@@ -1,6 +1,5 @@
 import path from 'path';
 import {
-    WEBOS,
     isSystemWin,
     getRealPath,
     writeFileSync,
@@ -135,7 +134,7 @@ export const checkWebosSdk = async (c: RnvContext) => {
         );
 
         switch (c.platform) {
-            case WEBOS:
+            case 'webos':
                 return _attemptAutoFix(c);
             default:
                 return true;

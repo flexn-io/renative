@@ -3,13 +3,11 @@ import {
     executeAsync,
     getAppFolder,
     getConfigProp,
-    getEntryFile,
     isSystemWin,
     chalk,
     logTask,
     logInfo,
     logSuccess,
-    ANDROID_WEAR,
     RnvContext,
     DEFAULTS,
     RnvPlatform,
@@ -17,6 +15,7 @@ import {
     ExecOptionsPresets,
 } from '@rnv/core';
 import { EnvVars } from './env';
+import { getEntryFile } from '@rnv/sdk-utils';
 
 export const packageReactNativeAndroid = async (c: RnvContext) => {
     logTask('packageAndroid');
@@ -26,7 +25,7 @@ export const packageReactNativeAndroid = async (c: RnvContext) => {
 
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets', false) === true;
 
-    if (!bundleAssets && platform !== ANDROID_WEAR) {
+    if (!bundleAssets && platform !== 'androidwear') {
         logInfo(`bundleAssets in scheme ${chalk().white(c.runtime.scheme)} marked false. SKIPPING PACKAGING...`);
         return true;
     }

@@ -13,9 +13,6 @@ import {
     copyAssetsFolder,
     copyBuildsFolder,
     parseFonts,
-    IOS,
-    MACOS,
-    TVOS,
     chalk,
     logTask,
     logError,
@@ -72,7 +69,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
         devicesArr = await getAppleDevices(c, true, false);
     }
 
-    let p = '';
+    let p;
 
     if (device === true) {
         if (devicesArr.length === 1) {
@@ -144,6 +141,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
             type: 'list',
             choices: devices,
         });
+
         c.runtime.target = sim.name;
         if (c.runtime.target) {
             p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
@@ -151,6 +149,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
     } else if (c.runtime.target) {
         // check if the default sim is available
         const desiredSim = devicesArr.find((d) => d.name === c.runtime.target && !d.isDevice);
+
         if (!desiredSim) {
             const { sim } = await inquirerPrompt({
                 name: 'sim',
@@ -233,7 +232,7 @@ export const runXcodeProject = async (c: Context, runDeviceArguments?: string) =
         return _checkLockAndExec(c, appPath, schemeTarget, runScheme, runDeviceArguments);
     }
 
-    if (c.platform === MACOS) {
+    if (c.platform === 'macos') {
         if (bundleAssets) {
             await packageReactNativeIOS(c, bundleIsDev);
         }
@@ -469,7 +468,7 @@ export const buildXcodeProject = async (c: Context) => {
 
     let destinationPlatform = '';
     switch (c.platform) {
-        case IOS: {
+        case 'ios': {
             if (c.program.device) {
                 destinationPlatform = 'iOS';
             } else {
@@ -477,7 +476,7 @@ export const buildXcodeProject = async (c: Context) => {
             }
             break;
         }
-        case TVOS: {
+        case 'tvos': {
             if (c.program.device) {
                 destinationPlatform = 'tvOS';
             } else {
@@ -485,7 +484,7 @@ export const buildXcodeProject = async (c: Context) => {
             }
             break;
         }
-        case MACOS: {
+        case 'macos': {
             destinationPlatform = 'macOS';
             break;
         }
@@ -525,7 +524,7 @@ export const buildXcodeProject = async (c: Context) => {
     // -arch / -sdk params are not compatible with -destination
     if (!ps.includes('-destination') && !ps.includes('-arch')) {
         p.push('-destination');
-        if (platform === MACOS) {
+        if (platform === 'macos') {
             p.push(`platform=${destinationPlatform}`);
         } else {
             p.push(`platform=${destinationPlatform},name=${c.runtime.target}`);
@@ -572,7 +571,7 @@ const archiveXcodeProject = (c: Context) => {
     const runScheme = getConfigProp(c, platform, 'runScheme', 'Debug');
     let sdk = getConfigProp(c, platform, 'sdk');
     if (!sdk) {
-        if (platform === IOS) sdk = 'iphoneos';
+        if (platform === 'ios') sdk = 'iphoneos';
         // if (platform === MACOS) sdk = 'macosx';
     }
     const sdkArr = [];

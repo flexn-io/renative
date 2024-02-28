@@ -195,7 +195,6 @@ export const runCocoaPods = async (c: RnvContext) => {
         const env = {
             ...CoreEnvVars.BASE(),
             ...EnvVars.RNV_REACT_NATIVE_PATH(),
-            ...EnvVars.REACT_NATIVE_PERMISSIONS_REQUIRED(),
             ...EnvVars.RCT_NEW_ARCH_ENABLED(),
             ...EnvVars.RNV_SKIP_LINKING(),
         };

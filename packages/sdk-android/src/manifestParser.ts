@@ -1,12 +1,8 @@
 import path from 'path';
 import {
     getAppFolder,
-    getAppId,
-    getBuildFilePath,
     getConfigProp,
     getFlavouredProp,
-    addSystemInjects,
-    getConfigPropArray,
     logTask,
     logError,
     logWarning,
@@ -16,8 +12,15 @@ import {
     parsePlugins,
     AndroidManifestNode,
     AndroidManifest,
+    ConfigPropKey,
+    RnvContext,
+    RnvPlatform,
+    ConfigProp,
+    _getConfigProp,
+    ConfigFileBuildConfig,
 } from '@rnv/core';
 import { Context } from './types';
+import { getBuildFilePath, getAppId, addSystemInjects } from '@rnv/sdk-utils';
 
 const PROHIBITED_DUPLICATE_TAGS = ['intent-filter'];
 const SYSTEM_TAGS = ['tag', 'children'];
@@ -171,6 +174,42 @@ const _mergeFeatures = (
         });
         _mergeNodeChildren(baseManifestFile, featuresObj);
     }
+};
+
+const getConfigPropArray = <T extends ConfigPropKey>(c: RnvContext, platform: RnvPlatform, key: T) => {
+    const result: Array<ConfigProp[T]> = [];
+    const configArr = [
+        c.files.defaultWorkspace.config,
+        c.files.rnv.projectTemplates.config,
+        // { plugins: extraPlugins },
+        // { pluginTemplates },
+        c.files.workspace.config,
+        c.files.workspace.configPrivate,
+        c.files.workspace.configLocal,
+        c.files.workspace.project.config,
+        c.files.workspace.project.configPrivate,
+        c.files.workspace.project.configLocal,
+        ...c.files.workspace.appConfig.configs,
+        ...c.files.workspace.appConfig.configsPrivate,
+        ...c.files.workspace.appConfig.configsLocal,
+        c.files.project.config,
+        c.files.project.configPrivate,
+        c.files.project.configLocal,
+        ...c.files.appConfig.configs,
+        ...c.files.appConfig.configsPrivate,
+        ...c.files.appConfig.configsLocal,
+    ];
+    configArr.forEach((config) => {
+        if (config) {
+            //TODO: this is bit of a hack. _getConfigProp expectes already merged obj needs to be redone
+            const val = _getConfigProp(c, platform, key, null, config as ConfigFileBuildConfig);
+            if (val) {
+                result.push(val);
+            }
+        }
+    });
+
+    return result;
 };
 
 export const parseAndroidManifestSync = (c: Context) => {

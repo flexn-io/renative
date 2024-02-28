@@ -1,9 +1,6 @@
 import {
     logTask,
     PARAMS,
-    TVOS,
-    ANDROID_TV,
-    FIRE_TV,
     TASK_WORKSPACE_CONFIGURE,
     TASK_PROJECT_CONFIGURE,
     executeTask,
@@ -22,11 +19,11 @@ export const taskRnvLog: RnvTaskFn = async (c, parentTask, originTask) => {
     await executeTask(c, TASK_WORKSPACE_CONFIGURE, TASK_PROJECT_CONFIGURE, originTask);
 
     switch (c.platform) {
-        case ANDROID_TV:
-        case FIRE_TV:
+        case 'androidtv':
+        case 'firetv':
             await checkAndConfigureAndroidSdks(c);
             return runAndroidLog(c);
-        case TVOS:
+        case 'tvos':
             return runAppleLog(c);
         default:
             return logErrorPlatform(c);
@@ -38,7 +35,7 @@ const Task: RnvTask = {
     fn: taskRnvLog,
     task: TASK_LOG,
     params: PARAMS.withBase(),
-    platforms: [TVOS, ANDROID_TV, FIRE_TV],
+    platforms: ['tvos', 'androidtv', 'firetv'],
     isGlobalScope: true,
 };
 

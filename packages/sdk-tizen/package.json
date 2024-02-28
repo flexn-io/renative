@@ -29,7 +29,7 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@rnv/sdk-utils": "1.0.0-feat-pin-cli.6",
+        "@rnv/sdk-utils": "1.0.0-rc.11",
         "@rnv/sdk-webpack": "1.0.0-rc.11",
         "xml2js": "0.6.2"
     },

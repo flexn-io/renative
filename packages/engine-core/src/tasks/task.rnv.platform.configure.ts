@@ -4,7 +4,6 @@ import {
     logInfo,
     fsExistsSync,
     getAppFolder,
-    isBuildSchemeSupported,
     isPlatformSupported,
     cleanPlatformBuild,
     createPlatformBuild,
@@ -20,6 +19,7 @@ import {
     RnvTask,
 } from '@rnv/core';
 import { checkAndConfigureSdks, checkSdk } from '../common';
+import { isBuildSchemeSupported } from '../buildSchemes';
 
 export const taskRnvPlatformConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvPlatformConfigure', '');

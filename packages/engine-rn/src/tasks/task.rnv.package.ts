@@ -7,12 +7,6 @@ import {
     executeOrSkipTask,
     shouldSkipTask,
     TASK_PACKAGE,
-    ANDROID,
-    ANDROID_TV,
-    FIRE_TV,
-    ANDROID_WEAR,
-    MACOS,
-    IOS,
     getConfigProp,
     TASK_EJECT,
     RnvTask,
@@ -35,13 +29,13 @@ export const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
     }
 
     switch (platform) {
-        case IOS:
-        case MACOS:
+        case 'ios':
+        case 'macos':
             return packageBundleForXcode(c);
-        case ANDROID:
-        case ANDROID_TV:
-        case FIRE_TV:
-        case ANDROID_WEAR: {
+        case 'android':
+        case 'androidtv':
+        case 'firetv':
+        case 'androidwear': {
             // NOTE: react-native v0.73 triggers packaging automatically so we skipping it unless we need to
             // package it explicitly for tasks where it is not triggered automatically
 
@@ -64,7 +58,7 @@ const Task: RnvTask = {
     fn: taskRnvPackage,
     task: TASK_PACKAGE,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR],
+    platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],
 };
 
 export default Task;

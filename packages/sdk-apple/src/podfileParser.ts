@@ -4,10 +4,8 @@ import {
     RenativeConfigPluginPlatform,
     OverridesOptions,
     getAppFolder,
-    getAppTemplateFolder,
     getConfigProp,
     getFlavouredProp,
-    addSystemInjects,
     logTask,
     parsePlugins,
     writeCleanFile,
@@ -15,6 +13,7 @@ import {
     DEFAULTS,
 } from '@rnv/core';
 import { Context } from './types';
+import { addSystemInjects, getAppTemplateFolder } from '@rnv/sdk-utils';
 
 export const parsePodFile = async (c: Context, platform: RnvPlatform) => {
     logTask('parsePodFile');
@@ -51,7 +50,6 @@ export const parsePodFile = async (c: Context, platform: RnvPlatform) => {
                     c.payload.pluginConfigiOS.podfileInject += `${v}\n`;
                 });
             }
-
             if (post_install) {
                 post_install.forEach((v) => {
                     c.payload.pluginConfigiOS.podPostInstall += `${v}\n`;

@@ -1,5 +1,5 @@
 {
-    "$schema": "../../../../.rnv/schema/rnv.app.json",
+    "$schema": "../../.rnv/schema/rnv.app.json",
     "id": "base",
     "skipBootstrapCopy": true,
     "hidden": true,
