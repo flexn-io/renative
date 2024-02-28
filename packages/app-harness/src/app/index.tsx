@@ -13,7 +13,6 @@ const App = () => {
     }, []);
 
     useEffect(() => {
-        console.log(isPlatformIos, 'isPlatformIos');
         if (!isPlatformIos) return;
         PushNotificationIOS.requestPermissions();
         PushNotificationIOS.addEventListener('notification', onRemoteNotification);
