@@ -162,7 +162,9 @@ ${getEnvExportCmd(envVar, 'REPLACE_WITH_ENV_VARIABLE')}
                 key
             )}. Make sure you keep it safe! Pass it with --key on decryption or set it as following env variable:
 
-${getEnvExportCmd(envVar, key)}
+${getEnvExportCmd(envVar, key)} 
+
+Make sure you take into account special characters that might need to be escaped
 
 `);
             c.process.env[envVar] = key;
