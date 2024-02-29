@@ -72,3 +72,4 @@ lerna-debug.log
 yarn-error.log
 .rnv
 coverage-ts
+.watchman-cookie-*
