@@ -7,6 +7,8 @@ import { isPlatformAndroid, isPlatformIos } from '@rnv/renative';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import { request, PERMISSIONS } from 'react-native-permissions';
 
+import styles from '../styles';
+
 const App = () => {
     const [showVideo, setShowVideo] = useState(false);
     useEffect(() => {
@@ -55,9 +57,9 @@ const App = () => {
     };
 
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ color: 'black' }}>ReNative Harness !!</Text>
-            <Text style={{ color: 'black' }}>{`hermes: ${
+        <View style={styles.container}>
+            <Text style={styles.text}>ReNative Harness !!</Text>
+            <Text style={styles.text}>{`hermes: ${
                 typeof HermesInternal === 'object' && HermesInternal !== null ? 'yes' : 'no'
             }`}</Text>
             {isPlatformIos && <Button onPress={requestPermission} title="Request permissions" />}
@@ -74,7 +76,7 @@ const App = () => {
                         <View>
                             <OrientationLocker orientation={LANDSCAPE} />
                             <View style={{ width: 320, height: 180, backgroundColor: '#ccc' }}>
-                                <Text>Landscape video goes here</Text>
+                                <Text style={styles.text}>Landscape video goes here</Text>
                             </View>
                         </View>
                     )}
