@@ -139,6 +139,7 @@ RNV will create it for you, make sure you add whatever you want encrypted in it 
     }
 
     let key = c.program.key || c.process.env[envVar];
+    console.log(key, 'key');
     let keyGenerated = false;
     if (!key) {
         const { confirm } = await inquirerPrompt({
@@ -154,6 +155,8 @@ RNV will create it for you, make sure you add whatever you want encrypted in it 
             return Promise.reject(`encrypt: You must pass ${chalk().white('--key')} or have env var defined:
 
 ${getEnvExportCmd(envVar, 'REPLACE_WITH_ENV_VARIABLE')}
+
+Make sure you take into account special characters that might need to be escaped
 
 `);
         }
