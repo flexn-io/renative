@@ -56,8 +56,10 @@ const App = () => {
 
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>ReNative Harness !!</Text>
-            <Text>{`hermes: ${typeof HermesInternal === 'object' && HermesInternal !== null ? 'yes' : 'no'}`}</Text>
+            <Text style={{ color: 'black' }}>ReNative Harness !!</Text>
+            <Text style={{ color: 'black' }}>{`hermes: ${
+                typeof HermesInternal === 'object' && HermesInternal !== null ? 'yes' : 'no'
+            }`}</Text>
             {isPlatformIos && <Button onPress={requestPermission} title="Request permissions" />}
             {isPlatformAndroid ? (
                 <>
