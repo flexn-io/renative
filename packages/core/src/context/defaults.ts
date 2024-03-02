@@ -186,9 +186,13 @@ export const generateContextDefaults = (): RnvContext => ({
                 dir: '',
                 index: '',
             },
+            src: {
+                dir: '',
+                index: '',
+                indexTs: '',
+            },
+            tsconfig: '',
             dir: '',
-            index: '',
-            indexTs: '',
         },
         home: {
             dir: '',

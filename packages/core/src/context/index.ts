@@ -107,12 +107,13 @@ Make sure all your rnv dependencies are of same version and you are executing wi
     // TODO: generate solution root
 
     populateLinkingInfo(c);
-
-    c.paths.buildHooks.dir = path.join(c.paths.project.dir, 'buildHooks/src');
-    c.paths.buildHooks.dist.dir = path.join(c.paths.project.dir, 'buildHooks/dist');
-    c.paths.buildHooks.index = path.join(c.paths.buildHooks.dir, 'index.js');
-    c.paths.buildHooks.indexTs = path.join(c.paths.buildHooks.dir, 'index.ts');
+    c.paths.buildHooks.dir = path.join(c.paths.project.dir, 'buildHooks');
+    c.paths.buildHooks.src.dir = path.join(c.paths.buildHooks.dir, 'src');
+    c.paths.buildHooks.dist.dir = path.join(c.paths.buildHooks.dir, 'dist');
+    c.paths.buildHooks.src.index = path.join(c.paths.buildHooks.src.dir, 'index.js');
+    c.paths.buildHooks.src.indexTs = path.join(c.paths.buildHooks.src.dir, 'index.ts');
     c.paths.buildHooks.dist.index = path.join(c.paths.buildHooks.dist.dir, 'index.js');
+    c.paths.buildHooks.tsconfig = path.join(c.paths.buildHooks.dir, 'tsconfig.json');
     c.paths.project.nodeModulesDir = path.join(c.paths.project.dir, 'node_modules');
     c.paths.project.srcDir = path.join(c.paths.project.dir, 'src');
     c.paths.project.appConfigsDir = path.join(c.paths.project.dir, 'appConfigs');

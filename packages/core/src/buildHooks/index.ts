@@ -6,6 +6,7 @@ import { doResolve } from '../system/resolve';
 import { RnvContext } from '../context/types';
 import { inquirerPrompt } from '../api';
 import { getConfigProp } from '../context/contextProps';
+import { executeAsync } from '../system/exec';
 
 export const executePipe = async (c: RnvContext, key: string) => {
     logHook('executePipe', c?.program?.json ? key : `('${key}')`);
@@ -39,16 +40,16 @@ export const buildHooks = async (c: RnvContext) => {
         c.runtime.forceBuildHookRebuild;
 
     if (
-        (!fsExistsSync(c.paths.buildHooks.index) && !fsExistsSync(c.paths.buildHooks.indexTs) && c.program.ci) ||
+        (!fsExistsSync(c.paths.buildHooks.src.index) &&
+            !fsExistsSync(c.paths.buildHooks.src.indexTs) &&
+            c.program.ci) ||
         c.runtime.skipBuildHooks
     ) {
         logInfo('No build hooks found and in --ci mode. SKIPPING');
         return true;
     }
 
-    let bhExt = 'js';
-
-    if (!fsExistsSync(c.paths.buildHooks.index) && !fsExistsSync(c.paths.buildHooks.indexTs)) {
+    if (!fsExistsSync(c.paths.buildHooks.src.index) && !fsExistsSync(c.paths.buildHooks.src.indexTs)) {
         if (c.program.ci) {
             c.runtime.skipBuildHooks = true;
             return;
@@ -70,38 +71,46 @@ export const buildHooks = async (c: RnvContext) => {
             const templatePath = c.buildConfig.currentTemplate ? doResolve(c.buildConfig.currentTemplate) : null;
             let buildHooksSource;
             // if there is a template and has buildhooks folder, use that instead of the default
-            if (templatePath) {
-                bhExt = fsExistsSync(`${templatePath}/buildHooks/src/index.ts`) ? 'ts' : 'js';
-            }
-            if (templatePath && fsExistsSync(`${templatePath}/buildHooks/src/index.${bhExt}`)) {
+            if (templatePath && fsExistsSync(`${templatePath}/buildHooks/src`)) {
                 buildHooksSource = path.join(templatePath, 'buildHooks/src');
                 shouldBuildHook = true;
             } else {
                 buildHooksSource = path.join(c.paths.rnv.dir, 'coreTemplateFiles/buildHooks/src');
             }
 
-            copyFolderContentsRecursiveSync(buildHooksSource, c.paths.buildHooks.dir);
+            copyFolderContentsRecursiveSync(buildHooksSource, c.paths.buildHooks.src.dir);
         } else {
             c.runtime.skipBuildHooks = true;
             return;
         }
     }
+    const useTsc = fsExistsSync(c.paths.buildHooks.tsconfig);
 
     if (shouldBuildHook && !c.isBuildHooksReady) {
         try {
             logHook('buildHooks', 'Build hooks not complied. BUILDING...');
-            await build({
-                entryPoints: [`${c.paths.buildHooks.dir}/index.${bhExt}`],
-                bundle: true,
-                platform: 'node',
-                logLimit: c.program.json ? 0 : 10,
-                external: [
-                    '@rnv/core', // exclude rnv core from build
-                    ...Object.keys(c.files.project.package.dependencies || {}),
-                    ...Object.keys(c.files.project.package.devDependencies || {}),
-                ], // exclude everything that's present in node_modules
-                outfile: `${c.paths.buildHooks.dist.dir}/index.js`,
-            });
+            if (useTsc) {
+                await executeAsync(
+                    `npx tsc  -b ${c.paths.buildHooks.src.dir}/../tsconfig.json`
+                    // -esModuleInterop --resolveJsonModule --skipLibCheck --forceConsistentCasingInFileNames --noEmit --strict --noImplicitAny --strictNullChecks --strictFunctionTypes --strictBindCallApply --strictPropertyInitialization --noImplicitThis --alwaysStrict --noUnusedLocals --noUnusedParameters --noImplicitReturns --noFallthroughCasesInSwitch --noUncheckedIndexedAccess --noImplicitOverride --noPropertyAccessFromIndexSignature --noUncheckedIndexedAccess`
+                );
+                // await executeAsync(
+                //     `tsc -b ${c.paths.buildHooks.dir}/../tsconfig.json --rootDir ${c.paths.buildHooks.dir} --outDir ${c.paths.buildHooks.dist.dir}`
+                // );
+            } else {
+                await build({
+                    entryPoints: [`${c.paths.buildHooks.src.dir}/index.js`],
+                    bundle: true,
+                    platform: 'node',
+                    logLimit: c.program.json ? 0 : 10,
+                    external: [
+                        '@rnv/core', // exclude rnv core from build
+                        ...Object.keys(c.files.project.package.dependencies || {}),
+                        ...Object.keys(c.files.project.package.devDependencies || {}),
+                    ], // exclude everything that's present in node_modules
+                    outfile: `${c.paths.buildHooks.dist.dir}/index.js`,
+                });
+            }
         } catch (e) {
             // Fail Builds instead of warn when hook fails
             return Promise.reject(`BUILD_HOOK Failed with error: ${e}`);
