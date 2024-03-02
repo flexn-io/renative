@@ -5,6 +5,7 @@ import NewModuleButton from './NewModuleButton';
 import { OrientationLocker, PORTRAIT, LANDSCAPE } from 'react-native-orientation-locker';
 import { isPlatformAndroid } from '@rnv/renative';
 
+import styles from '../styles';
 
 const App = () => {
     const [showVideo, setShowVideo] = useState(false);
@@ -13,9 +14,12 @@ const App = () => {
     }, []);
 
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>ReNative Harness !!</Text>
-            <Text>{`hermes: ${typeof HermesInternal === 'object' && HermesInternal !== null ? 'yes' : 'no'}`}</Text>
+        <View style={styles.container}>
+            <Text style={styles.text}>ReNative Harness !!</Text>
+            <Text style={styles.text}>{`hermes: ${
+                typeof HermesInternal === 'object' && HermesInternal !== null ? 'yes' : 'no'
+            }`}</Text>
+
             {isPlatformAndroid ? (
                 <>
                     <NewModuleButton />
@@ -29,7 +33,7 @@ const App = () => {
                         <View>
                             <OrientationLocker orientation={LANDSCAPE} />
                             <View style={{ width: 320, height: 180, backgroundColor: '#ccc' }}>
-                                <Text>Landscape video goes here</Text>
+                                <Text style={styles.text}>Landscape video goes here</Text>
                             </View>
                         </View>
                     )}
