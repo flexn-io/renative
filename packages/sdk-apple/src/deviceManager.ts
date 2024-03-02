@@ -30,8 +30,6 @@ export const getAppleDevices = async (c: RnvContext, ignoreDevices?: boolean, ig
     } = c;
 
     const connectedDevicesIds = await utilities.getConnectedDevices();
-    console.log('SSSSSSS', connectedDevicesIds);
-
     const connectedDevicesArray = await Promise.all(
         connectedDevicesIds.map(async (id: string) => {
             const info = await utilities.getDeviceInfo(id);
