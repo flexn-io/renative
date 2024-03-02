@@ -1,3 +1,4 @@
+import { isPlatformIos } from '@rnv/renative';
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -9,6 +10,20 @@ const styles = StyleSheet.create({
     },
     text: {
         color: 'black',
+    },
+    logo: {
+        width: 30,
+        height: 30,
+    },
+    header: {
+        marginTop: isPlatformIos ? 50 : 0, // TODO: remove once safe area view is implemented
+        flexDirection: 'row',
+        height: 50,
+        backgroundColor: 'white',
+        borderBottomColor: 'black',
+        borderBottomWidth: 1,
+        alignItems: 'center',
+        padding: 10,
     },
 });
 
