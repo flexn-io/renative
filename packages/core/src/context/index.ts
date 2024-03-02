@@ -111,6 +111,7 @@ Make sure all your rnv dependencies are of same version and you are executing wi
     c.paths.buildHooks.dir = path.join(c.paths.project.dir, 'buildHooks/src');
     c.paths.buildHooks.dist.dir = path.join(c.paths.project.dir, 'buildHooks/dist');
     c.paths.buildHooks.index = path.join(c.paths.buildHooks.dir, 'index.js');
+    c.paths.buildHooks.indexTs = path.join(c.paths.buildHooks.dir, 'index.ts');
     c.paths.buildHooks.dist.index = path.join(c.paths.buildHooks.dist.dir, 'index.js');
     c.paths.project.nodeModulesDir = path.join(c.paths.project.dir, 'node_modules');
     c.paths.project.srcDir = path.join(c.paths.project.dir, 'src');

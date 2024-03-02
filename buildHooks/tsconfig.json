@@ -1,0 +1,3 @@
+{
+    "extends": "@flexn/typescript-config/tsconfig.lib.node.json"
+}

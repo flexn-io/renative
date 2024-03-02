@@ -38,12 +38,17 @@ export const buildHooks = async (c: RnvContext) => {
         enableHookRebuild === true ||
         c.runtime.forceBuildHookRebuild;
 
-    if ((!fsExistsSync(c.paths.buildHooks.index) && c.program.ci) || c.runtime.skipBuildHooks) {
+    if (
+        (!fsExistsSync(c.paths.buildHooks.index) && !fsExistsSync(c.paths.buildHooks.indexTs) && c.program.ci) ||
+        c.runtime.skipBuildHooks
+    ) {
         logInfo('No build hooks found and in --ci mode. SKIPPING');
         return true;
     }
 
-    if (!fsExistsSync(c.paths.buildHooks.index)) {
+    let bhExt = 'js';
+
+    if (!fsExistsSync(c.paths.buildHooks.index) && !fsExistsSync(c.paths.buildHooks.indexTs)) {
         if (c.program.ci) {
             c.runtime.skipBuildHooks = true;
             return;
@@ -65,7 +70,10 @@ export const buildHooks = async (c: RnvContext) => {
             const templatePath = c.buildConfig.currentTemplate ? doResolve(c.buildConfig.currentTemplate) : null;
             let buildHooksSource;
             // if there is a template and has buildhooks folder, use that instead of the default
-            if (templatePath && fsExistsSync(`${templatePath}/buildHooks/src/index.js`)) {
+            if (templatePath) {
+                bhExt = fsExistsSync(`${templatePath}/buildHooks/src/index.ts`) ? 'ts' : 'js';
+            }
+            if (templatePath && fsExistsSync(`${templatePath}/buildHooks/src/index.${bhExt}`)) {
                 buildHooksSource = path.join(templatePath, 'buildHooks/src');
                 shouldBuildHook = true;
             } else {
@@ -83,7 +91,7 @@ export const buildHooks = async (c: RnvContext) => {
         try {
             logHook('buildHooks', 'Build hooks not complied. BUILDING...');
             await build({
-                entryPoints: [`${c.paths.buildHooks.dir}/index.js`],
+                entryPoints: [`${c.paths.buildHooks.dir}/index.${bhExt}`],
                 bundle: true,
                 platform: 'node',
                 logLimit: c.program.json ? 0 : 10,

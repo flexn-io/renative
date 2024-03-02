@@ -1,5 +1,5 @@
 import path from 'path';
-import { copyFileSync, fixPackageObject, fsExistsSync, readObjectSync, writeFileSync } from '@rnv/core';
+import { RnvContext, copyFileSync, fixPackageObject, fsExistsSync, readObjectSync, writeFileSync } from '@rnv/core';
 import fs from 'fs';
 
 const merge = require('deepmerge');
@@ -31,8 +31,8 @@ const VERSIONED_PACKAGES = [
     'renative',
 ];
 
-const setPackageVersions = (c, version, versionedPackages) => {
-    var v = {
+const setPackageVersions = (c: RnvContext, version: string, versionedPackages: string[]) => {
+    const v = {
         version: version,
     };
     const pkgFolder = path.join(c.paths.project.dir, 'packages');
@@ -85,7 +85,7 @@ const updateRenativeDeps = (pkgConfig, packageName, packageConfigs) => {
     }
 };
 
-export const prePublish = async (c) => {
+export const prePublish = async (c: RnvContext) => {
     const v = {
         version: c.files.project.package.version,
     };

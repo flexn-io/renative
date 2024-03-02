@@ -276,6 +276,7 @@ export type RnvContextPaths = {
         };
         dir: string;
         index: string;
+        indexTs: string;
     };
     home: {
         dir: string;
