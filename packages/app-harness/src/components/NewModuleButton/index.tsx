@@ -1,7 +1,7 @@
 import React from 'react';
 import { NativeModules, Button } from 'react-native';
 
-const NewModuleButton = () => {
+export const NewModuleButton = () => {
     const { TestNativeModule } = NativeModules;
     const callback = (error: any, result: string) => {
         if (error) {
@@ -15,5 +15,3 @@ const NewModuleButton = () => {
     };
     return <Button title="Click to invoke native module!" color="#841584" onPress={onPress} />;
 };
-
-export default NewModuleButton;
