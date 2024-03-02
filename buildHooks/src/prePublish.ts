@@ -31,7 +31,17 @@ const VERSIONED_PACKAGES = [
     'renative',
 ];
 
-const setPackageVersions = (c: RnvContext, version: string, versionedPackages: string[]) => {
+type PackageConfig = {
+    pkgName?: string;
+    rnvPath?: string;
+    pkgPath?: string;
+    pkgFile?: any;
+    rnvFile?: any;
+};
+
+type PackageConfigs = Record<string, PackageConfig>;
+
+const setPackageVersions = (c: RnvContext, version: string | undefined, versionedPackages: string[]) => {
     const v = {
         version: version,
     };
@@ -42,7 +52,13 @@ const setPackageVersions = (c: RnvContext, version: string, versionedPackages: s
     });
 };
 
-const updatePkgDeps = (pkgConfig, depKey, packageName, packageConfigs, semVer = '') => {
+const updatePkgDeps = (
+    pkgConfig: PackageConfig,
+    depKey: string,
+    packageName: string,
+    packageConfigs: PackageConfigs,
+    semVer = ''
+) => {
     const { pkgFile } = pkgConfig;
 
     if (pkgFile) {
@@ -64,7 +80,7 @@ const updatePkgDeps = (pkgConfig, depKey, packageName, packageConfigs, semVer = 
     }
 };
 
-const updateRenativeDeps = (pkgConfig, packageName, packageConfigs) => {
+const updateRenativeDeps = (pkgConfig: PackageConfig, packageName: string, packageConfigs: PackageConfigs) => {
     const { rnvFile } = pkgConfig;
 
     if (rnvFile) {
@@ -114,11 +130,11 @@ export const prePublish = async (c: RnvContext) => {
 
     const dirs = fs.readdirSync(pkgDirPath);
 
-    const packageNamesAll = [];
-    const packageConfigs = {};
+    const packageNamesAll: string[] = [];
+    const packageConfigs: PackageConfigs = {};
 
-    const parsePackages = (dirPath) => {
-        let pkgName;
+    const parsePackages = (dirPath: string) => {
+        let pkgName: string | undefined;
         let rnvPath;
         let _pkgPath;
         let rnvFile;
@@ -127,8 +143,8 @@ export const prePublish = async (c: RnvContext) => {
         if (fs.statSync(dirPath).isDirectory()) {
             _pkgPath = path.join(dirPath, 'package.json');
             if (fsExistsSync(_pkgPath)) {
-                pkgFile = readObjectSync(_pkgPath);
-                pkgName = pkgFile.name;
+                pkgFile = readObjectSync<any>(_pkgPath);
+                pkgName = pkgFile?.name;
             }
             const _rnvPath = path.join(dirPath, 'renative.json');
             if (fsExistsSync(_rnvPath)) {
@@ -136,14 +152,16 @@ export const prePublish = async (c: RnvContext) => {
                 rnvFile = readObjectSync(rnvPath);
             }
         }
-        packageConfigs[pkgName] = {
-            pkgName,
-            rnvPath,
-            pkgPath: _pkgPath,
-            pkgFile,
-            rnvFile,
-        };
-        packageNamesAll.push(pkgName);
+        if (pkgName) {
+            packageConfigs[pkgName] = {
+                pkgName,
+                rnvPath,
+                pkgPath: _pkgPath,
+                pkgFile,
+                rnvFile,
+            };
+            packageNamesAll.push(pkgName);
+        }
     };
 
     parsePackages(c.paths.project.dir);
@@ -170,7 +188,7 @@ export const prePublish = async (c: RnvContext) => {
     return true;
 };
 
-const _updateJson = (pPath, updateObj) => {
+const _updateJson = (pPath: string | undefined, updateObj: object) => {
     const pObj = readObjectSync(pPath);
 
     if (!pObj) {
