@@ -91,7 +91,7 @@ export const buildHooks = async (c: RnvContext) => {
             logHook('buildHooks', 'Build hooks not complied. BUILDING...');
             if (useTsc) {
                 await executeAsync(
-                    `npx tsc  -b ${c.paths.buildHooks.src.dir}/../tsconfig.json`
+                    `npx tsc  -b ${c.paths.buildHooks.tsconfig}`
                     // -esModuleInterop --resolveJsonModule --skipLibCheck --forceConsistentCasingInFileNames --noEmit --strict --noImplicitAny --strictNullChecks --strictFunctionTypes --strictBindCallApply --strictPropertyInitialization --noImplicitThis --alwaysStrict --noUnusedLocals --noUnusedParameters --noImplicitReturns --noFallthroughCasesInSwitch --noUncheckedIndexedAccess --noImplicitOverride --noPropertyAccessFromIndexSignature --noUncheckedIndexedAccess`
                 );
                 // await executeAsync(

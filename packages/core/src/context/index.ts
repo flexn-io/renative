@@ -114,6 +114,7 @@ Make sure all your rnv dependencies are of same version and you are executing wi
     c.paths.buildHooks.src.indexTs = path.join(c.paths.buildHooks.src.dir, 'index.ts');
     c.paths.buildHooks.dist.index = path.join(c.paths.buildHooks.dist.dir, 'index.js');
     c.paths.buildHooks.tsconfig = path.join(c.paths.buildHooks.dir, 'tsconfig.json');
+    // c.paths.buildHooks.tsconfig = path.join(__dirname, '../../supportFiles/tsconfig.hooks.json');
     c.paths.project.nodeModulesDir = path.join(c.paths.project.dir, 'node_modules');
     c.paths.project.srcDir = path.join(c.paths.project.dir, 'src');
     c.paths.project.appConfigsDir = path.join(c.paths.project.dir, 'appConfigs');

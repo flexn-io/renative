@@ -13,6 +13,7 @@
     "files": [
         "LICENSE",
         "jsonSchema",
+        "tsconfig.hooks.json",
         "lib"
     ],
     "main": "lib/index.js",
