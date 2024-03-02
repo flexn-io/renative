@@ -6,11 +6,11 @@ import {
     executeOrSkipTask,
     shouldSkipTask,
     TASK_PACKAGE,
-    TASK_EJECT,
     RnvTask,
 } from '@rnv/core';
 import { ejectGradleProject } from '@rnv/sdk-android';
 import { ejectXcodeProject } from '@rnv/sdk-apple';
+import { TASK_EJECT } from './constants';
 
 export const taskRnvEject: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvEject');

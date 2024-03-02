@@ -6,12 +6,11 @@ import {
     shouldSkipTask,
     executeAsync,
     logError,
-    TASK_PROJECT_CONFIGURE,
-    TASK_CRYPTO_INSTALL_CERTS,
     getFileListSync,
     logWarning,
     RnvTask,
 } from '@rnv/core';
+import { TASK_CRYPTO_INSTALL_CERTS, TASK_PROJECT_CONFIGURE } from './constants';
 
 export const taskRnvCryptoInstallCerts: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvCryptoInstallCerts');
