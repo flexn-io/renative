@@ -155,6 +155,8 @@ RNV will create it for you, make sure you add whatever you want encrypted in it 
 
 ${getEnvExportCmd(envVar, 'REPLACE_WITH_ENV_VARIABLE')}
 
+Make sure you take into account special characters that might need to be escaped
+
 `);
         }
         if (keyGenerated) {
@@ -162,7 +164,9 @@ ${getEnvExportCmd(envVar, 'REPLACE_WITH_ENV_VARIABLE')}
                 key
             )}. Make sure you keep it safe! Pass it with --key on decryption or set it as following env variable:
 
-${getEnvExportCmd(envVar, key)}
+${getEnvExportCmd(envVar, key)} 
+
+Make sure you take into account special characters that might need to be escaped
 
 `);
             c.process.env[envVar] = key;

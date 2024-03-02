@@ -109,6 +109,7 @@ export const taskRnvCryptoDecrypt: RnvTaskFn = async (c, parentTask, originTask)
 
 ${getEnvExportCmd(envVar, 'REPLACE_WITH_ENV_VARIABLE')}
 
+Make sure you take into account special characters that might need to be escaped.
 `);
         }
         if (!fsExistsSync(source)) {
@@ -153,6 +154,7 @@ ${chalk().green('SUGGESTION:')}
 
 ${chalk().yellow('STEP 1:')}
 check if your ENV VAR is correct: ${getEnvExportCmd(envVar, '***********')}
+Make sure you take into account special characters that might need to be escaped
 or if someone did not encrypt ${chalk().white(source)} with a different key
 
 ${chalk().yellow('STEP 2:')}
