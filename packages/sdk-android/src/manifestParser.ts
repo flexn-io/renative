@@ -240,6 +240,7 @@ export const parseAndroidManifestSync = (c: Context) => {
                 _mergeNodeChildren(baseManifestFile, manifestObj.children);
             }
         });
+        //TODO: Should be mark as deprecated
 
         // appConfigs/base/plugins.json PLUGIN CONFIG OVERRIDES
         parsePlugins(c, platform, (_plugin, pluginPlat) => {
