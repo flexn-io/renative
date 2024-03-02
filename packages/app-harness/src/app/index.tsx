@@ -47,15 +47,15 @@ const App = () => {
                         padding: 10,
                     }}
                 >
-                    <TestCase>
+                    <TestCase id={1} title="Hermes support ">
                         <Text style={styles.text}>{`hermes: ${
                             typeof HermesInternal === 'object' && HermesInternal !== null ? 'yes' : 'no'
                         }`}</Text>
                     </TestCase>
-                    <TestCase>
+                    <TestCase id={2} title="Native call">
                         <NewModuleButton />
                     </TestCase>
-                    <TestCase>
+                    <TestCase id={3} title="Orientation support ">
                         <OrientationLocker
                             orientation={PORTRAIT}
                             onChange={(orientation) => console.log('onChange', orientation)}
@@ -71,15 +71,18 @@ const App = () => {
                             </View>
                         )}
                     </TestCase>
-                    <TestCase>
+                    <TestCase id={4} title="Permissions">
                         <Button onPress={requestPermissions} title="Request permissions" />
+                    </TestCase>
+                    <TestCase id={5} title="Image Support">
+                        <Image source={ICON_LOGO} style={{ width: 100, height: 100 }} />
                     </TestCase>
                 </ScrollView>
             </View>
             <View
                 style={{
                     backgroundColor: '#EEEEEE',
-                    height: 200,
+                    height: 100,
                     width: '100%',
                     borderTopWidth: 1,
                     borderTopColor: 'black',

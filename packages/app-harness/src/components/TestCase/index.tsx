@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native';
 
-export const TestCase = ({ children }) => {
+export const TestCase = ({ children, title, id }) => {
     return (
         <View
             style={{
@@ -11,7 +11,7 @@ export const TestCase = ({ children }) => {
             }}
         >
             <View style={{ backgroundColor: '#111', height: 30, padding: 5, marginBottom: 10 }}>
-                <Text style={{ color: 'white' }}>Use Case: 123</Text>
+                <Text style={{ color: 'white' }}>{`#${id}: ${title}`}</Text>
             </View>
             <View style={{ flex: 1, padding: 10, minHeight: 50 }}>{children}</View>
         </View>
