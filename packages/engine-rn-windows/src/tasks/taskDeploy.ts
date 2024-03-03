@@ -13,7 +13,7 @@ import { SDKWindows } from '../sdks';
 // TODO Implement export windows app (currently it only seems to be available through VS Studio itself...)
 const { ruWindowsProject } = SDKWindows;
 
-export const taskRnvDeploy: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvDeploy: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvDeploy', `parent:${parentTask}`);
 
     const { platform } = c;

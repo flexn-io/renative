@@ -78,7 +78,7 @@ const _configureHostedIfRequired = async (c: RnvContext) => {
     }
 };
 
-export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { port } = c.runtime;
     const { target } = c.runtime;

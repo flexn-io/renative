@@ -28,7 +28,7 @@ const _linkPackage = (c: RnvContext, key: string, folder: string) => {
     }
 };
 
-export const taskRnvLink: RnvTaskFn = async (c, _parentTask, _originalTask) => {
+const taskRnvLink: RnvTaskFn = async (c, _parentTask, _originalTask) => {
     logTask('taskRnvLink');
 
     RNV_PACKAGES.forEach((pkg) => {

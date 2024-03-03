@@ -15,7 +15,7 @@ import { configureKaiOSProject } from '@rnv/sdk-kaios';
 import { configureWebOSProject } from '@rnv/sdk-webos';
 import { configureTizenProject } from '@rnv/sdk-tizen';
 
-export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure');
 
     await executeTask(c, TaskKey.platformConfigure, TaskKey.configure, originTask);

@@ -11,7 +11,7 @@ import {
 import { ejectGradleProject } from '@rnv/sdk-android';
 import { ejectXcodeProject } from '@rnv/sdk-apple';
 
-export const taskRnvEject: RnvTaskFn = async (c, _parentTask, originTask) => {
+const taskRnvEject: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvEject');
     const { platform } = c;
 

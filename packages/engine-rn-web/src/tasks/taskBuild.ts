@@ -13,7 +13,7 @@ import { buildTizenProject } from '@rnv/sdk-tizen';
 import { buildWebOSProject } from '@rnv/sdk-webos';
 import { buildKaiOSProject } from '@rnv/sdk-kaios';
 
-export const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvBuild', `parent:${parentTask}`);
 
     const { platform } = c;

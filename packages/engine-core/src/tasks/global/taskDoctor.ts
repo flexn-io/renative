@@ -22,7 +22,7 @@ const configTargets = [
     'appConfig.configs',
 ];
 
-export const taskRnvDoctor: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvDoctor: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvDoctor');
 
     await configureRuntimeDefaults(c);

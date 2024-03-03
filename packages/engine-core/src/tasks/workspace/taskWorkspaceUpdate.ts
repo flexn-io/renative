@@ -1,6 +1,6 @@
 import { logTask, executeTask, PARAMS, RnvTaskFn, RnvTask, TaskKey } from '@rnv/core';
 
-export const taskRnvWorkspaceUpdate: RnvTaskFn = async (c, _parentTask, originTask) => {
+const taskRnvWorkspaceUpdate: RnvTaskFn = async (c, _parentTask, originTask) => {
     // TODO: taskRnvWorkspaceUpdate
     logTask('taskRnvWorkspaceUpdate');
 

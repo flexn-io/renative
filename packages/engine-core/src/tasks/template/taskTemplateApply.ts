@@ -10,7 +10,7 @@ import {
     TaskKey,
 } from '@rnv/core';
 
-export const taskRnvTemplateApply: RnvTaskFn = async (c, _parentTask, originTask) => {
+const taskRnvTemplateApply: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvTemplateApply', `template: ${c.program.template}`);
 
     await executeTask(c, TaskKey.projectConfigure, TaskKey.templateApply, originTask);

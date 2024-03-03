@@ -34,7 +34,7 @@ export const _addTemplate = (c: RnvContext, template: string) => {
     _writeObjectSync(c, c.paths.project.config, cnf);
 };
 
-export const taskRnvTemplateAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
+const taskRnvTemplateAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvTemplateAdd');
 
     await executeTask(c, TaskKey.projectConfigure, TaskKey.templateAdd, originTask);

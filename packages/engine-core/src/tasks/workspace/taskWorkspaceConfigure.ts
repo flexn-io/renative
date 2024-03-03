@@ -17,7 +17,7 @@ import {
     ConfigName,
 } from '@rnv/core';
 
-export const taskRnvWorkspaceConfigure: RnvTaskFn = async (c) => {
+const taskRnvWorkspaceConfigure: RnvTaskFn = async (c) => {
     logTask('taskRnvWorkspaceConfigure');
 
     // Check globalConfig Dir

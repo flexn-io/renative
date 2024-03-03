@@ -12,7 +12,7 @@ import {
 import { packageAndroid } from '@rnv/sdk-android';
 import { packageBundleForXcode } from '@rnv/sdk-apple';
 
-export const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvPackage', `parent:${parentTask}`);
     const { platform } = c;
 

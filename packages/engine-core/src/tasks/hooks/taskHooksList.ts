@@ -10,7 +10,7 @@ import {
     TaskKey,
 } from '@rnv/core';
 
-export const taskRnvHooksList: RnvTaskFn = async (c, _parentTask, originTask) => {
+const taskRnvHooksList: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvHooksList');
 
     await executeTask(c, TaskKey.projectConfigure, TaskKey.hooksList, originTask);

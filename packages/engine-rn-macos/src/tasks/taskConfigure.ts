@@ -11,7 +11,7 @@ import {
 } from '@rnv/core';
 import { configureXcodeProject } from '@rnv/sdk-apple';
 
-export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure');
 
     await executeTask(c, TaskKey.platformConfigure, TaskKey.configure, originTask);

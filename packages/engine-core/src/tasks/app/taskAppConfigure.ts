@@ -146,7 +146,7 @@ const _setAppId = (c: RnvContext, appId: string) => {
     c.runtime.appDir = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}`);
 };
 
-export const taskRnvAppConfigure = async (c: RnvContext) => {
+const taskRnvAppConfigure = async (c: RnvContext) => {
     logTask('taskRnvAppConfigure');
 
     c.paths.project.appConfigsDirNames = listAppConfigsFoldersSync(c, true);

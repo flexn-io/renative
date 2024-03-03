@@ -1,6 +1,6 @@
 import { logToSummary, logTask, getTemplateOptions, executeTask, PARAMS, RnvTaskFn, RnvTask, TaskKey } from '@rnv/core';
 
-export const taskRnvTemplateList: RnvTaskFn = async (c, _parentTask, originTask) => {
+const taskRnvTemplateList: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvTemplateList');
 
     if (c.paths.project.configExists) {

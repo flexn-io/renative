@@ -32,7 +32,7 @@ const _unlinkPackage = (c: RnvContext, key: string) => {
     }
 };
 
-export const taskRnvUnlink: RnvTaskFn = async (c) => {
+const taskRnvUnlink: RnvTaskFn = async (c) => {
     logTask('taskRnvUnlink');
 
     RNV_PACKAGES.forEach((pkg) => {

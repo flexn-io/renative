@@ -19,7 +19,7 @@ import {
 import { NpmPackageFile } from '@rnv/core/lib/configs/types';
 import { ConfigFileProject } from '@rnv/core/lib/schema/configFiles/types';
 
-export const taskRnvProjectUpgrade: RnvTaskFn = async (c, _parentTask, originTask) => {
+const taskRnvProjectUpgrade: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvProjectUpgrade');
     const upgradedPaths = [];
     if (fsExistsSync(c.paths.project.config)) {

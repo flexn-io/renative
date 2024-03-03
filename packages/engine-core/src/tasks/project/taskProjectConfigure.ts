@@ -52,7 +52,7 @@ const configurePlatformBuilds = async (c: RnvContext) => {
     }
 };
 
-export const taskRnvProjectConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvProjectConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvProjectConfigure');
 
     await configurePlatformBuilds(c);

@@ -10,7 +10,7 @@ import {
 } from '@rnv/core';
 import Docker from '../docker';
 
-export const taskRnvDockerDeploy: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvDockerDeploy: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvDockerDeploy', `parent:${parentTask}`);
 
     if (c.program.only) {

@@ -48,7 +48,7 @@ const _unzipAndCopy = async (
     logSuccess(`Files succesfully extracted into ${destFolder}`);
 };
 
-export const taskRnvCryptoDecrypt: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvCryptoDecrypt: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvCryptoDecrypt');
 
     if (!parentTask) {

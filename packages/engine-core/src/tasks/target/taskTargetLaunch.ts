@@ -16,7 +16,7 @@ import { launchTizenSimulator } from '@rnv/sdk-tizen';
 import { launchWebOSimulator } from '@rnv/sdk-webos';
 import { launchKaiOSSimulator } from '@rnv/sdk-kaios';
 
-export const taskRnvTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvTargetLaunch');
 
     await isPlatformSupported(c, true);

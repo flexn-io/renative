@@ -5,7 +5,7 @@ import { listTizenTargets } from '@rnv/sdk-tizen';
 import { listWebOSTargets } from '@rnv/sdk-webos';
 import { checkAndConfigureSdks, checkSdk } from '../../common';
 
-export const taskRnvTargetList: RnvTaskFn = async (c, _parentTask, originTask) => {
+const taskRnvTargetList: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvTargetList');
 
     await isPlatformSupported(c, true);

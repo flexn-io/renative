@@ -1,6 +1,6 @@
 import { chalk, logTask, logToSummary, PARAMS, RnvTask, RnvTaskFn, TaskKey, writeFileSync } from '@rnv/core';
 
-export const taskRnvTelemetryEnable: RnvTaskFn = async (c) => {
+const taskRnvTelemetryEnable: RnvTaskFn = async (c) => {
     logTask('taskRnvTelemetryEnable');
 
     const { config } = c.files.defaultWorkspace;

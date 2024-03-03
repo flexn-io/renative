@@ -4,7 +4,7 @@ import { runAppleLog } from '@rnv/sdk-apple';
 
 import {} from '@rnv/sdk-android';
 
-export const taskRnvLog: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvLog: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvLog', `parent:${parentTask}`);
 
     await executeTask(c, TaskKey.workspaceConfigure, TaskKey.projectConfigure, originTask);

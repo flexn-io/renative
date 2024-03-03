@@ -10,7 +10,7 @@ import {
 } from '@rnv/core';
 import { exportXcodeProject } from '@rnv/sdk-apple';
 
-export const taskRnvExport: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvExport: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvExport', `parent:${parentTask}`);
     const { platform } = c;
 

@@ -173,7 +173,7 @@ Make sure you take into account special characters that might need to be escaped
     }
 };
 
-export const taskRnvCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask) => {
+const taskRnvCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvCryptoEncrypt');
 
     await executeTask(c, TaskKey.projectConfigure, TaskKey.cryptoEncrypt, originTask);

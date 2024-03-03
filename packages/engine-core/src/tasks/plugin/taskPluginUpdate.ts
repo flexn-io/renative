@@ -11,7 +11,7 @@ import {
     TaskKey,
 } from '@rnv/core';
 
-export const taskRnvPluginUpdate: RnvTaskFn = async (c, _parentTask, originTask) => {
+const taskRnvPluginUpdate: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvPluginUpdate');
 
     await executeTask(c, TaskKey.projectConfigure, TaskKey.pluginUpdate, originTask);

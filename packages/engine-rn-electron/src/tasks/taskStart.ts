@@ -12,7 +12,7 @@ import {
 } from '@rnv/core';
 import { openBrowser, waitForHost } from '@rnv/sdk-utils';
 
-export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { port } = c.runtime;
     const { hosted } = c.program;

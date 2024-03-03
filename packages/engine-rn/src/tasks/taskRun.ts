@@ -15,7 +15,7 @@ import { packageAndroid, runAndroid, getAndroidDeviceToRunOn } from '@rnv/sdk-an
 import { runXcodeProject, getIosDeviceToRunOn } from '@rnv/sdk-apple';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '@rnv/sdk-react-native';
 
-export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { port } = c.runtime;
     const { hosted } = c.program;
@@ -67,7 +67,7 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     }
 };
 
-export const taskRnvRunHelp = async () => {
+const taskRnvRunHelp = async () => {
     logRaw(`
 More info at: https://renative.org/docs/api-cli
 `);

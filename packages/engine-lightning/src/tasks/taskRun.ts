@@ -1,7 +1,7 @@
 import { RnvTaskFn, logErrorPlatform, logTask, logRaw, PARAMS, executeOrSkipTask, RnvTask, TaskKey } from '@rnv/core';
 import { runLightningProject } from '../sdks/sdk-lightning';
 
-export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { port } = c.runtime;
     const { target } = c.runtime;
@@ -19,7 +19,7 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     }
 };
 
-export const taskRnvRunHelp = async () => {
+const taskRnvRunHelp = async () => {
     logRaw(`
 More info at: https://renative.org/docs/api-cli
 `);

@@ -1,7 +1,7 @@
 import { RnvTaskFn, logErrorPlatform, logTask, PARAMS, executeTask, shouldSkipTask, RnvTask, TaskKey } from '@rnv/core';
 import { configureNextIfRequired } from '../sdk';
 
-export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure');
 
     await executeTask(c, TaskKey.platformConfigure, TaskKey.configure, originTask);

@@ -11,7 +11,7 @@ import {
 import { checkAndConfigureSdks, checkSdk } from '../../common';
 import { isBuildSchemeSupported } from '../../buildSchemes';
 
-export const taskRnvConfigureSoft: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvConfigureSoft: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigureSoft');
 
     await configureRuntimeDefaults(c);

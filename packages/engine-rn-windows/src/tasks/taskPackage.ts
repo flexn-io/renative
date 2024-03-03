@@ -13,7 +13,7 @@ import { SDKWindows } from '../sdks';
 
 const { packageBundleForWindows } = SDKWindows;
 
-export const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvPackage', `parent:${parentTask}`);
     const { platform } = c;
 

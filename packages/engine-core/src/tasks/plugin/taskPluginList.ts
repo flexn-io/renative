@@ -1,7 +1,7 @@
 import { logTask, logToSummary, executeTask, PARAMS, RnvTaskFn, RnvTask, TaskKey } from '@rnv/core';
 import { getPluginList } from '../../plugins';
 
-export const taskRnvPluginList: RnvTaskFn = async (c, _parentTask, originTask) => {
+const taskRnvPluginList: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvPluginList');
 
     await executeTask(c, TaskKey.projectConfigure, TaskKey.pluginList, originTask);

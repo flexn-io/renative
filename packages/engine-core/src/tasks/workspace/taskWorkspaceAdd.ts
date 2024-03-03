@@ -11,7 +11,7 @@ import {
     TaskKey,
 } from '@rnv/core';
 
-export const taskRnvWorkspaceAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
+const taskRnvWorkspaceAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvWorkspaceAdd');
 
     await executeTask(c, TaskKey.projectConfigure, TaskKey.workspaceAdd, originTask);

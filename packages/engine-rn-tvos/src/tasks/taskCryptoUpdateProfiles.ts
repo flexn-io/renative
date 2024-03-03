@@ -27,7 +27,7 @@ const _updateProfiles = (c: RnvContext) => {
     return acList.reduce((previousPromise, v) => previousPromise.then(() => _updateProfile(c, v)), Promise.resolve());
 };
 
-export const taskRnvCryptoUpdateProfiles: RnvTaskFn = async (c, _parentTask, originTask) => {
+const taskRnvCryptoUpdateProfiles: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvCryptoUpdateProfiles');
 
     await executeTask(c, TaskKey.projectConfigure, TaskKey.cryptoUpdateProfiles, originTask);

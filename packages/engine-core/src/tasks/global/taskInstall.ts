@@ -9,7 +9,7 @@ import {
     TaskKey,
 } from '@rnv/core';
 
-export const taskRnvInstall: RnvTaskFn = async (c, parentTask, _) => {
+const taskRnvInstall: RnvTaskFn = async (c, parentTask, _) => {
     logTask('taskRnvInstall', `requiresInstall:${!!c._requiresNpmInstall}:${!c.runtime.skipPackageUpdate}`);
 
     if (c.program.only && !!parentTask) return true;

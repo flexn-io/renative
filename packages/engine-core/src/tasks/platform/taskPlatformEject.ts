@@ -16,7 +16,7 @@ import {
     TaskKey,
 } from '@rnv/core';
 
-export const taskRnvPlatformEject: RnvTaskFn = async (c, _parentTask, originTask) => {
+const taskRnvPlatformEject: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvPlatformEject');
 
     await executeTask(c, TaskKey.projectConfigure, TaskKey.platformEject, originTask);

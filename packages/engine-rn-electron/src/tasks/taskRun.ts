@@ -10,7 +10,7 @@ import {
 } from '@rnv/core';
 import { runElectron } from '../sdk';
 
-export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { port } = c.runtime;
     const { target } = c.runtime;

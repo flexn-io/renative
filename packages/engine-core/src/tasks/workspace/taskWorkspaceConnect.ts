@@ -10,7 +10,7 @@ import {
     TaskKey,
 } from '@rnv/core';
 
-export const taskRnvWorkspaceConnect: RnvTaskFn = async (c, _parentTask, originTask) => {
+const taskRnvWorkspaceConnect: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvWorkspaceConnect');
 
     if (!c.paths.project.configExists) {

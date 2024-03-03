@@ -19,7 +19,7 @@ BUNDLER_PLATFORMS['tvos'] = 'ios';
 BUNDLER_PLATFORMS['androidtv'] = 'android';
 BUNDLER_PLATFORMS['firetv'] = 'android';
 
-export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { hosted } = c.program;
 

@@ -10,7 +10,7 @@ import {
 } from '@rnv/core';
 import { runWebNext } from '../sdk';
 
-export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     logTask('taskRnvRun', `parent:${parentTask}`);
 

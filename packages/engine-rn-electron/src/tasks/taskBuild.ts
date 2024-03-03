@@ -10,7 +10,7 @@ import {
 } from '@rnv/core';
 import { buildElectron } from '../sdk';
 
-export const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvBuild', `parent:${parentTask}`);
     const { platform } = c;
 

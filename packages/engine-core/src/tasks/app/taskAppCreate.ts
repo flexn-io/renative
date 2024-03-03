@@ -19,7 +19,7 @@ import {
     TaskKey,
 } from '@rnv/core';
 
-export const taskRnvAppCreate: RnvTaskFn = async (c) => {
+const taskRnvAppCreate: RnvTaskFn = async (c) => {
     logTask('taskRnvAppCreate');
 
     await configureRuntimeDefaults(c);

@@ -12,7 +12,7 @@ import {
     TaskKey,
 } from '@rnv/core';
 
-export const taskRnvHooksRun: RnvTaskFn = async (c, _parentTask, originTask) => {
+const taskRnvHooksRun: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvHooksRun');
 
     if (fsExistsSync(c.paths.project.config)) {

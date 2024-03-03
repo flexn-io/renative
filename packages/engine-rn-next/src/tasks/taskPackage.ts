@@ -1,6 +1,6 @@
 import { RnvTaskFn, logTask, PARAMS, executeOrSkipTask, RnvTask, TaskKey } from '@rnv/core';
 
-export const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvPackage', `parent:${parentTask}`);
 
     await executeOrSkipTask(c, TaskKey.configure, TaskKey.package, originTask);

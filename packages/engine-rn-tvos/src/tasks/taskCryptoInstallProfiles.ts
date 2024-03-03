@@ -16,7 +16,7 @@ import {
     TaskKey,
 } from '@rnv/core';
 
-export const taskRnvCryptoInstallProfiles: RnvTaskFn = async (c, _parentTask, originTask) => {
+const taskRnvCryptoInstallProfiles: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvCryptoInstallProfiles');
 
     await executeTask(c, TaskKey.projectConfigure, TaskKey.cryptoInstallProfiles, originTask);

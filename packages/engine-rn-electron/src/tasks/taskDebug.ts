@@ -1,6 +1,6 @@
 import { RnvTaskFn, logErrorPlatform, logTask, PARAMS, RnvTask, TaskKey } from '@rnv/core';
 
-export const taskRnvDebug: RnvTaskFn = async (c) => {
+const taskRnvDebug: RnvTaskFn = async (c) => {
     logTask('taskRnvDebug');
     const { platform } = c;
 

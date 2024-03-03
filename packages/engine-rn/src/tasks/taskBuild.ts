@@ -11,7 +11,7 @@ import {
 import { buildReactNativeAndroid } from '@rnv/sdk-react-native';
 import { buildXcodeProject } from '@rnv/sdk-apple';
 
-export const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvBuild');
     const { platform } = c;
 

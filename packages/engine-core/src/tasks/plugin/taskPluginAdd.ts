@@ -17,7 +17,7 @@ import {
 import { getPluginList } from '../../plugins';
 
 /* eslint-disable no-await-in-loop */
-export const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
+const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvPluginAdd');
 
     await executeTask(c, TaskKey.projectConfigure, TaskKey.pluginAdd, originTask);

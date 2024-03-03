@@ -1,6 +1,6 @@
 import { RnvContext, logTask, PARAMS, logSuccess, RnvTask } from '@rnv/core';
 
-export const taskRnvStarterHello = async (_c: RnvContext) => {
+const taskRnvStarterHello = async (_c: RnvContext) => {
     logTask('taskRnvStarterHello');
 
     logSuccess('Hello from Integration Starter!');

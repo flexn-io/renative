@@ -19,7 +19,7 @@ import {
 import { checkAndConfigureSdks, checkSdk } from '../../common';
 import { isBuildSchemeSupported } from '../../buildSchemes';
 
-export const taskRnvPlatformConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvPlatformConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvPlatformConfigure', '');
 
     await executeTask(c, TaskKey.projectConfigure, TaskKey.platformConfigure, originTask);

@@ -18,7 +18,7 @@ const BUNDLER_PLATFORMS: Partial<Record<PlatformKey, PlatformKey>> = {};
 BUNDLER_PLATFORMS['windows'] = 'windows';
 BUNDLER_PLATFORMS['xbox'] = 'windows';
 
-export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { hosted } = c.program;
 

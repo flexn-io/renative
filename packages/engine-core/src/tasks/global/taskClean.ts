@@ -43,7 +43,7 @@ function clearWindowsCacheFiles() {
     return true;
 }
 
-export const taskRnvClean: RnvTaskFn = async (c) => {
+const taskRnvClean: RnvTaskFn = async (c) => {
     logTask('taskRnvClean');
     const skipQuestion = c.program.ci;
     const pathsToRemove = [];

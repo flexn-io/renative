@@ -14,7 +14,7 @@ import { SDKWindows } from '../sdks';
 
 const { configureWindowsProject } = SDKWindows;
 
-export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure');
 
     await executeTask(c, TaskKey.platformConfigure, TaskKey.configure, originTask);

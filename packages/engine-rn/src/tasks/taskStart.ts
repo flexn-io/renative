@@ -11,7 +11,7 @@ import {
 } from '@rnv/core';
 import { startReactNative } from '@rnv/sdk-react-native';
 
-export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { hosted } = c.program;
 

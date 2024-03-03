@@ -9,7 +9,7 @@ import {
     TaskKey,
 } from '@rnv/core';
 
-export const taskRnvDebug: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvDebug: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvDebug', `parent:${parentTask}`);
 
     if (shouldSkipTask(c, TaskKey.debug, originTask)) return true;

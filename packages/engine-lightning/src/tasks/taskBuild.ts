@@ -10,7 +10,7 @@ import {
 } from '@rnv/core';
 import { buildLightningProject } from '../sdks/sdk-lightning';
 
-export const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvBuild', `parent:${parentTask}`);
     const { platform } = c;
     c.runtime.forceBundleAssets = true;

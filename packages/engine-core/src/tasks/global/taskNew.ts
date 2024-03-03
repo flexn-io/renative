@@ -234,7 +234,7 @@ const interactiveQuestion = async (
     }
 };
 
-export const taskRnvNew = async (c: RnvContext) => {
+const taskRnvNew = async (c: RnvContext) => {
     logTask('taskRnvNew');
     const {
         ci,

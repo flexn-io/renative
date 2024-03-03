@@ -1,6 +1,6 @@
 import { logTask, PARAMS, RnvTaskFn, executeTask, SUPPORTED_PLATFORMS, RnvTask, TaskKey } from '@rnv/core';
 
-export const taskRnvConfig: RnvTaskFn = async (c, _, originTask) => {
+const taskRnvConfig: RnvTaskFn = async (c, _, originTask) => {
     logTask('taskRnvConfig');
 
     await executeTask(c, TaskKey.configureSoft, TaskKey.config, originTask);

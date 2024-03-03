@@ -15,7 +15,7 @@ import {
 import { checkPortInUse } from '@rnv/sdk-utils';
 import killPort from 'kill-port';
 
-export const taskRnvKill: RnvTaskFn = async (c, _parentTask, originTask) => {
+const taskRnvKill: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvKill');
 
     const usedPorts: RnvContext['runtime']['supportedPlatforms'] = [];

@@ -17,7 +17,7 @@ const BUNDLER_PLATFORMS: Partial<Record<PlatformKey, PlatformKey>> = {};
 
 BUNDLER_PLATFORMS['macos'] = 'macos';
 
-export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { hosted } = c.program;
 

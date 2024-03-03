@@ -10,7 +10,7 @@ import {
 } from '@rnv/core';
 import { ruWindowsProject } from '../sdks/sdk-windows';
 
-export const taskRnvBuild: RnvTaskFn = async (c, _parentTask, originTask) => {
+const taskRnvBuild: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvBuild');
     const { platform } = c;
 

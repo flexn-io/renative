@@ -10,7 +10,7 @@ import {
     TaskKey,
 } from '@rnv/core';
 
-export const taskRnvSwitch: RnvTaskFn = async (c, _parentTask, originTask) => {
+const taskRnvSwitch: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvSwitch');
 
     c.program.appConfigID = true;
