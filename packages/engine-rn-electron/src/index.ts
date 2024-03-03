@@ -1,14 +1,14 @@
 import { generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
 //@ts-ignore
 import CNF from '../renative.engine.json';
-import taskRnvBuild from './tasks/task.rnv.build';
-import taskRnvConfigure from './tasks/task.rnv.configure';
-import taskRnvDebug from './tasks/task.rnv.debug';
-import taskRnvDeploy from './tasks/task.rnv.deploy';
-import taskRnvExport from './tasks/task.rnv.export';
-import taskRnvPackage from './tasks/task.rnv.package';
-import taskRnvRun from './tasks/task.rnv.run';
-import taskRnvStart from './tasks/task.rnv.start';
+import taskRnvBuild from './tasks/taskBuild';
+import taskRnvConfigure from './tasks/taskConfigure';
+import taskRnvDebug from './tasks/taskDebug';
+import taskRnvDeploy from './tasks/taskDeploy';
+import taskRnvExport from './tasks/taskExport';
+import taskRnvPackage from './tasks/taskPackage';
+import taskRnvRun from './tasks/taskRun';
+import taskRnvStart from './tasks/taskStart';
 import { withRNVBabel } from './adapter';
 
 const Engine: RnvEngine = {

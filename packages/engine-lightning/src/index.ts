@@ -1,14 +1,9 @@
 import { RnvEngine, generateEngineTasks, generateEngineExtensions } from '@rnv/core';
 //@ts-ignore
 import CNF from '../renative.engine.json';
-// import taskRnvPackage from './tasks/task.rnv.package';
-import taskRnvBuild from './tasks/task.rnv.build';
-import taskRnvConfigure from './tasks/task.rnv.configure';
-import taskRnvRun from './tasks/task.rnv.run';
-// import taskRnvStart from './tasks/task.rnv.start';
-// import taskRnvExport from './tasks/task.rnv.export';
-// import taskRnvDeploy from './tasks/task.rnv.deploy';
-// import taskRnvDebug from './tasks/task.rnv.debug';
+import taskRnvBuild from './tasks/taskBuild';
+import taskRnvConfigure from './tasks/taskConfigure';
+import taskRnvRun from './tasks/taskRun';
 
 const Engine: RnvEngine = {
     // initializeRuntimeConfig: (c) => Context.initializeConfig(c),

@@ -1,4 +1,4 @@
-import taskRnvStarterHello from './tasks/task.rnv.starter.hello';
+import taskRnvStarterHello from './tasks/taskStarterHello';
 //@ts-ignore
 import config from '../renative.integration.json';
 

@@ -1,5 +1,5 @@
-import taskRnvDockerDeploy from './tasks/task.rnv.docker.deploy';
-import taskRnvDockerExport from './tasks/task.rnv.docker.export';
+import taskRnvDockerDeploy from './tasks/taskDockerDeploy';
+import taskRnvDockerExport from './tasks/taskDockerExport';
 //@ts-ignore
 import config from '../renative.integration.json';
 
