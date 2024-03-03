@@ -1,4 +1,4 @@
-import { TaskKey } from '../enums/taskKey';
+import { TaskKey } from '../enums/taskName';
 import type { RnvTaskParameter } from './types';
 
 export const DEFAULT_TASK_DESCRIPTIONS: Record<string, string> = {
