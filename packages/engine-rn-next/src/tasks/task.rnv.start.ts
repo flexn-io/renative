@@ -3,12 +3,11 @@ import {
     logErrorPlatform,
     logTask,
     logError,
-    TaskKey.start,
-    TaskKey.configure,
     PARAMS,
     executeTask,
     shouldSkipTask,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import { runWebNext } from '../sdk';
 import { openBrowser, waitForHost } from '@rnv/sdk-utils';

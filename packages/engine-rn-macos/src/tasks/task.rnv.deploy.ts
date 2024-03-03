@@ -1,13 +1,4 @@
-import {
-    RnvTaskFn,
-    logTask,
-    TaskKey.export,
-    TaskKey.deploy,
-    PARAMS,
-    executeOrSkipTask,
-    shouldSkipTask,
-    RnvTask,
-} from '@rnv/core';
+import { RnvTaskFn, logTask, PARAMS, executeOrSkipTask, shouldSkipTask, RnvTask, TaskKey } from '@rnv/core';
 
 export const taskRnvDeploy: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvDeploy', `parent:${parentTask}`);

@@ -3,11 +3,10 @@ import {
     logTask,
     PARAMS,
     RnvTaskFn,
-    TaskKey.build,
-    TaskKey.export,
     executeOrSkipTask,
     shouldSkipTask,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import { SDKWindows } from '../sdks';
 

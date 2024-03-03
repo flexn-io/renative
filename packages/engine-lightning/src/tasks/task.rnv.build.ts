@@ -2,12 +2,11 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    TaskKey.build,
-    TaskKey.configure,
     PARAMS,
     executeOrSkipTask,
     shouldSkipTask,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import { buildLightningProject } from '../sdks/sdk-lightning';
 

@@ -1,14 +1,13 @@
 import {
     logErrorPlatform,
     logTask,
-    TaskKey.configure,
     PARAMS,
     RnvTaskFn,
     executeOrSkipTask,
     shouldSkipTask,
     getConfigProp,
-    TaskKey.package,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import { SDKWindows } from '../sdks';
 

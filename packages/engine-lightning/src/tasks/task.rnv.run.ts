@@ -1,14 +1,4 @@
-import {
-    RnvTaskFn,
-    logErrorPlatform,
-    logTask,
-    logRaw,
-    TaskKey.run,
-    TaskKey.configure,
-    PARAMS,
-    executeOrSkipTask,
-    RnvTask,
-} from '@rnv/core';
+import { RnvTaskFn, logErrorPlatform, logTask, logRaw, PARAMS, executeOrSkipTask, RnvTask, TaskKey } from '@rnv/core';
 import { runLightningProject } from '../sdks/sdk-lightning';
 
 export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {

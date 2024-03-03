@@ -3,10 +3,10 @@ import {
     logErrorPlatform,
     logTask,
     PARAMS,
-    TaskKey.debug,
     executeAsync,
     shouldSkipTask,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 
 export const taskRnvDebug: RnvTaskFn = async (c, parentTask, originTask) => {

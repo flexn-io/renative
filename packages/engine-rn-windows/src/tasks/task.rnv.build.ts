@@ -1,13 +1,12 @@
 import {
     RnvTaskFn,
     executeOrSkipTask,
-    TaskKey.package,
-    TaskKey.build,
     logErrorPlatform,
     PARAMS,
     logTask,
     shouldSkipTask,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import { ruWindowsProject } from '../sdks/sdk-windows';
 

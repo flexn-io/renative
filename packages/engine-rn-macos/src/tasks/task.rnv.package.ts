@@ -2,13 +2,12 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    TaskKey.package,
-    TaskKey.configure,
     PARAMS,
     getConfigProp,
     executeOrSkipTask,
     shouldSkipTask,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import { packageBundleForXcode } from '@rnv/sdk-apple';
 

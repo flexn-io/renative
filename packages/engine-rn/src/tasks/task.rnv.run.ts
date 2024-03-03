@@ -1,16 +1,15 @@
 import {
     logErrorPlatform,
     logTask,
-    TaskKey.configure,
     PARAMS,
     RnvTaskFn,
     executeOrSkipTask,
     shouldSkipTask,
     logRaw,
-    TaskKey.run,
     getConfigProp,
     logSummary,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import { packageAndroid, runAndroid, getAndroidDeviceToRunOn } from '@rnv/sdk-android';
 import { runXcodeProject, getIosDeviceToRunOn } from '@rnv/sdk-apple';

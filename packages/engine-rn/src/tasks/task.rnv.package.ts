@@ -1,7 +1,6 @@
 import {
     logErrorPlatform,
     logTask,
-    TaskKey.configure,
     PARAMS,
     RnvTaskFn,
     executeOrSkipTask,

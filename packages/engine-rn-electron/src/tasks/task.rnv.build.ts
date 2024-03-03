@@ -1,13 +1,12 @@
 import {
     RnvTaskFn,
     logTask,
-    TaskKey.build,
-    TaskKey.package,
     PARAMS,
     logErrorPlatform,
     executeOrSkipTask,
     shouldSkipTask,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import { buildElectron } from '../sdk';
 

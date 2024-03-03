@@ -18,6 +18,7 @@ import {
     RnvContext,
     RnvTaskFn,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import { getEnvExportCmd, getEnvVar } from './common';
 

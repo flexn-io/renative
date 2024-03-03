@@ -2,12 +2,11 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    TaskKey.export,
     PARAMS,
     shouldSkipTask,
     executeOrSkipTask,
-    TaskKey.build,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import { exportWebNext } from '../sdk';
 

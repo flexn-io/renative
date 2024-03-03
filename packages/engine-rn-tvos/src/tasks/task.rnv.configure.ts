@@ -3,13 +3,12 @@ import {
     jetifyIfRequired,
     logErrorPlatform,
     logTask,
-    TaskKey.platformConfigure,
-    TaskKey.configure,
     PARAMS,
     executeTask,
     shouldSkipTask,
     configureEntryPoint,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import { configureGradleProject } from '@rnv/sdk-android';
 import { configureXcodeProject } from '@rnv/sdk-apple';

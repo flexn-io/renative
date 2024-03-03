@@ -11,10 +11,9 @@ import {
     fsExistsSync,
     executeTask,
     shouldSkipTask,
-    TaskKey.cryptoInstallProfiles,
-    TaskKey.projectConfigure,
     PARAMS,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 
 export const taskRnvCryptoInstallProfiles: RnvTaskFn = async (c, _parentTask, originTask) => {

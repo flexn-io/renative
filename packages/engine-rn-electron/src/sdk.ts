@@ -24,9 +24,9 @@ import {
     logInfo,
     copyBuildsFolder,
     copyAssetsFolder,
-    TaskKey.export,
     ExecOptionsPresets,
     getAppFolder,
+    TaskKey,
 } from '@rnv/core';
 import { FileElectronPackage } from './types';
 import { NpmPackageFile } from '@rnv/core/lib/configs/types';

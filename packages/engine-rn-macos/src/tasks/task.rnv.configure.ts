@@ -2,13 +2,12 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    TaskKey.platformConfigure,
-    TaskKey.configure,
     PARAMS,
     executeTask,
     shouldSkipTask,
     configureEntryPoint,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import { configureXcodeProject } from '@rnv/sdk-apple';
 

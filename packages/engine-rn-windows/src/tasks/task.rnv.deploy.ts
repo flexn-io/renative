@@ -4,10 +4,9 @@ import {
     PARAMS,
     RnvTaskFn,
     shouldSkipTask,
-    TaskKey.export,
-    TaskKey.deploy,
     executeOrSkipTask,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import { SDKWindows } from '../sdks';
 

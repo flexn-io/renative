@@ -2,11 +2,11 @@ import {
     RnvTaskFn,
     logTask,
     PARAMS,
-    TaskKey.export,
     executeOrSkipTask,
     initializeTask,
     findSuitableTask,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import Docker from '../docker';
 

@@ -4,13 +4,13 @@ import {
     logTask,
     executeTask,
     chalk,
-    TaskKey.start,
     getConfigProp,
     RnvContext,
     fsExistsSync,
     logWarning,
     parseFonts,
     getApi,
+    TaskKey,
 } from '@rnv/core';
 import { confirmActiveBundler } from '@rnv/sdk-utils';
 

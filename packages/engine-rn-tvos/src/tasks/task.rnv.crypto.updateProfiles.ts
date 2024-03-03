@@ -4,12 +4,11 @@ import {
     listAppConfigsFoldersSync,
     chalk,
     logTask,
-    TaskKey.cryptoUpdateProfiles,
-    TaskKey.projectConfigure,
     PARAMS,
     executeTask,
     shouldSkipTask,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import { updateProfile } from '@rnv/sdk-apple';
 

@@ -7,10 +7,9 @@ import {
     executeAsync,
     executeTask,
     shouldSkipTask,
-    TaskKey.cryptoInstallCerts,
-    TaskKey.projectConfigure,
     PARAMS,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 
 export const taskRnvCryptoInstallCerts: RnvTaskFn = async (c, _parentTask, originTask) => {

@@ -1,14 +1,4 @@
-import {
-    logTask,
-    PARAMS,
-    TaskKey.workspaceConfigure,
-    TaskKey.projectConfigure,
-    executeTask,
-    logErrorPlatform,
-    RnvTaskFn,
-    RnvTask,
-    TaskKey.log,
-} from '@rnv/core';
+import { logTask, PARAMS, executeTask, logErrorPlatform, RnvTaskFn, RnvTask, TaskKey } from '@rnv/core';
 
 import { runAppleLog } from '@rnv/sdk-apple';
 import { runAndroidLog, checkAndConfigureAndroidSdks } from '@rnv/sdk-android';

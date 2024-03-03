@@ -5,12 +5,11 @@ import {
     shouldSkipTask,
     logTask,
     logError,
-    TaskKey.start,
-    TaskKey.configureSoft,
     PARAMS,
     RnvTaskFn,
     RnvTask,
     PlatformKey,
+    TaskKey,
 } from '@rnv/core';
 import { startReactNative } from '@rnv/sdk-react-native';
 

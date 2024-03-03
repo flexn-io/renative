@@ -5,12 +5,11 @@ import {
     logTask,
     logSummary,
     logRaw,
-    TaskKey.run,
-    TaskKey.configure,
     PARAMS,
     executeOrSkipTask,
     shouldSkipTask,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import { runXcodeProject } from '@rnv/sdk-apple';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '@rnv/sdk-react-native';

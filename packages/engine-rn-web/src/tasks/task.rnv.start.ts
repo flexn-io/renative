@@ -5,12 +5,11 @@ import {
     logErrorPlatform,
     logTask,
     logError,
-    TaskKey.start,
-    TaskKey.configure,
     PARAMS,
     executeTask,
     shouldSkipTask,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import { REMOTE_DEBUGGER_ENABLED_PLATFORMS, openBrowser, waitForHost } from '@rnv/sdk-utils';
 

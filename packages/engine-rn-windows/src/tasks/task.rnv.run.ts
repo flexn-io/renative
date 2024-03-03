@@ -1,13 +1,12 @@
 import {
     logErrorPlatform,
     logTask,
-    TaskKey.configure,
     PARAMS,
     RnvTaskFn,
     executeOrSkipTask,
     shouldSkipTask,
-    TaskKey.run,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import { SDKWindows } from '../sdks';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '@rnv/sdk-react-native';

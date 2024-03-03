@@ -1,7 +1,5 @@
 import {
     RnvTaskFn,
-    TaskKey.run,
-    TaskKey.configure,
     PARAMS,
     getConfigProp,
     logTask,
@@ -11,6 +9,7 @@ import {
     executeOrSkipTask,
     shouldSkipTask,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import { packageAndroid, runAndroid, getAndroidDeviceToRunOn } from '@rnv/sdk-android';
 import { runXcodeProject, getIosDeviceToRunOn } from '@rnv/sdk-apple';

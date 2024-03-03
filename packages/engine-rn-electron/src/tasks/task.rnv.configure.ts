@@ -3,13 +3,12 @@ import {
     logErrorPlatform,
     copySharedPlatforms,
     logTask,
-    TaskKey.platformConfigure,
-    TaskKey.configure,
     PARAMS,
     executeTask,
     shouldSkipTask,
     configureEntryPoint,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import { configureElectronProject } from '../sdk';
 

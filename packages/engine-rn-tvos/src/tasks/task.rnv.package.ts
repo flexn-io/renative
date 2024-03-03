@@ -2,14 +2,12 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    TaskKey.package,
-    TaskKey.configure,
     PARAMS,
     getConfigProp,
     executeOrSkipTask,
     shouldSkipTask,
-    TaskKey.eject,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import { packageAndroid } from '@rnv/sdk-android';
 import { packageBundleForXcode } from '@rnv/sdk-apple';
