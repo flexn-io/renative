@@ -1,5 +1,5 @@
 import { createRnvApi, createRnvContext, executeTask, getContext } from '@rnv/core';
-import taskRnvPlatformList from '../task.rnv.platform.list';
+import taskRnvPlatformList from '../taskPlatformList';
 
 jest.mock('@rnv/core');
 

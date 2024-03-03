@@ -1,8 +1,8 @@
 import { createRnvApi, createRnvContext, executeTask, getContext } from '@rnv/core';
-import taskRnvPlatformConfigure from '../task.rnv.platform.configure';
+import taskRnvPlatformConfigure from '../taskPlatformConfigure';
 
-jest.mock('../../common');
-jest.mock('../../buildSchemes');
+jest.mock('../../../common');
+jest.mock('../../../buildSchemes');
 jest.mock('@rnv/core');
 
 beforeEach(() => {

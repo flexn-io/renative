@@ -7,7 +7,7 @@ import {
     inquirerPrompt,
     removeDirs,
 } from '@rnv/core';
-import taskRnvClean from '../task.rnv.clean';
+import taskRnvClean from '../taskClean';
 
 jest.mock('@rnv/core');
 jest.mock('path');

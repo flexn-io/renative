@@ -10,7 +10,7 @@ import {
     checkAndCreateGitignore,
     commandExistsSync,
 } from '@rnv/core';
-import taskRnvNew from '../task.rnv.new';
+import taskRnvNew from '../taskNew';
 
 jest.mock('@rnv/core');
 jest.mock('lodash/set');

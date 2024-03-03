@@ -1,5 +1,5 @@
 import { createRnvApi, createRnvContext, executeTask, getContext } from '@rnv/core';
-import taskRnvKill from '../task.rnv.kill';
+import taskRnvKill from '../taskKill';
 
 jest.mock('@rnv/core');
 jest.mock('@rnv/sdk-utils');
