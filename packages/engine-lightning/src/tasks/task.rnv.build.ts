@@ -2,8 +2,8 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    TASK_BUILD,
-    TASK_CONFIGURE,
+    TaskKey.build,
+    TaskKey.configure,
     PARAMS,
     executeOrSkipTask,
     shouldSkipTask,
@@ -16,9 +16,9 @@ export const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     c.runtime.forceBundleAssets = true;
 
-    await executeOrSkipTask(c, TASK_CONFIGURE, TASK_BUILD, originTask);
+    await executeOrSkipTask(c, TaskKey.configure, TaskKey.build, originTask);
 
-    if (shouldSkipTask(c, TASK_BUILD, originTask)) return true;
+    if (shouldSkipTask(c, TaskKey.build, originTask)) return true;
 
     switch (platform) {
         case 'tizen':
@@ -33,7 +33,7 @@ export const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Build project binary',
     fn: taskRnvBuild,
-    task: TASK_BUILD,
+    task: TaskKey.build,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['tizen', 'webos'],
 };

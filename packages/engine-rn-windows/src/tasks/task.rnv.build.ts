@@ -1,8 +1,8 @@
 import {
     RnvTaskFn,
     executeOrSkipTask,
-    TASK_PACKAGE,
-    TASK_BUILD,
+    TaskKey.package,
+    TaskKey.build,
     logErrorPlatform,
     PARAMS,
     logTask,
@@ -15,9 +15,9 @@ export const taskRnvBuild: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvBuild');
     const { platform } = c;
 
-    await executeOrSkipTask(c, TASK_PACKAGE, TASK_BUILD, originTask);
+    await executeOrSkipTask(c, TaskKey.package, TaskKey.build, originTask);
 
-    if (shouldSkipTask(c, TASK_BUILD, originTask)) return true;
+    if (shouldSkipTask(c, TaskKey.build, originTask)) return true;
 
     switch (platform) {
         case 'xbox':
@@ -31,7 +31,7 @@ export const taskRnvBuild: RnvTaskFn = async (c, _parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Build project binary',
     fn: taskRnvBuild,
-    task: TASK_BUILD,
+    task: TaskKey.build,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['windows', 'xbox'],
 };

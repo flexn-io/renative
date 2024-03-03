@@ -4,8 +4,8 @@ import {
     logErrorPlatform,
     logTask,
     logError,
-    TASK_START,
-    TASK_CONFIGURE,
+    TaskKey.start,
+    TaskKey.configure,
     PARAMS,
     executeTask,
     shouldSkipTask,
@@ -27,10 +27,10 @@ export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     }
 
     if (!parentTask) {
-        await executeTask(c, TASK_CONFIGURE, TASK_START, originTask);
+        await executeTask(c, TaskKey.configure, TaskKey.start, originTask);
     }
 
-    if (shouldSkipTask(c, TASK_START, originTask)) return true;
+    if (shouldSkipTask(c, TaskKey.start, originTask)) return true;
 
     switch (platform) {
         case 'macos':
@@ -45,7 +45,7 @@ export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Starts bundler / server',
     fn: taskRnvStart,
-    task: TASK_START,
+    task: TaskKey.start,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['macos', 'windows', 'linux'],
 };

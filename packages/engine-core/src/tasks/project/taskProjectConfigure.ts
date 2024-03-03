@@ -30,14 +30,9 @@ import {
     generatePlatformAssetsRuntimeConfig,
     RnvTask,
     generateLocalJsonSchemas,
+    TaskKey,
 } from '@rnv/core';
 import { checkCrypto } from '../crypto/common';
-import { TASK_WORKSPACE_CONFIGURE } from '../workspace/constants';
-import { TASK_APP_CONFIGURE } from '../app/constants';
-import { TASK_PROJECT_CONFIGURE } from './constants';
-import { TASK_INSTALL } from '../global/constants';
-import { TASK_CRYPTO_DECRYPT } from '../crypto/constants';
-import { TASK_TEMPLATE_APPLY } from '../template/constants';
 
 const checkIsRenativeProject = async (c: RnvContext) => {
     if (!c.paths.project.configExists) {
@@ -66,25 +61,25 @@ export const taskRnvProjectConfigure: RnvTaskFn = async (c, parentTask, originTa
     await checkIsRenativeProject(c);
     await generateLocalJsonSchemas();
 
-    await executeTask(c, TASK_WORKSPACE_CONFIGURE, TASK_PROJECT_CONFIGURE, originTask);
+    await executeTask(c, TaskKey.workspaceConfigure, TaskKey.projectConfigure, originTask);
 
     if (c.program.only && !!parentTask) {
         await configureRuntimeDefaults(c);
-        await executeTask(c, TASK_APP_CONFIGURE, TASK_PROJECT_CONFIGURE, originTask);
+        await executeTask(c, TaskKey.appConfigure, TaskKey.projectConfigure, originTask);
         await generatePlatformAssetsRuntimeConfig(c);
         return true;
     }
 
     await checkIfTemplateConfigured(c);
-    await executeTask(c, TASK_INSTALL, TASK_PROJECT_CONFIGURE, originTask);
-    if (originTask !== TASK_CRYPTO_DECRYPT) {
+    await executeTask(c, TaskKey.install, TaskKey.projectConfigure, originTask);
+    if (originTask !== TaskKey.cryptoDecrypt) {
         //If we explicitly running rnv crypto decrypt there is no need to check crypto
         await checkCrypto(c, parentTask, originTask);
     }
 
     await configureRuntimeDefaults(c);
 
-    if (originTask !== TASK_TEMPLATE_APPLY) {
+    if (originTask !== TaskKey.templateApply) {
         if ((c.runtime.requiresBootstrap || !isTemplateInstalled(c)) && !c.files.project.config?.isTemplate) {
             await applyTemplate(c);
             // We'll have to install the template first and reset current engine
@@ -98,8 +93,8 @@ export const taskRnvProjectConfigure: RnvTaskFn = async (c, parentTask, originTa
         }
         await applyTemplate(c);
         await configureRuntimeDefaults(c);
-        await executeTask(c, TASK_INSTALL, TASK_PROJECT_CONFIGURE, originTask);
-        await executeTask(c, TASK_APP_CONFIGURE, TASK_PROJECT_CONFIGURE, originTask);
+        await executeTask(c, TaskKey.install, TaskKey.projectConfigure, originTask);
+        await executeTask(c, TaskKey.appConfigure, TaskKey.projectConfigure, originTask);
         // IMPORTANT: configurePlugins must run after appConfig present to ensure merge of all configs/plugins
         await versionCheck(c);
         await configureEngines(c);
@@ -144,7 +139,7 @@ export const taskRnvProjectConfigure: RnvTaskFn = async (c, parentTask, originTa
 const Task: RnvTask = {
     description: 'Configure current project',
     fn: taskRnvProjectConfigure,
-    task: TASK_PROJECT_CONFIGURE,
+    task: TaskKey.projectConfigure,
     params: PARAMS.withBase(),
     platforms: [],
 };

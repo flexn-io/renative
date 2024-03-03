@@ -1,5 +1,6 @@
 import {
     RnvContext,
+    TaskKey,
     chalk,
     executeTask,
     fsExistsSync,
@@ -12,7 +13,6 @@ import {
     logWarning,
 } from '@rnv/core';
 import path from 'path';
-import { TASK_CRYPTO_DECRYPT } from './constants';
 
 export const getEnvExportCmd = (envVar: string, key: string) => {
     if (isSystemWin) {
@@ -69,7 +69,7 @@ export const checkCrypto = async (c: RnvContext, parentTask?: string, originTask
 project timestamp: ${chalk().grey(`${tsProject} - ${new Date(tsProject)}`)}
 workspace timestamp: ${chalk().grey(`${tsWorkspace} - ${new Date(tsWorkspace)}`)}
 you should run decrypt`);
-                await executeTask(c, TASK_CRYPTO_DECRYPT, parentTask, originTask);
+                await executeTask(c, TaskKey.cryptoDecrypt, parentTask, originTask);
                 return;
             }
 

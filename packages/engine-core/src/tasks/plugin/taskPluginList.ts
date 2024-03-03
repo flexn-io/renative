@@ -1,12 +1,10 @@
-import { logTask, logToSummary, executeTask, PARAMS, RnvTaskFn, RnvTask } from '@rnv/core';
+import { logTask, logToSummary, executeTask, PARAMS, RnvTaskFn, RnvTask, TaskKey } from '@rnv/core';
 import { getPluginList } from '../../plugins';
-import { TASK_PROJECT_CONFIGURE } from '../project/constants';
-import { TASK_PLUGIN_LIST } from './constants';
 
 export const taskRnvPluginList: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvPluginList');
 
-    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLUGIN_LIST, originTask);
+    await executeTask(c, TaskKey.projectConfigure, TaskKey.pluginList, originTask);
 
     const o = getPluginList(c);
 
@@ -19,7 +17,7 @@ export const taskRnvPluginList: RnvTaskFn = async (c, _parentTask, originTask) =
 const Task: RnvTask = {
     description: 'Show list of all available plugins',
     fn: taskRnvPluginList,
-    task: TASK_PLUGIN_LIST,
+    task: TaskKey.pluginList,
     params: PARAMS.withBase(),
     platforms: [],
 };

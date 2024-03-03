@@ -1,13 +1,13 @@
 import {
     logErrorPlatform,
     logTask,
-    TASK_CONFIGURE,
+    TaskKey.configure,
     PARAMS,
     RnvTaskFn,
     executeOrSkipTask,
     shouldSkipTask,
     logRaw,
-    TASK_RUN,
+    TaskKey.run,
     getConfigProp,
     logSummary,
     RnvTask,
@@ -22,9 +22,9 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { hosted } = c.program;
     logTask('taskRnvRun', `parent:${parentTask} port:${port} hosted:${hosted}`);
 
-    await executeOrSkipTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
+    await executeOrSkipTask(c, TaskKey.configure, TaskKey.run, originTask);
 
-    if (shouldSkipTask(c, TASK_RUN, originTask)) return true;
+    if (shouldSkipTask(c, TaskKey.run, originTask)) return true;
 
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
 
@@ -34,7 +34,7 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
             // eslint-disable-next-line no-case-declarations
             const runDeviceArgs = await getIosDeviceToRunOn(c);
             if (!c.program.only) {
-                await startBundlerIfRequired(c, TASK_RUN, originTask);
+                await startBundlerIfRequired(c, TaskKey.run, originTask);
                 await runXcodeProject(c, runDeviceArgs);
                 if (!bundleAssets) {
                     logSummary('BUNDLER STARTED');
@@ -52,7 +52,7 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
                 c.runtime.target = runDevice?.name || runDevice?.udid;
             }
             if (!c.program.only) {
-                await startBundlerIfRequired(c, TASK_RUN, originTask);
+                await startBundlerIfRequired(c, TaskKey.run, originTask);
                 if (bundleAssets || platform === 'androidwear') {
                     await packageAndroid(c);
                 }
@@ -78,9 +78,9 @@ const Task: RnvTask = {
     description: 'Run your rn app on target device or emulator',
     fn: taskRnvRun,
     fnHelp: taskRnvRunHelp,
-    task: TASK_RUN,
+    task: TaskKey.run,
     // dependencies: {
-    //     before: TASK_CONFIGURE,
+    //     before: TaskKey.configure,
     // },
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],

@@ -2,8 +2,8 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    TASK_PLATFORM_CONFIGURE,
-    TASK_CONFIGURE,
+    TaskKey.platformConfigure,
+    TaskKey.configure,
     PARAMS,
     executeTask,
     shouldSkipTask,
@@ -14,9 +14,9 @@ import { configureNextIfRequired } from '../sdk';
 export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure');
 
-    await executeTask(c, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, originTask);
+    await executeTask(c, TaskKey.platformConfigure, TaskKey.configure, originTask);
 
-    if (shouldSkipTask(c, TASK_CONFIGURE, originTask)) return true;
+    if (shouldSkipTask(c, TaskKey.configure, originTask)) return true;
 
     if (c.program.only && !!parentTask) {
         return true;
@@ -34,7 +34,7 @@ export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => 
 const Task: RnvTask = {
     description: 'Configure current project',
     fn: taskRnvConfigure,
-    task: TASK_CONFIGURE,
+    task: TaskKey.configure,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['web', 'chromecast'],
 };

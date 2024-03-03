@@ -1,11 +1,18 @@
-import { PARAMS, updateProjectPlatforms, logTask, executeTask, RnvTaskFn, inquirerPrompt, RnvTask } from '@rnv/core';
-import { TASK_PROJECT_CONFIGURE } from '../project/constants';
-import { TASK_PLATFORM_SETUP } from './constants';
+import {
+    PARAMS,
+    updateProjectPlatforms,
+    logTask,
+    executeTask,
+    RnvTaskFn,
+    inquirerPrompt,
+    RnvTask,
+    TaskKey,
+} from '@rnv/core';
 
 export const taskRnvPlatformSetup: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvPlatformSetup');
 
-    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLATFORM_SETUP, originTask);
+    await executeTask(c, TaskKey.projectConfigure, TaskKey.platformSetup, originTask);
 
     const currentPlatforms = c.files.project.config?.defaults?.supportedPlatforms || [];
 
@@ -25,7 +32,7 @@ export const taskRnvPlatformSetup: RnvTaskFn = async (c, _parentTask, originTask
 const Task: RnvTask = {
     description: 'Allows you to change supportedPlatforms for your project',
     fn: taskRnvPlatformSetup,
-    task: TASK_PLATFORM_SETUP,
+    task: TaskKey.platformSetup,
     params: PARAMS.withBase(),
     platforms: [],
 };

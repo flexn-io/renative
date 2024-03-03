@@ -38,8 +38,8 @@ import {
     RnvTask,
     ConfigFileProject,
     ConfigFileTemplate,
+    TaskKey,
 } from '@rnv/core';
-import { TASK_NEW } from './constants';
 
 type NewProjectData = {
     appTitle?: string;
@@ -803,7 +803,7 @@ const findEngineKeyById = (c: RnvContext, id: string) => {
 const Task: RnvTask = {
     description: 'Create new ReNative project',
     fn: taskRnvNew,
-    task: TASK_NEW,
+    task: TaskKey.new,
     params: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,

@@ -1,26 +1,25 @@
 import {
     logErrorPlatform,
     logTask,
-    TASK_CONFIGURE,
+    TaskKey.configure,
     PARAMS,
     RnvTaskFn,
     executeOrSkipTask,
     shouldSkipTask,
-    TASK_PACKAGE,
     getConfigProp,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import { packageAndroid } from '@rnv/sdk-android';
 import { packageBundleForXcode } from '@rnv/sdk-apple';
-import { TASK_EJECT } from './constants';
 
 export const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvPackage', `parent:${parentTask}`);
     const { platform } = c;
 
-    await executeOrSkipTask(c, TASK_CONFIGURE, TASK_PACKAGE, originTask);
+    await executeOrSkipTask(c, TaskKey.configure, TaskKey.package, originTask);
 
-    if (shouldSkipTask(c, TASK_PACKAGE, originTask)) return true;
+    if (shouldSkipTask(c, TaskKey.package, originTask)) return true;
 
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
 
@@ -41,7 +40,7 @@ export const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
 
             const signingConfig = getConfigProp(c, c.platform, 'signingConfig');
 
-            if (originTask === TASK_EJECT || signingConfig !== 'Release') {
+            if (originTask === TaskKey.eject || signingConfig !== 'Release') {
                 //if bundleAssets === true AND signingConfig is not releaase RN will not trigger packaging
                 return packageAndroid(c);
             }
@@ -56,7 +55,7 @@ export const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Package source files into bundle',
     fn: taskRnvPackage,
-    task: TASK_PACKAGE,
+    task: TaskKey.package,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],
 };

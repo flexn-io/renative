@@ -12,17 +12,15 @@ import {
     inquirerPrompt,
     RenativeConfigPlugin,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import { getPluginList } from '../../plugins';
-import { TASK_PROJECT_CONFIGURE } from '../project/constants';
-import { TASK_PLUGIN_ADD } from './constants';
-import { TASK_INSTALL } from '../global/constants';
 
 /* eslint-disable no-await-in-loop */
 export const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvPluginAdd');
 
-    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLUGIN_ADD, originTask);
+    await executeTask(c, TaskKey.projectConfigure, TaskKey.pluginAdd, originTask);
 
     const selPluginKey = c.program.rawArgs?.[4];
 
@@ -95,7 +93,7 @@ export const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) =>
 
     await resolvePluginDependants(c);
 
-    await executeTask(c, TASK_INSTALL, TASK_PLUGIN_ADD, originTask);
+    await executeTask(c, TaskKey.install, TaskKey.pluginAdd, originTask);
 
     spinner.succeed('All plugins installed!');
     logSuccess('Plugins installed successfully!');
@@ -105,7 +103,7 @@ export const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) =>
 const Task: RnvTask = {
     description: 'Add selected plugin to the project',
     fn: taskRnvPluginAdd,
-    task: TASK_PLUGIN_ADD,
+    task: TaskKey.pluginAdd,
     params: PARAMS.withBase(),
     platforms: [],
 };

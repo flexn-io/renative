@@ -14,8 +14,8 @@ import {
     RnvTaskFn,
     inquirerPrompt,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
-import { TASK_CLEAN } from './constants';
 
 function clearWindowsCacheFiles() {
     const opts = {
@@ -212,7 +212,7 @@ export const taskRnvClean: RnvTaskFn = async (c) => {
 const Task: RnvTask = {
     description: 'Automatically removes all node_modules and lock in your project and its dependencies',
     fn: taskRnvClean,
-    task: TASK_CLEAN,
+    task: TaskKey.clean,
     params: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,

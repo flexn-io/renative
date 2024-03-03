@@ -8,9 +8,9 @@ import {
     RnvContext,
     listAppConfigsFoldersSync,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import { updateProfile } from '@rnv/sdk-apple';
-import { TASK_CRYPTO_UPDATE_PROFILES, TASK_PROJECT_CONFIGURE } from './constants';
 
 const _updateProfile = (c: RnvContext, v: string) =>
     new Promise<void>((resolve, reject) => {
@@ -30,9 +30,9 @@ const _updateProfiles = (c: RnvContext) => {
 export const taskRnvCryptoUpdateProfiles: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvCryptoUpdateProfiles');
 
-    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_CRYPTO_UPDATE_PROFILES, originTask);
+    await executeTask(c, TaskKey.projectConfigure, TaskKey.cryptoUpdateProfiles, originTask);
 
-    if (shouldSkipTask(c, TASK_CRYPTO_UPDATE_PROFILES, originTask)) return true;
+    if (shouldSkipTask(c, TaskKey.cryptoUpdateProfiles, originTask)) return true;
 
     switch (c.platform) {
         case 'ios':
@@ -47,7 +47,7 @@ export const taskRnvCryptoUpdateProfiles: RnvTaskFn = async (c, _parentTask, ori
 const Task: RnvTask = {
     description: 'Will attempt to update all provisioning profiles (mac only)',
     fn: taskRnvCryptoUpdateProfiles,
-    task: TASK_CRYPTO_UPDATE_PROFILES,
+    task: TaskKey.cryptoUpdateProfiles,
     params: PARAMS.withBase(),
     platforms: ['ios'],
     // skipPlatforms: true,

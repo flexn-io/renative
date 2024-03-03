@@ -14,8 +14,8 @@ import {
     logInfo,
     RnvTaskFn,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
-import { TASK_WORKSPACE_CONFIGURE } from './constants';
 
 export const taskRnvWorkspaceConfigure: RnvTaskFn = async (c) => {
     logTask('taskRnvWorkspaceConfigure');
@@ -91,7 +91,7 @@ export const taskRnvWorkspaceConfigure: RnvTaskFn = async (c) => {
 const Task: RnvTask = {
     description: 'Preconfigures your current workspace defined via "workspaceID" prop in renative config file',
     fn: taskRnvWorkspaceConfigure,
-    task: TASK_WORKSPACE_CONFIGURE,
+    task: TaskKey.workspaceConfigure,
     params: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,

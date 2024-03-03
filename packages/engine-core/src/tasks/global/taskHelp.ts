@@ -1,5 +1,4 @@
-import { chalk, logToSummary, logTask, PARAMS, getRegisteredEngines, RnvTaskFn, RnvTask } from '@rnv/core';
-import { TASK_HELP } from './constants';
+import { chalk, logToSummary, logTask, PARAMS, getRegisteredEngines, RnvTaskFn, RnvTask, TaskKey } from '@rnv/core';
 
 export const taskRnvHelp: RnvTaskFn = async (c) => {
     logTask('taskRnvHelp');
@@ -48,7 +47,7 @@ ${optsString}
 const Task: RnvTask = {
     description: 'Display generic help',
     fn: taskRnvHelp,
-    task: TASK_HELP,
+    task: TaskKey.help,
     params: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,

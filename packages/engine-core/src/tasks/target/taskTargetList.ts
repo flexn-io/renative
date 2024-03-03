@@ -1,19 +1,16 @@
-import { isPlatformSupported, chalk, logTask, PARAMS, executeTask, RnvTaskFn, RnvTask } from '@rnv/core';
+import { isPlatformSupported, chalk, logTask, PARAMS, executeTask, RnvTaskFn, RnvTask, TaskKey } from '@rnv/core';
 import { listAndroidTargets } from '@rnv/sdk-android';
 import { listAppleDevices } from '@rnv/sdk-apple';
 import { listTizenTargets } from '@rnv/sdk-tizen';
 import { listWebOSTargets } from '@rnv/sdk-webos';
-
 import { checkAndConfigureSdks, checkSdk } from '../../common';
-import { TASK_TARGET_LIST } from './constants';
-import { TASK_WORKSPACE_CONFIGURE } from '../workspace/constants';
 
 export const taskRnvTargetList: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvTargetList');
 
     await isPlatformSupported(c, true);
     await checkAndConfigureSdks(c);
-    await executeTask(c, TASK_WORKSPACE_CONFIGURE, TASK_TARGET_LIST, originTask);
+    await executeTask(c, TaskKey.workspaceConfigure, TaskKey.targetList, originTask);
 
     const { platform } = c;
 
@@ -42,7 +39,7 @@ export const taskRnvTargetList: RnvTaskFn = async (c, _parentTask, originTask) =
 const Task: RnvTask = {
     description: 'List all available targets for specific platform',
     fn: taskRnvTargetList,
-    task: TASK_TARGET_LIST,
+    task: TaskKey.targetList,
     params: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,

@@ -2,8 +2,8 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    TASK_BUILD,
-    TASK_EXPORT,
+    TaskKey.build,
+    TaskKey.export,
     PARAMS,
     executeOrSkipTask,
     shouldSkipTask,
@@ -16,9 +16,9 @@ export const taskRnvExport: RnvTaskFn = async (c, parentTask, originTask) => {
 
     const { platform } = c;
 
-    await executeOrSkipTask(c, TASK_BUILD, TASK_EXPORT, originTask);
+    await executeOrSkipTask(c, TaskKey.build, TaskKey.export, originTask);
 
-    if (shouldSkipTask(c, TASK_EXPORT, originTask)) return true;
+    if (shouldSkipTask(c, TaskKey.export, originTask)) return true;
 
     switch (platform) {
         case 'web':
@@ -39,7 +39,7 @@ export const taskRnvExport: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Export the app into deployable binary',
     fn: taskRnvExport,
-    task: TASK_EXPORT,
+    task: TaskKey.export,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['web', 'tizen', 'webos', 'tizenmobile', 'tizenwatch', 'kaios', 'chromecast'],
 };

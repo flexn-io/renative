@@ -1,12 +1,20 @@
-import { generateOptions, chalk, logTask, logToSummary, executeTask, PARAMS, RnvTaskFn, RnvTask } from '@rnv/core';
-import { TASK_PROJECT_CONFIGURE } from '../project/constants';
-import { TASK_WORKSPACE_LIST } from './constants';
+import {
+    generateOptions,
+    chalk,
+    logTask,
+    logToSummary,
+    executeTask,
+    PARAMS,
+    RnvTaskFn,
+    RnvTask,
+    TaskKey,
+} from '@rnv/core';
 
 export const taskRnvWorkspaceList: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvWorkspaceList');
 
     if (c.paths.project.configExists) {
-        await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_WORKSPACE_LIST, originTask);
+        await executeTask(c, TaskKey.projectConfigure, TaskKey.workspaceList, originTask);
     }
 
     const opts = generateOptions(
@@ -25,7 +33,7 @@ export const taskRnvWorkspaceList: RnvTaskFn = async (c, _parentTask, originTask
 const Task: RnvTask = {
     description: 'Show list of all available workspaces',
     fn: taskRnvWorkspaceList,
-    task: TASK_WORKSPACE_LIST,
+    task: TaskKey.workspaceList,
     params: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,

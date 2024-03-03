@@ -2,8 +2,8 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    TASK_RUN,
-    TASK_CONFIGURE,
+    TaskKey.run,
+    TaskKey.configure,
     PARAMS,
     executeOrSkipTask,
     shouldSkipTask,
@@ -15,9 +15,9 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     logTask('taskRnvRun', `parent:${parentTask}`);
 
-    await executeOrSkipTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
+    await executeOrSkipTask(c, TaskKey.configure, TaskKey.run, originTask);
 
-    if (shouldSkipTask(c, TASK_RUN, originTask)) return true;
+    if (shouldSkipTask(c, TaskKey.run, originTask)) return true;
 
     switch (platform) {
         case 'web':
@@ -32,7 +32,7 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Run your app in browser',
     fn: taskRnvRun,
-    task: TASK_RUN,
+    task: TaskKey.run,
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: ['web', 'chromecast'],
 };

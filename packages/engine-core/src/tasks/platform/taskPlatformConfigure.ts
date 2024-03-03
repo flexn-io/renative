@@ -14,19 +14,17 @@ import {
     PARAMS,
     RnvTaskFn,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import { checkAndConfigureSdks, checkSdk } from '../../common';
 import { isBuildSchemeSupported } from '../../buildSchemes';
-import { TASK_PROJECT_CONFIGURE } from '../project/constants';
-import { TASK_PLATFORM_CONFIGURE } from './constants';
-import { TASK_INSTALL } from '../global/constants';
 
 export const taskRnvPlatformConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvPlatformConfigure', '');
 
-    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLATFORM_CONFIGURE, originTask);
+    await executeTask(c, TaskKey.projectConfigure, TaskKey.platformConfigure, originTask);
 
-    if (shouldSkipTask(c, TASK_PLATFORM_CONFIGURE, originTask)) return true;
+    if (shouldSkipTask(c, TaskKey.platformConfigure, originTask)) return true;
 
     await isPlatformSupported(c);
     await isBuildSchemeSupported(c);
@@ -36,7 +34,7 @@ export const taskRnvPlatformConfigure: RnvTaskFn = async (c, parentTask, originT
 
     if (c.program.only && !!parentTask) return true;
 
-    await executeTask(c, TASK_INSTALL, TASK_PLATFORM_CONFIGURE, originTask);
+    await executeTask(c, TaskKey.install, TaskKey.platformConfigure, originTask);
 
     const hasBuild = fsExistsSync(c.paths.project.builds.dir);
     logTask('', `taskRnvPlatformConfigure hasBuildFolderPresent:${hasBuild}`);
@@ -59,7 +57,7 @@ export const taskRnvPlatformConfigure: RnvTaskFn = async (c, parentTask, originT
 const Task: RnvTask = {
     description: 'Low-level task used by engines to prepare platformBuilds folder',
     fn: taskRnvPlatformConfigure,
-    task: TASK_PLATFORM_CONFIGURE,
+    task: TaskKey.platformConfigure,
     params: PARAMS.withBase(),
     platforms: [],
 };

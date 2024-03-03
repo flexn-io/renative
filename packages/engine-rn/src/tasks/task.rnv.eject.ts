@@ -5,12 +5,11 @@ import {
     RnvTaskFn,
     executeOrSkipTask,
     shouldSkipTask,
-    TASK_PACKAGE,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import { ejectGradleProject } from '@rnv/sdk-android';
 import { ejectXcodeProject } from '@rnv/sdk-apple';
-import { TASK_EJECT } from './constants';
 
 export const taskRnvEject: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvEject');
@@ -30,9 +29,9 @@ export const taskRnvEject: RnvTaskFn = async (c, _parentTask, originTask) => {
 
     c.runtime._skipNativeDepResolutions = true;
 
-    await executeOrSkipTask(c, TASK_PACKAGE, TASK_EJECT, originTask);
+    await executeOrSkipTask(c, TaskKey.package, TaskKey.eject, originTask);
 
-    if (shouldSkipTask(c, TASK_EJECT, originTask)) return true;
+    if (shouldSkipTask(c, TaskKey.eject, originTask)) return true;
 
     switch (platform) {
         case 'ios':
@@ -53,7 +52,7 @@ export const taskRnvEject: RnvTaskFn = async (c, _parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Eject current project app to self contained native project',
     fn: taskRnvEject,
-    task: TASK_EJECT,
+    task: TaskKey.eject,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],
 };

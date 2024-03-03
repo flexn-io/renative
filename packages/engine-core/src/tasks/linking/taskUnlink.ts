@@ -11,8 +11,9 @@ import {
     RnvTaskFn,
     RnvContext,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
-import { RNV_PACKAGES, TASK_UNLINK } from './constants';
+import { RNV_PACKAGES } from './constants';
 
 const _unlinkPackage = (c: RnvContext, key: string) => {
     const rnvPath = path.join(c.paths.project.nodeModulesDir, key);
@@ -46,7 +47,7 @@ export const taskRnvUnlink: RnvTaskFn = async (c) => {
 const Task: RnvTask = {
     description: 'Replaces rnv version in project with original node_modules version',
     fn: taskRnvUnlink,
-    task: TASK_UNLINK,
+    task: TaskKey.unlink,
     params: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,

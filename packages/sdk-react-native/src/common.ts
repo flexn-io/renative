@@ -4,7 +4,7 @@ import {
     logTask,
     executeTask,
     chalk,
-    TASK_START,
+    TaskKey.start,
     getConfigProp,
     RnvContext,
     fsExistsSync,
@@ -24,14 +24,14 @@ export const startBundlerIfRequired = async (c: RnvContext, parentTask: string, 
     const isRunning = await isBundlerActive(c);
     if (!isRunning) {
         // _taskStart(c, parentTask, originTask);
-        await executeTask(c, TASK_START, parentTask, originTask);
+        await executeTask(c, TaskKey.start, parentTask, originTask);
 
         keepRNVRunning = true;
         await waitForBundler(c);
     } else {
         const resetCompleted = await confirmActiveBundler(c);
         if (resetCompleted) {
-            await executeTask(c, TASK_START, parentTask, originTask);
+            await executeTask(c, TaskKey.start, parentTask, originTask);
 
             keepRNVRunning = true;
             await waitForBundler(c);

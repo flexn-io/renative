@@ -1,4 +1,4 @@
-import { RnvTaskFn, logErrorPlatform, logTask, PARAMS, RnvTask, TASK_DEBUG } from '@rnv/core';
+import { RnvTaskFn, logErrorPlatform, logTask, PARAMS, RnvTask, TaskKey.debug } from '@rnv/core';
 
 export const taskRnvDebug: RnvTaskFn = async (c) => {
     logTask('taskRnvDebug');
@@ -13,7 +13,7 @@ export const taskRnvDebug: RnvTaskFn = async (c) => {
 const Task: RnvTask = {
     description: 'Debug your app on target device or emulator',
     fn: taskRnvDebug,
-    task: TASK_DEBUG,
+    task: TaskKey.debug,
     params: PARAMS.withBase(),
     platforms: ['macos', 'windows', 'linux'],
 };

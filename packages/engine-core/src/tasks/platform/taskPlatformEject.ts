@@ -13,14 +13,13 @@ import {
     inquirerPrompt,
     PlatformKey,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
-import { TASK_PROJECT_CONFIGURE } from '../project/constants';
-import { TASK_PLATFORM_EJECT } from './constants';
 
 export const taskRnvPlatformEject: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvPlatformEject');
 
-    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLATFORM_EJECT, originTask);
+    await executeTask(c, TaskKey.projectConfigure, TaskKey.platformEject, originTask);
 
     const configOriginal = c.files.project.config_original;
 
@@ -74,7 +73,7 @@ TIP: You can select options with ${chalk().white('SPACE')} key before pressing E
 const Task: RnvTask = {
     description: 'Copy all platform files directly to project',
     fn: taskRnvPlatformEject,
-    task: TASK_PLATFORM_EJECT,
+    task: TaskKey.platformEject,
     params: PARAMS.withBase(),
     platforms: [],
 };

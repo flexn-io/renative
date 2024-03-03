@@ -8,14 +8,13 @@ import {
     RnvTaskFn,
     inquirerPrompt,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
-import { TASK_PROJECT_CONFIGURE } from '../project/constants';
-import { TASK_PLUGIN_UPDATE } from './constants';
 
 export const taskRnvPluginUpdate: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvPluginUpdate');
 
-    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLUGIN_UPDATE, originTask);
+    await executeTask(c, TaskKey.projectConfigure, TaskKey.pluginUpdate, originTask);
 
     // const pluginList = getPluginList(c, true);
 
@@ -52,7 +51,7 @@ export const taskRnvPluginUpdate: RnvTaskFn = async (c, _parentTask, originTask)
 const Task: RnvTask = {
     description: 'Update specific plugin to latest supported version (rnv)',
     fn: taskRnvPluginUpdate,
-    task: TASK_PLUGIN_UPDATE,
+    task: TaskKey.pluginUpdate,
     params: PARAMS.withBase(),
     platforms: [],
 };

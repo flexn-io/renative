@@ -24,7 +24,7 @@ import {
     logInfo,
     copyBuildsFolder,
     copyAssetsFolder,
-    TASK_EXPORT,
+    TaskKey.export,
     ExecOptionsPresets,
     getAppFolder,
 } from '@rnv/core';
@@ -276,7 +276,7 @@ const buildElectron = async (c: RnvContext) => {
     const menuPathDest = path.join(platformBuildDir, 'build', 'contextMenu.js');
     copyFileSync(menuPathSrc, menuPathDest);
 
-    if (c.command !== TASK_EXPORT) {
+    if (c.command !== TaskKey.export) {
         logSuccess(`Your Build is located in ${chalk().cyan(path.join(platformBuildDir, 'build'))} .`);
     }
 

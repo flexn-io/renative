@@ -4,8 +4,8 @@ import {
     PARAMS,
     RnvTaskFn,
     shouldSkipTask,
-    TASK_EXPORT,
-    TASK_DEPLOY,
+    TaskKey.export,
+    TaskKey.deploy,
     executeOrSkipTask,
     RnvTask,
 } from '@rnv/core';
@@ -19,9 +19,9 @@ export const taskRnvDeploy: RnvTaskFn = async (c, parentTask, originTask) => {
 
     const { platform } = c;
 
-    await executeOrSkipTask(c, TASK_EXPORT, TASK_DEPLOY, originTask);
+    await executeOrSkipTask(c, TaskKey.export, TaskKey.deploy, originTask);
 
-    if (shouldSkipTask(c, TASK_DEPLOY, originTask)) return true;
+    if (shouldSkipTask(c, TaskKey.deploy, originTask)) return true;
 
     switch (platform) {
         case 'xbox':
@@ -35,7 +35,7 @@ export const taskRnvDeploy: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Deploy the binary via selected deployment intgeration or buld hook',
     fn: taskRnvDeploy,
-    task: TASK_DEPLOY,
+    task: TaskKey.deploy,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['windows', 'xbox'],
 };

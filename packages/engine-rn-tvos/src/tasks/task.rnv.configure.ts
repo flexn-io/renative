@@ -3,8 +3,8 @@ import {
     jetifyIfRequired,
     logErrorPlatform,
     logTask,
-    TASK_PLATFORM_CONFIGURE,
-    TASK_CONFIGURE,
+    TaskKey.platformConfigure,
+    TaskKey.configure,
     PARAMS,
     executeTask,
     shouldSkipTask,
@@ -17,8 +17,8 @@ import { configureXcodeProject } from '@rnv/sdk-apple';
 export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure');
 
-    await executeTask(c, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, originTask);
-    if (shouldSkipTask(c, TASK_CONFIGURE, originTask)) return true;
+    await executeTask(c, TaskKey.platformConfigure, TaskKey.configure, originTask);
+    if (shouldSkipTask(c, TaskKey.configure, originTask)) return true;
 
     await configureEntryPoint(c, c.platform);
 
@@ -44,7 +44,7 @@ export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => 
 const Task: RnvTask = {
     description: 'Configure current project',
     fn: taskRnvConfigure,
-    task: TASK_CONFIGURE,
+    task: TaskKey.configure,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['tvos', 'androidtv', 'firetv'],
 };

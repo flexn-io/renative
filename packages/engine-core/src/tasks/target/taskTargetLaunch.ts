@@ -7,23 +7,21 @@ import {
     RnvTaskFn,
     inquirerPrompt,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import { checkAndConfigureSdks, checkSdk } from '../../common';
-
 import { launchAndroidSimulator } from '@rnv/sdk-android';
 import { launchAppleSimulator } from '@rnv/sdk-apple';
 import { launchTizenSimulator } from '@rnv/sdk-tizen';
 import { launchWebOSimulator } from '@rnv/sdk-webos';
 import { launchKaiOSSimulator } from '@rnv/sdk-kaios';
-import { TASK_TARGET_LAUNCH } from './constants';
-import { TASK_WORKSPACE_CONFIGURE } from '../workspace/constants';
 
 export const taskRnvTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvTargetLaunch');
 
     await isPlatformSupported(c, true);
     await checkAndConfigureSdks(c);
-    await executeTask(c, TASK_WORKSPACE_CONFIGURE, TASK_TARGET_LAUNCH, originTask);
+    await executeTask(c, TaskKey.workspaceConfigure, TaskKey.targetLaunch, originTask);
 
     const { platform, program } = c;
     let target = program?.target;
@@ -83,7 +81,7 @@ export const taskRnvTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) 
 const Task: RnvTask = {
     description: 'Launch specific target',
     fn: taskRnvTargetLaunch,
-    task: TASK_TARGET_LAUNCH,
+    task: TaskKey.targetLaunch,
     params: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,

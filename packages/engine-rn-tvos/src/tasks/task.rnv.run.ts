@@ -1,7 +1,7 @@
 import {
     RnvTaskFn,
-    TASK_RUN,
-    TASK_CONFIGURE,
+    TaskKey.run,
+    TaskKey.configure,
     PARAMS,
     getConfigProp,
     logTask,
@@ -23,9 +23,9 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { hosted } = c.program;
     logTask('taskRnvRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
-    await executeOrSkipTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
+    await executeOrSkipTask(c, TaskKey.configure, TaskKey.run, originTask);
 
-    if (shouldSkipTask(c, TASK_RUN, originTask)) return true;
+    if (shouldSkipTask(c, TaskKey.run, originTask)) return true;
 
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
 
@@ -35,7 +35,7 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
             // eslint-disable-next-line no-case-declarations
             const runDevice = await getAndroidDeviceToRunOn(c);
             if (!c.program.only) {
-                await startBundlerIfRequired(c, TASK_RUN, originTask);
+                await startBundlerIfRequired(c, TaskKey.run, originTask);
                 if (bundleAssets) {
                     await packageAndroid(c);
                 }
@@ -50,7 +50,7 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
             // eslint-disable-next-line no-case-declarations
             const runDeviceArgs = await getIosDeviceToRunOn(c);
             if (!c.program.only) {
-                await startBundlerIfRequired(c, TASK_RUN, originTask);
+                await startBundlerIfRequired(c, TaskKey.run, originTask);
                 await runXcodeProject(c, runDeviceArgs);
                 if (!bundleAssets) {
                     logSummary('BUNDLER STARTED');
@@ -73,9 +73,9 @@ const Task: RnvTask = {
     description: 'Run your tv app on target device or emulator',
     fn: taskRnvRun,
     fnHelp: taskRnvRunHelp,
-    task: TASK_RUN,
+    task: TaskKey.run,
     // dependencies: {
-    //     before: TASK_CONFIGURE,
+    //     before: TaskKey.configure,
     // },
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: ['tvos', 'androidtv', 'firetv'],

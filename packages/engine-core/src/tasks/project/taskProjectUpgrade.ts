@@ -14,16 +14,16 @@ import {
     readObjectSync,
     RnvTaskFn,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import { NpmPackageFile } from '@rnv/core/lib/configs/types';
 import { ConfigFileProject } from '@rnv/core/lib/schema/configFiles/types';
-import { TASK_PROJECT_CONFIGURE, TASK_PROJECT_UPGRADE } from './constants';
 
 export const taskRnvProjectUpgrade: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvProjectUpgrade');
     const upgradedPaths = [];
     if (fsExistsSync(c.paths.project.config)) {
-        await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PROJECT_UPGRADE, originTask);
+        await executeTask(c, TaskKey.projectConfigure, TaskKey.projectUpgrade, originTask);
         const selectedVersion = await listAndSelectNpmVersion(c, 'rnv');
 
         upgradedPaths.push(...upgradeProjectDependencies(c, selectedVersion));
@@ -77,7 +77,7 @@ export const taskRnvProjectUpgrade: RnvTaskFn = async (c, _parentTask, originTas
 const Task: RnvTask = {
     description: 'Upgrade or downgrade RNV dependencies in your ReNative project',
     fn: taskRnvProjectUpgrade,
-    task: TASK_PROJECT_UPGRADE,
+    task: TaskKey.projectUpgrade,
     params: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,

@@ -1,22 +1,13 @@
+import { TaskKey } from '../taskKeys';
 import type { RnvTaskParameter } from './types';
 
-export const TASK_RUN = 'run';
-export const TASK_CONFIGURE = 'configure';
-export const TASK_BUILD = 'build';
-export const TASK_START = 'start';
-export const TASK_EXPORT = 'export';
-export const TASK_DEBUG = 'debug';
-export const TASK_PACKAGE = 'package';
-export const TASK_DEPLOY = 'deploy';
-export const TASK_LOG = 'log';
-
 export const DEFAULT_TASK_DESCRIPTIONS: Record<string, string> = {
-    [TASK_RUN]: 'Run your app on target device or emulator',
-    [TASK_PACKAGE]: 'Package source files into bundle',
-    [TASK_BUILD]: 'Build project binary',
-    [TASK_CONFIGURE]: 'Configure current project',
-    [TASK_START]: 'Starts bundler / server',
-    [TASK_EXPORT]: 'Export the app into deployable binary',
+    [TaskKey.run]: 'Run your app on target device or emulator',
+    [TaskKey.package]: 'Package source files into bundle',
+    [TaskKey.build]: 'Build project binary',
+    [TaskKey.configure]: 'Configure current project',
+    [TaskKey.start]: 'Starts bundler / server',
+    [TaskKey.export]: 'Export the app into deployable binary',
 };
 
 const PARAM_KEYS_ENUM = {

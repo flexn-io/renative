@@ -8,14 +8,13 @@ import {
     PARAMS,
     RnvTaskFn,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
-import { TASK_PROJECT_CONFIGURE } from '../project/constants';
-import { TASK_WORKSPACE_ADD } from './constants';
 
 export const taskRnvWorkspaceAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvWorkspaceAdd');
 
-    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_WORKSPACE_ADD, originTask);
+    await executeTask(c, TaskKey.projectConfigure, TaskKey.workspaceAdd, originTask);
 
     const { workspace } = await inquirerPrompt({
         name: 'workspace',
@@ -52,7 +51,7 @@ export const taskRnvWorkspaceAdd: RnvTaskFn = async (c, _parentTask, originTask)
 const Task: RnvTask = {
     description: 'Add new workspace',
     fn: taskRnvWorkspaceAdd,
-    task: TASK_WORKSPACE_ADD,
+    task: TaskKey.workspaceAdd,
     params: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,

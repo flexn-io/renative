@@ -22,11 +22,10 @@ import {
     RnvTaskFn,
     copyFileSync,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import { statSync } from 'fs';
 import { getEnvExportCmd, getEnvVar } from './common';
-import { TASK_PROJECT_CONFIGURE } from '../project/constants';
-import { TASK_CRYPTO_ENCRYPT } from './constants';
 
 const iocane = require('iocane');
 
@@ -177,7 +176,7 @@ Make sure you take into account special characters that might need to be escaped
 export const taskRnvCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvCryptoEncrypt');
 
-    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_CRYPTO_ENCRYPT, originTask);
+    await executeTask(c, TaskKey.projectConfigure, TaskKey.cryptoEncrypt, originTask);
 
     const projectName = c.files.project.config?.projectName;
 
@@ -237,7 +236,7 @@ export const taskRnvCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask
 const Task: RnvTask = {
     description: 'Encrypts secure files from `~/<wokspace>/<project>/..` to project',
     fn: taskRnvCryptoEncrypt,
-    task: TASK_CRYPTO_ENCRYPT,
+    task: TaskKey.cryptoEncrypt,
     params: PARAMS.withBase(),
     platforms: [],
 };

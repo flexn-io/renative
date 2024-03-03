@@ -9,9 +9,8 @@ import {
     RnvTaskFn,
     inquirerPrompt,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
-import { TASK_PROJECT_CONFIGURE } from '../project/constants';
-import { TASK_TEMPLATE_ADD } from './constants';
 
 const _writeObjectSync = (c: RnvContext, p: string, s: object) => {
     writeFileSync(p, s);
@@ -38,7 +37,7 @@ export const _addTemplate = (c: RnvContext, template: string) => {
 export const taskRnvTemplateAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvTemplateAdd');
 
-    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_TEMPLATE_ADD, originTask);
+    await executeTask(c, TaskKey.projectConfigure, TaskKey.templateAdd, originTask);
 
     const opts = getTemplateOptions(c);
 
@@ -57,7 +56,7 @@ export const taskRnvTemplateAdd: RnvTaskFn = async (c, _parentTask, originTask) 
 const Task: RnvTask = {
     description: 'Install additional template to the project',
     fn: taskRnvTemplateAdd,
-    task: TASK_TEMPLATE_ADD,
+    task: TaskKey.templateAdd,
     params: PARAMS.withBase(),
     platforms: [],
 };

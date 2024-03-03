@@ -101,6 +101,3 @@ export const RNV_PACKAGES = [
         folderName: 'sdk-webos',
     },
 ];
-
-export const TASK_LINK = 'link';
-export const TASK_UNLINK = 'unlink';

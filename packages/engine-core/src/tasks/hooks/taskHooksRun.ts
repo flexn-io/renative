@@ -9,15 +9,14 @@ import {
     RnvTaskFn,
     inquirerPrompt,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
-import { TASK_PROJECT_CONFIGURE } from '../project/constants';
-import { TASK_HOOKS_RUN } from './constants';
 
 export const taskRnvHooksRun: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvHooksRun');
 
     if (fsExistsSync(c.paths.project.config)) {
-        await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_HOOKS_RUN, originTask);
+        await executeTask(c, TaskKey.projectConfigure, TaskKey.hooksRun, originTask);
     } else {
         logInfo('Your are running your buildHook outside of renative project');
     }
@@ -60,7 +59,7 @@ export const taskRnvHooksRun: RnvTaskFn = async (c, _parentTask, originTask) => 
 const Task: RnvTask = {
     description: 'Run specific build hook',
     fn: taskRnvHooksRun,
-    task: TASK_HOOKS_RUN,
+    task: TaskKey.hooksRun,
     params: PARAMS.withBase([PARAM_KEYS.exeMethod]),
     platforms: [],
     forceBuildHookRebuild: true,

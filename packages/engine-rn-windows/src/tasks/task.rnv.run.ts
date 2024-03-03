@@ -1,12 +1,12 @@
 import {
     logErrorPlatform,
     logTask,
-    TASK_CONFIGURE,
+    TaskKey.configure,
     PARAMS,
     RnvTaskFn,
     executeOrSkipTask,
     shouldSkipTask,
-    TASK_RUN,
+    TaskKey.run,
     RnvTask,
 } from '@rnv/core';
 import { SDKWindows } from '../sdks';
@@ -21,15 +21,15 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { hosted } = c.program;
     logTask('taskRnvRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
-    await executeOrSkipTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
+    await executeOrSkipTask(c, TaskKey.configure, TaskKey.run, originTask);
 
-    if (shouldSkipTask(c, TASK_RUN, originTask)) return true;
+    if (shouldSkipTask(c, TaskKey.run, originTask)) return true;
 
     switch (platform) {
         case 'xbox':
         case 'windows':
             await clearWindowsTemporaryFiles(c);
-            await startBundlerIfRequired(c, TASK_RUN, originTask);
+            await startBundlerIfRequired(c, TaskKey.run, originTask);
             await ruWindowsProject(c);
             return waitForBundlerIfRequired(c);
         default:
@@ -40,7 +40,7 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Run your app in a window on desktop',
     fn: taskRnvRun,
-    task: TASK_RUN,
+    task: TaskKey.run,
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: ['windows', 'xbox'],
 };

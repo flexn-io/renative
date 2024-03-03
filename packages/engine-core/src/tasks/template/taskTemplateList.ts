@@ -1,12 +1,10 @@
-import { logToSummary, logTask, getTemplateOptions, executeTask, PARAMS, RnvTaskFn, RnvTask } from '@rnv/core';
-import { TASK_PROJECT_CONFIGURE } from '../project/constants';
-import { TASK_TEMPLATE_LIST } from './constants';
+import { logToSummary, logTask, getTemplateOptions, executeTask, PARAMS, RnvTaskFn, RnvTask, TaskKey } from '@rnv/core';
 
 export const taskRnvTemplateList: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvTemplateList');
 
     if (c.paths.project.configExists) {
-        await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_TEMPLATE_LIST, originTask);
+        await executeTask(c, TaskKey.projectConfigure, TaskKey.templateList, originTask);
     }
     const opts = getTemplateOptions(c, !c.paths.project.configExists);
     logToSummary(`Templates:\n\n${opts.asString}`);
@@ -16,7 +14,7 @@ export const taskRnvTemplateList: RnvTaskFn = async (c, _parentTask, originTask)
 const Task: RnvTask = {
     description: 'Show list of available templates',
     fn: taskRnvTemplateList,
-    task: TASK_TEMPLATE_LIST,
+    task: TaskKey.templateList,
     params: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,

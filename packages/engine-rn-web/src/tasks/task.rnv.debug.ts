@@ -3,7 +3,7 @@ import {
     logErrorPlatform,
     logTask,
     PARAMS,
-    TASK_DEBUG,
+    TaskKey.debug,
     executeAsync,
     shouldSkipTask,
     RnvTask,
@@ -12,7 +12,7 @@ import {
 export const taskRnvDebug: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvDebug', `parent:${parentTask}`);
 
-    if (shouldSkipTask(c, TASK_DEBUG, originTask)) return true;
+    if (shouldSkipTask(c, TaskKey.debug, originTask)) return true;
 
     const { platform } = c;
 
@@ -29,7 +29,7 @@ export const taskRnvDebug: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Debug your app on target device or emulator',
     fn: taskRnvDebug,
-    task: TASK_DEBUG,
+    task: TaskKey.debug,
     params: PARAMS.withBase(),
     platforms: ['web', 'webtv', 'tizen'],
 };

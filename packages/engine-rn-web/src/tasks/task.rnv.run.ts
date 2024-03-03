@@ -1,9 +1,9 @@
 import {
     RnvContext,
     RnvTaskFn,
-    TASK_RUN,
-    TASK_START,
-    TASK_CONFIGURE,
+    TaskKey.run,
+    TaskKey.start,
+    TaskKey.configure,
     PARAMS,
     logErrorPlatform,
     logTask,
@@ -87,15 +87,15 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { hosted } = c.program;
     logTask('taskRnvRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
-    await executeOrSkipTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
+    await executeOrSkipTask(c, TaskKey.configure, TaskKey.run, originTask);
 
     if (hosted) {
         c.runtime.shouldOpenBrowser = true;
         // return _taskStart(c);
-        return executeTask(c, TASK_START, TASK_RUN, originTask);
+        return executeTask(c, TaskKey.start, TaskKey.run, originTask);
     }
 
-    if (shouldSkipTask(c, TASK_RUN, originTask)) return true;
+    if (shouldSkipTask(c, TaskKey.run, originTask)) return true;
 
     switch (platform) {
         case 'web':
@@ -129,7 +129,7 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Run your app in browser',
     fn: taskRnvRun,
-    task: TASK_RUN,
+    task: TaskKey.run,
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: ['web', 'webtv', 'tizen', 'webos', 'tizenmobile', 'tizenwatch', 'kaios', 'chromecast'],
 };

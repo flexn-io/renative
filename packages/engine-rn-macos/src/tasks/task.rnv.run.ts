@@ -5,8 +5,8 @@ import {
     logTask,
     logSummary,
     logRaw,
-    TASK_RUN,
-    TASK_CONFIGURE,
+    TaskKey.run,
+    TaskKey.configure,
     PARAMS,
     executeOrSkipTask,
     shouldSkipTask,
@@ -22,16 +22,16 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { hosted } = c.program;
     logTask('taskRnvRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
-    await executeOrSkipTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
+    await executeOrSkipTask(c, TaskKey.configure, TaskKey.run, originTask);
 
-    if (shouldSkipTask(c, TASK_RUN, originTask)) return true;
+    if (shouldSkipTask(c, TaskKey.run, originTask)) return true;
 
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
 
     switch (platform) {
         case 'macos':
             if (!c.program.only) {
-                await startBundlerIfRequired(c, TASK_RUN, originTask);
+                await startBundlerIfRequired(c, TaskKey.run, originTask);
                 await runXcodeProject(c);
                 if (!bundleAssets) {
                     logSummary('BUNDLER STARTED');
@@ -54,9 +54,9 @@ const Task: RnvTask = {
     description: 'Run your macos app on target device or emulator',
     fn: taskRnvRun,
     fnHelp: taskRnvRunHelp,
-    task: TASK_RUN,
+    task: TaskKey.run,
     // dependencies: {
-    //     before: TASK_CONFIGURE,
+    //     before: TaskKey.configure,
     // },
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: ['macos'],

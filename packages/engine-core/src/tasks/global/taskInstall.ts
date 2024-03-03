@@ -6,8 +6,8 @@ import {
     logInfo,
     RnvTaskFn,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
-import { TASK_INSTALL } from './constants';
 
 export const taskRnvInstall: RnvTaskFn = async (c, parentTask, _) => {
     logTask('taskRnvInstall', `requiresInstall:${!!c._requiresNpmInstall}:${!c.runtime.skipPackageUpdate}`);
@@ -33,7 +33,7 @@ export const taskRnvInstall: RnvTaskFn = async (c, parentTask, _) => {
 const Task: RnvTask = {
     description: 'Install package node_modules via yarn or npm',
     fn: taskRnvInstall,
-    task: TASK_INSTALL,
+    task: TaskKey.install,
     params: PARAMS.withBase(),
     platforms: [],
 };

@@ -10,8 +10,9 @@ import {
     RnvTaskFn,
     RnvContext,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
-import { RNV_PACKAGES, TASK_LINK } from './constants';
+import { RNV_PACKAGES } from './constants';
 
 const _linkPackage = (c: RnvContext, key: string, folder: string) => {
     const rnvPath = path.join(c.paths.project.nodeModulesDir, key);
@@ -42,7 +43,7 @@ export const taskRnvLink: RnvTaskFn = async (c, _parentTask, _originalTask) => {
 const Task: RnvTask = {
     description: 'Links development version or renative with this project',
     fn: taskRnvLink,
-    task: TASK_LINK,
+    task: TaskKey.link,
     params: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,

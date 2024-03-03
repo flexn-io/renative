@@ -6,8 +6,8 @@ import {
     executeTask,
     shouldSkipTask,
     doResolve,
-    TASK_START,
-    TASK_CONFIGURE_SOFT,
+    TaskKey.start,
+    TaskKey.configureSoft,
     logError,
     RnvTask,
     PlatformKey,
@@ -31,10 +31,10 @@ export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     // Disable reset for other commands (ie. cleaning platforms)
     c.runtime.disableReset = true;
     if (!parentTask) {
-        await executeTask(c, TASK_CONFIGURE_SOFT, TASK_START, originTask);
+        await executeTask(c, TaskKey.configureSoft, TaskKey.start, originTask);
     }
 
-    if (shouldSkipTask(c, TASK_START, originTask)) return true;
+    if (shouldSkipTask(c, TaskKey.start, originTask)) return true;
 
     switch (platform) {
         case 'xbox':
@@ -53,7 +53,7 @@ export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Starts bundler / server',
     fn: taskRnvStart,
-    task: TASK_START,
+    task: TaskKey.start,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['windows', 'xbox'],
 };

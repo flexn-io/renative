@@ -3,8 +3,8 @@ import {
     logErrorPlatform,
     copySharedPlatforms,
     logTask,
-    TASK_PLATFORM_CONFIGURE,
-    TASK_CONFIGURE,
+    TaskKey.platformConfigure,
+    TaskKey.configure,
     PARAMS,
     executeTask,
     shouldSkipTask,
@@ -19,8 +19,8 @@ import { configureTizenProject } from '@rnv/sdk-tizen';
 export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure');
 
-    await executeTask(c, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, originTask);
-    if (shouldSkipTask(c, TASK_CONFIGURE, originTask)) return true;
+    await executeTask(c, TaskKey.platformConfigure, TaskKey.configure, originTask);
+    if (shouldSkipTask(c, TaskKey.configure, originTask)) return true;
     await configureEntryPoint(c, c.platform);
 
     await copySharedPlatforms(c);
@@ -51,7 +51,7 @@ export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => 
 const Task: RnvTask = {
     description: 'Configure current project',
     fn: taskRnvConfigure,
-    task: TASK_CONFIGURE,
+    task: TaskKey.configure,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['web', 'webtv', 'tizen', 'webos', 'tizenmobile', 'tizenwatch', 'kaios', 'chromecast'],
 };

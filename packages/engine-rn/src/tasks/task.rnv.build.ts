@@ -3,11 +3,11 @@ import {
     logTask,
     PARAMS,
     RnvTaskFn,
-    TASK_BUILD,
-    TASK_EXPORT,
+    TaskKey.build,
+    TaskKey.export,
     executeOrSkipTask,
     shouldSkipTask,
-    TASK_PACKAGE,
+    TaskKey.package,
     RnvTask,
 } from '@rnv/core';
 import { buildReactNativeAndroid } from '@rnv/sdk-react-native';
@@ -17,9 +17,9 @@ export const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvBuild');
     const { platform } = c;
 
-    await executeOrSkipTask(c, TASK_PACKAGE, TASK_BUILD, originTask);
+    await executeOrSkipTask(c, TaskKey.package, TaskKey.build, originTask);
 
-    if (shouldSkipTask(c, TASK_BUILD, originTask)) return true;
+    if (shouldSkipTask(c, TaskKey.build, originTask)) return true;
 
     switch (platform) {
         case 'android':
@@ -29,7 +29,7 @@ export const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
             return buildReactNativeAndroid(c);
         case 'ios':
         case 'macos':
-            if (parentTask === TASK_EXPORT) {
+            if (parentTask === TaskKey.export) {
                 // build task is not necessary when exporting ios
                 return true;
             }
@@ -42,7 +42,7 @@ export const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Build project binary',
     fn: taskRnvBuild,
-    task: TASK_BUILD,
+    task: TaskKey.build,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],
 };

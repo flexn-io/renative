@@ -14,14 +14,13 @@ import {
     inquirerPrompt,
     PlatformKey,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
-import { TASK_PROJECT_CONFIGURE } from '../project/constants';
-import { TASK_PLATFORM_CONNECT } from './constants';
 
 export const taskRnvPlatformConnect: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvPlatformConnect');
 
-    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLATFORM_CONNECT, originTask);
+    await executeTask(c, TaskKey.projectConfigure, TaskKey.platformConnect, originTask);
 
     const configOriginal = c.files.project.config_original;
     if (!configOriginal) {
@@ -91,7 +90,7 @@ export const taskRnvPlatformConnect: RnvTaskFn = async (c, _parentTask, originTa
 const Task: RnvTask = {
     description: 'Connect platform template back to rnv',
     fn: taskRnvPlatformConnect,
-    task: TASK_PLATFORM_CONNECT,
+    task: TaskKey.platformConnect,
     params: PARAMS.withBase(),
     platforms: [],
 };

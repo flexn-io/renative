@@ -2,7 +2,7 @@ import {
     RnvTaskFn,
     logTask,
     PARAMS,
-    TASK_EXPORT,
+    TaskKey.export,
     executeOrSkipTask,
     initializeTask,
     findSuitableTask,
@@ -15,9 +15,9 @@ export const taskRnvDockerDeploy: RnvTaskFn = async (c, parentTask, originTask) 
 
     if (c.program.only) {
         // If run as standalone command skip all the export
-        await executeOrSkipTask(c, TASK_EXPORT, 'docker export', originTask);
+        await executeOrSkipTask(c, TaskKey.export, 'docker export', originTask);
     } else {
-        const taskInstance = await findSuitableTask(c, TASK_EXPORT);
+        const taskInstance = await findSuitableTask(c, TaskKey.export);
         if (taskInstance) await initializeTask(c, taskInstance.task);
     }
 

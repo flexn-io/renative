@@ -20,8 +20,6 @@ import {
     RnvTask,
 } from '@rnv/core';
 import { getEnvExportCmd, getEnvVar } from './common';
-import { TASK_PROJECT_CONFIGURE } from '../project/constants';
-import { TASK_CRYPTO_DECRYPT } from './constants';
 
 const iocane = require('iocane');
 
@@ -53,7 +51,7 @@ export const taskRnvCryptoDecrypt: RnvTaskFn = async (c, parentTask, originTask)
     logTask('taskRnvCryptoDecrypt');
 
     if (!parentTask) {
-        await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_CRYPTO_DECRYPT, originTask);
+        await executeTask(c, TaskKey.projectConfigure, TaskKey.cryptoDecrypt, originTask);
     }
 
     const crypto = c.files.project.config?.crypto;
@@ -210,7 +208,7 @@ and we will try to help!
 const Task: RnvTask = {
     description: 'Decrypt encrypted project files into local `~/<wokspace>/<project>/..`',
     fn: taskRnvCryptoDecrypt,
-    task: TASK_CRYPTO_DECRYPT,
+    task: TaskKey.cryptoDecrypt,
     params: PARAMS.withBase(),
     platforms: [],
 };

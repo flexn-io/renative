@@ -7,16 +7,15 @@ import {
     RnvTaskFn,
     generatePlatformAssetsRuntimeConfig,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
-import { TASK_APP_SWITCH } from './constants';
-import { TASK_PROJECT_CONFIGURE } from '../project/constants';
 
 export const taskRnvSwitch: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvSwitch');
 
     c.program.appConfigID = true;
 
-    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_APP_SWITCH, originTask);
+    await executeTask(c, TaskKey.projectConfigure, TaskKey.appSwitch, originTask);
 
     await copyRuntimeAssets(c);
     await generatePlatformAssetsRuntimeConfig(c);
@@ -28,7 +27,7 @@ export const taskRnvSwitch: RnvTaskFn = async (c, _parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Switch between different app configs in current project',
     fn: taskRnvSwitch,
-    task: TASK_APP_SWITCH,
+    task: TaskKey.appSwitch,
     params: PARAMS.withBase(),
     platforms: [],
 };

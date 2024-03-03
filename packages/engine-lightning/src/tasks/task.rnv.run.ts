@@ -3,8 +3,8 @@ import {
     logErrorPlatform,
     logTask,
     logRaw,
-    TASK_RUN,
-    TASK_CONFIGURE,
+    TaskKey.run,
+    TaskKey.configure,
     PARAMS,
     executeOrSkipTask,
     RnvTask,
@@ -18,7 +18,7 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { hosted } = c.program;
     logTask('taskRnvRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
-    await executeOrSkipTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
+    await executeOrSkipTask(c, TaskKey.configure, TaskKey.run, originTask);
 
     switch (platform) {
         case 'tizen':
@@ -39,9 +39,9 @@ const Task: RnvTask = {
     description: 'Run your lightning app on target device or emulator',
     fn: taskRnvRun,
     fnHelp: taskRnvRunHelp,
-    task: TASK_RUN,
+    task: TaskKey.run,
     // dependencies: {
-    //     before: TASK_CONFIGURE,
+    //     before: TaskKey.configure,
     // },
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: ['tizen', 'webos'],

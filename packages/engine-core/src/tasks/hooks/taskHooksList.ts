@@ -1,11 +1,19 @@
-import { logToSummary, logTask, generateOptions, buildHooks, executeTask, PARAMS, RnvTaskFn, RnvTask } from '@rnv/core';
-import { TASK_PROJECT_CONFIGURE } from '../project/constants';
-import { TASK_HOOKS_LIST } from './constants';
+import {
+    logToSummary,
+    logTask,
+    generateOptions,
+    buildHooks,
+    executeTask,
+    PARAMS,
+    RnvTaskFn,
+    RnvTask,
+    TaskKey,
+} from '@rnv/core';
 
 export const taskRnvHooksList: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvHooksList');
 
-    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_HOOKS_LIST, originTask);
+    await executeTask(c, TaskKey.projectConfigure, TaskKey.hooksList, originTask);
     await buildHooks(c);
 
     if (c.buildHooks) {
@@ -25,7 +33,7 @@ export const taskRnvHooksList: RnvTaskFn = async (c, _parentTask, originTask) =>
 const Task: RnvTask = {
     description: 'Get list of all available hooks',
     fn: taskRnvHooksList,
-    task: TASK_HOOKS_LIST,
+    task: TaskKey.hooksList,
     params: PARAMS.withBase(),
     platforms: [],
     forceBuildHookRebuild: true,

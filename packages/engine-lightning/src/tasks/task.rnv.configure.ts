@@ -1,8 +1,8 @@
 import {
     logErrorPlatform,
     logTask,
-    TASK_PLATFORM_CONFIGURE,
-    TASK_CONFIGURE,
+    TaskKey.platformConfigure,
+    TaskKey.configure,
     PARAMS,
     executeTask,
     RnvTaskFn,
@@ -13,7 +13,7 @@ import { configureLightningProject } from '../sdks/sdk-lightning';
 export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure');
 
-    await executeTask(c, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, originTask);
+    await executeTask(c, TaskKey.platformConfigure, TaskKey.configure, originTask);
 
     if (c.program.only && !!parentTask) {
         return true;
@@ -31,7 +31,7 @@ export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => 
 const Task: RnvTask = {
     description: 'Configure current project',
     fn: taskRnvConfigure,
-    task: TASK_CONFIGURE,
+    task: TaskKey.configure,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['tizen', 'webos'],
 };

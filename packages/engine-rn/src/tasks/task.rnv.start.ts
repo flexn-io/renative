@@ -5,12 +5,11 @@ import {
     RnvTaskFn,
     executeTask,
     shouldSkipTask,
-    TASK_START,
     logError,
     RnvTask,
+    TaskKey,
 } from '@rnv/core';
 import { startReactNative } from '@rnv/sdk-react-native';
-import { TASK_CONFIGURE_SOFT } from './constants';
 
 export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
@@ -24,10 +23,10 @@ export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     // Disable reset for other commands (ie. cleaning platforms)
     c.runtime.disableReset = true;
     if (!parentTask) {
-        await executeTask(c, TASK_CONFIGURE_SOFT, TASK_START, originTask);
+        await executeTask(c, TaskKey.configureSoft, TaskKey.start, originTask);
     }
 
-    if (shouldSkipTask(c, TASK_START, originTask)) return true;
+    if (shouldSkipTask(c, TaskKey.start, originTask)) return true;
 
     switch (platform) {
         case 'ios':
@@ -46,7 +45,7 @@ export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Starts bundler / server',
     fn: taskRnvStart,
-    task: TASK_START,
+    task: TaskKey.start,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],
 };
