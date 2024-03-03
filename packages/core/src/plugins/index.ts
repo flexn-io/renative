@@ -2,7 +2,6 @@ import merge from 'deepmerge';
 import path from 'path';
 import { getAppConfigBuildsFolder, getAppFolder } from '../context/contextProps';
 import { parseRenativeConfigs } from '../configs';
-import { RENATIVE_CONFIG_PLUGINS_NAME } from '../constants';
 import { configureFonts } from '../projects';
 import {
     copyFolderContentsRecursiveSync,
@@ -28,6 +27,7 @@ import { ConfigFileOverrides, ConfigFilePlugin, ConfigFilePlugins } from '../sch
 import { NpmPackageFile } from '../configs/types';
 import { getContext } from '../context/provider';
 import { getConfigProp } from '../context/contextProps';
+import { ConfigName } from '../enums/configName';
 
 const _getPluginScope = (plugin: RenativeConfigPlugin | string): RnvPluginScope => {
     if (typeof plugin === 'string') {
@@ -562,7 +562,7 @@ const _parsePluginTemplateDependencies = (
                         ptPath = `${doResolve(val.npm)}/${val.path}`;
                     }
 
-                    const ptConfig = path.join(ptPath, RENATIVE_CONFIG_PLUGINS_NAME);
+                    const ptConfig = path.join(ptPath, ConfigName.renativePlugins);
                     c.paths.rnv.pluginTemplates.dirs[k] = ptPath;
                     if (fsExistsSync(ptConfig)) {
                         const ptConfigs = c.files.rnv.pluginTemplates.configs;

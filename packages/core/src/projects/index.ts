@@ -5,7 +5,6 @@ import {
     getPlatformProjectDir,
     getTimestampPathsConfig,
 } from '../context/contextProps';
-import { RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
 import { isPlatformActive } from '../platforms';
 import { copyTemplatePluginsSync, parsePlugins } from '../plugins';
 import {
@@ -23,9 +22,7 @@ import {
 } from '../system/fs';
 import { installPackageDependencies, isYarnInstalled } from './npm';
 import { executeAsync } from '../system/exec';
-
 import { chalk, logTask, logWarning, logDebug, logInfo, getCurrentCommand } from '../logger';
-
 import { configureTemplateFiles, configureEntryPoint } from '../templates';
 import { parseRenativeConfigs } from '../configs';
 import { RnvContext } from '../context/types';
@@ -36,6 +33,7 @@ import { upgradeProjectDependencies } from '../configs/configProject';
 import { generateConfigPropInjects } from '../system/injectors';
 import { ConfigFileApp, ConfigFileEngine, ConfigFileProject, ConfigFileTemplate } from '../schema/configFiles/types';
 import { getConfigProp } from '../context/contextProps';
+import { ConfigName } from '../enums/configName';
 
 export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
     logTask('checkAndBootstrapIfRequired');
@@ -50,7 +48,7 @@ export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
         const templatePath = path.join(c.paths.project.dir, 'node_modules', templateDir);
 
         c.paths.template.dir = templatePath;
-        c.paths.template.configTemplate = path.join(templatePath, RENATIVE_CONFIG_TEMPLATE_NAME);
+        c.paths.template.configTemplate = path.join(templatePath, ConfigName.renativeTemplate);
 
         const templateObj = readObjectSync<ConfigFileTemplate>(c.paths.template.configTemplate);
         const appConfigPath = path.join(c.paths.project.appConfigsDir, c.program.appConfigID, 'renative.json');

@@ -2,9 +2,7 @@ import lSet from 'lodash/set';
 import path from 'path';
 import semver from 'semver';
 import {
-    RENATIVE_CONFIG_NAME,
     PARAMS,
-    RENATIVE_CONFIG_TEMPLATE_NAME,
     getTemplateOptions,
     mkdirSync,
     writeFileSync,
@@ -39,6 +37,7 @@ import {
     ConfigFileProject,
     ConfigFileTemplate,
     TaskKey,
+    ConfigName,
 } from '@rnv/core';
 
 type NewProjectData = {
@@ -544,11 +543,11 @@ export const taskRnvNew = async (c: RnvContext) => {
 
     const renativeTemplateConfig =
         readObjectSync<ConfigFileTemplate>(
-            path.join(c.paths.project.dir, 'node_modules', selectedInputTemplate, RENATIVE_CONFIG_TEMPLATE_NAME)
+            path.join(c.paths.project.dir, 'node_modules', selectedInputTemplate, ConfigName.renativeTemplate)
         ) || {};
 
     const renativeConfig = readObjectSync<ConfigFileProject>(
-        path.join(c.paths.project.dir, 'node_modules', selectedInputTemplate, RENATIVE_CONFIG_NAME)
+        path.join(c.paths.project.dir, 'node_modules', selectedInputTemplate, ConfigName.renative)
     );
 
     // ==================================================
@@ -674,7 +673,7 @@ export const taskRnvNew = async (c: RnvContext) => {
     }
 
     c.paths.project.package = path.join(c.paths.project.dir, 'package.json');
-    c.paths.project.config = path.join(c.paths.project.dir, RENATIVE_CONFIG_NAME);
+    c.paths.project.config = path.join(c.paths.project.dir, ConfigName.renative);
 
     data.packageName = data?.appTitle?.replace(/\s+/g, '-').toLowerCase();
 

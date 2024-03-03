@@ -1,5 +1,4 @@
 import path from 'path';
-import { RENATIVE_CONFIG_NAME, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
 import {
     copyFolderContentsRecursiveSync,
     copyFileSync,
@@ -25,6 +24,7 @@ import { checkIfProjectAndNodeModulesExists } from '../projects/dependencyManage
 import { ConfigFileApp, ConfigFileProject, ConfigFileTemplate } from '../schema/configFiles/types';
 import { PlatformKey } from '../schema/types';
 import { getConfigProp } from '../context/contextProps';
+import { ConfigName } from '../enums/configName';
 
 const _cleanProjectTemplateSync = (c: RnvContext) => {
     logTask('_cleanProjectTemplateSync');
@@ -51,9 +51,9 @@ const _applyTemplate = async (c: RnvContext) => {
     }
 
     if (c.paths.template.dir) {
-        c.paths.template.configTemplate = path.join(c.paths.template.dir, RENATIVE_CONFIG_TEMPLATE_NAME);
+        c.paths.template.configTemplate = path.join(c.paths.template.dir, ConfigName.renativeTemplate);
 
-        c.paths.template.config = path.join(c.paths.template.dir, RENATIVE_CONFIG_NAME);
+        c.paths.template.config = path.join(c.paths.template.dir, ConfigName.renative);
     }
 
     if (!fsExistsSync(c.paths.template.configTemplate)) {
@@ -118,7 +118,7 @@ const _configureAppConfigs = async (c: RnvContext) => {
         try {
             const supPlats = c.files.project?.config?.defaults?.supportedPlatforms;
             appConfigIds.forEach((v) => {
-                const appConfigPath = path.join(c.paths.project.appConfigsDir, v, RENATIVE_CONFIG_NAME);
+                const appConfigPath = path.join(c.paths.project.appConfigsDir, v, ConfigName.renative);
                 const appConfig = readObjectSync<ConfigFileApp>(appConfigPath);
                 if (appConfig) {
                     if (appConfig.skipBootstrapCopy) {

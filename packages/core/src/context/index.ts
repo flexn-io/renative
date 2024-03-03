@@ -1,25 +1,16 @@
 import { fsExistsSync, fsReadFileSync } from '../system/fs';
-import { RENATIVE_CONFIG_LOCAL_NAME, RENATIVE_CONFIG_PRIVATE_NAME } from '../constants';
 import { CreateContextOptions, RnvContext, RnvContextPathObj } from './types';
 import { USER_HOME_DIR, generateContextDefaults } from './defaults';
-
-import {
-    RENATIVE_CONFIG_NAME,
-    RENATIVE_CONFIG_RUNTIME_NAME,
-    RENATIVE_CONFIG_WORKSPACES_NAME,
-    RENATIVE_CONFIG_PLUGINS_NAME,
-    RENATIVE_CONFIG_TEMPLATES_NAME,
-} from '../constants';
-
 import path from 'path';
 import { mkdirSync } from 'fs';
 import { isSystemWin } from '../system/is';
+import { ConfigName } from '../enums/configName';
 
 export const generateContextPaths = (pathObj: RnvContextPathObj, dir: string, configName?: string) => {
     pathObj.dir = dir;
-    pathObj.config = path.join(dir, configName || RENATIVE_CONFIG_NAME);
-    pathObj.configLocal = path.join(dir, RENATIVE_CONFIG_LOCAL_NAME);
-    pathObj.configPrivate = path.join(dir, RENATIVE_CONFIG_PRIVATE_NAME);
+    pathObj.config = path.join(dir, configName || ConfigName.renative);
+    pathObj.configLocal = path.join(dir, ConfigName.renativeLocal);
+    pathObj.configPrivate = path.join(dir, ConfigName.renativePrivate);
     pathObj.appConfigsDir = path.join(dir, '..');
 };
 
@@ -81,12 +72,9 @@ Make sure all your rnv dependencies are of same version and you are executing wi
     c.paths.rnv.engines.dir = path.join(c.paths.rnv.dir, 'engineTemplates');
     c.paths.rnv.pluginTemplates.overrideDir = path.join(c.paths.rnv.dir, 'pluginTemplates');
 
-    c.paths.rnv.pluginTemplates.config = path.join(
-        c.paths.rnv.pluginTemplates.overrideDir,
-        RENATIVE_CONFIG_PLUGINS_NAME
-    );
+    c.paths.rnv.pluginTemplates.config = path.join(c.paths.rnv.pluginTemplates.overrideDir, ConfigName.renativePlugins);
     c.paths.rnv.projectTemplates.dir = path.join(c.paths.rnv.dir, 'coreTemplateFiles');
-    c.paths.rnv.projectTemplates.config = path.join(c.paths.rnv.projectTemplates.dir, RENATIVE_CONFIG_TEMPLATES_NAME);
+    c.paths.rnv.projectTemplates.config = path.join(c.paths.rnv.projectTemplates.dir, ConfigName.renativeTemplates);
     c.paths.rnv.package = path.join(c.paths.rnv.dir, 'package.json');
 
     c.paths.rnv.projectTemplate.dir = path.join(c.paths.rnv.dir, 'coreTemplateFiles');
@@ -95,8 +83,8 @@ Make sure all your rnv dependencies are of same version and you are executing wi
     c.platform = c.program.platform;
     c.paths.home.dir = USER_HOME_DIR;
     c.paths.GLOBAL_RNV_DIR = path.join(c.paths.home.dir, '.rnv');
-    c.paths.GLOBAL_RNV_CONFIG = path.join(c.paths.GLOBAL_RNV_DIR, RENATIVE_CONFIG_NAME);
-    c.paths.rnv.configWorkspaces = path.join(c.paths.GLOBAL_RNV_DIR, RENATIVE_CONFIG_WORKSPACES_NAME);
+    c.paths.GLOBAL_RNV_CONFIG = path.join(c.paths.GLOBAL_RNV_DIR, ConfigName.renative);
+    c.paths.rnv.configWorkspaces = path.join(c.paths.GLOBAL_RNV_DIR, ConfigName.renativeWorkspaces);
 
     if (!fsExistsSync(c.paths.GLOBAL_RNV_DIR)) {
         mkdirSync(c.paths.GLOBAL_RNV_DIR);
@@ -130,7 +118,7 @@ Make sure all your rnv dependencies are of same version and you are executing wi
     c.paths.project.appConfigBase.fontsDirs = [c.paths.project.appConfigBase.fontsDir];
     c.paths.project.assets.dir = path.join(c.paths.project.dir, 'platformAssets');
     c.paths.project.assets.runtimeDir = path.join(c.paths.project.assets.dir, 'runtime');
-    c.paths.project.assets.config = path.join(c.paths.project.assets.dir, RENATIVE_CONFIG_RUNTIME_NAME);
+    c.paths.project.assets.config = path.join(c.paths.project.assets.dir, ConfigName.renativeRuntime);
     c.paths.project.builds.dir = path.join(c.paths.project.dir, 'platformBuilds');
 
     generateContextPaths(c.paths.workspace, c.paths.GLOBAL_RNV_DIR);

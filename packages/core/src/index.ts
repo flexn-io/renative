@@ -53,7 +53,8 @@ export * from './plugins';
 export * from './buildHooks';
 export * from './migrator';
 
-export * from './taskKeys';
+export * from './enums/taskKey';
+export * from './enums/configName';
 
 //TYPES
 export * from './engines/types';

@@ -1,6 +1,5 @@
 import path from 'path';
 import {
-    RENATIVE_CONFIG_NAME,
     PARAMS,
     copyFileSync,
     mkdirSync,
@@ -15,6 +14,7 @@ import {
     RnvTaskFn,
     RnvTask,
     TaskKey,
+    ConfigName,
 } from '@rnv/core';
 
 export const taskRnvWorkspaceConfigure: RnvTaskFn = async (c) => {
@@ -30,14 +30,14 @@ export const taskRnvWorkspaceConfigure: RnvTaskFn = async (c) => {
 
     // Check globalConfig
     if (fsExistsSync(c.paths.workspace.config)) {
-        logDebug(`${c.paths.workspace.dir}/${RENATIVE_CONFIG_NAME} file exists!`);
+        logDebug(`${c.paths.workspace.dir}/${ConfigName.renative} file exists!`);
     } else {
         const oldGlobalConfigPath = path.join(c.paths.workspace.dir, 'config.json');
         if (fsExistsSync(oldGlobalConfigPath)) {
             logWarning('Found old version of your config. will copy it to new renative.json config');
             copyFileSync(oldGlobalConfigPath, c.paths.workspace.config);
         } else {
-            logInfo(`${c.paths.workspace.dir}/${RENATIVE_CONFIG_NAME} file missing! Creating one for you...`);
+            logInfo(`${c.paths.workspace.dir}/${ConfigName.renative} file missing! Creating one for you...`);
             copyFileSync(
                 path.join(c.paths.rnv.dir, 'coreTemplateFiles', 'global-config-template.json'),
                 c.paths.workspace.config

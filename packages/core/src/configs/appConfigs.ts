@@ -1,12 +1,10 @@
 import path from 'path';
 
-import { RENATIVE_CONFIG_NAME } from '../constants';
 import { fsExistsSync, fsReaddirSync, fsLstatSync, readObjectSync } from '../system/fs';
-
 import { logTask, logWarning } from '../logger';
-
 import { RnvContext } from '../context/types';
 import { ConfigFileApp } from '../schema/configFiles/types';
+import { ConfigName } from '../enums/configName';
 
 const IGNORE_FOLDERS = ['.git'];
 
@@ -23,7 +21,7 @@ export const listAppConfigsFoldersSync = (c: RnvContext, ignoreHiddenConfigs: bo
         const appConfigDir = path.join(dirPath, dir);
         if (!IGNORE_FOLDERS.includes(dir) && fsLstatSync(appConfigDir).isDirectory()) {
             if (ignoreHiddenConfigs) {
-                const appConfig = path.join(appConfigDir, RENATIVE_CONFIG_NAME);
+                const appConfig = path.join(appConfigDir, ConfigName.renative);
                 if (fsExistsSync(appConfig)) {
                     try {
                         const config = readObjectSync<ConfigFileApp>(appConfig);

@@ -1,10 +1,9 @@
 import path from 'path';
 import { fsExistsSync, fsWriteFileSync, loadFile, readObjectSync } from '../system/fs';
 import { logTask, logWarning, logInfo } from '../logger';
-import { RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
-
 import { RnvContext } from '../context/types';
 import { ConfigFileTemplate } from '../schema/configFiles/types';
+import { ConfigName } from '../enums/configName';
 
 const packageJsonIsValid = (c: RnvContext) => {
     if (!fsExistsSync(c.paths.project.package)) return false;
@@ -34,7 +33,7 @@ export const checkAndCreateProjectPackage = async (c: RnvContext) => {
                 c.paths.project.dir,
                 'node_modules',
                 templateName,
-                RENATIVE_CONFIG_TEMPLATE_NAME
+                ConfigName.renativeTemplate
             );
         }
 
