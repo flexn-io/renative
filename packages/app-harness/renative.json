@@ -98,6 +98,11 @@
                         "android:name": "",
                         "children": [
                             {
+                                "tag": "uses-permission ",
+                                "android:name": "android.permission.WRITE_EXTERNAL_STORAGE",
+                                "children": []
+                            },
+                            {
                                 "tag": "application",
                                 "android:name": ".MainApplication",
                                 "children": [
@@ -105,7 +110,8 @@
                                         "tag": "activity",
                                         "android:name": "com.ahmedadeltito.photoeditor.PhotoEditorActivity",
                                         "children": []
-                                    }
+                                    },
+                                    { "tag": "activity", "android:name": "com.yalantis.ucrop.UCropActivity" }
                                 ]
                             }
                         ]
@@ -151,7 +157,10 @@
                 "templateXcode": {
                     "AppDelegate_h": {
                         "appDelegateExtensions": ["UNUserNotificationCenterDelegate"],
-                        "appDelegateImports": ["<UserNotifications/UNUserNotificationCenter.h>", "<UserNotifications/UserNotifications.h>"]
+                        "appDelegateImports": [
+                            "<UserNotifications/UNUserNotificationCenter.h>",
+                            "<UserNotifications/UserNotifications.h>"
+                        ]
                     },
                     "AppDelegate_mm": {
                         "appDelegateImports": ["<RNCPushNotificationIOS.h>"],
