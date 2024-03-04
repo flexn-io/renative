@@ -60,7 +60,8 @@ export const launchWebOSimulator = async (c: RnvContext, target: string | boolea
                 c.paths.GLOBAL_RNV_CONFIG
             )}`
         );
-        return await launchWebOSimulator(c, true);
+        await launchWebOSimulator(c, true);
+        return true;
     }
 
     const ePath = path.join(
