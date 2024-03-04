@@ -52,16 +52,18 @@ export const logInitialize = () => {
 
 export const logWelcome = () => {
     const ctx = getContext();
+    const chalCol = currentChalk.rgb(10, 116, 230);
+
     // prettier-ignore
     let str = _defaultColor(`
 ┌──────────────────────────────────────────────────────────────────────────────┐
 │                                                                              │
-│        ${currentChalk.red('██████╗')} ███████╗${currentChalk.red('███╗   ██╗')} █████╗ ████████╗██╗${currentChalk.red('██╗   ██╗')}███████╗       │
-│        ${currentChalk.red('██╔══██╗')}██╔════╝${currentChalk.red('████╗  ██║')}██╔══██╗╚══██╔══╝██║${currentChalk.red('██║   ██║')}██╔════╝       │
-│        ${currentChalk.red('██████╔╝')}█████╗  ${currentChalk.red('██╔██╗ ██║')}███████║   ██║   ██║${currentChalk.red('██║   ██║')}█████╗         │
-│        ${currentChalk.red('██╔══██╗')}██╔══╝  ${currentChalk.red('██║╚██╗██║')}██╔══██║   ██║   ██║${currentChalk.red('╚██╗ ██╔╝')}██╔══╝         │
-│        ${currentChalk.red('██║  ██║')}███████╗${currentChalk.red('██║ ╚████║')}██║  ██║   ██║   ██║${currentChalk.red(' ╚████╔╝ ')}███████╗       │
-│        ${currentChalk.red('╚═╝  ╚═╝')}╚══════╝${currentChalk.red('╚═╝  ╚═══╝')}╚═╝  ╚═╝   ╚═╝   ╚═╝${currentChalk.red('  ╚═══╝  ')}╚══════╝       │
+│        ${chalCol('██████╗')} ███████╗${chalCol('███╗   ██╗')} █████╗ ████████╗██╗${chalCol('██╗   ██╗')}███████╗       │
+│        ${chalCol('██╔══██╗')}██╔════╝${chalCol('████╗  ██║')}██╔══██╗╚══██╔══╝██║${chalCol('██║   ██║')}██╔════╝       │
+│        ${chalCol('██████╔╝')}█████╗  ${chalCol('██╔██╗ ██║')}███████║   ██║   ██║${chalCol('██║   ██║')}█████╗         │
+│        ${chalCol('██╔══██╗')}██╔══╝  ${chalCol('██║╚██╗██║')}██╔══██║   ██║   ██║${chalCol('╚██╗ ██╔╝')}██╔══╝         │
+│        ${chalCol('██║  ██║')}███████╗${chalCol('██║ ╚████║')}██║  ██║   ██║   ██║${chalCol(' ╚████╔╝ ')}███████╗       │
+│        ${chalCol('╚═╝  ╚═╝')}╚══════╝${chalCol('╚═╝  ╚═══╝')}╚═╝  ╚═╝   ╚═╝   ╚═╝${chalCol('  ╚═══╝  ')}╚══════╝       │
 │                                                                              │
 `);
 
