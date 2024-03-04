@@ -154,16 +154,6 @@ Dev server running at: ${url}
     });
 };
 
-export const deployWebNext = () => {
-    logTask('deployWebNext');
-    // const { platform } = c;
-
-    // DEPRECATED: custom deployers moved to external packages
-    // return selectWebToolAndDeploy(c, platform);
-
-    return true;
-};
-
 export const exportWebNext = async (c: RnvContext) => {
     logTask('exportWebNext');
 

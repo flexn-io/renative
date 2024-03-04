@@ -1,28 +1,15 @@
 import { generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
-import { withRNVBabel, withRNV } from './adapter';
+import { withRNVBabel, withRNVWebpack } from './adapter';
 //@ts-ignore
 import CNF from '../renative.engine.json';
 import taskRun from './tasks/taskRun';
-import taskPackage from './tasks/taskPackage';
 import taskBuild from './tasks/taskBuild';
 import taskConfigure from './tasks/taskConfigure';
 import taskStart from './tasks/taskStart';
-import taskExport from './tasks/taskExport';
-import taskDeploy from './tasks/taskDeploy';
 import taskDebug from './tasks/taskDebug';
 
 const Engine: RnvEngine = {
-    // initializeRuntimeConfig: (c) => Context.initializeConfig(c),
-    tasks: generateEngineTasks([
-        taskRun,
-        taskPackage,
-        taskBuild,
-        taskConfigure,
-        taskStart,
-        taskExport,
-        taskDeploy,
-        taskDebug,
-    ]),
+    tasks: generateEngineTasks([taskRun, taskBuild, taskConfigure, taskStart, taskDebug]),
     config: CNF,
     projectDirName: '',
     serverDirName: '',
@@ -77,6 +64,6 @@ const Engine: RnvEngine = {
     },
 };
 
-export { withRNVBabel, withRNV };
+export { withRNVBabel, withRNVWebpack };
 
 export default Engine;

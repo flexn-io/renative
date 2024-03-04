@@ -42,11 +42,9 @@ import taskTelemetryStatus from './tasks/telemetry/taskTelemetryStatus';
 import taskTelemetryEnable from './tasks/telemetry/taskTelemetryEnable';
 import taskTelemetryDisable from './tasks/telemetry/taskTelemetryDisable';
 import taskSwitch from './tasks/app/taskAppSwitch';
+import taskDeploy from './tasks/global/taskDeploy';
 
 const Engine: RnvEngine = {
-    // initializeRuntimeConfig: () => {
-    //     //Do nothing
-    // },
     runtimeExtraProps: {},
     serverDirName: '',
     tasks: generateEngineTasks([
@@ -92,6 +90,7 @@ const Engine: RnvEngine = {
         taskTelemetryEnable,
         taskTelemetryDisable,
         taskSwitch,
+        taskDeploy,
     ]),
     config: {
         // title: 'Engine Core',

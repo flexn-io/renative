@@ -5,8 +5,6 @@ import taskBuild from './tasks/taskBuild';
 import taskConfigure from './tasks/taskConfigure';
 import taskStart from './tasks/taskStart';
 import taskExport from './tasks/taskExport';
-import taskDeploy from './tasks/taskDeploy';
-import taskDebug from './tasks/taskDebug';
 import taskCryptoInstallCerts from './tasks/taskCryptoInstallCerts';
 import taskCryptoUpdateProfile from './tasks/taskCryptoUpdateProfile';
 import taskCryptoUpdateProfiles from './tasks/taskCryptoUpdateProfiles';
@@ -19,7 +17,6 @@ import { withRNVMetro } from './adapters/metroAdapter';
 import { withRNVRNConfig } from '@rnv/sdk-react-native';
 
 const Engine: RnvEngine = {
-    // initializeRuntimeConfig: (c) => Context.initializeConfig(c),
     tasks: generateEngineTasks([
         taskRun,
         taskPackage,
@@ -27,8 +24,6 @@ const Engine: RnvEngine = {
         taskConfigure,
         taskStart,
         taskExport,
-        taskDeploy,
-        taskDebug,
         taskCryptoInstallCerts,
         taskCryptoUpdateProfile,
         taskCryptoUpdateProfiles,
@@ -65,8 +60,6 @@ const Engine: RnvEngine = {
     },
 };
 
-const withRNV = withRNVMetro;
-
-export { withRNVMetro, withRNV, withRNVBabel, withRNVRNConfig };
+export { withRNVMetro, withRNVBabel, withRNVRNConfig };
 
 export default Engine;

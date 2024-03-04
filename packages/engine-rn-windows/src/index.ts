@@ -5,8 +5,6 @@ import { withRNVBabel } from './adapters/babelAdapter';
 import CNF from '../renative.engine.json';
 import taskBuild from './tasks/taskBuild';
 import taskConfigure from './tasks/taskConfigure';
-import taskDebug from './tasks/taskDebug';
-import taskDeploy from './tasks/taskDeploy';
 import taskExport from './tasks/taskExport';
 import taskPackage from './tasks/taskPackage';
 import taskRun from './tasks/taskRun';
@@ -14,17 +12,7 @@ import taskStart from './tasks/taskStart';
 import { withRNVRNConfig } from '@rnv/sdk-react-native';
 
 const Engine: RnvEngine = {
-    // initializeRuntimeConfig: (c) => Context.initializeConfig(c),
-    tasks: generateEngineTasks([
-        taskRun,
-        taskPackage,
-        taskBuild,
-        taskConfigure,
-        taskStart,
-        taskExport,
-        taskDeploy,
-        taskDebug,
-    ]),
+    tasks: generateEngineTasks([taskRun, taskPackage, taskBuild, taskConfigure, taskStart, taskExport]),
     config: CNF,
     projectDirName: '',
     runtimeExtraProps: {},
@@ -42,9 +30,6 @@ const Engine: RnvEngine = {
     },
 };
 
-// Backward compatibility
-const withRNV = withRNVMetro;
-
-export { withRNV, withRNVMetro, withRNVBabel, withRNVRNConfig };
+export { withRNVMetro, withRNVBabel, withRNVRNConfig };
 
 export default Engine;

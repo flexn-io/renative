@@ -6,17 +6,7 @@ import taskConfigure from './tasks/taskConfigure';
 import taskRun from './tasks/taskRun';
 
 const Engine: RnvEngine = {
-    // initializeRuntimeConfig: (c) => Context.initializeConfig(c),
-    tasks: generateEngineTasks([
-        taskRun,
-        // taskPackage,
-        taskBuild,
-        taskConfigure,
-        // taskStart,
-        // taskExport,
-        // taskDeploy,
-        // taskDebug,
-    ]),
+    tasks: generateEngineTasks([taskRun, taskBuild, taskConfigure]),
     config: CNF,
     projectDirName: 'project',
     serverDirName: 'server',

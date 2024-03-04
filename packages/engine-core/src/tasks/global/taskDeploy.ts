@@ -1,4 +1,13 @@
-import { RnvTaskFn, logTask, PARAMS, executeOrSkipTask, shouldSkipTask, RnvTask, TaskKey } from '@rnv/core';
+import {
+    RnvTaskFn,
+    logTask,
+    PARAMS,
+    executeOrSkipTask,
+    shouldSkipTask,
+    RnvTask,
+    TaskKey,
+    SUPPORTED_PLATFORMS,
+} from '@rnv/core';
 
 const taskDeploy: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskDeploy', `parent:${parentTask}`);
@@ -16,7 +25,7 @@ const Task: RnvTask = {
     fn: taskDeploy,
     task: TaskKey.deploy,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: ['tvos', 'androidtv', 'firetv'],
+    platforms: [...SUPPORTED_PLATFORMS],
 };
 
 export default Task;

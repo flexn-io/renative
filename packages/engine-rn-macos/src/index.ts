@@ -9,21 +9,10 @@ import taskBuild from './tasks/taskBuild';
 import taskConfigure from './tasks/taskConfigure';
 import taskStart from './tasks/taskStart';
 import taskExport from './tasks/taskExport';
-import taskDeploy from './tasks/taskDeploy';
 import { withRNVRNConfig } from '@rnv/sdk-react-native';
 
 const Engine: RnvEngine = {
-    // initializeRuntimeConfig: (c) => Context.initializeConfig(c),
-    tasks: generateEngineTasks([
-        taskRun,
-        taskPackage,
-        taskBuild,
-        taskConfigure,
-        taskStart,
-        taskExport,
-        taskDeploy,
-        // taskLog,
-    ]),
+    tasks: generateEngineTasks([taskRun, taskPackage, taskBuild, taskConfigure, taskStart, taskExport]),
     config: CNF,
     runtimeExtraProps: {
         reactNativePackageName: 'react-native',
@@ -43,9 +32,6 @@ const Engine: RnvEngine = {
     },
 };
 
-// Backward compatibility
-const withRNV = withRNVMetro;
-
-export { withRNV, withRNVMetro, withRNVBabel, withRNVRNConfig };
+export { withRNVMetro, withRNVBabel, withRNVRNConfig };
 
 export default Engine;

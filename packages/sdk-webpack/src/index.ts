@@ -345,22 +345,3 @@ export const runChromecast = async (c: RnvContext) => {
     logTask(`runChromecast:${c.platform}`);
     await runWebpackServer(c);
 };
-
-export const deployWeb = () => {
-    logTask('deployWeb');
-    // const { platform } = c;
-
-    // DEPRECATED: custom deployers moved to external packages
-    // return selectWebToolAndDeploy(c, platform);
-
-    return true;
-};
-
-export const exportWeb = () => {
-    logTask('exportWeb');
-    // const { platform } = c;
-
-    // DEPRECATED: custom deployers moved to external packages
-    // return selectWebToolAndExport(c, platform);
-    return true;
-};

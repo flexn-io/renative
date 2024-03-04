@@ -4,26 +4,13 @@ import { withRNVBabel } from './adapters/babelAdapter';
 //@ts-ignore
 import CNF from '../renative.engine.json';
 import taskRun from './tasks/taskRun';
-import taskPackage from './tasks/taskPackage';
 import taskBuild from './tasks/taskBuild';
 import taskConfigure from './tasks/taskConfigure';
 import taskStart from './tasks/taskStart';
 import taskExport from './tasks/taskExport';
-import taskDeploy from './tasks/taskDeploy';
-import taskDebug from './tasks/taskDebug';
 
 const Engine: RnvEngine = {
-    // initializeRuntimeConfig: (c) => Context.initializeConfig(c),
-    tasks: generateEngineTasks([
-        taskRun,
-        taskPackage,
-        taskBuild,
-        taskConfigure,
-        taskStart,
-        taskExport,
-        taskDeploy,
-        taskDebug,
-    ]),
+    tasks: generateEngineTasks([taskRun, taskBuild, taskConfigure, taskStart, taskExport]),
     config: CNF,
     projectDirName: '',
     runtimeExtraProps: {},
@@ -45,9 +32,6 @@ const Engine: RnvEngine = {
     },
 };
 
-// Backward compatibility
-const withRNV = withRNVNext;
-
-export { withRNV, withRNVNext, withRNVBabel };
+export { withRNVNext, withRNVBabel };
 
 export default Engine;
