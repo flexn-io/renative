@@ -15,8 +15,8 @@ import {
 import { checkPortInUse } from '@rnv/sdk-utils';
 import killPort from 'kill-port';
 
-const taskRnvKill: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskRnvKill');
+const taskKill: RnvTaskFn = async (c, _parentTask, originTask) => {
+    logTask('taskKill');
 
     const usedPorts: RnvContext['runtime']['supportedPlatforms'] = [];
     let platArray: RnvContext['runtime']['supportedPlatforms'] = [];
@@ -67,7 +67,7 @@ ${usedPorts.map((v) => chalk().white(`> ${v.port} (${v.platform})`)).join('\n')}
 
 const Task: RnvTask = {
     description: 'Kills all the processes related to this project',
-    fn: taskRnvKill,
+    fn: taskKill,
     task: TaskKey.kill,
     params: PARAMS.withBase(),
     platforms: [],

@@ -10,8 +10,8 @@ import {
     TaskKey,
 } from '@rnv/core';
 
-const taskRnvSwitch: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskRnvSwitch');
+const taskSwitch: RnvTaskFn = async (c, _parentTask, originTask) => {
+    logTask('taskSwitch');
 
     c.program.appConfigID = true;
 
@@ -26,7 +26,7 @@ const taskRnvSwitch: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Switch between different app configs in current project',
-    fn: taskRnvSwitch,
+    fn: taskSwitch,
     task: TaskKey.appSwitch,
     params: PARAMS.withBase(),
     platforms: [],

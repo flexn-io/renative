@@ -19,8 +19,8 @@ import {
 import { NpmPackageFile } from '@rnv/core/lib/configs/types';
 import { ConfigFileProject } from '@rnv/core/lib/schema/configFiles/types';
 
-const taskRnvProjectUpgrade: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskRnvProjectUpgrade');
+const taskProjectUpgrade: RnvTaskFn = async (c, _parentTask, originTask) => {
+    logTask('taskProjectUpgrade');
     const upgradedPaths = [];
     if (fsExistsSync(c.paths.project.config)) {
         await executeTask(c, TaskKey.projectConfigure, TaskKey.projectUpgrade, originTask);
@@ -76,7 +76,7 @@ const taskRnvProjectUpgrade: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Upgrade or downgrade RNV dependencies in your ReNative project',
-    fn: taskRnvProjectUpgrade,
+    fn: taskProjectUpgrade,
     task: TaskKey.projectUpgrade,
     params: PARAMS.withBase(),
     platforms: [],

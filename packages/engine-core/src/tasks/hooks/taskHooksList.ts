@@ -10,8 +10,8 @@ import {
     TaskKey,
 } from '@rnv/core';
 
-const taskRnvHooksList: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskRnvHooksList');
+const taskHooksList: RnvTaskFn = async (c, _parentTask, originTask) => {
+    logTask('taskHooksList');
 
     await executeTask(c, TaskKey.projectConfigure, TaskKey.hooksList, originTask);
     await buildHooks(c);
@@ -32,7 +32,7 @@ const taskRnvHooksList: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Get list of all available hooks',
-    fn: taskRnvHooksList,
+    fn: taskHooksList,
     task: TaskKey.hooksList,
     params: PARAMS.withBase(),
     platforms: [],

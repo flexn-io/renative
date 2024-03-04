@@ -1,9 +1,9 @@
-import taskRnvDockerDeploy from './tasks/taskDockerDeploy';
-import taskRnvDockerExport from './tasks/taskDockerExport';
+import taskDockerDeploy from './tasks/taskDockerDeploy';
+import taskDockerExport from './tasks/taskDockerExport';
 //@ts-ignore
 import config from '../renative.integration.json';
 
-const TASKS = [taskRnvDockerExport, taskRnvDockerDeploy];
+const TASKS = [taskDockerExport, taskDockerDeploy];
 
 const getTasks = () => TASKS;
 

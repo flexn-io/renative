@@ -3,8 +3,8 @@ import { logTask, PARAMS, executeTask, logErrorPlatform, RnvTaskFn, RnvTask, Tas
 import { runAppleLog } from '@rnv/sdk-apple';
 import { runAndroidLog, checkAndConfigureAndroidSdks } from '@rnv/sdk-android';
 
-const taskRnvLog: RnvTaskFn = async (c, parentTask, originTask) => {
-    logTask('taskRnvLog', `parent:${parentTask}`);
+const taskLog: RnvTaskFn = async (c, parentTask, originTask) => {
+    logTask('taskLog', `parent:${parentTask}`);
 
     await executeTask(c, TaskKey.workspaceConfigure, TaskKey.projectConfigure, originTask);
 
@@ -22,7 +22,7 @@ const taskRnvLog: RnvTaskFn = async (c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Attach logger to device or emulator and print out logs',
-    fn: taskRnvLog,
+    fn: taskLog,
     task: TaskKey.log,
     params: PARAMS.withBase(),
     platforms: ['tvos', 'androidtv', 'firetv'],

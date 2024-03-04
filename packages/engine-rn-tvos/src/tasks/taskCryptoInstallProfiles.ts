@@ -16,15 +16,15 @@ import {
     TaskKey,
 } from '@rnv/core';
 
-const taskRnvCryptoInstallProfiles: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskRnvCryptoInstallProfiles');
+const taskCryptoInstallProfiles: RnvTaskFn = async (c, _parentTask, originTask) => {
+    logTask('taskCryptoInstallProfiles');
 
     await executeTask(c, TaskKey.projectConfigure, TaskKey.cryptoInstallProfiles, originTask);
 
     if (shouldSkipTask(c, TaskKey.cryptoInstallProfiles, originTask)) return true;
 
     if (c.platform !== 'tvos') {
-        logError(`taskRnvCryptoInstallProfiles: platform ${c.platform} not supported`);
+        logError(`taskCryptoInstallProfiles: platform ${c.platform} not supported`);
         return true;
     }
 
@@ -40,7 +40,7 @@ const taskRnvCryptoInstallProfiles: RnvTaskFn = async (c, _parentTask, originTas
 
     try {
         mobileprovisionArr.forEach((v) => {
-            logDebug(`taskRnvCryptoInstallProfiles: Installing: ${v}`);
+            logDebug(`taskCryptoInstallProfiles: Installing: ${v}`);
             copyFileSync(v, ppFolder);
         });
     } catch (e) {
@@ -52,7 +52,7 @@ const taskRnvCryptoInstallProfiles: RnvTaskFn = async (c, _parentTask, originTas
 
 const Task: RnvTask = {
     description: 'Installs provisioning certificates found in your workspace (mac only)',
-    fn: taskRnvCryptoInstallProfiles,
+    fn: taskCryptoInstallProfiles,
     task: TaskKey.cryptoInstallProfiles,
     params: PARAMS.withBase(),
     platforms: [],

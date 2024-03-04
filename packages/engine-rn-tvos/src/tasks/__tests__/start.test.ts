@@ -1,5 +1,5 @@
 import { createRnvApi, createRnvContext, getContext, logError, doResolve, executeTask } from '@rnv/core';
-import taskRnvStart from '../taskStart';
+import taskStart from '../taskStart';
 import { startReactNative } from '@rnv/sdk-react-native';
 
 jest.mock('@rnv/core');
@@ -20,7 +20,7 @@ test('Execute task.rnv.start with no parent', async () => {
     ctx.platform = 'tvos';
     jest.mocked(doResolve).mockReturnValueOnce('MOCKED_PATH');
     // WHEN
-    await taskRnvStart.fn?.(ctx, undefined, undefined);
+    await taskStart.fn?.(ctx, undefined, undefined);
     // THEN
     expect(executeTask).toHaveBeenCalledTimes(1);
     expect(startReactNative).toHaveBeenCalledWith(ctx, {
@@ -36,7 +36,7 @@ test('Execute task.rnv.start', async () => {
     ctx.platform = 'tvos';
     jest.mocked(doResolve).mockReturnValueOnce('MOCKED_PATH');
     // WHEN
-    await taskRnvStart.fn?.(ctx, 'parent', undefined);
+    await taskStart.fn?.(ctx, 'parent', undefined);
     // THEN
     expect(startReactNative).toHaveBeenCalledWith(ctx, {
         waitForBundler: false,
@@ -51,7 +51,7 @@ test('Execute task.rnv.start in hosted mode', async () => {
     ctx.platform = 'tvos';
     ctx.program.hosted = true;
     // WHEN
-    await taskRnvStart.fn?.(ctx, 'parent', undefined);
+    await taskStart.fn?.(ctx, 'parent', undefined);
     // THEN
     expect(logError).toHaveBeenCalledWith('This platform does not support hosted mode', true);
 });

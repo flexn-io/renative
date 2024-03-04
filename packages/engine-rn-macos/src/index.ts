@@ -3,26 +3,26 @@ import { withRNVMetro } from './adapters/metroAdapter';
 import { withRNVBabel } from './adapters/babelAdapter';
 //@ts-ignore
 import CNF from '../renative.engine.json';
-import taskRnvRun from './tasks/taskRun';
-import taskRnvPackage from './tasks/taskPackage';
-import taskRnvBuild from './tasks/taskBuild';
-import taskRnvConfigure from './tasks/taskConfigure';
-import taskRnvStart from './tasks/taskStart';
-import taskRnvExport from './tasks/taskExport';
-import taskRnvDeploy from './tasks/taskDeploy';
+import taskRun from './tasks/taskRun';
+import taskPackage from './tasks/taskPackage';
+import taskBuild from './tasks/taskBuild';
+import taskConfigure from './tasks/taskConfigure';
+import taskStart from './tasks/taskStart';
+import taskExport from './tasks/taskExport';
+import taskDeploy from './tasks/taskDeploy';
 import { withRNVRNConfig } from '@rnv/sdk-react-native';
 
 const Engine: RnvEngine = {
     // initializeRuntimeConfig: (c) => Context.initializeConfig(c),
     tasks: generateEngineTasks([
-        taskRnvRun,
-        taskRnvPackage,
-        taskRnvBuild,
-        taskRnvConfigure,
-        taskRnvStart,
-        taskRnvExport,
-        taskRnvDeploy,
-        // taskRnvLog,
+        taskRun,
+        taskPackage,
+        taskBuild,
+        taskConfigure,
+        taskStart,
+        taskExport,
+        taskDeploy,
+        // taskLog,
     ]),
     config: CNF,
     runtimeExtraProps: {

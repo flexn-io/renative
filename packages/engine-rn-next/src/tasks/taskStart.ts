@@ -12,12 +12,12 @@ import {
 import { runWebNext } from '../sdk';
 import { openBrowser, waitForHost } from '@rnv/sdk-utils';
 
-const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskStart: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { port } = c.runtime;
     const { hosted } = c.program;
 
-    logTask('taskRnvStart', `parent:${parentTask} port:${c.runtime.port} hosted:${!!hosted}`);
+    logTask('taskStart', `parent:${parentTask} port:${c.runtime.port} hosted:${!!hosted}`);
 
     if (hosted) {
         waitForHost(c)
@@ -46,7 +46,7 @@ const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Starts bundler / server',
-    fn: taskRnvStart,
+    fn: taskStart,
     task: TaskKey.start,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['web', 'chromecast'],

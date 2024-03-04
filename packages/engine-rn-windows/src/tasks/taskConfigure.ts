@@ -14,8 +14,8 @@ import { SDKWindows } from '../sdks';
 
 const { configureWindowsProject } = SDKWindows;
 
-const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
-    logTask('taskRnvConfigure');
+const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
+    logTask('taskConfigure');
 
     await executeTask(c, TaskKey.platformConfigure, TaskKey.configure, originTask);
     if (shouldSkipTask(c, TaskKey.configure, originTask)) return true;
@@ -38,7 +38,7 @@ const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Configure current project',
-    fn: taskRnvConfigure,
+    fn: taskConfigure,
     task: TaskKey.configure,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['windows', 'xbox'],

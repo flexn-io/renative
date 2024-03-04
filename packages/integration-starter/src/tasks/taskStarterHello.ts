@@ -1,14 +1,14 @@
 import { RnvContext, logTask, PARAMS, logSuccess, RnvTask } from '@rnv/core';
 
-const taskRnvStarterHello = async (_c: RnvContext) => {
-    logTask('taskRnvStarterHello');
+const taskStarterHello = async (_c: RnvContext) => {
+    logTask('taskStarterHello');
 
     logSuccess('Hello from Integration Starter!');
 };
 
 const Task: RnvTask = {
     description: 'Prints hello message',
-    fn: taskRnvStarterHello,
+    fn: taskStarterHello,
     task: 'starter hello',
     params: PARAMS.withBase(),
     platforms: [],

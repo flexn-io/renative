@@ -17,8 +17,8 @@ import {
     ConfigName,
 } from '@rnv/core';
 
-const taskRnvWorkspaceConfigure: RnvTaskFn = async (c) => {
-    logTask('taskRnvWorkspaceConfigure');
+const taskWorkspaceConfigure: RnvTaskFn = async (c) => {
+    logTask('taskWorkspaceConfigure');
 
     // Check globalConfig Dir
     if (fsExistsSync(c.paths.workspace.dir)) {
@@ -90,7 +90,7 @@ const taskRnvWorkspaceConfigure: RnvTaskFn = async (c) => {
 
 const Task: RnvTask = {
     description: 'Preconfigures your current workspace defined via "workspaceID" prop in renative config file',
-    fn: taskRnvWorkspaceConfigure,
+    fn: taskWorkspaceConfigure,
     task: TaskKey.workspaceConfigure,
     params: PARAMS.withBase(),
     platforms: [],

@@ -17,8 +17,8 @@ import {
     TaskKey,
 } from '@rnv/core';
 
-const taskRnvPlatformConnect: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskRnvPlatformConnect');
+const taskPlatformConnect: RnvTaskFn = async (c, _parentTask, originTask) => {
+    logTask('taskPlatformConnect');
 
     await executeTask(c, TaskKey.projectConfigure, TaskKey.platformConnect, originTask);
 
@@ -89,7 +89,7 @@ const taskRnvPlatformConnect: RnvTaskFn = async (c, _parentTask, originTask) => 
 
 const Task: RnvTask = {
     description: 'Connect platform template back to rnv',
-    fn: taskRnvPlatformConnect,
+    fn: taskPlatformConnect,
     task: TaskKey.platformConnect,
     params: PARAMS.withBase(),
     platforms: [],

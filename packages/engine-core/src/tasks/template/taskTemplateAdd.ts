@@ -34,8 +34,8 @@ export const _addTemplate = (c: RnvContext, template: string) => {
     _writeObjectSync(c, c.paths.project.config, cnf);
 };
 
-const taskRnvTemplateAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskRnvTemplateAdd');
+const taskTemplateAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
+    logTask('taskTemplateAdd');
 
     await executeTask(c, TaskKey.projectConfigure, TaskKey.templateAdd, originTask);
 
@@ -55,7 +55,7 @@ const taskRnvTemplateAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Install additional template to the project',
-    fn: taskRnvTemplateAdd,
+    fn: taskTemplateAdd,
     task: TaskKey.templateAdd,
     params: PARAMS.withBase(),
     platforms: [],

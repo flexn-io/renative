@@ -11,8 +11,8 @@ import {
 import { buildReactNativeAndroid } from '@rnv/sdk-react-native';
 import { buildXcodeProject } from '@rnv/sdk-apple';
 
-const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
-    logTask('taskRnvBuild');
+const taskBuild: RnvTaskFn = async (c, parentTask, originTask) => {
+    logTask('taskBuild');
     const { platform } = c;
 
     await executeOrSkipTask(c, TaskKey.package, TaskKey.build, originTask);
@@ -39,7 +39,7 @@ const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Build project binary',
-    fn: taskRnvBuild,
+    fn: taskBuild,
     task: TaskKey.build,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],

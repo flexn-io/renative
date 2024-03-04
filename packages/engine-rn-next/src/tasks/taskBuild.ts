@@ -10,8 +10,8 @@ import {
 } from '@rnv/core';
 import { buildWebNext } from '../sdk';
 
-const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
-    logTask('taskRnvBuild', `parent:${parentTask}`);
+const taskBuild: RnvTaskFn = async (c, parentTask, originTask) => {
+    logTask('taskBuild', `parent:${parentTask}`);
     const { platform } = c;
 
     await executeOrSkipTask(c, TaskKey.package, TaskKey.build, originTask);
@@ -34,7 +34,7 @@ const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Build project binary',
-    fn: taskRnvBuild,
+    fn: taskBuild,
     task: TaskKey.build,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['web', 'chromecast'],

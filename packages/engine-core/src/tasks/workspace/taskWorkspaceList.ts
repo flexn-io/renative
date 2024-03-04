@@ -10,8 +10,8 @@ import {
     TaskKey,
 } from '@rnv/core';
 
-const taskRnvWorkspaceList: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskRnvWorkspaceList');
+const taskWorkspaceList: RnvTaskFn = async (c, _parentTask, originTask) => {
+    logTask('taskWorkspaceList');
 
     if (c.paths.project.configExists) {
         await executeTask(c, TaskKey.projectConfigure, TaskKey.workspaceList, originTask);
@@ -32,7 +32,7 @@ const taskRnvWorkspaceList: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Show list of all available workspaces',
-    fn: taskRnvWorkspaceList,
+    fn: taskWorkspaceList,
     task: TaskKey.workspaceList,
     params: PARAMS.withBase(),
     platforms: [],

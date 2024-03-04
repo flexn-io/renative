@@ -11,8 +11,8 @@ import {
 import { ejectGradleProject } from '@rnv/sdk-android';
 import { ejectXcodeProject } from '@rnv/sdk-apple';
 
-const taskRnvEject: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskRnvEject');
+const taskEject: RnvTaskFn = async (c, _parentTask, originTask) => {
+    logTask('taskEject');
     const { platform } = c;
 
     c.runtime._platformBuildsSuffix = '_eject';
@@ -51,7 +51,7 @@ const taskRnvEject: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Eject current project app to self contained native project',
-    fn: taskRnvEject,
+    fn: taskEject,
     task: TaskKey.eject,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],

@@ -173,8 +173,8 @@ Make sure you take into account special characters that might need to be escaped
     }
 };
 
-const taskRnvCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskRnvCryptoEncrypt');
+const taskCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask) => {
+    logTask('taskCryptoEncrypt');
 
     await executeTask(c, TaskKey.projectConfigure, TaskKey.cryptoEncrypt, originTask);
 
@@ -235,7 +235,7 @@ const taskRnvCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Encrypts secure files from `~/<wokspace>/<project>/..` to project',
-    fn: taskRnvCryptoEncrypt,
+    fn: taskCryptoEncrypt,
     task: TaskKey.cryptoEncrypt,
     params: PARAMS.withBase(),
     platforms: [],

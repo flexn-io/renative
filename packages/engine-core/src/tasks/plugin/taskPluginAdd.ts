@@ -17,8 +17,8 @@ import {
 import { getPluginList } from '../../plugins';
 
 /* eslint-disable no-await-in-loop */
-const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskRnvPluginAdd');
+const taskPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
+    logTask('taskPluginAdd');
 
     await executeTask(c, TaskKey.projectConfigure, TaskKey.pluginAdd, originTask);
 
@@ -102,7 +102,7 @@ const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Add selected plugin to the project',
-    fn: taskRnvPluginAdd,
+    fn: taskPluginAdd,
     task: TaskKey.pluginAdd,
     params: PARAMS.withBase(),
     platforms: [],

@@ -43,8 +43,8 @@ function clearWindowsCacheFiles() {
     return true;
 }
 
-const taskRnvClean: RnvTaskFn = async (c) => {
-    logTask('taskRnvClean');
+const taskClean: RnvTaskFn = async (c) => {
+    logTask('taskClean');
     const skipQuestion = c.program.ci;
     const pathsToRemove = [];
     const localFiles = [];
@@ -211,7 +211,7 @@ const taskRnvClean: RnvTaskFn = async (c) => {
 
 const Task: RnvTask = {
     description: 'Automatically removes all node_modules and lock in your project and its dependencies',
-    fn: taskRnvClean,
+    fn: taskClean,
     task: TaskKey.clean,
     params: PARAMS.withBase(),
     platforms: [],

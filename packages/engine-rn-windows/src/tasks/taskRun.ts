@@ -13,12 +13,12 @@ import { startBundlerIfRequired, waitForBundlerIfRequired } from '@rnv/sdk-react
 
 const { ruWindowsProject, clearWindowsTemporaryFiles } = SDKWindows;
 
-const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { port } = c.runtime;
     const { target } = c.runtime;
     const { hosted } = c.program;
-    logTask('taskRnvRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
+    logTask('taskRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
     await executeOrSkipTask(c, TaskKey.configure, TaskKey.run, originTask);
 
@@ -38,7 +38,7 @@ const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Run your app in a window on desktop',
-    fn: taskRnvRun,
+    fn: taskRun,
     task: TaskKey.run,
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: ['windows', 'xbox'],

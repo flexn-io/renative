@@ -27,8 +27,8 @@ const _updateProfiles = (c: RnvContext) => {
     return acList.reduce((previousPromise, v) => previousPromise.then(() => _updateProfile(c, v)), Promise.resolve());
 };
 
-const taskRnvCryptoUpdateProfiles: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskRnvCryptoUpdateProfiles');
+const taskCryptoUpdateProfiles: RnvTaskFn = async (c, _parentTask, originTask) => {
+    logTask('taskCryptoUpdateProfiles');
 
     await executeTask(c, TaskKey.projectConfigure, TaskKey.cryptoUpdateProfiles, originTask);
 
@@ -46,7 +46,7 @@ const taskRnvCryptoUpdateProfiles: RnvTaskFn = async (c, _parentTask, originTask
 
 const Task: RnvTask = {
     description: 'Will attempt to update all provisioning profiles (mac only)',
-    fn: taskRnvCryptoUpdateProfiles,
+    fn: taskCryptoUpdateProfiles,
     task: TaskKey.cryptoUpdateProfiles,
     params: PARAMS.withBase(),
     platforms: ['tvos'],

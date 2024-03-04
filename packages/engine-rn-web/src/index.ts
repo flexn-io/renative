@@ -2,26 +2,26 @@ import { generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/c
 import { withRNVBabel, withRNV } from './adapter';
 //@ts-ignore
 import CNF from '../renative.engine.json';
-import taskRnvRun from './tasks/taskRun';
-import taskRnvPackage from './tasks/taskPackage';
-import taskRnvBuild from './tasks/taskBuild';
-import taskRnvConfigure from './tasks/taskConfigure';
-import taskRnvStart from './tasks/taskStart';
-import taskRnvExport from './tasks/taskExport';
-import taskRnvDeploy from './tasks/taskDeploy';
-import taskRnvDebug from './tasks/taskDebug';
+import taskRun from './tasks/taskRun';
+import taskPackage from './tasks/taskPackage';
+import taskBuild from './tasks/taskBuild';
+import taskConfigure from './tasks/taskConfigure';
+import taskStart from './tasks/taskStart';
+import taskExport from './tasks/taskExport';
+import taskDeploy from './tasks/taskDeploy';
+import taskDebug from './tasks/taskDebug';
 
 const Engine: RnvEngine = {
     // initializeRuntimeConfig: (c) => Context.initializeConfig(c),
     tasks: generateEngineTasks([
-        taskRnvRun,
-        taskRnvPackage,
-        taskRnvBuild,
-        taskRnvConfigure,
-        taskRnvStart,
-        taskRnvExport,
-        taskRnvDeploy,
-        taskRnvDebug,
+        taskRun,
+        taskPackage,
+        taskBuild,
+        taskConfigure,
+        taskStart,
+        taskExport,
+        taskDeploy,
+        taskDebug,
     ]),
     config: CNF,
     projectDirName: '',

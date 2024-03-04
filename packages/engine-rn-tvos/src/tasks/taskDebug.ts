@@ -1,7 +1,7 @@
 import { RnvTaskFn, logErrorPlatform, logTask, PARAMS, RnvTask, TaskKey } from '@rnv/core';
 
-const taskRnvDebug: RnvTaskFn = async (c, parentTask) => {
-    logTask('taskRnvDebug', `parent:${parentTask}`);
+const taskDebug: RnvTaskFn = async (c, parentTask) => {
+    logTask('taskDebug', `parent:${parentTask}`);
     const { platform } = c;
 
     switch (platform) {
@@ -12,7 +12,7 @@ const taskRnvDebug: RnvTaskFn = async (c, parentTask) => {
 
 const Task: RnvTask = {
     description: 'Debug your app on target device or emulator',
-    fn: taskRnvDebug,
+    fn: taskDebug,
     task: TaskKey.debug,
     params: PARAMS.withBase(),
     platforms: [],

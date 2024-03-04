@@ -11,8 +11,8 @@ import {
     TaskKey,
 } from '@rnv/core';
 
-const taskRnvWorkspaceAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskRnvWorkspaceAdd');
+const taskWorkspaceAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
+    logTask('taskWorkspaceAdd');
 
     await executeTask(c, TaskKey.projectConfigure, TaskKey.workspaceAdd, originTask);
 
@@ -50,7 +50,7 @@ const taskRnvWorkspaceAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Add new workspace',
-    fn: taskRnvWorkspaceAdd,
+    fn: taskWorkspaceAdd,
     task: TaskKey.workspaceAdd,
     params: PARAMS.withBase(),
     platforms: [],

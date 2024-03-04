@@ -28,8 +28,8 @@ const _linkPackage = (c: RnvContext, key: string, folder: string) => {
     }
 };
 
-const taskRnvLink: RnvTaskFn = async (c, _parentTask, _originalTask) => {
-    logTask('taskRnvLink');
+const taskLink: RnvTaskFn = async (c, _parentTask, _originalTask) => {
+    logTask('taskLink');
 
     RNV_PACKAGES.forEach((pkg) => {
         if (!pkg.skipLinking) {
@@ -42,7 +42,7 @@ const taskRnvLink: RnvTaskFn = async (c, _parentTask, _originalTask) => {
 
 const Task: RnvTask = {
     description: 'Links development version or renative with this project',
-    fn: taskRnvLink,
+    fn: taskLink,
     task: TaskKey.link,
     params: PARAMS.withBase(),
     platforms: [],

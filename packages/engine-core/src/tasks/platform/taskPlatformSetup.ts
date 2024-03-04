@@ -9,8 +9,8 @@ import {
     TaskKey,
 } from '@rnv/core';
 
-const taskRnvPlatformSetup: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskRnvPlatformSetup');
+const taskPlatformSetup: RnvTaskFn = async (c, _parentTask, originTask) => {
+    logTask('taskPlatformSetup');
 
     await executeTask(c, TaskKey.projectConfigure, TaskKey.platformSetup, originTask);
 
@@ -31,7 +31,7 @@ const taskRnvPlatformSetup: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Allows you to change supportedPlatforms for your project',
-    fn: taskRnvPlatformSetup,
+    fn: taskPlatformSetup,
     task: TaskKey.platformSetup,
     params: PARAMS.withBase(),
     platforms: [],

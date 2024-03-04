@@ -10,8 +10,8 @@ import {
 } from '@rnv/core';
 import Docker from '../docker';
 
-const taskRnvDockerExport: RnvTaskFn = async (c, parentTask, originTask) => {
-    logTask('taskRnvDockerExport', `parent:${parentTask}`);
+const taskDockerExport: RnvTaskFn = async (c, parentTask, originTask) => {
+    logTask('taskDockerExport', `parent:${parentTask}`);
 
     if (c.program.only) {
         // If run as standalone command skip all the export
@@ -28,7 +28,7 @@ const taskRnvDockerExport: RnvTaskFn = async (c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Exports your project to docker image',
-    fn: taskRnvDockerExport,
+    fn: taskDockerExport,
     task: 'docker export',
     params: PARAMS.withBase(),
     platforms: ['web'],

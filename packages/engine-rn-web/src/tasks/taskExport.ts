@@ -10,8 +10,8 @@ import {
 } from '@rnv/core';
 import { exportWeb } from '@rnv/sdk-webpack';
 
-const taskRnvExport: RnvTaskFn = async (c, parentTask, originTask) => {
-    logTask('taskRnvExport', `parent:${parentTask}`);
+const taskExport: RnvTaskFn = async (c, parentTask, originTask) => {
+    logTask('taskExport', `parent:${parentTask}`);
 
     const { platform } = c;
 
@@ -37,7 +37,7 @@ const taskRnvExport: RnvTaskFn = async (c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Export the app into deployable binary',
-    fn: taskRnvExport,
+    fn: taskExport,
     task: TaskKey.export,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['web', 'tizen', 'webos', 'tizenmobile', 'tizenwatch', 'kaios', 'chromecast'],

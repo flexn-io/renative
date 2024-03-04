@@ -48,8 +48,8 @@ const _unzipAndCopy = async (
     logSuccess(`Files succesfully extracted into ${destFolder}`);
 };
 
-const taskRnvCryptoDecrypt: RnvTaskFn = async (c, parentTask, originTask) => {
-    logTask('taskRnvCryptoDecrypt');
+const taskCryptoDecrypt: RnvTaskFn = async (c, parentTask, originTask) => {
+    logTask('taskCryptoDecrypt');
 
     if (!parentTask) {
         await executeTask(c, TaskKey.projectConfigure, TaskKey.cryptoDecrypt, originTask);
@@ -208,7 +208,7 @@ and we will try to help!
 
 const Task: RnvTask = {
     description: 'Decrypt encrypted project files into local `~/<wokspace>/<project>/..`',
-    fn: taskRnvCryptoDecrypt,
+    fn: taskCryptoDecrypt,
     task: TaskKey.cryptoDecrypt,
     params: PARAMS.withBase(),
     platforms: [],

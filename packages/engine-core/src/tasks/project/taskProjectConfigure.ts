@@ -52,8 +52,8 @@ const configurePlatformBuilds = async (c: RnvContext) => {
     }
 };
 
-const taskRnvProjectConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
-    logTask('taskRnvProjectConfigure');
+const taskProjectConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
+    logTask('taskProjectConfigure');
 
     await configurePlatformBuilds(c);
     await checkAndMigrateProject();
@@ -138,7 +138,7 @@ const taskRnvProjectConfigure: RnvTaskFn = async (c, parentTask, originTask) => 
 
 const Task: RnvTask = {
     description: 'Configure current project',
-    fn: taskRnvProjectConfigure,
+    fn: taskProjectConfigure,
     task: TaskKey.projectConfigure,
     params: PARAMS.withBase(),
     platforms: [],

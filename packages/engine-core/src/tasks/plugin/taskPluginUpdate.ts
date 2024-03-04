@@ -11,8 +11,8 @@ import {
     TaskKey,
 } from '@rnv/core';
 
-const taskRnvPluginUpdate: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskRnvPluginUpdate');
+const taskPluginUpdate: RnvTaskFn = async (c, _parentTask, originTask) => {
+    logTask('taskPluginUpdate');
 
     await executeTask(c, TaskKey.projectConfigure, TaskKey.pluginUpdate, originTask);
 
@@ -50,7 +50,7 @@ const taskRnvPluginUpdate: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Update specific plugin to latest supported version (rnv)',
-    fn: taskRnvPluginUpdate,
+    fn: taskPluginUpdate,
     task: TaskKey.pluginUpdate,
     params: PARAMS.withBase(),
     platforms: [],

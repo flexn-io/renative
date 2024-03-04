@@ -12,8 +12,8 @@ import {
 import { packageAndroid } from '@rnv/sdk-android';
 import { packageBundleForXcode } from '@rnv/sdk-apple';
 
-const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
-    logTask('taskRnvPackage', `parent:${parentTask}`);
+const taskPackage: RnvTaskFn = async (c, parentTask, originTask) => {
+    logTask('taskPackage', `parent:${parentTask}`);
     const { platform } = c;
 
     await executeOrSkipTask(c, TaskKey.configure, TaskKey.package, originTask);
@@ -48,7 +48,7 @@ const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Package source files into bundle',
-    fn: taskRnvPackage,
+    fn: taskPackage,
     task: TaskKey.package,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['tvos', 'androidtv', 'firetv'],

@@ -10,8 +10,8 @@ import {
 } from '@rnv/core';
 import { ruWindowsProject } from '../sdks/sdk-windows';
 
-const taskRnvBuild: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskRnvBuild');
+const taskBuild: RnvTaskFn = async (c, _parentTask, originTask) => {
+    logTask('taskBuild');
     const { platform } = c;
 
     await executeOrSkipTask(c, TaskKey.package, TaskKey.build, originTask);
@@ -29,7 +29,7 @@ const taskRnvBuild: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Build project binary',
-    fn: taskRnvBuild,
+    fn: taskBuild,
     task: TaskKey.build,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['windows', 'xbox'],

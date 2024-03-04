@@ -10,9 +10,9 @@ import {
 } from '@rnv/core';
 import { runWebNext } from '../sdk';
 
-const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
-    logTask('taskRnvRun', `parent:${parentTask}`);
+    logTask('taskRun', `parent:${parentTask}`);
 
     await executeOrSkipTask(c, TaskKey.configure, TaskKey.run, originTask);
 
@@ -30,7 +30,7 @@ const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Run your app in browser',
-    fn: taskRnvRun,
+    fn: taskRun,
     task: TaskKey.run,
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: ['web', 'chromecast'],

@@ -1,7 +1,7 @@
 import { chalk, logTask, logToSummary, PARAMS, RnvTask, RnvTaskFn, TaskKey, writeFileSync } from '@rnv/core';
 
-const taskRnvTelemetryDisable: RnvTaskFn = async (c) => {
-    logTask('taskRnvTelemetryDisable');
+const taskTelemetryDisable: RnvTaskFn = async (c) => {
+    logTask('taskTelemetryDisable');
 
     const { config } = c.files.defaultWorkspace;
     if (config) {
@@ -20,7 +20,7 @@ const taskRnvTelemetryDisable: RnvTaskFn = async (c) => {
 
 const Task: RnvTask = {
     description: 'Disables rnv telemetry on your machine',
-    fn: taskRnvTelemetryDisable,
+    fn: taskTelemetryDisable,
     task: TaskKey.telemetryDisable,
     params: PARAMS.withBase(),
     platforms: [],

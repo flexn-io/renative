@@ -1,7 +1,7 @@
 import { chalk, logTask, logToSummary, PARAMS, RnvTask, RnvTaskFn, TaskKey } from '@rnv/core';
 
-const taskRnvTelemetryStatus: RnvTaskFn = async (c) => {
-    logTask('taskRnvTelemetryStatus');
+const taskTelemetryStatus: RnvTaskFn = async (c) => {
+    logTask('taskTelemetryStatus');
 
     const disableTelemetry = c.files.defaultWorkspace.config?.disableTelemetry;
 
@@ -27,7 +27,7 @@ const taskRnvTelemetryStatus: RnvTaskFn = async (c) => {
 
 const Task: RnvTask = {
     description: 'Show current rnv telemetry status on your machine',
-    fn: taskRnvTelemetryStatus,
+    fn: taskTelemetryStatus,
     task: TaskKey.telemetryStatus,
     params: PARAMS.withBase(),
     platforms: [],

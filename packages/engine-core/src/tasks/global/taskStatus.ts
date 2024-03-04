@@ -1,10 +1,10 @@
 import { PARAMS, RnvTask, TaskKey } from '@rnv/core';
 
-const taskRnvStatus = async () => Promise.resolve();
+const taskStatus = async () => Promise.resolve();
 
 const Task: RnvTask = {
     description: 'Show current info about the project',
-    fn: taskRnvStatus,
+    fn: taskStatus,
     task: TaskKey.status,
     params: PARAMS.withBase(),
     platforms: [],

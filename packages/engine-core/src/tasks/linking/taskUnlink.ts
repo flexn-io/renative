@@ -32,8 +32,8 @@ const _unlinkPackage = (c: RnvContext, key: string) => {
     }
 };
 
-const taskRnvUnlink: RnvTaskFn = async (c) => {
-    logTask('taskRnvUnlink');
+const taskUnlink: RnvTaskFn = async (c) => {
+    logTask('taskUnlink');
 
     RNV_PACKAGES.forEach((pkg) => {
         if (!pkg.skipLinking) {
@@ -46,7 +46,7 @@ const taskRnvUnlink: RnvTaskFn = async (c) => {
 
 const Task: RnvTask = {
     description: 'Replaces rnv version in project with original node_modules version',
-    fn: taskRnvUnlink,
+    fn: taskUnlink,
     task: TaskKey.unlink,
     params: PARAMS.withBase(),
     platforms: [],

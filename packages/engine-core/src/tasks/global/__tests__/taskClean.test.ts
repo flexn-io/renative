@@ -7,7 +7,7 @@ import {
     inquirerPrompt,
     removeDirs,
 } from '@rnv/core';
-import taskRnvClean from '../taskClean';
+import taskClean from '../taskClean';
 
 jest.mock('@rnv/core');
 jest.mock('path');
@@ -30,7 +30,7 @@ test('Execute task.rnv.clean', async () => {
     jest.mocked(fsExistsSync).mockReturnValue(true);
     ctx.program.ci = false;
     //WHEN
-    await expect(taskRnvClean.fn?.(ctx)).resolves.toEqual(true);
+    await expect(taskClean.fn?.(ctx)).resolves.toEqual(true);
     //THEN
     expect(removeDirs).toHaveBeenCalledTimes(3);
     expect(executeAsync).toHaveBeenCalledWith(ctx, 'watchman watch-del-all');

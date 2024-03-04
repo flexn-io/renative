@@ -19,8 +19,8 @@ import {
     TaskKey,
 } from '@rnv/core';
 
-const taskRnvAppCreate: RnvTaskFn = async (c) => {
-    logTask('taskRnvAppCreate');
+const taskAppCreate: RnvTaskFn = async (c) => {
+    logTask('taskAppCreate');
 
     await configureRuntimeDefaults(c);
 
@@ -166,7 +166,7 @@ const taskRnvAppCreate: RnvTaskFn = async (c) => {
 
 const Task: RnvTask = {
     description: 'Create new app config',
-    fn: taskRnvAppCreate,
+    fn: taskAppCreate,
     task: TaskKey.appCreate,
     params: PARAMS.withBase(),
     platforms: [],

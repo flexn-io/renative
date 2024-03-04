@@ -1,47 +1,47 @@
 import { RnvEngine, generateEngineTasks } from '@rnv/core';
 
-import taskRnvCryptoDecrypt from './tasks/crypto/taskCryptoDecrypt';
-import taskRnvCryptoEncrypt from './tasks/crypto/taskCryptoEncrypt';
-import taskRnvPlatformEject from './tasks/platform/taskPlatformEject';
-import taskRnvPlatformConnect from './tasks/platform/taskPlatformConnect';
-import taskRnvPlatformList from './tasks/platform/taskPlatformList';
-import taskRnvPlatformConfigure from './tasks/platform/taskPlatformConfigure';
-import taskRnvPlatformSetup from './tasks/platform/taskPlatformSetup';
-import taskRnvTemplateAdd from './tasks/template/taskTemplateAdd';
-import taskRnvTemplateApply from './tasks/template/taskTemplateApply';
-import taskRnvTemplateList from './tasks/template/taskTemplateList';
-import taskRnvPluginAdd from './tasks/plugin/taskPluginAdd';
-import taskRnvPluginList from './tasks/plugin/taskPluginList';
-import taskRnvPluginUpdate from './tasks/plugin/taskPluginUpdate';
-import taskRnvWorkspaceList from './tasks/workspace/taskWorkspaceList';
-import taskRnvWorkspaceAdd from './tasks/workspace/taskWorkspaceAdd';
-import taskRnvWorkspaceConnect from './tasks/workspace/taskWorkspaceConnect';
-import taskRnvWorkspaceUpdate from './tasks/workspace/taskWorkspaceUpdate';
-import taskRnvHooksList from './tasks/hooks/taskHooksList';
-import taskRnvHooksRun from './tasks/hooks/taskHooksRun';
-import taskRnvHooksPipes from './tasks/hooks/taskHooksPipes';
-import taskRnvClean from './tasks/global/taskClean';
-import taskRnvStatus from './tasks/global/taskStatus';
-import taskRnvConfig from './tasks/global/taskConfig';
-import taskRnvHelp from './tasks/global/taskHelp';
-import taskRnvNew from './tasks/global/taskNew';
-import taskRnvInstall from './tasks/global/taskInstall';
-import taskRnvProjectConfigure from './tasks/project/taskProjectConfigure';
-import taskRnvProjectUpgrade from './tasks/project/taskProjectUpgrade';
-import taskRnvAppConfigure from './tasks/app/taskAppConfigure';
-import taskRnvAppCreate from './tasks/app/taskAppCreate';
-import taskRnvWorkspaceConfigure from './tasks/workspace/taskWorkspaceConfigure';
-import taskRnvConfigureSoft from './tasks/global/taskConfigureSoft';
+import taskCryptoDecrypt from './tasks/crypto/taskCryptoDecrypt';
+import taskCryptoEncrypt from './tasks/crypto/taskCryptoEncrypt';
+import taskPlatformEject from './tasks/platform/taskPlatformEject';
+import taskPlatformConnect from './tasks/platform/taskPlatformConnect';
+import taskPlatformList from './tasks/platform/taskPlatformList';
+import taskPlatformConfigure from './tasks/platform/taskPlatformConfigure';
+import taskPlatformSetup from './tasks/platform/taskPlatformSetup';
+import taskTemplateAdd from './tasks/template/taskTemplateAdd';
+import taskTemplateApply from './tasks/template/taskTemplateApply';
+import taskTemplateList from './tasks/template/taskTemplateList';
+import taskPluginAdd from './tasks/plugin/taskPluginAdd';
+import taskPluginList from './tasks/plugin/taskPluginList';
+import taskPluginUpdate from './tasks/plugin/taskPluginUpdate';
+import taskWorkspaceList from './tasks/workspace/taskWorkspaceList';
+import taskWorkspaceAdd from './tasks/workspace/taskWorkspaceAdd';
+import taskWorkspaceConnect from './tasks/workspace/taskWorkspaceConnect';
+import taskWorkspaceUpdate from './tasks/workspace/taskWorkspaceUpdate';
+import taskHooksList from './tasks/hooks/taskHooksList';
+import taskHooksRun from './tasks/hooks/taskHooksRun';
+import taskHooksPipes from './tasks/hooks/taskHooksPipes';
+import taskClean from './tasks/global/taskClean';
+import taskStatus from './tasks/global/taskStatus';
+import taskConfig from './tasks/global/taskConfig';
+import taskHelp from './tasks/global/taskHelp';
+import taskNew from './tasks/global/taskNew';
+import taskInstall from './tasks/global/taskInstall';
+import taskProjectConfigure from './tasks/project/taskProjectConfigure';
+import taskProjectUpgrade from './tasks/project/taskProjectUpgrade';
+import taskAppConfigure from './tasks/app/taskAppConfigure';
+import taskAppCreate from './tasks/app/taskAppCreate';
+import taskWorkspaceConfigure from './tasks/workspace/taskWorkspaceConfigure';
+import taskConfigureSoft from './tasks/global/taskConfigureSoft';
 import taskRvnKill from './tasks/global/taskKill';
 import taskRvnDoctor from './tasks/global/taskDoctor';
-import taskRnvTargetList from './tasks/target/taskTargetList';
-import taskRnvTargetLaunch from './tasks/target/taskTargetLaunch';
-import taskRnvLink from './tasks/linking/taskLink';
-import taskRnvUnlink from './tasks/linking/taskUnlink';
-import taskRnvTelemetryStatus from './tasks/telemetry/taskTelemetryStatus';
-import taskRnvTelemetryEnable from './tasks/telemetry/taskTelemetryEnable';
-import taskRnvTelemetryDisable from './tasks/telemetry/taskTelemetryDisable';
-import taskRnvSwitch from './tasks/app/taskAppSwitch';
+import taskTargetList from './tasks/target/taskTargetList';
+import taskTargetLaunch from './tasks/target/taskTargetLaunch';
+import taskLink from './tasks/linking/taskLink';
+import taskUnlink from './tasks/linking/taskUnlink';
+import taskTelemetryStatus from './tasks/telemetry/taskTelemetryStatus';
+import taskTelemetryEnable from './tasks/telemetry/taskTelemetryEnable';
+import taskTelemetryDisable from './tasks/telemetry/taskTelemetryDisable';
+import taskSwitch from './tasks/app/taskAppSwitch';
 
 const Engine: RnvEngine = {
     // initializeRuntimeConfig: () => {
@@ -50,48 +50,48 @@ const Engine: RnvEngine = {
     runtimeExtraProps: {},
     serverDirName: '',
     tasks: generateEngineTasks([
-        taskRnvCryptoDecrypt,
-        taskRnvCryptoEncrypt,
-        taskRnvPlatformEject,
-        taskRnvPlatformConnect,
-        taskRnvPlatformList,
-        taskRnvPlatformConfigure,
-        taskRnvPlatformSetup,
-        taskRnvTemplateAdd,
-        taskRnvTemplateApply,
-        taskRnvTemplateList,
-        taskRnvPluginAdd,
-        taskRnvPluginList,
-        taskRnvPluginUpdate,
-        taskRnvWorkspaceList,
-        taskRnvWorkspaceAdd,
-        taskRnvWorkspaceConnect,
-        taskRnvWorkspaceUpdate,
-        taskRnvHooksList,
-        taskRnvHooksRun,
-        taskRnvHooksPipes,
-        taskRnvClean,
-        taskRnvStatus,
-        taskRnvConfig,
-        taskRnvHelp,
-        taskRnvNew,
-        taskRnvInstall,
-        taskRnvProjectConfigure,
-        taskRnvProjectUpgrade,
-        taskRnvAppConfigure,
-        taskRnvAppCreate,
-        taskRnvWorkspaceConfigure,
-        taskRnvConfigureSoft,
+        taskCryptoDecrypt,
+        taskCryptoEncrypt,
+        taskPlatformEject,
+        taskPlatformConnect,
+        taskPlatformList,
+        taskPlatformConfigure,
+        taskPlatformSetup,
+        taskTemplateAdd,
+        taskTemplateApply,
+        taskTemplateList,
+        taskPluginAdd,
+        taskPluginList,
+        taskPluginUpdate,
+        taskWorkspaceList,
+        taskWorkspaceAdd,
+        taskWorkspaceConnect,
+        taskWorkspaceUpdate,
+        taskHooksList,
+        taskHooksRun,
+        taskHooksPipes,
+        taskClean,
+        taskStatus,
+        taskConfig,
+        taskHelp,
+        taskNew,
+        taskInstall,
+        taskProjectConfigure,
+        taskProjectUpgrade,
+        taskAppConfigure,
+        taskAppCreate,
+        taskWorkspaceConfigure,
+        taskConfigureSoft,
         taskRvnKill,
         taskRvnDoctor,
-        taskRnvTargetList,
-        taskRnvTargetLaunch,
-        taskRnvLink,
-        taskRnvUnlink,
-        taskRnvTelemetryStatus,
-        taskRnvTelemetryEnable,
-        taskRnvTelemetryDisable,
-        taskRnvSwitch,
+        taskTargetList,
+        taskTargetLaunch,
+        taskLink,
+        taskUnlink,
+        taskTelemetryStatus,
+        taskTelemetryEnable,
+        taskTelemetryDisable,
+        taskSwitch,
     ]),
     config: {
         // title: 'Engine Core',

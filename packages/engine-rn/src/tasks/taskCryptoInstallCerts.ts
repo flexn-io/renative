@@ -12,8 +12,8 @@ import {
     TaskKey,
 } from '@rnv/core';
 
-const taskRnvCryptoInstallCerts: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskRnvCryptoInstallCerts');
+const taskCryptoInstallCerts: RnvTaskFn = async (c, _parentTask, originTask) => {
+    logTask('taskCryptoInstallCerts');
 
     await executeTask(c, TaskKey.projectConfigure, TaskKey.cryptoInstallCerts, originTask);
 
@@ -38,7 +38,7 @@ const taskRnvCryptoInstallCerts: RnvTaskFn = async (c, _parentTask, originTask) 
 
 const Task: RnvTask = {
     description: 'Installs certificates into keychain (mac only)',
-    fn: taskRnvCryptoInstallCerts,
+    fn: taskCryptoInstallCerts,
     task: TaskKey.cryptoInstallCerts,
     params: PARAMS.withBase(),
     platforms: [],

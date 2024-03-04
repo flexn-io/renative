@@ -234,8 +234,8 @@ const interactiveQuestion = async (
     }
 };
 
-const taskRnvNew = async (c: RnvContext) => {
-    logTask('taskRnvNew');
+const taskNew = async (c: RnvContext) => {
+    logTask('taskNew');
     const {
         ci,
         projectName,
@@ -801,7 +801,7 @@ const findEngineKeyById = (c: RnvContext, id: string) => {
 
 const Task: RnvTask = {
     description: 'Create new ReNative project',
-    fn: taskRnvNew,
+    fn: taskNew,
     task: TaskKey.new,
     params: PARAMS.withBase(),
     platforms: [],

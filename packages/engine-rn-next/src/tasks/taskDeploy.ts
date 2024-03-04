@@ -10,8 +10,8 @@ import {
 } from '@rnv/core';
 import { deployWebNext } from '../sdk';
 
-const taskRnvDeploy: RnvTaskFn = async (c, parentTask, originTask) => {
-    logTask('taskRnvDeploy', `parent:${parentTask}`);
+const taskDeploy: RnvTaskFn = async (c, parentTask, originTask) => {
+    logTask('taskDeploy', `parent:${parentTask}`);
     const { platform } = c;
 
     await executeOrSkipTask(c, TaskKey.export, TaskKey.deploy, originTask);
@@ -30,7 +30,7 @@ const taskRnvDeploy: RnvTaskFn = async (c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Deploy the binary via selected deployment intgeration or buld hook',
-    fn: taskRnvDeploy,
+    fn: taskDeploy,
     task: TaskKey.deploy,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['web', 'chromecast'],

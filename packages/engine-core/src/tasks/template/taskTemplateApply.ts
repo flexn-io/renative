@@ -10,8 +10,8 @@ import {
     TaskKey,
 } from '@rnv/core';
 
-const taskRnvTemplateApply: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskRnvTemplateApply', `template: ${c.program.template}`);
+const taskTemplateApply: RnvTaskFn = async (c, _parentTask, originTask) => {
+    logTask('taskTemplateApply', `template: ${c.program.template}`);
 
     await executeTask(c, TaskKey.projectConfigure, TaskKey.templateApply, originTask);
 
@@ -45,7 +45,7 @@ const taskRnvTemplateApply: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Reset project to specific template',
-    fn: taskRnvTemplateApply,
+    fn: taskTemplateApply,
     task: TaskKey.templateApply,
     params: PARAMS.withBase(),
     platforms: [],

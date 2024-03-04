@@ -19,11 +19,11 @@ BUNDLER_PLATFORMS['tvos'] = 'ios';
 BUNDLER_PLATFORMS['androidtv'] = 'android';
 BUNDLER_PLATFORMS['firetv'] = 'android';
 
-const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskStart: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { hosted } = c.program;
 
-    logTask('taskRnvStart', `parent:${parentTask} port:${c.runtime.port} hosted:${!!hosted}`);
+    logTask('taskStart', `parent:${parentTask} port:${c.runtime.port} hosted:${!!hosted}`);
 
     if (hosted) {
         return logError('This platform does not support hosted mode', true);
@@ -53,7 +53,7 @@ const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Starts bundler / server',
-    fn: taskRnvStart,
+    fn: taskStart,
     task: TaskKey.start,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['tvos', 'androidtv', 'firetv'],

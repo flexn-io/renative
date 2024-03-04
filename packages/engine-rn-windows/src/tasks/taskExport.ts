@@ -13,8 +13,8 @@ import { SDKWindows } from '../sdks';
 // TODO Implement export windows app (currently it only seems to be available through VS Studio itself...)
 const { packageWindowsApp, clearWindowsTemporaryFiles } = SDKWindows;
 
-const taskRnvExport: RnvTaskFn = async (c, parentTask, originTask) => {
-    logTask('taskRnvExport', `parent:${parentTask}`);
+const taskExport: RnvTaskFn = async (c, parentTask, originTask) => {
+    logTask('taskExport', `parent:${parentTask}`);
 
     const { platform } = c;
 
@@ -34,7 +34,7 @@ const taskRnvExport: RnvTaskFn = async (c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Export the app into deployable binary',
-    fn: taskRnvExport,
+    fn: taskExport,
     task: TaskKey.export,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['windows', 'xbox'],

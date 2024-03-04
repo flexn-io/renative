@@ -13,14 +13,14 @@ import {
 } from '@rnv/core';
 import { REMOTE_DEBUGGER_ENABLED_PLATFORMS, openBrowser, waitForHost } from '@rnv/sdk-utils';
 
-const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskStart: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { port } = c.runtime;
     const { hosted } = c.program;
 
     if (!platform) return;
 
-    logTask('taskRnvStart', `parent:${parentTask} port:${port} hosted:${!!hosted}`);
+    logTask('taskStart', `parent:${parentTask} port:${port} hosted:${!!hosted}`);
 
     if (!parentTask) {
         await executeTask(c, TaskKey.configure, TaskKey.start, originTask);
@@ -55,7 +55,7 @@ const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Starts bundler / server',
-    fn: taskRnvStart,
+    fn: taskStart,
     task: TaskKey.start,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['web', 'webtv', 'tizen', 'webos', 'tizenmobile', 'tizenwatch', 'kaios', 'chromecast'],

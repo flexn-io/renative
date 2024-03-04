@@ -22,8 +22,8 @@ const configTargets = [
     'appConfig.configs',
 ];
 
-const taskRnvDoctor: RnvTaskFn = async (c, parentTask, originTask) => {
-    logTask('taskRnvDoctor');
+const taskDoctor: RnvTaskFn = async (c, parentTask, originTask) => {
+    logTask('taskDoctor');
 
     await configureRuntimeDefaults(c);
     await executeTask(c, TaskKey.appConfigure, parentTask, originTask);
@@ -89,7 +89,7 @@ const taskRnvDoctor: RnvTaskFn = async (c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Checks validity and config health of your project',
-    fn: taskRnvDoctor,
+    fn: taskDoctor,
     task: TaskKey.doctor,
     params: PARAMS.withBase(),
     platforms: [],

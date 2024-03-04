@@ -1,7 +1,7 @@
 import { RnvTaskFn, logTask, PARAMS, executeOrSkipTask, RnvTask, TaskKey } from '@rnv/core';
 
-const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
-    logTask('taskRnvPackage', `parent:${parentTask}`);
+const taskPackage: RnvTaskFn = async (c, parentTask, originTask) => {
+    logTask('taskPackage', `parent:${parentTask}`);
 
     await executeOrSkipTask(c, TaskKey.configure, TaskKey.package, originTask);
 
@@ -10,7 +10,7 @@ const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Package source files into bundle',
-    fn: taskRnvPackage,
+    fn: taskPackage,
     task: TaskKey.package,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['web', 'tizen', 'webos', 'tizenmobile', 'tizenwatch', 'kaios', 'chromecast'],

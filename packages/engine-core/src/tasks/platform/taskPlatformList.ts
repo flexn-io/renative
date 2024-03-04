@@ -10,8 +10,8 @@ import {
     TaskKey,
 } from '@rnv/core';
 
-const taskRnvPlatformList: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskRnvPlatformList');
+const taskPlatformList: RnvTaskFn = async (c, _parentTask, originTask) => {
+    logTask('taskPlatformList');
 
     await executeTask(c, TaskKey.projectConfigure, TaskKey.platformList, originTask);
 
@@ -22,7 +22,7 @@ const taskRnvPlatformList: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'List all available platforms',
-    fn: taskRnvPlatformList,
+    fn: taskPlatformList,
     task: TaskKey.platformList,
     params: PARAMS.withBase(),
     platforms: [],

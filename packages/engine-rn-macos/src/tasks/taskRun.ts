@@ -14,12 +14,12 @@ import {
 import { runXcodeProject } from '@rnv/sdk-apple';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '@rnv/sdk-react-native';
 
-const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { port } = c.runtime;
     const { target } = c.runtime;
     const { hosted } = c.program;
-    logTask('taskRnvRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
+    logTask('taskRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
     await executeOrSkipTask(c, TaskKey.configure, TaskKey.run, originTask);
 
@@ -43,7 +43,7 @@ const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     }
 };
 
-const taskRnvRunHelp = async () => {
+const taskRunHelp = async () => {
     logRaw(`
 More info at: https://renative.org/docs/api-cli
 `);
@@ -51,8 +51,8 @@ More info at: https://renative.org/docs/api-cli
 
 const Task: RnvTask = {
     description: 'Run your macos app on target device or emulator',
-    fn: taskRnvRun,
-    fnHelp: taskRnvRunHelp,
+    fn: taskRun,
+    fnHelp: taskRunHelp,
     task: TaskKey.run,
     // dependencies: {
     //     before: TaskKey.configure,

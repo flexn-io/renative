@@ -5,8 +5,8 @@ import { listTizenTargets } from '@rnv/sdk-tizen';
 import { listWebOSTargets } from '@rnv/sdk-webos';
 import { checkAndConfigureSdks, checkSdk } from '../../common';
 
-const taskRnvTargetList: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskRnvTargetList');
+const taskTargetList: RnvTaskFn = async (c, _parentTask, originTask) => {
+    logTask('taskTargetList');
 
     await isPlatformSupported(c, true);
     await checkAndConfigureSdks(c);
@@ -38,7 +38,7 @@ const taskRnvTargetList: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'List all available targets for specific platform',
-    fn: taskRnvTargetList,
+    fn: taskTargetList,
     task: TaskKey.targetList,
     params: PARAMS.withBase(),
     platforms: [],

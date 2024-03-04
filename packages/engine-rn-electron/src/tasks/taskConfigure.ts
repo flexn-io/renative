@@ -12,8 +12,8 @@ import {
 } from '@rnv/core';
 import { configureElectronProject } from '../sdk';
 
-const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
-    logTask('taskRnvConfigure');
+const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
+    logTask('taskConfigure');
 
     await executeTask(c, TaskKey.platformConfigure, TaskKey.configure, originTask);
 
@@ -39,7 +39,7 @@ const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Configure current project',
-    fn: taskRnvConfigure,
+    fn: taskConfigure,
     task: TaskKey.configure,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['macos', 'windows', 'linux'],

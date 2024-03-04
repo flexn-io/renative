@@ -10,8 +10,8 @@ import {
     TaskKey,
 } from '@rnv/core';
 
-const taskRnvWorkspaceConnect: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskRnvWorkspaceConnect');
+const taskWorkspaceConnect: RnvTaskFn = async (c, _parentTask, originTask) => {
+    logTask('taskWorkspaceConnect');
 
     if (!c.paths.project.configExists) {
         return Promise.reject(`${TaskKey.projectConfigure} not supported outside of renative project`);
@@ -35,7 +35,7 @@ const taskRnvWorkspaceConnect: RnvTaskFn = async (c, _parentTask, originTask) =>
 
 const Task: RnvTask = {
     description: 'Connect project with selected workspace',
-    fn: taskRnvWorkspaceConnect,
+    fn: taskWorkspaceConnect,
     task: TaskKey.workspaceConnect,
     params: PARAMS.withBase(),
     platforms: [],

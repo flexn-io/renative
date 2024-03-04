@@ -10,7 +10,7 @@ import {
     checkAndCreateGitignore,
     commandExistsSync,
 } from '@rnv/core';
-import taskRnvNew from '../taskNew';
+import taskNew from '../taskNew';
 
 jest.mock('@rnv/core');
 jest.mock('lodash/set');
@@ -96,7 +96,7 @@ test('Execute task.rnv.new', async () => {
     ctx.program.templateVersion = '1.0.0-canary.7';
     ctx.program.projectTemplate = '@rnv/template-starter';
     //WHEN
-    await expect(taskRnvNew.fn?.(ctx)).resolves.toEqual(true);
+    await expect(taskNew.fn?.(ctx)).resolves.toEqual(true);
     //THEN
     expect(writeFileSync).toHaveBeenCalledTimes(1);
     expect(writeFileSync).toHaveBeenCalledWith(undefined, {

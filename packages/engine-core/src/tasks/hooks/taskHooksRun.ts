@@ -12,8 +12,8 @@ import {
     TaskKey,
 } from '@rnv/core';
 
-const taskRnvHooksRun: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskRnvHooksRun');
+const taskHooksRun: RnvTaskFn = async (c, _parentTask, originTask) => {
+    logTask('taskHooksRun');
 
     if (fsExistsSync(c.paths.project.config)) {
         await executeTask(c, TaskKey.projectConfigure, TaskKey.hooksRun, originTask);
@@ -58,7 +58,7 @@ const taskRnvHooksRun: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Run specific build hook',
-    fn: taskRnvHooksRun,
+    fn: taskHooksRun,
     task: TaskKey.hooksRun,
     params: PARAMS.withBase([PARAM_KEYS.exeMethod]),
     platforms: [],
