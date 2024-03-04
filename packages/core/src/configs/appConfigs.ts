@@ -1,7 +1,7 @@
 import path from 'path';
 
 import { fsExistsSync, fsReaddirSync, fsLstatSync, readObjectSync } from '../system/fs';
-import { logTask, logWarning } from '../logger';
+import { logDefault, logWarning } from '../logger';
 import { RnvContext } from '../context/types';
 import { ConfigFileApp } from '../schema/configFiles/types';
 import { ConfigName } from '../enums/configName';
@@ -9,7 +9,7 @@ import { ConfigName } from '../enums/configName';
 const IGNORE_FOLDERS = ['.git'];
 
 export const listAppConfigsFoldersSync = (c: RnvContext, ignoreHiddenConfigs: boolean, appConfigsDirPath?: string) => {
-    logTask('listAppConfigsFoldersSync', `ignoreHiddenConfigs:${!!ignoreHiddenConfigs}`);
+    logDefault('listAppConfigsFoldersSync', `ignoreHiddenConfigs:${!!ignoreHiddenConfigs}`);
 
     if (!c.paths?.project) return [];
 

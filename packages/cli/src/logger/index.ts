@@ -344,6 +344,31 @@ export const logTask = (task: string, customChalk?: string | RnvApiChalkFn) => {
     console.log(_sanitizePaths(msg));
 };
 
+export const logDefault = (task: string, customChalk?: string | RnvApiChalkFn) => {
+    if (!TASK_COUNTER[task]) TASK_COUNTER[task] = 0;
+    TASK_COUNTER[task] += 1;
+    const taskCount = currentChalk.grey(`[${TASK_COUNTER[task]}]`);
+
+    if (_jsonOnly) {
+        return _printJson({
+            type: 'task',
+            task: stripAnsi(_getCurrentTask()),
+            message: stripAnsi(_sanitizePaths(typeof customChalk === 'string' ? customChalk : task)),
+        });
+    }
+
+    let msg = '';
+    if (typeof customChalk === 'string') {
+        msg = `[ log ]${_getCurrentTask()} ${task}${taskCount} ${currentChalk.grey(customChalk)}`;
+    } else if (customChalk) {
+        msg = customChalk(`[ task ]${_getCurrentTask()} ${task}${taskCount}`);
+    } else {
+        msg = `${currentChalk.green(`[ task ]${_getCurrentTask()}`)} ${task}${taskCount}`;
+    }
+
+    console.log(_sanitizePaths(msg));
+};
+
 export const logInitTask = (task: string, customChalk?: string | ((s: string) => string)) => {
     if (_jsonOnly) {
         return _printJson({
@@ -598,6 +623,7 @@ const Logger: RnvApiLogger = {
     logError,
     logDebug,
     logAppInfo,
+    logDefault,
     logWarning,
     logSuccess,
     logWelcome,
