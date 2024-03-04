@@ -92,7 +92,7 @@ const Task: RnvTask = {
     description: 'Preconfigures your current workspace defined via "workspaceID" prop in renative config file',
     fn: taskWorkspaceConfigure,
     task: TaskKey.workspaceConfigure,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,
 };

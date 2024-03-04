@@ -40,7 +40,7 @@ const Task: RnvTask = {
     description: 'Installs certificates into keychain (mac only)',
     fn: taskCryptoInstallCerts,
     task: TaskKey.cryptoInstallCerts,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
     // skipPlatforms: true,
 };

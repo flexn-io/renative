@@ -34,7 +34,7 @@ const Task: RnvTask = {
     description: 'Get list of all available hooks',
     fn: taskHooksList,
     task: TaskKey.hooksList,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
     forceBuildHookRebuild: true,
 };

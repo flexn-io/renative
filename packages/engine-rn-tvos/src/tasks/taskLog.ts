@@ -24,7 +24,7 @@ const Task: RnvTask = {
     description: 'Attach logger to device or emulator and print out logs',
     fn: taskLog,
     task: TaskKey.log,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: ['tvos', 'androidtv', 'firetv'],
     isGlobalScope: true,
 };

@@ -69,7 +69,7 @@ const Task: RnvTask = {
     description: 'Kills all the processes related to this project',
     fn: taskKill,
     task: TaskKey.kill,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,
 };

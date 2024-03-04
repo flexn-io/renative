@@ -30,7 +30,7 @@ const Task: RnvTask = {
     description: 'Exports your project to docker image',
     fn: taskDockerExport,
     task: 'docker export',
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: ['web'],
 };
 

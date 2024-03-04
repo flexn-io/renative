@@ -57,7 +57,7 @@ const Task: RnvTask = {
     description: 'Install additional template to the project',
     fn: taskTemplateAdd,
     task: TaskKey.templateAdd,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
 };
 

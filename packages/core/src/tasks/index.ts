@@ -53,7 +53,7 @@ const _getTaskOption = ({ taskInstance }: TaskObj, provider?: string): TaskOptio
         description: taskInstance.description,
         isGlobalScope: taskInstance.isGlobalScope,
         isPrivate: taskInstance.isPrivate,
-        params: taskInstance.params,
+        params: taskInstance.options,
         providers: [],
     };
 
@@ -325,8 +325,8 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
 };
 
 const _populateExtraParameters = (c: RnvContext, task: RnvTask) => {
-    if (task.params) {
-        task.params.forEach((param) => {
+    if (task.options) {
+        task.options.forEach((param) => {
             let cmd = '';
             if (param.shortcut) {
                 cmd += `-${param.shortcut}, `;
@@ -532,7 +532,7 @@ Description: ${t.description}
 
 Options:
 
-${t.params
+${t.options
     .map((v) => {
         const option = v.shortcut ? `\`-${v.shortcut}\`, ` : '';
         return `${option}\`--${v.key}\` - ${v.description}`;

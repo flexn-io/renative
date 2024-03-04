@@ -40,7 +40,7 @@ const Task: RnvTask = {
     description: 'List all available targets for specific platform',
     fn: taskTargetList,
     task: TaskKey.targetList,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,
 };

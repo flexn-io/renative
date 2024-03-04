@@ -48,7 +48,7 @@ const Task: RnvTask = {
     description: 'Replaces rnv version in project with original node_modules version',
     fn: taskUnlink,
     task: TaskKey.unlink,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,
     ignoreEngines: true,

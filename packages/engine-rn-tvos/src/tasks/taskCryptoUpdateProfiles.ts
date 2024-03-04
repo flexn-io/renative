@@ -48,7 +48,7 @@ const Task: RnvTask = {
     description: 'Will attempt to update all provisioning profiles (mac only)',
     fn: taskCryptoUpdateProfiles,
     task: TaskKey.cryptoUpdateProfiles,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: ['tvos'],
     // skipPlatforms: true,
 };

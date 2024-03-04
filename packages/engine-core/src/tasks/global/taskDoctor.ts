@@ -91,7 +91,7 @@ const Task: RnvTask = {
     description: 'Checks validity and config health of your project',
     fn: taskDoctor,
     task: TaskKey.doctor,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,
 };

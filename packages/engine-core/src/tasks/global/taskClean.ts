@@ -213,7 +213,7 @@ const Task: RnvTask = {
     description: 'Automatically removes all node_modules and lock in your project and its dependencies',
     fn: taskClean,
     task: TaskKey.clean,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,
 };

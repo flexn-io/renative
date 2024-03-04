@@ -18,7 +18,7 @@ const Task: RnvTask = {
     description: 'Show list of all available plugins',
     fn: taskPluginList,
     task: TaskKey.pluginList,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
 };
 

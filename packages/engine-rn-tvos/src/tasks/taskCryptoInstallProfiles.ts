@@ -54,7 +54,7 @@ const Task: RnvTask = {
     description: 'Installs provisioning certificates found in your workspace (mac only)',
     fn: taskCryptoInstallProfiles,
     task: TaskKey.cryptoInstallProfiles,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
     // skipPlatforms: true,
 };

@@ -34,7 +34,7 @@ const Task: RnvTask = {
     description: 'Show list of all available workspaces',
     fn: taskWorkspaceList,
     task: TaskKey.workspaceList,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,
 };

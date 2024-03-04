@@ -78,7 +78,7 @@ const Task: RnvTask = {
     description: 'Upgrade or downgrade RNV dependencies in your ReNative project',
     fn: taskProjectUpgrade,
     task: TaskKey.projectUpgrade,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,
 };

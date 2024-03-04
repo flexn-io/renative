@@ -28,7 +28,7 @@ const Task: RnvTask = {
     description: 'Switch between different app configs in current project',
     fn: taskSwitch,
     task: TaskKey.appSwitch,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
 };
 

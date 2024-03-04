@@ -13,7 +13,7 @@ const Task: RnvTask = {
     description: 'TODO: unused task',
     fn: taskWorkspaceUpdate,
     task: TaskKey.workspaceUpdate,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,
     isPrivate: true,

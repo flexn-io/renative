@@ -140,7 +140,7 @@ const Task: RnvTask = {
     description: 'Configure current project',
     fn: taskProjectConfigure,
     task: TaskKey.projectConfigure,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
 };
 

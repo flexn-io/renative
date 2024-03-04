@@ -6,7 +6,7 @@ const Task: RnvTask = {
     description: 'Show current info about the project',
     fn: taskStatus,
     task: TaskKey.status,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,
 };

@@ -33,7 +33,7 @@ const Task: RnvTask = {
     description: 'Build project binary',
     fn: taskBuild,
     task: TaskKey.build,
-    params: PARAMS.withBase(PARAMS.withConfigure()),
+    options: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['macos', 'windows', 'linux'],
 };
 

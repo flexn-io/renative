@@ -52,7 +52,7 @@ const Task: RnvTask = {
     description: 'Add new workspace',
     fn: taskWorkspaceAdd,
     task: TaskKey.workspaceAdd,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,
 };

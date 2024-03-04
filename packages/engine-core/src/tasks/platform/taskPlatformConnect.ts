@@ -91,7 +91,7 @@ const Task: RnvTask = {
     description: 'Connect platform template back to rnv',
     fn: taskPlatformConnect,
     task: TaskKey.platformConnect,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
 };
 

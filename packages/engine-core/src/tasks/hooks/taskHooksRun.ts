@@ -60,7 +60,7 @@ const Task: RnvTask = {
     description: 'Run specific build hook',
     fn: taskHooksRun,
     task: TaskKey.hooksRun,
-    params: PARAMS.withBase([PARAM_KEYS.exeMethod]),
+    options: PARAMS.withBase([PARAM_KEYS.exeMethod]),
     platforms: [],
     forceBuildHookRebuild: true,
     isGlobalScope: true,

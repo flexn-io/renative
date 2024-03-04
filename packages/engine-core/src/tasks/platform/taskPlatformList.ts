@@ -24,7 +24,7 @@ const Task: RnvTask = {
     description: 'List all available platforms',
     fn: taskPlatformList,
     task: TaskKey.platformList,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
 };
 

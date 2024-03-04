@@ -30,7 +30,7 @@ const Task: RnvTask = {
     description: 'Debug your app on target device or emulator',
     fn: taskDebug,
     task: TaskKey.debug,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: ['web', 'webtv', 'tizen'],
 };
 

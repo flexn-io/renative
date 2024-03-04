@@ -37,7 +37,7 @@ const Task: RnvTask = {
     description: 'Connect project with selected workspace',
     fn: taskWorkspaceConnect,
     task: TaskKey.workspaceConnect,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,
 };

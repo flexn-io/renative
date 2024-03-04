@@ -55,7 +55,7 @@ const Task: RnvTask = {
     description: 'Package source files into bundle',
     fn: taskPackage,
     task: TaskKey.package,
-    params: PARAMS.withBase(PARAMS.withConfigure()),
+    options: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],
 };
 

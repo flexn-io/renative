@@ -74,7 +74,7 @@ const Task: RnvTask = {
     description: 'Copy all platform files directly to project',
     fn: taskPlatformEject,
     task: TaskKey.platformEject,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
 };
 

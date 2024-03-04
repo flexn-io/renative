@@ -53,7 +53,7 @@ const Task: RnvTask = {
     description: 'Eject current project app to self contained native project',
     fn: taskEject,
     task: TaskKey.eject,
-    params: PARAMS.withBase(PARAMS.withConfigure()),
+    options: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],
 };
 

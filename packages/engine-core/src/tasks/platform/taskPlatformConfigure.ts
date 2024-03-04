@@ -58,7 +58,7 @@ const Task: RnvTask = {
     description: 'Low-level task used by engines to prepare platformBuilds folder',
     fn: taskPlatformConfigure,
     task: TaskKey.platformConfigure,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
 };
 

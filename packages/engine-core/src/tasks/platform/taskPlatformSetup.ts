@@ -33,7 +33,7 @@ const Task: RnvTask = {
     description: 'Allows you to change supportedPlatforms for your project',
     fn: taskPlatformSetup,
     task: TaskKey.platformSetup,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
 };
 

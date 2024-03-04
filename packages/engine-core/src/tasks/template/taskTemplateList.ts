@@ -15,7 +15,7 @@ const Task: RnvTask = {
     description: 'Show list of available templates',
     fn: taskTemplateList,
     task: TaskKey.templateList,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,
 };

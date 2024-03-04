@@ -104,7 +104,7 @@ const Task: RnvTask = {
     description: 'Add selected plugin to the project',
     fn: taskPluginAdd,
     task: TaskKey.pluginAdd,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
 };
 

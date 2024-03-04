@@ -209,7 +209,7 @@ const Task: RnvTask = {
     description: 'Configure project with specific appConfig',
     fn: taskAppConfigure,
     task: TaskKey.appConfigure,
-    params: PARAMS.withBase(PARAMS.withConfigure()),
+    options: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [],
 };
 

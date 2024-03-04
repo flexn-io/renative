@@ -15,7 +15,7 @@ const Task: RnvTask = {
     description: 'Update provisioning profile (mac only)',
     fn: taskCryptoUpdateProfile,
     task: TaskKey.cryptoUpdateProfile,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: ['ios'],
     // skipPlatforms: true,
 };

@@ -32,7 +32,7 @@ const Task: RnvTask = {
     description: 'Run your app in browser',
     fn: taskRun,
     task: TaskKey.run,
-    params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
+    options: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: ['web', 'chromecast'],
 };
 

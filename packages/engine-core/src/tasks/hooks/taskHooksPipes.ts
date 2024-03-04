@@ -25,7 +25,7 @@ const Task: RnvTask = {
     description: 'Get the list of all available pipes',
     fn: taskHooksPipes,
     task: TaskKey.hooksPipes,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
 };
 

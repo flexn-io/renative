@@ -237,7 +237,7 @@ const Task: RnvTask = {
     description: 'Encrypts secure files from `~/<wokspace>/<project>/..` to project',
     fn: taskCryptoEncrypt,
     task: TaskKey.cryptoEncrypt,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
 };
 

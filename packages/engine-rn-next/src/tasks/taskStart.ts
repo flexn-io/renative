@@ -48,7 +48,7 @@ const Task: RnvTask = {
     description: 'Starts bundler / server',
     fn: taskStart,
     task: TaskKey.start,
-    params: PARAMS.withBase(PARAMS.withConfigure()),
+    options: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['web', 'chromecast'],
 };
 

@@ -82,7 +82,7 @@ const Task: RnvTask = {
     description: 'Launch specific target',
     fn: taskTargetLaunch,
     task: TaskKey.targetLaunch,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,
 };

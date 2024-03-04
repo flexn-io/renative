@@ -803,7 +803,7 @@ const Task: RnvTask = {
     description: 'Create new ReNative project',
     fn: taskNew,
     task: TaskKey.new,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,
     isPriorityOrder: true,

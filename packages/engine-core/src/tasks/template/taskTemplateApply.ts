@@ -47,7 +47,7 @@ const Task: RnvTask = {
     description: 'Reset project to specific template',
     fn: taskTemplateApply,
     task: TaskKey.templateApply,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
 };
 

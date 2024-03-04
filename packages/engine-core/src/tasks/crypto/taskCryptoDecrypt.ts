@@ -210,7 +210,7 @@ const Task: RnvTask = {
     description: 'Decrypt encrypted project files into local `~/<wokspace>/<project>/..`',
     fn: taskCryptoDecrypt,
     task: TaskKey.cryptoDecrypt,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
 };
 

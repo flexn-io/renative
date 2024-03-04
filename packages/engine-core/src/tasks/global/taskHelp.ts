@@ -48,7 +48,7 @@ const Task: RnvTask = {
     description: 'Display generic help',
     fn: taskHelp,
     task: TaskKey.help,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,
     isPriorityOrder: true,

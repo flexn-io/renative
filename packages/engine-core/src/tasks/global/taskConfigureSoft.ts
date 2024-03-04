@@ -28,7 +28,7 @@ const Task: RnvTask = {
     description: 'Configure system and project without recreating files (used for --only)',
     fn: taskConfigureSoft,
     task: TaskKey.configureSoft,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
     isPrivate: true,
 };

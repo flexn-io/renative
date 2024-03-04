@@ -44,7 +44,7 @@ const Task: RnvTask = {
     description: 'Links development version or renative with this project',
     fn: taskLink,
     task: TaskKey.link,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,
     ignoreEngines: true,

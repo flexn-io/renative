@@ -36,7 +36,7 @@ const Task: RnvTask = {
     description: 'Export the app into deployable binary',
     fn: taskExport,
     task: TaskKey.export,
-    params: PARAMS.withBase(PARAMS.withConfigure()),
+    options: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: ['windows', 'xbox'],
 };
 

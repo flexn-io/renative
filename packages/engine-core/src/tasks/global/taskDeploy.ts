@@ -24,7 +24,7 @@ const Task: RnvTask = {
     description: 'Deploy the binary via selected deployment intgeration or buld hook',
     fn: taskDeploy,
     task: TaskKey.deploy,
-    params: PARAMS.withBase(PARAMS.withConfigure()),
+    options: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [...SUPPORTED_PLATFORMS],
 };
 

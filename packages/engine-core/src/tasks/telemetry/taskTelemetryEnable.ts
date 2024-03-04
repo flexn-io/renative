@@ -22,7 +22,7 @@ const Task: RnvTask = {
     description: 'Enables rnv telemetry on your machine',
     fn: taskTelemetryEnable,
     task: TaskKey.telemetryEnable,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,
 };

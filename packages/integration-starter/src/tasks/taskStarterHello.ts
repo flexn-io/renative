@@ -10,7 +10,7 @@ const Task: RnvTask = {
     description: 'Prints hello message',
     fn: taskStarterHello,
     task: 'starter hello',
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
 };
 

@@ -81,7 +81,7 @@ const Task: RnvTask = {
     // dependencies: {
     //     before: TaskKey.configure,
     // },
-    params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
+    options: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],
 };
 

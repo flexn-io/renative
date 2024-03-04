@@ -35,7 +35,7 @@ const Task: RnvTask = {
     description: 'Run your electron app on your machine',
     fn: taskRun,
     task: TaskKey.run,
-    params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
+    options: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: ['macos', 'windows', 'linux'],
 };
 

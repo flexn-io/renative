@@ -29,7 +29,7 @@ const Task: RnvTask = {
     description: 'Show current rnv telemetry status on your machine',
     fn: taskTelemetryStatus,
     task: TaskKey.telemetryStatus,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true,
 };

@@ -14,7 +14,7 @@ const Task: RnvTask = {
     description: 'Display RNV config',
     fn: taskConfig,
     task: TaskKey.config,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [...SUPPORTED_PLATFORMS],
 };
 

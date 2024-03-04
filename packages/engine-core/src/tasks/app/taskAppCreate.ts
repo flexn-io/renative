@@ -168,7 +168,7 @@ const Task: RnvTask = {
     description: 'Create new app config',
     fn: taskAppCreate,
     task: TaskKey.appCreate,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
 };
 

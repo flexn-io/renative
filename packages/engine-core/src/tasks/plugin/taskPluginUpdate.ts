@@ -52,7 +52,7 @@ const Task: RnvTask = {
     description: 'Update specific plugin to latest supported version (rnv)',
     fn: taskPluginUpdate,
     task: TaskKey.pluginUpdate,
-    params: PARAMS.withBase(),
+    options: PARAMS.withBase(),
     platforms: [],
 };
 
