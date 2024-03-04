@@ -121,11 +121,6 @@
         "android": {
           "type": "object",
           "properties": {
-            "enabled": {
-              "type": "boolean",
-              "default": true,
-              "description": "Marks plugin platform enabled or disabled"
-            },
             "disabled": {
               "type": "boolean",
               "default": false,
@@ -467,9 +462,6 @@
         "ios": {
           "type": "object",
           "properties": {
-            "enabled": {
-              "$ref": "#/definitions/rnv.plugin/properties/android/properties/enabled"
-            },
             "disabled": {
               "$ref": "#/definitions/rnv.plugin/properties/android/properties/disabled"
             },
@@ -528,7 +520,8 @@
                       "type": "array",
                       "items": {
                         "type": "string"
-                      }
+                      },
+                      "description": "Array of URLs that will be injected on top of the Podfile as sources"
                     },
                     "podDependencies": {
                       "type": "array",
@@ -546,7 +539,8 @@
                       "type": "array",
                       "items": {
                         "type": "string"
-                      }
+                      },
+                      "description": "Array of strings that will be injected on top of the Podfile"
                     }
                   },
                   "additionalProperties": false,
@@ -744,10 +738,17 @@
                               "items": {
                                 "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
                               }
+                            },
+                            "didReceiveNotificationResponse": {
+                              "type": "array",
+                              "items": {
+                                "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
+                              }
                             }
                           },
                           "required": [
-                            "willPresent"
+                            "willPresent",
+                            "didReceiveNotificationResponse"
                           ],
                           "additionalProperties": false
                         }
@@ -813,9 +814,6 @@
         "tizen": {
           "type": "object",
           "properties": {
-            "enabled": {
-              "$ref": "#/definitions/rnv.plugin/properties/android/properties/enabled"
-            },
             "disabled": {
               "$ref": "#/definitions/rnv.plugin/properties/android/properties/disabled"
             },
