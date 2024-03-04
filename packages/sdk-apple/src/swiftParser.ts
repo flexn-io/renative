@@ -9,7 +9,7 @@
 //     getFlavouredProp,
 //     addSystemInjects,
 //     chalk,
-//     logTask,
+//     logDefault,
 //     logDebug,
 //     logWarning,
 //     parsePlugins,
@@ -38,7 +38,7 @@
 // ) =>
 //     new Promise<void>((resolve) => {
 //         const newPort = c.runtime?.port;
-//         logTask('parseAppDelegateSync', `ip:${ip} port:${newPort}`);
+//         logDefault('parseAppDelegateSync', `ip:${ip} port:${newPort}`);
 //         const appDelegate = 'AppDelegate.swift';
 
 //         const entryFile = getEntryFile(c, platform);

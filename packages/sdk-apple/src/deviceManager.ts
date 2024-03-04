@@ -2,7 +2,7 @@ import { utilities } from 'appium-ios-device';
 import {
     chalk,
     logToSummary,
-    logTask,
+    logDefault,
     logWarning,
     logDebug,
     executeAsync,
@@ -23,7 +23,7 @@ const ERROR_MSG = {
 export const getAppleDevices = async (c: RnvContext, ignoreDevices?: boolean, ignoreSimulators?: boolean) => {
     const { platform } = c;
 
-    logTask('getAppleDevices', `ignoreDevices:${ignoreDevices} ignoreSimulators:${ignoreSimulators}`);
+    logDefault('getAppleDevices', `ignoreDevices:${ignoreDevices} ignoreSimulators:${ignoreSimulators}`);
 
     const {
         program: { skipTargetCheck },
@@ -183,7 +183,7 @@ const _parseIOSDevicesList = (
 };
 
 export const launchAppleSimulator = async (c: RnvContext, target: string | boolean) => {
-    logTask('launchAppleSimulator', `${target}`);
+    logDefault('launchAppleSimulator', `${target}`);
 
     const devicesArr = await getAppleDevices(c, true);
 
@@ -261,7 +261,7 @@ const _launchSimulator = async (selectedDevice: AppleDevice) => {
 };
 
 export const listAppleDevices = async (c: RnvContext) => {
-    logTask('listAppleDevices');
+    logDefault('listAppleDevices');
     const { platform } = c;
     const devicesArr = await getAppleDevices(c);
     let devicesString = '';

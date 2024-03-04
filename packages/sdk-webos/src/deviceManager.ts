@@ -10,7 +10,7 @@ import {
     getPlatformProjectDir,
     chalk,
     logToSummary,
-    logTask,
+    logDefault,
     logInfo,
     isSystemWin,
     RnvContext,
@@ -37,7 +37,7 @@ import semver from 'semver';
 import { isUrlLocalhost } from '@rnv/sdk-utils';
 
 export const launchWebOSimulator = async (c: RnvContext, target: string) => {
-    logTask('launchWebOSimulator', `${target}`);
+    logDefault('launchWebOSimulator', `${target}`);
 
     const webosSdkPath = getRealPath(c, c.buildConfig?.sdks?.WEBOS_SDK);
     if (!webosSdkPath) {
@@ -122,7 +122,7 @@ const parseDevices = (c: RnvContext, devicesResponse: string): Promise<Array<Web
 
 // Used for simulator
 const launchAppOnSimulator = async (c: RnvContext, appPath: string) => {
-    logTask('launchAppOnSimulator');
+    logDefault('launchAppOnSimulator');
 
     const webosSdkPath = getRealPath(c, c.buildConfig?.sdks?.WEBOS_SDK);
 

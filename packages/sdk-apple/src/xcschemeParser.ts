@@ -1,5 +1,5 @@
 import path from 'path';
-import { getAppFolder, getConfigProp, logTask, writeCleanFile, RnvPlatform } from '@rnv/core';
+import { getAppFolder, getConfigProp, logDefault, writeCleanFile, RnvPlatform } from '@rnv/core';
 import { getAppFolderName } from './common';
 import { Context } from './types';
 import { addSystemInjects, getAppTemplateFolder } from '@rnv/sdk-utils';
@@ -8,7 +8,7 @@ import { addSystemInjects, getAppTemplateFolder } from '@rnv/sdk-utils';
 // const parser = new xml2js.Parser();
 
 export const parseXcscheme = async (c: Context, platform: RnvPlatform) => {
-    logTask('parseXcscheme');
+    logDefault('parseXcscheme');
     // XCSCHEME
     // const allowProvisioningUpdates = getConfigProp(
     //     c,

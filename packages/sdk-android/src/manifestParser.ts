@@ -3,7 +3,7 @@ import {
     getAppFolder,
     getConfigProp,
     getFlavouredProp,
-    logTask,
+    logDefault,
     logError,
     logWarning,
     logDebug,
@@ -213,7 +213,7 @@ const getConfigPropArray = <T extends ConfigPropKey>(c: RnvContext, platform: Rn
 };
 
 export const parseAndroidManifestSync = (c: Context) => {
-    logTask('parseAndroidManifestSync');
+    logDefault('parseAndroidManifestSync');
     const { platform } = c;
 
     if (!platform) return;

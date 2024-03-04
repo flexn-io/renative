@@ -10,7 +10,7 @@ import {
     logDebug,
     logError,
     logInfo,
-    logTask,
+    logDefault,
     logToSummary,
     logWarning,
     waitForExecCLI,
@@ -71,7 +71,7 @@ const formatXMLObject = (
 };
 
 export const launchTizenSimulator = async (c: RnvContext, name: string | true): Promise<boolean> => {
-    logTask(`launchTizenSimulator:${name}`);
+    logDefault(`launchTizenSimulator:${name}`);
 
     if (name === true) {
         const targets = await execCLI(c, CLI_TIZEN_EMULATOR, 'list-vm', {
@@ -129,7 +129,7 @@ export const listTizenTargets = async (c: RnvContext) => {
 
 export const createDevelopTizenCertificate = (c: RnvContext) =>
     new Promise<void>((resolve) => {
-        logTask('createDevelopTizenCertificate');
+        logDefault('createDevelopTizenCertificate');
 
         const certDirPath = c.paths.workspace.dir;
         const certFilename = DEFAULT_CERTIFICATE_NAME;
@@ -157,7 +157,7 @@ export const createDevelopTizenCertificate = (c: RnvContext) =>
 
 export const addDevelopTizenCertificate = (c: RnvContext, secureProfileConfig: TizenSecurityConfig) =>
     new Promise<void>((resolve) => {
-        logTask('addDevelopTizenCertificate');
+        logDefault('addDevelopTizenCertificate');
 
         const { profileName, certPath, certPassword } = secureProfileConfig || {};
         execCLI(c, CLI_TIZEN, `security-profiles add -n ${profileName} -a ${certPath} -p ${certPassword}`, {

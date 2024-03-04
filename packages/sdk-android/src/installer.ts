@@ -8,7 +8,7 @@ import {
     fsReaddirSync,
     fsLstatSync,
     chalk,
-    logTask,
+    logDefault,
     logWarning,
     logSuccess,
     logError,
@@ -51,7 +51,7 @@ const _logSdkWarning = (c: RnvContext) => {
 
 export const checkAndConfigureAndroidSdks = async (c: RnvContext) => {
     const sdk = c.buildConfig?.sdks?.ANDROID_SDK;
-    logTask('checkAndConfigureAndroidSdks', `(${sdk})`);
+    logDefault('checkAndConfigureAndroidSdks', `(${sdk})`);
 
     if (!sdk) return _logSdkWarning(c);
 
@@ -82,7 +82,7 @@ export const checkAndConfigureAndroidSdks = async (c: RnvContext) => {
 const _getCurrentSdkPath = (c: RnvContext) => (c.platform ? c.buildConfig?.sdks?.ANDROID_SDK : undefined);
 
 const _isSdkInstalled = (c: RnvContext) => {
-    logTask('_isSdkInstalled');
+    logDefault('_isSdkInstalled');
 
     if (!c.platform) return false;
 
@@ -110,7 +110,7 @@ const _findFolderWithFile = (dir: string, fileToFind: string) => {
 };
 
 const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: SDKKey, traverseUntilFoundFile?: string) => {
-    logTask('_attemptAutoFix');
+    logDefault('_attemptAutoFix');
 
     if (c.program.hosted) {
         logInfo('HOSTED Mode. Skipping SDK checks');
@@ -168,7 +168,7 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: SDKKe
         }
     }
 
-    logTask(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOCATIONS[sdkPlatform].join(', ')}`);
+    logDefault(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOCATIONS[sdkPlatform].join(', ')}`);
 
     // const setupInstance = PlatformSetup(c);
     // await setupInstance.askToInstallSDK(sdkPlatform);
@@ -177,7 +177,7 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: SDKKe
 };
 
 export const checkAndroidSdk = async (c: RnvContext) => {
-    logTask('checkAndroidSdk');
+    logDefault('checkAndroidSdk');
     if (!_isSdkInstalled(c)) {
         logWarning(
             `${c.platform} requires SDK to be installed. Your SDK path in ${chalk().white(

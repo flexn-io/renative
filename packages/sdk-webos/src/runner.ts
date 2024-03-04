@@ -6,7 +6,7 @@ import {
     getPlatformProjectDir,
     getConfigProp,
     chalk,
-    logTask,
+    logDefault,
     logError,
     logSuccess,
     logInfo,
@@ -48,7 +48,7 @@ export const runWebOS = async (c: RnvContext) => {
             const resetCompleted = await confirmActiveBundler(c);
             c.runtime.skipActiveServerCheck = !resetCompleted;
         }
-        logTask('runWebOS', `target:${target} hosted:${!!isHosted}`);
+        logDefault('runWebOS', `target:${target} hosted:${!!isHosted}`);
         return;
     }
 
@@ -112,7 +112,7 @@ export const runWebOS = async (c: RnvContext) => {
 };
 
 export const buildWebOSProject = async (c: RnvContext) => {
-    logTask('buildWebOSProject');
+    logDefault('buildWebOSProject');
 
     await buildCoreWebpackProject(c);
 
@@ -138,7 +138,7 @@ export const buildWebOSProject = async (c: RnvContext) => {
 };
 
 export const configureWebOSProject = async (c: RnvContext) => {
-    logTask('configureWebOSProject');
+    logDefault('configureWebOSProject');
 
     const { platform } = c;
 
@@ -153,7 +153,7 @@ export const configureWebOSProject = async (c: RnvContext) => {
 };
 
 const _configureProject = async (c: RnvContext) => {
-    logTask('_configureProject');
+    logDefault('_configureProject');
     const { platform } = c;
 
     const configFile = 'appinfo.json';

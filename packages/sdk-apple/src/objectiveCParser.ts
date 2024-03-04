@@ -4,7 +4,7 @@ import {
     getConfigProp,
     getFlavouredProp,
     chalk,
-    logTask,
+    logDefault,
     logDebug,
     logWarning,
     parsePlugins,
@@ -32,7 +32,7 @@ export const parseAppDelegate = (
     // isBundled = false,
 ) =>
     new Promise<void>((resolve) => {
-        logTask('parseAppDelegateSync');
+        logDefault('parseAppDelegateSync');
         const appDelegateMm = 'AppDelegate.mm';
         const appDelegateH = 'AppDelegate.h';
         // const entryFile = getEntryFile(c, platform);

@@ -6,7 +6,7 @@ import {
     writeFileSync,
     fsExistsSync,
     chalk,
-    logTask,
+    logDefault,
     logWarning,
     logSuccess,
     logError,
@@ -28,7 +28,7 @@ const _logSdkWarning = (c: RnvContext) => {
 };
 
 export const checkAndConfigureTizenSdks = async (c: RnvContext) => {
-    logTask(`checkAndConfigureTizenSdks:${c.platform}`);
+    logDefault(`checkAndConfigureTizenSdks:${c.platform}`);
     const sdk = c.buildConfig?.sdks?.TIZEN_SDK;
     if (sdk) {
         c.cli[CLI_TIZEN_EMULATOR] = getRealPath(
@@ -45,7 +45,7 @@ export const checkAndConfigureTizenSdks = async (c: RnvContext) => {
 const _getCurrentSdkPath = (c: RnvContext) => (c.platform ? c.buildConfig?.sdks?.TIZEN_SDK : undefined);
 
 const _isSdkInstalled = (c: RnvContext) => {
-    logTask('_isSdkInstalled');
+    logDefault('_isSdkInstalled');
 
     if (!c.platform) return false;
 
@@ -55,7 +55,7 @@ const _isSdkInstalled = (c: RnvContext) => {
 };
 
 const _attemptAutoFix = async (c: RnvContext) => {
-    logTask('_attemptAutoFix');
+    logDefault('_attemptAutoFix');
 
     if (!c.files.workspace.config) return;
 
@@ -94,7 +94,7 @@ const _attemptAutoFix = async (c: RnvContext) => {
         }
     }
 
-    logTask(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOCATIONS.join(', ')}`);
+    logDefault(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOCATIONS.join(', ')}`);
 
     // const setupInstance = PlatformSetup(c);
     // await setupInstance.askToInstallSDK(sdkPlatform);
@@ -103,7 +103,7 @@ const _attemptAutoFix = async (c: RnvContext) => {
 };
 
 export const checkTizenSdk = async (c: RnvContext) => {
-    logTask('checkTizenSdk');
+    logDefault('checkTizenSdk');
     if (!_isSdkInstalled(c)) {
         logWarning(
             `${c.platform} requires SDK to be installed. Your SDK path in ${chalk().white(

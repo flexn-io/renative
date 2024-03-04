@@ -14,7 +14,7 @@ import {
     copyBuildsFolder,
     parseFonts,
     chalk,
-    logTask,
+    logDefault,
     logError,
     logWarning,
     logDebug,
@@ -43,7 +43,7 @@ export const packageBundleForXcode = (c: Context) => {
 
 const copyAppleAssets = (c: Context, platform: RnvPlatform, appFolderName: string) =>
     new Promise<void>((resolve) => {
-        logTask('copyAppleAssets');
+        logDefault('copyAppleAssets');
         if (!isPlatformActive(c, platform, resolve)) return;
 
         const appFolder = getAppFolder(c);
@@ -57,7 +57,7 @@ const copyAppleAssets = (c: Context, platform: RnvPlatform, appFolderName: strin
     });
 
 export const getIosDeviceToRunOn = async (c: Context) => {
-    logTask('getIosDeviceToRunOn');
+    logDefault('getIosDeviceToRunOn');
 
     if (!c.platform) return;
 
@@ -213,7 +213,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
 };
 
 export const runXcodeProject = async (c: Context, runDeviceArguments?: string) => {
-    logTask('runXcodeProject', `targetArgs:${runDeviceArguments}`);
+    logDefault('runXcodeProject', `targetArgs:${runDeviceArguments}`);
 
     const appPath = getAppFolder(c);
     const schemeTarget = getConfigProp(c, c.platform, 'schemeTarget') || 'RNVApp';
@@ -258,7 +258,7 @@ const _checkLockAndExec = async (
     runScheme: string,
     extraParamsString = ''
 ) => {
-    logTask('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme} p:${extraParamsString}`);
+    logDefault('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme} p:${extraParamsString}`);
     if (!c.platform) return;
 
     const appFolderName = getAppFolderName(c, c.platform);
@@ -400,7 +400,7 @@ ${proAutoText}`);
 };
 
 const _setAutomaticSigning = async (c: Context) => {
-    logTask(`_setAutomaticSigning:${c.platform}`);
+    logDefault(`_setAutomaticSigning:${c.platform}`);
 
     if (!c.platform) return;
 
@@ -420,7 +420,7 @@ const _setAutomaticSigning = async (c: Context) => {
 };
 
 const _setDevelopmentTeam = async (c: Context, teamID: string) => {
-    logTask(`_setDevelopmentTeam:${teamID}`);
+    logDefault(`_setDevelopmentTeam:${teamID}`);
 
     if (!c.platform) return;
     const cnf = c.files.appConfig.config_original;
@@ -458,7 +458,7 @@ const composeXcodeArgsFromCLI = (string: string) => {
 };
 
 export const buildXcodeProject = async (c: Context) => {
-    logTask('buildXcodeProject');
+    logDefault('buildXcodeProject');
 
     const { platform } = c;
 
@@ -538,7 +538,7 @@ export const buildXcodeProject = async (c: Context) => {
     }
     if (ignoreLogs && !ps.includes('-quiet')) p.push('-quiet');
 
-    logTask('buildXcodeProject', 'STARTING xcodebuild BUILD...');
+    logDefault('buildXcodeProject', 'STARTING xcodebuild BUILD...');
 
     // TODO: check if below code is still required
     // if (c.buildConfig.platforms[platform].runScheme === 'Release') {
@@ -563,7 +563,7 @@ export const buildXcodeProject = async (c: Context) => {
 };
 
 const archiveXcodeProject = (c: Context) => {
-    logTask('archiveXcodeProject');
+    logDefault('archiveXcodeProject');
     const { platform } = c;
 
     const appFolderName = getAppFolderName(c, c.platform);
@@ -623,7 +623,7 @@ const archiveXcodeProject = (c: Context) => {
     if (ignoreLogs && !ps.includes('-quiet')) p.push('-quiet');
     // if (sdk === 'iphonesimulator') p.push('ONLY_ACTIVE_ARCH=NO', "-destination='name=iPhone 7,OS=10.2'");
 
-    logTask('archiveXcodeProject', 'STARTING xcodebuild ARCHIVE...');
+    logDefault('archiveXcodeProject', 'STARTING xcodebuild ARCHIVE...');
 
     const args = ps !== '' ? [...composeXcodeArgsFromCLI(ps), ...p] : p;
 
@@ -644,7 +644,7 @@ const archiveXcodeProject = (c: Context) => {
 };
 
 export const exportXcodeProject = async (c: Context) => {
-    logTask('exportXcodeProject');
+    logDefault('exportXcodeProject');
 
     const { platform } = c;
 
@@ -680,7 +680,7 @@ export const exportXcodeProject = async (c: Context) => {
 
     logDebug('running', p);
 
-    logTask('exportXcodeProject', 'STARTING xcodebuild EXPORT...');
+    logDefault('exportXcodeProject', 'STARTING xcodebuild EXPORT...');
 
     return executeAsync(c, `xcodebuild ${p.join(' ')}`).then(() => {
         logSuccess(`Your IPA is located in ${chalk().cyan(exportPath)} .`);
@@ -690,7 +690,7 @@ export const exportXcodeProject = async (c: Context) => {
 // Resolve or reject will not be called so this will keep running
 export const runAppleLog = (c: Context) =>
     new Promise(() => {
-        logTask('runAppleLog');
+        logDefault('runAppleLog');
         const filter = c.program.filter || 'RNV';
         const opts: ObjectEncodingOptions & ExecFileOptions = {}; //{ stdio: 'inherit', customFds: [0, 1, 2] };
         const child = child_process.execFile(
@@ -714,7 +714,7 @@ export const runAppleLog = (c: Context) =>
     });
 
 export const configureXcodeProject = async (c: Context) => {
-    logTask('configureXcodeProject');
+    logDefault('configureXcodeProject');
 
     const { device } = c.program;
     const { platform } = c;

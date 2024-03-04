@@ -10,6 +10,7 @@ import {
     getAppFolder,
     getConfigProp,
     logDebug,
+    logDefault,
     logError,
     logTask,
     logWarning,
@@ -199,7 +200,7 @@ type InjectOptions = {
 
 // TODO Document/comment each of the functions
 export const ruWindowsProject = async (c: RnvContext, injectedOptions?: InjectOptions) => {
-    logTask('runWindowsProject');
+    logDefault('runWindowsProject');
 
     const options = getOptions(c, injectedOptions);
     const args: string[] = [];
@@ -347,7 +348,7 @@ const packageBundleForWindows = (c: RnvContext, isDev = false) => {
 };
 
 const setSingleBuildProcessForWindows = (c: RnvContext) => {
-    logTask('setSingleBuildProcessForWindows');
+    logDefault('setSingleBuildProcessForWindows');
     // eslint-disable-next-line eqeqeq
     if (env.MSBUILDDISABLENODEREUSE != 1) {
         const logging = getConfigProp<ConfigKey>(c, c.platform, 'logging', defaultOptions.logging);

@@ -8,7 +8,7 @@ import {
     getConfigProp,
     getPlatformProjectDir,
     chalk,
-    logTask,
+    logDefault,
     logInfo,
     logWarning,
     logSuccess,
@@ -60,7 +60,7 @@ const _runWebBrowser = (
     alreadyStarted: boolean
 ) =>
     new Promise<void>((resolve) => {
-        logTask('_runWebBrowser', `ip:${devServerHost} port:${port} openBrowser:${!!c.runtime.shouldOpenBrowser}`);
+        logDefault('_runWebBrowser', `ip:${devServerHost} port:${port} openBrowser:${!!c.runtime.shouldOpenBrowser}`);
         if (!c.runtime.shouldOpenBrowser) return resolve();
         const wait = waitForHost(c, '')
             .then(() => {
@@ -146,7 +146,7 @@ Debugger running at: ${debugUrl}`);
 };
 
 export const _runWebDevServer = async (c: RnvContext, enableRemoteDebugger?: boolean) => {
-    logTask('_runWebDevServer');
+    logDefault('_runWebDevServer');
     const { debug } = c.program;
 
     const env: Env = {
@@ -192,7 +192,7 @@ export const _runWebDevServer = async (c: RnvContext, enableRemoteDebugger?: boo
 
 export const buildCoreWebpackProject = async (c: RnvContext) => {
     const { debug, debugIp } = c.program;
-    logTask('buildCoreWebpackProject');
+    logDefault('buildCoreWebpackProject');
     const env: Record<string, any> = {
         ...CoreEnvVars.BASE(),
         ...CoreEnvVars.RNV_EXTENSIONS(),
@@ -221,13 +221,13 @@ export const buildCoreWebpackProject = async (c: RnvContext) => {
 };
 
 export const configureCoreWebProject = async () => {
-    logTask('configureCoreWebProject');
+    logDefault('configureCoreWebProject');
 };
 
 export const runWebpackServer = async (c: RnvContext, enableRemoteDebugger?: boolean) => {
     const { port } = c.runtime;
     const { platform } = c;
-    logTask('runWeb', `port:${port} debugger:${!!enableRemoteDebugger}`);
+    logDefault('runWeb', `port:${port} debugger:${!!enableRemoteDebugger}`);
 
     let devServerHost = c.runtime.localhost;
 
@@ -269,7 +269,7 @@ export const runWebpackServer = async (c: RnvContext, enableRemoteDebugger?: boo
 };
 
 export const waitForWebpack = async (c: RnvContext, suffix = 'assets/bundle.js') => {
-    logTask('waitForWebpack', `port:${c.runtime.port}`);
+    logDefault('waitForWebpack', `port:${c.runtime.port}`);
     let attempts = 0;
     const maxAttempts = 10;
     const CHECK_INTEVAL = 2000;
@@ -310,7 +310,7 @@ export const waitForWebpack = async (c: RnvContext, suffix = 'assets/bundle.js')
 export const buildWeb = async (c: RnvContext) => buildCoreWebpackProject(c);
 
 export const configureWebProject = async (c: RnvContext) => {
-    logTask('configureWebProject');
+    logDefault('configureWebProject');
 
     const { platform } = c;
 
@@ -327,7 +327,7 @@ export const configureWebProject = async (c: RnvContext) => {
 // CHROMECAST
 
 export const configureChromecastProject = async (c: RnvContext) => {
-    logTask(`configureChromecastProject:${c.platform}`);
+    logDefault(`configureChromecastProject:${c.platform}`);
 
     c.runtime.platformBuildsProjectPath = `${getPlatformProjectDir(c)}`;
 
@@ -338,10 +338,10 @@ export const configureChromecastProject = async (c: RnvContext) => {
 };
 
 const _configureProject = async (c: RnvContext) => {
-    logTask(`_configureProject:${c.platform}`);
+    logDefault(`_configureProject:${c.platform}`);
 };
 
 export const runChromecast = async (c: RnvContext) => {
-    logTask(`runChromecast:${c.platform}`);
+    logDefault(`runChromecast:${c.platform}`);
     await runWebpackServer(c);
 };

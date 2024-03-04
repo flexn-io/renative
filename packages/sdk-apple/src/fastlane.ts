@@ -1,10 +1,10 @@
 import path from 'path';
-import { getConfigProp, chalk, logTask, logWarning, logSuccess, executeAsync } from '@rnv/core';
+import { getConfigProp, chalk, logDefault, logWarning, logSuccess, executeAsync } from '@rnv/core';
 import { Context } from './types';
 import { getAppId } from '@rnv/sdk-utils';
 
 export const registerDevice = async (c: Context) => {
-    logTask(`registerDevice:${c.platform}`);
+    logDefault(`registerDevice:${c.platform}`);
 
     const teamID = getConfigProp(c, c.platform, 'teamID');
     const udid = c.runtime.targetUDID;
@@ -27,7 +27,7 @@ export const registerDevice = async (c: Context) => {
 };
 
 export const updateProfile = async (c: Context): Promise<boolean> => {
-    logTask(`updateProfile`, chalk().grey);
+    logDefault(`updateProfile`, chalk().grey);
 
     // TODO: run trough all schemes
     // const schemes = c.buildConfig.platforms?.[c.platform]?.buildSchemes
