@@ -20,7 +20,6 @@ import {
     isSystemMac,
     logError,
     logSuccess,
-    logWarning,
     getConfigProp,
     getAppFolder,
 } from '@rnv/core';
@@ -36,38 +35,29 @@ import {
 import semver from 'semver';
 import { isUrlLocalhost } from '@rnv/sdk-utils';
 
-export const launchWebOSimulator = async (c: RnvContext, target: string) => {
+export const launchWebOSimulator = async (c: RnvContext, target: string | boolean) => {
     logTask('launchWebOSimulator', `${target}`);
 
     const webosSdkPath = getRealPath(c, c.buildConfig?.sdks?.WEBOS_SDK);
     if (!webosSdkPath) {
         return Promise.reject(`c.buildConfig.sdks.WEBOS_SDK undefined`);
     }
-    let selectedOption = target;
-
     const availableSimulatorVersions = getDirectories(path.join(webosSdkPath, 'Simulator'));
-    if (target && !availableSimulatorVersions.includes(selectedOption)) {
-        logWarning(
-            `Target with name ${chalk().red(selectedOption)} does not exist. You can update it here: ${chalk().cyan(
-                c.paths.GLOBAL_RNV_CONFIG
-            )}`
-        );
-        await launchWebOSimulator(c, '');
-        return true;
-    }
 
-    if (!target) {
-        ({ selectedOption } = await inquirerPrompt({
-            name: 'selectedOption',
+    if (target) {
+        const { selectedSimulator } = await inquirerPrompt({
+            name: 'selectedSimulator',
             type: 'list',
+            message: 'What simulator would you like to launch?',
             choices: availableSimulatorVersions,
-            message: `Select the simulator you want to launch`,
-        }));
+        });
+
+        target = selectedSimulator;
     }
 
     const ePath = path.join(
         webosSdkPath,
-        `Simulator/${selectedOption}/${selectedOption}${isSystemWin ? '.exe' : isSystemLinux ? '.appimage' : '.app'}`
+        `Simulator/${target}/${target}${isSystemWin ? '.exe' : isSystemLinux ? '.appimage' : '.app'}`
     );
 
     if (!fsExistsSync(ePath)) {
@@ -78,7 +68,7 @@ export const launchWebOSimulator = async (c: RnvContext, target: string) => {
     }
 
     await executeAsync(c, `${openCommand} ${ePath}`, { detached: true });
-    logSuccess(`Succesfully launched ${selectedOption}`);
+    logSuccess(`Succesfully launched ${target}`);
     return true;
 };
 
