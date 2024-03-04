@@ -9,7 +9,7 @@ import {
     executeOrSkipTask,
     shouldSkipTask,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 import { runXcodeProject } from '@rnv/sdk-apple';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '@rnv/sdk-react-native';
@@ -21,16 +21,16 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { hosted } = c.program;
     logTask('taskRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
-    await executeOrSkipTask(c, TaskKey.configure, TaskKey.run, originTask);
+    await executeOrSkipTask(c, RnvTaskName.configure, RnvTaskName.run, originTask);
 
-    if (shouldSkipTask(c, TaskKey.run, originTask)) return true;
+    if (shouldSkipTask(c, RnvTaskName.run, originTask)) return true;
 
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
 
     switch (platform) {
         case 'macos':
             if (!c.program.only) {
-                await startBundlerIfRequired(c, TaskKey.run, originTask);
+                await startBundlerIfRequired(c, RnvTaskName.run, originTask);
                 await runXcodeProject(c);
                 if (!bundleAssets) {
                     logSummary('BUNDLER STARTED');
@@ -53,9 +53,9 @@ const Task: RnvTask = {
     description: 'Run your macos app on target device or emulator',
     fn: taskRun,
     fnHelp: taskRunHelp,
-    task: TaskKey.run,
+    task: RnvTaskName.run,
     // dependencies: {
-    //     before: TaskKey.configure,
+    //     before: RnvTaskName.configure,
     // },
     options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun())),
     platforms: ['macos'],

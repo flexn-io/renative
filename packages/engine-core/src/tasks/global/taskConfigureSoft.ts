@@ -6,7 +6,7 @@ import {
     isPlatformSupported,
     logTask,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 import { checkAndConfigureSdks, checkSdk } from '../../common';
 import { isBuildSchemeSupported } from '../../buildSchemes';
@@ -15,7 +15,7 @@ const taskConfigureSoft: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskConfigureSoft');
 
     await configureRuntimeDefaults(c);
-    await executeTask(c, TaskKey.appConfigure, parentTask, originTask);
+    await executeTask(c, RnvTaskName.appConfigure, parentTask, originTask);
     await isPlatformSupported(c);
     await isBuildSchemeSupported(c);
     await checkAndConfigureSdks(c);
@@ -27,7 +27,7 @@ const taskConfigureSoft: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Configure system and project without recreating files (used for --only)',
     fn: taskConfigureSoft,
-    task: TaskKey.configureSoft,
+    task: RnvTaskName.configureSoft,
     options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     isPrivate: true,

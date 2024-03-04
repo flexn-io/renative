@@ -5,7 +5,7 @@ import {
     RnvTaskOptionPresets,
     RnvTask,
     RnvTaskFn,
-    TaskKey,
+    RnvTaskName,
     writeFileSync,
 } from '@rnv/core';
 
@@ -30,7 +30,7 @@ const taskTelemetryEnable: RnvTaskFn = async (c) => {
 const Task: RnvTask = {
     description: 'Enables rnv telemetry on your machine',
     fn: taskTelemetryEnable,
-    task: TaskKey.telemetryEnable,
+    task: RnvTaskName.telemetryEnable,
     options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     isGlobalScope: true,

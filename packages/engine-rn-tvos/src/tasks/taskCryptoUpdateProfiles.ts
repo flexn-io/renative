@@ -8,7 +8,7 @@ import {
     executeTask,
     shouldSkipTask,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 import { updateProfile } from '@rnv/sdk-apple';
 
@@ -30,9 +30,9 @@ const _updateProfiles = (c: RnvContext) => {
 const taskCryptoUpdateProfiles: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskCryptoUpdateProfiles');
 
-    await executeTask(c, TaskKey.projectConfigure, TaskKey.cryptoUpdateProfiles, originTask);
+    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.cryptoUpdateProfiles, originTask);
 
-    if (shouldSkipTask(c, TaskKey.cryptoUpdateProfiles, originTask)) return true;
+    if (shouldSkipTask(c, RnvTaskName.cryptoUpdateProfiles, originTask)) return true;
 
     switch (c.platform) {
         case 'tvos':
@@ -47,7 +47,7 @@ const taskCryptoUpdateProfiles: RnvTaskFn = async (c, _parentTask, originTask) =
 const Task: RnvTask = {
     description: 'Will attempt to update all provisioning profiles (mac only)',
     fn: taskCryptoUpdateProfiles,
-    task: TaskKey.cryptoUpdateProfiles,
+    task: RnvTaskName.cryptoUpdateProfiles,
     options: RnvTaskOptionPresets.withBase(),
     platforms: ['tvos'],
     // skipPlatforms: true,

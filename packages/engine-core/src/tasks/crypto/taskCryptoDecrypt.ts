@@ -18,7 +18,7 @@ import {
     RnvContext,
     RnvTaskFn,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 import { getEnvExportCmd, getEnvVar } from './common';
 
@@ -52,7 +52,7 @@ const taskCryptoDecrypt: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskCryptoDecrypt');
 
     if (!parentTask) {
-        await executeTask(c, TaskKey.projectConfigure, TaskKey.cryptoDecrypt, originTask);
+        await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.cryptoDecrypt, originTask);
     }
 
     const crypto = c.files.project.config?.crypto;
@@ -209,7 +209,7 @@ and we will try to help!
 const Task: RnvTask = {
     description: 'Decrypt encrypted project files into local `~/<wokspace>/<project>/..`',
     fn: taskCryptoDecrypt,
-    task: TaskKey.cryptoDecrypt,
+    task: RnvTaskName.cryptoDecrypt,
     options: RnvTaskOptionPresets.withBase(),
     platforms: [],
 };

@@ -22,7 +22,7 @@ import {
     RnvTaskFn,
     copyFileSync,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 import { statSync } from 'fs';
 import { getEnvExportCmd, getEnvVar } from './common';
@@ -176,7 +176,7 @@ Make sure you take into account special characters that might need to be escaped
 const taskCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskCryptoEncrypt');
 
-    await executeTask(c, TaskKey.projectConfigure, TaskKey.cryptoEncrypt, originTask);
+    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.cryptoEncrypt, originTask);
 
     const projectName = c.files.project.config?.projectName;
 
@@ -236,7 +236,7 @@ const taskCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Encrypts secure files from `~/<wokspace>/<project>/..` to project',
     fn: taskCryptoEncrypt,
-    task: TaskKey.cryptoEncrypt,
+    task: RnvTaskName.cryptoEncrypt,
     options: RnvTaskOptionPresets.withBase(),
     platforms: [],
 };

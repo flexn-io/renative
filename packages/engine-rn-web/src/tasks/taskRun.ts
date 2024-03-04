@@ -15,7 +15,7 @@ import {
     getAppFolder,
     fsExistsSync,
     getAppConfigBuildsFolder,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 import path from 'path';
 import { runChromecast, runWebpackServer } from '@rnv/sdk-webpack';
@@ -85,15 +85,15 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { hosted } = c.program;
     logTask('taskRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
-    await executeOrSkipTask(c, TaskKey.configure, TaskKey.run, originTask);
+    await executeOrSkipTask(c, RnvTaskName.configure, RnvTaskName.run, originTask);
 
     if (hosted) {
         c.runtime.shouldOpenBrowser = true;
         // return _taskStart(c);
-        return executeTask(c, TaskKey.start, TaskKey.run, originTask);
+        return executeTask(c, RnvTaskName.start, RnvTaskName.run, originTask);
     }
 
-    if (shouldSkipTask(c, TaskKey.run, originTask)) return true;
+    if (shouldSkipTask(c, RnvTaskName.run, originTask)) return true;
 
     switch (platform) {
         case 'web':
@@ -127,7 +127,7 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Run your app in browser',
     fn: taskRun,
-    task: TaskKey.run,
+    task: RnvTaskName.run,
     options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun())),
     platforms: ['web', 'webtv', 'tizen', 'webos', 'tizenmobile', 'tizenwatch', 'kaios', 'chromecast'],
 };

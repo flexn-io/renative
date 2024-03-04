@@ -7,16 +7,16 @@ import {
     RnvTaskOptionPresets,
     RnvTaskFn,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 
 const taskWorkspaceConnect: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskWorkspaceConnect');
 
     if (!c.paths.project.configExists) {
-        return Promise.reject(`${TaskKey.projectConfigure} not supported outside of renative project`);
+        return Promise.reject(`${RnvTaskName.projectConfigure} not supported outside of renative project`);
     }
-    await executeTask(c, TaskKey.projectConfigure, TaskKey.workspaceConnect, originTask);
+    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.workspaceConnect, originTask);
 
     const cnf = c.files.rnv.configWorkspaces;
     if (!cnf) return;
@@ -36,7 +36,7 @@ const taskWorkspaceConnect: RnvTaskFn = async (c, _parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Connect project with selected workspace',
     fn: taskWorkspaceConnect,
-    task: TaskKey.workspaceConnect,
+    task: RnvTaskName.workspaceConnect,
     options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     isGlobalScope: true,

@@ -7,7 +7,7 @@ import {
     executeTask,
     shouldSkipTask,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 import { runWebNext } from '../sdk';
 import { openBrowser, waitForHost } from '@rnv/sdk-utils';
@@ -26,10 +26,10 @@ const taskStart: RnvTaskFn = async (c, parentTask, originTask) => {
     }
 
     if (!parentTask) {
-        await executeTask(c, TaskKey.configure, TaskKey.start, originTask);
+        await executeTask(c, RnvTaskName.configure, RnvTaskName.start, originTask);
     }
 
-    if (shouldSkipTask(c, TaskKey.start, originTask)) return true;
+    if (shouldSkipTask(c, RnvTaskName.start, originTask)) return true;
 
     if (hosted) {
         return logError('This platform does not support hosted mode', true);
@@ -47,7 +47,7 @@ const taskStart: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Starts bundler / server',
     fn: taskStart,
-    task: TaskKey.start,
+    task: RnvTaskName.start,
     options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['web', 'chromecast'],
 };

@@ -5,7 +5,7 @@ import {
     executeOrSkipTask,
     shouldSkipTask,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
     RnvTaskOptionPresets,
 } from '@rnv/core';
 import { buildXcodeProject } from '@rnv/sdk-apple';
@@ -14,13 +14,13 @@ const taskBuild: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskBuild');
     const { platform } = c;
 
-    await executeOrSkipTask(c, TaskKey.package, TaskKey.build, originTask);
+    await executeOrSkipTask(c, RnvTaskName.package, RnvTaskName.build, originTask);
 
-    if (shouldSkipTask(c, TaskKey.build, originTask)) return true;
+    if (shouldSkipTask(c, RnvTaskName.build, originTask)) return true;
 
     switch (platform) {
         case 'macos':
-            if (parentTask === TaskKey.export) {
+            if (parentTask === RnvTaskName.export) {
                 // build task is not necessary when exporting macos
                 return true;
             }
@@ -33,7 +33,7 @@ const taskBuild: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Build project binary',
     fn: taskBuild,
-    task: TaskKey.build,
+    task: RnvTaskName.build,
     options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['macos'],
 };

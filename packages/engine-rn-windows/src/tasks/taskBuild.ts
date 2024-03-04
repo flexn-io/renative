@@ -6,7 +6,7 @@ import {
     logTask,
     shouldSkipTask,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 import { ruWindowsProject } from '../sdks/sdk-windows';
 
@@ -14,9 +14,9 @@ const taskBuild: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskBuild');
     const { platform } = c;
 
-    await executeOrSkipTask(c, TaskKey.package, TaskKey.build, originTask);
+    await executeOrSkipTask(c, RnvTaskName.package, RnvTaskName.build, originTask);
 
-    if (shouldSkipTask(c, TaskKey.build, originTask)) return true;
+    if (shouldSkipTask(c, RnvTaskName.build, originTask)) return true;
 
     switch (platform) {
         case 'xbox':
@@ -30,7 +30,7 @@ const taskBuild: RnvTaskFn = async (c, _parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Build project binary',
     fn: taskBuild,
-    task: TaskKey.build,
+    task: RnvTaskName.build,
     options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['windows', 'xbox'],
 };

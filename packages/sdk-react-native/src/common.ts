@@ -10,7 +10,7 @@ import {
     logWarning,
     parseFonts,
     getApi,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 import { confirmActiveBundler } from '@rnv/sdk-utils';
 
@@ -24,14 +24,14 @@ export const startBundlerIfRequired = async (c: RnvContext, parentTask: string, 
     const isRunning = await isBundlerActive(c);
     if (!isRunning) {
         // _taskStart(c, parentTask, originTask);
-        await executeTask(c, TaskKey.start, parentTask, originTask);
+        await executeTask(c, RnvTaskName.start, parentTask, originTask);
 
         keepRNVRunning = true;
         await waitForBundler(c);
     } else {
         const resetCompleted = await confirmActiveBundler(c);
         if (resetCompleted) {
-            await executeTask(c, TaskKey.start, parentTask, originTask);
+            await executeTask(c, RnvTaskName.start, parentTask, originTask);
 
             keepRNVRunning = true;
             await waitForBundler(c);

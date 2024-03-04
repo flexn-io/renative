@@ -6,7 +6,7 @@ import {
     logInfo,
     RnvTaskFn,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 
 const taskInstall: RnvTaskFn = async (c, parentTask, _) => {
@@ -33,7 +33,7 @@ const taskInstall: RnvTaskFn = async (c, parentTask, _) => {
 const Task: RnvTask = {
     description: 'Install package node_modules via yarn or npm',
     fn: taskInstall,
-    task: TaskKey.install,
+    task: RnvTaskName.install,
     options: RnvTaskOptionPresets.withBase(),
     platforms: [],
 };

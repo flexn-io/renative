@@ -6,13 +6,13 @@ import {
     RnvTaskFn,
     inquirerPrompt,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 
 const taskPlatformSetup: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskPlatformSetup');
 
-    await executeTask(c, TaskKey.projectConfigure, TaskKey.platformSetup, originTask);
+    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.platformSetup, originTask);
 
     const currentPlatforms = c.files.project.config?.defaults?.supportedPlatforms || [];
 
@@ -32,7 +32,7 @@ const taskPlatformSetup: RnvTaskFn = async (c, _parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Allows you to change supportedPlatforms for your project',
     fn: taskPlatformSetup,
-    task: TaskKey.platformSetup,
+    task: RnvTaskName.platformSetup,
     options: RnvTaskOptionPresets.withBase(),
     platforms: [],
 };

@@ -13,7 +13,7 @@ import type { RnvTask, RnvTaskMap, TaskItemMap, TaskObj, TaskPromptOption } from
 import type { RnvEngine } from '../engines/types';
 import { inquirerPrompt, inquirerSeparator, pressAnyKeyToContinue } from '../api';
 import { getApi } from '../api/provider';
-import type { PlatformKey, RenativeConfigTaskKey } from '../schema/types';
+import type { PlatformKey, RenativeConfigRnvTaskName } from '../schema/types';
 import { checkIfProjectAndNodeModulesExists } from '../projects/dependencyManager';
 import { DEFAULT_TASK_DESCRIPTIONS } from './constants';
 import { getContext } from '../context/provider';
@@ -445,9 +445,9 @@ const _logSkip = (task: string) => {
     logInfo(`Original RNV task ${chalk().white(task)} marked to ignore. SKIPPING...`);
 };
 
-export const shouldSkipTask = (c: RnvContext, taskKey: string, originTaskKey?: string) => {
-    const task = taskKey as RenativeConfigTaskKey;
-    const originTask = originTaskKey as RenativeConfigTaskKey;
+export const shouldSkipTask = (c: RnvContext, taskKey: string, originRnvTaskName?: string) => {
+    const task = taskKey as RenativeConfigRnvTaskName;
+    const originTask = originRnvTaskName as RenativeConfigRnvTaskName;
     const tasks = c.buildConfig?.tasks;
     c.runtime.platform = c.platform;
     if (!tasks) return;

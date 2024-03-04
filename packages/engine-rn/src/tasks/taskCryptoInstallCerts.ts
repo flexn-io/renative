@@ -8,16 +8,16 @@ import {
     getFileListSync,
     logWarning,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
     RnvTaskOptionPresets,
 } from '@rnv/core';
 
 const taskCryptoInstallCerts: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskCryptoInstallCerts');
 
-    await executeTask(c, TaskKey.projectConfigure, TaskKey.cryptoInstallCerts, originTask);
+    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.cryptoInstallCerts, originTask);
 
-    if (shouldSkipTask(c, TaskKey.cryptoInstallCerts, originTask)) return true;
+    if (shouldSkipTask(c, RnvTaskName.cryptoInstallCerts, originTask)) return true;
 
     if (c.platform !== 'ios') {
         logError(`_installTempCerts: platform ${c.platform} not supported`);
@@ -39,7 +39,7 @@ const taskCryptoInstallCerts: RnvTaskFn = async (c, _parentTask, originTask) => 
 const Task: RnvTask = {
     description: 'Installs certificates into keychain (mac only)',
     fn: taskCryptoInstallCerts,
-    task: TaskKey.cryptoInstallCerts,
+    task: RnvTaskName.cryptoInstallCerts,
     options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     // skipPlatforms: true,

@@ -7,13 +7,13 @@ import {
     RnvTaskOptionPresets,
     RnvTaskFn,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 
 const taskHooksList: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskHooksList');
 
-    await executeTask(c, TaskKey.projectConfigure, TaskKey.hooksList, originTask);
+    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.hooksList, originTask);
     await buildHooks(c);
 
     if (c.buildHooks) {
@@ -33,7 +33,7 @@ const taskHooksList: RnvTaskFn = async (c, _parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Get list of all available hooks',
     fn: taskHooksList,
-    task: TaskKey.hooksList,
+    task: RnvTaskName.hooksList,
     options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     forceBuildHookRebuild: true,

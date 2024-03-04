@@ -7,7 +7,7 @@ import {
     executeOrSkipTask,
     shouldSkipTask,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 import { packageBundleForXcode } from '@rnv/sdk-apple';
 
@@ -15,7 +15,7 @@ const taskPackage: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskPackage', `parent:${parentTask}`);
     const { platform } = c;
 
-    await executeOrSkipTask(c, TaskKey.configure, TaskKey.package, originTask);
+    await executeOrSkipTask(c, RnvTaskName.configure, RnvTaskName.package, originTask);
 
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
 
@@ -23,7 +23,7 @@ const taskPackage: RnvTaskFn = async (c, parentTask, originTask) => {
         return true;
     }
 
-    if (shouldSkipTask(c, TaskKey.package, originTask)) return true;
+    if (shouldSkipTask(c, RnvTaskName.package, originTask)) return true;
 
     switch (platform) {
         case 'macos':
@@ -37,7 +37,7 @@ const taskPackage: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Package source files into bundle',
     fn: taskPackage,
-    task: TaskKey.package,
+    task: RnvTaskName.package,
     options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['macos'],
 };

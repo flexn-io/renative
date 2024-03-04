@@ -6,13 +6,13 @@ import {
     executeAsync,
     shouldSkipTask,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 
 const taskDebug: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskDebug', `parent:${parentTask}`);
 
-    if (shouldSkipTask(c, TaskKey.debug, originTask)) return true;
+    if (shouldSkipTask(c, RnvTaskName.debug, originTask)) return true;
 
     const { platform } = c;
 
@@ -29,7 +29,7 @@ const taskDebug: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Debug your app on target device or emulator',
     fn: taskDebug,
-    task: TaskKey.debug,
+    task: RnvTaskName.debug,
     options: RnvTaskOptionPresets.withBase(),
     platforms: ['web', 'webtv', 'tizen'],
 };

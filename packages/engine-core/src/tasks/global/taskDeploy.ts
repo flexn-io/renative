@@ -5,16 +5,16 @@ import {
     executeOrSkipTask,
     shouldSkipTask,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
     SUPPORTED_PLATFORMS,
 } from '@rnv/core';
 
 const taskDeploy: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskDeploy', `parent:${parentTask}`);
 
-    await executeOrSkipTask(c, TaskKey.export, TaskKey.deploy, originTask);
+    await executeOrSkipTask(c, RnvTaskName.export, RnvTaskName.deploy, originTask);
 
-    if (shouldSkipTask(c, TaskKey.deploy, originTask)) return true;
+    if (shouldSkipTask(c, RnvTaskName.deploy, originTask)) return true;
 
     // Deploy simply trggets hook
     return true;
@@ -23,7 +23,7 @@ const taskDeploy: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Deploy the binary via selected deployment intgeration or buld hook',
     fn: taskDeploy,
-    task: TaskKey.deploy,
+    task: RnvTaskName.deploy,
     options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: [...SUPPORTED_PLATFORMS],
 };

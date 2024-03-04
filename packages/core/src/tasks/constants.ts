@@ -1,13 +1,13 @@
-import { TaskKey } from '../enums/taskName';
+import { RnvTaskName } from '../enums/taskName';
 import type { RnvTaskOption } from './types';
 
 export const DEFAULT_TASK_DESCRIPTIONS: Record<string, string> = {
-    [TaskKey.run]: 'Run your app on target device or emulator',
-    [TaskKey.package]: 'Package source files into bundle',
-    [TaskKey.build]: 'Build project binary',
-    [TaskKey.configure]: 'Configure current project',
-    [TaskKey.start]: 'Starts bundler / server',
-    [TaskKey.export]: 'Export the app into deployable binary',
+    [RnvTaskName.run]: 'Run your app on target device or emulator',
+    [RnvTaskName.package]: 'Package source files into bundle',
+    [RnvTaskName.build]: 'Build project binary',
+    [RnvTaskName.configure]: 'Configure current project',
+    [RnvTaskName.start]: 'Starts bundler / server',
+    [RnvTaskName.export]: 'Export the app into deployable binary',
 };
 
 export const RnvTaskOptions: Record<string, RnvTaskOption> = {

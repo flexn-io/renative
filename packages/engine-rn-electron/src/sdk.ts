@@ -26,7 +26,7 @@ import {
     copyAssetsFolder,
     ExecOptionsPresets,
     getAppFolder,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 import { FileElectronPackage } from './types';
 import { NpmPackageFile } from '@rnv/core/lib/configs/types';
@@ -276,7 +276,7 @@ const buildElectron = async (c: RnvContext) => {
     const menuPathDest = path.join(platformBuildDir, 'build', 'contextMenu.js');
     copyFileSync(menuPathSrc, menuPathDest);
 
-    if (c.command !== TaskKey.export) {
+    if (c.command !== RnvTaskName.export) {
         logSuccess(`Your Build is located in ${chalk().cyan(path.join(platformBuildDir, 'build'))} .`);
     }
 

@@ -4,7 +4,7 @@ import {
     RnvContext,
     RnvTask,
     RnvTaskFn,
-    TaskKey,
+    RnvTaskName,
     chalk,
     configureRuntimeDefaults,
     executeTask,
@@ -26,7 +26,7 @@ const taskKill: RnvTaskFn = async (c, _parentTask, originTask) => {
     await configureRuntimeDefaults(c);
 
     if (c.paths.project.configExists) {
-        await executeTask(c, TaskKey.appConfigure, TaskKey.kill, originTask);
+        await executeTask(c, RnvTaskName.appConfigure, RnvTaskName.kill, originTask);
         await configureRuntimeDefaults(c);
         platArray = Object.values(c.runtime.supportedPlatforms);
         ports = c.buildConfig?.defaults?.ports || {};
@@ -68,7 +68,7 @@ ${usedPorts.map((v) => chalk().white(`> ${v.port} (${v.platform})`)).join('\n')}
 const Task: RnvTask = {
     description: 'Kills all the processes related to this project',
     fn: taskKill,
-    task: TaskKey.kill,
+    task: RnvTaskName.kill,
     options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     isGlobalScope: true,

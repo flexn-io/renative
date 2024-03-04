@@ -6,7 +6,7 @@ import {
     executeOrSkipTask,
     shouldSkipTask,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 import { SDKWindows } from '../sdks';
 
@@ -18,9 +18,9 @@ const taskExport: RnvTaskFn = async (c, parentTask, originTask) => {
 
     const { platform } = c;
 
-    await executeOrSkipTask(c, TaskKey.build, TaskKey.export, originTask);
+    await executeOrSkipTask(c, RnvTaskName.build, RnvTaskName.export, originTask);
 
-    if (shouldSkipTask(c, TaskKey.export, originTask)) return true;
+    if (shouldSkipTask(c, RnvTaskName.export, originTask)) return true;
 
     switch (platform) {
         case 'xbox':
@@ -35,7 +35,7 @@ const taskExport: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Export the app into deployable binary',
     fn: taskExport,
-    task: TaskKey.export,
+    task: RnvTaskName.export,
     options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['windows', 'xbox'],
 };

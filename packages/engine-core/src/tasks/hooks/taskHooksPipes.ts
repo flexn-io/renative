@@ -7,13 +7,13 @@ import {
     RnvTaskOptionPresets,
     RnvTaskFn,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 
 const taskHooksPipes: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskHooksPipes');
 
-    await executeTask(c, TaskKey.projectConfigure, TaskKey.hooksPipes, originTask);
+    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.hooksPipes, originTask);
 
     await buildHooks(c);
 
@@ -24,7 +24,7 @@ const taskHooksPipes: RnvTaskFn = async (c, _parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Get the list of all available pipes',
     fn: taskHooksPipes,
-    task: TaskKey.hooksPipes,
+    task: RnvTaskName.hooksPipes,
     options: RnvTaskOptionPresets.withBase(),
     platforms: [],
 };

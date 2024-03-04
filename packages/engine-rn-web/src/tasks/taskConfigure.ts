@@ -8,7 +8,7 @@ import {
     shouldSkipTask,
     configureEntryPoint,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 import { configureWebProject, configureChromecastProject } from '@rnv/sdk-webpack';
 import { configureKaiOSProject } from '@rnv/sdk-kaios';
@@ -18,8 +18,8 @@ import { configureTizenProject } from '@rnv/sdk-tizen';
 const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskConfigure');
 
-    await executeTask(c, TaskKey.platformConfigure, TaskKey.configure, originTask);
-    if (shouldSkipTask(c, TaskKey.configure, originTask)) return true;
+    await executeTask(c, RnvTaskName.platformConfigure, RnvTaskName.configure, originTask);
+    if (shouldSkipTask(c, RnvTaskName.configure, originTask)) return true;
     await configureEntryPoint(c, c.platform);
 
     await copySharedPlatforms(c);
@@ -50,7 +50,7 @@ const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Configure current project',
     fn: taskConfigure,
-    task: TaskKey.configure,
+    task: RnvTaskName.configure,
     options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['web', 'webtv', 'tizen', 'webos', 'tizenmobile', 'tizenwatch', 'kaios', 'chromecast'],
 };

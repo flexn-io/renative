@@ -6,7 +6,7 @@ import {
     getRegisteredEngines,
     RnvTaskFn,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 
 const taskHelp: RnvTaskFn = async (c) => {
@@ -56,7 +56,7 @@ ${optsString}
 const Task: RnvTask = {
     description: 'Display generic help',
     fn: taskHelp,
-    task: TaskKey.help,
+    task: RnvTaskName.help,
     options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     isGlobalScope: true,

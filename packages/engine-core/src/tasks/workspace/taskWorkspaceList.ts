@@ -7,14 +7,14 @@ import {
     RnvTaskOptionPresets,
     RnvTaskFn,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 
 const taskWorkspaceList: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskWorkspaceList');
 
     if (c.paths.project.configExists) {
-        await executeTask(c, TaskKey.projectConfigure, TaskKey.workspaceList, originTask);
+        await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.workspaceList, originTask);
     }
 
     const opts = generateOptions(
@@ -33,7 +33,7 @@ const taskWorkspaceList: RnvTaskFn = async (c, _parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Show list of all available workspaces',
     fn: taskWorkspaceList,
-    task: TaskKey.workspaceList,
+    task: RnvTaskName.workspaceList,
     options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     isGlobalScope: true,

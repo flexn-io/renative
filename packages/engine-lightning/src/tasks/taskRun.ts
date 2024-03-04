@@ -5,7 +5,7 @@ import {
     logRaw,
     executeOrSkipTask,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
     RnvTaskOptionPresets,
 } from '@rnv/core';
 import { runLightningProject } from '../sdks/sdk-lightning';
@@ -17,7 +17,7 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { hosted } = c.program;
     logTask('taskRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
-    await executeOrSkipTask(c, TaskKey.configure, TaskKey.run, originTask);
+    await executeOrSkipTask(c, RnvTaskName.configure, RnvTaskName.run, originTask);
 
     switch (platform) {
         case 'tizen':
@@ -38,9 +38,9 @@ const Task: RnvTask = {
     description: 'Run your lightning app on target device or emulator',
     fn: taskRun,
     fnHelp: taskRunHelp,
-    task: TaskKey.run,
+    task: RnvTaskName.run,
     // dependencies: {
-    //     before: TaskKey.configure,
+    //     before: RnvTaskName.configure,
     // },
     options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun())),
     platforms: ['tizen', 'webos'],

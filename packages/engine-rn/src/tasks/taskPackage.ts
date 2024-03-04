@@ -6,7 +6,7 @@ import {
     shouldSkipTask,
     getConfigProp,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
     RnvTaskOptionPresets,
 } from '@rnv/core';
 import { packageAndroid } from '@rnv/sdk-android';
@@ -16,9 +16,9 @@ const taskPackage: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskPackage', `parent:${parentTask}`);
     const { platform } = c;
 
-    await executeOrSkipTask(c, TaskKey.configure, TaskKey.package, originTask);
+    await executeOrSkipTask(c, RnvTaskName.configure, RnvTaskName.package, originTask);
 
-    if (shouldSkipTask(c, TaskKey.package, originTask)) return true;
+    if (shouldSkipTask(c, RnvTaskName.package, originTask)) return true;
 
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
 
@@ -39,7 +39,7 @@ const taskPackage: RnvTaskFn = async (c, parentTask, originTask) => {
 
             const signingConfig = getConfigProp(c, c.platform, 'signingConfig');
 
-            if (originTask === TaskKey.eject || signingConfig !== 'Release') {
+            if (originTask === RnvTaskName.eject || signingConfig !== 'Release') {
                 //if bundleAssets === true AND signingConfig is not releaase RN will not trigger packaging
                 return packageAndroid(c);
             }
@@ -54,7 +54,7 @@ const taskPackage: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Package source files into bundle',
     fn: taskPackage,
-    task: TaskKey.package,
+    task: RnvTaskName.package,
     options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],
 };

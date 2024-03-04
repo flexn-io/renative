@@ -11,7 +11,7 @@ import {
     RnvTaskFn,
     RnvContext,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 import { RNV_PACKAGES } from './constants';
 
@@ -47,7 +47,7 @@ const taskUnlink: RnvTaskFn = async (c) => {
 const Task: RnvTask = {
     description: 'Replaces rnv version in project with original node_modules version',
     fn: taskUnlink,
-    task: TaskKey.unlink,
+    task: RnvTaskName.unlink,
     options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     isGlobalScope: true,

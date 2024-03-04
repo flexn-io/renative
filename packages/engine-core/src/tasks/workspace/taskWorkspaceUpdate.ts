@@ -1,10 +1,10 @@
-import { logTask, executeTask, RnvTaskOptionPresets, RnvTaskFn, RnvTask, TaskKey } from '@rnv/core';
+import { logTask, executeTask, RnvTaskOptionPresets, RnvTaskFn, RnvTask, RnvTaskName } from '@rnv/core';
 
 const taskWorkspaceUpdate: RnvTaskFn = async (c, _parentTask, originTask) => {
     // TODO: taskWorkspaceUpdate
     logTask('taskWorkspaceUpdate');
 
-    await executeTask(c, TaskKey.projectConfigure, TaskKey.workspaceUpdate, originTask);
+    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.workspaceUpdate, originTask);
 
     return true;
 };
@@ -12,7 +12,7 @@ const taskWorkspaceUpdate: RnvTaskFn = async (c, _parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'TODO: unused task',
     fn: taskWorkspaceUpdate,
-    task: TaskKey.workspaceUpdate,
+    task: RnvTaskName.workspaceUpdate,
     options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     isGlobalScope: true,

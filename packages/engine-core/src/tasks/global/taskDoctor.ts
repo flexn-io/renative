@@ -11,7 +11,7 @@ import {
     RnvTaskFn,
     validateRenativeProjectSchema,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 
 const configTargets = [
@@ -26,7 +26,7 @@ const taskDoctor: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskDoctor');
 
     await configureRuntimeDefaults(c);
-    await executeTask(c, TaskKey.appConfigure, parentTask, originTask);
+    await executeTask(c, RnvTaskName.appConfigure, parentTask, originTask);
     await configureRuntimeDefaults(c);
 
     const configPaths: Array<string> = [];
@@ -90,7 +90,7 @@ const taskDoctor: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Checks validity and config health of your project',
     fn: taskDoctor,
-    task: TaskKey.doctor,
+    task: RnvTaskName.doctor,
     options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     isGlobalScope: true,

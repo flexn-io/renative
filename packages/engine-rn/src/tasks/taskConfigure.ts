@@ -7,7 +7,7 @@ import {
     shouldSkipTask,
     jetifyIfRequired,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
     RnvTaskOptionPresets,
 } from '@rnv/core';
 import { configureGradleProject } from '@rnv/sdk-android';
@@ -17,8 +17,8 @@ import { configureFonts } from '@rnv/sdk-react-native';
 const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskConfigure');
 
-    await executeTask(c, TaskKey.platformConfigure, TaskKey.configure, originTask);
-    if (shouldSkipTask(c, TaskKey.configure, originTask)) return true;
+    await executeTask(c, RnvTaskName.platformConfigure, RnvTaskName.configure, originTask);
+    if (shouldSkipTask(c, RnvTaskName.configure, originTask)) return true;
 
     await configureEntryPoint(c, c.platform);
 
@@ -50,7 +50,7 @@ const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Configure current project',
     fn: taskConfigure,
-    task: TaskKey.configure,
+    task: RnvTaskName.configure,
     options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],
 };

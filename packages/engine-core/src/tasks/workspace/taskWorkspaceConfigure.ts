@@ -13,7 +13,7 @@ import {
     logInfo,
     RnvTaskFn,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
     ConfigName,
 } from '@rnv/core';
 
@@ -91,7 +91,7 @@ const taskWorkspaceConfigure: RnvTaskFn = async (c) => {
 const Task: RnvTask = {
     description: 'Preconfigures your current workspace defined via "workspaceID" prop in renative config file',
     fn: taskWorkspaceConfigure,
-    task: TaskKey.workspaceConfigure,
+    task: RnvTaskName.workspaceConfigure,
     options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     isGlobalScope: true,

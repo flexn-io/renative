@@ -10,7 +10,7 @@ import {
     RnvTaskFn,
     RnvContext,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 import { RNV_PACKAGES } from './constants';
 
@@ -43,7 +43,7 @@ const taskLink: RnvTaskFn = async (c, _parentTask, _originalTask) => {
 const Task: RnvTask = {
     description: 'Links development version or renative with this project',
     fn: taskLink,
-    task: TaskKey.link,
+    task: RnvTaskName.link,
     options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     isGlobalScope: true,

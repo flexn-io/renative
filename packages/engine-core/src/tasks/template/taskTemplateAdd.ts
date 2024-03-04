@@ -9,7 +9,7 @@ import {
     RnvTaskFn,
     inquirerPrompt,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 
 const _writeObjectSync = (c: RnvContext, p: string, s: object) => {
@@ -37,7 +37,7 @@ export const _addTemplate = (c: RnvContext, template: string) => {
 const taskTemplateAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskTemplateAdd');
 
-    await executeTask(c, TaskKey.projectConfigure, TaskKey.templateAdd, originTask);
+    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.templateAdd, originTask);
 
     const opts = getTemplateOptions(c);
 
@@ -56,7 +56,7 @@ const taskTemplateAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Install additional template to the project',
     fn: taskTemplateAdd,
-    task: TaskKey.templateAdd,
+    task: RnvTaskName.templateAdd,
     options: RnvTaskOptionPresets.withBase(),
     platforms: [],
 };

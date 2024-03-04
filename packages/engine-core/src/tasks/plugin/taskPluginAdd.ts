@@ -12,7 +12,7 @@ import {
     inquirerPrompt,
     RenativeConfigPlugin,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 import { getPluginList } from '../../plugins';
 
@@ -20,7 +20,7 @@ import { getPluginList } from '../../plugins';
 const taskPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskPluginAdd');
 
-    await executeTask(c, TaskKey.projectConfigure, TaskKey.pluginAdd, originTask);
+    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.pluginAdd, originTask);
 
     const selPluginKey = c.program.rawArgs?.[4];
 
@@ -93,7 +93,7 @@ const taskPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
 
     await resolvePluginDependants(c);
 
-    await executeTask(c, TaskKey.install, TaskKey.pluginAdd, originTask);
+    await executeTask(c, RnvTaskName.install, RnvTaskName.pluginAdd, originTask);
 
     spinner.succeed('All plugins installed!');
     logSuccess('Plugins installed successfully!');
@@ -103,7 +103,7 @@ const taskPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Add selected plugin to the project',
     fn: taskPluginAdd,
-    task: TaskKey.pluginAdd,
+    task: RnvTaskName.pluginAdd,
     options: RnvTaskOptionPresets.withBase(),
     platforms: [],
 };

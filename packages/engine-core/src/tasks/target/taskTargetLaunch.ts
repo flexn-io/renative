@@ -7,7 +7,7 @@ import {
     RnvTaskFn,
     inquirerPrompt,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 import { checkAndConfigureSdks, checkSdk } from '../../common';
 import { launchAndroidSimulator } from '@rnv/sdk-android';
@@ -21,7 +21,7 @@ const taskTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) => {
 
     await isPlatformSupported(c, true);
     await checkAndConfigureSdks(c);
-    await executeTask(c, TaskKey.workspaceConfigure, TaskKey.targetLaunch, originTask);
+    await executeTask(c, RnvTaskName.workspaceConfigure, RnvTaskName.targetLaunch, originTask);
 
     const { platform, program } = c;
     let target = program?.target;
@@ -81,7 +81,7 @@ const taskTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Launch specific target',
     fn: taskTargetLaunch,
-    task: TaskKey.targetLaunch,
+    task: RnvTaskName.targetLaunch,
     options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     isGlobalScope: true,

@@ -6,7 +6,7 @@ import {
     executeOrSkipTask,
     shouldSkipTask,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 import { buildWeb } from '@rnv/sdk-webpack';
 import { buildTizenProject } from '@rnv/sdk-tizen';
@@ -21,9 +21,9 @@ const taskBuild: RnvTaskFn = async (c, parentTask, originTask) => {
     // Build aways bundles assets
     c.runtime.forceBundleAssets = true;
 
-    await executeOrSkipTask(c, TaskKey.package, TaskKey.build, originTask);
+    await executeOrSkipTask(c, RnvTaskName.package, RnvTaskName.build, originTask);
 
-    if (shouldSkipTask(c, TaskKey.build, originTask)) return true;
+    if (shouldSkipTask(c, RnvTaskName.build, originTask)) return true;
 
     switch (platform) {
         case 'web':
@@ -50,7 +50,7 @@ const taskBuild: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Build project binary',
     fn: taskBuild,
-    task: TaskKey.build,
+    task: RnvTaskName.build,
     options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['web', 'webtv', 'tizen', 'webos', 'tizenmobile', 'tizenwatch', 'kaios', 'chromecast'],
 };

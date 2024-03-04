@@ -1,4 +1,4 @@
-export const TaskKey = {
+export const RnvTaskName = {
     run: 'run',
     configure: 'configure',
     doctor: 'doctor',

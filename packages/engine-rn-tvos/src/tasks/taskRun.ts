@@ -9,7 +9,7 @@ import {
     executeOrSkipTask,
     shouldSkipTask,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 import { packageAndroid, runAndroid, getAndroidDeviceToRunOn } from '@rnv/sdk-android';
 import { runXcodeProject, getIosDeviceToRunOn } from '@rnv/sdk-apple';
@@ -22,9 +22,9 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { hosted } = c.program;
     logTask('taskRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
-    await executeOrSkipTask(c, TaskKey.configure, TaskKey.run, originTask);
+    await executeOrSkipTask(c, RnvTaskName.configure, RnvTaskName.run, originTask);
 
-    if (shouldSkipTask(c, TaskKey.run, originTask)) return true;
+    if (shouldSkipTask(c, RnvTaskName.run, originTask)) return true;
 
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
 
@@ -34,7 +34,7 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
             // eslint-disable-next-line no-case-declarations
             const runDevice = await getAndroidDeviceToRunOn(c);
             if (!c.program.only) {
-                await startBundlerIfRequired(c, TaskKey.run, originTask);
+                await startBundlerIfRequired(c, RnvTaskName.run, originTask);
                 if (bundleAssets) {
                     await packageAndroid(c);
                 }
@@ -49,7 +49,7 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
             // eslint-disable-next-line no-case-declarations
             const runDeviceArgs = await getIosDeviceToRunOn(c);
             if (!c.program.only) {
-                await startBundlerIfRequired(c, TaskKey.run, originTask);
+                await startBundlerIfRequired(c, RnvTaskName.run, originTask);
                 await runXcodeProject(c, runDeviceArgs);
                 if (!bundleAssets) {
                     logSummary('BUNDLER STARTED');
@@ -72,9 +72,9 @@ const Task: RnvTask = {
     description: 'Run your tv app on target device or emulator',
     fn: taskRun,
     fnHelp: taskRunHelp,
-    task: TaskKey.run,
+    task: RnvTaskName.run,
     // dependencies: {
-    //     before: TaskKey.configure,
+    //     before: RnvTaskName.configure,
     // },
     options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun())),
     platforms: ['tvos', 'androidtv', 'firetv'],

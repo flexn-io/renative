@@ -5,7 +5,7 @@ import {
     executeOrSkipTask,
     shouldSkipTask,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
     RnvTaskOptionPresets,
 } from '@rnv/core';
 import { ejectGradleProject } from '@rnv/sdk-android';
@@ -29,9 +29,9 @@ const taskEject: RnvTaskFn = async (c, _parentTask, originTask) => {
 
     c.runtime._skipNativeDepResolutions = true;
 
-    await executeOrSkipTask(c, TaskKey.package, TaskKey.eject, originTask);
+    await executeOrSkipTask(c, RnvTaskName.package, RnvTaskName.eject, originTask);
 
-    if (shouldSkipTask(c, TaskKey.eject, originTask)) return true;
+    if (shouldSkipTask(c, RnvTaskName.eject, originTask)) return true;
 
     switch (platform) {
         case 'ios':
@@ -52,7 +52,7 @@ const taskEject: RnvTaskFn = async (c, _parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Eject current project app to self contained native project',
     fn: taskEject,
-    task: TaskKey.eject,
+    task: RnvTaskName.eject,
     options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],
 };

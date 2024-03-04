@@ -16,7 +16,7 @@ import {
     RnvTaskOptionPresets,
     RnvTask,
     ConfigFileApp,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 
 const taskAppCreate: RnvTaskFn = async (c) => {
@@ -167,7 +167,7 @@ const taskAppCreate: RnvTaskFn = async (c) => {
 const Task: RnvTask = {
     description: 'Create new app config',
     fn: taskAppCreate,
-    task: TaskKey.appCreate,
+    task: RnvTaskName.appCreate,
     options: RnvTaskOptionPresets.withBase(),
     platforms: [],
 };

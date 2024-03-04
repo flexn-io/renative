@@ -8,7 +8,7 @@ import {
     getConfigProp,
     logSummary,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
     RnvTaskOptionPresets,
 } from '@rnv/core';
 import { packageAndroid, runAndroid, getAndroidDeviceToRunOn } from '@rnv/sdk-android';
@@ -21,9 +21,9 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { hosted } = c.program;
     logTask('taskRun', `parent:${parentTask} port:${port} hosted:${hosted}`);
 
-    await executeOrSkipTask(c, TaskKey.configure, TaskKey.run, originTask);
+    await executeOrSkipTask(c, RnvTaskName.configure, RnvTaskName.run, originTask);
 
-    if (shouldSkipTask(c, TaskKey.run, originTask)) return true;
+    if (shouldSkipTask(c, RnvTaskName.run, originTask)) return true;
 
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
 
@@ -33,7 +33,7 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
             // eslint-disable-next-line no-case-declarations
             const runDeviceArgs = await getIosDeviceToRunOn(c);
             if (!c.program.only) {
-                await startBundlerIfRequired(c, TaskKey.run, originTask);
+                await startBundlerIfRequired(c, RnvTaskName.run, originTask);
                 await runXcodeProject(c, runDeviceArgs);
                 if (!bundleAssets) {
                     logSummary('BUNDLER STARTED');
@@ -51,7 +51,7 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
                 c.runtime.target = runDevice?.name || runDevice?.udid;
             }
             if (!c.program.only) {
-                await startBundlerIfRequired(c, TaskKey.run, originTask);
+                await startBundlerIfRequired(c, RnvTaskName.run, originTask);
                 if (bundleAssets || platform === 'androidwear') {
                     await packageAndroid(c);
                 }
@@ -77,9 +77,9 @@ const Task: RnvTask = {
     description: 'Run your rn app on target device or emulator',
     fn: taskRun,
     fnHelp: taskRunHelp,
-    task: TaskKey.run,
+    task: RnvTaskName.run,
     // dependencies: {
-    //     before: TaskKey.configure,
+    //     before: RnvTaskName.configure,
     // },
     options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun())),
     platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],

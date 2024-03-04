@@ -1,6 +1,6 @@
 import {
     RnvContext,
-    TaskKey,
+    RnvTaskName,
     chalk,
     executeTask,
     fsExistsSync,
@@ -69,7 +69,7 @@ export const checkCrypto = async (c: RnvContext, parentTask?: string, originTask
 project timestamp: ${chalk().grey(`${tsProject} - ${new Date(tsProject)}`)}
 workspace timestamp: ${chalk().grey(`${tsWorkspace} - ${new Date(tsWorkspace)}`)}
 you should run decrypt`);
-                await executeTask(c, TaskKey.cryptoDecrypt, parentTask, originTask);
+                await executeTask(c, RnvTaskName.cryptoDecrypt, parentTask, originTask);
                 return;
             }
 

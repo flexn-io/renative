@@ -6,7 +6,7 @@ import {
     executeTask,
     RnvTaskFn,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 import { listAndroidTargets } from '@rnv/sdk-android';
 import { listAppleDevices } from '@rnv/sdk-apple';
@@ -19,7 +19,7 @@ const taskTargetList: RnvTaskFn = async (c, _parentTask, originTask) => {
 
     await isPlatformSupported(c, true);
     await checkAndConfigureSdks(c);
-    await executeTask(c, TaskKey.workspaceConfigure, TaskKey.targetList, originTask);
+    await executeTask(c, RnvTaskName.workspaceConfigure, RnvTaskName.targetList, originTask);
 
     const { platform } = c;
 
@@ -48,7 +48,7 @@ const taskTargetList: RnvTaskFn = async (c, _parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'List all available targets for specific platform',
     fn: taskTargetList,
-    task: TaskKey.targetList,
+    task: RnvTaskName.targetList,
     options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     isGlobalScope: true,

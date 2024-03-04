@@ -1,4 +1,12 @@
-import { logErrorPlatform, logTask, RnvTaskFn, executeTask, RnvTask, TaskKey, RnvTaskOptionPresets } from '@rnv/core';
+import {
+    logErrorPlatform,
+    logTask,
+    RnvTaskFn,
+    executeTask,
+    RnvTask,
+    RnvTaskName,
+    RnvTaskOptionPresets,
+} from '@rnv/core';
 import { runAndroidLog, checkAndConfigureAndroidSdks } from '@rnv/sdk-android';
 import { runAppleLog } from '@rnv/sdk-apple';
 
@@ -7,7 +15,7 @@ import {} from '@rnv/sdk-android';
 const taskLog: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskLog', `parent:${parentTask}`);
 
-    await executeTask(c, TaskKey.workspaceConfigure, TaskKey.projectConfigure, originTask);
+    await executeTask(c, RnvTaskName.workspaceConfigure, RnvTaskName.projectConfigure, originTask);
 
     switch (c.platform) {
         case 'android':
@@ -26,7 +34,7 @@ const taskLog: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Attach logger to device or emulator and print out logs',
     fn: taskLog,
-    task: TaskKey.log,
+    task: RnvTaskName.log,
     options: RnvTaskOptionPresets.withBase(),
     platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],
     isGlobalScope: true,

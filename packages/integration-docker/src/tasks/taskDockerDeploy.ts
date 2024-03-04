@@ -6,7 +6,7 @@ import {
     initializeTask,
     findSuitableTask,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 import Docker from '../docker';
 
@@ -15,9 +15,9 @@ const taskDockerDeploy: RnvTaskFn = async (c, parentTask, originTask) => {
 
     if (c.program.only) {
         // If run as standalone command skip all the export
-        await executeOrSkipTask(c, TaskKey.export, 'docker export', originTask);
+        await executeOrSkipTask(c, RnvTaskName.export, 'docker export', originTask);
     } else {
-        const taskInstance = await findSuitableTask(c, TaskKey.export);
+        const taskInstance = await findSuitableTask(c, RnvTaskName.export);
         if (taskInstance) await initializeTask(c, taskInstance.task);
     }
 

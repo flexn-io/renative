@@ -7,7 +7,7 @@ import {
     shouldSkipTask,
     configureEntryPoint,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
     RnvTaskOptionPresets,
 } from '@rnv/core';
 import { configureElectronProject } from '../sdk';
@@ -15,9 +15,9 @@ import { configureElectronProject } from '../sdk';
 const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskConfigure');
 
-    await executeTask(c, TaskKey.platformConfigure, TaskKey.configure, originTask);
+    await executeTask(c, RnvTaskName.platformConfigure, RnvTaskName.configure, originTask);
 
-    if (shouldSkipTask(c, TaskKey.configure, originTask)) return true;
+    if (shouldSkipTask(c, RnvTaskName.configure, originTask)) return true;
 
     await configureEntryPoint(c, c.platform);
 
@@ -40,7 +40,7 @@ const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Configure current project',
     fn: taskConfigure,
-    task: TaskKey.configure,
+    task: RnvTaskName.configure,
     options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['macos', 'windows', 'linux'],
 };

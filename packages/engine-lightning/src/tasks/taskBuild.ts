@@ -5,7 +5,7 @@ import {
     executeOrSkipTask,
     shouldSkipTask,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
     RnvTaskOptionPresets,
 } from '@rnv/core';
 import { buildLightningProject } from '../sdks/sdk-lightning';
@@ -15,9 +15,9 @@ const taskBuild: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     c.runtime.forceBundleAssets = true;
 
-    await executeOrSkipTask(c, TaskKey.configure, TaskKey.build, originTask);
+    await executeOrSkipTask(c, RnvTaskName.configure, RnvTaskName.build, originTask);
 
-    if (shouldSkipTask(c, TaskKey.build, originTask)) return true;
+    if (shouldSkipTask(c, RnvTaskName.build, originTask)) return true;
 
     switch (platform) {
         case 'tizen':
@@ -32,7 +32,7 @@ const taskBuild: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Build project binary',
     fn: taskBuild,
-    task: TaskKey.build,
+    task: RnvTaskName.build,
     options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['tizen', 'webos'],
 };

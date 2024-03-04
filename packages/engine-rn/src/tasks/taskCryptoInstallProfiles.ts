@@ -11,16 +11,16 @@ import {
     getFileListSync,
     logDebug,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
     RnvTaskOptionPresets,
 } from '@rnv/core';
 
 const taskCryptoInstallProfiles: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskCryptoInstallProfiles');
 
-    await executeTask(c, TaskKey.projectConfigure, TaskKey.cryptoInstallProfiles, originTask);
+    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.cryptoInstallProfiles, originTask);
 
-    if (shouldSkipTask(c, TaskKey.cryptoInstallProfiles, originTask)) return true;
+    if (shouldSkipTask(c, RnvTaskName.cryptoInstallProfiles, originTask)) return true;
 
     if (c.platform !== 'ios') {
         logError(`taskCryptoInstallProfiles: platform ${c.platform} not supported`);
@@ -52,7 +52,7 @@ const taskCryptoInstallProfiles: RnvTaskFn = async (c, _parentTask, originTask) 
 const Task: RnvTask = {
     description: 'Installs provisioning certificates found in your workspace (mac only)',
     fn: taskCryptoInstallProfiles,
-    task: TaskKey.cryptoInstallProfiles,
+    task: RnvTaskName.cryptoInstallProfiles,
     options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     // skipPlatforms: true,

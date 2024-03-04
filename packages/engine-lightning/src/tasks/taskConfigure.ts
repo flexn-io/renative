@@ -1,10 +1,18 @@
-import { logErrorPlatform, logTask, executeTask, RnvTaskFn, RnvTask, TaskKey, RnvTaskOptionPresets } from '@rnv/core';
+import {
+    logErrorPlatform,
+    logTask,
+    executeTask,
+    RnvTaskFn,
+    RnvTask,
+    RnvTaskName,
+    RnvTaskOptionPresets,
+} from '@rnv/core';
 import { configureLightningProject } from '../sdks/sdk-lightning';
 
 const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskConfigure');
 
-    await executeTask(c, TaskKey.platformConfigure, TaskKey.configure, originTask);
+    await executeTask(c, RnvTaskName.platformConfigure, RnvTaskName.configure, originTask);
 
     if (c.program.only && !!parentTask) {
         return true;
@@ -22,7 +30,7 @@ const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Configure current project',
     fn: taskConfigure,
-    task: TaskKey.configure,
+    task: RnvTaskName.configure,
     options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['tizen', 'webos'],
 };

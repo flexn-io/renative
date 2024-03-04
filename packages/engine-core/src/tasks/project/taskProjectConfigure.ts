@@ -30,7 +30,7 @@ import {
     generatePlatformAssetsRuntimeConfig,
     RnvTask,
     generateLocalJsonSchemas,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 import { checkCrypto } from '../crypto/common';
 
@@ -61,25 +61,25 @@ const taskProjectConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     await checkIsRenativeProject(c);
     await generateLocalJsonSchemas();
 
-    await executeTask(c, TaskKey.workspaceConfigure, TaskKey.projectConfigure, originTask);
+    await executeTask(c, RnvTaskName.workspaceConfigure, RnvTaskName.projectConfigure, originTask);
 
     if (c.program.only && !!parentTask) {
         await configureRuntimeDefaults(c);
-        await executeTask(c, TaskKey.appConfigure, TaskKey.projectConfigure, originTask);
+        await executeTask(c, RnvTaskName.appConfigure, RnvTaskName.projectConfigure, originTask);
         await generatePlatformAssetsRuntimeConfig(c);
         return true;
     }
 
     await checkIfTemplateConfigured(c);
-    await executeTask(c, TaskKey.install, TaskKey.projectConfigure, originTask);
-    if (originTask !== TaskKey.cryptoDecrypt) {
+    await executeTask(c, RnvTaskName.install, RnvTaskName.projectConfigure, originTask);
+    if (originTask !== RnvTaskName.cryptoDecrypt) {
         //If we explicitly running rnv crypto decrypt there is no need to check crypto
         await checkCrypto(c, parentTask, originTask);
     }
 
     await configureRuntimeDefaults(c);
 
-    if (originTask !== TaskKey.templateApply) {
+    if (originTask !== RnvTaskName.templateApply) {
         if ((c.runtime.requiresBootstrap || !isTemplateInstalled(c)) && !c.files.project.config?.isTemplate) {
             await applyTemplate(c);
             // We'll have to install the template first and reset current engine
@@ -93,8 +93,8 @@ const taskProjectConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
         }
         await applyTemplate(c);
         await configureRuntimeDefaults(c);
-        await executeTask(c, TaskKey.install, TaskKey.projectConfigure, originTask);
-        await executeTask(c, TaskKey.appConfigure, TaskKey.projectConfigure, originTask);
+        await executeTask(c, RnvTaskName.install, RnvTaskName.projectConfigure, originTask);
+        await executeTask(c, RnvTaskName.appConfigure, RnvTaskName.projectConfigure, originTask);
         // IMPORTANT: configurePlugins must run after appConfig present to ensure merge of all configs/plugins
         await versionCheck(c);
         await configureEngines(c);
@@ -139,7 +139,7 @@ const taskProjectConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Configure current project',
     fn: taskProjectConfigure,
-    task: TaskKey.projectConfigure,
+    task: RnvTaskName.projectConfigure,
     options: RnvTaskOptionPresets.withBase(),
     platforms: [],
 };

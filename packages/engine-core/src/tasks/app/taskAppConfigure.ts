@@ -19,7 +19,7 @@ import {
     RnvContext,
     inquirerSeparator,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 
 const _loadAppConfigIDfromDir = (dirName: string, appConfigsDir: string) => {
@@ -173,7 +173,7 @@ const taskAppConfigure = async (c: RnvContext) => {
     if (c.program.appConfigID === true || (!c.program.appConfigID && !c.runtime.appId)) {
         const hasAppConfig = await _findAndSwitchAppConfigDir(c);
         if (!hasAppConfig) {
-            // await executeTask(c, TaskKey.appCreate, TaskKey.appConfigure);
+            // await executeTask(c, RnvTaskName.appCreate, RnvTaskName.appConfigure);
             // return Promise.reject('No app configs found for this project');
             logWarning('No app configs found for this project');
             return true;
@@ -184,7 +184,7 @@ const taskAppConfigure = async (c: RnvContext) => {
             logWarning(`Cannot find app config ${chalk().white(c.program.appConfigID)}`);
             const hasAppConfig = await _findAndSwitchAppConfigDir(c);
             if (!hasAppConfig) {
-                // await executeTask(c, TaskKey.appCreate, TaskKey.appConfigure);
+                // await executeTask(c, RnvTaskName.appCreate, RnvTaskName.appConfigure);
                 // return Promise.reject('No app configs found for this project');
                 logWarning('No app configs found for this project');
                 return true;
@@ -208,7 +208,7 @@ const taskAppConfigure = async (c: RnvContext) => {
 const Task: RnvTask = {
     description: 'Configure project with specific appConfig',
     fn: taskAppConfigure,
-    task: TaskKey.appConfigure,
+    task: RnvTaskName.appConfigure,
     options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: [],
 };

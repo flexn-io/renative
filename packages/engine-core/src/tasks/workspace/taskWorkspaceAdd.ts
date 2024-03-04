@@ -8,13 +8,13 @@ import {
     RnvTaskOptionPresets,
     RnvTaskFn,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 
 const taskWorkspaceAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskWorkspaceAdd');
 
-    await executeTask(c, TaskKey.projectConfigure, TaskKey.workspaceAdd, originTask);
+    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.workspaceAdd, originTask);
 
     const { workspace } = await inquirerPrompt({
         name: 'workspace',
@@ -51,7 +51,7 @@ const taskWorkspaceAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Add new workspace',
     fn: taskWorkspaceAdd,
-    task: TaskKey.workspaceAdd,
+    task: RnvTaskName.workspaceAdd,
     options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     isGlobalScope: true,

@@ -6,7 +6,7 @@ import {
     executeOrSkipTask,
     shouldSkipTask,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 import { SDKWindows } from '../sdks';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '@rnv/sdk-react-native';
@@ -20,15 +20,15 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { hosted } = c.program;
     logTask('taskRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
-    await executeOrSkipTask(c, TaskKey.configure, TaskKey.run, originTask);
+    await executeOrSkipTask(c, RnvTaskName.configure, RnvTaskName.run, originTask);
 
-    if (shouldSkipTask(c, TaskKey.run, originTask)) return true;
+    if (shouldSkipTask(c, RnvTaskName.run, originTask)) return true;
 
     switch (platform) {
         case 'xbox':
         case 'windows':
             await clearWindowsTemporaryFiles(c);
-            await startBundlerIfRequired(c, TaskKey.run, originTask);
+            await startBundlerIfRequired(c, RnvTaskName.run, originTask);
             await ruWindowsProject(c);
             return waitForBundlerIfRequired(c);
         default:
@@ -39,7 +39,7 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Run your app in a window on desktop',
     fn: taskRun,
-    task: TaskKey.run,
+    task: RnvTaskName.run,
     options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun())),
     platforms: ['windows', 'xbox'],
 };

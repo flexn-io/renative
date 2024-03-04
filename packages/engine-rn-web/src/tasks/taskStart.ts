@@ -9,7 +9,7 @@ import {
     executeTask,
     shouldSkipTask,
     RnvTask,
-    TaskKey,
+    RnvTaskName,
 } from '@rnv/core';
 import { REMOTE_DEBUGGER_ENABLED_PLATFORMS, openBrowser, waitForHost } from '@rnv/sdk-utils';
 
@@ -23,10 +23,10 @@ const taskStart: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskStart', `parent:${parentTask} port:${port} hosted:${!!hosted}`);
 
     if (!parentTask) {
-        await executeTask(c, TaskKey.configure, TaskKey.start, originTask);
+        await executeTask(c, RnvTaskName.configure, RnvTaskName.start, originTask);
     }
 
-    if (shouldSkipTask(c, TaskKey.start, originTask)) return true;
+    if (shouldSkipTask(c, RnvTaskName.start, originTask)) return true;
 
     if (hosted) {
         waitForHost(c, '')
@@ -56,7 +56,7 @@ const taskStart: RnvTaskFn = async (c, parentTask, originTask) => {
 const Task: RnvTask = {
     description: 'Starts bundler / server',
     fn: taskStart,
-    task: TaskKey.start,
+    task: RnvTaskName.start,
     options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['web', 'webtv', 'tizen', 'webos', 'tizenmobile', 'tizenwatch', 'kaios', 'chromecast'],
 };
