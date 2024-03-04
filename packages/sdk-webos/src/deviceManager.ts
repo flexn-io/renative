@@ -12,6 +12,8 @@ import {
     logToSummary,
     logDefault,
     logInfo,
+    logTask,
+    logWarning,
     isSystemWin,
     RnvContext,
     inquirerPrompt,
@@ -43,7 +45,7 @@ export const launchWebOSimulator = async (c: RnvContext, target: string | boolea
     }
     const availableSimulatorVersions = getDirectories(path.join(webosSdkPath, 'Simulator'));
 
-    if (target) {
+    if (target === true) {
         const { selectedSimulator } = await inquirerPrompt({
             name: 'selectedSimulator',
             type: 'list',
@@ -52,6 +54,13 @@ export const launchWebOSimulator = async (c: RnvContext, target: string | boolea
         });
 
         target = selectedSimulator;
+    } else if (typeof target === 'string' && !availableSimulatorVersions.includes(target)) {
+        logWarning(
+            `Target with name ${chalk().red(target)} does not exist. You can update it here: ${chalk().cyan(
+                c.paths.GLOBAL_RNV_CONFIG
+            )}`
+        );
+        return await launchWebOSimulator(c, true);
     }
 
     const ePath = path.join(
