@@ -351,7 +351,7 @@ export const logDefault = (task: string, customChalk?: string | RnvApiChalkFn) =
 
     if (_jsonOnly) {
         return _printJson({
-            type: 'task',
+            type: 'log',
             task: stripAnsi(_getCurrentTask()),
             message: stripAnsi(_sanitizePaths(typeof customChalk === 'string' ? customChalk : task)),
         });
@@ -361,9 +361,9 @@ export const logDefault = (task: string, customChalk?: string | RnvApiChalkFn) =
     if (typeof customChalk === 'string') {
         msg = `[ log ]${_getCurrentTask()} ${task}${taskCount} ${currentChalk.grey(customChalk)}`;
     } else if (customChalk) {
-        msg = customChalk(`[ task ]${_getCurrentTask()} ${task}${taskCount}`);
+        msg = customChalk(`[ log ]${_getCurrentTask()} ${task}${taskCount}`);
     } else {
-        msg = `${currentChalk.green(`[ task ]${_getCurrentTask()}`)} ${task}${taskCount}`;
+        msg = `[ log ]${_getCurrentTask()} ${task}${taskCount}`;
     }
 
     console.log(_sanitizePaths(msg));

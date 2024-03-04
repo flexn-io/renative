@@ -13,7 +13,7 @@ import {
     readObjectSync,
     sanitizeDynamicProps,
 } from '../system/fs';
-import { chalk, logDebug, logError, logInfo, logSuccess, logTask, logWarning } from '../logger';
+import { chalk, logDebug, logError, logInfo, logSuccess, logDefault, logWarning } from '../logger';
 import { doResolve } from '../system/resolve';
 import { RnvContext } from '../context/types';
 import { PluginCallback, RnvPlugin, RnvPluginScope } from './types';
@@ -166,7 +166,7 @@ const _applyPackageDependency = (deps: Record<string, string>, key: string, vers
 };
 
 export const configurePlugins = async (c: RnvContext) => {
-    logTask('configurePlugins');
+    logDefault('configurePlugins');
 
     if (c.program.skipDependencyCheck) return true;
 
@@ -298,7 +298,7 @@ const _updatePackage = (c: RnvContext, override: Partial<NpmPackageFile>) => {
 };
 
 export const resolvePluginDependants = async (c: RnvContext) => {
-    logTask('resolvePluginDependants');
+    logDefault('resolvePluginDependants');
     const { plugins } = c.buildConfig;
 
     if (plugins) {
@@ -376,7 +376,7 @@ export const parsePlugins = (
     ignorePlatformObjectCheck?: boolean,
     includeDisabledOrExcludedPlugins?: boolean
 ) => {
-    logTask('parsePlugins');
+    logDefault('parsePlugins');
     if (c.buildConfig && platform) {
         const includedPluginsConfig = getConfigProp(c, platform, 'includedPlugins');
         // default to all plugins if it's not defined (null allowed for overrides)
@@ -460,7 +460,7 @@ export const parsePlugins = (
 };
 
 export const loadPluginTemplates = async (c: RnvContext) => {
-    logTask('loadPluginTemplates');
+    logDefault('loadPluginTemplates');
 
     //This comes from project dependency
     let flexnPluginsPath = doResolve('@flexn/plugins');
@@ -543,7 +543,7 @@ const _parsePluginTemplateDependencies = (
     customPluginTemplates: RenativeConfigPaths['pluginTemplates'],
     scope = 'root'
 ) => {
-    logTask('_parsePluginTemplateDependencies', `scope:${scope}`);
+    logDefault('_parsePluginTemplateDependencies', `scope:${scope}`);
     const missingDeps: Array<string> = [];
     if (customPluginTemplates) {
         Object.keys(customPluginTemplates).forEach((k) => {
@@ -745,7 +745,7 @@ export const overrideFileContents = (dest: string, override: Record<string, stri
 };
 
 export const installPackageDependenciesAndPlugins = async (c: RnvContext) => {
-    logTask('installPackageDependenciesAndPlugins');
+    logDefault('installPackageDependenciesAndPlugins');
 
     await installPackageDependencies(c);
     await overrideTemplatePlugins(c);
@@ -832,7 +832,7 @@ export const checkForPluginDependencies = async (c: RnvContext) => {
 // const getPluginPlatformFromString = (p: string): RnvPluginPlatform => p as RnvPluginPlatform;
 
 export const overrideTemplatePlugins = async (c: RnvContext) => {
-    logTask('overrideTemplatePlugins');
+    logDefault('overrideTemplatePlugins');
 
     const rnvPluginsDirs = c.paths.rnv.pluginTemplates.dirs;
     const appPluginDirs = c.paths.appConfig.pluginDirs;
@@ -875,7 +875,7 @@ export const copyTemplatePluginsSync = (c: RnvContext) => {
     const { platform } = c;
     const destPath = path.join(getAppFolder(c));
 
-    logTask('copyTemplatePluginsSync', `(${destPath})`);
+    logDefault('copyTemplatePluginsSync', `(${destPath})`);
 
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         const objectInject: OverridesOptions = []; // = { ...c.configPropsInjects };

@@ -1,7 +1,7 @@
 import path from 'path';
 import { fsExistsSync, readObjectSync, writeFileSync } from '../system/fs';
 import { installPackageDependencies } from '../projects/npm';
-import { logDebug, logTask, chalk, logInfo, logWarning, logError } from '../logger';
+import { logDebug, logDefault, chalk, logInfo, logWarning, logError } from '../logger';
 import { doResolve } from '../system/resolve';
 import { configurePlugins } from '../plugins';
 import { RnvContext } from '../context/types';
@@ -20,7 +20,7 @@ const ENGINE_CORE = 'engine-core';
 
 export const registerEngine = async (engine: RnvEngine, platform?: RnvPlatform, engConfig?: RnvEngineTemplate) => {
     const c = getContext();
-    logTask(`registerEngine:${engine.config.id}`);
+    logDefault(`registerEngine:${engine.config.id}`);
     c.runtime.enginesById[engine.config.id] = engine;
 
     c.runtime.enginesByIndex.push(engine);
@@ -83,7 +83,7 @@ export const generateEngineTasks = (taskArr: Array<RnvTask>) => {
 };
 
 export const configureEngines = async (c: RnvContext) => {
-    logTask('configureEngines');
+    logDefault('configureEngines');
 
     const engines = _getFilteredEngines(c);
     const devDependencies = c.files.project.package.devDependencies || {};
@@ -118,7 +118,7 @@ export const configureEngines = async (c: RnvContext) => {
 };
 
 export const registerMissingPlatformEngines = async (c: RnvContext, taskInstance?: RnvTask) => {
-    logTask('registerMissingPlatformEngines');
+    logDefault('registerMissingPlatformEngines');
     if (
         !taskInstance ||
         (!taskInstance.isGlobalScope && taskInstance?.platforms?.length === 0) ||
@@ -138,7 +138,7 @@ export const registerMissingPlatformEngines = async (c: RnvContext, taskInstance
 };
 
 export const registerAllPlatformEngines = async (c: RnvContext) => {
-    logTask('registerAllPlatformEngines');
+    logDefault('registerAllPlatformEngines');
     if (!c.buildConfig?.defaults?.supportedPlatforms?.forEach) {
         c.runtime.hasAllEnginesRegistered = true;
         return true;
@@ -156,7 +156,7 @@ export const registerAllPlatformEngines = async (c: RnvContext) => {
 };
 
 export const loadEnginePluginDeps = async (c: RnvContext, engineConfigs: Array<RnvEngineInstallConfig>) => {
-    logTask('loadEnginePluginDeps');
+    logDefault('loadEnginePluginDeps');
     if (c.files.project.config?.isTemplate) return 0;
 
     const cnf = c.files.project.config_original;
@@ -211,7 +211,7 @@ If you don't want to use this dependency make sure you remove platform which req
 };
 
 export const loadEnginePackageDeps = async (c: RnvContext, engineConfigs: Array<RnvEngineInstallConfig>) => {
-    logTask('loadEnginePackageDeps');
+    logDefault('loadEnginePackageDeps');
     if (c.program.skipDependencyCheck || c.files.project.config?.isTemplate) return 0;
     // Check engine dependencies
     const addedDeps = [];
@@ -356,7 +356,7 @@ const getScopedVersion = (
 };
 
 export const loadEngines = async (c: RnvContext, failOnMissingDeps?: boolean): Promise<boolean> => {
-    logTask('loadEngines');
+    logDefault('loadEngines');
     if (!fsExistsSync(c.paths.project.config)) return true;
 
     const filteredEngines: Record<string, string> = _getFilteredEngines(c);

@@ -1,7 +1,7 @@
 import path from 'path';
 
 import { mergeObjects, fsExistsSync, fsReaddirSync, getRealPath, readObjectSync, loadFile } from '../system/fs';
-import { logTask, logWarning, logDebug } from '../logger';
+import { logWarning, logDebug, logDefault } from '../logger';
 import { doResolve } from '../system/resolve';
 import { RnvContextFileObj, RnvContextPathObj, RnvContext, RnvContextFileKey } from '../context/types';
 import { generateRnvConfigPathObj } from '../context/defaults';
@@ -187,7 +187,7 @@ const _loadConfigFiles = (
 };
 
 export const parseRenativeConfigs = async (c: RnvContext) => {
-    logTask('parseRenativeConfigs');
+    logDefault('parseRenativeConfigs');
     // LOAD ./package.json
     loadFile(c.files.project, c.paths.project, 'package');
 

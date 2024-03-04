@@ -110,7 +110,7 @@ export const writeCleanFile = (
     timestampPathsConfig?: TimestampPathsConfig,
     c?: RnvContext
 ) => {
-    // logTask(`writeCleanFile`)
+    // logDefault(`writeCleanFile`)
     // console.log('writeCleanFile', destination);
     const api = getApi();
     if (!fs.existsSync(source)) {
@@ -161,7 +161,7 @@ export const writeCleanFile = (
 };
 
 export const readCleanFile = (source: string, overrides?: OverridesOptions) => {
-    // logTask(`writeCleanFile`)
+    // logDefault(`writeCleanFile`)
     // console.log('readCleanFile', source);
     if (!fs.existsSync(source)) {
         logError(`Cannot read file. source path doesn't exist: ${source}`);

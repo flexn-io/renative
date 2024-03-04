@@ -3,7 +3,7 @@ import { fsExistsSync, writeFileSync, readObjectSync, mkdirSync } from '../syste
 import { getContext } from '../context/provider';
 
 import path from 'path';
-import { chalk, logTask, logDebug, logInfo, logWarning } from '../logger';
+import { chalk, logDefault, logDebug, logInfo, logWarning } from '../logger';
 import { RnvContext } from '../context/types';
 import { generateOptions, inquirerPrompt } from '../api';
 import { ConfigFileWorkspace, ConfigFileWorkspaces } from '../schema/configFiles/types';
@@ -30,7 +30,7 @@ export const createWorkspace = async (c: RnvContext, workspaceID: string, worksp
 };
 
 export const getWorkspaceDirPath = async (c: RnvContext) => {
-    logTask('getWorkspaceDirPath');
+    logDefault('getWorkspaceDirPath');
     const wss = c.files.rnv.configWorkspaces;
     const ws = c.runtime.selectedWorkspace || c.buildConfig?.workspaceID;
     let dirPath;

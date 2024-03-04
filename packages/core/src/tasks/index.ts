@@ -1,4 +1,4 @@
-import { logTask, logInitTask, logExitTask, chalk, logRaw, logInfo, logWarning } from '../logger';
+import { logDefault, logInitTask, logExitTask, chalk, logRaw, logInfo, logWarning } from '../logger';
 import { executePipe } from '../buildHooks';
 import {
     getEngineRunner,
@@ -29,7 +29,7 @@ export const registerCustomTask = async (_c: RnvContext, task: RnvTask) => {
 };
 
 export const initializeTask = async (c: RnvContext, task: string) => {
-    logTask('initializeTask', task);
+    logDefault('initializeTask', task);
     c.runtime.task = task;
     executedTasks = {};
 
@@ -118,7 +118,7 @@ export const getAllSuitableTasks = (c: RnvContext): Record<string, TaskPromptOpt
 };
 
 export const findSuitableTask = async (c: RnvContext, specificTask?: string): Promise<RnvTask | undefined> => {
-    logTask('findSuitableTask');
+    logDefault('findSuitableTask');
     const REGISTERED_ENGINES = getRegisteredEngines(c);
     let task = '';
     if (!specificTask) {

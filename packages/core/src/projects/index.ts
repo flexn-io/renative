@@ -22,7 +22,7 @@ import {
 } from '../system/fs';
 import { installPackageDependencies, isYarnInstalled } from './npm';
 import { executeAsync } from '../system/exec';
-import { chalk, logTask, logWarning, logDebug, logInfo, getCurrentCommand } from '../logger';
+import { chalk, logDefault, logWarning, logDebug, logInfo, getCurrentCommand } from '../logger';
 import { configureTemplateFiles, configureEntryPoint } from '../templates';
 import { parseRenativeConfigs } from '../configs';
 import { RnvContext } from '../context/types';
@@ -36,7 +36,7 @@ import { getConfigProp } from '../context/contextProps';
 import { ConfigName } from '../enums/configName';
 
 export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
-    logTask('checkAndBootstrapIfRequired');
+    logDefault('checkAndBootstrapIfRequired');
     const template: string = c.program?.template;
     if (!c.paths.project.configExists && template) {
         await executeAsync(`${isYarnInstalled() ? 'yarn' : 'npm'} add ${template}`, {
@@ -191,7 +191,7 @@ export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
 };
 
 export const checkAndCreateGitignore = async (c: RnvContext) => {
-    logTask('checkAndCreateGitignore');
+    logDefault('checkAndCreateGitignore');
     const ignrPath = path.join(c.paths.project.dir, '.gitignore');
     if (!fsExistsSync(ignrPath)) {
         logInfo('Your .gitignore is missing. CREATING...DONE');
@@ -273,7 +273,7 @@ export const configureFonts = async (c: RnvContext) => {
 };
 
 export const copyRuntimeAssets = async (c: RnvContext) => {
-    logTask('copyRuntimeAssets');
+    logDefault('copyRuntimeAssets');
 
     const destPath = path.join(c.paths.project.assets.dir, 'runtime');
 
@@ -305,7 +305,7 @@ export const copyRuntimeAssets = async (c: RnvContext) => {
 };
 
 export const parseFonts = (c: RnvContext, callback: ParseFontsCallback) => {
-    logTask('parseFonts');
+    logDefault('parseFonts');
 
     if (c.buildConfig) {
         // FONTS - PROJECT CONFIG
@@ -428,7 +428,7 @@ export const copyAssetsFolder = async (
     subPath?: string,
     customFn?: (c: RnvContext, platform: RnvPlatform) => void
 ) => {
-    logTask('copyAssetsFolder');
+    logDefault('copyAssetsFolder');
 
     if (!isPlatformActive(c, platform)) return;
 
@@ -518,7 +518,7 @@ export const copyAssetsFolder = async (
 
 //NOTE: Default assets have been removed from engines
 // const generateDefaultAssets = async (c: RnvConfig, platform, sourcePath, forceTrue) => {
-//     logTask('generateDefaultAssets');
+//     logDefault('generateDefaultAssets');
 // let confirmAssets = true;
 // if (c.program.ci !== true && c.program.yes !== true && !forceTrue) {
 //     const { confirm } = await inquirerPrompt({
@@ -543,7 +543,7 @@ export const copyAssetsFolder = async (
 
 export const copyBuildsFolder = (c: RnvContext, platform: RnvPlatform) =>
     new Promise<void>((resolve) => {
-        logTask('copyBuildsFolder');
+        logDefault('copyBuildsFolder');
         if (!isPlatformActive(c, platform, resolve)) return;
 
         const destPath = path.join(getAppFolder(c));
@@ -597,7 +597,7 @@ export const copyBuildsFolder = (c: RnvContext, platform: RnvPlatform) =>
     });
 
 export const versionCheck = async (c: RnvContext) => {
-    logTask('versionCheck');
+    logDefault('versionCheck');
 
     if (c.runtime.versionCheckCompleted || c.files.project?.config?.skipAutoUpdate || c.program.skipDependencyCheck) {
         return true;
@@ -605,7 +605,7 @@ export const versionCheck = async (c: RnvContext) => {
     c.runtime.rnvVersionRunner = c.files.rnv?.package?.version || 'unknown';
     c.runtime.rnvVersionProject =
         c.files.project?.package?.devDependencies?.rnv || c.files.project?.package?.dependencies?.rnv || 'unknown';
-    logTask(
+    logDefault(
         `versionCheck:rnvRunner:${c.runtime.rnvVersionRunner},rnvProject:${c.runtime.rnvVersionProject}`,
         chalk().grey
     );
@@ -642,7 +642,7 @@ It is recommended that you run your rnv command with npx prefix: ${recCmd} . or 
 };
 
 export const cleanPlaformAssets = async (c: RnvContext) => {
-    logTask('cleanPlaformAssets');
+    logDefault('cleanPlaformAssets');
 
     await cleanFolder(c.paths.project.assets.dir);
     mkdirSync(c.paths.project.assets.runtimeDir);

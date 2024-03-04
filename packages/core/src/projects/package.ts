@@ -1,6 +1,6 @@
 import path from 'path';
 import { fsExistsSync, fsWriteFileSync, loadFile, readObjectSync } from '../system/fs';
-import { logTask, logWarning, logInfo } from '../logger';
+import { logDefault, logWarning, logInfo } from '../logger';
 import { RnvContext } from '../context/types';
 import { ConfigFileTemplate } from '../schema/configFiles/types';
 import { ConfigName } from '../enums/configName';
@@ -15,7 +15,7 @@ const packageJsonIsValid = (c: RnvContext) => {
 };
 
 export const checkAndCreateProjectPackage = async (c: RnvContext) => {
-    logTask('checkAndCreateProjectPackage');
+    logDefault('checkAndCreateProjectPackage');
 
     if (!packageJsonIsValid(c)) {
         logInfo(`Your ${c.paths.project.package} is missing. CREATING...DONE`);
