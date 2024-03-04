@@ -95,7 +95,7 @@
                     "org.gradle.parallel": true,
                     "org.gradle.configureondemand": true
                 },
-                "MainActivity_java": {
+                "MainActivity_kt": {
                     "onCreate": "super.onCreate(null)"
                 }
             }

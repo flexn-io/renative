@@ -9,7 +9,7 @@
         "react-native-splash-screen": {
             "android": {
                 "templateAndroid": {
-                    "MainActivity_java": {
+                    "MainActivity_kt": {
                         "createMethods": ["SplashScreen.show(this)"],
                         "imports": ["org.devio.rn.splashscreen.SplashScreen"]
                     }
@@ -37,7 +37,7 @@
         "TestNativeModule": {
             "android": {
                 "templateAndroid": {
-                    "MainApplication_java": {
+                    "MainApplication_kt": {
                         "packages": ["MyAppPackage"]
                     }
                 },
