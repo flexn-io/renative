@@ -1,9 +1,9 @@
 import { RnvContext } from '../context/types';
-import { logTask } from '../logger';
+import { logDefault } from '../logger';
 import { writeFileSync } from '../system/fs';
 
 export const generateLocalConfig = (c: RnvContext, resetAppId?: boolean) => {
-    logTask('generateLocalConfig', `resetAppId:${!!resetAppId}`);
+    logDefault('generateLocalConfig', `resetAppId:${!!resetAppId}`);
     const configLocal = c.files.project.configLocal || {};
     configLocal._meta = configLocal._meta || {};
     if (resetAppId) {

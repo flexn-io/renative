@@ -1,4 +1,4 @@
-import { logTask, logInitTask, logExitTask, chalk, logRaw, logInfo, logWarning } from '../logger';
+import { logDefault, logInitTask, logExitTask, chalk, logRaw, logInfo, logWarning } from '../logger';
 import { executePipe } from '../buildHooks';
 import {
     getEngineRunner,
@@ -9,13 +9,14 @@ import {
     registerAllPlatformEngines,
 } from '../engines';
 import type { RnvContext } from '../context/types';
-import type { RnvTask, RnvTaskMap, TaskItemMap, TaskObj, TaskOption } from './types';
+import type { RnvTask, RnvTaskMap, TaskItemMap, TaskObj, TaskPromptOption } from './types';
 import type { RnvEngine } from '../engines/types';
 import { inquirerPrompt, inquirerSeparator, pressAnyKeyToContinue } from '../api';
 import { getApi } from '../api/provider';
-import type { PlatformKey, RenativeConfigTaskKey } from '../schema/types';
+import type { PlatformKey, RenativeConfigRnvTaskName } from '../schema/types';
 import { checkIfProjectAndNodeModulesExists } from '../projects/dependencyManager';
-import { DEFAULT_TASK_DESCRIPTIONS, TASK_CONFIGURE_SOFT } from './constants';
+import { DEFAULT_TASK_DESCRIPTIONS } from './constants';
+import { getContext } from '../context/provider';
 
 let executedTasks: Record<string, number> = {};
 
@@ -28,7 +29,7 @@ export const registerCustomTask = async (_c: RnvContext, task: RnvTask) => {
 };
 
 export const initializeTask = async (c: RnvContext, task: string) => {
-    logTask('initializeTask', task);
+    logDefault('initializeTask', task);
     c.runtime.task = task;
     executedTasks = {};
 
@@ -41,9 +42,9 @@ export const initializeTask = async (c: RnvContext, task: string) => {
     return true;
 };
 
-const _getTaskOption = ({ taskInstance }: TaskObj, provider?: string): TaskOption => {
+const _getTaskOption = ({ taskInstance }: TaskObj, provider?: string): TaskPromptOption => {
     const asArray = taskInstance.task.split(' ');
-    const output: TaskOption = {
+    const output: TaskPromptOption = {
         value: taskInstance.task,
         command: '',
         name: '',
@@ -52,7 +53,8 @@ const _getTaskOption = ({ taskInstance }: TaskObj, provider?: string): TaskOptio
         description: taskInstance.description,
         isGlobalScope: taskInstance.isGlobalScope,
         isPrivate: taskInstance.isPrivate,
-        params: taskInstance.params,
+        params: taskInstance.options,
+        providers: [],
     };
 
     if (taskInstance.description && taskInstance.description !== '') {
@@ -65,7 +67,7 @@ const _getTaskOption = ({ taskInstance }: TaskObj, provider?: string): TaskOptio
     output.subCommand = asArray[1];
 
     if (provider) {
-        output.provider = provider;
+        output.providers.push(provider);
     }
 
     return output;
@@ -87,21 +89,23 @@ const _getTaskObj = (taskInstance: RnvTask) => {
     };
 };
 
-export const getAllSuitableTasks = (c: RnvContext): Record<string, TaskOption> => {
+export const getAllSuitableTasks = (c: RnvContext): Record<string, TaskPromptOption> => {
     const REGISTERED_ENGINES = getRegisteredEngines(c);
-    const suitableTasks: Record<string, TaskOption> = {};
+    const suitableTasks: Record<string, TaskPromptOption> = {};
+
     REGISTERED_ENGINES.forEach((engine) => {
         Object.values(engine.tasks).forEach((taskInstance) => {
-            let taskObj: TaskOption = _getTaskOption(_getTaskObj(taskInstance), engine?.config?.id);
+            let taskObj: TaskPromptOption = _getTaskOption(_getTaskObj(taskInstance), engine?.config?.id);
             if (!suitableTasks[taskObj.value]) {
                 suitableTasks[taskObj.value] = taskObj;
             } else {
-                taskObj = suitableTasks[taskObj.value];
                 // In case of multiple competing tasks (same task name but coming from different engines)
+                taskObj = suitableTasks[taskObj.value];
                 // We try to revert to generic description instead.
                 taskObj.description = DEFAULT_TASK_DESCRIPTIONS[taskObj.value] || taskObj.description;
                 // In case of multiple competing tasks we assume they are "commonly used"
                 taskObj.isPriorityOrder = true;
+                taskObj.providers.push(engine?.config?.id);
             }
         });
     });
@@ -114,7 +118,7 @@ export const getAllSuitableTasks = (c: RnvContext): Record<string, TaskOption> =
 };
 
 export const findSuitableTask = async (c: RnvContext, specificTask?: string): Promise<RnvTask | undefined> => {
-    logTask('findSuitableTask');
+    logDefault('findSuitableTask');
     const REGISTERED_ENGINES = getRegisteredEngines(c);
     let task = '';
     if (!specificTask) {
@@ -122,7 +126,7 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
             const suitableTasks = getAllSuitableTasks(c);
 
             const taskInstances = Object.values(suitableTasks);
-            let tasks: TaskOption[];
+            let tasks: TaskPromptOption[];
 
             let defaultCmd: string | undefined = 'new';
             let addendum = '';
@@ -134,17 +138,18 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
                 defaultCmd = tasks.find((v) => v.value === 'run')?.name;
             }
 
-            const commonTasks: TaskOption[] = [];
-            const ungroupedTasks: TaskOption[] = [];
-            const groupedTasks: TaskOption[] = [];
-            const taskGroups: Record<string, TaskOption> = {};
+            const commonTasks: TaskPromptOption[] = [];
+            const ungroupedTasks: TaskPromptOption[] = [];
+            const groupedTasks: TaskPromptOption[] = [];
+            const taskGroups: Record<string, TaskPromptOption> = {};
             tasks.forEach((task) => {
                 if (task.subCommand) {
                     if (!taskGroups[task.command]) {
-                        const groupTask: TaskOption = {
+                        const groupTask: TaskPromptOption = {
                             name: `${task.command}...`,
                             command: task.command,
                             value: task.command,
+                            providers: [],
                         };
                         taskGroups[task.command] = groupTask;
                         groupedTasks.push(groupTask);
@@ -320,8 +325,8 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
 };
 
 const _populateExtraParameters = (c: RnvContext, task: RnvTask) => {
-    if (task.params) {
-        task.params.forEach((param) => {
+    if (task.options) {
+        task.options.forEach((param) => {
             let cmd = '';
             if (param.shortcut) {
                 cmd += `-${param.shortcut}, `;
@@ -401,12 +406,35 @@ To avoid that test your task code against parentTask and avoid executing same ta
     logExitTask(`${prt}<= ${task}`);
 };
 
+/**
+ * @deprecated Use executeDependantTask instead
+ */
 export const executeOrSkipTask = async (c: RnvContext, task: string, parentTask: string, originTask?: string) => {
     if (!c.program.only) {
         return executeTask(c, task, parentTask, originTask);
     }
+    return executeTask(c, 'configureSoft', parentTask, originTask);
+};
 
-    return executeTask(c, TASK_CONFIGURE_SOFT, parentTask, originTask);
+export const executeDependantTask = async ({
+    task,
+    parentTask,
+    originTask,
+    alternativeTask,
+}: {
+    task: string;
+    parentTask: string;
+    originTask?: string;
+    alternativeTask?: string;
+}) => {
+    const ctx = getContext();
+    if (!ctx.program.only) {
+        return executeTask(ctx, task, parentTask, originTask);
+    }
+    if (alternativeTask) {
+        return executeTask(ctx, alternativeTask, parentTask, originTask);
+    }
+    return true;
 };
 
 const ACCEPTED_CONDITIONS = ['platform', 'target', 'appId', 'scheme'] as const;
@@ -417,9 +445,9 @@ const _logSkip = (task: string) => {
     logInfo(`Original RNV task ${chalk().white(task)} marked to ignore. SKIPPING...`);
 };
 
-export const shouldSkipTask = (c: RnvContext, taskKey: string, originTaskKey?: string) => {
-    const task = taskKey as RenativeConfigTaskKey;
-    const originTask = originTaskKey as RenativeConfigTaskKey;
+export const shouldSkipTask = (c: RnvContext, taskKey: string, originRnvTaskName?: string) => {
+    const task = taskKey as RenativeConfigRnvTaskName;
+    const originTask = originRnvTaskName as RenativeConfigRnvTaskName;
     const tasks = c.buildConfig?.tasks;
     c.runtime.platform = c.platform;
     if (!tasks) return;
@@ -504,7 +532,7 @@ Description: ${t.description}
 
 Options:
 
-${t.params
+${t.options
     .map((v) => {
         const option = v.shortcut ? `\`-${v.shortcut}\`, ` : '';
         return `${option}\`--${v.key}\` - ${v.description}`;

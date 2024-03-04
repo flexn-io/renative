@@ -6,7 +6,7 @@ export const getPluginList = (c: RnvContext, isUpdate = false) => {
         asString: '',
         asArray: [],
         plugins: [],
-        allPlugins: {}, // this is used by taskRnvPluginAdd
+        allPlugins: {}, // this is used by taskPluginAdd
     };
 
     let i = 1;
@@ -64,7 +64,7 @@ export const getPluginList = (c: RnvContext, isUpdate = false) => {
             output.allPlugins[k] = {
                 name: `${k} ${versionString}`,
                 value: k,
-            }; // this is used by taskRnvPluginAdd
+            }; // this is used by taskPluginAdd
             output.asArray.sort((a, b) => {
                 const aStr = a.name.toLowerCase();
                 const bStr = b.name.toLowerCase();

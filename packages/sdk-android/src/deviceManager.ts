@@ -11,7 +11,7 @@ import {
     isSystemWin,
     chalk,
     logToSummary,
-    logTask,
+    logDefault,
     logError,
     logWarning,
     logDebug,
@@ -36,14 +36,14 @@ export const IS_TABLET_ABOVE_INCH = 6.5;
 const currentDeviceProps: Record<string, Record<string, string>> = {};
 
 export const composeDevicesString = (devices: Array<AndroidDevice>) => {
-    logTask('composeDevicesString', `numDevices:${devices ? devices.length : null}`);
+    logDefault('composeDevicesString', `numDevices:${devices ? devices.length : null}`);
     const devicesArray: Array<string> = [];
     devices.forEach((v, i) => devicesArray.push(_getDeviceAsString(v, i)));
     return `\n${devicesArray.join('')}`;
 };
 
 export const composeDevicesArray = (devices: Array<AndroidDevice>) => {
-    logTask('composeDevicesString', `numDevices:${devices ? devices.length : null}`);
+    logDefault('composeDevicesString', `numDevices:${devices ? devices.length : null}`);
     const devicesArray: Array<DeviceInfo> = [];
     devices.forEach((v) => devicesArray.push(_getDeviceAsObject(v)));
     return devicesArray;
@@ -59,7 +59,7 @@ export const launchAndroidSimulator = async (
     target: true | { name: string } | string,
     isIndependentThread = false
 ): Promise<boolean> => {
-    logTask(
+    logDefault(
         'launchAndroidSimulator',
         `target:${typeof target === 'object' ? target?.name : target} independentThread:${!!isIndependentThread}`
     );
@@ -135,7 +135,7 @@ export const launchAndroidSimulator = async (
 };
 
 export const listAndroidTargets = async (c: RnvContext) => {
-    logTask('listAndroidTargets');
+    logDefault('listAndroidTargets');
     const {
         program: { device },
     } = c;
@@ -207,7 +207,7 @@ export const resetAdb = async (c: RnvContext, forceRun?: boolean, ranBefore?: bo
 };
 
 export const getAndroidTargets = async (c: RnvContext, skipDevices: boolean, skipAvds: boolean, deviceOnly = false) => {
-    logTask('getAndroidTargets', `skipDevices:${!!skipDevices} skipAvds:${!!skipAvds} deviceOnly:${!!deviceOnly}`);
+    logDefault('getAndroidTargets', `skipDevices:${!!skipDevices} skipAvds:${!!skipAvds} deviceOnly:${!!deviceOnly}`);
     // Temp workaround for race conditions receiving devices with offline status
     await new Promise((r) => setTimeout(r, 1000));
 
@@ -584,7 +584,7 @@ const _getDeviceProp = (arr: Array<string>, prop: string) => {
 };
 
 export const askForNewEmulator = async (c: RnvContext, platform: RnvPlatform) => {
-    logTask('askForNewEmulator');
+    logDefault('askForNewEmulator');
     if (!platform) return;
 
     let emuName = c.files.workspace.config?.defaultTargets?.[platform];
@@ -632,7 +632,7 @@ export const askForNewEmulator = async (c: RnvContext, platform: RnvPlatform) =>
 };
 
 const _createEmulator = (c: RnvContext, apiVersion: string, emuPlatform: string, emuName: string, arch = 'x86') => {
-    logTask('_createEmulator');
+    logDefault('_createEmulator');
 
     return execCLI(c, CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};${arch}"`)
         .then(() =>
@@ -656,7 +656,7 @@ const waitForEmulatorToBeReady = (c: RnvContext, emulator: string) =>
 
 export const checkForActiveEmulator = (c: RnvContext, emulatorName?: string) =>
     new Promise<AndroidDevice | undefined>((resolve, reject) => {
-        logTask('checkForActiveEmulator');
+        logDefault('checkForActiveEmulator');
         const { platform } = c;
 
         if (!platform) {

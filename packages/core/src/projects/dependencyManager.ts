@@ -3,7 +3,7 @@ import merge from 'deepmerge';
 
 import { executeAsync } from '../system/exec';
 import { installPackageDependencies } from './npm';
-import { chalk, logInfo, logDebug, logTask } from '../logger';
+import { chalk, logInfo, logDebug, logDefault } from '../logger';
 import { getEngineRunnerByPlatform } from '../engines';
 import { overrideTemplatePlugins } from '../plugins';
 import { configureFonts } from '.';
@@ -14,7 +14,7 @@ import { fsExistsSync } from '../system/fs';
 import { NpmDepKey, NpmPackageFile } from '../configs/types';
 
 export const checkIfProjectAndNodeModulesExists = async (c: RnvContext) => {
-    logTask('checkIfProjectAndNodeModulesExists');
+    logDefault('checkIfProjectAndNodeModulesExists');
 
     if (c.paths.project.configExists && !fsExistsSync(c.paths.project.nodeModulesDir)) {
         c._requiresNpmInstall = false;
@@ -30,7 +30,7 @@ const injectProjectDependency = async (
     type: NpmDepKey,
     skipInstall = false
 ) => {
-    logTask('injectProjectDependency');
+    logDefault('injectProjectDependency');
 
     const currentPackage = c.files.project.package;
     if (currentPackage) {
@@ -126,7 +126,7 @@ export const checkRequiredPackage = async (
 };
 
 export const injectPlatformDependencies = async (c: RnvContext) => {
-    logTask('injectPlatformDependencies');
+    logDefault('injectPlatformDependencies');
     const { platform } = c;
     const engine = getEngineRunnerByPlatform(c, platform);
     const npmDepsBase = engine?.config?.npm || {};

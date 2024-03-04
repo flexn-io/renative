@@ -8,7 +8,7 @@ import {
     logErrorPlatform,
     logInfo,
     logRaw,
-    logTask,
+    logDefault,
 } from '@rnv/core';
 import { isBundlerActive } from './common';
 import { EnvVars } from './env';
@@ -27,7 +27,7 @@ export const startReactNative = async (
     c: RnvContext,
     opts: { waitForBundler?: boolean; customCliPath?: string; metroConfigName?: string }
 ) => {
-    logTask('startReactNative');
+    logDefault('startReactNative');
 
     if (!c.platform) {
         logErrorPlatform(c);

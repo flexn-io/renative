@@ -4,14 +4,13 @@ import {
     getConfigProp,
     getPlatformProjectDir,
     RnvContext,
-    RENATIVE_CONFIG_NAME,
     execCLI,
     fsRenameSync,
     chalk,
     logDebug,
     logError,
     logInfo,
-    logTask,
+    logDefault,
     logToSummary,
     logWarning,
     waitForExecCLI,
@@ -19,6 +18,7 @@ import {
     DEFAULTS,
     executeAsync,
     ExecOptionsPresets,
+    ConfigName,
 } from '@rnv/core';
 import { CLI_SDB_TIZEN, CLI_TIZEN, CLI_TIZEN_EMULATOR } from './constants';
 
@@ -71,7 +71,7 @@ const formatXMLObject = (
 };
 
 export const launchTizenSimulator = async (c: RnvContext, name: string | true): Promise<boolean> => {
-    logTask(`launchTizenSimulator:${name}`);
+    logDefault(`launchTizenSimulator:${name}`);
 
     if (name === true) {
         const targets = await execCLI(c, CLI_TIZEN_EMULATOR, 'list-vm', {
@@ -129,7 +129,7 @@ export const listTizenTargets = async (c: RnvContext) => {
 
 export const createDevelopTizenCertificate = (c: RnvContext) =>
     new Promise<void>((resolve) => {
-        logTask('createDevelopTizenCertificate');
+        logDefault('createDevelopTizenCertificate');
 
         const certDirPath = c.paths.workspace.dir;
         const certFilename = DEFAULT_CERTIFICATE_NAME;
@@ -157,7 +157,7 @@ export const createDevelopTizenCertificate = (c: RnvContext) =>
 
 export const addDevelopTizenCertificate = (c: RnvContext, secureProfileConfig: TizenSecurityConfig) =>
     new Promise<void>((resolve) => {
-        logTask('addDevelopTizenCertificate');
+        logDefault('addDevelopTizenCertificate');
 
         const { profileName, certPath, certPassword } = secureProfileConfig || {};
         execCLI(c, CLI_TIZEN, `security-profiles add -n ${profileName} -a ${certPath} -p ${certPassword}`, {
@@ -365,7 +365,7 @@ export const runTizenSimOrDevice = async (
                     logDebug(err);
                     logError(
                         `Could not find the specified target and could not create the emulator automatically.
-Please create one and then edit the default target from ${c.paths.workspace.dir}/${RENATIVE_CONFIG_NAME}`
+Please create one and then edit the default target from ${c.paths.workspace.dir}/${ConfigName.renative}`
                     );
                 }
             }

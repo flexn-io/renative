@@ -1,0 +1,7 @@
+{
+    "extends": "@rnv/core/tsconfig.hooks.json",
+    "compilerOptions": {
+        "outDir": "dist",
+        "rootDir": "src"
+    }
+}

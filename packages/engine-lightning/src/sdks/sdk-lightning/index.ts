@@ -16,6 +16,7 @@ import {
     OverridesOptions,
     CoreEnvVars,
     getAppFolder,
+    logDefault,
 } from '@rnv/core';
 import semver from 'semver';
 
@@ -25,7 +26,7 @@ import { getAppVersion, getAppTitle, getAppId, getAppDescription, addSystemInjec
 import { EnvVars } from './env';
 
 export const runLightningProject = async (c: RnvContext) => {
-    logTask('runLightningProject');
+    logDefault('runLightningProject');
     const { platform } = c;
     const { hosted } = c.program;
     const isHosted = hosted && !getConfigProp(c, platform, 'bundleAssets');
@@ -54,7 +55,7 @@ export const runLightningProject = async (c: RnvContext) => {
 };
 
 export const buildLightningProject = async (c: RnvContext) => {
-    logTask('buildLightningProject');
+    logDefault('buildLightningProject');
 
     const { platform } = c;
     if (!platform) return;
@@ -103,7 +104,7 @@ export const configureLightningProject = async (c: RnvContext) => {
 
 const _configureProject = (c: RnvContext) =>
     new Promise<void>((resolve) => {
-        logTask('_configureProject');
+        logDefault('_configureProject');
 
         const { platform } = c;
         if (!platform) {

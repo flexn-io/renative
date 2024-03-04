@@ -1,10 +1,10 @@
 import path from 'path';
 import { getContext } from '../context/provider';
-import { logInfo, logTask } from '../logger';
+import { logDefault, logInfo } from '../logger';
 import { copyFolderContentsRecursiveSync, fsExistsSync, mkdirSync } from '../system/fs';
 
 export const generateLocalJsonSchemas = async () => {
-    logTask('generateLocalJsonSchemas');
+    logDefault('generateLocalJsonSchemas');
     const ctx = getContext();
 
     if (!fsExistsSync(ctx.paths.project.dotRnvDir)) {

@@ -34,7 +34,7 @@ export type RenativeWebpackConfig = RenativeConfigPlugin['webpackConfig'];
 
 export type PlatformKey = _PlatformsKeysType;
 
-export type RenativeConfigTaskKey = keyof Required<Required<ConfigFileBuildConfig>['tasks']>;
+export type RenativeConfigRnvTaskName = keyof Required<Required<ConfigFileBuildConfig>['tasks']>;
 
 export type RenativeConfigAppDelegateMethod = _AppDelegateMethodType;
 

@@ -5,7 +5,7 @@ import {
     writeFileSync,
     fsExistsSync,
     chalk,
-    logTask,
+    logDefault,
     logWarning,
     logSuccess,
     logError,
@@ -32,7 +32,7 @@ const _logSdkWarning = (c: RnvContext) => {
 };
 
 export const checkAndConfigureWebosSdks = async (c: RnvContext) => {
-    logTask(`checkAndConfigureWebosSdks:${c.platform}`);
+    logDefault(`checkAndConfigureWebosSdks:${c.platform}`);
     const sdk = c.buildConfig?.sdks?.WEBOS_SDK;
     if (sdk) {
         c.cli[CLI_WEBOS_ARES] = getRealPath(c, path.join(sdk, `CLI/bin/ares${isSystemWin ? '.cmd' : ''}`));
@@ -68,7 +68,7 @@ export const checkAndConfigureWebosSdks = async (c: RnvContext) => {
 const _getCurrentSdkPath = (c: RnvContext) => (c.platform ? c.buildConfig?.sdks?.WEBOS_SDK : undefined);
 
 const _isSdkInstalled = (c: RnvContext) => {
-    logTask('_isSdkInstalled');
+    logDefault('_isSdkInstalled');
 
     if (!c.platform) return;
 
@@ -78,7 +78,7 @@ const _isSdkInstalled = (c: RnvContext) => {
 };
 
 const _attemptAutoFix = async (c: RnvContext) => {
-    logTask('_attemptAutoFix');
+    logDefault('_attemptAutoFix');
 
     if (c.program.hosted) {
         logInfo('HOSTED Mode. Skipping SDK checks');
@@ -116,7 +116,7 @@ const _attemptAutoFix = async (c: RnvContext) => {
         }
     }
 
-    logTask(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOCATIONS.join(', ')}`);
+    logDefault(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOCATIONS.join(', ')}`);
 
     // const setupInstance = PlatformSetup(c);
     // await setupInstance.askToInstallSDK(sdkPlatform);
@@ -125,7 +125,7 @@ const _attemptAutoFix = async (c: RnvContext) => {
 };
 
 export const checkWebosSdk = async (c: RnvContext) => {
-    logTask('checkWebosSdk');
+    logDefault('checkWebosSdk');
     if (!_isSdkInstalled(c)) {
         logWarning(
             `${c.platform} requires SDK to be installed. Your SDK path in ${chalk().white(

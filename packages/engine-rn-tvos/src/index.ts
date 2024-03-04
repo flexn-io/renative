@@ -1,17 +1,15 @@
 import { generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
-import taskRnvRun from './tasks/task.rnv.run';
-import taskRnvPackage from './tasks/task.rnv.package';
-import taskRnvBuild from './tasks/task.rnv.build';
-import taskRnvConfigure from './tasks/task.rnv.configure';
-import taskRnvStart from './tasks/task.rnv.start';
-import taskRnvExport from './tasks/task.rnv.export';
-import taskRnvDeploy from './tasks/task.rnv.deploy';
-import taskRnvDebug from './tasks/task.rnv.debug';
-import taskRnvCryptoInstallCerts from './tasks/task.rnv.crypto.installCerts';
-import taskRnvCryptoUpdateProfile from './tasks/task.rnv.crypto.updateProfile';
-import taskRnvCryptoUpdateProfiles from './tasks/task.rnv.crypto.updateProfiles';
-import taskRnvCryptoInstallProfiles from './tasks/task.rnv.crypto.installProfiles';
-import taskRnvLog from './tasks/task.rnv.log';
+import taskRun from './tasks/taskRun';
+import taskPackage from './tasks/taskPackage';
+import taskBuild from './tasks/taskBuild';
+import taskConfigure from './tasks/taskConfigure';
+import taskStart from './tasks/taskStart';
+import taskExport from './tasks/taskExport';
+import taskCryptoInstallCerts from './tasks/taskCryptoInstallCerts';
+import taskCryptoUpdateProfile from './tasks/taskCryptoUpdateProfile';
+import taskCryptoUpdateProfiles from './tasks/taskCryptoUpdateProfiles';
+import taskCryptoInstallProfiles from './tasks/taskCryptoInstallProfiles';
+import taskLog from './tasks/taskLog';
 //@ts-ignore
 import CNF from '../renative.engine.json';
 import { withRNVBabel } from './adapters/babelAdapter';
@@ -19,21 +17,18 @@ import { withRNVMetro } from './adapters/metroAdapter';
 import { withRNVRNConfig } from '@rnv/sdk-react-native';
 
 const Engine: RnvEngine = {
-    // initializeRuntimeConfig: (c) => Context.initializeConfig(c),
     tasks: generateEngineTasks([
-        taskRnvRun,
-        taskRnvPackage,
-        taskRnvBuild,
-        taskRnvConfigure,
-        taskRnvStart,
-        taskRnvExport,
-        taskRnvDeploy,
-        taskRnvDebug,
-        taskRnvCryptoInstallCerts,
-        taskRnvCryptoUpdateProfile,
-        taskRnvCryptoUpdateProfiles,
-        taskRnvCryptoInstallProfiles,
-        taskRnvLog,
+        taskRun,
+        taskPackage,
+        taskBuild,
+        taskConfigure,
+        taskStart,
+        taskExport,
+        taskCryptoInstallCerts,
+        taskCryptoUpdateProfile,
+        taskCryptoUpdateProfiles,
+        taskCryptoInstallProfiles,
+        taskLog,
     ]),
     config: CNF,
     runtimeExtraProps: {
@@ -65,8 +60,6 @@ const Engine: RnvEngine = {
     },
 };
 
-const withRNV = withRNVMetro;
-
-export { withRNVMetro, withRNV, withRNVBabel, withRNVRNConfig };
+export { withRNVMetro, withRNVBabel, withRNVRNConfig };
 
 export default Engine;

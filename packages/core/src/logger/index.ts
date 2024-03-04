@@ -19,6 +19,9 @@ export const logSummary: RnvApiLogger['logSummary'] = (header?) => getApi().logg
 
 export const logTask: RnvApiLogger['logTask'] = (task, customChalk?) => getApi().logger.logTask(task, customChalk);
 
+export const logDefault: RnvApiLogger['logDefault'] = (msg, customChalk?) =>
+    getApi().logger.logDefault(msg, customChalk);
+
 export const logInitTask: RnvApiLogger['logInitTask'] = (task, customChalk?) =>
     getApi().logger.logInitTask(task, customChalk);
 

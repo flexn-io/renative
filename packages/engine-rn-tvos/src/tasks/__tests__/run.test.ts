@@ -1,5 +1,5 @@
 import { createRnvApi, createRnvContext, getContext } from '@rnv/core';
-import taskRnvRun from '../task.rnv.run';
+import taskRun from '../taskRun';
 import { getIosDeviceToRunOn, runXcodeProject } from '@rnv/sdk-apple';
 
 jest.mock('@rnv/core');
@@ -16,15 +16,13 @@ afterEach(() => {
     jest.resetAllMocks();
 });
 
-const originTask = undefined;
-
 test('Execute task.rnv.run', async () => {
     // GIVEN
     const ctx = getContext();
     ctx.platform = 'tvos';
     jest.mocked(getIosDeviceToRunOn).mockResolvedValue('MOCK_DEVICE_ARGS');
     // WHEN
-    await taskRnvRun.fn?.(ctx, undefined, originTask);
+    await taskRun.fn?.(ctx, undefined, undefined);
     // THEN
     expect(runXcodeProject).toHaveBeenCalledWith(ctx, 'MOCK_DEVICE_ARGS');
 });

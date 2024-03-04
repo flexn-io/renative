@@ -1,10 +1,10 @@
-import { fsExistsSync, getRealPath, chalk, logTask, RnvError, RnvContext } from '@rnv/core';
+import { fsExistsSync, getRealPath, chalk, logDefault, RnvError, RnvContext } from '@rnv/core';
 
 const childProcess = require('child_process');
 
 export const launchKaiOSSimulator = (c: RnvContext) =>
     new Promise<void>((resolve, reject) => {
-        logTask('launchKaiOSSimulator');
+        logDefault('launchKaiOSSimulator');
 
         if (!c.buildConfig?.sdks?.KAIOS_SDK) {
             reject(

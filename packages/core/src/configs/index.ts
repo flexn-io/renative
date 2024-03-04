@@ -1,8 +1,7 @@
 import path from 'path';
 
-import { RENATIVE_CONFIG_NAME, RENATIVE_CONFIG_PRIVATE_NAME, RENATIVE_CONFIG_LOCAL_NAME } from '../constants';
 import { mergeObjects, fsExistsSync, fsReaddirSync, getRealPath, readObjectSync, loadFile } from '../system/fs';
-import { logTask, logWarning, logDebug } from '../logger';
+import { logWarning, logDebug, logDefault } from '../logger';
 import { doResolve } from '../system/resolve';
 import { RnvContextFileObj, RnvContextPathObj, RnvContext, RnvContextFileKey } from '../context/types';
 import { generateRnvConfigPathObj } from '../context/defaults';
@@ -12,6 +11,7 @@ import { generateLocalConfig } from './configLocal';
 import { getWorkspaceDirPath } from './workspaces';
 import { generatePlatformTemplatePaths } from './configProject';
 import { ConfigFileTemplates } from '../schema/configFiles/types';
+import { ConfigName } from '../enums/configName';
 
 export const loadFileExtended = (
     c: RnvContext,
@@ -114,9 +114,9 @@ const _loadConfigFiles = (
 
         const pathObj1: RnvContextPathObj = {
             ...generateRnvConfigPathObj(),
-            config: path.join(path1, RENATIVE_CONFIG_NAME),
-            configLocal: path.join(path1, RENATIVE_CONFIG_LOCAL_NAME),
-            configPrivate: path.join(path1, RENATIVE_CONFIG_PRIVATE_NAME),
+            config: path.join(path1, ConfigName.renative),
+            configLocal: path.join(path1, ConfigName.renativeLocal),
+            configPrivate: path.join(path1, ConfigName.renativePrivate),
         };
         pathObj.dirs.push(path1);
         pathObj.fontsDirs.push(path.join(path1, 'fonts'));
@@ -138,9 +138,9 @@ const _loadConfigFiles = (
                 const path2 = path.join(pathObj.appConfigsDir, extendAppId);
                 const pathObj2: RnvContextPathObj = {
                     ...generateRnvConfigPathObj(),
-                    config: path.join(path2, RENATIVE_CONFIG_NAME),
-                    configLocal: path.join(path2, RENATIVE_CONFIG_LOCAL_NAME),
-                    configPrivate: path.join(path2, RENATIVE_CONFIG_PRIVATE_NAME),
+                    config: path.join(path2, ConfigName.renative),
+                    configLocal: path.join(path2, ConfigName.renativeLocal),
+                    configPrivate: path.join(path2, ConfigName.renativePrivate),
                 };
                 const fileObj2: RnvContextFileObj<unknown> = {
                     configs: [],
@@ -170,9 +170,9 @@ const _loadConfigFiles = (
         pathObj.dirs.push(path3);
         pathObj.fontsDirs.push(path.join(path3, 'fonts'));
         pathObj.pluginDirs.push(path.join(path3, 'plugins'));
-        pathObj.configs.push(path.join(path3, RENATIVE_CONFIG_NAME));
-        pathObj.configsLocal.push(path.join(path3, RENATIVE_CONFIG_LOCAL_NAME));
-        pathObj.configsPrivate.push(path.join(path3, RENATIVE_CONFIG_PRIVATE_NAME));
+        pathObj.configs.push(path.join(path3, ConfigName.renative));
+        pathObj.configsLocal.push(path.join(path3, ConfigName.renativeLocal));
+        pathObj.configsPrivate.push(path.join(path3, ConfigName.renativePrivate));
         // FILE3: appConfigs/<appId>
         loadFileExtended(c, fileObj, pathObj, 'config');
         loadFileExtended(c, fileObj, pathObj, 'configPrivate');
@@ -187,7 +187,7 @@ const _loadConfigFiles = (
 };
 
 export const parseRenativeConfigs = async (c: RnvContext) => {
-    logTask('parseRenativeConfigs');
+    logDefault('parseRenativeConfigs');
     // LOAD ./package.json
     loadFile(c.files.project, c.paths.project, 'package');
 

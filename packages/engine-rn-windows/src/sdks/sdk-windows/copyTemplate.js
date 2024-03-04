@@ -21,7 +21,7 @@ const configUtils_1 = require('./config/configUtils');
 // EXTRACTS FROM RNV
 const { getAppFolder, getAppTitle, getConfigProp } = Common;
 const { copyFolderContentsRecursive, copyFolderContentsRecursiveSync } = FileUtils;
-const { logError, logTask, logInfo, logWarning, logSuccess } = Logger;
+const { logError, logDefault, logInfo, logWarning, logSuccess } = Logger;
 const { copyAssetsFolder } = ProjectManager;
 
 // CONSTS
@@ -29,7 +29,7 @@ const bundleDir = 'Bundle';
 
 // FUNCTIONS
 async function generateCertificate(srcPath, currentUser, c, options) {
-    logTask('Generating self-signed certificate');
+    logDefault('Generating self-signed certificate');
     const appFolder = getAppFolder(c, true);
     if (os.platform() === 'win32') {
         try {

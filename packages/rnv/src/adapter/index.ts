@@ -39,8 +39,8 @@ export const withRNVBabel =
 export const withRNVMetro = (cnf: unknown) => {
     if (process.env.RNV_ENGINE_PATH) {
         const engine = require(process.env.RNV_ENGINE_PATH);
-        if (engine.withRNV) {
-            return engine.withRNV(cnf);
+        if (engine.withRNVMetro) {
+            return engine.withRNVMetro(cnf);
         }
     }
 

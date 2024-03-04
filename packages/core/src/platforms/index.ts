@@ -1,5 +1,5 @@
 import path from 'path';
-import { chalk, logTask, logError, logWarning } from '../logger';
+import { chalk, logDefault, logError, logWarning, logDebug } from '../logger';
 import { cleanFolder, copyFolderContentsRecursiveSync } from '../system/fs';
 import { getTimestampPathsConfig, getAppFolder } from '../context/contextProps';
 import { SUPPORTED_PLATFORMS } from '../constants';
@@ -28,32 +28,29 @@ export const generatePlatformChoices = (c: RnvContext) => {
     return options;
 };
 
-export const cleanPlatformBuild = (c: RnvContext, platform: RnvPlatform) =>
-    new Promise<void>((resolve) => {
-        logTask('cleanPlatformBuild');
+export const cleanPlatformBuild = async (c: RnvContext, platform: RnvPlatform) => {
+    logDebug('cleanPlatformBuild');
 
-        const cleanTasks = [];
+    const cleanTasks = [];
 
-        if ((platform as RnvPlatformWithAll) === 'all' && c.buildConfig.platforms) {
-            Object.keys(c.buildConfig.platforms).forEach((k) => {
-                if (isPlatformSupportedSync(c, k as RnvPlatform)) {
-                    const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${k}`);
-                    cleanTasks.push(cleanFolder(pPath));
-                }
-            });
-        } else if (isPlatformSupportedSync(c, platform)) {
-            const pPath = getAppFolder(c);
-            cleanTasks.push(cleanFolder(pPath));
-        }
-
-        Promise.all(cleanTasks).then(() => {
-            resolve();
+    if ((platform as RnvPlatformWithAll) === 'all' && c.buildConfig.platforms) {
+        Object.keys(c.buildConfig.platforms).forEach((k) => {
+            if (isPlatformSupportedSync(c, k as RnvPlatform)) {
+                const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${k}`);
+                cleanTasks.push(cleanFolder(pPath));
+            }
         });
-    });
+    } else if (isPlatformSupportedSync(c, platform)) {
+        const pPath = getAppFolder(c);
+        cleanTasks.push(cleanFolder(pPath));
+    }
+
+    await Promise.all(cleanTasks);
+};
 
 export const createPlatformBuild = (c: RnvContext, platform: RnvPlatform) =>
     new Promise<void>((resolve, reject) => {
-        logTask('createPlatformBuild');
+        logDefault('createPlatformBuild');
 
         if (!platform || !isPlatformSupportedSync(c, platform, undefined, reject)) return;
 
@@ -89,8 +86,6 @@ export const createPlatformBuild = (c: RnvContext, platform: RnvPlatform) =>
     });
 
 export const isPlatformSupported = async (c: RnvContext, isGlobalScope = false) => {
-    logTask('isPlatformSupported');
-
     if (c.platform && c.program.platform !== true && isGlobalScope) {
         return c.platform;
     }
@@ -191,7 +186,7 @@ export const isPlatformActive = (c: RnvContext, platform: RnvPlatform, resolve?:
 };
 export const copySharedPlatforms = (c: RnvContext) =>
     new Promise<void>((resolve) => {
-        logTask('copySharedPlatforms');
+        logDefault('copySharedPlatforms');
 
         if (c.platform) {
             copyFolderContentsRecursiveSync(

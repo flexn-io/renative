@@ -5,7 +5,7 @@ import {
     getPlatformProjectDir,
     fsWriteFileSync,
     fsReadFileSync,
-    logTask,
+    logDefault,
     isPlatformActive,
     copyBuildsFolder,
     copyAssetsFolder,
@@ -15,7 +15,7 @@ import { launchKaiOSSimulator } from './deviceManager';
 import { getAppAuthor, getAppDescription, getAppTitle } from '@rnv/sdk-utils';
 
 export const configureKaiOSProject = async (c: RnvContext) => {
-    logTask('configureKaiOSProject');
+    logDefault('configureKaiOSProject');
 
     const { platform } = c;
 
@@ -31,7 +31,7 @@ export const configureKaiOSProject = async (c: RnvContext) => {
 
 const _configureProject = (c: RnvContext) =>
     new Promise<void>((resolve) => {
-        logTask('configureProject');
+        logDefault('configureProject');
         const { platform } = c;
 
         if (!isPlatformActive(c, platform, resolve)) return;
@@ -51,7 +51,7 @@ const _configureProject = (c: RnvContext) =>
     });
 
 export const runKaiOSProject = async (c: RnvContext) => {
-    logTask('runKaiOSProject');
+    logDefault('runKaiOSProject');
 
     await buildCoreWebpackProject(c);
     await launchKaiOSSimulator(c);
@@ -59,7 +59,7 @@ export const runKaiOSProject = async (c: RnvContext) => {
 };
 
 export const buildKaiOSProject = async (c: RnvContext) => {
-    logTask('buildKaiOSProject');
+    logDefault('buildKaiOSProject');
 
     await buildCoreWebpackProject(c);
     return true;

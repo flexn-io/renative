@@ -70,9 +70,9 @@
             "enum": [
               "ios",
               "android",
-              "firetv",
               "androidtv",
               "androidwear",
+              "firetv",
               "web",
               "webtv",
               "tizen",

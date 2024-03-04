@@ -2,7 +2,7 @@ import path from 'path';
 import {
     RnvContext,
     inquirerPrompt,
-    logTask,
+    logDefault,
     logInfo,
     logSuccess,
     executeAsync,
@@ -53,7 +53,7 @@ class Docker {
         const appVersion = files.project.package.version;
 
         // save the docker files
-        logTask('docker:Dockerfile:create');
+        logDefault('docker:Dockerfile:create');
         const deployOptions = getConfigProp(c, platform, 'custom').deploy;
         const healthCheck = deployOptions?.docker?.healthcheckProbe;
 
@@ -74,7 +74,7 @@ class Docker {
             { pattern: '{{IMAGE_AND_TAG}}', override: `${imageName}:${appVersion}` },
         ]);
 
-        logTask('docker:Dockerfile:build');
+        logDefault('docker:Dockerfile:build');
         await executeAsync(`docker build -t ${imageName}:${appVersion} ${dockerDestination}`);
 
         logInfo(`Your Dockerfile and docker-compose.yml are located in ${dockerDestination}`);
@@ -95,7 +95,7 @@ class Docker {
         const dockerDestination = path.join(getAppFolder(c)!, 'export', 'docker');
         const dockerSaveFile = path.join(dockerDestination, `${imageName}_${appVersion}.tar`);
 
-        logTask('docker:Dockerfile:build');
+        logDefault('docker:Dockerfile:build');
         await executeAsync(`docker save -o ${dockerSaveFile} ${imageName}:${appVersion}`);
         logSuccess(
             `${imageName}_${appVersion}.tar file has been saved in ${chalk().white(
@@ -114,7 +114,7 @@ class Docker {
         const zipImage = deployOptions?.docker?.zipImage;
 
         if (zipImage) {
-            logTask('docker:zipImage');
+            logDefault('docker:zipImage');
             if (commandExistsSync('zip')) {
                 const pth = `${dockerDestination}${path.sep}`;
                 await executeAsync(
@@ -171,12 +171,12 @@ class Docker {
         const imageTag = `${DOCKERHUB_USER}/${imageName}`;
         const appVersion = files.project.package.version;
 
-        logTask('docker:Dockerfile:login');
+        logDefault('docker:Dockerfile:login');
         await executeAsync(
             `echo "${DOCKERHUB_PASS}" | docker login -u "${DOCKERHUB_USER}" --password-stdin`,
             ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER
         );
-        logTask('docker:Dockerfile:push');
+        logDefault('docker:Dockerfile:push');
         // tagging for versioning
         await executeAsync(`docker tag ${imageName}:${appVersion} ${imageTag}:${appVersion}`);
         await executeAsync(`docker tag ${imageName}:${appVersion} ${imageTag}:latest`);

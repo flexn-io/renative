@@ -1,7 +1,14 @@
 import React, { createContext, useState } from 'react';
 import { ImageStyle, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 
-import { getScaledValue, isPlatformMacos, isPlatformIos, isPlatformTvos, isPlatformWeb } from '@rnv/renative';
+import {
+    getScaledValue,
+    isPlatformMacos,
+    isPlatformIos,
+    isPlatformTvos,
+    isPlatformWeb,
+    isPlatformAndroidwear,
+} from '@rnv/renative';
 import CONFIG from '../platformAssets/renative.runtime.json';
 import '../platformAssets/runtime/fontManager';
 import ICON_LOGO from '../platformAssets/runtime/logo.png';
@@ -16,7 +23,9 @@ export function testProps(testId: string | undefined) {
     }
     return { accessibilityLabel: testId, accessible: true };
 }
-
+const getFlexPropertyValue = () => {
+    return isPlatformAndroidwear ? 0 : 1;
+};
 if (!global.performance) {
     // @ts-expect-error Performance needs to be typed
     global.performance = {};
@@ -54,17 +63,22 @@ const staticThemes = {
 
 const createStyleSheet = (currentTheme) =>
     StyleSheet.create({
-        container: {
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingVertical: getScaledValue(50),
-            minHeight: getScaledValue(300),
-            alignSelf: 'stretch',
+        wrapper: {
             position: 'absolute',
             top: 0,
             left: 0,
             bottom: 0,
             right: 0,
+            backgroundColor: currentTheme.colorBgPrimary,
+        },
+
+        container: {
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingVertical: getScaledValue(10),
+            minHeight: getScaledValue(300),
+            alignSelf: 'stretch',
+            flex: getFlexPropertyValue(),
             backgroundColor: currentTheme.colorBgPrimary,
         },
         textH2: {
@@ -128,6 +142,7 @@ export type ThemeInterface = {
             colorTextSecondary: string;
         };
         styles: {
+            wrapper: ViewStyle;
             container: ViewStyle;
             textH2: TextStyle;
             textH3: TextStyle;

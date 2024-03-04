@@ -1,8 +1,8 @@
-import taskRnvStarterHello from './tasks/task.rnv.starter.hello';
+import taskStarterHello from './tasks/taskStarterHello';
 //@ts-ignore
 import config from '../renative.integration.json';
 
-const TASKS = [taskRnvStarterHello];
+const TASKS = [taskStarterHello];
 
 const getTasks = () => TASKS;
 
