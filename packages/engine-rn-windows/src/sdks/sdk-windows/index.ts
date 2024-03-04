@@ -10,9 +10,8 @@ import {
     getAppFolder,
     getConfigProp,
     logDebug,
-    logDefault,
     logError,
-    logTask,
+    logDefault,
     logWarning,
 } from '@rnv/core';
 // import cli from '@react-native-windows/cli';
@@ -276,7 +275,7 @@ const copyWindowsTemplateProject = async (c: RnvContext, injectedOptions = {}) =
 };
 
 function clearWindowsTemporaryFiles(c: RnvContext) {
-    logTask('clearWindowsTemporaryFiles');
+    logDefault('clearWindowsTemporaryFiles');
     const logging = getConfigProp<ConfigKey>(c, c.platform, 'logging', defaultOptions.logging);
     const opts = {
         cwd: c.paths.project.dir,
@@ -303,7 +302,7 @@ function clearWindowsTemporaryFiles(c: RnvContext) {
 }
 
 const packageBundleForWindows = (c: RnvContext, isDev = false) => {
-    logTask('packageBundleForWindows');
+    logDefault('packageBundleForWindows');
     // const { maxErrorLength } = c.program;
     const entryFile = getConfigProp(c, c.platform, 'entryFile');
 
