@@ -6,7 +6,6 @@ import { doResolve } from '../system/resolve';
 import { RnvContext } from '../context/types';
 import { inquirerPrompt } from '../api';
 import { getConfigProp } from '../context/contextProps';
-import { executeAsync } from '../system/exec';
 
 export const executePipe = async (c: RnvContext, key: string) => {
     logHook('executePipe', c?.program?.json ? key : `('${key}')`);
@@ -49,7 +48,9 @@ export const buildHooks = async (c: RnvContext) => {
         return true;
     }
 
-    if (!fsExistsSync(c.paths.buildHooks.src.index) && !fsExistsSync(c.paths.buildHooks.src.indexTs)) {
+    const hasNoIndex = !fsExistsSync(c.paths.buildHooks.src.index) && !fsExistsSync(c.paths.buildHooks.src.indexTs);
+
+    if (hasNoIndex) {
         if (c.program.ci) {
             c.runtime.skipBuildHooks = true;
             return;
@@ -84,33 +85,26 @@ export const buildHooks = async (c: RnvContext) => {
             return;
         }
     }
-    const useTsc = fsExistsSync(c.paths.buildHooks.tsconfig);
 
     if (shouldBuildHook && !c.isBuildHooksReady) {
+        const indexPath = fsExistsSync(c.paths.buildHooks.src.indexTs)
+            ? c.paths.buildHooks.src.indexTs
+            : c.paths.buildHooks.src.index;
         try {
             logHook('buildHooks', 'Build hooks not complied. BUILDING...');
-            if (useTsc) {
-                await executeAsync(
-                    `npx tsc  -b ${c.paths.buildHooks.tsconfig}`
-                    // -esModuleInterop --resolveJsonModule --skipLibCheck --forceConsistentCasingInFileNames --noEmit --strict --noImplicitAny --strictNullChecks --strictFunctionTypes --strictBindCallApply --strictPropertyInitialization --noImplicitThis --alwaysStrict --noUnusedLocals --noUnusedParameters --noImplicitReturns --noFallthroughCasesInSwitch --noUncheckedIndexedAccess --noImplicitOverride --noPropertyAccessFromIndexSignature --noUncheckedIndexedAccess`
-                );
-                // await executeAsync(
-                //     `tsc -b ${c.paths.buildHooks.dir}/../tsconfig.json --rootDir ${c.paths.buildHooks.dir} --outDir ${c.paths.buildHooks.dist.dir}`
-                // );
-            } else {
-                await build({
-                    entryPoints: [`${c.paths.buildHooks.src.dir}/index.js`],
-                    bundle: true,
-                    platform: 'node',
-                    logLimit: c.program.json ? 0 : 10,
-                    external: [
-                        '@rnv/core', // exclude rnv core from build
-                        ...Object.keys(c.files.project.package.dependencies || {}),
-                        ...Object.keys(c.files.project.package.devDependencies || {}),
-                    ], // exclude everything that's present in node_modules
-                    outfile: `${c.paths.buildHooks.dist.dir}/index.js`,
-                });
-            }
+
+            await build({
+                entryPoints: [indexPath],
+                bundle: true,
+                platform: 'node',
+                logLimit: c.program.json ? 0 : 10,
+                external: [
+                    '@rnv/core', // exclude rnv core from build
+                    ...Object.keys(c.files.project.package.dependencies || {}),
+                    ...Object.keys(c.files.project.package.devDependencies || {}),
+                ], // exclude everything that's present in node_modules
+                outfile: `${c.paths.buildHooks.dist.dir}/index.js`,
+            });
         } catch (e) {
             // Fail Builds instead of warn when hook fails
             return Promise.reject(`BUILD_HOOK Failed with error: ${e}`);
