@@ -15,7 +15,7 @@ import {
     fsExistsSync,
     fsMkdirSync,
     checkAndMigrateProject,
-    PARAMS,
+    RnvTaskOptionPresets,
     copyRuntimeAssets,
     cleanPlaformAssets,
     checkAndCreateGitignore,
@@ -140,7 +140,7 @@ const Task: RnvTask = {
     description: 'Configure current project',
     fn: taskProjectConfigure,
     task: TaskKey.projectConfigure,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
 };
 

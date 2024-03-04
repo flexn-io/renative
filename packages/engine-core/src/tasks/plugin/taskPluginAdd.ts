@@ -1,6 +1,6 @@
 import {
     writeRenativeConfigFile,
-    PARAMS,
+    RnvTaskOptionPresets,
     chalk,
     logSuccess,
     logTask,
@@ -104,7 +104,7 @@ const Task: RnvTask = {
     description: 'Add selected plugin to the project',
     fn: taskPluginAdd,
     task: TaskKey.pluginAdd,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
 };
 

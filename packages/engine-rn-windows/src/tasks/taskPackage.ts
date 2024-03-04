@@ -1,7 +1,7 @@
 import {
     logErrorPlatform,
     logTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     RnvTaskFn,
     executeOrSkipTask,
     shouldSkipTask,
@@ -41,7 +41,7 @@ const Task: RnvTask = {
     description: 'Package source files into bundle',
     fn: taskPackage,
     task: TaskKey.package,
-    options: PARAMS.withBase(PARAMS.withConfigure()),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['windows', 'xbox'],
 };
 

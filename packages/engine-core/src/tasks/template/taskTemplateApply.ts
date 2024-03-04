@@ -3,7 +3,7 @@ import {
     applyTemplate,
     getInstalledTemplateOptions,
     executeTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     RnvTaskFn,
     inquirerPrompt,
     RnvTask,
@@ -47,7 +47,7 @@ const Task: RnvTask = {
     description: 'Reset project to specific template',
     fn: taskTemplateApply,
     task: TaskKey.templateApply,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
 };
 

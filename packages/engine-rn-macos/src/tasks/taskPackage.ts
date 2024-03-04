@@ -2,7 +2,7 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     getConfigProp,
     executeOrSkipTask,
     shouldSkipTask,
@@ -38,7 +38,7 @@ const Task: RnvTask = {
     description: 'Package source files into bundle',
     fn: taskPackage,
     task: TaskKey.package,
-    options: PARAMS.withBase(PARAMS.withConfigure()),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['macos'],
 };
 

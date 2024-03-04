@@ -1,4 +1,13 @@
-import { isPlatformSupported, chalk, logTask, PARAMS, executeTask, RnvTaskFn, RnvTask, TaskKey } from '@rnv/core';
+import {
+    isPlatformSupported,
+    chalk,
+    logTask,
+    RnvTaskOptionPresets,
+    executeTask,
+    RnvTaskFn,
+    RnvTask,
+    TaskKey,
+} from '@rnv/core';
 import { listAndroidTargets } from '@rnv/sdk-android';
 import { listAppleDevices } from '@rnv/sdk-apple';
 import { listTizenTargets } from '@rnv/sdk-tizen';
@@ -40,7 +49,7 @@ const Task: RnvTask = {
     description: 'List all available targets for specific platform',
     fn: taskTargetList,
     task: TaskKey.targetList,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     isGlobalScope: true,
 };

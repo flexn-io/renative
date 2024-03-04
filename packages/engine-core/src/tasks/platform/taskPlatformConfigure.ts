@@ -11,7 +11,7 @@ import {
     configureRuntimeDefaults,
     executeTask,
     shouldSkipTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     RnvTaskFn,
     RnvTask,
     TaskKey,
@@ -58,7 +58,7 @@ const Task: RnvTask = {
     description: 'Low-level task used by engines to prepare platformBuilds folder',
     fn: taskPlatformConfigure,
     task: TaskKey.platformConfigure,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
 };
 

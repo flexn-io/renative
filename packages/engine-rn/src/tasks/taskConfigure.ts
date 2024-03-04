@@ -1,7 +1,6 @@
 import {
     logErrorPlatform,
     logTask,
-    PARAMS,
     RnvTaskFn,
     configureEntryPoint,
     executeTask,
@@ -9,6 +8,7 @@ import {
     jetifyIfRequired,
     RnvTask,
     TaskKey,
+    RnvTaskOptionPresets,
 } from '@rnv/core';
 import { configureGradleProject } from '@rnv/sdk-android';
 import { configureXcodeProject } from '@rnv/sdk-apple';
@@ -51,7 +51,7 @@ const Task: RnvTask = {
     description: 'Configure current project',
     fn: taskConfigure,
     task: TaskKey.configure,
-    options: PARAMS.withBase(PARAMS.withConfigure()),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],
 };
 

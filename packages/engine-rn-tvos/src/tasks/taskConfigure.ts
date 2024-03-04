@@ -3,7 +3,7 @@ import {
     jetifyIfRequired,
     logErrorPlatform,
     logTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     executeTask,
     shouldSkipTask,
     configureEntryPoint,
@@ -44,7 +44,7 @@ const Task: RnvTask = {
     description: 'Configure current project',
     fn: taskConfigure,
     task: TaskKey.configure,
-    options: PARAMS.withBase(PARAMS.withConfigure()),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['tvos', 'androidtv', 'firetv'],
 };
 

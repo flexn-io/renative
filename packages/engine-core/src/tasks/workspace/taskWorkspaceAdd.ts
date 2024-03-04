@@ -5,7 +5,7 @@ import {
     createWorkspace,
     fsExistsSync,
     executeTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     RnvTaskFn,
     RnvTask,
     TaskKey,
@@ -52,7 +52,7 @@ const Task: RnvTask = {
     description: 'Add new workspace',
     fn: taskWorkspaceAdd,
     task: TaskKey.workspaceAdd,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     isGlobalScope: true,
 };

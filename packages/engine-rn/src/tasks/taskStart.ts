@@ -1,13 +1,13 @@
 import {
     logErrorPlatform,
     logTask,
-    PARAMS,
     RnvTaskFn,
     executeTask,
     shouldSkipTask,
     logError,
     RnvTask,
     TaskKey,
+    RnvTaskOptionPresets,
 } from '@rnv/core';
 import { startReactNative } from '@rnv/sdk-react-native';
 
@@ -46,7 +46,7 @@ const Task: RnvTask = {
     description: 'Starts bundler / server',
     fn: taskStart,
     task: TaskKey.start,
-    options: PARAMS.withBase(PARAMS.withConfigure()),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],
 };
 

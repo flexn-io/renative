@@ -1,5 +1,5 @@
 import {
-    PARAMS,
+    RnvTaskOptionPresets,
     updateProjectPlatforms,
     logTask,
     executeTask,
@@ -33,7 +33,7 @@ const Task: RnvTask = {
     description: 'Allows you to change supportedPlatforms for your project',
     fn: taskPlatformSetup,
     task: TaskKey.platformSetup,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
 };
 

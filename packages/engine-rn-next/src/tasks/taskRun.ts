@@ -2,7 +2,7 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     executeOrSkipTask,
     shouldSkipTask,
     RnvTask,
@@ -32,7 +32,7 @@ const Task: RnvTask = {
     description: 'Run your app in browser',
     fn: taskRun,
     task: TaskKey.run,
-    options: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun())),
     platforms: ['web', 'chromecast'],
 };
 

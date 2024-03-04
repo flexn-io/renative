@@ -2,11 +2,11 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    PARAMS,
     executeOrSkipTask,
     shouldSkipTask,
     RnvTask,
     TaskKey,
+    RnvTaskOptionPresets,
 } from '@rnv/core';
 import { buildXcodeProject } from '@rnv/sdk-apple';
 
@@ -34,7 +34,7 @@ const Task: RnvTask = {
     description: 'Build project binary',
     fn: taskBuild,
     task: TaskKey.build,
-    options: PARAMS.withBase(PARAMS.withConfigure()),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['macos'],
 };
 

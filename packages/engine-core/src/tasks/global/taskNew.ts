@@ -2,7 +2,7 @@ import lSet from 'lodash/set';
 import path from 'path';
 import semver from 'semver';
 import {
-    PARAMS,
+    RnvTaskOptionPresets,
     getTemplateOptions,
     mkdirSync,
     writeFileSync,
@@ -803,7 +803,7 @@ const Task: RnvTask = {
     description: 'Create new ReNative project',
     fn: taskNew,
     task: TaskKey.new,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     isGlobalScope: true,
     isPriorityOrder: true,

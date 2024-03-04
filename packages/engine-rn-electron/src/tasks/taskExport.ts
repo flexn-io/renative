@@ -2,11 +2,11 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    PARAMS,
     executeOrSkipTask,
     shouldSkipTask,
     RnvTask,
     TaskKey,
+    RnvTaskOptionPresets,
 } from '@rnv/core';
 import { exportElectron } from '../sdk';
 
@@ -32,7 +32,7 @@ const Task: RnvTask = {
     description: 'Export the app into deployable binary',
     fn: taskExport,
     task: TaskKey.export,
-    options: PARAMS.withBase(PARAMS.withConfigure()),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['macos', 'windows', 'linux'],
 };
 

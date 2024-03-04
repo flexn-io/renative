@@ -3,7 +3,7 @@ import {
     logTask,
     generateBuildConfig,
     executeTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     getTemplateOptions,
     RnvContext,
     RnvTaskFn,
@@ -57,7 +57,7 @@ const Task: RnvTask = {
     description: 'Install additional template to the project',
     fn: taskTemplateAdd,
     task: TaskKey.templateAdd,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
 };
 

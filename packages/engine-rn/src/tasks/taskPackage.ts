@@ -1,13 +1,13 @@
 import {
     logErrorPlatform,
     logTask,
-    PARAMS,
     RnvTaskFn,
     executeOrSkipTask,
     shouldSkipTask,
     getConfigProp,
     RnvTask,
     TaskKey,
+    RnvTaskOptionPresets,
 } from '@rnv/core';
 import { packageAndroid } from '@rnv/sdk-android';
 import { packageBundleForXcode } from '@rnv/sdk-apple';
@@ -55,7 +55,7 @@ const Task: RnvTask = {
     description: 'Package source files into bundle',
     fn: taskPackage,
     task: TaskKey.package,
-    options: PARAMS.withBase(PARAMS.withConfigure()),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],
 };
 

@@ -11,7 +11,7 @@ import {
     fsExistsSync,
     executeTask,
     shouldSkipTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     RnvTask,
     TaskKey,
 } from '@rnv/core';
@@ -54,7 +54,7 @@ const Task: RnvTask = {
     description: 'Installs provisioning certificates found in your workspace (mac only)',
     fn: taskCryptoInstallProfiles,
     task: TaskKey.cryptoInstallProfiles,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     // skipPlatforms: true,
 };

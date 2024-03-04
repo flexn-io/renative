@@ -3,12 +3,12 @@ import {
     logErrorPlatform,
     copySharedPlatforms,
     logTask,
-    PARAMS,
     executeTask,
     shouldSkipTask,
     configureEntryPoint,
     RnvTask,
     TaskKey,
+    RnvTaskOptionPresets,
 } from '@rnv/core';
 import { configureElectronProject } from '../sdk';
 
@@ -41,7 +41,7 @@ const Task: RnvTask = {
     description: 'Configure current project',
     fn: taskConfigure,
     task: TaskKey.configure,
-    options: PARAMS.withBase(PARAMS.withConfigure()),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['macos', 'windows', 'linux'],
 };
 

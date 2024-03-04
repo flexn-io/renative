@@ -2,7 +2,7 @@ import {
     logErrorPlatform,
     copySharedPlatforms,
     logTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     RnvTaskFn,
     configureEntryPoint,
     executeTask,
@@ -40,7 +40,7 @@ const Task: RnvTask = {
     description: 'Configure current project',
     fn: taskConfigure,
     task: TaskKey.configure,
-    options: PARAMS.withBase(PARAMS.withConfigure()),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['windows', 'xbox'],
 };
 

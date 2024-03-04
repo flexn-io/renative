@@ -4,7 +4,7 @@ import {
     logTask,
     logToSummary,
     executeTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     RnvTaskFn,
     RnvTask,
     TaskKey,
@@ -34,7 +34,7 @@ const Task: RnvTask = {
     description: 'Show list of all available workspaces',
     fn: taskWorkspaceList,
     task: TaskKey.workspaceList,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     isGlobalScope: true,
 };

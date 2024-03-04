@@ -1,7 +1,7 @@
 import {
     logErrorPlatform,
     logTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     RnvTaskFn,
     executeTask,
     shouldSkipTask,
@@ -53,7 +53,7 @@ const Task: RnvTask = {
     description: 'Starts bundler / server',
     fn: taskStart,
     task: TaskKey.start,
-    options: PARAMS.withBase(PARAMS.withConfigure()),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['windows', 'xbox'],
 };
 

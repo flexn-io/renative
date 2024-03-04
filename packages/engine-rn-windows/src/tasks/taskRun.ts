@@ -1,7 +1,7 @@
 import {
     logErrorPlatform,
     logTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     RnvTaskFn,
     executeOrSkipTask,
     shouldSkipTask,
@@ -40,7 +40,7 @@ const Task: RnvTask = {
     description: 'Run your app in a window on desktop',
     fn: taskRun,
     task: TaskKey.run,
-    options: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun())),
     platforms: ['windows', 'xbox'],
 };
 

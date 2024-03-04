@@ -4,12 +4,12 @@ import {
     buildHooks,
     executeTask,
     fsExistsSync,
-    PARAMS,
-    PARAM_KEYS,
+    RnvTaskOptionPresets,
     RnvTaskFn,
     inquirerPrompt,
     RnvTask,
     TaskKey,
+    RnvTaskOptions,
 } from '@rnv/core';
 
 const taskHooksRun: RnvTaskFn = async (c, _parentTask, originTask) => {
@@ -60,7 +60,7 @@ const Task: RnvTask = {
     description: 'Run specific build hook',
     fn: taskHooksRun,
     task: TaskKey.hooksRun,
-    options: PARAMS.withBase([PARAM_KEYS.exeMethod]),
+    options: RnvTaskOptionPresets.withBase([RnvTaskOptions.exeMethod]),
     platforms: [],
     forceBuildHookRebuild: true,
     isGlobalScope: true,

@@ -2,7 +2,7 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     executeAsync,
     shouldSkipTask,
     RnvTask,
@@ -30,7 +30,7 @@ const Task: RnvTask = {
     description: 'Debug your app on target device or emulator',
     fn: taskDebug,
     task: TaskKey.debug,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: ['web', 'webtv', 'tizen'],
 };
 

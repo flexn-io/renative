@@ -12,7 +12,7 @@ import {
     fsExistsSync,
     fsReadFileSync,
     fsRenameSync,
-    PARAMS,
+    RnvTaskOptionPresets,
     listAppConfigsFoldersSync,
     updateRenativeConfigs,
     inquirerPrompt,
@@ -209,7 +209,7 @@ const Task: RnvTask = {
     description: 'Configure project with specific appConfig',
     fn: taskAppConfigure,
     task: TaskKey.appConfigure,
-    options: PARAMS.withBase(PARAMS.withConfigure()),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: [],
 };
 

@@ -1,4 +1,4 @@
-import { logTask, PARAMS, RnvTaskFn, executeTask, shouldSkipTask, RnvTask, TaskKey } from '@rnv/core';
+import { logTask, RnvTaskFn, executeTask, shouldSkipTask, RnvTask, TaskKey, RnvTaskOptionPresets } from '@rnv/core';
 import { updateProfile } from '@rnv/sdk-apple';
 
 const taskCryptoUpdateProfile: RnvTaskFn = async (c, _parentTask, originTask) => {
@@ -15,7 +15,7 @@ const Task: RnvTask = {
     description: 'Update provisioning profile (mac only)',
     fn: taskCryptoUpdateProfile,
     task: TaskKey.cryptoUpdateProfile,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: ['ios'],
     // skipPlatforms: true,
 };

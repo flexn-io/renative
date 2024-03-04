@@ -3,7 +3,7 @@ import type { PlatformKey } from '../schema/types';
 
 export type RnvTask = {
     task: string;
-    options: Array<RnvTaskParameter>;
+    options: Array<RnvTaskOption>;
     isGlobalScope?: boolean;
     platforms: Array<PlatformKey>;
     description: string;
@@ -15,22 +15,22 @@ export type RnvTask = {
     ignoreEngines?: boolean;
 };
 
-export type TaskOption = {
+export type TaskPromptOption = {
     name: string;
     value: string;
     command: string;
     asArray?: string[];
     subCommand?: string;
-    subTasks?: TaskOption[];
+    subTasks?: TaskPromptOption[];
     description?: string;
     isGlobalScope?: boolean;
     isPrivate?: boolean;
     isPriorityOrder?: boolean;
     providers: string[];
-    params?: Array<RnvTaskParameter>;
+    params?: Array<RnvTaskOption>;
 };
 
-export type RnvTaskParameter = {
+export type RnvTaskOption = {
     shortcut?: string;
     value?: string;
     key?: string;

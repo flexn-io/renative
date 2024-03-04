@@ -1,5 +1,5 @@
 import { TaskKey } from '../enums/taskName';
-import type { RnvTaskParameter } from './types';
+import type { RnvTaskOption } from './types';
 
 export const DEFAULT_TASK_DESCRIPTIONS: Record<string, string> = {
     [TaskKey.run]: 'Run your app on target device or emulator',
@@ -10,7 +10,7 @@ export const DEFAULT_TASK_DESCRIPTIONS: Record<string, string> = {
     [TaskKey.export]: 'Export the app into deployable binary',
 };
 
-const PARAM_KEYS_ENUM = {
+export const RnvTaskOptions: Record<string, RnvTaskOption> = {
     info: {
         shortcut: 'i',
         value: 'value',
@@ -291,9 +291,7 @@ const PARAM_KEYS_ENUM = {
     },
 };
 
-export const PARAM_KEYS = PARAM_KEYS_ENUM as Record<string, RnvTaskParameter>;
-
-type ParamKeysType = typeof PARAM_KEYS_ENUM;
+type ParamKeysType = typeof RnvTaskOptions;
 
 type ProgramOptionsKey = keyof ParamKeysType;
 
@@ -302,34 +300,40 @@ type ParamType = any; //boolean | string | undefined
 
 export type ParamKeys = Partial<Record<ProgramOptionsKey, ParamType>>;
 
-(Object.keys(PARAM_KEYS) as ProgramOptionsKey[]).forEach((k) => {
-    PARAM_KEYS[k].key = k;
+(Object.keys(RnvTaskOptions) as ProgramOptionsKey[]).forEach((k) => {
+    RnvTaskOptions[k].key = k;
 });
 
-export const PARAMS = {
-    withBase: (arr?: Array<RnvTaskParameter>) =>
-        [PARAM_KEYS.info, PARAM_KEYS.ci, PARAM_KEYS.mono, PARAM_KEYS.maxErrorLength, PARAM_KEYS.only].concat(arr || []),
-    withConfigure: (arr?: Array<RnvTaskParameter>) =>
+export const RnvTaskOptionPresets = {
+    withBase: (arr?: Array<RnvTaskOption>) =>
         [
-            PARAM_KEYS.reset,
-            PARAM_KEYS.resetHard,
-            PARAM_KEYS.engine,
-            PARAM_KEYS.resetAssets,
-            PARAM_KEYS.appConfigID,
-            PARAM_KEYS.scheme,
-            PARAM_KEYS.platform,
+            RnvTaskOptions.info,
+            RnvTaskOptions.ci,
+            RnvTaskOptions.mono,
+            RnvTaskOptions.maxErrorLength,
+            RnvTaskOptions.only,
         ].concat(arr || []),
-    withRun: (arr?: Array<RnvTaskParameter>) =>
+    withConfigure: (arr?: Array<RnvTaskOption>) =>
         [
-            PARAM_KEYS.target,
-            PARAM_KEYS.device,
-            PARAM_KEYS.hosted,
-            PARAM_KEYS.port,
-            PARAM_KEYS.debug,
-            PARAM_KEYS.debugIp,
-            PARAM_KEYS.skipTargetCheck,
-            PARAM_KEYS.host,
+            RnvTaskOptions.reset,
+            RnvTaskOptions.resetHard,
+            RnvTaskOptions.engine,
+            RnvTaskOptions.resetAssets,
+            RnvTaskOptions.appConfigID,
+            RnvTaskOptions.scheme,
+            RnvTaskOptions.platform,
         ].concat(arr || []),
-    withAll: (arr?: Array<RnvTaskParameter>) => Object.values(PARAM_KEYS).concat(arr || []),
-    all: Object.keys(PARAM_KEYS),
+    withRun: (arr?: Array<RnvTaskOption>) =>
+        [
+            RnvTaskOptions.target,
+            RnvTaskOptions.device,
+            RnvTaskOptions.hosted,
+            RnvTaskOptions.port,
+            RnvTaskOptions.debug,
+            RnvTaskOptions.debugIp,
+            RnvTaskOptions.skipTargetCheck,
+            RnvTaskOptions.host,
+        ].concat(arr || []),
+    withAll: (arr?: Array<RnvTaskOption>) => Object.values(RnvTaskOptions).concat(arr || []),
+    all: Object.keys(RnvTaskOptions),
 };

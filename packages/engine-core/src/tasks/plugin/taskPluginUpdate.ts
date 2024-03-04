@@ -4,7 +4,7 @@ import {
     logTask,
     logWarning,
     executeTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     RnvTaskFn,
     inquirerPrompt,
     RnvTask,
@@ -52,7 +52,7 @@ const Task: RnvTask = {
     description: 'Update specific plugin to latest supported version (rnv)',
     fn: taskPluginUpdate,
     task: TaskKey.pluginUpdate,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
 };
 

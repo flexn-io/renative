@@ -1,4 +1,13 @@
-import { chalk, logToSummary, logTask, PARAMS, getRegisteredEngines, RnvTaskFn, RnvTask, TaskKey } from '@rnv/core';
+import {
+    chalk,
+    logToSummary,
+    logTask,
+    RnvTaskOptionPresets,
+    getRegisteredEngines,
+    RnvTaskFn,
+    RnvTask,
+    TaskKey,
+} from '@rnv/core';
 
 const taskHelp: RnvTaskFn = async (c) => {
     logTask('taskHelp');
@@ -6,7 +15,7 @@ const taskHelp: RnvTaskFn = async (c) => {
     // PARAMS
     let optsString = '';
 
-    PARAMS.withAll().forEach((param) => {
+    RnvTaskOptionPresets.withAll().forEach((param) => {
         let cmd = '';
         if (param.shortcut) {
             cmd += `-${param.shortcut}, `;
@@ -48,7 +57,7 @@ const Task: RnvTask = {
     description: 'Display generic help',
     fn: taskHelp,
     task: TaskKey.help,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     isGlobalScope: true,
     isPriorityOrder: true,

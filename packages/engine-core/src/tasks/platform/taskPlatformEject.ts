@@ -5,7 +5,7 @@ import {
     logError,
     logInfo,
     writeFileSync,
-    PARAMS,
+    RnvTaskOptionPresets,
     generatePlatformChoices,
     ejectPlatform,
     executeTask,
@@ -74,7 +74,7 @@ const Task: RnvTask = {
     description: 'Copy all platform files directly to project',
     fn: taskPlatformEject,
     task: TaskKey.platformEject,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
 };
 

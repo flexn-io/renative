@@ -1,7 +1,7 @@
 import {
     RnvTaskFn,
     logTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     executeOrSkipTask,
     initializeTask,
     findSuitableTask,
@@ -30,7 +30,7 @@ const Task: RnvTask = {
     description: 'Deploys your project to docker image',
     fn: taskDockerDeploy,
     task: 'docker deploy',
-    params: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: ['web'],
 };
 

@@ -17,7 +17,7 @@ import {
     fsReaddir,
     inquirerPrompt,
     executeTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     RnvContext,
     RnvTaskFn,
     copyFileSync,
@@ -237,7 +237,7 @@ const Task: RnvTask = {
     description: 'Encrypts secure files from `~/<wokspace>/<project>/..` to project',
     fn: taskCryptoEncrypt,
     task: TaskKey.cryptoEncrypt,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
 };
 

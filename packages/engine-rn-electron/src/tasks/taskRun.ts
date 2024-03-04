@@ -2,11 +2,11 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    PARAMS,
     executeOrSkipTask,
     shouldSkipTask,
     RnvTask,
     TaskKey,
+    RnvTaskOptionPresets,
 } from '@rnv/core';
 import { runElectron } from '../sdk';
 
@@ -35,7 +35,7 @@ const Task: RnvTask = {
     description: 'Run your electron app on your machine',
     fn: taskRun,
     task: TaskKey.run,
-    options: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun())),
     platforms: ['macos', 'windows', 'linux'],
 };
 

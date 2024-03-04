@@ -13,7 +13,7 @@ import {
     inquirerPrompt,
     logInfo,
     logTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     RnvTask,
     ConfigFileApp,
     TaskKey,
@@ -168,7 +168,7 @@ const Task: RnvTask = {
     description: 'Create new app config',
     fn: taskAppCreate,
     task: TaskKey.appCreate,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
 };
 

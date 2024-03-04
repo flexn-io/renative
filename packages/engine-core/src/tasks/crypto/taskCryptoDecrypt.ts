@@ -14,7 +14,7 @@ import {
     fsReadFileSync,
     inquirerPrompt,
     executeTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     RnvContext,
     RnvTaskFn,
     RnvTask,
@@ -210,7 +210,7 @@ const Task: RnvTask = {
     description: 'Decrypt encrypted project files into local `~/<wokspace>/<project>/..`',
     fn: taskCryptoDecrypt,
     task: TaskKey.cryptoDecrypt,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
 };
 

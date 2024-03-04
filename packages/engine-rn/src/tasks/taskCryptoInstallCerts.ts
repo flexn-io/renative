@@ -1,6 +1,5 @@
 import {
     logTask,
-    PARAMS,
     RnvTaskFn,
     executeTask,
     shouldSkipTask,
@@ -10,6 +9,7 @@ import {
     logWarning,
     RnvTask,
     TaskKey,
+    RnvTaskOptionPresets,
 } from '@rnv/core';
 
 const taskCryptoInstallCerts: RnvTaskFn = async (c, _parentTask, originTask) => {
@@ -40,7 +40,7 @@ const Task: RnvTask = {
     description: 'Installs certificates into keychain (mac only)',
     fn: taskCryptoInstallCerts,
     task: TaskKey.cryptoInstallCerts,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     // skipPlatforms: true,
 };

@@ -1,4 +1,4 @@
-import { logErrorPlatform, logTask, PARAMS, RnvTaskFn, executeTask, RnvTask, TaskKey } from '@rnv/core';
+import { logErrorPlatform, logTask, RnvTaskFn, executeTask, RnvTask, TaskKey, RnvTaskOptionPresets } from '@rnv/core';
 import { runAndroidLog, checkAndConfigureAndroidSdks } from '@rnv/sdk-android';
 import { runAppleLog } from '@rnv/sdk-apple';
 
@@ -27,7 +27,7 @@ const Task: RnvTask = {
     description: 'Attach logger to device or emulator and print out logs',
     fn: taskLog,
     task: TaskKey.log,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],
     isGlobalScope: true,
 };

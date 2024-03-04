@@ -3,7 +3,7 @@ import {
     configureFonts,
     copyRuntimeAssets,
     executeTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     RnvTaskFn,
     generatePlatformAssetsRuntimeConfig,
     RnvTask,
@@ -28,7 +28,7 @@ const Task: RnvTask = {
     description: 'Switch between different app configs in current project',
     fn: taskSwitch,
     task: TaskKey.appSwitch,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
 };
 

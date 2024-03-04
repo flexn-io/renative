@@ -1,6 +1,6 @@
 import {
     areNodeModulesInstalled,
-    PARAMS,
+    RnvTaskOptionPresets,
     installPackageDependenciesAndPlugins,
     logTask,
     logInfo,
@@ -34,7 +34,7 @@ const Task: RnvTask = {
     description: 'Install package node_modules via yarn or npm',
     fn: taskInstall,
     task: TaskKey.install,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
 };
 

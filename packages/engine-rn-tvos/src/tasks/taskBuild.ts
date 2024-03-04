@@ -2,7 +2,7 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     executeOrSkipTask,
     shouldSkipTask,
     RnvTask,
@@ -38,7 +38,7 @@ const Task: RnvTask = {
     description: 'Build project binary',
     fn: taskBuild,
     task: TaskKey.build,
-    options: PARAMS.withBase(PARAMS.withConfigure()),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['tvos', 'androidtv', 'firetv'],
 };
 

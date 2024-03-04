@@ -4,7 +4,7 @@ import {
     logRaw,
     getWorkspaceConnectionString,
     executeTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     RnvTaskFn,
     RnvTask,
     TaskKey,
@@ -37,7 +37,7 @@ const Task: RnvTask = {
     description: 'Connect project with selected workspace',
     fn: taskWorkspaceConnect,
     task: TaskKey.workspaceConnect,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     isGlobalScope: true,
 };

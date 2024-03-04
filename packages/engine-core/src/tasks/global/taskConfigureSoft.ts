@@ -1,6 +1,6 @@
 import {
     RnvTaskFn,
-    PARAMS,
+    RnvTaskOptionPresets,
     executeTask,
     configureRuntimeDefaults,
     isPlatformSupported,
@@ -28,7 +28,7 @@ const Task: RnvTask = {
     description: 'Configure system and project without recreating files (used for --only)',
     fn: taskConfigureSoft,
     task: TaskKey.configureSoft,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     isPrivate: true,
 };

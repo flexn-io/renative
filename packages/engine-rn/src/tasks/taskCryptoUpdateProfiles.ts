@@ -1,6 +1,5 @@
 import {
     logTask,
-    PARAMS,
     RnvTaskFn,
     executeTask,
     shouldSkipTask,
@@ -9,6 +8,7 @@ import {
     listAppConfigsFoldersSync,
     RnvTask,
     TaskKey,
+    RnvTaskOptionPresets,
 } from '@rnv/core';
 import { updateProfile } from '@rnv/sdk-apple';
 
@@ -48,7 +48,7 @@ const Task: RnvTask = {
     description: 'Will attempt to update all provisioning profiles (mac only)',
     fn: taskCryptoUpdateProfiles,
     task: TaskKey.cryptoUpdateProfiles,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: ['ios'],
     // skipPlatforms: true,
 };

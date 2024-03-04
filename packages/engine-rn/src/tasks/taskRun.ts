@@ -1,7 +1,6 @@
 import {
     logErrorPlatform,
     logTask,
-    PARAMS,
     RnvTaskFn,
     executeOrSkipTask,
     shouldSkipTask,
@@ -10,6 +9,7 @@ import {
     logSummary,
     RnvTask,
     TaskKey,
+    RnvTaskOptionPresets,
 } from '@rnv/core';
 import { packageAndroid, runAndroid, getAndroidDeviceToRunOn } from '@rnv/sdk-android';
 import { runXcodeProject, getIosDeviceToRunOn } from '@rnv/sdk-apple';
@@ -81,7 +81,7 @@ const Task: RnvTask = {
     // dependencies: {
     //     before: TaskKey.configure,
     // },
-    options: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun())),
     platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],
 };
 

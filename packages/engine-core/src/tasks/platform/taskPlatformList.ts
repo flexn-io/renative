@@ -4,7 +4,7 @@ import {
     logTask,
     generatePlatformChoices,
     executeTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     RnvTaskFn,
     RnvTask,
     TaskKey,
@@ -24,7 +24,7 @@ const Task: RnvTask = {
     description: 'List all available platforms',
     fn: taskPlatformList,
     task: TaskKey.platformList,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
 };
 

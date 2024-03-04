@@ -1,12 +1,12 @@
 import {
     RnvTaskFn,
     logTask,
-    PARAMS,
     logErrorPlatform,
     executeOrSkipTask,
     shouldSkipTask,
     RnvTask,
     TaskKey,
+    RnvTaskOptionPresets,
 } from '@rnv/core';
 import { buildElectron } from '../sdk';
 
@@ -33,7 +33,7 @@ const Task: RnvTask = {
     description: 'Build project binary',
     fn: taskBuild,
     task: TaskKey.build,
-    options: PARAMS.withBase(PARAMS.withConfigure()),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['macos', 'windows', 'linux'],
 };
 

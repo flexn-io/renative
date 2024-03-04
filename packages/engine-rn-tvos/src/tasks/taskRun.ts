@@ -1,6 +1,6 @@
 import {
     RnvTaskFn,
-    PARAMS,
+    RnvTaskOptionPresets,
     getConfigProp,
     logTask,
     logSummary,
@@ -76,7 +76,7 @@ const Task: RnvTask = {
     // dependencies: {
     //     before: TaskKey.configure,
     // },
-    options: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun())),
     platforms: ['tvos', 'androidtv', 'firetv'],
 };
 

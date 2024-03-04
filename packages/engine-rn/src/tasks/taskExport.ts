@@ -1,12 +1,12 @@
 import {
     logErrorPlatform,
     logTask,
-    PARAMS,
     RnvTaskFn,
     executeOrSkipTask,
     shouldSkipTask,
     RnvTask,
     TaskKey,
+    RnvTaskOptionPresets,
 } from '@rnv/core';
 import { exportXcodeProject } from '@rnv/sdk-apple';
 
@@ -36,7 +36,7 @@ const Task: RnvTask = {
     description: 'Export the app into deployable binary',
     fn: taskExport,
     task: TaskKey.export,
-    options: PARAMS.withBase(PARAMS.withConfigure()),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],
 };
 

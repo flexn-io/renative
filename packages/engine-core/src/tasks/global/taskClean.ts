@@ -9,7 +9,7 @@ import {
     logToSummary,
     logDebug,
     executeAsync,
-    PARAMS,
+    RnvTaskOptionPresets,
     isSystemWin,
     RnvTaskFn,
     inquirerPrompt,
@@ -213,7 +213,7 @@ const Task: RnvTask = {
     description: 'Automatically removes all node_modules and lock in your project and its dependencies',
     fn: taskClean,
     task: TaskKey.clean,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     isGlobalScope: true,
 };

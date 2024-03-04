@@ -9,7 +9,7 @@ import {
     registerAllPlatformEngines,
 } from '../engines';
 import type { RnvContext } from '../context/types';
-import type { RnvTask, RnvTaskMap, TaskItemMap, TaskObj, TaskOption } from './types';
+import type { RnvTask, RnvTaskMap, TaskItemMap, TaskObj, TaskPromptOption } from './types';
 import type { RnvEngine } from '../engines/types';
 import { inquirerPrompt, inquirerSeparator, pressAnyKeyToContinue } from '../api';
 import { getApi } from '../api/provider';
@@ -42,9 +42,9 @@ export const initializeTask = async (c: RnvContext, task: string) => {
     return true;
 };
 
-const _getTaskOption = ({ taskInstance }: TaskObj, provider?: string): TaskOption => {
+const _getTaskOption = ({ taskInstance }: TaskObj, provider?: string): TaskPromptOption => {
     const asArray = taskInstance.task.split(' ');
-    const output: TaskOption = {
+    const output: TaskPromptOption = {
         value: taskInstance.task,
         command: '',
         name: '',
@@ -89,13 +89,13 @@ const _getTaskObj = (taskInstance: RnvTask) => {
     };
 };
 
-export const getAllSuitableTasks = (c: RnvContext): Record<string, TaskOption> => {
+export const getAllSuitableTasks = (c: RnvContext): Record<string, TaskPromptOption> => {
     const REGISTERED_ENGINES = getRegisteredEngines(c);
-    const suitableTasks: Record<string, TaskOption> = {};
+    const suitableTasks: Record<string, TaskPromptOption> = {};
 
     REGISTERED_ENGINES.forEach((engine) => {
         Object.values(engine.tasks).forEach((taskInstance) => {
-            let taskObj: TaskOption = _getTaskOption(_getTaskObj(taskInstance), engine?.config?.id);
+            let taskObj: TaskPromptOption = _getTaskOption(_getTaskObj(taskInstance), engine?.config?.id);
             if (!suitableTasks[taskObj.value]) {
                 suitableTasks[taskObj.value] = taskObj;
             } else {
@@ -126,7 +126,7 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
             const suitableTasks = getAllSuitableTasks(c);
 
             const taskInstances = Object.values(suitableTasks);
-            let tasks: TaskOption[];
+            let tasks: TaskPromptOption[];
 
             let defaultCmd: string | undefined = 'new';
             let addendum = '';
@@ -138,14 +138,14 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
                 defaultCmd = tasks.find((v) => v.value === 'run')?.name;
             }
 
-            const commonTasks: TaskOption[] = [];
-            const ungroupedTasks: TaskOption[] = [];
-            const groupedTasks: TaskOption[] = [];
-            const taskGroups: Record<string, TaskOption> = {};
+            const commonTasks: TaskPromptOption[] = [];
+            const ungroupedTasks: TaskPromptOption[] = [];
+            const groupedTasks: TaskPromptOption[] = [];
+            const taskGroups: Record<string, TaskPromptOption> = {};
             tasks.forEach((task) => {
                 if (task.subCommand) {
                     if (!taskGroups[task.command]) {
-                        const groupTask: TaskOption = {
+                        const groupTask: TaskPromptOption = {
                             name: `${task.command}...`,
                             command: task.command,
                             value: task.command,

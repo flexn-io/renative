@@ -2,7 +2,7 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     executeOrSkipTask,
     shouldSkipTask,
     RnvTask,
@@ -34,7 +34,7 @@ const Task: RnvTask = {
     description: 'Export the app into deployable binary',
     fn: taskExport,
     task: TaskKey.export,
-    options: PARAMS.withBase(PARAMS.withConfigure()),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['tvos', 'androidtv', 'firetv'],
 };
 

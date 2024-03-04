@@ -1,4 +1,4 @@
-import { RnvContext, logTask, PARAMS, logSuccess, RnvTask } from '@rnv/core';
+import { RnvContext, logTask, RnvTaskOptionPresets, logSuccess, RnvTask } from '@rnv/core';
 
 const taskStarterHello = async (_c: RnvContext) => {
     logTask('taskStarterHello');
@@ -10,7 +10,7 @@ const Task: RnvTask = {
     description: 'Prints hello message',
     fn: taskStarterHello,
     task: 'starter hello',
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
 };
 

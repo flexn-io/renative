@@ -1,4 +1,13 @@
-import { RnvTaskFn, logErrorPlatform, logTask, logRaw, PARAMS, executeOrSkipTask, RnvTask, TaskKey } from '@rnv/core';
+import {
+    RnvTaskFn,
+    logErrorPlatform,
+    logTask,
+    logRaw,
+    executeOrSkipTask,
+    RnvTask,
+    TaskKey,
+    RnvTaskOptionPresets,
+} from '@rnv/core';
 import { runLightningProject } from '../sdks/sdk-lightning';
 
 const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
@@ -33,7 +42,7 @@ const Task: RnvTask = {
     // dependencies: {
     //     before: TaskKey.configure,
     // },
-    options: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun())),
     platforms: ['tizen', 'webos'],
 };
 

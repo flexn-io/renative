@@ -4,7 +4,7 @@ import {
     generateOptions,
     buildHooks,
     executeTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     RnvTaskFn,
     RnvTask,
     TaskKey,
@@ -25,7 +25,7 @@ const Task: RnvTask = {
     description: 'Get the list of all available pipes',
     fn: taskHooksPipes,
     task: TaskKey.hooksPipes,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
 };
 

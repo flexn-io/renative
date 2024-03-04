@@ -2,7 +2,6 @@ import { copyFileSync, mkdirSync } from 'fs';
 import path from 'path';
 import {
     logTask,
-    PARAMS,
     RnvTaskFn,
     executeTask,
     shouldSkipTask,
@@ -13,6 +12,7 @@ import {
     logDebug,
     RnvTask,
     TaskKey,
+    RnvTaskOptionPresets,
 } from '@rnv/core';
 
 const taskCryptoInstallProfiles: RnvTaskFn = async (c, _parentTask, originTask) => {
@@ -53,7 +53,7 @@ const Task: RnvTask = {
     description: 'Installs provisioning certificates found in your workspace (mac only)',
     fn: taskCryptoInstallProfiles,
     task: TaskKey.cryptoInstallProfiles,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     // skipPlatforms: true,
 };

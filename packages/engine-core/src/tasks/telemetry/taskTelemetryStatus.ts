@@ -1,4 +1,4 @@
-import { chalk, logTask, logToSummary, PARAMS, RnvTask, RnvTaskFn, TaskKey } from '@rnv/core';
+import { chalk, logTask, logToSummary, RnvTaskOptionPresets, RnvTask, RnvTaskFn, TaskKey } from '@rnv/core';
 
 const taskTelemetryStatus: RnvTaskFn = async (c) => {
     logTask('taskTelemetryStatus');
@@ -29,7 +29,7 @@ const Task: RnvTask = {
     description: 'Show current rnv telemetry status on your machine',
     fn: taskTelemetryStatus,
     task: TaskKey.telemetryStatus,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     isGlobalScope: true,
 };

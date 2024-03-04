@@ -1,7 +1,7 @@
 import {
     RnvContext,
     RnvTaskFn,
-    PARAMS,
+    RnvTaskOptionPresets,
     logErrorPlatform,
     logTask,
     logDebug,
@@ -128,7 +128,7 @@ const Task: RnvTask = {
     description: 'Run your app in browser',
     fn: taskRun,
     task: TaskKey.run,
-    options: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun())),
     platforms: ['web', 'webtv', 'tizen', 'webos', 'tizenmobile', 'tizenwatch', 'kaios', 'chromecast'],
 };
 

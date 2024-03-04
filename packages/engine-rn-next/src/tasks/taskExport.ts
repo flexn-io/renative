@@ -2,7 +2,7 @@ import {
     RnvTaskFn,
     logErrorPlatform,
     logTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     shouldSkipTask,
     executeOrSkipTask,
     RnvTask,
@@ -31,7 +31,7 @@ const Task: RnvTask = {
     description: 'Export the app into deployable binary',
     fn: taskExport,
     task: TaskKey.export,
-    options: PARAMS.withBase(PARAMS.withConfigure()),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['web', 'chromecast'],
 };
 

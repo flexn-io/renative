@@ -2,7 +2,7 @@ import {
     RnvTaskFn,
     executeOrSkipTask,
     logErrorPlatform,
-    PARAMS,
+    RnvTaskOptionPresets,
     logTask,
     shouldSkipTask,
     RnvTask,
@@ -31,7 +31,7 @@ const Task: RnvTask = {
     description: 'Build project binary',
     fn: taskBuild,
     task: TaskKey.build,
-    options: PARAMS.withBase(PARAMS.withConfigure()),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['windows', 'xbox'],
 };
 

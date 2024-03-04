@@ -5,7 +5,7 @@ import {
     shouldSkipTask,
     logTask,
     logError,
-    PARAMS,
+    RnvTaskOptionPresets,
     RnvTaskFn,
     RnvTask,
     PlatformKey,
@@ -55,7 +55,7 @@ const Task: RnvTask = {
     description: 'Starts bundler / server',
     fn: taskStart,
     task: TaskKey.start,
-    options: PARAMS.withBase(PARAMS.withConfigure()),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['tvos', 'androidtv', 'firetv'],
 };
 

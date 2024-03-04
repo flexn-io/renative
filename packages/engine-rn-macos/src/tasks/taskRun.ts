@@ -5,7 +5,7 @@ import {
     logTask,
     logSummary,
     logRaw,
-    PARAMS,
+    RnvTaskOptionPresets,
     executeOrSkipTask,
     shouldSkipTask,
     RnvTask,
@@ -57,7 +57,7 @@ const Task: RnvTask = {
     // dependencies: {
     //     before: TaskKey.configure,
     // },
-    options: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun())),
     platforms: ['macos'],
 };
 

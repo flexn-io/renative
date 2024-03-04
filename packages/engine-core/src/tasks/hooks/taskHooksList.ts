@@ -4,7 +4,7 @@ import {
     generateOptions,
     buildHooks,
     executeTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     RnvTaskFn,
     RnvTask,
     TaskKey,
@@ -34,7 +34,7 @@ const Task: RnvTask = {
     description: 'Get list of all available hooks',
     fn: taskHooksList,
     task: TaskKey.hooksList,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     forceBuildHookRebuild: true,
 };

@@ -3,7 +3,7 @@ import {
     chalk,
     logTask,
     logToSummary,
-    PARAMS,
+    RnvTaskOptionPresets,
     executeTask,
     configureRuntimeDefaults,
     readObjectSync,
@@ -91,7 +91,7 @@ const Task: RnvTask = {
     description: 'Checks validity and config health of your project',
     fn: taskDoctor,
     task: TaskKey.doctor,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     isGlobalScope: true,
 };

@@ -1,7 +1,7 @@
 import {
     RnvTaskFn,
     logTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     executeOrSkipTask,
     shouldSkipTask,
     RnvTask,
@@ -24,7 +24,7 @@ const Task: RnvTask = {
     description: 'Deploy the binary via selected deployment intgeration or buld hook',
     fn: taskDeploy,
     task: TaskKey.deploy,
-    options: PARAMS.withBase(PARAMS.withConfigure()),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: [...SUPPORTED_PLATFORMS],
 };
 

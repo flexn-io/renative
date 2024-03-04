@@ -2,7 +2,7 @@ import {
     isPlatformSupported,
     chalk,
     logTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     executeTask,
     RnvTaskFn,
     inquirerPrompt,
@@ -82,7 +82,7 @@ const Task: RnvTask = {
     description: 'Launch specific target',
     fn: taskTargetLaunch,
     task: TaskKey.targetLaunch,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     isGlobalScope: true,
 };

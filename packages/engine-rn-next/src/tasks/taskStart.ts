@@ -3,7 +3,7 @@ import {
     logErrorPlatform,
     logTask,
     logError,
-    PARAMS,
+    RnvTaskOptionPresets,
     executeTask,
     shouldSkipTask,
     RnvTask,
@@ -48,7 +48,7 @@ const Task: RnvTask = {
     description: 'Starts bundler / server',
     fn: taskStart,
     task: TaskKey.start,
-    options: PARAMS.withBase(PARAMS.withConfigure()),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['web', 'chromecast'],
 };
 

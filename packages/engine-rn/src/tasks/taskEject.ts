@@ -1,12 +1,12 @@
 import {
     logErrorPlatform,
     logTask,
-    PARAMS,
     RnvTaskFn,
     executeOrSkipTask,
     shouldSkipTask,
     RnvTask,
     TaskKey,
+    RnvTaskOptionPresets,
 } from '@rnv/core';
 import { ejectGradleProject } from '@rnv/sdk-android';
 import { ejectXcodeProject } from '@rnv/sdk-apple';
@@ -53,7 +53,7 @@ const Task: RnvTask = {
     description: 'Eject current project app to self contained native project',
     fn: taskEject,
     task: TaskKey.eject,
-    options: PARAMS.withBase(PARAMS.withConfigure()),
+    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
     platforms: ['ios', 'android', 'androidtv', 'androidwear', 'macos'],
 };
 

@@ -9,7 +9,7 @@ import {
     removeDirs,
     generatePlatformChoices,
     executeTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     RnvTaskFn,
     inquirerPrompt,
     PlatformKey,
@@ -91,7 +91,7 @@ const Task: RnvTask = {
     description: 'Connect platform template back to rnv',
     fn: taskPlatformConnect,
     task: TaskKey.platformConnect,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
 };
 

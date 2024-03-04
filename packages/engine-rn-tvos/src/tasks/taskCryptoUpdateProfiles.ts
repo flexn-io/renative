@@ -4,7 +4,7 @@ import {
     listAppConfigsFoldersSync,
     chalk,
     logTask,
-    PARAMS,
+    RnvTaskOptionPresets,
     executeTask,
     shouldSkipTask,
     RnvTask,
@@ -48,7 +48,7 @@ const Task: RnvTask = {
     description: 'Will attempt to update all provisioning profiles (mac only)',
     fn: taskCryptoUpdateProfiles,
     task: TaskKey.cryptoUpdateProfiles,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: ['tvos'],
     // skipPlatforms: true,
 };

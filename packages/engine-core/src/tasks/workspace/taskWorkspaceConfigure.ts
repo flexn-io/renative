@@ -1,6 +1,6 @@
 import path from 'path';
 import {
-    PARAMS,
+    RnvTaskOptionPresets,
     copyFileSync,
     mkdirSync,
     fsWriteFileSync,
@@ -92,7 +92,7 @@ const Task: RnvTask = {
     description: 'Preconfigures your current workspace defined via "workspaceID" prop in renative config file',
     fn: taskWorkspaceConfigure,
     task: TaskKey.workspaceConfigure,
-    options: PARAMS.withBase(),
+    options: RnvTaskOptionPresets.withBase(),
     platforms: [],
     isGlobalScope: true,
 };
