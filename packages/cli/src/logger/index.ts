@@ -57,32 +57,36 @@ export const logWelcome = () => {
     // prettier-ignore
     let str = _defaultColor(`
 ┌──────────────────────────────────────────────────────────────────────────────┐
-│                                                                              │
 │        ${chalCol('██████╗')} ███████╗${chalCol('███╗   ██╗')} █████╗ ████████╗██╗${chalCol('██╗   ██╗')}███████╗       │
 │        ${chalCol('██╔══██╗')}██╔════╝${chalCol('████╗  ██║')}██╔══██╗╚══██╔══╝██║${chalCol('██║   ██║')}██╔════╝       │
 │        ${chalCol('██████╔╝')}█████╗  ${chalCol('██╔██╗ ██║')}███████║   ██║   ██║${chalCol('██║   ██║')}█████╗         │
 │        ${chalCol('██╔══██╗')}██╔══╝  ${chalCol('██║╚██╗██║')}██╔══██║   ██║   ██║${chalCol('╚██╗ ██╔╝')}██╔══╝         │
 │        ${chalCol('██║  ██║')}███████╗${chalCol('██║ ╚████║')}██║  ██║   ██║   ██║${chalCol(' ╚████╔╝ ')}███████╗       │
 │        ${chalCol('╚═╝  ╚═╝')}╚══════╝${chalCol('╚═╝  ╚═══╝')}╚═╝  ╚═╝   ╚═╝   ╚═╝${chalCol('  ╚═══╝  ')}╚══════╝       │
-│                                                                              │
 `);
 
     if (ctx.files?.rnv?.package?.version) {
         ctx.rnvVersion = ctx.files.rnv.package.version;
-        str += printIntoBox(`      Version: ${currentChalk.green(ctx.rnvVersion)}`);
+        str += printIntoBox(
+            `      Version: ${currentChalk.green(ctx.rnvVersion)} ${ICN_ROCKET} ${currentChalk.yellow('Firing up!...')}`
+        );
         if (ctx.rnvVersion?.includes?.('alpha')) {
             str += printIntoBox(`      ${currentChalk.yellow('WARNING: this is a prerelease version.')}`);
         }
     }
-    str += printIntoBox(`      ${currentChalk.grey('https://renative.org')}`);
-    str += printIntoBox(`      ${ICN_ROCKET} ${currentChalk.yellow('Firing up!...')}`);
+    str += printIntoBox(
+        `      ${currentChalk.grey('https://renative.org')} | Start Time: ${currentChalk.grey(
+            ctx.timeStart.toLocaleString()
+        )}`
+    );
+    // str += printIntoBox(`      ${ICN_ROCKET} ${currentChalk.yellow('Firing up!...')}`);
     str += printIntoBox(`      $ ${currentChalk.cyan(getCurrentCommand(true))}`);
     if (ctx.timeStart) {
-        str += printIntoBox(`      Start Time: ${currentChalk.grey(ctx.timeStart.toLocaleString())}`);
+        // str += printIntoBox(`      Start Time: ${currentChalk.grey(ctx.timeStart.toLocaleString())}`);
     }
-    str += printIntoBox('');
+    // str += printIntoBox('');
     str += printBoxEnd();
-    str += '\n';
+    // str += '\n';
 
     console.log(str);
 };
