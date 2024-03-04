@@ -21,7 +21,7 @@ const taskBuild: RnvTaskFn = async (c, parentTask, originTask) => {
     // Build aways bundles assets
     c.runtime.forceBundleAssets = true;
 
-    await executeOrSkipTask(c, RnvTaskName.package, RnvTaskName.build, originTask);
+    await executeOrSkipTask(c, RnvTaskName.configure, RnvTaskName.build, originTask);
 
     if (shouldSkipTask(c, RnvTaskName.build, originTask)) return true;
 
