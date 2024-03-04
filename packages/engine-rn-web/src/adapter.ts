@@ -20,6 +20,4 @@ const withRNVBabel = (cnf: BabelConfig): BabelConfig => {
     };
 };
 
-const withRNV = withRNVWebpack;
-
-export { withRNV, withRNVBabel };
+export { withRNVWebpack, withRNVBabel };

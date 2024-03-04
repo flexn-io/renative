@@ -1,5 +1,4 @@
 import path from 'path';
-import { RENATIVE_CONFIG_NAME, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
 import {
     copyFolderContentsRecursiveSync,
     copyFileSync,
@@ -12,7 +11,7 @@ import {
     fsUnlinkSync,
     removeDirSync,
 } from '../system/fs';
-import { chalk, logError, logInfo, logWarning, logTask, logDebug } from '../logger';
+import { chalk, logError, logInfo, logWarning, logDefault, logDebug } from '../logger';
 import { loadFileExtended } from '../configs';
 import { doResolve } from '../system/resolve';
 import { RnvContext } from '../context/types';
@@ -25,9 +24,10 @@ import { checkIfProjectAndNodeModulesExists } from '../projects/dependencyManage
 import { ConfigFileApp, ConfigFileProject, ConfigFileTemplate } from '../schema/configFiles/types';
 import { PlatformKey } from '../schema/types';
 import { getConfigProp } from '../context/contextProps';
+import { ConfigName } from '../enums/configName';
 
 const _cleanProjectTemplateSync = (c: RnvContext) => {
-    logTask('_cleanProjectTemplateSync');
+    logDefault('_cleanProjectTemplateSync');
     const dirsToRemove = [c.paths.project.appConfigBase.dir, c.paths.project.srcDir!, c.paths.project.appConfigsDir];
 
     const filesToRemove = c.buildConfig.defaults?.supportedPlatforms?.map((p) =>
@@ -40,7 +40,7 @@ const _cleanProjectTemplateSync = (c: RnvContext) => {
 };
 
 const _applyTemplate = async (c: RnvContext) => {
-    logTask('_applyTemplate', `current:${c.buildConfig.currentTemplate} selected:${c.runtime.selectedTemplate}`);
+    logDefault('_applyTemplate', `current:${c.buildConfig.currentTemplate} selected:${c.runtime.selectedTemplate}`);
 
     if (c.runtime.selectedTemplate) {
         _cleanProjectTemplateSync(c);
@@ -51,9 +51,9 @@ const _applyTemplate = async (c: RnvContext) => {
     }
 
     if (c.paths.template.dir) {
-        c.paths.template.configTemplate = path.join(c.paths.template.dir, RENATIVE_CONFIG_TEMPLATE_NAME);
+        c.paths.template.configTemplate = path.join(c.paths.template.dir, ConfigName.renativeTemplate);
 
-        c.paths.template.config = path.join(c.paths.template.dir, RENATIVE_CONFIG_NAME);
+        c.paths.template.config = path.join(c.paths.template.dir, ConfigName.renative);
     }
 
     if (!fsExistsSync(c.paths.template.configTemplate)) {
@@ -118,7 +118,7 @@ const _configureAppConfigs = async (c: RnvContext) => {
         try {
             const supPlats = c.files.project?.config?.defaults?.supportedPlatforms;
             appConfigIds.forEach((v) => {
-                const appConfigPath = path.join(c.paths.project.appConfigsDir, v, RENATIVE_CONFIG_NAME);
+                const appConfigPath = path.join(c.paths.project.appConfigsDir, v, ConfigName.renative);
                 const appConfig = readObjectSync<ConfigFileApp>(appConfigPath);
                 if (appConfig) {
                     if (appConfig.skipBootstrapCopy) {
@@ -206,7 +206,7 @@ const _configureRenativeConfig = async (c: RnvContext) => {
 };
 
 export const configureTemplateFiles = async (c: RnvContext) => {
-    logTask('configureTemplateFiles');
+    logDefault('configureTemplateFiles');
 
     const templateConfig = readObjectSync<ConfigFileTemplate>(c.paths.template.configTemplate);
 
@@ -237,7 +237,7 @@ export const configureTemplateFiles = async (c: RnvContext) => {
 };
 
 export const configureEntryPoint = async (c: RnvContext, platform: RnvPlatform) => {
-    logTask('configureEntryPoint');
+    logDefault('configureEntryPoint');
 
     if (c.files.project.config?.isTemplate) return true;
 
@@ -284,7 +284,7 @@ export const isTemplateInstalled = (c: RnvContext) =>
     c.buildConfig.currentTemplate ? doResolve(c.buildConfig.currentTemplate) : false;
 
 export const applyTemplate = async (c: RnvContext, selectedTemplate?: string) => {
-    logTask('applyTemplate', `${c.buildConfig.currentTemplate}=>${selectedTemplate}`);
+    logDefault('applyTemplate', `${c.buildConfig.currentTemplate}=>${selectedTemplate}`);
     if (c.files.project.config?.isTemplate) return true;
 
     if (!c.files.project.config) {

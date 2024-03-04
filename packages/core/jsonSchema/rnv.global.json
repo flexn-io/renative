@@ -13,9 +13,9 @@
             "enum": [
               "ios",
               "android",
-              "firetv",
               "androidtv",
               "androidwear",
+              "firetv",
               "web",
               "webtv",
               "tizen",
@@ -63,6 +63,10 @@
             "additionalProperties": false
           }
         },
+        "disableTelemetry": {
+          "type": "boolean",
+          "description": "Opt-out from renative telemetry program. More info at https://renative.org/telemetry"
+        },
         "appConfigsPath": {
           "type": "string",
           "description": "Enables you to define custom global appConfigs location that every project will automatically use"
@@ -72,9 +76,6 @@
           "description": "schema definition"
         }
       },
-      "required": [
-        "projectTemplates"
-      ],
       "additionalProperties": false
     }
   },

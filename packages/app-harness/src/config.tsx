@@ -1,6 +1,6 @@
-// @ts-ignore
 import { isPlatformIos, isPlatformMacos, isPlatformTvos, isPlatformWeb } from '@rnv/renative';
 import CONFIG from '../platformAssets/renative.runtime.json';
+import ICON_LOGO from '../platformAssets/runtime/logo.png';
 import '../platformAssets/runtime/fontManager';
 
 export function testProps(testId: string | undefined) {
@@ -26,4 +26,4 @@ if (typeof global.performance.now !== 'function') {
     };
 }
 
-export { CONFIG };
+export { CONFIG, ICON_LOGO };

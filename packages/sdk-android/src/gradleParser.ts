@@ -13,7 +13,7 @@ import {
     includesPluginPath,
     isSystemWin,
     logDebug,
-    logTask,
+    logDefault,
     logWarning,
     sanitizePluginPath,
     writeCleanFile,
@@ -178,7 +178,7 @@ const setReactNativeEngineV8 = (c: Context) => {
 };
 
 export const parseAppBuildGradleSync = (c: Context) => {
-    logTask('parseAppBuildGradleSync');
+    logDefault('parseAppBuildGradleSync');
     const appFolder = getAppFolder(c);
     const { platform } = c;
 

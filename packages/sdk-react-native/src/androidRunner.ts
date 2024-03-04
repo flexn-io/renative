@@ -5,7 +5,7 @@ import {
     getConfigProp,
     isSystemWin,
     chalk,
-    logTask,
+    logDefault,
     logInfo,
     logSuccess,
     RnvContext,
@@ -18,7 +18,7 @@ import { EnvVars } from './env';
 import { getEntryFile } from '@rnv/sdk-utils';
 
 export const packageReactNativeAndroid = async (c: RnvContext) => {
-    logTask('packageAndroid');
+    logDefault('packageAndroid');
     const { platform } = c;
 
     if (!c.platform) return;
@@ -90,7 +90,7 @@ export const runReactNativeAndroid = async (
     platform: RnvPlatform,
     device: { udid?: string } | undefined
 ) => {
-    logTask('_runGradleApp');
+    logDefault('_runGradleApp');
 
     const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
     const appFolder = getAppFolder(c);
@@ -120,7 +120,7 @@ export const runReactNativeAndroid = async (
 };
 
 export const buildReactNativeAndroid = async (c: RnvContext) => {
-    logTask('buildAndroid');
+    logDefault('buildAndroid');
     const { platform } = c;
 
     const appFolder = getAppFolder(c);

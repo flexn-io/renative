@@ -9,7 +9,7 @@ import {
     mkdirSync,
     writeFileSync,
 } from '../system/fs';
-import { chalk, logTask, logWarning, logDebug } from '../logger';
+import { chalk, logDefault, logWarning, logDebug } from '../logger';
 import { getContext } from '../context/provider';
 import type { RnvContext, RnvContextBuildConfig } from '../context/types';
 import { FileUtilsPropConfig } from '../system/types';
@@ -177,7 +177,7 @@ export const generateBuildConfig = (_c?: RnvContext) => {
             const result = writeFileSync(c.paths.project.builds.config, c.buildConfig);
             if (result) {
                 const size = formatBytes(Buffer.byteLength(result || '', 'utf8'));
-                logTask(chalk().grey('generateBuildConfig'), `size:${size}`);
+                logDefault(chalk().grey('generateBuildConfig'), `size:${size}`);
             } else {
                 logDebug(`generateBuildConfig NOT SAVED: ${c.paths.project.builds.config}`);
             }

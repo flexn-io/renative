@@ -1,7 +1,7 @@
 import path from 'path';
 import {
     getAppFolder,
-    logTask,
+    logDefault,
     getConfigProp,
     writeCleanFile,
     copyFolderContentsRecursiveSync,
@@ -14,7 +14,7 @@ import { addSystemInjects, getBuildFilePath } from '@rnv/sdk-utils';
 const GRADLE_SOURCE_PATH = path.join(__dirname, '../templates/gradleProject');
 
 const copyGradleProjectTemplate = async (c: Context) => {
-    logTask('copyGradleProjectTemplate');
+    logDefault('copyGradleProjectTemplate');
     const appFolder = getAppFolder(c);
 
     copyFolderContentsRecursiveSync(GRADLE_SOURCE_PATH, appFolder);
@@ -25,7 +25,7 @@ const copyGradleProjectTemplate = async (c: Context) => {
 };
 
 export const parseGradleWrapperSync = (c: Context) => {
-    logTask('parseGradleWrapperSync');
+    logDefault('parseGradleWrapperSync');
 
     copyGradleProjectTemplate(c);
 

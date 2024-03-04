@@ -3,7 +3,7 @@ import {
     getAppFolder,
     getConfigProp,
     doResolve,
-    logTask,
+    logDefault,
     RnvContext,
     CoreEnvVars,
     fsReadFileSync,
@@ -22,7 +22,7 @@ import path from 'path';
 import crypto from 'crypto';
 
 export const packageReactNativeIOS = (c: RnvContext, isDev = false) => {
-    logTask('packageBundleForXcode');
+    logDefault('packageBundleForXcode');
 
     const entryFile = getConfigProp(c, c.platform, 'entryFile');
 
@@ -76,7 +76,7 @@ export const runReactNativeIOS = async (
     runScheme: string,
     extraParamsString: string
 ) => {
-    logTask('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme}`);
+    logDefault('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme}`);
 
     // const cmd = `node ${doResolve(
     //     c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'
@@ -150,7 +150,7 @@ const checkIfPodsIsRequired = (c: RnvContext): { result: boolean; reason: string
 };
 
 const updatePodsChecksum = (c: RnvContext) => {
-    logTask('updatePodsChecksum');
+    logDefault('updatePodsChecksum');
     const appFolder = getAppFolder(c);
     const podChecksumPath = path.join(appFolder, 'Podfile.checksum');
 
@@ -168,7 +168,7 @@ const updatePodsChecksum = (c: RnvContext) => {
 };
 
 export const runCocoaPods = async (c: RnvContext) => {
-    logTask('runCocoaPods', `forceUpdate:${!!c.program.updatePods}`);
+    logDefault('runCocoaPods', `forceUpdate:${!!c.program.updatePods}`);
 
     const checkResult = await checkIfPodsIsRequired(c);
 

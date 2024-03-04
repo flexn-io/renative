@@ -48,6 +48,7 @@ export const generateApiDefaults = (): RnvApi => ({
         logSuccess: defaultLog,
         logSummary: defaultLog,
         logTask: defaultLog,
+        logDefault: defaultLog,
         logToSummary: defaultLog,
         logWarning: defaultLog,
         logWelcome: defaultLog,

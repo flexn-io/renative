@@ -1,7 +1,7 @@
 import program from 'commander';
 import fs from 'fs';
 import path from 'path';
-import { logComplete, logError, PARAMS, getContext } from '@rnv/core';
+import { logComplete, logError, getContext, RnvTaskOptionPresets } from '@rnv/core';
 import Spinner from './ora';
 import Prompt from './prompt';
 import Logger from './logger';
@@ -28,7 +28,7 @@ export const run = () => {
 
     program.version(packageJson.version, '-v, --version', 'output current version');
 
-    PARAMS.withAll().forEach((param) => {
+    RnvTaskOptionPresets.withAll().forEach((param) => {
         let cmd = '';
         if (param.shortcut) {
             cmd += `-${param.shortcut}, `;

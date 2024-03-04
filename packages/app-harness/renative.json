@@ -183,6 +183,9 @@
                     }
                 }
             },
+            "tvos": {
+                "disabled": true
+            },
             "version": "1.11.0"
         },
         "react-native": {

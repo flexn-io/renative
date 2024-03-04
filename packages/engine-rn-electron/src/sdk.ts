@@ -17,16 +17,16 @@ import {
     getConfigProp,
     doResolve,
     chalk,
-    logTask,
+    logDefault,
     logError,
     logWarning,
     logSuccess,
     logInfo,
     copyBuildsFolder,
     copyAssetsFolder,
-    TASK_EXPORT,
     ExecOptionsPresets,
     getAppFolder,
+    RnvTaskName,
 } from '@rnv/core';
 import { FileElectronPackage } from './types';
 import { NpmPackageFile } from '@rnv/core/lib/configs/types';
@@ -44,7 +44,7 @@ import {
 } from '@rnv/sdk-utils';
 
 export const configureElectronProject = async (c: RnvContext, exitOnFail?: boolean) => {
-    logTask('configureElectronProject');
+    logDefault('configureElectronProject');
 
     const { platform } = c;
 
@@ -70,7 +70,7 @@ const merge = require('deepmerge');
 
 const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
     new Promise<void>((resolve, reject) => {
-        logTask('configureProject');
+        logDefault('configureProject');
         const { platform } = c;
 
         if (!isPlatformActive(c, platform, resolve)) return;
@@ -254,7 +254,7 @@ const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
     });
 
 const buildElectron = async (c: RnvContext) => {
-    logTask('buildElectron');
+    logDefault('buildElectron');
 
     await buildCoreWebpackProject(c);
     // Webpack 5 deletes build folder but does not copy package json
@@ -276,7 +276,7 @@ const buildElectron = async (c: RnvContext) => {
     const menuPathDest = path.join(platformBuildDir, 'build', 'contextMenu.js');
     copyFileSync(menuPathSrc, menuPathDest);
 
-    if (c.command !== TASK_EXPORT) {
+    if (c.command !== RnvTaskName.export) {
         logSuccess(`Your Build is located in ${chalk().cyan(path.join(platformBuildDir, 'build'))} .`);
     }
 
@@ -284,7 +284,7 @@ const buildElectron = async (c: RnvContext) => {
 };
 
 const exportElectron = async (c: RnvContext) => {
-    logTask('exportElectron');
+    logDefault('exportElectron');
 
     const platformBuildDir = getAppFolder(c)!;
     const buildPath = path.join(platformBuildDir, 'build', 'release');
@@ -314,7 +314,7 @@ const exportElectron = async (c: RnvContext) => {
 };
 
 export const runElectron = async (c: RnvContext) => {
-    logTask('runElectron');
+    logDefault('runElectron');
 
     const { platform } = c;
     const { port } = c.runtime;
@@ -354,7 +354,7 @@ export const runElectron = async (c: RnvContext) => {
 };
 
 const _runElectronSimulator = async (c: RnvContext) => {
-    logTask(`_runElectronSimulator:${c.platform}`);
+    logDefault(`_runElectronSimulator:${c.platform}`);
     // const appFolder = getAppFolder(c, c.platform);
     // const elc = `${doResolve('electron')}/cli.js`;
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets') === true;
@@ -370,7 +370,7 @@ const _runElectronSimulator = async (c: RnvContext) => {
 
 const _generateICNS = (c: RnvContext) =>
     new Promise<void>((resolve, reject) => {
-        logTask('_generateICNS');
+        logDefault('_generateICNS');
         const { platform } = c;
 
         let source;

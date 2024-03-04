@@ -1,37 +1,37 @@
 import path from 'path';
 import axios from 'axios';
 import {
-    logTask,
+    logDefault,
     executeTask,
     chalk,
-    TASK_START,
     getConfigProp,
     RnvContext,
     fsExistsSync,
     logWarning,
     parseFonts,
     getApi,
+    RnvTaskName,
 } from '@rnv/core';
 import { confirmActiveBundler } from '@rnv/sdk-utils';
 
 let keepRNVRunning = false;
 
 export const startBundlerIfRequired = async (c: RnvContext, parentTask: string, originTask?: string) => {
-    logTask('startBundlerIfRequired');
+    logDefault('startBundlerIfRequired');
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
     if (bundleAssets === true) return;
 
     const isRunning = await isBundlerActive(c);
     if (!isRunning) {
         // _taskStart(c, parentTask, originTask);
-        await executeTask(c, TASK_START, parentTask, originTask);
+        await executeTask(c, RnvTaskName.start, parentTask, originTask);
 
         keepRNVRunning = true;
         await waitForBundler(c);
     } else {
         const resetCompleted = await confirmActiveBundler(c);
         if (resetCompleted) {
-            await executeTask(c, TASK_START, parentTask, originTask);
+            await executeTask(c, RnvTaskName.start, parentTask, originTask);
 
             keepRNVRunning = true;
             await waitForBundler(c);
@@ -51,25 +51,25 @@ export const waitForBundlerIfRequired = async (c: RnvContext) => {
 };
 
 const _isBundlerRunning = async (c: RnvContext) => {
-    logTask('_isBundlerRunning');
+    logDefault('_isBundlerRunning');
     try {
         const { data } = await axios.get(
             `http://${c.runtime.localhost}:${c.runtime.port}/${getConfigProp(c, c.platform, 'entryFile')}.js`
         );
         if (data.includes('import')) {
-            logTask('_isBundlerRunning', '(YES)');
+            logDefault('_isBundlerRunning', '(YES)');
             return true;
         }
-        logTask('_isBundlerRunning', '(NO)');
+        logDefault('_isBundlerRunning', '(NO)');
         return false;
     } catch (e) {
-        logTask('_isBundlerRunning', '(NO)');
+        logDefault('_isBundlerRunning', '(NO)');
         return false;
     }
 };
 
 export const isBundlerActive = async (c: RnvContext) => {
-    logTask('isBundlerActive', `(http://${c.runtime.localhost}:${c.runtime.port})`);
+    logDefault('isBundlerActive', `(http://${c.runtime.localhost}:${c.runtime.port})`);
     try {
         await axios.get(`http://${c.runtime.localhost}:${c.runtime.port}`);
         return true;

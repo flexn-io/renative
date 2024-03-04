@@ -270,12 +270,17 @@ export type RnvContextPaths = {
     };
     appConfig: RnvContextPathObj;
     buildHooks: {
+        dir: string;
         dist: {
             dir: string;
             index: string;
         };
-        dir: string;
-        index: string;
+        src: {
+            dir: string;
+            index: string;
+            indexTs: string;
+        };
+        tsconfig: string;
     };
     home: {
         dir: string;

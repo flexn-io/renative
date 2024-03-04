@@ -9,7 +9,7 @@ import {
     getFlavouredProp,
     inquirerPrompt,
     logError,
-    logTask,
+    logDefault,
     logWarning,
     parsePlugins,
     writeFileSync,
@@ -22,7 +22,7 @@ import { Context } from './types';
 import { getAppId } from '@rnv/sdk-utils';
 
 export const parseXcodeProject = async (c: Context) => {
-    logTask('parseXcodeProject');
+    logDefault('parseXcodeProject');
     const { platform } = c;
     if (!platform) return;
     // PROJECT
@@ -89,7 +89,7 @@ export const parseXcodeProject = async (c: Context) => {
 
 const _parseXcodeProject = (c: Context, platform: RnvPlatform) =>
     new Promise<void>((resolve) => {
-        logTask('_parseXcodeProject');
+        logDefault('_parseXcodeProject');
         const xcodePath = doResolve('xcode');
         if (!xcodePath) {
             logError(`Cannot resolve xcode path`);

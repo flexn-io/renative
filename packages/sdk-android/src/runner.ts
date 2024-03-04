@@ -20,7 +20,7 @@ import {
     isSystemWin,
     updateRenativeConfigs,
     chalk,
-    logTask,
+    logDefault,
     logWarning,
     logDebug,
     logSuccess,
@@ -64,14 +64,14 @@ import { runReactNativeAndroid, packageReactNativeAndroid } from '@rnv/sdk-react
 import { getEntryFile } from '@rnv/sdk-utils';
 
 export const packageAndroid = async (c: Context) => {
-    logTask('packageAndroid');
+    logDefault('packageAndroid');
 
     return packageReactNativeAndroid(c);
 };
 
 export const getAndroidDeviceToRunOn = async (c: Context) => {
     const defaultTarget = c.runtime.target;
-    logTask('getAndroidDeviceToRunOn', `default:${defaultTarget}`);
+    logDefault('getAndroidDeviceToRunOn', `default:${defaultTarget}`);
 
     if (!c.platform) return;
 
@@ -184,7 +184,7 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
 };
 
 export const runAndroid = async (c: Context, device: AndroidDevice) => {
-    logTask('runAndroid', `target:${device.udid}`);
+    logDefault('runAndroid', `target:${device.udid}`);
     const { platform } = c;
 
     if (!platform) return;
@@ -193,7 +193,7 @@ export const runAndroid = async (c: Context, device: AndroidDevice) => {
 };
 
 const _checkSigningCerts = async (c: Context) => {
-    logTask('_checkSigningCerts');
+    logDefault('_checkSigningCerts');
     const signingConfig = getConfigProp(c, c.platform, 'signingConfig', 'Debug');
     const isRelease = signingConfig === 'Release';
 
@@ -324,7 +324,7 @@ const _checkSigningCerts = async (c: Context) => {
 };
 
 export const configureAndroidProperties = async (c: Context) => {
-    logTask('configureAndroidProperties');
+    logDefault('configureAndroidProperties');
 
     const appFolder = getAppFolder(c);
 
@@ -356,7 +356,7 @@ sdk.dir=${sdkDir}`
 
 export const configureGradleProject = async (c: Context) => {
     const { platform } = c;
-    logTask('configureGradleProject');
+    logDefault('configureGradleProject');
 
     if (!isPlatformActive(c, platform)) return;
     await copyAssetsFolder(c, platform, 'app/src/main');
@@ -381,7 +381,7 @@ export const configureGradleProject = async (c: Context) => {
 // }
 
 export const configureProject = async (c: Context) => {
-    logTask('configureProject');
+    logDefault('configureProject');
     const { platform } = c;
 
     const appFolder = getAppFolder(c);
@@ -504,7 +504,7 @@ export const configureProject = async (c: Context) => {
 
 // Resolve or reject will not be called so this will keep running
 export const runAndroidLog = async (c: Context) => {
-    logTask('runAndroidLog');
+    logDefault('runAndroidLog');
     const filter = c.program.filter || '';
     const child = execaCommand(`${c.cli[CLI_ANDROID_ADB]} logcat`);
     // use event hooks to provide a callback to execute when data are available:

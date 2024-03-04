@@ -8,7 +8,7 @@ import {
     RnvContext,
     RnvPlatform,
     getConfigProp,
-    logTask,
+    logDefault,
     fsExistsSync,
     PlatformKey,
 } from '@rnv/core';
@@ -47,7 +47,7 @@ export const getDevServerHost = (c: RnvContext) => {
 };
 
 export const waitForHost = async (c: RnvContext, suffix = 'assets/bundle.js') => {
-    logTask('waitForHost', `port:${c.runtime.port}`);
+    logDefault('waitForHost', `port:${c.runtime.port}`);
     let attempts = 0;
     const maxAttempts = 10;
     const CHECK_INTEVAL = 2000;

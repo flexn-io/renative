@@ -125,7 +125,7 @@
     "title": "ReNative",
     "husky": {
         "hooks": {
-            "pre-commit": "yarn lint && yarn test"
+            "pre-commit": "yarn sanity"
         }
     },
     "lint-staged": {

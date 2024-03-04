@@ -1,11 +1,11 @@
 import { generateOptions } from '../api';
 import { RnvContext } from '../context/types';
-import { chalk, logInfo, logTask, logWarning } from '../logger';
+import { chalk, logInfo, logDefault, logWarning } from '../logger';
 import { doResolve } from '../system/resolve';
 import { writeRenativeConfigFile } from './utils';
 
 export const checkIfTemplateConfigured = async (c: RnvContext) => {
-    logTask('checkIfTemplateConfigured');
+    logDefault('checkIfTemplateConfigured');
     if (c.program.skipDependencyCheck || c.files.project.config?.isTemplate) return true;
     if (!c.buildConfig.templates) {
         logWarning(

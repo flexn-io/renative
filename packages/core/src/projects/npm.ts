@@ -1,13 +1,13 @@
 import path from 'path';
 import { executeAsync, commandExistsSync } from '../system/exec';
 import { fsExistsSync, invalidatePodsChecksum, removeDirs, writeFileSync } from '../system/fs';
-import { logTask, logWarning, logError, logInfo, logDebug, logSuccess } from '../logger';
+import { logDefault, logWarning, logError, logInfo, logDebug, logSuccess } from '../logger';
 import { doResolve } from '../system/resolve';
 import { RnvContext } from '../context/types';
 import { inquirerPrompt } from '../api';
 
 export const checkNpxIsInstalled = async () => {
-    logTask('checkNpxIsInstalled');
+    logDefault('checkNpxIsInstalled');
     if (!commandExistsSync('npx')) {
         logWarning('npx is not installed, please install it before running this command');
 
@@ -110,7 +110,7 @@ export const installPackageDependencies = async (c: RnvContext, failOnError = fa
     const customScript = _getInstallScript(c);
 
     if (customScript) {
-        logTask('installPackageDependencies');
+        logDefault('installPackageDependencies');
         logInfo(`Found custom task for install: ${customScript}.`);
         await executeAsync(customScript);
         c._requiresNpmInstall = false;
@@ -162,7 +162,7 @@ export const installPackageDependencies = async (c: RnvContext, failOnError = fa
         if (packageManager === 'yarn') command = 'yarn';
     }
 
-    logTask('installPackageDependencies', `packageManager:(${command})`);
+    logDefault('installPackageDependencies', `packageManager:(${command})`);
 
     try {
         await executeAsync(command);
@@ -210,7 +210,7 @@ export const installPackageDependencies = async (c: RnvContext, failOnError = fa
 };
 
 export const jetifyIfRequired = async (c: RnvContext) => {
-    logTask('jetifyIfRequired');
+    logDefault('jetifyIfRequired');
     if (c.files.project.configLocal?._meta?.requiresJetify) {
         if (doResolve('jetifier')) {
             await executeAsync('npx jetify');
@@ -223,7 +223,7 @@ export const jetifyIfRequired = async (c: RnvContext) => {
 
 export const cleanNodeModules = () =>
     new Promise<void>((resolve, reject) => {
-        logTask('cleanNodeModules');
+        logDefault('cleanNodeModules');
         const dirs = [
             'react-native-safe-area-view/.git',
             '@react-navigation/native/node_modules/react-native-safe-area-view/.git',

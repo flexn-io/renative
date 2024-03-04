@@ -52,35 +52,44 @@ export const logInitialize = () => {
 
 export const logWelcome = () => {
     const ctx = getContext();
+    const chalCol = currentChalk.rgb(10, 116, 230);
+    const shortLen = 64;
     // prettier-ignore
     let str = _defaultColor(`
-┌──────────────────────────────────────────────────────────────────────────────┐
-│                                                                              │
-│        ${currentChalk.red('██████╗')} ███████╗${currentChalk.red('███╗   ██╗')} █████╗ ████████╗██╗${currentChalk.red('██╗   ██╗')}███████╗       │
-│        ${currentChalk.red('██╔══██╗')}██╔════╝${currentChalk.red('████╗  ██║')}██╔══██╗╚══██╔══╝██║${currentChalk.red('██║   ██║')}██╔════╝       │
-│        ${currentChalk.red('██████╔╝')}█████╗  ${currentChalk.red('██╔██╗ ██║')}███████║   ██║   ██║${currentChalk.red('██║   ██║')}█████╗         │
-│        ${currentChalk.red('██╔══██╗')}██╔══╝  ${currentChalk.red('██║╚██╗██║')}██╔══██║   ██║   ██║${currentChalk.red('╚██╗ ██╔╝')}██╔══╝         │
-│        ${currentChalk.red('██║  ██║')}███████╗${currentChalk.red('██║ ╚████║')}██║  ██║   ██║   ██║${currentChalk.red(' ╚████╔╝ ')}███████╗       │
-│        ${currentChalk.red('╚═╝  ╚═╝')}╚══════╝${currentChalk.red('╚═╝  ╚═══╝')}╚═╝  ╚═╝   ╚═╝   ╚═╝${currentChalk.red('  ╚═══╝  ')}╚══════╝       │
-│                                                                              │
+┌─────────────────────────────────────────────────────────────────┐
+│ ${chalCol('██████╗')} ███████╗${chalCol('███╗   ██╗')} █████╗ ████████╗██╗${chalCol('██╗   ██╗')}███████╗ │
+│ ${chalCol('██╔══██╗')}██╔════╝${chalCol('████╗  ██║')}██╔══██╗╚══██╔══╝██║${chalCol('██║   ██║')}██╔════╝ │
+│ ${chalCol('██████╔╝')}█████╗  ${chalCol('██╔██╗ ██║')}███████║   ██║   ██║${chalCol('██║   ██║')}█████╗   │
+│ ${chalCol('██╔══██╗')}██╔══╝  ${chalCol('██║╚██╗██║')}██╔══██║   ██║   ██║${chalCol('╚██╗ ██╔╝')}██╔══╝   │
+│ ${chalCol('██║  ██║')}███████╗${chalCol('██║ ╚████║')}██║  ██║   ██║   ██║${chalCol(' ╚████╔╝ ')}███████╗ │
+│ ${chalCol('╚═╝  ╚═╝')}╚══════╝${chalCol('╚═╝  ╚═══╝')}╚═╝  ╚═╝   ╚═╝   ╚═╝${chalCol('  ╚═══╝  ')}╚══════╝ │
 `);
 
     if (ctx.files?.rnv?.package?.version) {
         ctx.rnvVersion = ctx.files.rnv.package.version;
-        str += printIntoBox(`      Version: ${currentChalk.green(ctx.rnvVersion)}`);
+        str += printIntoBox(
+            `Version: ${currentChalk.green(ctx.rnvVersion)} ${ICN_ROCKET} ${currentChalk.yellow('Firing up!...')}`,
+            shortLen
+        );
         if (ctx.rnvVersion?.includes?.('alpha')) {
-            str += printIntoBox(`      ${currentChalk.yellow('WARNING: this is a prerelease version.')}`);
+            str += printIntoBox(`${currentChalk.yellow('WARNING: this is a prerelease version.')}`, shortLen);
         }
     }
-    str += printIntoBox(`      ${currentChalk.grey('https://renative.org')}`);
-    str += printIntoBox(`      ${ICN_ROCKET} ${currentChalk.yellow('Firing up!...')}`);
-    str += printIntoBox(`      $ ${currentChalk.cyan(getCurrentCommand(true))}`);
+    str += printIntoBox(
+        `${currentChalk.grey('https://renative.org')} | Start Time: ${currentChalk.grey(
+            ctx.timeStart.toLocaleString()
+        )}`,
+        shortLen
+    );
+    // str += printIntoBox(`      ${ICN_ROCKET} ${currentChalk.yellow('Firing up!...')}`);
+    str += printIntoBox(`$ ${currentChalk.cyan(getCurrentCommand(true))}`, shortLen);
     if (ctx.timeStart) {
-        str += printIntoBox(`      Start Time: ${currentChalk.grey(ctx.timeStart.toLocaleString())}`);
+        // str += printIntoBox(`      Start Time: ${currentChalk.grey(ctx.timeStart.toLocaleString())}`);
     }
-    str += printIntoBox('');
-    str += printBoxEnd();
-    str += '\n';
+    // str += printIntoBox('');
+    // str += printBoxEnd();
+    str += _defaultColor('└─────────────────────────────────────────────────────────────────┘');
+    // str += '\n';
 
     console.log(str);
 };
@@ -275,7 +284,7 @@ export const logSummary = (header = 'SUMMARY') => {
 
     str += logContent.replace(/\n\s*\n\s*\n/g, '\n\n');
 
-    str += printIntoBox('');
+    // str += printIntoBox('');
     if (ctx.runtime?.platformBuildsProjectPath) {
         str += printIntoBox('Project location:');
         str += printIntoBox(`${currentChalk.cyan(_sanitizePaths(ctx.runtime.platformBuildsProjectPath || ''))}`);
@@ -339,6 +348,31 @@ export const logTask = (task: string, customChalk?: string | RnvApiChalkFn) => {
         msg = customChalk(`[ task ]${_getCurrentTask()} ${task}${taskCount}`);
     } else {
         msg = `${currentChalk.green(`[ task ]${_getCurrentTask()}`)} ${task}${taskCount}`;
+    }
+
+    console.log(_sanitizePaths(msg));
+};
+
+export const logDefault = (task: string, customChalk?: string | RnvApiChalkFn) => {
+    if (!TASK_COUNTER[task]) TASK_COUNTER[task] = 0;
+    TASK_COUNTER[task] += 1;
+    const taskCount = currentChalk.grey(`[${TASK_COUNTER[task]}]`);
+
+    if (_jsonOnly) {
+        return _printJson({
+            type: 'log',
+            task: stripAnsi(_getCurrentTask()),
+            message: stripAnsi(_sanitizePaths(typeof customChalk === 'string' ? customChalk : task)),
+        });
+    }
+
+    let msg = '';
+    if (typeof customChalk === 'string') {
+        msg = `[ log ]${_getCurrentTask()} ${task}${taskCount} ${currentChalk.grey(customChalk)}`;
+    } else if (customChalk) {
+        msg = customChalk(`[ log ]${_getCurrentTask()} ${task}${taskCount}`);
+    } else {
+        msg = `[ log ]${_getCurrentTask()} ${task}${taskCount}`;
     }
 
     console.log(_sanitizePaths(msg));
@@ -530,12 +564,11 @@ export const logAppInfo = (c: RnvContext) => {
     }
 };
 
-export const printIntoBox = (str: string) => {
-    let output = _defaultColor('│  ');
+export const printIntoBox = (str: string, maxLen = 64) => {
+    let output = _defaultColor('│ ');
 
     const strLenDiff = str.length - stripAnsi(str).length;
     output += _defaultColor(str);
-    const maxLen = 76;
     const len = maxLen - (str.length - strLenDiff);
     if (len > 0) {
         for (let i = 0; i < len; i++) {
@@ -580,15 +613,14 @@ export const printArrIntoBox = (arr: Array<string>, prefix = '') => {
 };
 
 export const printBoxStart = (str: string, str2?: string) => {
-    let output = _defaultColor('┌──────────────────────────────────────────────────────────────────────────────┐\n');
+    let output = _defaultColor('┌─────────────────────────────────────────────────────────────────┐\n');
     output += printIntoBox(str);
     output += printIntoBox(str2 || '');
-    output += _defaultColor('├──────────────────────────────────────────────────────────────────────────────┤\n');
+    output += _defaultColor('├─────────────────────────────────────────────────────────────────┤\n');
     return output;
 };
 
-export const printBoxEnd = () =>
-    _defaultColor('└──────────────────────────────────────────────────────────────────────────────┘');
+export const printBoxEnd = () => _defaultColor('└─────────────────────────────────────────────────────────────────┘');
 
 const Logger: RnvApiLogger = {
     logHook,
@@ -598,6 +630,7 @@ const Logger: RnvApiLogger = {
     logError,
     logDebug,
     logAppInfo,
+    logDefault,
     logWarning,
     logSuccess,
     logWelcome,

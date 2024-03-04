@@ -11,7 +11,7 @@ import {
     getConfigProp,
     logDebug,
     logError,
-    logTask,
+    logDefault,
     logWarning,
 } from '@rnv/core';
 // import cli from '@react-native-windows/cli';
@@ -199,7 +199,7 @@ type InjectOptions = {
 
 // TODO Document/comment each of the functions
 export const ruWindowsProject = async (c: RnvContext, injectedOptions?: InjectOptions) => {
-    logTask('runWindowsProject');
+    logDefault('runWindowsProject');
 
     const options = getOptions(c, injectedOptions);
     const args: string[] = [];
@@ -275,7 +275,7 @@ const copyWindowsTemplateProject = async (c: RnvContext, injectedOptions = {}) =
 };
 
 function clearWindowsTemporaryFiles(c: RnvContext) {
-    logTask('clearWindowsTemporaryFiles');
+    logDefault('clearWindowsTemporaryFiles');
     const logging = getConfigProp<ConfigKey>(c, c.platform, 'logging', defaultOptions.logging);
     const opts = {
         cwd: c.paths.project.dir,
@@ -302,7 +302,7 @@ function clearWindowsTemporaryFiles(c: RnvContext) {
 }
 
 const packageBundleForWindows = (c: RnvContext, isDev = false) => {
-    logTask('packageBundleForWindows');
+    logDefault('packageBundleForWindows');
     // const { maxErrorLength } = c.program;
     const entryFile = getConfigProp(c, c.platform, 'entryFile');
 
@@ -347,7 +347,7 @@ const packageBundleForWindows = (c: RnvContext, isDev = false) => {
 };
 
 const setSingleBuildProcessForWindows = (c: RnvContext) => {
-    logTask('setSingleBuildProcessForWindows');
+    logDefault('setSingleBuildProcessForWindows');
     // eslint-disable-next-line eqeqeq
     if (env.MSBUILDDISABLENODEREUSE != 1) {
         const logging = getConfigProp<ConfigKey>(c, c.platform, 'logging', defaultOptions.logging);

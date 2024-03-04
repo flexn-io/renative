@@ -3,7 +3,7 @@ import {
     getAppFolder,
     getConfigProp,
     getFlavouredProp,
-    logTask,
+    logDefault,
     logError,
     logWarning,
     parsePlugins,
@@ -60,7 +60,7 @@ export const parseExportOptionsPlist = (c: Context, platform: RnvPlatform) =>
 
 export const parseEntitlementsPlist = (c: Context, platform: RnvPlatform) =>
     new Promise<void>((resolve) => {
-        logTask('parseEntitlementsPlist');
+        logDefault('parseEntitlementsPlist');
 
         const appFolder = getAppFolder(c);
         const appFolderName = getAppFolderName(c, platform);
@@ -78,7 +78,7 @@ export const parseEntitlementsPlist = (c: Context, platform: RnvPlatform) =>
 
 export const parseInfoPlist = (c: Context, platform: RnvPlatform) =>
     new Promise<void>((resolve) => {
-        logTask('parseInfoPlist');
+        logDefault('parseInfoPlist');
 
         if (!platform) return;
 

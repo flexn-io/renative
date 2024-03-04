@@ -43,7 +43,7 @@ export * from './api/provider';
 
 export * from './constants';
 export * from './env';
-export * from './doctor';
+export * from './formatter';
 export * from './templates';
 export * from './integrations';
 export * from './runner';
@@ -52,6 +52,9 @@ export * from './platforms';
 export * from './plugins';
 export * from './buildHooks';
 export * from './migrator';
+
+export * from './enums/taskName';
+export * from './enums/configName';
 
 //TYPES
 export * from './engines/types';

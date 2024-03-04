@@ -1,5 +1,5 @@
 import { getRealPath, writeFileSync } from '../system/fs';
-import { chalk, logTask, logWarning } from '../logger';
+import { chalk, logDefault, logWarning } from '../logger';
 import { RnvContext } from '../context/types';
 import { RnvPlatform } from '../types';
 import { PlatformKey } from '../schema/types';
@@ -23,7 +23,7 @@ const SYNCED_DEPS = [
 const SYNCED_TEMPLATES = ['@rnv/template-starter'];
 
 export const upgradeProjectDependencies = (c: RnvContext, version: string) => {
-    logTask('upgradeProjectDependencies');
+    logDefault('upgradeProjectDependencies');
 
     // const templates = c.files.project.config?.templates;
     // TODO: Make this dynamically injected
@@ -46,7 +46,7 @@ export const upgradeDependencies = (
     configPath: string | null,
     version: string
 ) => {
-    // logTask('upgradeDependencies');
+    // logDefault('upgradeDependencies');
 
     const result = [];
 
@@ -96,7 +96,7 @@ export const updateProjectPlatforms = (c: RnvContext, platforms: Array<PlatformK
 };
 
 export const generatePlatformTemplatePaths = (c: RnvContext) => {
-    logTask('generatePlatformTemplatePaths');
+    logDefault('generatePlatformTemplatePaths');
     if (!c.buildConfig.paths) {
         logWarning(`You're missing paths object in your ${chalk().red(c.paths.project.config)}`);
         c.buildConfig.paths = {

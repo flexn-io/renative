@@ -5,7 +5,7 @@ import {
     getConfigProp,
     copyFolderContentsRecursiveSync,
     chalk,
-    logTask,
+    logDefault,
     logInfo,
     logWarning,
     logRaw,
@@ -21,7 +21,7 @@ import { checkPortInUse, confirmActiveBundler, getDevServerHost, openBrowser, wa
 import { EnvVars } from './env';
 
 export const configureNextIfRequired = async (c: RnvContext) => {
-    logTask('configureNextIfRequired');
+    logDefault('configureNextIfRequired');
 
     if (!c.platform) return;
 
@@ -44,7 +44,7 @@ export const configureNextIfRequired = async (c: RnvContext) => {
 
 export const runWebNext = async (c: RnvContext) => {
     const { port } = c.runtime;
-    logTask('runWebNext', `port:${port}`);
+    logDefault('runWebNext', `port:${port}`);
     const { platform } = c;
 
     if (!c.platform) return;
@@ -89,7 +89,7 @@ const _runWebBrowser = (
     alreadyStarted: boolean
 ) =>
     new Promise<void>((resolve) => {
-        logTask('_runWebBrowser', `ip:${devServerHost} port:${port} openBrowser:${!!c.runtime.shouldOpenBrowser}`);
+        logDefault('_runWebBrowser', `ip:${devServerHost} port:${port} openBrowser:${!!c.runtime.shouldOpenBrowser}`);
         if (!c.runtime.shouldOpenBrowser) return resolve();
         const wait = waitForHost(c, '')
             .then(() => {
@@ -114,7 +114,7 @@ export const getExportDir = (c: RnvContext) => {
 };
 
 export const buildWebNext = async (c: RnvContext) => {
-    logTask('buildWebNext');
+    logDefault('buildWebNext');
 
     await executeAsync(c, 'npx next build', {
         env: {
@@ -129,7 +129,7 @@ export const buildWebNext = async (c: RnvContext) => {
 };
 
 export const runWebDevServer = async (c: RnvContext) => {
-    logTask('runWebDevServer');
+    logDefault('runWebDevServer');
 
     const devServerHost = getDevServerHost(c);
 
@@ -154,18 +154,8 @@ Dev server running at: ${url}
     });
 };
 
-export const deployWebNext = () => {
-    logTask('deployWebNext');
-    // const { platform } = c;
-
-    // DEPRECATED: custom deployers moved to external packages
-    // return selectWebToolAndDeploy(c, platform);
-
-    return true;
-};
-
 export const exportWebNext = async (c: RnvContext) => {
-    logTask('exportWebNext');
+    logDefault('exportWebNext');
 
     const exportDir = getExportDir(c);
 

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Text, Image, View, PixelRatio, TouchableOpacity, StatusBar } from 'react-native';
+import { Text, Image, View, PixelRatio, TouchableOpacity, StatusBar, ScrollView } from 'react-native';
 import { Api } from '@rnv/renative';
 import { ICON_LOGO, CONFIG, ThemeProvider, ThemeContext, testProps } from '../config';
 import packageJson from '../../package.json';
@@ -22,36 +22,38 @@ const AppThemed = () => {
     }, []);
 
     return (
-        <View style={theme.styles.container}>
-            <StatusBar
-                backgroundColor={theme.styles.container.backgroundColor}
-                barStyle={dark ? 'light-content' : 'dark-content'}
-            />
-            <Image
-                style={theme.styles.image}
-                source={ICON_LOGO}
-                {...testProps('template-starter-home-screen-renative-image')}
-            />
-            <Text style={theme.styles.textH2} {...testProps('template-starter-home-screen-welcome-message-text')}>
-                {CONFIG.welcomeMessage}
-            </Text>
-            <Text style={theme.styles.textH2} {...testProps('template-starter-home-screen-version-number-text')}>
-                v {packageJson.version}
-            </Text>
-            <Text style={theme.styles.textH3}>
-                {`platform: ${Api.platform}, factor: ${Api.formFactor}, engine: ${Api.engine}`}
-            </Text>
-            <Text style={theme.styles.textH3}>{`hermes: ${
-                typeof HermesInternal === 'object' && HermesInternal !== null ? 'yes' : 'no'
-            }`}</Text>
-            <Text style={theme.styles.textH3}>{`pixelRatio: ${pixelRatio}, ${fontScale}`}</Text>
-            <TouchableOpacity
-                onPress={toggle}
-                style={theme.styles.button}
-                {...testProps('template-starter-home-screen-try-my-button')}
-            >
-                <Text style={theme.styles.buttonText}>Try me!</Text>
-            </TouchableOpacity>
+        <View style={theme.styles.wrapper}>
+            <ScrollView contentContainerStyle={theme.styles.container}>
+                <StatusBar
+                    backgroundColor={theme.styles.container.backgroundColor}
+                    barStyle={dark ? 'light-content' : 'dark-content'}
+                />
+                <Image
+                    style={theme.styles.image}
+                    source={ICON_LOGO}
+                    {...testProps('template-starter-home-screen-renative-image')}
+                />
+                <Text style={theme.styles.textH2} {...testProps('template-starter-home-screen-welcome-message-text')}>
+                    {CONFIG.welcomeMessage}
+                </Text>
+                <Text style={theme.styles.textH2} {...testProps('template-starter-home-screen-version-number-text')}>
+                    v {packageJson.version}
+                </Text>
+                <Text style={theme.styles.textH3}>
+                    {`platform: ${Api.platform}, factor: ${Api.formFactor}, engine: ${Api.engine}`}
+                </Text>
+                <Text style={theme.styles.textH3}>{`hermes: ${
+                    typeof HermesInternal === 'object' && HermesInternal !== null ? 'yes' : 'no'
+                }`}</Text>
+                <Text style={theme.styles.textH3}>{`pixelRatio: ${pixelRatio}, ${fontScale}`}</Text>
+                <TouchableOpacity
+                    onPress={toggle}
+                    style={theme.styles.button}
+                    {...testProps('template-starter-home-screen-try-my-button')}
+                >
+                    <Text style={theme.styles.buttonText}>Try me!</Text>
+                </TouchableOpacity>
+            </ScrollView>
         </View>
     );
 };

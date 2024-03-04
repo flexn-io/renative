@@ -1,76 +1,16 @@
-import type { RnvTaskParameter } from './types';
-
-export const TASK_RUN = 'run';
-export const TASK_CONFIGURE = 'configure';
-export const TASK_DOCTOR = 'doctor';
-export const TASK_NEW = 'new';
-export const TASK_HELP = 'help';
-export const TASK_BUILD = 'build';
-export const TASK_INFO = 'info';
-export const TASK_START = 'start';
-export const TASK_EXPORT = 'export';
-export const TASK_DEBUG = 'debug';
-export const TASK_PACKAGE = 'package';
-export const TASK_DEPLOY = 'deploy';
-export const TASK_LOG = 'log';
-export const TASK_CLEAN = 'clean';
-export const TASK_LINK = 'link';
-export const TASK_UNLINK = 'unlink';
-export const TASK_INSTALL = 'install';
-export const TASK_PUBLISH = 'publish';
-export const TASK_STATUS = 'status';
-export const TASK_SWITCH = 'switch';
-export const TASK_TARGET_LAUNCH = 'target launch';
-export const TASK_TARGET_LIST = 'target list';
-export const TASK_TARGET = 'target';
-export const TASK_TEMPLATE_ADD = 'template add';
-export const TASK_TEMPLATE_LIST = 'template list';
-export const TASK_TEMPLATE_APPLY = 'template apply';
-export const TASK_WORKSPACE_ADD = 'workspace add';
-export const TASK_WORKSPACE_CONNECT = 'workspace connect';
-export const TASK_WORKSPACE_LIST = 'workspace list';
-export const TASK_WORKSPACE_UPDATE = 'workspace update';
-export const TASK_PLATFORM_CONFIGURE = 'platform configure';
-export const TASK_PLATFORM_CONNECT = 'platform connect';
-export const TASK_PLATFORM_EJECT = 'platform eject';
-export const TASK_PLATFORM_LIST = 'platform list';
-export const TASK_PLATFORM_SETUP = 'platform setup';
-export const TASK_PROJECT_CONFIGURE = 'project configure';
-export const TASK_PROJECT_UPGRADE = 'project upgrade';
-export const TASK_PLUGIN_ADD = 'plugin add';
-export const TASK_PLUGIN_LIST = 'plugin list';
-export const TASK_PLUGIN_UPDATE = 'plugin update';
-export const TASK_CRYPTO_ENCRYPT = 'crypto encrypt';
-export const TASK_CRYPTO_DECRYPT = 'crypto decrypt';
-export const TASK_CRYPTO_INSTALL_CERTS = 'crypto installCerts';
-export const TASK_CRYPTO_INSTALL_PROFILES = 'crypto installProfiles';
-export const TASK_CRYPTO_INSTALL_PROFILE = 'crypto installProfile';
-export const TASK_CRYPTO_UPDATE_PROFILE = 'crypto updateProfile';
-export const TASK_CRYPTO_UPDATE_PROFILES = 'crypto updateProfiles';
-export const TASK_HOOKS_RUN = 'hooks run';
-export const TASK_HOOKS_LIST = 'hooks list';
-export const TASK_HOOKS_PIPES = 'hooks pipes';
-export const TASK_PKG = 'pkg';
-export const TASK_APP_CONFIGURE = 'app configure';
-export const TASK_APP_CREATE = 'app create';
-export const TASK_WORKSPACE_CONFIGURE = 'workspace configure';
-export const TASK_CONFIGURE_SOFT = 'configureSoft';
-export const TASK_KILL = 'kill';
-export const TASK_EJECT = 'eject';
-export const TASK_TELEMETRY_DISABLE = 'telemetry disable';
-export const TASK_TELEMETRY_ENABLE = 'telemetry enable';
-export const TASK_TELEMETRY_STATUS = 'telemetry status';
+import { RnvTaskName } from '../enums/taskName';
+import type { RnvTaskOption } from './types';
 
 export const DEFAULT_TASK_DESCRIPTIONS: Record<string, string> = {
-    [TASK_RUN]: 'Run your app on target device or emulator',
-    [TASK_PACKAGE]: 'Package source files into bundle',
-    [TASK_BUILD]: 'Build project binary',
-    [TASK_CONFIGURE]: 'Configure current project',
-    [TASK_START]: 'Starts bundler / server',
-    [TASK_EXPORT]: 'Export the app into deployable binary',
+    [RnvTaskName.run]: 'Run your app on target device or emulator',
+    [RnvTaskName.package]: 'Package source files into bundle',
+    [RnvTaskName.build]: 'Build project binary',
+    [RnvTaskName.configure]: 'Configure current project',
+    [RnvTaskName.start]: 'Starts bundler / server',
+    [RnvTaskName.export]: 'Export the app into deployable binary',
 };
 
-const PARAM_KEYS_ENUM = {
+export const RnvTaskOptions: Record<string, RnvTaskOption> = {
     info: {
         shortcut: 'i',
         value: 'value',
@@ -351,9 +291,7 @@ const PARAM_KEYS_ENUM = {
     },
 };
 
-export const PARAM_KEYS = PARAM_KEYS_ENUM as Record<string, RnvTaskParameter>;
-
-type ParamKeysType = typeof PARAM_KEYS_ENUM;
+type ParamKeysType = typeof RnvTaskOptions;
 
 type ProgramOptionsKey = keyof ParamKeysType;
 
@@ -362,34 +300,40 @@ type ParamType = any; //boolean | string | undefined
 
 export type ParamKeys = Partial<Record<ProgramOptionsKey, ParamType>>;
 
-(Object.keys(PARAM_KEYS) as ProgramOptionsKey[]).forEach((k) => {
-    PARAM_KEYS[k].key = k;
+(Object.keys(RnvTaskOptions) as ProgramOptionsKey[]).forEach((k) => {
+    RnvTaskOptions[k].key = k;
 });
 
-export const PARAMS = {
-    withBase: (arr?: Array<RnvTaskParameter>) =>
-        [PARAM_KEYS.info, PARAM_KEYS.ci, PARAM_KEYS.mono, PARAM_KEYS.maxErrorLength, PARAM_KEYS.only].concat(arr || []),
-    withConfigure: (arr?: Array<RnvTaskParameter>) =>
+export const RnvTaskOptionPresets = {
+    withBase: (arr?: Array<RnvTaskOption>) =>
         [
-            PARAM_KEYS.reset,
-            PARAM_KEYS.resetHard,
-            PARAM_KEYS.engine,
-            PARAM_KEYS.resetAssets,
-            PARAM_KEYS.appConfigID,
-            PARAM_KEYS.scheme,
-            PARAM_KEYS.platform,
+            RnvTaskOptions.info,
+            RnvTaskOptions.ci,
+            RnvTaskOptions.mono,
+            RnvTaskOptions.maxErrorLength,
+            RnvTaskOptions.only,
         ].concat(arr || []),
-    withRun: (arr?: Array<RnvTaskParameter>) =>
+    withConfigure: (arr?: Array<RnvTaskOption>) =>
         [
-            PARAM_KEYS.target,
-            PARAM_KEYS.device,
-            PARAM_KEYS.hosted,
-            PARAM_KEYS.port,
-            PARAM_KEYS.debug,
-            PARAM_KEYS.debugIp,
-            PARAM_KEYS.skipTargetCheck,
-            PARAM_KEYS.host,
+            RnvTaskOptions.reset,
+            RnvTaskOptions.resetHard,
+            RnvTaskOptions.engine,
+            RnvTaskOptions.resetAssets,
+            RnvTaskOptions.appConfigID,
+            RnvTaskOptions.scheme,
+            RnvTaskOptions.platform,
         ].concat(arr || []),
-    withAll: (arr?: Array<RnvTaskParameter>) => Object.values(PARAM_KEYS).concat(arr || []),
-    all: Object.keys(PARAM_KEYS),
+    withRun: (arr?: Array<RnvTaskOption>) =>
+        [
+            RnvTaskOptions.target,
+            RnvTaskOptions.device,
+            RnvTaskOptions.hosted,
+            RnvTaskOptions.port,
+            RnvTaskOptions.debug,
+            RnvTaskOptions.debugIp,
+            RnvTaskOptions.skipTargetCheck,
+            RnvTaskOptions.host,
+        ].concat(arr || []),
+    withAll: (arr?: Array<RnvTaskOption>) => Object.values(RnvTaskOptions).concat(arr || []),
+    all: Object.keys(RnvTaskOptions),
 };

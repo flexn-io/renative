@@ -6,7 +6,7 @@ import {
     getPlatformProjectDir,
     getConfigProp,
     chalk,
-    logTask,
+    logDefault,
     logDebug,
     logError,
     logSuccess,
@@ -52,7 +52,7 @@ export const checkTizenStudioCert = async (c: RnvContext): Promise<boolean> => {
 
 export const configureTizenGlobal = (c: RnvContext) =>
     new Promise<void>((resolve, reject) => {
-        logTask('configureTizenGlobal');
+        logDefault('configureTizenGlobal');
         // Check Tizen Cert
         // if (isPlatformActive(c, TIZEN) || isPlatformActive(c, TIZEN_WATCH)) {
         const tizenAuthorCert = path.join(c.paths.workspace.dir, DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION);
@@ -105,7 +105,7 @@ const _runTizenSimOrDevice = async (c: RnvContext) => {
 };
 
 export const runTizen = async (c: RnvContext, target?: string) => {
-    logTask('runTizen', `target:${target}`);
+    logDefault('runTizen', `target:${target}`);
     const { platform } = c;
     const { hosted } = c.program;
 
@@ -121,7 +121,7 @@ export const runTizen = async (c: RnvContext, target?: string) => {
         }
     }
 
-    logTask('runTizen', `target:${target} hosted:${!!isHosted}`);
+    logDefault('runTizen', `target:${target} hosted:${!!isHosted}`);
     if (isHosted) return;
 
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
@@ -159,7 +159,7 @@ export const runTizen = async (c: RnvContext, target?: string) => {
 };
 
 export const buildTizenProject = async (c: RnvContext) => {
-    logTask('buildTizenProject');
+    logDefault('buildTizenProject');
 
     const { platform } = c;
 
@@ -193,7 +193,7 @@ export const buildTizenProject = async (c: RnvContext) => {
 let _isGlobalConfigured = false;
 
 export const configureTizenProject = async (c: RnvContext) => {
-    logTask('configureTizenProject');
+    logDefault('configureTizenProject');
 
     const { platform } = c;
 
@@ -216,7 +216,7 @@ export const configureTizenProject = async (c: RnvContext) => {
 
 const _configureProject = (c: RnvContext) =>
     new Promise<void>((resolve) => {
-        logTask('_configureProject');
+        logDefault('_configureProject');
         const { platform } = c;
 
         if (!platform) return;

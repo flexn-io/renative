@@ -262,6 +262,7 @@ rnvcore.confirmActiveBundler = () => null;
 rnvcore.getAppFolder = jest.fn();
 rnvcore.logToSummary = jest.fn();
 rnvcore.logTask = jest.fn();
+rnvcore.logDefault = jest.fn();
 rnvcore.logDebug = jest.fn();
 rnvcore.logInfo = jest.fn();
 rnvcore.logError = jest.fn();

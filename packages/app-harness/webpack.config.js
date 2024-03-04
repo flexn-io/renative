@@ -1,8 +1,8 @@
 const webpack = require('webpack'); //to access built-in plugins
 
-const { withRNV } = require('@rnv/engine-rn-web');
+const { withRNVWebpack } = require('@rnv/engine-rn-web');
 
-module.exports = withRNV({
+module.exports = withRNVWebpack({
     resolve: {
         alias: {
             'my-module': 'some_path',

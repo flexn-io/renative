@@ -38,12 +38,19 @@ export const buildHooks = async (c: RnvContext) => {
         enableHookRebuild === true ||
         c.runtime.forceBuildHookRebuild;
 
-    if ((!fsExistsSync(c.paths.buildHooks.index) && c.program.ci) || c.runtime.skipBuildHooks) {
+    if (
+        (!fsExistsSync(c.paths.buildHooks.src.index) &&
+            !fsExistsSync(c.paths.buildHooks.src.indexTs) &&
+            c.program.ci) ||
+        c.runtime.skipBuildHooks
+    ) {
         logInfo('No build hooks found and in --ci mode. SKIPPING');
         return true;
     }
 
-    if (!fsExistsSync(c.paths.buildHooks.index)) {
+    const hasNoIndex = !fsExistsSync(c.paths.buildHooks.src.index) && !fsExistsSync(c.paths.buildHooks.src.indexTs);
+
+    if (hasNoIndex) {
         if (c.program.ci) {
             c.runtime.skipBuildHooks = true;
             return;
@@ -65,14 +72,14 @@ export const buildHooks = async (c: RnvContext) => {
             const templatePath = c.buildConfig.currentTemplate ? doResolve(c.buildConfig.currentTemplate) : null;
             let buildHooksSource;
             // if there is a template and has buildhooks folder, use that instead of the default
-            if (templatePath && fsExistsSync(`${templatePath}/buildHooks/src/index.js`)) {
+            if (templatePath && fsExistsSync(`${templatePath}/buildHooks/src`)) {
                 buildHooksSource = path.join(templatePath, 'buildHooks/src');
                 shouldBuildHook = true;
             } else {
                 buildHooksSource = path.join(c.paths.rnv.dir, 'coreTemplateFiles/buildHooks/src');
             }
 
-            copyFolderContentsRecursiveSync(buildHooksSource, c.paths.buildHooks.dir);
+            copyFolderContentsRecursiveSync(buildHooksSource, c.paths.buildHooks.src.dir);
         } else {
             c.runtime.skipBuildHooks = true;
             return;
@@ -80,10 +87,14 @@ export const buildHooks = async (c: RnvContext) => {
     }
 
     if (shouldBuildHook && !c.isBuildHooksReady) {
+        const indexPath = fsExistsSync(c.paths.buildHooks.src.indexTs)
+            ? c.paths.buildHooks.src.indexTs
+            : c.paths.buildHooks.src.index;
         try {
             logHook('buildHooks', 'Build hooks not complied. BUILDING...');
+
             await build({
-                entryPoints: [`${c.paths.buildHooks.dir}/index.js`],
+                entryPoints: [indexPath],
                 bundle: true,
                 platform: 'node',
                 logLimit: c.program.json ? 0 : 10,

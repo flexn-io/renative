@@ -18,19 +18,9 @@ const getChalk = (): any => {
     return chalk;
 };
 
-// const loggerMock = {
-//     logToSummary= jest.fn(),
-//     logTask= jest.fn(),
-//     logDebug= jest.fn(),
-//     logInfo= jest.fn(),
-//     logError= jest.fn(),
-//     logWarning= jest.fn(),
-//     logSuccess= jest.fn(),
-//     chalk: () => getChalk(),
-// };
-
 export const logToSummary = jest.fn();
 export const logTask = jest.fn();
+export const logDefault = jest.fn();
 export const logDebug = jest.fn();
 export const logInfo = jest.fn();
 export const logError = jest.fn();
@@ -50,7 +40,7 @@ export default {
     logHook,
     logEnd,
     logInfo,
-    logTask,
+    logDefault,
     logError,
     logDebug,
     logAppInfo,
