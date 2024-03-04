@@ -295,7 +295,7 @@ type ParamKeysType = typeof RnvTaskOptions;
 
 type ProgramOptionsKey = keyof ParamKeysType;
 
-//TODO: make this properly typed
+//TODO: make this properly typed. Pass integration type to getContext?
 type ParamType = any; //boolean | string | undefined
 
 export type ParamKeys = Partial<Record<ProgramOptionsKey, ParamType>>;
