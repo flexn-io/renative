@@ -1,4 +1,4 @@
-import { createRnvApi, createRnvContext, getAppFolder, getContext, getPlatformProjectDir } from '@rnv/core';
+import { createRnvContext, getAppFolder, getContext, getPlatformProjectDir } from '@rnv/core';
 import taskRun from '../taskRun';
 import { runWebpackServer } from '@rnv/sdk-webpack';
 import { runTizen } from '@rnv/sdk-tizen';
@@ -14,7 +14,6 @@ jest.mock('@rnv/sdk-utils');
 
 beforeEach(() => {
     createRnvContext();
-    createRnvApi();
 });
 
 afterEach(() => {

@@ -91,7 +91,7 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
         mono: c.program?.mono || c.program?.json,
     };
 
-    const blue2 = chalk().rgb(50, 50, 255);
+    const blue2 = chalk().rgb(50, 50, 255).bold;
 
     const mergedOpts = { ...defaultOpts, ...opts };
 
@@ -126,7 +126,7 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
         if (opts.cwd) {
             logMsg = `cd ${opts.cwd} ${chalk().cyan('&&')} ${logMsg}`;
         }
-        logRaw(`${blue2('[ exec ]')} ${blue2('<[')} ${logMsg} ${blue2(']>')}`);
+        logRaw(`${blue2('exec:')} ${blue2('○')} ${logMsg} ${blue2('○')}`);
     }
 
     logDebug(`_execute: ${logMessage}`);

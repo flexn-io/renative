@@ -302,7 +302,7 @@ export const logSummary = (header = 'SUMMARY') => {
     // str += printIntoBox('');
     if (ctx.runtime?.platformBuildsProjectPath) {
         str += printIntoBox('Project location:');
-        str += printIntoBox(`${currentChalk.cyan(_sanitizePaths(ctx.runtime.platformBuildsProjectPath || ''))}`);
+        str += printIntoBox(`${currentChalk.bold(_sanitizePaths(ctx.runtime.platformBuildsProjectPath || ''))}`);
     }
     str += printBoxEnd();
 
@@ -323,18 +323,26 @@ const _msToTime = (seconds: number) => {
 
 const _getCurrentTask = () => {
     const ctx = getContext();
-    return ctx._currentTask ? currentChalk.grey(` ○ ${ctx._currentTask}:`) : '';
+    return ctx._currentTask ? currentChalk.grey(`○ ${ctx._currentTask}:`) : '';
 };
 
+const CWD = process.cwd();
+const CWD_UP = CWD.split('/').slice(0, -1).join('/');
+const CWD_UP_UP = CWD.split('/').slice(0, -2).join('/');
+
 const _sanitizePaths = (msg: string) => {
-    const ctx = getContext();
+    // const ctx = getContext();
     // let dir
     // const config = ctx.files?.project?.config;
     // if(config && config.isMonorepo) {
     //     if()
     // }
-    if (msg?.replace && ctx.paths?.project?.dir) {
-        return msg.replace(new RegExp(ctx.paths.project.dir, 'g'), '.');
+
+    if (msg?.replace) {
+        return msg
+            .replace(new RegExp(CWD, 'g'), '.')
+            .replace(new RegExp(CWD_UP, 'g'), '..')
+            .replace(new RegExp(CWD_UP_UP, 'g'), '../..');
     }
     return msg;
 };
@@ -407,24 +415,18 @@ const getLogCounter = (task: string, skipAddition = false) => {
     return taskCount;
 };
 
-export const logInitTask = (task: string, customChalk?: string | ((s: string) => string)) => {
+export const logInitTask = (task: string) => {
     const taskCount = getLogCounter(task);
 
     if (_jsonOnly) {
         return _printJson({
             type: 'taskInit',
             task: stripAnsi(_getCurrentTask()),
-            message: stripAnsi(_sanitizePaths(typeof customChalk === 'string' ? customChalk : task)),
+            message: stripAnsi(_sanitizePaths(task)),
         });
     }
-    let msg = '';
-    if (typeof customChalk === 'string') {
-        msg = `${chalkBlue().bold(`task: ○ ${task}`)} ${customChalk} ${taskCount}`;
-    } else if (customChalk) {
-        msg = customChalk(`task ○ ${task} ${taskCount}`);
-    } else {
-        msg = `${chalkBlue.bold('task:')} ○ ${task} ${taskCount}`;
-    }
+
+    const msg = `${chalkBlue.bold('task:')} ○ ${task} ${taskCount}`;
 
     console.log(msg);
 };
@@ -437,26 +439,16 @@ type PrintJsonPayload = {
     level?: string;
 };
 
-export const logExitTask = (task: string, customChalk?: (s: string) => string) => {
+export const logExitTask = (task: string) => {
     if (_jsonOnly) {
         return _printJson({
             type: 'taskExit',
             task: stripAnsi(_getCurrentTask()),
-            message: stripAnsi(_sanitizePaths(typeof customChalk === 'string' ? customChalk : task)),
+            message: stripAnsi(_sanitizePaths(task)),
         });
     }
     const taskCount = getLogCounter(task, true);
-
-    let msg = '';
-    if (typeof customChalk === 'string') {
-        msg = `${currentChalk.green(`task: < ${task}`)} ${currentChalk.grey(
-            customChalk
-        )}${taskCount} ${currentChalk.green('✔')}`;
-    } else if (customChalk) {
-        msg = customChalk(`task: < ${task} ${taskCount} ${currentChalk.green('✔')}`);
-    } else {
-        msg = `${currentChalk.green('task:')} ${currentChalk.green('✔')} ${task} ${taskCount}`;
-    }
+    const msg = `${currentChalk.green('task:')} ${currentChalk.green('✔')} ${task} ${taskCount}`;
 
     console.log(msg);
 };
@@ -492,7 +484,7 @@ export const logInfo = (msg: string) => {
             message: stripAnsi(_sanitizePaths(msg)),
         });
     }
-    console.log(`${currentChalk.cyan('info:')}${_getCurrentTask()} ${_sanitizePaths(msg)}`);
+    console.log(`${currentChalk.bold('info:')} ${_sanitizePaths(msg)}`);
 };
 
 export const logDebug = (...args: Array<string>) => {
