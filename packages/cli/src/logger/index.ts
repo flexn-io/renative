@@ -360,7 +360,10 @@ export const logTask = (task: string, customChalk?: string | RnvApiChalkFn) => {
         msg = `${currentChalk.green(`[task]${_getCurrentTask()}`)} ${task}${taskCount}`;
     }
 
-    // console.log(_sanitizePaths(msg));
+    if (_isInfoEnabled) {
+        // TODO: temporary. will be activated under different flag
+        console.log(_sanitizePaths(msg));
+    }
 };
 
 export const logDefault = (task: string, customChalk?: string | RnvApiChalkFn) => {
@@ -383,7 +386,10 @@ export const logDefault = (task: string, customChalk?: string | RnvApiChalkFn) =
         msg = `[log]${_getCurrentTask()} ${task} ${taskCount}`;
     }
 
-    // console.log(_sanitizePaths(msg));
+    if (_isInfoEnabled) {
+        // TODO: temporary. will be activated under different flag
+        console.log(_sanitizePaths(msg));
+    }
 };
 
 const getLogCounter = (task: string) => {
