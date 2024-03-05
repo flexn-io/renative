@@ -47,6 +47,8 @@ export const run = () => {
         program.option(cmd, param.description);
     });
 
+    program.allowUnknownOption(true); // integration options are not known ahead of time
+
     // Make both arguments optional un order to allow `$ rnv` top level command
     program.arguments('[cmd] [option]').action((cmd, option) => {
         cmdValue = cmd;

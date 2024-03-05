@@ -64,7 +64,7 @@ const _getTaskOption = ({ taskInstance }: TaskObj, provider?: string): TaskPromp
         output.name = taskInstance.task;
     }
     output.command = asArray[0];
-    output.subCommand = asArray[1];
+    output.subCommand = asArray[1]; // TODO don't treat options like --myopt as subcommands
 
     if (provider) {
         output.providers.push(provider);
@@ -113,6 +113,7 @@ export const getAllSuitableTasks = (c: RnvContext): Record<string, TaskPromptOpt
         const taskObj = _getTaskOption(_getTaskObj(taskInstance), 'custom');
         suitableTasks[taskObj.value] = taskObj;
     });
+    // TODO: handle integration cli options
 
     return suitableTasks;
 };
