@@ -273,9 +273,9 @@ const execCLI = (c: RnvContext, cli: string, command: string, opts: ExecOptions 
             c.buildConfig?.sdks
         );
         return Promise.reject(
-            `Location of your cli ${chalk().white(p)} does not exists. check your ${chalk().white(
+            `Location of your cli ${chalk().bold(p)} does not exists. check your ${chalk().bold(
                 c.paths.workspace.config
-            )} file if your ${chalk().white('sdks')} paths are correct`
+            )} file if your ${chalk().bold('sdks')} paths are correct`
         );
     }
 

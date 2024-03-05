@@ -43,11 +43,11 @@ const taskHelp: RnvTaskFn = async (c) => {
     const cmdsString = commands.join(', ');
 
     logToSummary(`
-${chalk().bold.white('COMMANDS:')}
+${chalk().bold('COMMANDS:')}
 
 ${cmdsString}
 
-${chalk().bold.white('OPTIONS:')}
+${chalk().bold('OPTIONS:')}
 
 ${optsString}
 `);

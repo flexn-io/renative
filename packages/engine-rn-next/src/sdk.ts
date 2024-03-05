@@ -56,7 +56,7 @@ export const runWebNext = async (c: RnvContext) => {
 
     if (!isPortActive) {
         logInfo(
-            `Your ${chalk().white(platform)} devServerHost ${chalk().white(devServerHost)} at port ${chalk().white(
+            `Your ${chalk().bold(platform)} devServerHost ${chalk().bold(devServerHost)} at port ${chalk().bold(
                 port
             )} is not running. Starting it up for you...`
         );

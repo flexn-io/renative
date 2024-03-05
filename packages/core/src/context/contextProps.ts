@@ -122,7 +122,7 @@ export const getAppConfigBuildsFolder = (c: RnvContext, platform: RnvPlatform, c
     const pp = customPath || c.paths.appConfig.dir;
     if (!pp) {
         logWarning(
-            `getAppConfigBuildsFolder: Path ${chalk().white(
+            `getAppConfigBuildsFolder: Path ${chalk().bold(
                 'c.paths.appConfig.dir'
             )} not defined! can't return path. You might not be in renative project`
         );

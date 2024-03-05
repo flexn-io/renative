@@ -74,7 +74,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
     if (device === true) {
         if (devicesArr.length === 1) {
             logSuccess(
-                `Found one device connected! Device name: ${chalk().white(devicesArr[0].name)} udid: ${chalk().white(
+                `Found one device connected! Device name: ${chalk().bold(devicesArr[0].name)} udid: ${chalk().bold(
                     devicesArr[0].udid
                 )}`
             );
@@ -280,9 +280,9 @@ const _checkLockAndExec = async (
             if (isDeviceNotRegistered) {
                 logError(e);
                 logWarning(
-                    `${c.platform} DEVICE: ${chalk().white(c.runtime.target)} with UDID: ${chalk().white(
+                    `${c.platform} DEVICE: ${chalk().bold(c.runtime.target)} with UDID: ${chalk().bold(
                         c.runtime.targetUDID
-                    )} is not included in your provisionong profile in TEAM: ${chalk().white(
+                    )} is not included in your provisionong profile in TEAM: ${chalk().bold(
                         getConfigProp(c, c.platform, 'teamID')
                     )}`
                 );
@@ -321,14 +321,14 @@ const _checkLockAndExec = async (
 ${chalk().green('SUGGESTION:')}
 
 ${chalk().yellow('STEP 1:')}
-Open xcode workspace at: ${chalk().white(`${appPath}/${appFolderName}.xcworkspace`)}
+Open xcode workspace at: ${chalk().bold(`${appPath}/${appFolderName}.xcworkspace`)}
 
 ${chalk().yellow('STEP 2:')}
-${chalk().white('Run app and observe any extra errors')}
+${chalk().bold('Run app and observe any extra errors')}
 
 ${chalk().yellow('IF ALL HOPE IS LOST:')}
 Raise new issue and copy this SUMMARY box output at:
-${chalk().white('https://github.com/flexn-io/renative/issues')}
+${chalk().bold('https://github.com/flexn-io/renative/issues')}
 and we will try to help!
 
 `);
@@ -343,8 +343,8 @@ const _handleMissingTeam = async (c: Context, e: unknown) => {
         logError(e);
         logWarning(`You need specify the development team if you want to run app on ${
             c.platform
-        } device. this can be set manually in ${chalk().white(loc)}
-  You can find correct teamID in the URL of your apple developer account: ${chalk().white(
+        } device. this can be set manually in ${chalk().bold(loc)}
+  You can find correct teamID in the URL of your apple developer account: ${chalk().bold(
       'https://developer.apple.com/account/#/overview/YOUR-TEAM-ID'
   )}
 Type in your Apple Team ID to be used (will be saved to ${c.paths.appConfig?.config})`);
@@ -369,18 +369,18 @@ const _handleProvisioningIssues = async (c: Context, e: unknown, msg: string) =>
     const isProvAutomatic = provisioningStyle === 'Automatic';
     const proAutoText = isProvAutomatic
         ? ''
-        : `${chalk().white('[4]>')} Switch to automatic signing for appId: ${c.runtime.appId} , platform: ${
+        : `${chalk().bold('[4]>')} Switch to automatic signing for appId: ${c.runtime.appId} , platform: ${
               c.platform
           }, scheme: ${c.runtime.scheme}`;
     const fixCommand = `rnv crypto updateProfile -p ${c.platform} -s ${c.runtime.scheme}`;
-    const workspacePath = chalk().white(`${getAppFolder(c)}/${appFolderName}.xcworkspace`);
+    const workspacePath = chalk().bold(`${getAppFolder(c)}/${appFolderName}.xcworkspace`);
     logError(e);
     logWarning(`${msg}. To fix try:
-${chalk().white('[1]>')} Configure your certificates, provisioning profiles correctly manually
-${chalk().white('[2]>')} Try to generate matching profiles with ${chalk().white(
+${chalk().bold('[1]>')} Configure your certificates, provisioning profiles correctly manually
+${chalk().bold('[2]>')} Try to generate matching profiles with ${chalk().bold(
         fixCommand
     )} (you need correct priviledges in apple developer portal)
-${chalk().white(
+${chalk().bold(
     '[3]>'
 )} Open generated project in Xcode: ${workspacePath} and debug from there (Sometimes this helps for the first-time builds)
 ${proAutoText}`);
@@ -806,7 +806,7 @@ export const configureXcodeProject = async (c: Context) => {
                         c.payload.pluginConfigiOS.embeddedFonts.push(font);
                     }
                 } else {
-                    logWarning(`Font ${chalk().white(fontSource)} doesn't exist! Skipping.`);
+                    logWarning(`Font ${chalk().bold(fontSource)} doesn't exist! Skipping.`);
                 }
             }
         }
@@ -816,7 +816,7 @@ export const configureXcodeProject = async (c: Context) => {
     const tId = getConfigProp(c, platform, 'teamID');
     if (device && (!tId || tId === '')) {
         logError(
-            `You're missing teamID in your ${chalk().white(
+            `You're missing teamID in your ${chalk().bold(
                 c.paths.appConfig.config
             )} => .platforms.${platform}.teamID . you will not be able to build ${platform} app for device!`
         );

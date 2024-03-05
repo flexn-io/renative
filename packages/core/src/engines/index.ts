@@ -190,9 +190,9 @@ export const loadEnginePluginDeps = async (c: RnvContext, engineConfigs: Array<R
         const addedPluginsKeys = Object.keys(addedPlugins);
 
         logInfo(
-            `Engines: ${chalk().yellow(engineKeys.join(','))} require plugins ${chalk().white(
+            `Engines: ${chalk().yellow(engineKeys.join(','))} require plugins ${chalk().bold(
                 addedPluginsKeys.join(',')
-            )} to be added to ${chalk().white(c.paths.project.config)}`
+            )} to be added to ${chalk().bold(c.paths.project.config)}`
         );
         const confirm = await inquirerPrompt({
             name: 'selectedScheme',
@@ -548,7 +548,7 @@ export const getEngineRunner = (c: RnvContext, task: string, customTasks?: RnvTa
     if (hasEngineTask(task, c.runtime.enginesById[ENGINE_CORE].tasks, configExists)) {
         return c.runtime.enginesById[ENGINE_CORE];
     }
-    if (failOnMissingEngine) throw new Error(`Cound not find suitable executor for task ${chalk().white(task)}`);
+    if (failOnMissingEngine) throw new Error(`Cound not find suitable executor for task ${chalk().bold(task)}`);
     return undefined;
 };
 

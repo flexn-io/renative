@@ -41,7 +41,7 @@ const taskPlatformConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
 
     if ((c.program.reset || c.program.resetHard) && !c.runtime.disableReset) {
         logInfo(
-            `You passed ${chalk().white(c.program.reset ? '-r' : '-R')} argument. "${chalk().white(
+            `You passed ${chalk().bold(c.program.reset ? '-r' : '-R')} argument. "${chalk().bold(
                 getAppFolder(c)
             )}" CLEANING...DONE`
         );

@@ -40,10 +40,10 @@ const taskPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
         });
 
         selectedPlugins[plugin] = o.allPlugins[plugin];
-        installMessage.push(`${chalk().white(plugin)} v(${chalk().green(o.allPlugins[plugin].version)})`);
+        installMessage.push(`${chalk().bold(plugin)} v(${chalk().green(o.allPlugins[plugin].version)})`);
     } else {
         selectedPlugins[selPluginKey] = selPlugin;
-        installMessage.push(`${chalk().white(selPluginKey)} v(${chalk().green(selPlugin.version)})`);
+        installMessage.push(`${chalk().bold(selPluginKey)} v(${chalk().green(selPlugin.version)})`);
     }
 
     const questionPlugins: Record<string, PluginListResponseItem> = {};

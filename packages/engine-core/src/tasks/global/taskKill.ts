@@ -51,7 +51,7 @@ const taskKill: RnvTaskFn = async (c, _parentTask, originTask) => {
             type: 'confirm',
             message: 'Processes attached to the ports will be killed. Continue?',
             warningMessage: `Found active ports:
-${usedPorts.map((v) => chalk().white(`> ${v.port} (${v.platform})`)).join('\n')}`,
+${usedPorts.map((v) => chalk().bold(`> ${v.port} (${v.platform})`)).join('\n')}`,
         });
         if (confirm) {
             const killPromise = [];

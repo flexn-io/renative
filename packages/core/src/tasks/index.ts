@@ -285,7 +285,7 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
                 return findSuitableTask(c);
             }
 
-            logInfo(`could not find suitable task for ${chalk().white(c.command)}. GETTING OPTIONS...`);
+            logInfo(`could not find suitable task for ${chalk().bold(c.command)}. GETTING OPTIONS...`);
             c.command = null;
             c.subCommand = null;
             return findSuitableTask(c);
@@ -305,7 +305,7 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
         }
 
         logInfo(
-            `Current Engine: ${chalk().bold.cyan(c.runtime.engine?.config.id)} path: ${chalk().grey(
+            `Current Engine: ${chalk().bold(c.runtime.engine?.config.id)} path: ${chalk().grey(
                 c.runtime.engine?.rootPath
             )}`
         );
@@ -443,7 +443,7 @@ const ACCEPTED_CONDITIONS = ['platform', 'target', 'appId', 'scheme'] as const;
 type ACKey = (typeof ACCEPTED_CONDITIONS)[number];
 
 const _logSkip = (task: string) => {
-    logInfo(`Original RNV task ${chalk().white(task)} marked to ignore. SKIPPING...`);
+    logInfo(`Original RNV task ${chalk().bold(task)} marked to ignore. SKIPPING...`);
 };
 
 export const shouldSkipTask = (c: RnvContext, taskKey: string, originRnvTaskName?: string) => {

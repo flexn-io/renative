@@ -120,7 +120,7 @@ export const configureFonts = async (c: RnvContext) => {
                     const fontFolder = fontSource.split('/').slice(0, -1).join('/');
                     fontFolders.add(fontFolder);
                 } else {
-                    logWarning(`Font ${chalk().white(fontSource)} doesn't exist! Skipping.`);
+                    logWarning(`Font ${chalk().bold(fontSource)} doesn't exist! Skipping.`);
                 }
             }
         }

@@ -230,7 +230,7 @@ export const configureFonts = async (c: RnvContext) => {
                               file: require('${fontSource}'),
                           },`;
                         } else {
-                            logWarning(`Font ${chalk().white(fontSource)} doesn't exist! Skipping.`);
+                            logWarning(`Font ${chalk().bold(fontSource)} doesn't exist! Skipping.`);
                         }
                     }
                 }
@@ -291,9 +291,9 @@ export const copyRuntimeAssets = async (c: RnvContext) => {
     if (!c.buildConfig?.common) {
         logDebug('BUILD_CONFIG', c.buildConfig);
         logWarning(
-            `Your ${chalk().white(
+            `Your ${chalk().bold(
                 c.paths.appConfig.config
-            )} is misconfigured. (Maybe you have older version?). Missing ${chalk().white(
+            )} is misconfigured. (Maybe you have older version?). Missing ${chalk().bold(
                 '{ common: {} }'
             )} object at root`
         );
@@ -392,9 +392,9 @@ const _resolvePackage = (c: RnvContext, v: string) => {
 //     if (assetsToCopy.length > 0) {
 //         if (!fsExistsSync(assetsDir)) {
 //             logInfo(
-//                 `Required assets: ${chalk().white(
+//                 `Required assets: ${chalk().bold(
 //                     JSON.stringify(assetsToCopy.map((v) => v.value))
-//                 )} will be copied to ${chalk().white('appConfigs/assets')} folder`
+//                 )} will be copied to ${chalk().bold('appConfigs/assets')} folder`
 //             );
 //             return true;
 //         }
@@ -467,7 +467,7 @@ export const copyAssetsFolder = async (
     // FOLDER MERGERS FROM EXTERNAL SOURCES
     if (validAssetSources.length > 0) {
         logInfo(
-            `Found custom assetSources at ${chalk().white(
+            `Found custom assetSources at ${chalk().bold(
                 validAssetSources.join('/n')
             )}. Will be used to generate assets.`
         );
@@ -523,7 +523,7 @@ export const copyAssetsFolder = async (
 // if (c.program.ci !== true && c.program.yes !== true && !forceTrue) {
 //     const { confirm } = await inquirerPrompt({
 //         type: 'confirm',
-//         message: `It seems you don't have assets configured in ${chalk().white(
+//         message: `It seems you don't have assets configured in ${chalk().bold(
 //             sourcePath
 //         )} do you want generate default ones?`,
 //     });
@@ -611,7 +611,7 @@ export const versionCheck = async (c: RnvContext) => {
     );
     if (c.runtime.rnvVersionRunner && c.runtime.rnvVersionProject) {
         if (c.runtime.rnvVersionRunner !== c.runtime.rnvVersionProject && !c.program.skipRnvCheck) {
-            const recCmd = chalk().white(`$ npx ${getCurrentCommand(true)}`);
+            const recCmd = chalk().bold(`$ npx ${getCurrentCommand(true)}`);
             const actionNoUpdate = 'Continue and skip updating package.json';
             const actionWithUpdate = 'Continue and update package.json';
             const actionUpgrade = `Upgrade project to ${c.runtime.rnvVersionRunner}`;

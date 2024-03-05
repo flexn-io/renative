@@ -65,7 +65,7 @@
 //         //     if (UI_COLORS.includes(backgroundColor)) {
 //         //         pluginBgColor = `vc.view.backgroundColor = UIColor.${backgroundColor}`;
 //         //     } else {
-//         //         logWarning(`Your choosen color in renative.json for platform ${chalk().white(platform)} is not supported by UIColor. use one of the predefined ones: ${chalk().white(UI_COLORS.join(','))}`);
+//         //         logWarning(`Your choosen color in renative.json for platform ${chalk().bold(platform)} is not supported by UIColor. use one of the predefined ones: ${chalk().bold(UI_COLORS.join(','))}`);
 //         //     }
 //         // }
 
