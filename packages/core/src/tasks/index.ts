@@ -305,7 +305,7 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
         }
 
         logInfo(
-            `Current Engine: ${chalk().bold.white(c.runtime.engine?.config.id)} path: ${chalk().grey(
+            `Current Engine: ${chalk().bold.cyan(c.runtime.engine?.config.id)} path: ${chalk().grey(
                 c.runtime.engine?.rootPath
             )}`
         );
@@ -377,9 +377,10 @@ export const executeTask = async (
     originTask?: string,
     isFirstTask?: boolean
 ) => {
-    const pt = parentTask ? `=> [${parentTask}] ` : '';
+    // const pt = parentTask ? `=> [${parentTask}] ` : '';
     c._currentTask = task;
-    logInitTask(`${pt}=> [${chalk().bold.rgb(170, 106, 170)(task)}]`);
+    // logInitTask(`${pt}=> [${chalk().bold.rgb(170, 106, 170)(task)}]`);
+    logInitTask(`${task}`);
 
     if (!executedTasks[task]) executedTasks[task] = 0;
     if (executedTasks[task] > TASK_LIMIT) {
@@ -402,8 +403,8 @@ To avoid that test your task code against parentTask and avoid executing same ta
     executedTasks[task]++;
 
     c._currentTask = parentTask;
-    const prt = parentTask ? `<= [${chalk().rgb(170, 106, 170)(parentTask)}] ` : '';
-    logExitTask(`${prt}<= ${task}`);
+    // const prt = parentTask ? `<= [${chalk().rgb(170, 106, 170)(parentTask)}] ` : '';
+    logExitTask(`${task}`);
 };
 
 /**

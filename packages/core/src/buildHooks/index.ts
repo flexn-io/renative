@@ -8,7 +8,7 @@ import { inquirerPrompt } from '../api';
 import { getConfigProp } from '../context/contextProps';
 
 export const executePipe = async (c: RnvContext, key: string) => {
-    logHook('executePipe', c?.program?.json ? key : `('${key}')`);
+    logDebug('executePipe', c?.program?.json ? key : `('${key}')`);
 
     await buildHooks(c);
 
@@ -91,7 +91,7 @@ export const buildHooks = async (c: RnvContext) => {
             ? c.paths.buildHooks.src.indexTs
             : c.paths.buildHooks.src.index;
         try {
-            logHook('buildHooks', 'Build hooks not complied. BUILDING...');
+            logInfo('Build hooks not complied. BUILDING...');
 
             await build({
                 entryPoints: [indexPath],
