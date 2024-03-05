@@ -36,6 +36,8 @@ end
 
 target 'RNVApp' do
   config = use_native_modules!
+
+  {{INJECT_PLUGIN_PATHS}}
   
   use_react_native!(
     :path => config[:reactNativePath],
@@ -62,6 +64,7 @@ target 'RNVApp' do
       config[:reactNativePath],
       :mac_catalyst_enabled => false
     )
+    {{INJECT_POST_INSTALL}}
   end
 end
 
