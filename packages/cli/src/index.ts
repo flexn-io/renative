@@ -62,7 +62,22 @@ export const run = () => {
         process.exit(0);
     });
 
-    executeRnv({ cmd: cmdValue, subCmd: cmdOption, program, process, spinner: Spinner, prompt: Prompt, logger: Logger })
+    // If the first argument is a flag, then the subCommand is missing
+    // this occurs when rnv has to execute unknown commands (ie intergration commands)
+    // commander does not handle this scenario automatically
+    if ((cmdOption && cmdOption.startsWith('--')) || cmdOption.startsWith('-')) {
+        cmdOption = '';
+    }
+
+    executeRnv({
+        cmd: cmdValue,
+        subCmd: cmdOption,
+        program,
+        process,
+        spinner: Spinner,
+        prompt: Prompt,
+        logger: Logger,
+    })
         .then(() => {
             logComplete(!getContext().runtime.keepSessionActive);
         })

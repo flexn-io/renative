@@ -193,9 +193,6 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
         );
 
         const isAutoComplete = !suitableEngines.length && !!c.command && !autocompleteEngines.length;
-        const message = isAutoComplete
-            ? `Autocomplete action for "${c.command}"`
-            : `Pick a subCommand for ${c.command}`;
 
         if (!suitableEngines.length) {
             // Get all supported tasks
@@ -218,7 +215,8 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
             });
             Object.values(CUSTOM_TASKS).forEach((taskInstance) => {
                 const tskArr = taskInstance.task.split(' ');
-                if (task === tskArr[0]) {
+
+                if (task === tskArr[0] && tskArr.length > 1) {
                     const taskKey = isAutoComplete ? taskInstance.task : taskInstance.task.split(' ')[1];
 
                     supportedSubtasksArr.push({
@@ -227,6 +225,7 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
                     });
                 }
             });
+
             const supportedSubtasks: TaskItemMap = {};
             // Normalize task options
             const supportedSubtasksFilter: TaskItemMap = {};
@@ -247,6 +246,10 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
                     taskKey: v.taskKey,
                 };
             });
+
+            const message = isAutoComplete
+                ? `Autocomplete action for "${c.command}"`
+                : `Pick a subCommand for ${c.command}`;
 
             const subTasks = Object.keys(supportedSubtasks);
             if (subTasks.length) {
