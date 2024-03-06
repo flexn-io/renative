@@ -73,10 +73,9 @@ export const launchWebOSimulator = async (c: RnvContext, target: string) => {
     if (!fsExistsSync(ePath)) {
         return Promise.reject(`Can't find simulator at path: ${ePath}`);
     }
-    if (isSystemWin) {
+    if (isSystemWin || isSystemLinux) {
         return executeAsync(c, ePath, { detached: true, stdio: 'ignore' });
     }
-
     await executeAsync(c, `${openCommand} ${ePath}`, { detached: true });
     logSuccess(`Succesfully launched ${selectedOption}`);
     return true;
