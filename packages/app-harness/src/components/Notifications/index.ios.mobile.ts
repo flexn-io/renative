@@ -1,4 +1,5 @@
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import { logDebug } from '../Logger';
 
 export const addNotificationListeners = () => {
     PushNotificationIOS.requestPermissions();
@@ -14,11 +15,11 @@ export const removeNotificationListeners = () => {
 };
 
 const onRegistered = (deviceToken) => {
-    console.log(`Device Token: ${deviceToken}`);
+    logDebug(`Device Token: ${deviceToken}`);
 };
 
 const onError = (error) => {
-    console.log(`Error on notification register: ${error}`);
+    logDebug(`Error on notification register: ${error}`);
 };
 
 const onRemoteNotification = (notification) => {

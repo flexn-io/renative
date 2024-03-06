@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Image, ScrollView, Text, View } from 'react-native';
+import { Api } from '@rnv/renative';
 import { OrientationLocker, PORTRAIT, LANDSCAPE } from '../components/OrientationLocker';
 import { NewModuleButton } from '../components/NewModuleButton';
 import { SplashScreen } from '../components/SplashScreen';
@@ -35,7 +36,9 @@ const App = () => {
                     ReNative Harness
                 </Text>
                 <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                    <Text style={{ color: 'black' }}>v1.0.0-rc.12, platform: macos, formFactor: desktop</Text>
+                    <Text style={{ color: 'black' }}>
+                        {`v1.0.0-rc.12, platform: ${Api.platform}, factor: ${Api.formFactor}, engine: ${Api.engine}`}
+                    </Text>
                 </View>
             </View>
 

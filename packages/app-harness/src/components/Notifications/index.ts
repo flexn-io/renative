@@ -1,7 +1,9 @@
+import { logDebug } from '../Logger';
+
 export const addNotificationListeners = () => {
-    console.log('addNotificationListeners not supported on this platform');
+    logDebug('addNotificationListeners not supported on this platform');
 };
 
 export const removeNotificationListeners = () => {
-    console.log('removeNotificationListeners not supported on this platform');
+    logDebug('removeNotificationListeners not supported on this platform');
 };

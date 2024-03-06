@@ -1,3 +1,5 @@
+import { logDebug } from '../Logger';
+
 export const requestPermissions = () => {
-    console.log('requestPermissions not supported on this platform');
+    logDebug('requestPermissions not supported on this platform');
 };
