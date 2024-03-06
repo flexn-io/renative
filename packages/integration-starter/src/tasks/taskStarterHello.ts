@@ -1,16 +1,15 @@
-import { RnvContext, logTask, RnvTaskOptionPresets, logSuccess, RnvTask } from '@rnv/core';
+import { RnvContext, RnvTaskOptionPresets, logSuccess, RnvTask, RnvTaskFn } from '@rnv/core';
 
-const taskStarterHello = async (_c: RnvContext) => {
-    logTask('taskStarterHello');
-
-    logSuccess('Hello from Integration Starter!');
+const taskStarterHello: RnvTaskFn = async (c: RnvContext) => {
+    logSuccess(`Hello from Integration Starter! 
+--my-opt: "${c.program.myOpt}"`);
 };
 
 const Task: RnvTask = {
     description: 'Prints hello message',
     fn: taskStarterHello,
     task: 'starter hello',
-    options: RnvTaskOptionPresets.withBase(),
+    options: RnvTaskOptionPresets.withBase([{ key: 'my-opt', description: 'Hello', value: 'value' }]),
     platforms: [],
 };
 

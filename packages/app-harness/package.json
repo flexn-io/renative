@@ -68,6 +68,7 @@
         "@rnv/engine-rn-next": "1.0.0-rc.12",
         "@rnv/engine-rn-tvos": "1.0.0-rc.12",
         "@rnv/engine-rn-web": "1.0.0-rc.12",
+        "@rnv/integration-starter": "1.0.0-rc.12",
         "@rnv/template-starter": "1.0.0-rc.12",
         "@types/react": "18.2.52",
         "@types/react-dom": "18.2.18",

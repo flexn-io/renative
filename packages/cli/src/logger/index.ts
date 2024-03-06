@@ -525,7 +525,7 @@ export const logSuccess = (msg: string) => {
             message: stripAnsi(_sanitizePaths(msg)),
         });
     }
-    logAndSave(currentChalk.magenta(`success:${_getCurrentTask()} ${_sanitizePaths(msg)}`));
+    logAndSave(currentChalk.magenta(`success: ${_getCurrentTask()} ${_sanitizePaths(msg)}`));
 };
 
 export const logError = (e: Error | string | unknown, isEnd = false, skipAnalytics = false) => {

@@ -29,6 +29,7 @@ const VERSIONED_PACKAGES = [
     'sdk-webos',
     'sdk-utils',
     'renative',
+    'integration-docker',
 ];
 
 type PackageConfig = {
