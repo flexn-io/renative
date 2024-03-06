@@ -1,12 +1,18 @@
 import { getAllSuitableTasks } from '..';
 import { createRnvApi, createRnvContext, getContext } from '@rnv/core';
 import { getRegisteredEngines } from '../../engines';
+import { RnvEngine } from '../../engines/types';
+import { RnvTaskMap } from '../types';
+// import { DEFAULT_TASK_DESCRIPTIONS } from '../constants';
 // import { inquirerPrompt } from '../../api';
+
+const runMockedDescription = 'Run your app in jest';
 
 jest.mock('../../engines');
 jest.mock('chalk');
 jest.mock('../../logger');
 jest.mock('../../api');
+jest.mock('../constants', () => ({ DEFAULT_TASK_DESCRIPTIONS: { runMock: runMockedDescription } }));
 
 beforeEach(() => {
     createRnvContext();
@@ -17,168 +23,106 @@ afterEach(() => {
     jest.resetAllMocks();
 });
 
-const mockEngineRegistration = [
-    {
-        tasks: {
-            run: {
-                description: 'Run your app in browser',
-                task: 'run',
-                options: [
-                    {
-                        shortcut: 'i',
-                        value: 'value',
-                        description: 'Show full debug Info',
-                        key: 'info',
-                    },
-                    {
-                        shortcut: 'H',
-                        value: 'value',
-                        isRequired: true,
-                        description: 'custom Host ip',
-                        key: 'host',
-                    },
-                ],
-                platforms: [],
-            },
-            build: {
-                description: 'Build project binary',
-                task: 'build',
-                options: [
-                    {
-                        shortcut: 'i',
-                        value: 'value',
-                        description: 'Show full debug Info',
-                        key: 'info',
-                    },
-                    {
-                        description: 'CI/CD flag so it wont ask questions',
-                        key: 'ci',
-                    },
-                ],
-                platforms: [],
-            },
-            configure: {
-                description: 'Configure current project',
-                task: 'configure',
-                options: [
-                    {
-                        shortcut: 'i',
-                        value: 'value',
-                        description: 'Show full debug Info',
-                        key: 'info',
-                    },
-                ],
-                platforms: [],
-            },
-        },
-        config: {
-            $schema: '../../.rnv/schema/rnv.engine.json',
-            id: 'engine-rn-web',
-            overview: 'React native based engine with web transpiler provided by react-native-web',
-            plugins: {
-                react: 'source:rnv',
-                'react-art': 'source:rnv',
-                'react-dom': 'source:rnv',
-                'react-native': 'source:rnv',
-                'react-native-web': 'source:rnv',
-            },
-            npm: {
-                devDependencies: {},
-            },
-            platforms: {
-                tizen: {
-                    npm: {
-                        dependencies: {
-                            raf: '3.4.1',
-                        },
-                    },
-                },
-                web: {},
-                webtv: {},
-                webos: {},
-                tizenwatch: {},
-                tizenmobile: {},
-                chromecast: {},
-                kaios: {},
-            },
-            engineExtension: 'ext',
-        },
-        projectDirName: '',
-        serverDirName: '',
-        runtimeExtraProps: {},
-        platforms: {
-            web: {
-                defaultPort: 8080,
-                isWebHosted: true,
-                extensions: ['engine-rn-web.jsx'],
-            },
-            chromecast: {
-                defaultPort: 8095,
-                isWebHosted: true,
-                extensions: ['engine-rn-web.jsx'],
-            },
-        },
-        rootPath: 'renative/packages/engine-rn-web',
-        originalTemplatePlatformsDir: 'renative/packages/engine-rn-web/templates/platforms',
-        originalTemplatePlatformProjectDir: 'renative/packages/engine-rn-web/templates/platforms',
-    },
-];
-
-const tasksExpected = {
-    run: {
-        value: 'run',
-        command: 'run',
-        name: 'run (Run your app in browser)',
-        asArray: ['run'],
+const rnvEngineTasksMock: RnvTaskMap = {
+    runMock: {
         description: 'Run your app in browser',
-        params: [
-            { shortcut: 'i', value: 'value', description: 'Show full debug Info', key: 'info' },
-            { shortcut: 'H', value: 'value', isRequired: true, description: 'custom Host ip', key: 'host' },
-        ],
-        providers: ['engine-rn-web'],
+        task: 'runMock',
+        options: [],
+        platforms: [],
     },
-    build: {
-        value: 'build',
-        command: 'build',
-        name: 'build (Build project binary)',
-        asArray: ['build'],
-        description: 'Build project binary',
-        params: [
-            { shortcut: 'i', value: 'value', description: 'Show full debug Info', key: 'info' },
-            { description: 'CI/CD flag so it wont ask questions', key: 'ci' },
-        ],
-        providers: ['engine-rn-web'],
+};
+
+const rnvEngineTasksMock2: RnvTaskMap = {
+    runMock: {
+        description: 'Run your app on android',
+        task: 'runMock',
+        options: [],
+        platforms: [],
     },
-    configure: {
-        value: 'configure',
-        command: 'configure',
-        name: 'configure (Configure current project)',
-        asArray: ['configure'],
-        description: 'Configure current project',
-        params: [{ shortcut: 'i', value: 'value', description: 'Show full debug Info', key: 'info' }],
-        providers: ['engine-rn-web'],
+};
+
+const rnvEngineMock: RnvEngine = {
+    platforms: {
+        web: {
+            extensions: ['engine-rn-web.jsx'],
+            defaultPort: 8080,
+        },
+    },
+    config: {
+        id: 'engine-mock',
+        engineExtension: 'mck',
+        overview: 'Mock engine',
+    },
+    projectDirName: '',
+    runtimeExtraProps: {},
+    serverDirName: '',
+    tasks: rnvEngineTasksMock,
+};
+
+const rnvEngineMock2: RnvEngine = {
+    platforms: {
+        android: {
+            extensions: ['engine-rn.jsx'],
+            defaultPort: 8081,
+        },
+    },
+    config: {
+        id: 'engine-mock2',
+        engineExtension: 'mck2',
+        overview: 'Mock engine two',
+    },
+    projectDirName: '',
+    runtimeExtraProps: {},
+    serverDirName: '',
+    tasks: rnvEngineTasksMock2,
+};
+
+const singleEnginePayload: RnvEngine[] = [rnvEngineMock];
+const dualEnginePayload: RnvEngine[] = [rnvEngineMock, rnvEngineMock2];
+
+const expectedSingleEngineResult = {
+    runMock: {
+        description: runMockedDescription,
+        command: rnvEngineTasksMock.runMock.task,
+        asArray: [rnvEngineTasksMock.runMock.task],
+        isGlobalScope: undefined,
+        isPriorityOrder: undefined,
+        isPrivate: undefined,
+        name: `${rnvEngineTasksMock.runMock.task} (${runMockedDescription})`,
+        params: [],
+        providers: [rnvEngineMock.config.id],
+        subCommand: undefined,
+        value: rnvEngineTasksMock.runMock.task,
+    },
+};
+
+const expectedDualEngineResult = {
+    runMock: {
+        ...expectedSingleEngineResult.runMock,
+        isPriorityOrder: true,
+        providers: [rnvEngineMock.config.id, rnvEngineMock2.config.id],
     },
 };
 
 describe('Get suitable tasks', () => {
-    it('should return empty when no engines are registered', () => {
+    it('should return all tasks for given engines', () => {
         // GIVEN
         const c = getContext();
-        jest.mocked(getRegisteredEngines).mockReturnValue([]);
+        jest.mocked(getRegisteredEngines).mockReturnValue(singleEnginePayload);
         // WHEN
         const result = getAllSuitableTasks(c);
         // THEN
-        expect(result).toEqual({});
+        expect(result).toEqual(expectedSingleEngineResult);
     });
 
     it('should return all tasks when all engines are registered', () => {
         // GIVEN
         const c = getContext();
-        jest.mocked(getRegisteredEngines).mockReturnValue(mockEngineRegistration);
+        jest.mocked(getRegisteredEngines).mockReturnValue(dualEnginePayload);
         // WHEN
         const result = getAllSuitableTasks(c);
         // THEN
-        expect(result).toEqual(tasksExpected);
+        expect(result).toEqual(expectedDualEngineResult);
     });
 });
 
