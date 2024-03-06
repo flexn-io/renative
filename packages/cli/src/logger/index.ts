@@ -559,9 +559,9 @@ export const logError = (e: Error | string | unknown, isEnd = false, skipAnalyti
             message: stripAnsi(_sanitizePaths(err)),
         });
     } else if (e && e instanceof Error && e.message) {
-        logAndSave(currentChalk.red(`error:${_getCurrentTask()} ${e.message}\n${e.stack}`), isEnd);
+        logAndSave(currentChalk.red(`error: ⨯ ${_getCurrentTask()} ${e.message}\n${e.stack}`), isEnd);
     } else {
-        logAndSave(currentChalk.red(`error:${_getCurrentTask()} ${e}`), isEnd);
+        logAndSave(currentChalk.red(`error: ⨯ ${_getCurrentTask()} ${e}`), isEnd);
     }
 
     ctx.runtime.keepSessionActive = false;
