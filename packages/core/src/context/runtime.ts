@@ -1,14 +1,17 @@
+import path from 'path';
 import { getEngineRunnerByPlatform } from '../engines';
 import { isSystemWin } from '../system/is';
-import { getRealPath } from '../system/fs';
+import { fsExistsSync, fsReadFileSync, getRealPath } from '../system/fs';
 import { RnvContext, RnvContextPlatform } from './types';
 import { generateRuntimePropInjects } from '../system/injectors';
 import { getConfigProp } from './contextProps';
-import { logDefault } from '../logger';
+import { logDebug, logDefault } from '../logger';
 
 export const configureRuntimeDefaults = async (c: RnvContext) => {
-    c.runtime.appId = c.files.project?.configLocal?._meta?.currentAppConfigId;
-
+    c.runtime.appId = c.files.project?.configLocal?._meta?.currentAppConfigId || _getAppId(c);
+    if (c.runtime.appId) {
+        c.runtime.appConfigDir = path.join(c.paths.project.appConfigsDir, c.runtime.appId);
+    }
     logDefault('configureRuntimeDefaults', `appId:${c.runtime.appId}`);
 
     // TODO:
@@ -76,4 +79,19 @@ export const configureRuntimeDefaults = async (c: RnvContext) => {
         }
     }
     return true;
+};
+
+const _getAppId = (c: RnvContext) => {
+    logDebug(`_getAppId`);
+    const localConfigPath = path.join(c.paths.project.dir, 'renative.local.json');
+    if (!fsExistsSync(localConfigPath)) return undefined;
+    try {
+        const fileAsString = fsReadFileSync(localConfigPath).toString();
+        if (!fileAsString) return undefined;
+
+        const appId = JSON.parse(fileAsString)?._meta?.currentAppConfigId;
+        return appId;
+    } catch (error) {
+        return undefined;
+    }
 };
