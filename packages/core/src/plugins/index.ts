@@ -685,7 +685,6 @@ const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
     }
 
     // const parentDest = path.join(dir, '..')
-    // console.log('SKSLSL', dir, dest);
 };
 
 export const overrideFileContents = (dest: string, override: Record<string, string>, overridePath = '') => {

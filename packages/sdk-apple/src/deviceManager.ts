@@ -96,7 +96,6 @@ const _parseNewIOSDevicesList = (
         }
         return 'Apple Device';
     };
-    console.log('SSSSSSS2', rawDevices);
 
     return rawDevices.map((device) => {
         const { DeviceName, ProductVersion, udid } = device;
@@ -201,7 +200,6 @@ export const launchAppleSimulator = async (c: RnvContext, target: string | boole
     } else if (target !== true && target !== undefined) {
         logWarning(`Your specified simulator target ${chalk().bold(target)} doesn't exist`);
     }
-    console.log('SSSSSSS3', devicesArr);
 
     const devices = devicesArr.map((v) => ({
         name: `${v.name} | ${v.icon} | v: ${chalk().green(v.version)} | udid: ${chalk().grey(v.udid)}${
