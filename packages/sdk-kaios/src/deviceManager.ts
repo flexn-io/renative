@@ -11,7 +11,7 @@ export const launchKaiOSSimulator = (c: RnvContext) =>
                 `KAIOS_SDK is not configured in your ${
                     c.paths.workspace.config
                 } file. Make sure you add location to your Kaiosrt App path similar to: ${chalk().white.bold(
-                    '"KAIOS_SDK": "/Applications/Kaiosrt.app"'
+                    '"KAIOS_SDK": "/Users/<USER>/Library/kaiosrt/kaiosrt"'
                 )}`
             );
             return;
@@ -20,11 +20,11 @@ export const launchKaiOSSimulator = (c: RnvContext) =>
         const ePath = getRealPath(c, c.buildConfig?.sdks?.KAIOS_SDK);
 
         if (ePath && !fsExistsSync(ePath)) {
-            reject(`Can't find emulator at path: ${ePath}`);
+            reject(`Can't find simulator at path: ${ePath}`);
             return;
         }
 
-        childProcess.exec(`open ${ePath}`, (err: RnvError) => {
+        childProcess.exec(`${ePath}`, (err: RnvError) => {
             if (err) {
                 reject(err);
                 return;
