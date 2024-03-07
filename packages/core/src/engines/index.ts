@@ -378,6 +378,7 @@ export const loadEngines = async (c: RnvContext, failOnMissingDeps?: boolean): P
             }
         } else {
             readyEngines.push(k);
+            logInfo(`Engine ${k} found at ${engineRootPath}`);
             engineConfigs.push({
                 key: k,
                 engineRootPath,

@@ -18,6 +18,14 @@ export const executeRnvCore = async () => {
     if (c.program.npxMode) {
         return;
     }
+
+    // Special Case for engine-core tasks
+    // they don't require other engines to be loaded if isGlobalScope = true
+    const initTask = await findSuitableTask(c);
+    if (initTask?.task && initTask.isGlobalScope) {
+        return initializeTask(c, initTask?.task);
+    }
+
     await loadIntegrations(c);
     const result = await loadEngines(c);
 

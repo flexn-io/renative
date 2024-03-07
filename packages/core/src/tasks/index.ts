@@ -281,7 +281,7 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
 
         if (CUSTOM_TASKS[task]) {
             // Custom tasks are executed by core engine
-            logInfo(`Running custom task ${task}`);
+            logInfo(`Running custom task ${chalk().bold(task)}`);
         } else if (!suitableEngines.length) {
             if (!c.runtime.hasAllEnginesRegistered) {
                 // No platform was specified. we have no option other than load all engines and offer platform list next round
