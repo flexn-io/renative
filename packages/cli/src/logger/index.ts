@@ -240,27 +240,27 @@ export const logSummary = (header = '✔ SUMMARY') => {
 
     // str += printIntoBox(`ReNative Version: ${_highlightColor(ctx.rnvVersion)}`);
     if (ctx.files?.project?.package?.name && ctx.files?.project?.package?.version) {
-        str += printIntoBox(`Project Name ($package.name): ${_highlightColor(ctx.files.project.package.name)}`);
         str += printIntoBox(
-            `Project Version ($package.version): ${_highlightColor(ctx.files.project.package.version)}`
+            `Project: ${currentChalk.gray(`${ctx.files.project.package.name}@${ctx.files.project.package.version}`)}`
         );
+        // str += printIntoBox(`Project Version: ${currentChalk.gray(ctx.files.project.package.version)}`);
     }
 
     if (ctx.buildConfig?.workspaceID) {
-        str += printIntoBox(`Workspace ($.workspaceID): ${_highlightColor(ctx.buildConfig.workspaceID)}`);
+        str += printIntoBox(`Workspace: ${currentChalk.gray(ctx.buildConfig.workspaceID)}`);
     }
     if (ctx.platform) {
         str += printIntoBox(`Platform (-p): ${_highlightColor(ctx.platform)}`);
     }
     if (ctx.runtime?.engine) {
-        let addon = '';
-        if (ctx.platform) {
-            addon = ` ($.platforms.${ctx.platform}.engine)`;
-        }
-        str += printIntoBox(`Engine${addon}: ${_highlightColor(ctx.runtime?.engine?.config?.id || '')}`);
+        // let addon = '';
+        // if (ctx.platform) {
+        //     addon = ` ($.platforms.${ctx.platform}.engine)`;
+        // }
+        str += printIntoBox(`Engine: ${_highlightColor(ctx.runtime?.engine?.config?.id || '')}`);
     }
     if (ctx.runtime?.activeTemplate) {
-        str += printIntoBox(`Template: ${_highlightColor(ctx.runtime?.activeTemplate)}`);
+        str += printIntoBox(`Template: ${currentChalk.gray(ctx.runtime?.activeTemplate)}`);
     }
     if (ctx.buildConfig?._meta?.currentAppConfigId) {
         str += printIntoBox(`App Config (-c): ${_highlightColor(ctx.buildConfig._meta?.currentAppConfigId)}`);
@@ -283,7 +283,9 @@ export const logSummary = (header = '✔ SUMMARY') => {
         str += printIntoBox(`Reset Project and Assets (-R): ${_highlightColor(!!ctx.program?.resetHard)}`);
     }
     if (ctx.runtime?.supportedPlatforms?.length) {
-        const plats = ctx.runtime.supportedPlatforms.map((v) => `${v.platform}${v.isConnected ? '' : '(ejected)'}`);
+        const plats = ctx.runtime.supportedPlatforms.map(
+            (v) => `${currentChalk.gray(v.platform)}${v.isConnected ? '' : '(ejected)'}`
+        );
         str += printArrIntoBox(plats, 'Supported Platforms: ');
     }
 
@@ -293,7 +295,9 @@ export const logSummary = (header = '✔ SUMMARY') => {
     }
 
     if (ctx.timeEnd) {
-        str += printIntoBox(`Executed Time: ${_msToTime(ctx.timeEnd.getTime() - ctx.timeStart.getTime())}`);
+        str += printIntoBox(
+            `Executed Time: ${currentChalk.gray(_msToTime(ctx.timeEnd.getTime() - ctx.timeStart.getTime()))}`
+        );
     }
 
     // str += printIntoBox('');
@@ -302,8 +306,9 @@ export const logSummary = (header = '✔ SUMMARY') => {
 
     // str += printIntoBox('');
     if (ctx.runtime?.platformBuildsProjectPath) {
-        str += printIntoBox('Project location:');
-        str += printIntoBox(`${currentChalk.bold(_sanitizePaths(ctx.runtime.platformBuildsProjectPath || ''))}`);
+        str += printIntoBox(
+            `Project location: ${currentChalk.gray(_sanitizePaths(ctx.runtime.platformBuildsProjectPath || ''))}`
+        );
     }
     str += printBoxEnd();
 
