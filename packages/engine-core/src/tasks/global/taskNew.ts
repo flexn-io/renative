@@ -506,6 +506,11 @@ const taskNew = async (c: RnvContext) => {
         cwd: c.paths.project.dir,
     });
 
+    // Add xmlbuilder  before the first run
+    await executeAsync(`${isYarnInstalled() ? 'yarn' : 'npm'} add xmlbuilder@^15.1.1`, {
+        cwd: c.paths.project.dir,
+    });
+
     // Check if node_modules folder exists
     if (!fsExistsSync(path.join(c.paths.project.dir, 'node_modules'))) {
         logError(
