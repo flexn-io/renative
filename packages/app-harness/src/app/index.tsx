@@ -10,6 +10,7 @@ import { addNotificationListeners, removeNotificationListeners } from '../compon
 import { requestPermissions } from '../components/Permissions';
 import { TestCase } from '../components/TestCase';
 import { useLogger } from '../hooks/useLogger';
+import config from '../../package.json';
 
 const App = () => {
     const [showVideo, setShowVideo] = useState(false);
@@ -53,7 +54,7 @@ const App = () => {
                 </Text>
                 <View style={{ flex: 1, alignItems: 'flex-end' }}>
                     <Text style={{ color: 'black' }}>
-                        {`v1.0.0-rc.12, platform: ${Api.platform}, factor: ${Api.formFactor}, engine: ${Api.engine}`}
+                        {`v${config.version}, platform: ${Api.platform}, factor: ${Api.formFactor}, engine: ${Api.engine}`}
                     </Text>
                 </View>
             </View>
