@@ -391,24 +391,18 @@ module.exports = function (webpackEnv) {
                             options: {
                                 // customize: require.resolve('babel-preset-react-app/webpack-overrides'),
                                 presets: [
-                                    // [
-                                    //     require.resolve('babel-preset-react-app'),
-                                    //     {
-                                    //         runtime: hasJsxRuntime ? 'automatic' : 'classic',
-                                    //     },
-                                    // ],
+                                    [
+                                        '@babel/preset-env',
+                                        {
+                                            useBuiltIns: 'usage',
+                                            corejs: '3.3',
+                                            loose: true,
+                                        },
+                                    ],
                                     [
                                         '@babel/preset-react',
                                         {
                                             runtime: 'automatic',
-                                        },
-                                    ],
-                                    [
-                                        '@babel/preset-env',
-                                        {
-                                            useBuiltIns: 'entry',
-                                            corejs: '3.36',
-                                            loose: true,
                                         },
                                     ],
                                 ],
@@ -441,14 +435,6 @@ module.exports = function (webpackEnv) {
                                         '@babel/preset-react',
                                         {
                                             runtime: 'automatic',
-                                        },
-                                    ],
-                                    [
-                                        '@babel/preset-env',
-                                        {
-                                            useBuiltIns: 'entry',
-                                            corejs: '3.36',
-                                            loose: true,
                                         },
                                     ],
                                 ],
