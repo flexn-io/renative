@@ -403,6 +403,14 @@ module.exports = function (webpackEnv) {
                                             runtime: 'automatic',
                                         },
                                     ],
+                                    [
+                                        '@babel/preset-env',
+                                        {
+                                            useBuiltIns: 'entry',
+                                            corejs: '3.36',
+                                            loose: true,
+                                        },
+                                    ],
                                 ],
 
                                 plugins: [
@@ -433,6 +441,14 @@ module.exports = function (webpackEnv) {
                                         '@babel/preset-react',
                                         {
                                             runtime: 'automatic',
+                                        },
+                                    ],
+                                    [
+                                        '@babel/preset-env',
+                                        {
+                                            useBuiltIns: 'entry',
+                                            corejs: '3.36',
+                                            loose: true,
                                         },
                                     ],
                                 ],
