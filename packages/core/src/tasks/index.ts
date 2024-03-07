@@ -9,7 +9,7 @@ import {
     registerAllPlatformEngines,
 } from '../engines';
 import type { RnvContext } from '../context/types';
-import type { RnvTask, RnvTaskMap, TaskItemMap, TaskObj, TaskPromptOption } from './types';
+import type { RnvTask, RnvTaskMap, RnvTaskOption, TaskItemMap, TaskObj, TaskPromptOption } from './types';
 import type { RnvEngine } from '../engines/types';
 import { inquirerPrompt, inquirerSeparator, pressAnyKeyToContinue } from '../api';
 import { getApi } from '../api/provider';
@@ -328,22 +328,32 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
     return getEngineTask(task, c.runtime.engine?.tasks);
 };
 
+export const generateStringFromTaskOption = (opt: RnvTaskOption) => {
+    let cmd = '';
+    if (opt.shortcut) {
+        cmd += `-${opt.shortcut}, `;
+    }
+    cmd += `--${opt.key}`;
+    if (opt.isVariadic) {
+        if (opt.isRequired) {
+            cmd += ` <value...>`;
+        } else {
+            cmd += ` [value...]`;
+        }
+    } else if (opt.isValueType) {
+        if (opt.isRequired) {
+            cmd += ` <value>`;
+        } else {
+            cmd += ` [value]`;
+        }
+    }
+    return cmd;
+};
+
 const _populateExtraParameters = (c: RnvContext, task: RnvTask) => {
     if (task.options) {
-        task.options.forEach((param) => {
-            let cmd = '';
-            if (param.shortcut) {
-                cmd += `-${param.shortcut}, `;
-            }
-            cmd += `--${param.key}`;
-            if (param.value) {
-                if (param.isRequired) {
-                    cmd += ` <${param.value}>`;
-                } else {
-                    cmd += ` [${param.value}]`;
-                }
-            }
-            c.program.option?.(cmd, param.description);
+        task.options.forEach((opt) => {
+            c.program.option?.(generateStringFromTaskOption(opt), opt.description);
         });
         c.program.parse?.(process.argv);
     }

@@ -9,7 +9,7 @@ const Task: RnvTask = {
     description: 'Prints hello message',
     fn: task,
     task: 'starter hello',
-    options: RnvTaskOptionPresets.withBase([{ key: 'my-opt', description: 'Hello', value: 'value' }]),
+    options: RnvTaskOptionPresets.withBase([{ key: 'my-opt', description: 'Hello', isValueType: true }]),
     platforms: [],
 };
 

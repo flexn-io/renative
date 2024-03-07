@@ -13,7 +13,7 @@ export const DEFAULT_TASK_DESCRIPTIONS: Record<string, string> = {
 export const RnvTaskOptions: Record<string, RnvTaskOption> = {
     info: {
         shortcut: 'i',
-        value: 'value',
+        isValueType: true,
         description: 'Show full debug Info',
     },
     printExec: {
@@ -25,66 +25,66 @@ export const RnvTaskOptions: Record<string, RnvTaskOption> = {
     },
     platform: {
         shortcut: 'p',
-        value: 'value',
+        isValueType: true,
         description: 'select specific Platform',
     },
     appConfigID: {
         shortcut: 'c',
-        value: 'value',
+        isValueType: true,
         description: 'select specific app Config id',
     },
     target: {
         shortcut: 't',
-        value: 'value',
+        isValueType: true,
         description: 'select specific Target device/simulator',
     },
     projectName: {
-        value: 'value',
+        isValueType: true,
         description: 'select the name of the new project',
     },
     projectTemplate: {
-        value: 'value',
+        isValueType: true,
         description: 'select the template of new project',
     },
     templateVersion: {
-        value: 'value',
+        isValueType: true,
         description: 'select the template version',
     },
     title: {
-        value: 'value',
+        isValueType: true,
         description: 'select the title of the app',
     },
     id: {
-        value: 'value',
+        isValueType: true,
         description: 'select the id of the app',
     },
     appVersion: {
-        value: 'value',
+        isValueType: true,
         description: 'select the version of the app',
     },
     workspace: {
-        value: 'value',
+        isValueType: true,
         description: 'select the workspace for the new project',
     },
     template: {
         shortcut: 'T',
-        value: 'value',
+        isValueType: true,
         isRequired: true,
         description: 'select specific template',
     },
     device: {
         shortcut: 'd',
-        value: 'value',
+        isValueType: true,
         description: 'select connected Device',
     },
     scheme: {
         shortcut: 's',
-        value: 'value',
+        isValueType: true,
         description: 'select build Scheme',
     },
     filter: {
         shortcut: 'f',
-        value: 'value',
+        isValueType: true,
         isRequired: true,
         description: 'Filter value',
     },
@@ -110,13 +110,13 @@ export const RnvTaskOptions: Record<string, RnvTaskOption> = {
     },
     key: {
         shortcut: 'k',
-        value: 'value',
+        isValueType: true,
         isRequired: true,
         description: 'Pass the key/password',
     },
     blueprint: {
         shortcut: 'b',
-        value: 'value',
+        isValueType: true,
         description: 'Blueprint for targets',
     },
     help: {
@@ -125,24 +125,24 @@ export const RnvTaskOptions: Record<string, RnvTaskOption> = {
     },
     host: {
         shortcut: 'H',
-        value: 'value',
+        isValueType: true,
         isRequired: true,
         description: 'custom Host ip',
     },
     exeMethod: {
         shortcut: 'x',
-        value: 'value',
+        isValueType: true,
         description: 'eXecutable method in buildHooks',
     },
     port: {
         shortcut: 'P',
-        value: 'value',
+        isValueType: true,
         isRequired: true,
         description: 'custom Port',
     },
     debug: {
         shortcut: 'D',
-        value: 'value',
+        isValueType: true,
         description: 'enable or disable remote debugger.',
         examples: [
             '--debug weinre //run remote debug with weinre as preference',
@@ -157,12 +157,12 @@ export const RnvTaskOptions: Record<string, RnvTaskOption> = {
     },
     engine: {
         shortcut: 'e',
-        value: 'value',
+        isValueType: true,
         isRequired: true,
         description: 'engine to be used (next)',
     },
     debugIp: {
-        value: 'value',
+        isValueType: true,
         isRequired: true,
         description: '(optional) overwrite the ip to which the remote debugger will connect',
     },
@@ -176,22 +176,22 @@ export const RnvTaskOptions: Record<string, RnvTaskOption> = {
         description: 'Skip sending any integrated notifications',
     },
     keychain: {
-        value: 'value',
+        isValueType: true,
         isRequired: true,
         description: 'Name of the keychain',
     },
     provisioningStyle: {
-        value: 'value',
+        isValueType: true,
         isRequired: true,
         description: 'Set provisioningStyle (Automatic | Manual)',
     },
     codeSignIdentity: {
-        value: 'value',
+        isValueType: true,
         isRequired: true,
         description: 'Set codeSignIdentity (ie iPhone Distribution)',
     },
     provisionProfileSpecifier: {
-        value: 'value',
+        isValueType: true,
         isRequired: true,
         description: 'Name of provisionProfile',
     },
@@ -202,7 +202,7 @@ export const RnvTaskOptions: Record<string, RnvTaskOption> = {
         description: 'Force rebuild hooks',
     },
     maxErrorLength: {
-        value: 'number',
+        isValueType: true,
         isRequired: true,
         description: 'Specify how many characters each error should display. Default 200',
     },
@@ -213,17 +213,17 @@ export const RnvTaskOptions: Record<string, RnvTaskOption> = {
         description: 'Enable real-time bundle analyzer',
     },
     xcodebuildArgs: {
-        value: 'value',
+        isValueType: true,
         isRequired: true,
         description: 'pass down custom xcodebuild arguments',
     },
     xcodebuildArchiveArgs: {
-        value: 'value',
+        isValueType: true,
         isRequired: true,
         description: 'pass down custom xcodebuild arguments',
     },
     xcodebuildExportArgs: {
-        value: 'value',
+        isValueType: true,
         isRequired: true,
         description: 'pass down custom xcodebuild arguments',
     },
@@ -234,17 +234,17 @@ export const RnvTaskOptions: Record<string, RnvTaskOption> = {
         description: 'Skips auto update of rnv dependencies if mismatch found',
     },
     configName: {
-        value: 'value',
+        isValueType: true,
         isRequired: true,
         description: 'Use custom name for ./renative.json. (applies only at root level)',
     },
     sourceAppConfigID: {
-        value: 'value',
+        isValueType: true,
         isRequired: true,
         description: 'name of source appConfig folder to copy from',
     },
     hostIp: {
-        value: 'value',
+        isValueType: true,
         isRequired: true,
         description: 'Custom IP override',
     },
@@ -256,7 +256,7 @@ export const RnvTaskOptions: Record<string, RnvTaskOption> = {
     },
     gitEnabled: {
         description: 'Enable git in your newly created project',
-        value: 'value',
+        isValueType: true,
     },
     npxMode: {
         description: 'Ensures you can use local npx rnv version after the command is done',
@@ -265,23 +265,23 @@ export const RnvTaskOptions: Record<string, RnvTaskOption> = {
         description: 'Outputs the result as json',
     },
     packageManager: {
-        value: 'value',
+        isValueType: true,
         isRequired: true,
         options: ['yarn', 'npm'],
         description: 'Set specific package manager to use',
         examples: ['--packageManager yarn', '--packageManager npm'],
     },
     skipTasks: {
-        value: 'value',
+        isValueType: true,
         isRequired: true,
         description: 'List tasks which you want to skip during rnv execution',
         examples: ['--skipTasks "configure,export"', '--skipTasks deploy'],
     },
     answer: {
-        value: 'value',
-        variadic: true,
+        isValueType: true,
+        isVariadic: true,
         description: 'Pass in answers to prompts',
-        examples: ['--answer question=response --answer question2=response2', '--answer question=\'{"some": "json"}\''],
+        examples: ['--answer question=response question2=response2', '--answer question=\'{"some": "json"}\''],
     },
     resetAdb: {
         description: 'Forces to reset android adb',

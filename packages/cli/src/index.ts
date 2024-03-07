@@ -1,7 +1,7 @@
 import program from 'commander';
 import fs from 'fs';
 import path from 'path';
-import { logComplete, logError, getContext, RnvTaskOptionPresets } from '@rnv/core';
+import { logComplete, logError, getContext, RnvTaskOptionPresets, generateStringFromTaskOption } from '@rnv/core';
 import Spinner from './ora';
 import Prompt from './prompt';
 import Logger from './logger';
@@ -29,22 +29,7 @@ export const run = () => {
     program.version(packageJson.version, '-v, --version', 'output current version');
 
     RnvTaskOptionPresets.withAll().forEach((param) => {
-        let cmd = '';
-        if (param.shortcut) {
-            cmd += `-${param.shortcut}, `;
-        }
-        cmd += `--${param.key}`;
-
-        if (param.value) {
-            if (param.isRequired) {
-                cmd += ` <${param.value}>`;
-            } else if (param.variadic) {
-                cmd += ` [${param.value}...]`;
-            } else {
-                cmd += ` [${param.value}]`;
-            }
-        }
-        program.option(cmd, param.description);
+        program.option(generateStringFromTaskOption(param), param.description);
     });
 
     program.allowUnknownOption(true); // integration options are not known ahead of time
