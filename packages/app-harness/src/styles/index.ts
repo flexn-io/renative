@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     header: {
         marginTop: isPlatformIos ? 50 : 0, // TODO: remove once safe area view is implemented
         flexDirection: 'row',
-        height: 50,
+        height: 60,
         backgroundColor: 'white',
         borderBottomColor: 'black',
         borderBottomWidth: 1,

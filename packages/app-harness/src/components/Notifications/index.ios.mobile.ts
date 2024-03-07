@@ -1,24 +1,23 @@
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
-import { logDebug } from '../Logger';
 
-export const addNotificationListeners = () => {
+export const addNotificationListeners = (logDebug: (message: string) => void) => {
     PushNotificationIOS.requestPermissions();
     PushNotificationIOS.addEventListener('notification', onRemoteNotification);
-    PushNotificationIOS.addEventListener('register', onRegistered);
-    PushNotificationIOS.addEventListener('registrationError', onError);
+    PushNotificationIOS.addEventListener('register', onRegistered(logDebug));
+    PushNotificationIOS.addEventListener('registrationError', onError(logDebug));
 };
 
-export const removeNotificationListeners = () => {
+export const removeNotificationListeners = (logDebug: (message: string) => void) => {
     PushNotificationIOS.removeEventListener('notification');
     PushNotificationIOS.removeEventListener('register');
     PushNotificationIOS.removeEventListener('registrationError');
 };
 
-const onRegistered = (deviceToken) => {
+const onRegistered = (logDebug) => (deviceToken) => {
     logDebug(`Device Token: ${deviceToken}`);
 };
 
-const onError = (error) => {
+const onError = (logDebug) => (error) => {
     logDebug(`Error on notification register: ${error}`);
 };
 

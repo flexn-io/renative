@@ -9,17 +9,33 @@ import styles from '../styles';
 import { addNotificationListeners, removeNotificationListeners } from '../components/Notifications';
 import { requestPermissions } from '../components/Permissions';
 import { TestCase } from '../components/TestCase';
+import { useLogger } from '../hooks/useLogger';
 
 const App = () => {
     const [showVideo, setShowVideo] = useState(false);
+    const { logDebug, logs } = useLogger();
+
     useEffect(() => {
-        SplashScreen.hide();
-        addNotificationListeners();
+        if (typeof SplashScreen === 'function') {
+            SplashScreen(logDebug).hide();
+        } else {
+            (SplashScreen as any)?.hide();
+        }
+        addNotificationListeners(logDebug);
 
         return () => {
-            removeNotificationListeners();
+            removeNotificationListeners(logDebug);
         };
     }, []);
+
+    const handleRequestPermissions = async () => {
+        try {
+            const permission = await requestPermissions();
+            logDebug(`Permissions: ${permission}`);
+        } catch (error) {
+            logDebug(`${error}`);
+        }
+    };
 
     return (
         <View style={{ flex: 1 }}>
@@ -56,13 +72,13 @@ const App = () => {
                         }`}</Text>
                     </TestCase>
                     <TestCase id={2} title="Native call">
-                        <NewModuleButton />
+                        <NewModuleButton handleLogs={logDebug} />
                     </TestCase>
                     <TestCase id={3} title="Orientation support ">
                         <OrientationLocker
                             orientation={PORTRAIT}
-                            onChange={(orientation) => console.log('onChange', orientation)}
-                            onDeviceChange={(orientation) => console.log('onDeviceChange', orientation)}
+                            onChange={(orientation) => logDebug(`onChange ${orientation}`)}
+                            onDeviceChange={(orientation) => logDebug(`onDeviceChange ${orientation}`)}
                         />
                         <Button title="Toggle Video" onPress={() => setShowVideo(!showVideo)} />
                         {showVideo && (
@@ -75,25 +91,35 @@ const App = () => {
                         )}
                     </TestCase>
                     <TestCase id={4} title="Permissions">
-                        <Button onPress={requestPermissions} title="Request permissions" />
+                        <Button onPress={handleRequestPermissions} title="Request permissions" />
                     </TestCase>
                     <TestCase id={5} title="Image Support">
                         <Image source={ICON_LOGO} style={{ width: 100, height: 100 }} />
                     </TestCase>
                 </ScrollView>
             </View>
-            <View
+            <ScrollView
                 style={{
                     backgroundColor: '#EEEEEE',
-                    height: 100,
+                    maxHeight: '20%',
                     width: '100%',
                     borderTopWidth: 1,
                     borderTopColor: 'black',
                     padding: 10,
                 }}
+                contentContainerStyle={{
+                    paddingBottom: 10,
+                }}
             >
-                <Text style={{ color: 'black' }}>Logs:</Text>
-            </View>
+                <Text style={{ color: 'black' }}>{`Logs: `}</Text>
+                {logs.length
+                    ? logs.map((it, idx) => (
+                          <Text key={idx} style={{ color: 'black' }}>
+                              {`${idx + 1}. ${it}`}
+                          </Text>
+                      ))
+                    : null}
+            </ScrollView>
         </View>
     );
 };
