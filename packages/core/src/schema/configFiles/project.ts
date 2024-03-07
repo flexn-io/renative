@@ -205,6 +205,12 @@ const Paths = z
     })
     .describe('Define custom paths for RNV to look into');
 
+const UseTemplate = z.object({
+    name: z.string(),
+    version: z.string(),
+    excludedPaths: z.optional(z.array(z.string())),
+});
+
 //LEVEl 0 (ROOT)
 
 const RootProjectBaseFragment = {
@@ -212,6 +218,7 @@ const RootProjectBaseFragment = {
     projectVersion: z.string(),
     projectName: ProjectName,
     isMonorepo: z.optional(IsMonoRepo),
+    useTemplate: z.optional(UseTemplate),
     isTemplate: z.boolean().optional(),
     defaults: z.optional(DefaultsSchema),
     pipes: z.optional(Pipes),

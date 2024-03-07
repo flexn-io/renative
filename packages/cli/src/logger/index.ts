@@ -257,7 +257,7 @@ export const logSummary = (header = '✔ SUMMARY') => {
         // if (ctx.platform) {
         //     addon = ` ($.platforms.${ctx.platform}.engine)`;
         // }
-        str += printIntoBox(`Engine: ${_highlightColor(ctx.runtime?.engine?.config?.id || '')}`);
+        str += printIntoBox(`Engine: ${currentChalk.gray(ctx.runtime?.engine?.config?.id || '')}`);
     }
     if (ctx.runtime?.activeTemplate) {
         str += printIntoBox(`Template: ${currentChalk.gray(ctx.runtime?.activeTemplate)}`);

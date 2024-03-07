@@ -211,8 +211,14 @@ export const configureTemplateFiles = async (c: RnvContext) => {
     const templateConfig = readObjectSync<ConfigFileTemplate>(c.paths.template.configTemplate);
 
     const includedPaths = templateConfig?.templateConfig?.includedPaths;
+    const excludedPaths = c.buildConfig.useTemplate?.excludedPaths;
+
     if (includedPaths) {
         includedPaths.forEach((name: string) => {
+            if (excludedPaths && excludedPaths.includes(name)) {
+                logDebug(`Skipping file ${chalk().bold(name)} due to exclusion`);
+                return;
+            }
             if (c.paths.template.dir) {
                 const sourcePath = path.join(c.paths.template.dir, name);
                 const destPath = path.join(c.paths.project.dir, name);

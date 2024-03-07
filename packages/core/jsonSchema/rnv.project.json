@@ -19,6 +19,28 @@
           "type": "boolean",
           "description": "Mark if your project is part of monorepo"
         },
+        "useTemplate": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            },
+            "excludedPaths": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "name",
+            "version"
+          ],
+          "additionalProperties": false
+        },
         "isTemplate": {
           "type": "boolean"
         },
