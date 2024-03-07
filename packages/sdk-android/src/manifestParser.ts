@@ -241,21 +241,6 @@ export const parseAndroidManifestSync = (c: Context) => {
             }
         });
 
-        // PARSE renative.json plugins
-        parsePlugins(
-            c,
-            platform,
-            (_, pluginPlat) => {
-                const androidManifest = getFlavouredProp(c, pluginPlat, 'templateAndroid')?.AndroidManifest_xml;
-                if (androidManifest?.children) {
-                    _mergeNodeChildren(baseManifestFile, androidManifest.children);
-                }
-            },
-            true,
-            true
-        );
-        //TODO: Should be mark as deprecated
-
         // appConfigs/base/plugins.json PLUGIN CONFIG OVERRIDES
         parsePlugins(c, platform, (_plugin, pluginPlat) => {
             const androidManifestPlugin = getFlavouredProp(c, pluginPlat, 'templateAndroid')?.AndroidManifest_xml;
