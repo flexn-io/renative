@@ -294,7 +294,7 @@ def keystoreProps = new Properties()
 keystoreProps.load(new FileInputStream(keystorePropsFile))`;
         } else {
             logWarning(
-                `Your ${chalk().white(
+                `Your ${chalk().bold(
                     keystorePathFull
                 )} does not exist. You won't be able to make production releases without it!`
             );
@@ -304,11 +304,11 @@ keystoreProps.load(new FileInputStream(keystorePropsFile))`;
         if (!keyAlias) missingKeys.push('keyAlias');
         if (!storePassword) missingKeys.push('storePassword');
         if (!keyPassword) missingKeys.push('keyPassword');
-        logWarning(`You defined store file ${chalk().white(
+        logWarning(`You defined store file ${chalk().bold(
             storeFile
         )}, but you are missing following keys: ${chalk().red(missingKeys.join(', '))}
 Check your private files at:
-${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
+${chalk().bold(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
     }
 
     // BUILD_TYPES
@@ -780,7 +780,7 @@ const _fixAndroidLegacy = (c: RnvContext, modulePath: string) => {
 //             output.parentFolder = c.paths.workspace.appConfig.dir;
 //             output.path = privateConfigPath;
 //             logInfo(
-//                 `Found ${chalk().white(privateConfigPath)}. Will use it for production releases!`,
+//                 `Found ${chalk().bold(privateConfigPath)}. Will use it for production releases!`,
 //             );
 //             return output;
 //         } catch (e) {
@@ -789,7 +789,7 @@ const _fixAndroidLegacy = (c: RnvContext, modulePath: string) => {
 //         }
 //     } else {
 //         logWarning(
-//             `You're missing ${chalk().white(privateConfigPath)} for this app: . You won't be able to make production releases without it!`,
+//             `You're missing ${chalk().bold(privateConfigPath)} for this app: . You won't be able to make production releases without it!`,
 //         );
 //         return null;
 //     }

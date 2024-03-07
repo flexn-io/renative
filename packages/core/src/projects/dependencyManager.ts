@@ -154,14 +154,14 @@ export const injectPlatformDependencies = async (c: RnvContext) => {
             const { isMonorepo } = c.buildConfig;
             if (isMonorepo) {
                 logInfo(
-                    `Found extra npm dependencies required by ${chalk().white(
+                    `Found extra npm dependencies required by ${chalk().bold(
                         engine.config.id
                     )} engine. project marked as monorepo. SKIPPING`
                 );
             } else {
                 // do npm i only if something new is added
                 logInfo(
-                    `Found extra npm dependencies required by ${chalk().white(engine.config.id)} engine. ADDING...DONE`
+                    `Found extra npm dependencies required by ${chalk().bold(engine.config.id)} engine. ADDING...DONE`
                 );
                 await installPackageDependencies(c);
                 await overrideTemplatePlugins(c);

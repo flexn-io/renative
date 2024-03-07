@@ -142,7 +142,7 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: SDKKe
     }
 
     if (result) {
-        logSuccess(`Found existing ${chalk().white(sdkKey)} location at ${chalk().white(result)}`);
+        logSuccess(`Found existing ${chalk().bold(sdkKey)} location at ${chalk().bold(result)}`);
         let confirmSdk = true;
         if (!c.program.ci) {
             const { confirm } = await inquirerPrompt({
@@ -180,9 +180,9 @@ export const checkAndroidSdk = async (c: RnvContext) => {
     logDefault('checkAndroidSdk');
     if (!_isSdkInstalled(c)) {
         logWarning(
-            `${c.platform} requires SDK to be installed. Your SDK path in ${chalk().white(
+            `${c.platform} requires SDK to be installed. Your SDK path in ${chalk().bold(
                 c.paths.workspace.config
-            )} does not exist: ${chalk().white(_getCurrentSdkPath(c))}`
+            )} does not exist: ${chalk().bold(_getCurrentSdkPath(c))}`
         );
 
         switch (c.platform) {

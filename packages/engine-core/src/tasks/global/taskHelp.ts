@@ -7,6 +7,7 @@ import {
     RnvTaskFn,
     RnvTask,
     RnvTaskName,
+    generateStringFromTaskOption,
 } from '@rnv/core';
 
 const taskHelp: RnvTaskFn = async (c) => {
@@ -16,19 +17,7 @@ const taskHelp: RnvTaskFn = async (c) => {
     let optsString = '';
 
     RnvTaskOptionPresets.withAll().forEach((param) => {
-        let cmd = '';
-        if (param.shortcut) {
-            cmd += `-${param.shortcut}, `;
-        }
-        cmd += `--${param.key}`;
-        if (param.value) {
-            if (param.isRequired) {
-                cmd += ` <${param.value}>`;
-            } else {
-                cmd += ` [${param.value}]`;
-            }
-        }
-        optsString += chalk().grey(`${cmd}, ${param.description}\n`);
+        optsString += chalk().grey(`${generateStringFromTaskOption(param)}, ${param.description}\n`);
     });
 
     // TASKS
@@ -43,11 +32,11 @@ const taskHelp: RnvTaskFn = async (c) => {
     const cmdsString = commands.join(', ');
 
     logToSummary(`
-${chalk().bold.white('COMMANDS:')}
+${chalk().bold('COMMANDS:')}
 
 ${cmdsString}
 
-${chalk().bold.white('OPTIONS:')}
+${chalk().bold('OPTIONS:')}
 
 ${optsString}
 `);

@@ -9,7 +9,7 @@ import {
     registerAllPlatformEngines,
 } from '../engines';
 import type { RnvContext } from '../context/types';
-import type { RnvTask, RnvTaskMap, TaskItemMap, TaskObj, TaskPromptOption } from './types';
+import type { RnvTask, RnvTaskMap, RnvTaskOption, TaskItemMap, TaskObj, TaskPromptOption } from './types';
 import type { RnvEngine } from '../engines/types';
 import { inquirerPrompt, inquirerSeparator, pressAnyKeyToContinue } from '../api';
 import { getApi } from '../api/provider';
@@ -64,7 +64,7 @@ const _getTaskOption = ({ taskInstance }: TaskObj, provider?: string): TaskPromp
         output.name = taskInstance.task;
     }
     output.command = asArray[0];
-    output.subCommand = asArray[1];
+    output.subCommand = asArray[1]; // TODO don't treat options like --myopt as subcommands
 
     if (provider) {
         output.providers.push(provider);
@@ -113,6 +113,7 @@ export const getAllSuitableTasks = (c: RnvContext): Record<string, TaskPromptOpt
         const taskObj = _getTaskOption(_getTaskObj(taskInstance), 'custom');
         suitableTasks[taskObj.value] = taskObj;
     });
+    // TODO: handle integration cli options
 
     return suitableTasks;
 };
@@ -192,9 +193,6 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
         );
 
         const isAutoComplete = !suitableEngines.length && !!c.command && !autocompleteEngines.length;
-        const message = isAutoComplete
-            ? `Autocomplete action for "${c.command}"`
-            : `Pick a subCommand for ${c.command}`;
 
         if (!suitableEngines.length) {
             // Get all supported tasks
@@ -217,7 +215,8 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
             });
             Object.values(CUSTOM_TASKS).forEach((taskInstance) => {
                 const tskArr = taskInstance.task.split(' ');
-                if (task === tskArr[0]) {
+
+                if (task === tskArr[0] && tskArr.length > 1) {
                     const taskKey = isAutoComplete ? taskInstance.task : taskInstance.task.split(' ')[1];
 
                     supportedSubtasksArr.push({
@@ -226,6 +225,7 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
                     });
                 }
             });
+
             const supportedSubtasks: TaskItemMap = {};
             // Normalize task options
             const supportedSubtasksFilter: TaskItemMap = {};
@@ -246,6 +246,10 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
                     taskKey: v.taskKey,
                 };
             });
+
+            const message = isAutoComplete
+                ? `Autocomplete action for "${c.command}"`
+                : `Pick a subCommand for ${c.command}`;
 
             const subTasks = Object.keys(supportedSubtasks);
             if (subTasks.length) {
@@ -285,7 +289,7 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
                 return findSuitableTask(c);
             }
 
-            logInfo(`could not find suitable task for ${chalk().white(c.command)}. GETTING OPTIONS...`);
+            logInfo(`could not find suitable task for ${chalk().bold(c.command)}. GETTING OPTIONS...`);
             c.command = null;
             c.subCommand = null;
             return findSuitableTask(c);
@@ -305,7 +309,7 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
         }
 
         logInfo(
-            `Current Engine: ${chalk().bold.white(c.runtime.engine?.config.id)} path: ${chalk().grey(
+            `Current Engine: ${chalk().bold(c.runtime.engine?.config.id)} path: ${chalk().grey(
                 c.runtime.engine?.rootPath
             )}`
         );
@@ -324,22 +328,32 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
     return getEngineTask(task, c.runtime.engine?.tasks);
 };
 
+export const generateStringFromTaskOption = (opt: RnvTaskOption) => {
+    let cmd = '';
+    if (opt.shortcut) {
+        cmd += `-${opt.shortcut}, `;
+    }
+    cmd += `--${opt.key}`;
+    if (opt.isVariadic) {
+        if (opt.isRequired) {
+            cmd += ` <value...>`;
+        } else {
+            cmd += ` [value...]`;
+        }
+    } else if (opt.isValueType) {
+        if (opt.isRequired) {
+            cmd += ` <value>`;
+        } else {
+            cmd += ` [value]`;
+        }
+    }
+    return cmd;
+};
+
 const _populateExtraParameters = (c: RnvContext, task: RnvTask) => {
     if (task.options) {
-        task.options.forEach((param) => {
-            let cmd = '';
-            if (param.shortcut) {
-                cmd += `-${param.shortcut}, `;
-            }
-            cmd += `--${param.key}`;
-            if (param.value) {
-                if (param.isRequired) {
-                    cmd += ` <${param.value}>`;
-                } else {
-                    cmd += ` [${param.value}]`;
-                }
-            }
-            c.program.option?.(cmd, param.description);
+        task.options.forEach((opt) => {
+            c.program.option?.(generateStringFromTaskOption(opt), opt.description);
         });
         c.program.parse?.(process.argv);
     }
@@ -377,9 +391,10 @@ export const executeTask = async (
     originTask?: string,
     isFirstTask?: boolean
 ) => {
-    const pt = parentTask ? `=> [${parentTask}] ` : '';
+    // const pt = parentTask ? `=> [${parentTask}] ` : '';
     c._currentTask = task;
-    logInitTask(`${pt}=> [${chalk().bold.rgb(170, 106, 170)(task)}]`);
+    // logInitTask(`${pt}=> [${chalk().bold.rgb(170, 106, 170)(task)}]`);
+    logInitTask(`${task}`);
 
     if (!executedTasks[task]) executedTasks[task] = 0;
     if (executedTasks[task] > TASK_LIMIT) {
@@ -402,8 +417,8 @@ To avoid that test your task code against parentTask and avoid executing same ta
     executedTasks[task]++;
 
     c._currentTask = parentTask;
-    const prt = parentTask ? `<= [${chalk().rgb(170, 106, 170)(parentTask)}] ` : '';
-    logExitTask(`${prt}<= ${task}`);
+    // const prt = parentTask ? `<= [${chalk().rgb(170, 106, 170)(parentTask)}] ` : '';
+    logExitTask(`${task}`);
 };
 
 /**
@@ -442,7 +457,7 @@ const ACCEPTED_CONDITIONS = ['platform', 'target', 'appId', 'scheme'] as const;
 type ACKey = (typeof ACCEPTED_CONDITIONS)[number];
 
 const _logSkip = (task: string) => {
-    logInfo(`Original RNV task ${chalk().white(task)} marked to ignore. SKIPPING...`);
+    logInfo(`Original RNV task ${chalk().bold(task)} marked to ignore. SKIPPING...`);
 };
 
 export const shouldSkipTask = (c: RnvContext, taskKey: string, originRnvTaskName?: string) => {

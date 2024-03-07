@@ -31,7 +31,7 @@ const taskPlatformEject: RnvTaskFn = async (c, _parentTask, originTask) => {
     if (c.platform) {
         selectedPlatforms = [c.platform];
     } else {
-        logInfo(`Preparing to eject engine platforms to local ${chalk().white('./platformTemplates')}`);
+        logInfo(`Preparing to eject engine platforms to local ${chalk().bold('./platformTemplates')}`);
         const { ejectedPlatforms } = await inquirerPrompt({
             name: 'ejectedPlatforms',
             message: 'Select platforms you would like to eject (use SPACE key)',
@@ -60,13 +60,13 @@ const taskPlatformEject: RnvTaskFn = async (c, _parentTask, originTask) => {
         });
 
         logSuccess(
-            `${chalk().white(selectedPlatforms.join(','))} platform templates are located in ${chalk().white(
+            `${chalk().bold(selectedPlatforms.join(','))} platform templates are located in ${chalk().bold(
                 c.files.project.config?.paths?.platformTemplatesDirs?.[selectedPlatforms[0]]
             )} now. You can edit them directly!`
         );
     } else {
         logError(`You haven't selected any platform to eject.
-TIP: You can select options with ${chalk().white('SPACE')} key before pressing ENTER!`);
+TIP: You can select options with ${chalk().bold('SPACE')} key before pressing ENTER!`);
     }
 };
 

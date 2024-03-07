@@ -309,7 +309,7 @@ export const runTizenSimOrDevice = async (
 
     // if (!platformConfig) {
     //     throw new Error(
-    //         `runTizen: ${chalk().grey(platform)} not defined in your ${chalk().white(c.paths.appConfig.config)}`
+    //         `runTizen: ${chalk().grey(platform)} not defined in your ${chalk().bold(c.paths.appConfig.config)}`
     //     );
     // }
 
@@ -317,7 +317,7 @@ export const runTizenSimOrDevice = async (
 
     if (!appName) {
         throw new Error(
-            `runTizen: ${chalk().grey(platform)}.appName not defined in your ${chalk().white(c.paths.appConfig.config)}`
+            `runTizen: ${chalk().grey(platform)}.appName not defined in your ${chalk().bold(c.paths.appConfig.config)}`
         );
     }
 

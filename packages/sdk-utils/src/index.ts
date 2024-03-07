@@ -282,7 +282,7 @@ export const confirmActiveBundler = async (c: RnvContext) => {
         name: 'selectedOption',
         type: 'list',
         choices,
-        warningMessage: `Another ${c.platform} server at port ${chalk().white(c.runtime.port)} already running`,
+        warningMessage: `Another ${c.platform} server at port ${chalk().bold(c.runtime.port)} already running`,
     });
 
     if (choices[0] === selectedOption) {
@@ -309,7 +309,7 @@ export const addSystemInjects = (c: RnvContext, injects: OverridesOptions) => {
 
 export const sanitizeColor = (val: string | undefined, key: string) => {
     if (!val) {
-        logWarning(`You are missing ${chalk().white(key)} in your renative config. will use default #FFFFFF instead`);
+        logWarning(`You are missing ${chalk().bold(key)} in your renative config. will use default #FFFFFF instead`);
         return {
             rgb: [255, 255, 255, 1],
             rgbDecimal: [1, 1, 1, 1],

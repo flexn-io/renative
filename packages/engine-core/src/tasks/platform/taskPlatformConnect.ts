@@ -81,7 +81,7 @@ const taskPlatformConnect: RnvTaskFn = async (c, _parentTask, originTask) => {
     }
 
     logSuccess(
-        `${chalk().white(
+        `${chalk().bold(
             selectedPlatforms.join(',')
         )} now using ReNative platformTemplates located associated platform engines.`
     );

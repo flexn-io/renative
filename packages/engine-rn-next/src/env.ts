@@ -58,7 +58,7 @@ const _checkPagesDir = () => {
         const pagesDirPath = path.join(c.paths.project.dir, pagesDir);
         if (!fsExistsSync(pagesDirPath)) {
             logWarning(
-                `You configured custom ${c.platform}pagesDir: ${chalk().white(
+                `You configured custom ${c.platform}pagesDir: ${chalk().bold(
                     pagesDir
                 )} in your renative.json but it is missing at ${chalk().red(pagesDirPath)}`
             );
@@ -70,7 +70,7 @@ const _checkPagesDir = () => {
 
     const fallbackPagesDirPath = path.join(c.paths.project.dir, fallbackPagesDir);
     if (!fsExistsSync(fallbackPagesDirPath)) {
-        logWarning(`Folder ${chalk().white(
+        logWarning(`Folder ${chalk().bold(
             fallbackPagesDir
         )} is missing. make sure your entry code is located there in order for next to work correctly!
 Alternatively you can configure custom entry folder via ${c.platform}.pagesDir in renative.json`);

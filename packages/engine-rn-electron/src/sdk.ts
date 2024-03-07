@@ -90,7 +90,7 @@ const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
 
         if (!fsExistsSync(packagePath)) {
             if (exitOnFail) {
-                logWarning(`Your ${chalk().white(platform)} platformBuild is misconfigured!. let's repair it.`);
+                logWarning(`Your ${chalk().bold(platform)} platformBuild is misconfigured!. let's repair it.`);
                 createPlatformBuild(c, platform)
                     .then(() => configureElectronProject(c, true))
                     .then(() => resolve())
@@ -329,7 +329,7 @@ export const runElectron = async (c: RnvContext) => {
         const isPortActive = await checkPortInUse(c, platform, port);
         if (!isPortActive) {
             logInfo(
-                `Your ${chalk().white(platform)} devServer at port ${chalk().white(
+                `Your ${chalk().bold(platform)} devServer at port ${chalk().bold(
                     port
                 )} is not running. Starting it up for you...`
             );
@@ -391,7 +391,7 @@ const _generateICNS = (c: RnvContext) =>
         // It's ok if icns are not generated as png is also valid https://www.electron.build/icons.html#macos
         if (!source) {
             logWarning(
-                `You are missing AppIcon.iconset in ${chalk().white(
+                `You are missing AppIcon.iconset in ${chalk().bold(
                     c.paths.appConfig.dir
                 )}. icon.icns will not be generated!`
             );
@@ -400,7 +400,7 @@ const _generateICNS = (c: RnvContext) =>
         }
 
         if (!fsExistsSync(source)) {
-            logWarning(`Your app config is missing ${chalk().white(source)}. icon.icns will not be generated!`);
+            logWarning(`Your app config is missing ${chalk().bold(source)}. icon.icns will not be generated!`);
             resolve();
             return;
         }

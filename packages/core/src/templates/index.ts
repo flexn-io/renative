@@ -58,7 +58,7 @@ const _applyTemplate = async (c: RnvContext) => {
 
     if (!fsExistsSync(c.paths.template.configTemplate)) {
         logWarning(
-            `Template file ${chalk().white(c.paths.template.configTemplate)} does not exist. check your ${chalk().white(
+            `Template file ${chalk().bold(c.paths.template.configTemplate)} does not exist. check your ${chalk().bold(
                 c.paths.template.dir
             )}. skipping`
         );
@@ -92,7 +92,7 @@ const _configureSrc = (c: RnvContext) =>
         // Check src
         logDebug('configureProject:check src');
         if (!fsExistsSync(c.paths.project.srcDir)) {
-            logInfo(`Your src folder ${chalk().white(c.paths.project.srcDir)} is missing! CREATING...DONE`);
+            logInfo(`Your src folder ${chalk().bold(c.paths.project.srcDir)} is missing! CREATING...DONE`);
             copyFolderContentsRecursiveSync(path.join(c.paths.template.dir, 'src'), c.paths.project.srcDir);
         }
         resolve();
@@ -104,7 +104,7 @@ const _configureAppConfigs = async (c: RnvContext) => {
     //
     if (!fsExistsSync(c.paths.project.appConfigsDir)) {
         logInfo(
-            `Your appConfig folder ${chalk().white(
+            `Your appConfig folder ${chalk().bold(
                 c.paths.project.appConfigsDir
             )} is missing! ReNative will create one from template.`
         );
@@ -156,7 +156,7 @@ const _configureProjectConfig = (c: RnvContext) =>
         logDebug('configureProject:check projectConfigs');
         if (!fsExistsSync(c.paths.project.appConfigBase.dir)) {
             logInfo(
-                `Your projectConfig folder ${chalk().white(
+                `Your projectConfig folder ${chalk().bold(
                     c.paths.project.appConfigBase.dir
                 )} is missing! CREATING...DONE`
             );
@@ -219,12 +219,10 @@ export const configureTemplateFiles = async (c: RnvContext) => {
                 if (!fsExistsSync(destPath) && fsExistsSync(sourcePath)) {
                     try {
                         if (fsLstatSync(sourcePath).isDirectory()) {
-                            logInfo(
-                                `Missing directory ${chalk().white(`${destPath}.js`)}. COPYING from TEMPATE...DONE`
-                            );
+                            logInfo(`Missing directory ${chalk().bold(`${destPath}.js`)}. COPYING from TEMPATE...DONE`);
                             copyFolderContentsRecursiveSync(sourcePath, destPath);
                         } else {
-                            logInfo(`Missing file ${chalk().white(`${destPath}.js`)}. COPYING from TEMPATE...DONE`);
+                            logInfo(`Missing file ${chalk().bold(`${destPath}.js`)}. COPYING from TEMPATE...DONE`);
                             copyFileSync(sourcePath, destPath);
                         }
                     } catch (e) {
@@ -249,18 +247,18 @@ export const configureEntryPoint = async (c: RnvContext, platform: RnvPlatform) 
         if (!fsExistsSync(dest)) {
             if (!entryFile) {
                 logWarning(
-                    `Missing entryFile key for ${chalk().white(c.platform)} platform in your ${chalk().white(
+                    `Missing entryFile key for ${chalk().bold(c.platform)} platform in your ${chalk().bold(
                         c.paths.appConfig.config
                     )}.`
                 );
             } else if (!fsExistsSync(source)) {
                 logWarning(
-                    `Missing entry file ${chalk().white(
+                    `Missing entry file ${chalk().bold(
                         `${entryFile}.js`
                     )}. Not available in your current template. You need to create one manually`
                 );
             } else {
-                logInfo(`Missing entry file ${chalk().white(`${entryFile}.js`)}. COPYING from TEMPATE...DONE`);
+                logInfo(`Missing entry file ${chalk().bold(`${entryFile}.js`)}. COPYING from TEMPATE...DONE`);
                 copyFileSync(source, dest);
             }
         }

@@ -203,9 +203,9 @@ const _checkSigningCerts = async (c: Context) => {
     if (isRelease && !c.payload.pluginConfigAndroid?.store?.storeFile) {
         const msg = `You're attempting to ${
             c.command
-        } app in release mode but you have't configured your ${chalk().white(
+        } app in release mode but you have't configured your ${chalk().bold(
             c.paths.workspace.appConfig.configPrivate
-        )} for ${chalk().white(c.platform)} platform yet.`;
+        )} for ${chalk().bold(c.platform)} platform yet.`;
         if (c.program.ci === true) {
             return Promise.reject(msg);
         }
@@ -256,9 +256,9 @@ const _checkSigningCerts = async (c: Context) => {
                         type: 'input',
                         name: 'storeFile',
                         default: './release.keystore',
-                        message: `Paste relative path to ${chalk().white(
+                        message: `Paste relative path to ${chalk().bold(
                             c.paths.workspace.appConfig.dir
-                        )} of your existing ${chalk().white('release.keystore')} file`,
+                        )} of your existing ${chalk().bold('release.keystore')} file`,
                     });
                     storeFile = result?.storeFile;
                 }
@@ -310,9 +310,7 @@ const _checkSigningCerts = async (c: Context) => {
             }
 
             updateObjectSync(c.paths.workspace.appConfig.configPrivate, c.files.workspace.appConfig.configPrivate);
-            logSuccess(
-                `Successfully updated private config file at ${chalk().white(c.paths.workspace.appConfig.dir)}.`
-            );
+            logSuccess(`Successfully updated private config file at ${chalk().bold(c.paths.workspace.appConfig.dir)}.`);
             // await configureProject(c);
             await updateRenativeConfigs(c);
             await parseAppBuildGradleSync(c);
@@ -387,7 +385,7 @@ export const configureProject = async (c: Context) => {
     const appFolder = getAppFolder(c);
 
     // if (!fsExistsSync(gradlew)) {
-    //     logWarning(`Your ${chalk().white(platform)} platformBuild is misconfigured!. let's repair it.`);
+    //     logWarning(`Your ${chalk().bold(platform)} platformBuild is misconfigured!. let's repair it.`);
     //     await createPlatformBuild(c, platform);
     //     await configureGradleProject(c);
 
@@ -476,7 +474,7 @@ export const configureProject = async (c: Context) => {
                             const fontDest = path.join(fontFolder, fontNormalised);
                             copyFileSync(fontSource, fontDest);
                         } else {
-                            logWarning(`Font ${chalk().white(fontSource)} doesn't exist! Skipping.`);
+                            logWarning(`Font ${chalk().bold(fontSource)} doesn't exist! Skipping.`);
                         }
                     }
                 }

@@ -88,7 +88,7 @@ const _attemptAutoFix = async (c: RnvContext) => {
     const result = SDK_LOCATIONS.find((v) => fsExistsSync(v));
 
     if (result) {
-        logSuccess(`Found existing ${c.platform} SDK location at ${chalk().white(result)}`);
+        logSuccess(`Found existing ${c.platform} SDK location at ${chalk().bold(result)}`);
         let confirmSdk = true;
         if (!c.program.ci) {
             const { confirm } = await inquirerPrompt({
@@ -128,9 +128,9 @@ export const checkWebosSdk = async (c: RnvContext) => {
     logDefault('checkWebosSdk');
     if (!_isSdkInstalled(c)) {
         logWarning(
-            `${c.platform} requires SDK to be installed. Your SDK path in ${chalk().white(
+            `${c.platform} requires SDK to be installed. Your SDK path in ${chalk().bold(
                 c.paths.workspace.config
-            )} does not exist: ${chalk().white(_getCurrentSdkPath(c))}`
+            )} does not exist: ${chalk().bold(_getCurrentSdkPath(c))}`
         );
 
         switch (c.platform) {

@@ -21,14 +21,21 @@ const _chalkCols: any = {
     blue: (v) => v,
     cyan: (v) => v,
     magenta: (v) => v,
+    bold: (v) => v,
+    rgb: (v) => v,
 };
-_chalkCols.rgb = () => (v) => v;
-_chalkCols.bold = _chalkCols;
+function mockChalk() {
+    return _chalkCols;
+}
+Object.assign(mockChalk, _chalkCols);
+Object.keys(_chalkCols).forEach((key) => {
+    _chalkCols[key] = mockChalk;
+});
 const _chalkMono = {
     ..._chalkCols,
 };
 
-export const generateRnvConfigPathObj = () => {
+const generateRnvConfigPathObj = () => {
     return {
         configs: [],
         configsPrivate: [],
@@ -45,7 +52,7 @@ export const generateRnvConfigPathObj = () => {
     };
 };
 
-export const generateRnvConfigFileObj = () => {
+const generateRnvConfigFileObj = () => {
     return {
         configs: [],
         configsLocal: [],
@@ -53,7 +60,7 @@ export const generateRnvConfigFileObj = () => {
     };
 };
 
-export const generateContextDefaults = (ctx?: Context) => {
+const generateContextDefaults = (ctx?: Context) => {
     const runtime: any = {
         currentEngine: { rootPath: '' },
         enginesByPlatform: {},
@@ -244,90 +251,10 @@ export const generateContextDefaults = (ctx?: Context) => {
         },
     };
 };
-
-rnvcore.getEngineRunnerByPlatform = () => ({
-    getOriginalPlatformTemplatesDir: () => 'sometemptdir',
-});
-rnvcore.executeTask = jest.fn();
-rnvcore.shouldSkipTask = () => false;
-rnvcore.generatePlatformChoices = () => [];
-rnvcore.executeAsync = jest.fn();
-rnvcore.removeDirs = jest.fn();
-rnvcore.fsExistsSync = jest.fn();
-rnvcore.fsReaddirSync = () => [];
-rnvcore.getRealPath = () => '';
-rnvcore.copyFolderContentsRecursiveSync = jest.fn();
-rnvcore.getConfigProp = jest.fn();
-rnvcore.confirmActiveBundler = () => null;
-rnvcore.getAppFolder = jest.fn();
-rnvcore.logToSummary = jest.fn();
-rnvcore.logTask = jest.fn();
-rnvcore.logDefault = jest.fn();
-rnvcore.logDebug = jest.fn();
-rnvcore.logInfo = jest.fn();
-rnvcore.logError = jest.fn();
-rnvcore.logWarning = jest.fn();
-rnvcore.logSuccess = jest.fn();
-rnvcore.logSummary = jest.fn();
 rnvcore.chalk = () => _chalkMono;
-rnvcore.inquirerPrompt = jest.fn();
-rnvcore.getPlatformProjectDir = jest.fn();
-
 rnvcore.createRnvContext = (ctx?: Context) => {
     rnvcore.__MOCK_RNV_CONTEXT = generateContextDefaults(ctx);
 };
 rnvcore.getContext = () => rnvcore.__MOCK_RNV_CONTEXT;
-rnvcore.generateContextDefaults = generateContextDefaults;
-
-rnvcore.createRnvApi = () => {
-    global.MOCK_RNV_API = {
-        doResolve: jest.fn(),
-        getConfigProp: jest.fn(),
-        logger: jest.fn(),
-        analytics: {
-            captureEvent: () => {
-                //NOOP
-            },
-            captureException() {
-                //NOOP
-            },
-            teardown: async () => {
-                //NOOP
-            },
-        },
-        prompt: {
-            generateOptions() {
-                //NOOP
-                return {
-                    asString: '',
-                    keysAsArray: [],
-                    keysAsObject: {},
-                    optionsAsArray: [],
-                    valuesAsArray: [],
-                    valuesAsObject: {},
-                };
-            },
-            inquirerPrompt: async () => {
-                return {};
-            },
-            pressAnyKeyToContinue: async () => {
-                return {};
-            },
-            inquirerSeparator() {
-                return {};
-            },
-        },
-        spinner: jest.fn(),
-        fsExistsSync: jest.fn(),
-        fsReadFileSync: jest.fn(),
-        fsReaddirSync: jest.fn(),
-        fsWriteFileSync: jest.fn(),
-        path: jest.fn(),
-    };
-};
-
-rnvcore.getApi = () => {
-    return global.MOCK_RNV_API;
-};
 
 module.exports = rnvcore;

@@ -193,9 +193,9 @@ export const configurePlugins = async (c: RnvContext) => {
                 // Skip Warning as this is intentional "plugin":null
             } else {
                 logWarning(
-                    `Plugin with name ${chalk().white(
+                    `Plugin with name ${chalk().bold(
                         k
-                    )} does not exists in ReNative source:rnv scope. you need to define it manually here: ${chalk().white(
+                    )} does not exists in ReNative source:rnv scope. you need to define it manually here: ${chalk().bold(
                         c.paths.project.builds.config
                     )}`
                 );
@@ -208,9 +208,9 @@ export const configurePlugins = async (c: RnvContext) => {
                     }
                 } else if (dependencies[k] !== plugin.version) {
                     logWarning(
-                        `Version mismatch of dependency ${chalk().white(k)} between:
-${chalk().white(c.paths.project.package)}: v(${chalk().red(dependencies[k])}) and
-${chalk().white(c.paths.project.builds.config)}: v(${chalk().green(plugin.version)}).
+                        `Version mismatch of dependency ${chalk().bold(k)} between:
+${chalk().bold(c.paths.project.package)}: v(${chalk().red(dependencies[k])}) and
+${chalk().bold(c.paths.project.builds.config)}: v(${chalk().green(plugin.version)}).
 ${ovMsg}`
                     );
 
@@ -226,7 +226,7 @@ ${ovMsg}`
                     }
                 } else if (devDependencies[k] !== plugin.version) {
                     logWarning(
-                        `Version mismatch of devDependency ${chalk().white(k)} between package.json: v(${chalk().red(
+                        `Version mismatch of devDependency ${chalk().bold(k)} between package.json: v(${chalk().red(
                             devDependencies[k]
                         )}) and plugins.json: v(${chalk().red(plugin.version)}). ${ovMsg}`
                     );
@@ -238,7 +238,7 @@ ${ovMsg}`
             // Dependency does not exists
             if (plugin.version) {
                 logInfo(
-                    `Missing dependency ${chalk().white(k)} v(${chalk().red(plugin.version)}) in package.json. ${ovMsg}`
+                    `Missing dependency ${chalk().bold(k)} v(${chalk().red(plugin.version)}) in package.json. ${ovMsg}`
                 );
 
                 hasPackageChanged = true;
@@ -259,14 +259,14 @@ ${ovMsg}`
 - ${k} .npm sub dependencies:
    |- ${npmKey}@${chalk().red(npmDep)}`);
                 } else if (!dependencies[npmKey]) {
-                    logInfo(`Plugin ${chalk().white(k)} requires npm dependency ${chalk().white(npmKey)}. ${ovMsg}`);
+                    logInfo(`Plugin ${chalk().bold(k)} requires npm dependency ${chalk().bold(npmKey)}. ${ovMsg}`);
                     if (npmDep) {
                         _applyPackageDependency(newDeps, npmKey, npmDep);
                         hasPackageChanged = true;
                     }
                 } else if (dependencies[npmKey] !== npmDep) {
                     logWarning(
-                        `Plugin ${chalk().white(k)} npm dependency ${chalk().white(npmKey)} mismatch (${chalk().red(
+                        `Plugin ${chalk().bold(k)} npm dependency ${chalk().bold(npmKey)} mismatch (${chalk().red(
                             dependencies[npmKey]
                         )}) => (${chalk().green(npmDep)}) .${ovMsg}`
                     );
@@ -336,7 +336,7 @@ const _resolvePluginDependencies = async (
             const { confirm } = await inquirerPrompt({
                 type: 'confirm',
                 message: `Install ${key}?`,
-                warningMessage: `Plugin ${chalk().white(key)} source:${chalk().white(scope)} required by ${chalk().red(
+                warningMessage: `Plugin ${chalk().bold(key)} source:${chalk().bold(scope)} required by ${chalk().red(
                     parentKey
                 )} is not installed`,
             });
@@ -348,7 +348,7 @@ const _resolvePluginDependencies = async (
             }
         } else {
             logWarning(
-                `Plugin ${chalk().white(parentKey)} requires ${chalk().red(key)} which is not available in your system`
+                `Plugin ${chalk().bold(parentKey)} requires ${chalk().red(key)} which is not available in your system`
             );
         }
     } else {
@@ -443,17 +443,17 @@ export const parsePlugins = (
                 // Not valid warning as web based plugins might not need web definition object to work
                 // if (totalIncludedPlugins === 0) {
                 //     logWarning(
-                //         `Found plugins in your app but non are included. are you sure you added ${chalk().white('includedPlugins')} in your renative.json config?`
+                //         `Found plugins in your app but non are included. are you sure you added ${chalk().bold('includedPlugins')} in your renative.json config?`
                 //     );
                 // }
             } else {
-                logError(`You have no plugins defined in ${chalk().white(c.paths.project.builds.config)}`);
+                logError(`You have no plugins defined in ${chalk().bold(c.paths.project.builds.config)}`);
             }
         } else {
             logWarning(
-                `You haven't included any ${chalk().white(
-                    '{ common: { includedPlugins: [] }}'
-                )} in your ${chalk().white(c.paths.appConfig.config)}. Your app might not work correctly`
+                `You haven't included any ${chalk().bold('{ common: { includedPlugins: [] }}')} in your ${chalk().bold(
+                    c.paths.appConfig.config
+                )}. Your app might not work correctly`
             );
         }
     }
@@ -475,7 +475,7 @@ export const loadPluginTemplates = async (c: RnvContext) => {
                 // This comes from rnv built-in dependency (installed via yarn might install it 2 level up but scoped to @rnv)
                 flexnPluginsPath = path.resolve(__dirname, '../../../../@flexn/plugins');
                 if (!fsExistsSync(flexnPluginsPath)) {
-                    return Promise.reject(`RNV Cannot find package: ${chalk().white(flexnPluginsPath)}`);
+                    return Promise.reject(`RNV Cannot find package: ${chalk().bold(flexnPluginsPath)}`);
                 }
             }
         }
@@ -620,14 +620,14 @@ const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
 
     if (flavourSource && fsExistsSync(flavourSource)) {
         logInfo(
-            `${chalk().white(dest.split('node_modules').pop())} overriden by: ${chalk().white(
+            `${chalk().bold(dest.split('node_modules').pop())} overriden by: ${chalk().bold(
                 flavourSource.split('node_modules').pop()
             )}`
         );
         copyFolderContentsRecursiveSync(flavourSource, dest, false);
     } else if (fsExistsSync(source)) {
         logInfo(
-            `${chalk().white(dest.split('node_modules').pop())} overriden by: ${chalk().white(
+            `${chalk().bold(dest.split('node_modules').pop())} overriden by: ${chalk().bold(
                 source.split('node_modules').pop()
             )}`
         );
@@ -637,7 +637,7 @@ const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
         // });
     } else {
         logDebug(
-            `Your plugin configuration has no override path ${chalk().white(source)}. skipping folder override action`
+            `Your plugin configuration has no override path ${chalk().bold(source)}. skipping folder override action`
         );
     }
 
@@ -685,7 +685,6 @@ const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
     }
 
     // const parentDest = path.join(dir, '..')
-    // console.log('SKSLSL', dir, dest);
 };
 
 export const overrideFileContents = (dest: string, override: Record<string, string>, overridePath = '') => {
@@ -708,7 +707,7 @@ export const overrideFileContents = (dest: string, override: Record<string, stri
                 } else {
                     foundRegEx = true;
                     logInfo(
-                        `${chalk().white(dest.split('node_modules').pop())} overriden by: ${chalk().white(
+                        `${chalk().bold(dest.split('node_modules').pop())} overriden by: ${chalk().bold(
                             overridePath.split('node_modules').pop()
                         )}`
                     );
@@ -717,7 +716,7 @@ export const overrideFileContents = (dest: string, override: Record<string, stri
                 foundRegEx = true;
                 fileToFix = fileToFix.replace(regEx, override[fk]);
                 logSuccess(
-                    `${chalk().white(dest.split('node_modules').pop())} requires override by: ${chalk().white(
+                    `${chalk().bold(dest.split('node_modules').pop())} requires override by: ${chalk().bold(
                         overridePath.split('node_modules').pop()
                     )}. FIXING...DONE`
                 );
@@ -730,7 +729,7 @@ export const overrideFileContents = (dest: string, override: Record<string, stri
                     logWarning(
                         `No Match found in ${chalk().red(
                             dest.split('node_modules').pop()
-                        )} for expression: ${chalk().gray(term)}. source: ${chalk().white(
+                        )} for expression: ${chalk().gray(term)}. source: ${chalk().bold(
                             overridePath.split('node_modules').pop()
                         )}`
                     );
@@ -805,7 +804,7 @@ export const checkForPluginDependencies = async (c: RnvContext) => {
             const answer = await inquirerPrompt({
                 type: 'confirm',
                 message: `Install ${Object.keys(toAdd).join(', ')}?`,
-                warningMessage: `One or more dependencies are not installed: ${chalk().white(
+                warningMessage: `One or more dependencies are not installed: ${chalk().bold(
                     Object.keys(toAdd).join(', ')
                 )}`,
             });
@@ -862,7 +861,7 @@ export const overrideTemplatePlugins = async (c: RnvContext) => {
                 }
             } else {
                 logInfo(
-                    `Plugin overrides disabled for: ${chalk().white(key)} with disablePluginTemplateOverrides. SKIPPING`
+                    `Plugin overrides disabled for: ${chalk().bold(key)} with disablePluginTemplateOverrides. SKIPPING`
                 );
             }
         },

@@ -1,4 +1,4 @@
-import { createRnvApi, inquirerPrompt, getContext, createRnvContext } from '@rnv/core';
+import { inquirerPrompt, getContext, createRnvContext } from '@rnv/core';
 import type { PromptParams } from '@rnv/core';
 import { getIosDeviceToRunOn } from '../runner';
 import { getAppleDevices } from '../deviceManager';
@@ -27,7 +27,6 @@ jest.mock('../deviceManager');
 
 beforeEach(() => {
     createRnvContext();
-    createRnvApi();
 });
 
 afterEach(() => {

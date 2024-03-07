@@ -1,21 +1,11 @@
+import { getAndroidTargets } from '../deviceManager';
 import { getAndroidDeviceToRunOn } from '../runner';
-import { createRnvApi, createRnvContext, getContext } from '@rnv/core';
+import { createRnvContext, getContext } from '@rnv/core';
 
-jest.mock('../deviceManager', () => {
-    return {
-        mockLaunchAndroidSimulator: jest.fn(),
-        resetAdb: jest.fn(),
-        connectToWifiDevice: jest.fn(),
-        getAndroidTargets: jest.fn(),
-        checkForActiveEmulator: jest.fn(),
-        composeDevicesArray: jest.fn(),
-        askForNewEmulator: jest.fn(),
-    };
-});
+jest.mock('../deviceManager');
 
 beforeEach(() => {
     createRnvContext();
-    createRnvApi();
 });
 
 afterEach(() => {
@@ -30,10 +20,8 @@ describe('getAndroidDeviceToRunOn', () => {
         ctx.program.target = 'existingTarget';
         ctx.runtime.target = 'defaultTarget';
         const mockFoundDevice = { name: 'existingTarget', isActive: true, udid: '' };
-        const { getAndroidTargets } = require('../deviceManager');
-        getAndroidTargets.mockResolvedValueOnce([mockFoundDevice]);
+        jest.mocked(getAndroidTargets).mockResolvedValueOnce([mockFoundDevice]);
         //WHEN
-
         const result = await getAndroidDeviceToRunOn(ctx);
         //THEN
         expect(result).toEqual(mockFoundDevice);
