@@ -23,7 +23,7 @@ const colorBlue = { r: 10, g: 116, b: 230 }; // '#0a74e6'
 let currentChalk: RnvApiChalk = _chalk;
 let chalkBlue: any = _chalk.rgb(colorBlue.r, colorBlue.g, colorBlue.b);
 
-let RNV = 'ReNative';
+// const RNV = 'ReNative';
 const PRIVATE_PARAMS = ['-k', '--key'];
 let _currentProcess: NodeJS.Process;
 let _isInfoEnabled = false;
@@ -52,7 +52,7 @@ export const logInitialize = () => {
         chalkBlue = _chalkMono;
     }
     _updateDefaultColors();
-    RNV = getCurrentCommand();
+    // RNV = getCurrentCommand();
     if (!_jsonOnly) logWelcome();
 };
 
@@ -203,7 +203,7 @@ export const logRaw = (...args: Array<string>) => {
     console.log.apply(null, args);
 };
 
-export const logSummary = (header = 'SUMMARY') => {
+export const logSummary = (header = '✔ SUMMARY') => {
     const ctx = getContext();
 
     if (_jsonOnly) return;
@@ -513,7 +513,7 @@ export const isInfoEnabled = () => _isInfoEnabled;
 
 export const logComplete = (isEnd = false) => {
     if (_jsonOnly) return;
-    console.log(currentChalk.bold(`${RNV} - Done! ${ICN_ROCKET}`));
+    // console.log(currentChalk.green.bold(`✔ Done`));
     if (isEnd) logEnd(0);
 };
 

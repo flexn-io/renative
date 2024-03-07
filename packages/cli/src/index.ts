@@ -50,7 +50,7 @@ export const run = () => {
     // If the first argument is a flag, then the subCommand is missing
     // this occurs when rnv has to execute unknown commands (ie intergration commands)
     // commander does not handle this scenario automatically
-    if ((cmdOption && cmdOption.startsWith('--')) || cmdOption.startsWith('-')) {
+    if (cmdOption && (cmdOption.startsWith('--') || cmdOption.startsWith('-'))) {
         cmdOption = '';
     }
 
