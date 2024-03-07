@@ -10,6 +10,7 @@ import {
     RnvApiChalk,
     RnvApiChalkFn,
 } from '@rnv/core';
+import path from 'path';
 
 const ICN_ROCKET = isSystemWin ? 'RNV' : '🚀';
 // const ICN_UNICORN = isSystemWin ? 'unicorn' : '🦄';
@@ -326,9 +327,20 @@ const _getCurrentTask = () => {
     return ctx._currentTask ? currentChalk.grey(`○ ${ctx._currentTask}:`) : '';
 };
 
-const CWD = process.cwd();
-const CWD_UP = CWD.split('/').slice(0, -1).join('/');
-const CWD_UP_UP = CWD.split('/').slice(0, -2).join('/');
+const CWD_ARR: { path: string; relative: string }[] = [];
+
+const _generateRelativePaths = () => {
+    const cwd = process.cwd();
+    const cwdArr = cwd.split(path.sep);
+    let relativeUp = '.';
+    for (let i = 1; i < cwdArr.length; i++) {
+        const absoluteUp = path.join(cwd, relativeUp).normalize();
+        CWD_ARR.push({ path: absoluteUp, relative: relativeUp });
+        relativeUp += i > 1 ? '/..' : '.';
+    }
+};
+
+_generateRelativePaths();
 
 const _sanitizePaths = (msg: string) => {
     // const ctx = getContext();
@@ -339,10 +351,13 @@ const _sanitizePaths = (msg: string) => {
     // }
 
     if (msg?.replace) {
-        return msg
-            .replace(new RegExp(CWD, 'g'), '.')
-            .replace(new RegExp(CWD_UP, 'g'), '..')
-            .replace(new RegExp(CWD_UP_UP, 'g'), '../..');
+        CWD_ARR.forEach((v) => {
+            msg = msg.replace(new RegExp(v.path, 'g'), v.relative);
+        });
+        // return msg
+        //     .replace(new RegExp(CWD, 'g'), '.')
+        //     .replace(new RegExp(CWD_UP, 'g'), '..')
+        //     .replace(new RegExp(CWD_UP_UP, 'g'), '../..');
     }
     return msg;
 };
@@ -583,7 +598,7 @@ export const logEnd = (code: number) => {
 
 export const logAppInfo = (c: RnvContext) => {
     if (!_jsonOnly) {
-        logInfo(`Current App Config: ${currentChalk.bold(c.runtime.appId)}`);
+        logInfo(`Current app config: ${currentChalk.bold(c.runtime.appId)}`);
     }
 };
 

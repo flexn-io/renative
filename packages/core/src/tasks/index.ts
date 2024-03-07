@@ -30,6 +30,11 @@ export const registerCustomTask = async (_c: RnvContext, task: RnvTask) => {
 
 export const initializeTask = async (c: RnvContext, task: string) => {
     logDefault('initializeTask', task);
+    logInfo(
+        `Current engine: ${chalk().bold(c.runtime.engine?.config.id)} ${chalk().grey(
+            `(${c.runtime.engine?.rootPath})`
+        )}`
+    );
     c.runtime.task = task;
     executedTasks = {};
 
@@ -308,11 +313,6 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
             c.runtime.runtimeExtraProps = c.runtime.engine.runtimeExtraProps;
         }
 
-        logInfo(
-            `Current Engine: ${chalk().bold(c.runtime.engine?.config.id)} path: ${chalk().grey(
-                c.runtime.engine?.rootPath
-            )}`
-        );
         const customTask = CUSTOM_TASKS[task];
         if (customTask) {
             c.runtime.availablePlatforms = customTask.platforms;
