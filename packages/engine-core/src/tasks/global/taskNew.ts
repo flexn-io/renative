@@ -501,15 +501,6 @@ const taskNew = async (c: RnvContext) => {
     await executeAsync(`${isYarnInstalled() ? 'yarn' : 'npm'} add rnv@${c.rnvVersion}`, {
         cwd: c.paths.project.dir,
     });
-    // Add pkg-dir to have the correct version before the first run
-    await executeAsync(`${isYarnInstalled() ? 'yarn' : 'npm'} add pkg-dir@7.0.0`, {
-        cwd: c.paths.project.dir,
-    });
-
-    // Add xmlbuilder  before the first run
-    await executeAsync(`${isYarnInstalled() ? 'yarn' : 'npm'} add xmlbuilder@^15.1.1`, {
-        cwd: c.paths.project.dir,
-    });
 
     // Check if node_modules folder exists
     if (!fsExistsSync(path.join(c.paths.project.dir, 'node_modules'))) {
@@ -519,6 +510,22 @@ const taskNew = async (c: RnvContext) => {
             } add ${selectedInputTemplate}@${inputTemplateVersion} : FAILED. this could happen if you have package.json accidentally created somewhere in parent directory`
         );
         return;
+    }
+    // This ensures that the correct version of the npm packages will be used to run the project for the first time after creation
+
+    const renativeTemplateConfig =
+        readObjectSync<ConfigFileTemplate>(
+            path.join(c.paths.project.dir, 'node_modules', selectedInputTemplate, ConfigName.renativeTemplate)
+        ) || {};
+
+    const rnvNewPatchDependencies = renativeTemplateConfig.templateConfig?.rnvNewPatchDependencies;
+
+    if (rnvNewPatchDependencies) {
+        const patchDeps = Object.entries(rnvNewPatchDependencies);
+        for (const [dependency, version] of patchDeps) {
+            const command = `${isYarnInstalled() ? 'yarn' : 'npm'} add ${dependency}@${version}`;
+            await executeAsync(command, { cwd: c.paths.project.dir });
+        }
     }
 
     if (!data.optionTemplates.keysAsArray?.includes(selectedInputTemplate)) {
@@ -545,11 +552,6 @@ const taskNew = async (c: RnvContext) => {
             }
         }
     }
-
-    const renativeTemplateConfig =
-        readObjectSync<ConfigFileTemplate>(
-            path.join(c.paths.project.dir, 'node_modules', selectedInputTemplate, ConfigName.renativeTemplate)
-        ) || {};
 
     const renativeConfig = readObjectSync<ConfigFileProject>(
         path.join(c.paths.project.dir, 'node_modules', selectedInputTemplate, ConfigName.renative)

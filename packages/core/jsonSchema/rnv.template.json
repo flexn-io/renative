@@ -189,23 +189,27 @@
               },
               "description": "Defines list of custom bootstrap questions"
             },
+            "rnvNewPatchDependencies": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              },
+              "description": "This ensures that the correct version of the package will be used to run the project for the first time after creation"
+            },
             "packageTemplate": {
               "type": "object",
               "properties": {
                 "dependencies": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "string"
-                  }
+                  "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/rnvNewPatchDependencies"
                 },
                 "devDependencies": {
-                  "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/packageTemplate/properties/dependencies"
+                  "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/rnvNewPatchDependencies"
                 },
                 "peerDependencies": {
-                  "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/packageTemplate/properties/dependencies"
+                  "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/rnvNewPatchDependencies"
                 },
                 "optionalDependencies": {
-                  "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/packageTemplate/properties/dependencies"
+                  "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/rnvNewPatchDependencies"
                 },
                 "name": {
                   "type": "string"

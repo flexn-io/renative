@@ -16,6 +16,10 @@
             "typings",
             "webpack.config.js"
         ],
+        "rnvNewPatchDependencies": {
+            "pkg-dir": "7.0.0",
+            "xmlbuilder": "^15.1.1"
+        },
         "packageTemplate": {
             "devDependencies": {
                 "typescript": "5.0.4",
@@ -27,16 +31,8 @@
                 "babel-loader": "9.1.3"
             },
             "browserslist": {
-                "production": [
-                    ">0.2%",
-                    "not dead",
-                    "not op_mini all"
-                ],
-                "development": [
-                    "last 1 chrome version",
-                    "last 1 firefox version",
-                    "last 1 safari version"
-                ]
+                "production": [">0.2%", "not dead", "not op_mini all"],
+                "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
             },
             "resolutions": {
                 "@babel/traverse": "7.15.0",

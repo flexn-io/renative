@@ -36,6 +36,11 @@ export const RootTemplateSchema = z.object({
                 .describe('Defines list of all file/dir paths you want to include in template')
                 .optional(),
             bootstrapQuestions: BootstrapQuestionsSchema,
+            rnvNewPatchDependencies: z
+                .optional(NpmDep)
+                .describe(
+                    'This ensures that the correct version of the npm packages will be used to run the project for the first time after creation'
+                ),
             packageTemplate: z.optional(
                 z.object({
                     dependencies: z.optional(NpmDep),
