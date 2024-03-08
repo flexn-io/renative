@@ -415,6 +415,104 @@
         "runtime": {
           "description": "This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code"
         },
+        "templateConfig": {
+          "type": "object",
+          "properties": {
+            "includedPaths": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Defines list of all file/dir paths you want to include in template"
+            },
+            "bootstrapQuestions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "options": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "object",
+                          "properties": {},
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "value"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "configProp": {
+                    "type": "object",
+                    "properties": {
+                      "prop": {
+                        "type": "string"
+                      },
+                      "key": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "prop",
+                      "key"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type",
+                  "title"
+                ],
+                "additionalProperties": false
+              },
+              "description": "Defines list of custom bootstrap questions"
+            },
+            "packageTemplate": {
+              "type": "object",
+              "properties": {
+                "dependencies": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                },
+                "devDependencies": {
+                  "$ref": "#/definitions/rnv.project/properties/templateConfig/properties/packageTemplate/properties/dependencies"
+                },
+                "peerDependencies": {
+                  "$ref": "#/definitions/rnv.project/properties/templateConfig/properties/packageTemplate/properties/dependencies"
+                },
+                "optionalDependencies": {
+                  "$ref": "#/definitions/rnv.project/properties/templateConfig/properties/packageTemplate/properties/dependencies"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "version": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false,
+          "description": "Used in `renative.template.json` allows you to define template behaviour."
+        },
         "skipAutoUpdate": {
           "type": "boolean",
           "description": "Enables the equivalent to passing --skipDependencyCheck parameter on every rnv run so you don't have to use it"

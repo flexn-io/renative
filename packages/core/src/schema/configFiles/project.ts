@@ -1,6 +1,6 @@
 import { AnyZodObject, z } from 'zod';
 import { CommonSchema } from '../common';
-import { Ext, ExtendTemplate, PlatformsKeys, Runtime } from '../shared';
+import { Ext, ExtendTemplate, PlatformsKeys, Runtime, TemplateConfig } from '../shared';
 import { PlatformsSchema } from '../platforms';
 import { PluginsSchema } from '../plugins';
 
@@ -236,6 +236,7 @@ const RootProjectBaseFragment = {
     integrations: z.optional(Integrations),
     env: z.optional(Env),
     runtime: z.optional(Runtime),
+    templateConfig: TemplateConfig.optional(),
     skipAutoUpdate: z
         .boolean()
         .optional()
