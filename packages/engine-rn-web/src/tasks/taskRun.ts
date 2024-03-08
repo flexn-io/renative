@@ -128,6 +128,7 @@ const Task: RnvTask = {
     description: 'Run your app in browser',
     fn: taskRun,
     task: RnvTaskName.run,
+    isPriorityOrder: true,
     options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun())),
     platforms: ['web', 'webtv', 'tizen', 'webos', 'tizenmobile', 'tizenwatch', 'kaios', 'chromecast'],
 };

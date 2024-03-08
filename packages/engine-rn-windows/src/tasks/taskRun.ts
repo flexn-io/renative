@@ -40,6 +40,7 @@ const Task: RnvTask = {
     description: 'Run your app in a window on desktop',
     fn: taskRun,
     task: RnvTaskName.run,
+    isPriorityOrder: true,
     options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun())),
     platforms: ['windows', 'xbox'],
 };
