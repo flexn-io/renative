@@ -19,6 +19,9 @@ import {
     executeAsync,
     ExecOptionsPresets,
     ConfigName,
+    fsExistsSync,
+    fsMkdirSync,
+    copyFileSync,
 } from '@rnv/core';
 import { CLI_SDB_TIZEN, CLI_TIZEN, CLI_TIZEN_EMULATOR } from './constants';
 
@@ -289,29 +292,11 @@ const _composeDevicesString = (devices: Array<Pick<TizenDevice, 'id' | 'name'>>)
 //     }
 // };
 
-export const runTizenSimOrDevice = async (
-    c: RnvContext,
-    buildCoreWebpackProject?: (c: RnvContext) => Promise<void>
-) => {
-    const { hosted } = c.program;
-    const { target, engine } = c.runtime;
+export const runTizenSimOrDevice = async (c: RnvContext) => {
+    const { target } = c.runtime;
     const { platform } = c;
 
     if (!platform) return;
-
-    // const platformConfig = c.buildConfig.platforms?.[platform];
-    const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
-    const isHosted = hosted ?? !bundleAssets;
-    const isLightningEngine = engine?.config.id === 'engine-lightning';
-    if (!bundleAssets && !hosted) {
-        // console.log('RUN WEINRE');
-    }
-
-    // if (!platformConfig) {
-    //     throw new Error(
-    //         `runTizen: ${chalk().grey(platform)} not defined in your ${chalk().bold(c.paths.appConfig.config)}`
-    //     );
-    // }
 
     const appName = getConfigProp(c, platform, 'appName');
 
@@ -323,6 +308,7 @@ export const runTizenSimOrDevice = async (
 
     const tDir = getPlatformProjectDir(c)!;
     const tBuild = path.join(tDir, 'build');
+    const intermediate = path.join(tDir, 'intermediate');
     const tOut = path.join(tDir, 'output');
     const tId = getConfigProp(c, platform, 'id');
     const certProfile = getConfigProp(c, platform, 'certificateProfile') || DEFAULTS.certificateProfile;
@@ -375,12 +361,8 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
     const continueLaunching = async () => {
         let hasDevice = false;
 
-        if (!isLightningEngine && buildCoreWebpackProject) {
-            // lightning engine handles the build and packaging
-            !isHosted && (await buildCoreWebpackProject(c));
-            await execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`);
-            await execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`);
-        }
+        await execCLI(c, CLI_TIZEN, `build-web -- ${tBuild} -out ${intermediate}`);
+        await execCLI(c, CLI_TIZEN, `package -- ${intermediate} -s ${certProfile} -t wgt -o ${tOut}`);
 
         try {
             const packageID = platform === 'tizenwatch' || platform === 'tizenmobile' ? tId.split('.')[0] : tId;

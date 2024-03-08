@@ -40,7 +40,10 @@ export const runWebOS = async (c: RnvContext) => {
     const { target } = c.runtime;
     const { platform } = c;
 
-    const isHosted = hosted && !getConfigProp(c, platform, 'bundleAssets');
+    if (!platform) return;
+
+    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
+    const isHosted = hosted && !bundleAssets;
 
     if (isHosted) {
         const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
@@ -51,8 +54,6 @@ export const runWebOS = async (c: RnvContext) => {
         logDefault('runWebOS', `target:${target} hosted:${!!isHosted}`);
         return;
     }
-
-    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
 
     const env = getConfigProp(c, platform, 'environment');
     if (env !== 'production') {

@@ -1,7 +1,14 @@
 import { isPlatformIos } from '@rnv/renative';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const { height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
+    screen: {
+        flex: 1,
+        height,
+        backgroundColor: 'white',
+    },
     container: {
         flex: 1,
         justifyContent: 'center',

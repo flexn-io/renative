@@ -94,14 +94,16 @@ export const configureTizenGlobal = (c: RnvContext) =>
         // }
     });
 
-const _runTizenSimOrDevice = async (c: RnvContext) => {
-    try {
-        await runTizenSimOrDevice(c, buildCoreWebpackProject);
-    } catch (e) {
-        // TODO: Capture different errors and react accordingly
-        return Promise.reject(e);
-    }
-    return true;
+const _copyRequiredFiles = (c: RnvContext) => {
+    const tDir = getPlatformProjectDir(c)!;
+    const tBuild = path.join(tDir, 'build');
+
+    const requiredFiles = ['.project', '.tproject', 'config.xml', 'icon.png'];
+
+    requiredFiles.map((requiredFile) => {
+        const requiredFilePath = path.join(tDir, requiredFile);
+        copyFileSync(requiredFilePath, path.join(tBuild, requiredFile));
+    });
 };
 
 export const runTizen = async (c: RnvContext, target?: string) => {
@@ -111,7 +113,8 @@ export const runTizen = async (c: RnvContext, target?: string) => {
 
     if (!platform) return;
 
-    const isHosted = hosted && !getConfigProp(c, platform, 'bundleAssets');
+    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
+    const isHosted = hosted && !bundleAssets;
 
     if (isHosted) {
         const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
@@ -119,16 +122,14 @@ export const runTizen = async (c: RnvContext, target?: string) => {
             const resetCompleted = await confirmActiveBundler(c);
             c.runtime.skipActiveServerCheck = !resetCompleted;
         }
+        logDefault('runTizen', `target:${target} hosted:${!!isHosted}`);
+        return;
     }
-
-    logDefault('runTizen', `target:${target} hosted:${!!isHosted}`);
-    if (isHosted) return;
-
-    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
 
     if (bundleAssets) {
         await buildCoreWebpackProject(c);
-        await _runTizenSimOrDevice(c);
+        _copyRequiredFiles(c);
+        await runTizenSimOrDevice(c);
     } else {
         const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
         const isWeinreEnabled = REMOTE_DEBUGGER_ENABLED_PLATFORMS.includes(platform) && !bundleAssets && !hosted;
@@ -140,7 +141,7 @@ export const runTizen = async (c: RnvContext, target?: string) => {
                 )} is not running. Starting it up for you...`
             );
             waitForHost(c, '')
-                .then(() => _runTizenSimOrDevice(c))
+                .then(() => runTizenSimOrDevice(c))
                 .catch(logError);
             await runWebpackServer(c, isWeinreEnabled);
         } else {
@@ -148,11 +149,11 @@ export const runTizen = async (c: RnvContext, target?: string) => {
 
             if (resetCompleted) {
                 waitForHost(c, '')
-                    .then(() => _runTizenSimOrDevice(c))
+                    .then(() => runTizenSimOrDevice(c))
                     .catch(logError);
                 await runWebpackServer(c, isWeinreEnabled);
             } else {
-                await _runTizenSimOrDevice(c);
+                await runTizenSimOrDevice(c);
             }
         }
     }
@@ -169,17 +170,12 @@ export const buildTizenProject = async (c: RnvContext) => {
     const tDir = getPlatformProjectDir(c)!;
 
     await buildCoreWebpackProject(c);
+
     if (!c.program.hosted) {
+        _copyRequiredFiles(c);
         const tOut = path.join(tDir, 'output');
         const tIntermediate = path.join(tDir, 'intermediate');
         const tBuild = path.join(tDir, 'build');
-
-        const requiredFiles = ['.project', '.tproject', 'config.xml', 'icon.png'];
-
-        requiredFiles.map((requiredFile) => {
-            const requiredFilePath = path.join(tDir, requiredFile);
-            copyFileSync(requiredFilePath, path.join(tBuild, requiredFile));
-        });
 
         await execCLI(c, CLI_TIZEN, `build-web -- ${tBuild} -out ${tIntermediate}`);
         await execCLI(c, CLI_TIZEN, `package -- ${tIntermediate} -s ${certProfile} -t wgt -o ${tOut}`);
