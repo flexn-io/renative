@@ -32,13 +32,13 @@ export type TaskPromptOption = {
 
 export type RnvTaskOption = {
     shortcut?: string;
-    value?: string;
     key?: string;
     isRequired?: boolean;
+    isValueType?: boolean;
+    isVariadic?: boolean;
     description: string;
     examples?: Array<string>;
     options?: Array<string>;
-    variadic?: boolean;
 };
 
 export type RnvTaskMap = Record<string, RnvTask>;

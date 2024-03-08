@@ -1,5 +1,4 @@
 import {
-    createRnvApi,
     createRnvContext,
     fsExistsSync,
     getContext,
@@ -19,7 +18,6 @@ jest.mock('semver');
 
 beforeEach(() => {
     createRnvContext();
-    createRnvApi();
 });
 
 afterEach(() => {

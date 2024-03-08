@@ -60,7 +60,7 @@ const checkForDuplicates = (arr: Array<any>) => {
         if (v) {
             Object.keys(v).forEach((k) => {
                 if (dupCheck[k]) {
-                    logWarning(`Key ${chalk().white(k)} is duplicated in your package.json`);
+                    logWarning(`Key ${chalk().bold(k)} is duplicated in your package.json`);
                 }
                 dupCheck[k] = true;
             });

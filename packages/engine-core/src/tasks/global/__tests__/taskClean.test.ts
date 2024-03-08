@@ -1,8 +1,8 @@
 import {
-    createRnvApi,
     createRnvContext,
     executeAsync,
     fsExistsSync,
+    fsReaddirSync,
     getContext,
     inquirerPrompt,
     removeDirs,
@@ -14,7 +14,6 @@ jest.mock('path');
 
 beforeEach(() => {
     createRnvContext();
-    createRnvApi();
 });
 
 afterEach(() => {
@@ -28,6 +27,7 @@ test('Execute task.rnv.clean', async () => {
         Promise.resolve({ confirm: true, confirmBuilds: true, confirmLocals: true, confirmCache: true })
     );
     jest.mocked(fsExistsSync).mockReturnValue(true);
+    jest.mocked(fsReaddirSync).mockReturnValue([]);
     ctx.program.ci = false;
     //WHEN
     await expect(taskClean.fn?.(ctx)).resolves.toEqual(true);

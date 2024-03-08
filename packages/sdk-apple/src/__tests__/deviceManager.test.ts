@@ -1,4 +1,4 @@
-import { createRnvApi, executeAsync, createRnvContext } from '@rnv/core';
+import { executeAsync, createRnvContext } from '@rnv/core';
 import { utilities } from 'appium-ios-device';
 
 const simctlSimJson = {
@@ -136,7 +136,6 @@ jest.mock('@rnv/core');
 
 beforeEach(() => {
     createRnvContext();
-    createRnvApi();
 });
 
 afterEach(() => {

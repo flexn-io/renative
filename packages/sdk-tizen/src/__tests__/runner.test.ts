@@ -1,4 +1,4 @@
-import { createRnvApi, createRnvContext, execCLI, fsExistsSync, getContext } from '@rnv/core';
+import { createRnvContext, execCLI, fsExistsSync, getContext } from '@rnv/core';
 import { configureTizenGlobal, checkTizenStudioCert } from '../runner';
 import path from 'path';
 import { addDevelopTizenCertificate, createDevelopTizenCertificate } from '../deviceManager';
@@ -9,7 +9,6 @@ jest.mock('@rnv/core');
 
 beforeEach(() => {
     createRnvContext();
-    createRnvApi();
 });
 
 afterEach(() => {

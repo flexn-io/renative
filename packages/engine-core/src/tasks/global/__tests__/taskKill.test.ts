@@ -1,4 +1,4 @@
-import { createRnvApi, createRnvContext, executeTask, getContext } from '@rnv/core';
+import { createRnvContext, executeTask, getContext } from '@rnv/core';
 import taskKill from '../taskKill';
 
 jest.mock('@rnv/core');
@@ -7,7 +7,6 @@ jest.mock('kill-port');
 
 beforeEach(() => {
     createRnvContext();
-    createRnvApi();
 });
 
 afterEach(() => {

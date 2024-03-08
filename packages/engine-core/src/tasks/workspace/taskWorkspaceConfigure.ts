@@ -51,13 +51,13 @@ const taskWorkspaceConfigure: RnvTaskFn = async (c) => {
         if (c.files.workspace.config?.appConfigsPath) {
             if (!fsExistsSync(c.files.workspace.config.appConfigsPath)) {
                 logWarning(
-                    `Your custom global appConfig is pointing to ${chalk().white(
+                    `Your custom global appConfig is pointing to ${chalk().bold(
                         c.files.workspace.config.appConfigsPath
                     )} which doesn't exist! Make sure you create one in that location`
                 );
             } else {
                 logInfo(
-                    `Found custom appConfing location pointing to ${chalk().white(
+                    `Found custom appConfing location pointing to ${chalk().bold(
                         c.files.workspace.config.appConfigsPath
                     )}. ReNativewill now swith to that location!`
                 );
@@ -68,7 +68,7 @@ const taskWorkspaceConfigure: RnvTaskFn = async (c) => {
         // Check config sanity
         if (c.files.workspace.config?.defaultTargets === undefined) {
             logWarning(
-                `You're missing defaultTargets in your config ${chalk().white(
+                `You're missing defaultTargets in your config ${chalk().bold(
                     c.paths.workspace.config
                 )}. Let's add them!`
             );

@@ -185,4 +185,19 @@ export const generateBuildConfig = (_c?: RnvContext) => {
             logWarning('Cannot save buildConfig as c.paths.project.builds.dir is not defined');
         }
     }
+
+    _checkBuildSchemeIfEngine(c);
+};
+
+const _checkBuildSchemeIfEngine = (c: RnvContext) => {
+    const { scheme } = c.program;
+    if (!c.platform || !scheme) return;
+
+    const platform = c.buildConfig?.platforms?.[c.platform];
+    if (!platform) return;
+
+    const definedEngine = platform.buildSchemes?.[scheme]?.engine;
+    if (definedEngine) {
+        platform.engine = definedEngine;
+    }
 };

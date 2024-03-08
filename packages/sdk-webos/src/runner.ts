@@ -58,7 +58,7 @@ export const runWebOS = async (c: RnvContext) => {
     if (env !== 'production') {
         process.env.RNV_INJECTED_WEBPACK_SCRIPTS = `${
             process.env.RNV_INJECTED_WEBPACK_SCRIPTS || ''
-        }\n<script type="text/javascript" src="webOSTVjs-1.1.1/webOSTV-dev.js"></script>`;
+        }\n<script type="text/javascript" src="webOSTVjs-1.2.8/webOSTV-dev.js"></script>`;
     }
 
     if (bundleAssets) {
@@ -87,7 +87,7 @@ export const runWebOS = async (c: RnvContext) => {
 
         if (!isPortActive) {
             logInfo(
-                `Your ${chalk().white(platform)} devServer at port ${chalk().white(
+                `Your ${chalk().bold(platform)} devServer at port ${chalk().bold(
                     c.runtime.port
                 )} is not running. Starting it up for you...`
             );

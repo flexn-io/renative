@@ -391,12 +391,16 @@ module.exports = function (webpackEnv) {
                             options: {
                                 // customize: require.resolve('babel-preset-react-app/webpack-overrides'),
                                 presets: [
-                                    // [
-                                    //     require.resolve('babel-preset-react-app'),
-                                    //     {
-                                    //         runtime: hasJsxRuntime ? 'automatic' : 'classic',
-                                    //     },
-                                    // ],
+                                    // RNV-ADDITION
+                                    [
+                                        '@babel/preset-env',
+                                        {
+                                            useBuiltIns: 'usage',
+                                            corejs: '3.3',
+                                            loose: true,
+                                        },
+                                    ],
+                                    // RNV-ADDITION
                                     [
                                         '@babel/preset-react',
                                         {

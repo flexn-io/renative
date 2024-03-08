@@ -12,6 +12,8 @@ import {
     logToSummary,
     logDefault,
     logInfo,
+    logTask,
+    logWarning,
     isSystemWin,
     RnvContext,
     inquirerPrompt,
@@ -20,7 +22,6 @@ import {
     isSystemMac,
     logError,
     logSuccess,
-    logWarning,
     getConfigProp,
     getAppFolder,
 } from '@rnv/core';
@@ -36,38 +37,36 @@ import {
 import semver from 'semver';
 import { isUrlLocalhost } from '@rnv/sdk-utils';
 
-export const launchWebOSimulator = async (c: RnvContext, target: string) => {
-    logDefault('launchWebOSimulator', `${target}`);
-
+export const launchWebOSimulator = async (c: RnvContext, target: string | boolean) => {
+    logTask('launchWebOSimulator', `${target}`);
     const webosSdkPath = getRealPath(c, c.buildConfig?.sdks?.WEBOS_SDK);
     if (!webosSdkPath) {
         return Promise.reject(`c.buildConfig.sdks.WEBOS_SDK undefined`);
     }
-    let selectedOption = target;
-
     const availableSimulatorVersions = getDirectories(path.join(webosSdkPath, 'Simulator'));
-    if (target && !availableSimulatorVersions.includes(selectedOption)) {
+
+    if (target === true) {
+        const { selectedSimulator } = await inquirerPrompt({
+            name: 'selectedSimulator',
+            type: 'list',
+            message: 'What simulator would you like to launch?',
+            choices: availableSimulatorVersions,
+        });
+
+        target = selectedSimulator;
+    } else if (typeof target === 'string' && !availableSimulatorVersions.includes(target)) {
         logWarning(
-            `Target with name ${chalk().red(selectedOption)} does not exist. You can update it here: ${chalk().cyan(
+            `Target with name ${chalk().red(target)} does not exist. You can update it here: ${chalk().cyan(
                 c.paths.GLOBAL_RNV_CONFIG
             )}`
         );
-        await launchWebOSimulator(c, '');
+        await launchWebOSimulator(c, true);
         return true;
-    }
-
-    if (!target) {
-        ({ selectedOption } = await inquirerPrompt({
-            name: 'selectedOption',
-            type: 'list',
-            choices: availableSimulatorVersions,
-            message: `Select the simulator you want to launch`,
-        }));
     }
 
     const ePath = path.join(
         webosSdkPath,
-        `Simulator/${selectedOption}/${selectedOption}${isSystemWin ? '.exe' : isSystemLinux ? '.appimage' : '.app'}`
+        `Simulator/${target}/${target}${isSystemWin ? '.exe' : isSystemLinux ? '.appimage' : '.app'}`
     );
 
     if (!fsExistsSync(ePath)) {
@@ -76,6 +75,7 @@ export const launchWebOSimulator = async (c: RnvContext, target: string) => {
     if (isSystemWin || isSystemLinux) {
         return executeAsync(c, ePath, ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY);
     }
+  
     await executeAsync(c, `${openCommand} ${ePath}`, ExecOptionsPresets.FIRE_AND_FORGET);
     logSuccess(`Succesfully launched ${selectedOption}`);
     return true;

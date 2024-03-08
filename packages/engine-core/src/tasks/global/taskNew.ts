@@ -520,7 +520,7 @@ const taskNew = async (c: RnvContext) => {
         const { confirmAddTemplate } = await inquirerPrompt({
             name: 'confirmAddTemplate',
             type: 'confirm',
-            message: `Would you like to add ${chalk().white(selectedInputTemplate)} to your ${
+            message: `Would you like to add ${chalk().bold(selectedInputTemplate)} to your ${
                 c.runtime.selectedWorkspace
             } workspace template list?`,
         });
@@ -775,7 +775,7 @@ const taskNew = async (c: RnvContext) => {
     }
 
     logSuccess(
-        `Your project is ready! navigate to project ${chalk().white(`cd ${data.projectName}`)} and run ${chalk().white(
+        `Your project is ready! navigate to project ${chalk().bold(`cd ${data.projectName}`)} and run ${chalk().bold(
             'npx rnv run'
         )} to see magic happen!`
     );

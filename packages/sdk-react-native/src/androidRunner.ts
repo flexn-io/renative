@@ -26,7 +26,7 @@ export const packageReactNativeAndroid = async (c: RnvContext) => {
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets', false) === true;
 
     if (!bundleAssets && platform !== 'androidwear') {
-        logInfo(`bundleAssets in scheme ${chalk().white(c.runtime.scheme)} marked false. SKIPPING PACKAGING...`);
+        logInfo(`bundleAssets in scheme ${chalk().bold(c.runtime.scheme)} marked false. SKIPPING PACKAGING...`);
         return true;
     }
 

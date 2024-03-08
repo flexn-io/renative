@@ -5,6 +5,9 @@
     "crypto": {
         "path": "./secrets/privateConfigs.enc"
     },
+    "integrations": {
+        "@rnv/integration-starter": {}
+    },
     "plugins": {
         "react-native-splash-screen": {
             "android": {
@@ -151,7 +154,10 @@
                 "templateXcode": {
                     "AppDelegate_h": {
                         "appDelegateExtensions": ["UNUserNotificationCenterDelegate"],
-                        "appDelegateImports": ["<UserNotifications/UNUserNotificationCenter.h>", "<UserNotifications/UserNotifications.h>"]
+                        "appDelegateImports": [
+                            "<UserNotifications/UNUserNotificationCenter.h>",
+                            "<UserNotifications/UserNotifications.h>"
+                        ]
                     },
                     "AppDelegate_mm": {
                         "appDelegateImports": ["<RNCPushNotificationIOS.h>"],

@@ -52,11 +52,11 @@ export const getWorkspaceDirPath = async (c: RnvContext) => {
                     const { conf } = await inquirerPrompt({
                         name: 'conf',
                         type: 'confirm',
-                        message: `Your project belongs to workspace ${chalk().white(
+                        message: `Your project belongs to workspace ${chalk().bold(
                             ws
-                        )}. do you want to add new workspace ${chalk().white(
-                            ws
-                        )} to your local system at ${chalk().white(wsDir)}?`,
+                        )}. do you want to add new workspace ${chalk().bold(ws)} to your local system at ${chalk().bold(
+                            wsDir
+                        )}?`,
                         warningMessage: 'No app configs found for this project',
                     });
                     confirm = conf;

@@ -1,7 +1,7 @@
 import program from 'commander';
 import fs from 'fs';
 import path from 'path';
-import { logComplete, logError, getContext, RnvTaskOptionPresets } from '@rnv/core';
+import { logComplete, logError, getContext, RnvTaskOptionPresets, generateStringFromTaskOption } from '@rnv/core';
 import Spinner from './ora';
 import Prompt from './prompt';
 import Logger from './logger';
@@ -29,23 +29,10 @@ export const run = () => {
     program.version(packageJson.version, '-v, --version', 'output current version');
 
     RnvTaskOptionPresets.withAll().forEach((param) => {
-        let cmd = '';
-        if (param.shortcut) {
-            cmd += `-${param.shortcut}, `;
-        }
-        cmd += `--${param.key}`;
-
-        if (param.value) {
-            if (param.isRequired) {
-                cmd += ` <${param.value}>`;
-            } else if (param.variadic) {
-                cmd += ` [${param.value}...]`;
-            } else {
-                cmd += ` [${param.value}]`;
-            }
-        }
-        program.option(cmd, param.description);
+        program.option(generateStringFromTaskOption(param), param.description);
     });
+
+    program.allowUnknownOption(true); // integration options are not known ahead of time
 
     // Make both arguments optional un order to allow `$ rnv` top level command
     program.arguments('[cmd] [option]').action((cmd, option) => {
@@ -60,7 +47,22 @@ export const run = () => {
         process.exit(0);
     });
 
-    executeRnv({ cmd: cmdValue, subCmd: cmdOption, program, process, spinner: Spinner, prompt: Prompt, logger: Logger })
+    // If the first argument is a flag, then the subCommand is missing
+    // this occurs when rnv has to execute unknown commands (ie intergration commands)
+    // commander does not handle this scenario automatically
+    if (cmdOption && (cmdOption.startsWith('--') || cmdOption.startsWith('-'))) {
+        cmdOption = '';
+    }
+
+    executeRnv({
+        cmd: cmdValue,
+        subCmd: cmdOption,
+        program,
+        process,
+        spinner: Spinner,
+        prompt: Prompt,
+        logger: Logger,
+    })
         .then(() => {
             logComplete(!getContext().runtime.keepSessionActive);
         })

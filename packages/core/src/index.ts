@@ -67,3 +67,4 @@ export * from './system/types';
 export * from './api/types';
 export * from './types';
 export * from './schema/types';
+export * from './integrations/types';

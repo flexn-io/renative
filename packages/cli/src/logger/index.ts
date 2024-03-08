@@ -12,20 +12,25 @@ import {
 } from '@rnv/core';
 
 const ICN_ROCKET = isSystemWin ? 'RNV' : '🚀';
-const ICN_UNICORN = isSystemWin ? 'unicorn' : '🦄';
+// const ICN_UNICORN = isSystemWin ? 'unicorn' : '🦄';
 const _chalkCols = generateDefaultChalk();
 const _chalkMono = {
     ..._chalkCols,
 };
+
+const colorBlue = { r: 10, g: 116, b: 230 }; // '#0a74e6'
+
 let currentChalk: RnvApiChalk = _chalk;
-let RNV = 'ReNative';
+let chalkBlue: any = _chalk.rgb(colorBlue.r, colorBlue.g, colorBlue.b);
+
+// const RNV = 'ReNative';
 const PRIVATE_PARAMS = ['-k', '--key'];
 let _currentProcess: NodeJS.Process;
 let _isInfoEnabled = false;
 let _infoFilter: Array<string> = [];
 // let _c: RnvContext;
 // let _isMono = false;
-let _defaultColor = _chalkCols.white;
+let _defaultColor: any = _chalkCols.white;
 let _highlightColor = _chalkCols.white;
 // let _analytics: AnalyticsApi;
 let _jsonOnly: boolean;
@@ -44,45 +49,47 @@ export const logInitialize = () => {
 
     if (ctx.program.mono) {
         currentChalk = _chalkMono;
+        chalkBlue = _chalkMono;
     }
     _updateDefaultColors();
-    RNV = getCurrentCommand();
+    // RNV = getCurrentCommand();
     if (!_jsonOnly) logWelcome();
 };
 
 export const logWelcome = () => {
     const ctx = getContext();
-    const chalCol = currentChalk.rgb(10, 116, 230);
     const shortLen = 64;
     // prettier-ignore
     let str = _defaultColor(`
 ┌─────────────────────────────────────────────────────────────────┐
-│ ${chalCol('██████╗')} ███████╗${chalCol('███╗   ██╗')} █████╗ ████████╗██╗${chalCol('██╗   ██╗')}███████╗ │
-│ ${chalCol('██╔══██╗')}██╔════╝${chalCol('████╗  ██║')}██╔══██╗╚══██╔══╝██║${chalCol('██║   ██║')}██╔════╝ │
-│ ${chalCol('██████╔╝')}█████╗  ${chalCol('██╔██╗ ██║')}███████║   ██║   ██║${chalCol('██║   ██║')}█████╗   │
-│ ${chalCol('██╔══██╗')}██╔══╝  ${chalCol('██║╚██╗██║')}██╔══██║   ██║   ██║${chalCol('╚██╗ ██╔╝')}██╔══╝   │
-│ ${chalCol('██║  ██║')}███████╗${chalCol('██║ ╚████║')}██║  ██║   ██║   ██║${chalCol(' ╚████╔╝ ')}███████╗ │
-│ ${chalCol('╚═╝  ╚═╝')}╚══════╝${chalCol('╚═╝  ╚═══╝')}╚═╝  ╚═╝   ╚═╝   ╚═╝${chalCol('  ╚═══╝  ')}╚══════╝ │
+│ ${chalkBlue('██████╗')} ███████╗${chalkBlue('███╗   ██╗')} █████╗ ████████╗██╗${chalkBlue('██╗   ██╗')}███████╗ │
+│ ${chalkBlue('██╔══██╗')}██╔════╝${chalkBlue('████╗  ██║')}██╔══██╗╚══██╔══╝██║${chalkBlue('██║   ██║')}██╔════╝ │
+│ ${chalkBlue('██████╔╝')}█████╗  ${chalkBlue('██╔██╗ ██║')}███████║   ██║   ██║${chalkBlue('██║   ██║')}█████╗   │
+│ ${chalkBlue('██╔══██╗')}██╔══╝  ${chalkBlue('██║╚██╗██║')}██╔══██║   ██║   ██║${chalkBlue('╚██╗ ██╔╝')}██╔══╝   │
+│ ${chalkBlue('██║  ██║')}███████╗${chalkBlue('██║ ╚████║')}██║  ██║   ██║   ██║${chalkBlue(' ╚████╔╝ ')}███████╗ │
+│ ${chalkBlue('╚═╝  ╚═╝')}╚══════╝${chalkBlue('╚═╝  ╚═══╝')}╚═╝  ╚═╝   ╚═╝   ╚═╝${chalkBlue('  ╚═══╝  ')}╚══════╝ │
 `);
 
     if (ctx.files?.rnv?.package?.version) {
         ctx.rnvVersion = ctx.files.rnv.package.version;
         str += printIntoBox(
-            `Version: ${currentChalk.green(ctx.rnvVersion)} ${ICN_ROCKET} ${currentChalk.yellow('Firing up!...')}`,
+            currentChalk.grey(
+                `${ICN_ROCKET} v:${ctx.rnvVersion} | ${'renative.org'} | ${ctx.timeStart.toLocaleString()}`
+            ),
             shortLen
         );
         if (ctx.rnvVersion?.includes?.('alpha')) {
             str += printIntoBox(`${currentChalk.yellow('WARNING: this is a prerelease version.')}`, shortLen);
         }
     }
-    str += printIntoBox(
-        `${currentChalk.grey('https://renative.org')} | Start Time: ${currentChalk.grey(
-            ctx.timeStart.toLocaleString()
-        )}`,
-        shortLen
-    );
+    // str += printIntoBox(
+    //     `${currentChalk.grey('https://renative.org')} | Start Time: ${currentChalk.grey(
+    //         ctx.timeStart.toLocaleString()
+    //     )}`,
+    //     shortLen
+    // );
     // str += printIntoBox(`      ${ICN_ROCKET} ${currentChalk.yellow('Firing up!...')}`);
-    str += printIntoBox(`$ ${currentChalk.cyan(getCurrentCommand(true))}`, shortLen);
+    str += printIntoBox(`$ ${currentChalk.bold(getCurrentCommand(true))}`, shortLen);
     if (ctx.timeStart) {
         // str += printIntoBox(`      Start Time: ${currentChalk.grey(ctx.timeStart.toLocaleString())}`);
     }
@@ -137,8 +144,8 @@ export function stripAnsi(string: string) {
 // };
 
 const _updateDefaultColors = () => {
-    _defaultColor = currentChalk.gray;
-    _highlightColor = currentChalk.green;
+    _defaultColor = currentChalk;
+    _highlightColor = currentChalk.bold; //currentChalk.bold;
 };
 _updateDefaultColors();
 
@@ -196,7 +203,7 @@ export const logRaw = (...args: Array<string>) => {
     console.log.apply(null, args);
 };
 
-export const logSummary = (header = 'SUMMARY') => {
+export const logSummary = (header = '✔ SUMMARY') => {
     const ctx = getContext();
 
     if (_jsonOnly) return;
@@ -205,10 +212,10 @@ export const logSummary = (header = 'SUMMARY') => {
         logAndSave(chalk().yellow('You are trying to run global rnv command in your current project.'), true);
         logAndSave(chalk().yellow('This might lead to unexpected behaviour.'), true);
         logAndSave(chalk().yellow('Run your rnv command with npx prefix:'), true);
-        logAndSave(chalk().white('npx ' + getCurrentCommand(true)), true);
+        logAndSave(chalk().bold('npx ' + getCurrentCommand(true)), true);
     }
 
-    let logContent = printIntoBox(`All good as ${ICN_UNICORN} `);
+    let logContent = ''; //= printIntoBox(`All good as ${ICN_UNICORN} `);
     if (ctx.logMessages && ctx.logMessages.length) {
         logContent = '';
         ctx.logMessages.forEach((m) => {
@@ -220,9 +227,17 @@ export const logSummary = (header = 'SUMMARY') => {
     ctx.timeEnd = new Date();
     timeString = `| ${ctx.timeEnd.toLocaleString()}`;
 
-    let str = printBoxStart(`${ICN_ROCKET}  ${header} ${timeString}`, getCurrentCommand());
+    // let envString = '';
+    // if (ctx.process) {
+    //     envString = `${ctx.process.platform} | ${ctx.process.arch} | node v${ctx.process.versions?.node}`;
+    // }
 
-    str += printIntoBox(`ReNative Version: ${_highlightColor(ctx.rnvVersion)}`);
+    let str = printBoxStart(
+        `${currentChalk.green.bold(header)} ${timeString} | rnv@${ctx.rnvVersion}`,
+        getCurrentCommand()
+    );
+
+    // str += printIntoBox(`ReNative Version: ${_highlightColor(ctx.rnvVersion)}`);
     if (ctx.files?.project?.package?.name && ctx.files?.project?.package?.version) {
         str += printIntoBox(`Project Name ($package.name): ${_highlightColor(ctx.files.project.package.name)}`);
         str += printIntoBox(
@@ -280,14 +295,14 @@ export const logSummary = (header = 'SUMMARY') => {
         str += printIntoBox(`Executed Time: ${_msToTime(ctx.timeEnd.getTime() - ctx.timeStart.getTime())}`);
     }
 
-    str += printIntoBox('');
+    // str += printIntoBox('');
 
     str += logContent.replace(/\n\s*\n\s*\n/g, '\n\n');
 
     // str += printIntoBox('');
     if (ctx.runtime?.platformBuildsProjectPath) {
         str += printIntoBox('Project location:');
-        str += printIntoBox(`${currentChalk.cyan(_sanitizePaths(ctx.runtime.platformBuildsProjectPath || ''))}`);
+        str += printIntoBox(`${currentChalk.bold(_sanitizePaths(ctx.runtime.platformBuildsProjectPath || ''))}`);
     }
     str += printBoxEnd();
 
@@ -308,18 +323,26 @@ const _msToTime = (seconds: number) => {
 
 const _getCurrentTask = () => {
     const ctx = getContext();
-    return ctx._currentTask ? currentChalk.grey(` [${ctx._currentTask}]`) : '';
+    return ctx._currentTask ? currentChalk.grey(`○ ${ctx._currentTask}:`) : '';
 };
 
+const CWD = process.cwd();
+const CWD_UP = CWD.split('/').slice(0, -1).join('/');
+const CWD_UP_UP = CWD.split('/').slice(0, -2).join('/');
+
 const _sanitizePaths = (msg: string) => {
-    const ctx = getContext();
+    // const ctx = getContext();
     // let dir
     // const config = ctx.files?.project?.config;
     // if(config && config.isMonorepo) {
     //     if()
     // }
-    if (msg?.replace && ctx.paths?.project?.dir) {
-        return msg.replace(new RegExp(ctx.paths.project.dir, 'g'), '.');
+
+    if (msg?.replace) {
+        return msg
+            .replace(new RegExp(CWD, 'g'), '.')
+            .replace(new RegExp(CWD_UP, 'g'), '..')
+            .replace(new RegExp(CWD_UP_UP, 'g'), '../..');
     }
     return msg;
 };
@@ -341,22 +364,23 @@ export const logTask = (task: string, customChalk?: string | RnvApiChalkFn) => {
 
     let msg = '';
     if (typeof customChalk === 'string') {
-        msg = `${currentChalk.green(`[ task ]${_getCurrentTask()}`)} ${task}${taskCount} ${currentChalk.grey(
+        msg = `${currentChalk.green(`[task]${_getCurrentTask()}`)} ${task}${taskCount} ${currentChalk.grey(
             customChalk
         )}`;
     } else if (customChalk) {
-        msg = customChalk(`[ task ]${_getCurrentTask()} ${task}${taskCount}`);
+        msg = customChalk(`[task]${_getCurrentTask()} ${task}${taskCount}`);
     } else {
-        msg = `${currentChalk.green(`[ task ]${_getCurrentTask()}`)} ${task}${taskCount}`;
+        msg = `${currentChalk.green(`[task]${_getCurrentTask()}`)} ${task}${taskCount}`;
     }
 
-    console.log(_sanitizePaths(msg));
+    if (_isInfoEnabled) {
+        // TODO: temporary. will be activated under different flag
+        console.log(_sanitizePaths(msg));
+    }
 };
 
 export const logDefault = (task: string, customChalk?: string | RnvApiChalkFn) => {
-    if (!TASK_COUNTER[task]) TASK_COUNTER[task] = 0;
-    TASK_COUNTER[task] += 1;
-    const taskCount = currentChalk.grey(`[${TASK_COUNTER[task]}]`);
+    const taskCount = getLogCounter(task);
 
     if (_jsonOnly) {
         return _printJson({
@@ -368,32 +392,41 @@ export const logDefault = (task: string, customChalk?: string | RnvApiChalkFn) =
 
     let msg = '';
     if (typeof customChalk === 'string') {
-        msg = `[ log ]${_getCurrentTask()} ${task}${taskCount} ${currentChalk.grey(customChalk)}`;
+        msg = `[log]${_getCurrentTask()} ${task}${taskCount} ${currentChalk.grey(customChalk)}`;
     } else if (customChalk) {
-        msg = customChalk(`[ log ]${_getCurrentTask()} ${task}${taskCount}`);
+        msg = customChalk(`[log]${_getCurrentTask()} ${task} ${taskCount}`);
     } else {
-        msg = `[ log ]${_getCurrentTask()} ${task}${taskCount}`;
+        msg = `[log]${_getCurrentTask()} ${task} ${taskCount}`;
     }
 
-    console.log(_sanitizePaths(msg));
+    if (_isInfoEnabled) {
+        // TODO: temporary. will be activated under different flag
+        console.log(_sanitizePaths(msg));
+    }
 };
 
-export const logInitTask = (task: string, customChalk?: string | ((s: string) => string)) => {
+const getLogCounter = (task: string, skipAddition = false) => {
+    if (!TASK_COUNTER[task]) TASK_COUNTER[task] = 0;
+    if (!skipAddition) {
+        TASK_COUNTER[task] += 1;
+    }
+
+    const taskCount = currentChalk.grey(`[${TASK_COUNTER[task]}]`);
+    return taskCount;
+};
+
+export const logInitTask = (task: string) => {
+    const taskCount = getLogCounter(task);
+
     if (_jsonOnly) {
         return _printJson({
             type: 'taskInit',
             task: stripAnsi(_getCurrentTask()),
-            message: stripAnsi(_sanitizePaths(typeof customChalk === 'string' ? customChalk : task)),
+            message: stripAnsi(_sanitizePaths(task)),
         });
     }
-    let msg = '';
-    if (typeof customChalk === 'string') {
-        msg = `${currentChalk.rgb(183, 84, 117)(`[ task ] ${task}`)} ${currentChalk.grey(customChalk)}`;
-    } else if (customChalk) {
-        msg = customChalk(`[ task ] ${task}`);
-    } else {
-        msg = currentChalk.rgb(183, 84, 117)(`[ task ] ${task}`);
-    }
+
+    const msg = `${chalkBlue.bold('task:')} ○ ${task} ${taskCount}`;
 
     console.log(msg);
 };
@@ -406,22 +439,16 @@ type PrintJsonPayload = {
     level?: string;
 };
 
-export const logExitTask = (task: string, customChalk?: (s: string) => string) => {
+export const logExitTask = (task: string) => {
     if (_jsonOnly) {
         return _printJson({
             type: 'taskExit',
             task: stripAnsi(_getCurrentTask()),
-            message: stripAnsi(_sanitizePaths(typeof customChalk === 'string' ? customChalk : task)),
+            message: stripAnsi(_sanitizePaths(task)),
         });
     }
-    let msg = '';
-    if (typeof customChalk === 'string') {
-        msg = `${currentChalk.rgb(183, 84, 117)(`[ task ] ${task}`)} ${currentChalk.grey(customChalk)}`;
-    } else if (customChalk) {
-        msg = customChalk(`[ task ] ${task}`);
-    } else {
-        msg = currentChalk.rgb(183, 84, 117)(`[ task ] ${task}`);
-    }
+    const taskCount = getLogCounter(task, true);
+    const msg = `${currentChalk.green('task:')} ${currentChalk.green('✔')} ${task} ${taskCount}`;
 
     console.log(msg);
 };
@@ -432,11 +459,7 @@ export const logHook = (hook = '', msg = '') => {
         if (_getCurrentTask()) payload.task = stripAnsi(_getCurrentTask());
         return _printJson(payload);
     }
-    console.log(
-        `${currentChalk.rgb(127, 255, 212)(`[ hook ]${_getCurrentTask()} ${hook}`)} ${currentChalk.grey(
-            _sanitizePaths(msg)
-        )}`
-    );
+    console.log(`${`[hook]`} ${_sanitizePaths(msg)}`);
 };
 
 export const logWarning = (msg: string | boolean | unknown) => {
@@ -449,7 +472,7 @@ export const logWarning = (msg: string | boolean | unknown) => {
             message: stripAnsi(msgSn),
         });
     }
-    logAndSave(currentChalk.yellow(`[ warn ]${_getCurrentTask()} ${msgSn}`));
+    logAndSave(currentChalk.yellow(`warn:${_getCurrentTask()} ${msgSn}`));
 };
 
 export const logInfo = (msg: string) => {
@@ -461,7 +484,7 @@ export const logInfo = (msg: string) => {
             message: stripAnsi(_sanitizePaths(msg)),
         });
     }
-    console.log(currentChalk.cyan(`[ info ]${_getCurrentTask()} ${_sanitizePaths(msg)}`));
+    console.log(`${currentChalk.bold('info:')} ${_sanitizePaths(msg)}`);
 };
 
 export const logDebug = (...args: Array<string>) => {
@@ -490,7 +513,7 @@ export const isInfoEnabled = () => _isInfoEnabled;
 
 export const logComplete = (isEnd = false) => {
     if (_jsonOnly) return;
-    console.log(currentChalk.bold.white(`\n ${RNV} - Done! ${ICN_ROCKET}`));
+    // console.log(currentChalk.green.bold(`✔ Done`));
     if (isEnd) logEnd(0);
 };
 
@@ -502,7 +525,7 @@ export const logSuccess = (msg: string) => {
             message: stripAnsi(_sanitizePaths(msg)),
         });
     }
-    logAndSave(currentChalk.magenta(`[ success ]${_getCurrentTask()} ${_sanitizePaths(msg)}`));
+    logAndSave(`${currentChalk.magenta(`info: ✔`)} ${_sanitizePaths(msg)}`);
 };
 
 export const logError = (e: Error | string | unknown, isEnd = false, skipAnalytics = false) => {
@@ -536,9 +559,9 @@ export const logError = (e: Error | string | unknown, isEnd = false, skipAnalyti
             message: stripAnsi(_sanitizePaths(err)),
         });
     } else if (e && e instanceof Error && e.message) {
-        logAndSave(currentChalk.red(`[ error ]${_getCurrentTask()} ${e.message}\n${e.stack}`), isEnd);
+        logAndSave(currentChalk.red(`error: ⨯ ${_getCurrentTask()} ${e.message}\n${e.stack}`), isEnd);
     } else {
-        logAndSave(currentChalk.red(`[ error ]${_getCurrentTask()} ${e}`), isEnd);
+        logAndSave(currentChalk.red(`error: ⨯ ${_getCurrentTask()} ${e}`), isEnd);
     }
 
     ctx.runtime.keepSessionActive = false;
@@ -560,7 +583,7 @@ export const logEnd = (code: number) => {
 
 export const logAppInfo = (c: RnvContext) => {
     if (!_jsonOnly) {
-        logInfo(`Current App Config: ${currentChalk.bold.white(c.runtime.appId)}`);
+        logInfo(`Current App Config: ${currentChalk.bold(c.runtime.appId)}`);
     }
 };
 

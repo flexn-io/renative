@@ -1,5 +1,5 @@
 import { getValidLocalhost, getDevServerHost, getAppVersionCode } from '../';
-import { DEFAULTS, createRnvApi, createRnvContext, getContext, getConfigProp } from '@rnv/core';
+import { DEFAULTS, createRnvContext, getContext, getConfigProp } from '@rnv/core';
 
 jest.mock('@rnv/core');
 jest.mock('axios');
@@ -12,7 +12,6 @@ jest.mock('color-string');
 
 beforeEach(() => {
     createRnvContext();
-    createRnvApi();
 });
 
 afterEach(() => {

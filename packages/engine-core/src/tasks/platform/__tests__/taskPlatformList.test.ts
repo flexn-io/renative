@@ -1,11 +1,10 @@
-import { createRnvApi, createRnvContext, executeTask, getContext } from '@rnv/core';
+import { createRnvContext, executeTask, generatePlatformChoices, getContext } from '@rnv/core';
 import taskPlatformList from '../taskPlatformList';
 
 jest.mock('@rnv/core');
 
 beforeEach(() => {
     createRnvContext();
-    createRnvApi();
 });
 
 afterEach(() => {
@@ -15,6 +14,7 @@ afterEach(() => {
 test('Execute task.rnv.platform.list', async () => {
     //GIVEN
     const ctx = getContext();
+    jest.mocked(generatePlatformChoices).mockReturnValue([]);
     //WHEN
     await expect(taskPlatformList.fn?.(ctx)).resolves.toEqual(true);
     //THEN

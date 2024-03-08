@@ -1,11 +1,10 @@
-import { createRnvApi, createRnvContext, getContext } from '@rnv/core';
+import { createRnvContext, getContext } from '@rnv/core';
 import { EnvVars } from '../env';
 
 jest.mock('@rnv/core');
 
 beforeEach(() => {
     createRnvContext();
-    createRnvApi();
 });
 
 afterEach(() => {

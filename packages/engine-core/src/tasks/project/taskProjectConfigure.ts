@@ -37,9 +37,9 @@ import { checkCrypto } from '../crypto/common';
 const checkIsRenativeProject = async (c: RnvContext) => {
     if (!c.paths.project.configExists) {
         return Promise.reject(
-            `This directory is not ReNative project. Project config ${chalk().white(
+            `This directory is not ReNative project. Project config ${chalk().bold(
                 c.paths.project.config
-            )} is missing!. You can create new project with ${chalk().white('rnv new')}`
+            )} is missing!. You can create new project with ${chalk().bold('rnv new')}`
         );
     }
     return true;
@@ -105,14 +105,14 @@ const taskProjectConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
         if (!c.runtime.disableReset) {
             if (c.program.resetHard) {
                 logInfo(
-                    `You passed ${chalk().white('-R, --resetHard')} argument. "${chalk().white(
+                    `You passed ${chalk().bold('-R, --resetHard')} argument. "${chalk().bold(
                         './platformAssets'
                     )}" will be cleaned up first`
                 );
                 await cleanPlaformAssets(c);
             } else if (c.program.resetAssets) {
                 logInfo(
-                    `You passed ${chalk().white('-a, --resetAssets')} argument. "${chalk().white(
+                    `You passed ${chalk().bold('-a, --resetAssets')} argument. "${chalk().bold(
                         './platformAssets'
                     )}" will be cleaned up first`
                 );

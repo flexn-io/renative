@@ -11,7 +11,7 @@ import { doResolve } from '../system/resolve';
 
 export const logErrorPlatform = (c: RnvContext) => {
     logError(
-        `Platform: ${chalk().white(c.platform)} doesn't support command: ${chalk().white(c.command)}`,
+        `Platform: ${chalk().bold(c.platform)} doesn't support command: ${chalk().bold(c.command)}`,
         true // kill it if we're not supporting this
     );
     return false;
@@ -157,7 +157,7 @@ export const isPlatformSupportedSync = (
         if (reject) {
             reject(
                 chalk().red(
-                    `Platform ${platform} is not supported. Use one of the following: ${chalk().white(
+                    `Platform ${platform} is not supported. Use one of the following: ${chalk().bold(
                         c.runtime.availablePlatforms.join(', ')
                     )} .`
                 )
@@ -172,7 +172,7 @@ export const isPlatformSupportedSync = (
 export const isPlatformActive = (c: RnvContext, platform: RnvPlatform, resolve?: () => void) => {
     if (!c.buildConfig || !c.buildConfig.platforms) {
         logError(
-            `Your appConfigFile is not configured properly! check ${chalk().white(c.paths.appConfig.config)} location.`
+            `Your appConfigFile is not configured properly! check ${chalk().bold(c.paths.appConfig.config)} location.`
         );
         if (resolve) resolve();
         return false;
