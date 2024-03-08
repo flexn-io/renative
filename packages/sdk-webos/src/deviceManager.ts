@@ -75,9 +75,9 @@ export const launchWebOSimulator = async (c: RnvContext, target: string | boolea
     if (isSystemWin || isSystemLinux) {
         return executeAsync(c, ePath, ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY);
     }
-  
+
     await executeAsync(c, `${openCommand} ${ePath}`, ExecOptionsPresets.FIRE_AND_FORGET);
-    logSuccess(`Succesfully launched ${selectedOption}`);
+    logSuccess(`Succesfully launched ${target}`);
     return true;
 };
 
