@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Image, ScrollView, Text, View } from 'react-native';
+import { Button, Image, ScrollView, Text, View, Dimensions } from 'react-native';
 import { OrientationLocker, PORTRAIT, LANDSCAPE } from '../components/OrientationLocker';
 import { NewModuleButton } from '../components/NewModuleButton';
 import { SplashScreen } from '../components/SplashScreen';
@@ -20,8 +20,10 @@ const App = () => {
         };
     }, []);
 
+    const { height } = Dimensions.get('window');
+
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, height, backgroundColor: 'white' }}>
             <View style={styles.header}>
                 <Image
                     style={styles.logo}
