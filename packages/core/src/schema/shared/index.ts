@@ -69,8 +69,17 @@ const BootstrapQuestionsSchema = z
 
 export const TemplateConfig = z
     .object({
+        disabled: z.boolean().optional(),
         includedPaths: z
-            .array(z.string())
+            .array(
+                z.union([
+                    z.string(),
+                    z.object({
+                        paths: z.array(z.string()),
+                        engines: z.array(z.string()).optional(),
+                    }),
+                ])
+            )
             .describe('Defines list of all file/dir paths you want to include in template')
             .optional(),
         bootstrapQuestions: BootstrapQuestionsSchema.optional(),

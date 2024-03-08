@@ -39,7 +39,7 @@ export const checkAndCreateProjectPackage = async (c: RnvContext) => {
 
         const templateObj = readObjectSync<ConfigFileTemplate>(c.paths.template.configTemplate);
 
-        const pkgJson = templateObj?.templateConfig?.packageTemplate || {};
+        const pkgJson = templateObj?.templateConfig?.package_json || {};
         pkgJson.name = packageName;
         pkgJson.version = packageVersion;
         pkgJson.dependencies = pkgJson.dependencies || {};

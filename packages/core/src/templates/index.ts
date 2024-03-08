@@ -212,6 +212,24 @@ const getProjectTemplateMergedConfig = (c: RnvContext, templateConfig: ConfigFil
     return null;
 };
 
+const _copyIncludedPath = (c: RnvContext, name: string) => {
+    const sourcePath = path.join(c.paths.template.dir, name);
+    const destPath = path.join(c.paths.project.dir, name);
+    if (!fsExistsSync(destPath) && fsExistsSync(sourcePath)) {
+        try {
+            if (fsLstatSync(sourcePath).isDirectory()) {
+                logInfo(`Missing directory ${chalk().bold(`${destPath}.js`)}. COPYING from TEMPATE...DONE`);
+                copyFolderContentsRecursiveSync(sourcePath, destPath);
+            } else {
+                logInfo(`Missing file ${chalk().bold(`${destPath}.js`)}. COPYING from TEMPATE...DONE`);
+                copyFileSync(sourcePath, destPath);
+            }
+        } catch (e) {
+            // Get some beer and order hookers
+        }
+    }
+};
+
 export const configureTemplateFiles = async (c: RnvContext) => {
     logDefault('configureTemplateFiles');
 
@@ -221,21 +239,19 @@ export const configureTemplateFiles = async (c: RnvContext) => {
     const includedPaths = mergedObj?.templateConfig?.includedPaths;
 
     if (includedPaths) {
-        includedPaths.forEach((name: string) => {
+        includedPaths.forEach((pth) => {
             if (c.paths.template.dir) {
-                const sourcePath = path.join(c.paths.template.dir, name);
-                const destPath = path.join(c.paths.project.dir, name);
-                if (!fsExistsSync(destPath) && fsExistsSync(sourcePath)) {
-                    try {
-                        if (fsLstatSync(sourcePath).isDirectory()) {
-                            logInfo(`Missing directory ${chalk().bold(`${destPath}.js`)}. COPYING from TEMPATE...DONE`);
-                            copyFolderContentsRecursiveSync(sourcePath, destPath);
-                        } else {
-                            logInfo(`Missing file ${chalk().bold(`${destPath}.js`)}. COPYING from TEMPATE...DONE`);
-                            copyFileSync(sourcePath, destPath);
+                if (typeof pth === 'string') {
+                    _copyIncludedPath(c, pth);
+                } else {
+                    const engId = c.runtime.engine?.config?.id;
+                    if (!pth.engines || (engId && pth.engines?.includes?.(engId))) {
+                        const incPaths = pth.paths;
+                        if (incPaths.length > 0) {
+                            incPaths.forEach((pth) => {
+                                _copyIncludedPath(c, pth);
+                            });
                         }
-                    } catch (e) {
-                        // Get some beer and order hookers
                     }
                 }
             }

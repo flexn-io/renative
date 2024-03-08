@@ -87,8 +87,8 @@ export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
             });
         }
 
-        if (config.templateConfig?.packageTemplate) {
-            const pkgJson = config.templateConfig.packageTemplate;
+        if (config.templateConfig?.package_json) {
+            const pkgJson = config.templateConfig.package_json;
             if (!pkgJson.devDependencies) pkgJson.devDependencies = {};
             if (!pkgJson.dependencies) pkgJson.dependencies = {};
             c.files.project.package = pkgJson;

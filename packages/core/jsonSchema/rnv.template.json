@@ -125,10 +125,38 @@
         "templateConfig": {
           "type": "object",
           "properties": {
+            "disabled": {
+              "type": "boolean"
+            },
             "includedPaths": {
               "type": "array",
               "items": {
-                "type": "string"
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "paths": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "engines": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "required": [
+                      "paths"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
               },
               "description": "Defines list of all file/dir paths you want to include in template"
             },
