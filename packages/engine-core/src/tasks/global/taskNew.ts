@@ -158,7 +158,7 @@ const _prepareProjectOverview = (c: RnvContext, data: NewProjectData) => {
     data.confirmString = str;
 };
 
-type ConfigProp = Required<ConfigFileTemplate>['templateConfig']['bootstrapQuestions'][number]['configProp'];
+type ConfigProp = Required<Required<ConfigFileTemplate>['templateConfig']>['bootstrapQuestions'][number]['configProp'];
 
 type QuestionResults = Record<
     string,
@@ -169,7 +169,7 @@ type QuestionResults = Record<
     }
 >;
 
-type BootstrapQuestions = Required<ConfigFileTemplate>['templateConfig']['bootstrapQuestions'];
+type BootstrapQuestions = Required<Required<ConfigFileTemplate>['templateConfig']>['bootstrapQuestions'];
 
 const interactiveQuestion = async (
     results: QuestionResults,
