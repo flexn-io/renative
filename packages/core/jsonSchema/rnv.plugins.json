@@ -722,20 +722,6 @@
                                     }
                                   }
                                 },
-                                "required": [
-                                  "didFinishLaunchingWithOptions",
-                                  "applicationDidBecomeActive",
-                                  "open",
-                                  "supportedInterfaceOrientationsFor",
-                                  "didReceiveRemoteNotification",
-                                  "didFailToRegisterForRemoteNotificationsWithError",
-                                  "didReceive",
-                                  "didRegister",
-                                  "didRegisterForRemoteNotificationsWithDeviceToken",
-                                  "continue",
-                                  "didConnectCarInterfaceController",
-                                  "didDisconnectCarInterfaceController"
-                                ],
                                 "additionalProperties": false
                               },
                               "userNotificationCenter": {
@@ -754,17 +740,9 @@
                                     }
                                   }
                                 },
-                                "required": [
-                                  "willPresent",
-                                  "didReceiveNotificationResponse"
-                                ],
                                 "additionalProperties": false
                               }
                             },
-                            "required": [
-                              "application",
-                              "userNotificationCenter"
-                            ],
                             "additionalProperties": false
                           },
                           "appDelegateImports": {

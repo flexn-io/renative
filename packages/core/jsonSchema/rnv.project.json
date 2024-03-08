@@ -482,7 +482,19 @@
               },
               "description": "Defines list of custom bootstrap questions"
             },
-            "packageTemplate": {
+            "renative_json": {
+              "type": "object",
+              "properties": {
+                "$schema": {
+                  "type": "string"
+                },
+                "extendsTemplate": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": true
+            },
+            "package_json": {
               "type": "object",
               "properties": {
                 "dependencies": {
@@ -492,13 +504,13 @@
                   }
                 },
                 "devDependencies": {
-                  "$ref": "#/definitions/rnv.project/properties/templateConfig/properties/packageTemplate/properties/dependencies"
+                  "$ref": "#/definitions/rnv.project/properties/templateConfig/properties/package_json/properties/dependencies"
                 },
                 "peerDependencies": {
-                  "$ref": "#/definitions/rnv.project/properties/templateConfig/properties/packageTemplate/properties/dependencies"
+                  "$ref": "#/definitions/rnv.project/properties/templateConfig/properties/package_json/properties/dependencies"
                 },
                 "optionalDependencies": {
-                  "$ref": "#/definitions/rnv.project/properties/templateConfig/properties/packageTemplate/properties/dependencies"
+                  "$ref": "#/definitions/rnv.project/properties/templateConfig/properties/package_json/properties/dependencies"
                 },
                 "name": {
                   "type": "string"
@@ -507,7 +519,7 @@
                   "type": "string"
                 }
               },
-              "additionalProperties": false
+              "additionalProperties": true
             }
           },
           "additionalProperties": false,
@@ -1924,20 +1936,6 @@
                                   }
                                 }
                               },
-                              "required": [
-                                "didFinishLaunchingWithOptions",
-                                "applicationDidBecomeActive",
-                                "open",
-                                "supportedInterfaceOrientationsFor",
-                                "didReceiveRemoteNotification",
-                                "didFailToRegisterForRemoteNotificationsWithError",
-                                "didReceive",
-                                "didRegister",
-                                "didRegisterForRemoteNotificationsWithDeviceToken",
-                                "continue",
-                                "didConnectCarInterfaceController",
-                                "didDisconnectCarInterfaceController"
-                              ],
                               "additionalProperties": false
                             },
                             "userNotificationCenter": {
@@ -1956,17 +1954,9 @@
                                   }
                                 }
                               },
-                              "required": [
-                                "willPresent",
-                                "didReceiveNotificationResponse"
-                              ],
                               "additionalProperties": false
                             }
                           },
-                          "required": [
-                            "application",
-                            "userNotificationCenter"
-                          ],
                           "additionalProperties": false
                         },
                         "appDelegateImports": {

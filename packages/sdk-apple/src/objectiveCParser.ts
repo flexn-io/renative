@@ -316,26 +316,29 @@ export const injectPluginObjectiveCSync = (c: Context, plugin: RenativeConfigPlu
     if (appDelegateMethods) {
         const admk = Object.keys(appDelegateMethods) as Array<PayloadAppDelegateKey>;
         admk.forEach((delKey) => {
-            const amdk2 = Object.keys(appDelegateMethods[delKey]) as Array<PayloadAppDelegateSubKey>;
-            amdk2.forEach((key2) => {
-                const plugArr: Array<RenativeConfigAppDelegateMethod> =
-                    c.payload.pluginConfigiOS.appDelegateMmMethods[delKey][key2];
-                if (!plugArr) {
-                    logWarning(`appDelegateMethods.${delKey}.${chalk().red(key2)} not supported. SKIPPING.`);
-                } else {
-                    const plugVal: Array<RenativeConfigAppDelegateMethod> = appDelegateMethods[delKey][key2];
-                    if (plugVal) {
-                        plugVal.forEach((v) => {
-                            const isString = typeof v === 'string';
-                            plugArr.push({
-                                order: isString ? 0 : v?.order || 0,
-                                value: isString ? v : v?.value,
-                                weight: isString ? 0 : v?.weight || 0,
+            const apDelMet = appDelegateMethods[delKey];
+            if (apDelMet) {
+                const amdk2 = Object.keys(apDelMet) as Array<PayloadAppDelegateSubKey>;
+                amdk2.forEach((key2) => {
+                    const plugArr: Array<RenativeConfigAppDelegateMethod> =
+                        c.payload.pluginConfigiOS.appDelegateMmMethods[delKey][key2];
+                    if (!plugArr) {
+                        logWarning(`appDelegateMethods.${delKey}.${chalk().red(key2)} not supported. SKIPPING.`);
+                    } else {
+                        const plugVal: Array<RenativeConfigAppDelegateMethod> = apDelMet[key2];
+                        if (plugVal) {
+                            plugVal.forEach((v) => {
+                                const isString = typeof v === 'string';
+                                plugArr.push({
+                                    order: isString ? 0 : v?.order || 0,
+                                    value: isString ? v : v?.value,
+                                    weight: isString ? 0 : v?.weight || 0,
+                                });
                             });
-                        });
+                        }
                     }
-                }
-            });
+                });
+            }
         });
     }
 };

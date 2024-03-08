@@ -189,7 +189,19 @@
               },
               "description": "Defines list of custom bootstrap questions"
             },
-            "packageTemplate": {
+            "renative_json": {
+              "type": "object",
+              "properties": {
+                "$schema": {
+                  "type": "string"
+                },
+                "extendsTemplate": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": true
+            },
+            "package_json": {
               "type": "object",
               "properties": {
                 "dependencies": {
@@ -199,13 +211,13 @@
                   }
                 },
                 "devDependencies": {
-                  "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/packageTemplate/properties/dependencies"
+                  "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/package_json/properties/dependencies"
                 },
                 "peerDependencies": {
-                  "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/packageTemplate/properties/dependencies"
+                  "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/package_json/properties/dependencies"
                 },
                 "optionalDependencies": {
-                  "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/packageTemplate/properties/dependencies"
+                  "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/package_json/properties/dependencies"
                 },
                 "name": {
                   "type": "string"
@@ -214,7 +226,7 @@
                   "type": "string"
                 }
               },
-              "additionalProperties": false
+              "additionalProperties": true
             }
           },
           "additionalProperties": false,
