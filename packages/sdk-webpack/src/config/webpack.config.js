@@ -391,6 +391,7 @@ module.exports = function (webpackEnv) {
                             options: {
                                 // customize: require.resolve('babel-preset-react-app/webpack-overrides'),
                                 presets: [
+                                    // RNV-ADDITION
                                     [
                                         '@babel/preset-env',
                                         {
@@ -399,6 +400,7 @@ module.exports = function (webpackEnv) {
                                             loose: true,
                                         },
                                     ],
+                                    // RNV-ADDITION
                                     [
                                         '@babel/preset-react',
                                         {
