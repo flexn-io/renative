@@ -188,7 +188,7 @@ const _configureRenativeConfig = async (c: RnvContext) => {
 
             // mergedObj.isNew = null;
             delete mergedObj.isNew;
-            delete mergedObj.templateConfig;
+            // delete mergedObj.templateConfig;
             // c.files.project.config = mergedObj;
             writeRenativeConfigFile(c, c.paths.project.config, mergedObj);
             loadFileExtended(c, c.files.project, c.paths.project, 'config');
@@ -200,13 +200,9 @@ const _configureRenativeConfig = async (c: RnvContext) => {
 
 const getProjectTemplateMergedConfig = (c: RnvContext, templateConfig: ConfigFileTemplate | null) => {
     if (c.files.project.config_original && templateConfig) {
-        const mergedObj = mergeObjects<ConfigFileTemplate & ConfigFileProject>(
-            c,
-            templateConfig,
-            c.files.project.config_original,
-            false,
-            true
-        );
+        const mergedObj = mergeObjects<
+            Required<ConfigFileTemplate>['templateConfig']['renative_json'] & ConfigFileProject
+        >(c, templateConfig.templateConfig?.renative_json || {}, c.files.project.config_original, false, true);
         return mergedObj;
     }
     return null;
