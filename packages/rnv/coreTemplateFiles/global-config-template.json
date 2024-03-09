@@ -4,7 +4,7 @@
         "ANDROID_NDK": "/Users/<USER>/Library/Android/sdk/ndk-bundle",
         "TIZEN_SDK": "/Users/<USER>/tizen-studio",
         "WEBOS_SDK": "/Users/<USER>/Library/webOS_TV_SDK",
-        "KAIOS_SDK": "/Users/<USER>/Library/kaiosrt"
+        "KAIOS_SDK": "/Users/<USER>/Library/KaiosSimulators"
     },
     "defaultTargets": {
         "android": "Nexus_5X_API_26",
@@ -17,6 +17,6 @@
         "tizenwatch": "W-5.5-circle-x86",
         "tizenmobile": "mobile-5.5-x86",
         "webos": "emulator",
-        "kaios": "kaiosrt"
+        "kaios": "Kaiosrtv3.0_ubuntu"
     }
 }

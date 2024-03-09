@@ -9,13 +9,7 @@ export const launchKaiOSSimulator = async (c: RnvContext, target: string | boole
     const kaiosSdkPath = getRealPath(c, c.buildConfig?.sdks?.KAIOS_SDK);
 
     if (!kaiosSdkPath) {
-        return Promise.reject(
-            `KAIOS_SDK is not configured in your ${
-                c.paths.workspace.config
-            } file. Make sure you add location to your Kaiosrt App path similar to: ${chalk().white.bold(
-                '"KAIOS_SDK": "/Users/<USER>/Library/Kaiosrtv3.0"'
-            )}`
-        );
+        return Promise.reject(`c.buildConfig.sdks.KAIOS_SDK undefined`);
     }
 
     if(target === true){
