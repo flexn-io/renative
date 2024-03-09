@@ -16,6 +16,7 @@
         "tizen": "T-samsung-5.5-x86",
         "tizenwatch": "W-5.5-circle-x86",
         "tizenmobile": "mobile-5.5-x86",
-        "webos": "emulator"
+        "webos": "emulator",
+        "kaios": "kaiosrt"
     }
 }
