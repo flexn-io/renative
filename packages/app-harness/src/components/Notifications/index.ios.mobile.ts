@@ -1,24 +1,25 @@
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import { NotificationCallback, NotificationError } from '../types';
 
-export const addNotificationListeners = (logDebug: (message: string) => void) => {
+export const addNotificationListeners = (callback: NotificationCallback) => {
     PushNotificationIOS.requestPermissions();
     PushNotificationIOS.addEventListener('notification', onRemoteNotification);
-    PushNotificationIOS.addEventListener('register', onRegistered(logDebug));
-    PushNotificationIOS.addEventListener('registrationError', onError(logDebug));
+    PushNotificationIOS.addEventListener('register', onRegistered(callback));
+    PushNotificationIOS.addEventListener('registrationError', onError(callback));
 };
 
-export const removeNotificationListeners = (logDebug: (message: string) => void) => {
+export const removeNotificationListeners = (callback: NotificationCallback) => {
     PushNotificationIOS.removeEventListener('notification');
     PushNotificationIOS.removeEventListener('register');
     PushNotificationIOS.removeEventListener('registrationError');
 };
 
-const onRegistered = (logDebug) => (deviceToken) => {
-    logDebug(`Device Token: ${deviceToken}`);
+const onRegistered = (callback: NotificationCallback) => (deviceToken: string) => {
+    callback(`Device Token: ${deviceToken}`);
 };
 
-const onError = (logDebug) => (error) => {
-    logDebug(`Error on notification register: ${error}`);
+const onError = (callback: NotificationCallback) => (error: NotificationError) => {
+    callback(`Error on notification register: ${error.message}`);
 };
 
 const onRemoteNotification = (notification) => {

@@ -9,25 +9,36 @@ import styles from '../styles';
 import { addNotificationListeners, removeNotificationListeners } from '../components/Notifications';
 import { requestPermissions } from '../components/Permissions';
 import { TestCase } from '../components/TestCase';
-import { useLogger } from '../hooks/useLogger';
-import config from '../../package.json';
 
-const App = () => {
+import config from '../../package.json';
+import { LoggerProvider, useLoggerContext } from '../context';
+import { NotificationCallback } from '../components/types';
+import { SplashscreenType } from '../components/SplashScreen/types';
+
+const App = () => (
+    <LoggerProvider>
+        <AppContent />
+    </LoggerProvider>
+);
+
+const AppContent = () => {
     const [showVideo, setShowVideo] = useState(false);
-    const { logDebug, logs } = useLogger();
+    const { logDebug, logs } = useLoggerContext();
 
     useEffect(() => {
         if (typeof SplashScreen === 'function') {
-            SplashScreen(logDebug).hide();
+            SplashScreen(handleNotification).hide();
         } else {
-            (SplashScreen as any)?.hide();
+            (SplashScreen as SplashscreenType)?.hide();
         }
-        addNotificationListeners(logDebug);
+        addNotificationListeners(handleNotification);
 
         return () => {
-            removeNotificationListeners(logDebug);
+            removeNotificationListeners(handleNotification);
         };
     }, []);
+
+    const handleNotification: NotificationCallback = (message) => logDebug(message);
 
     const handleRequestPermissions = async () => {
         try {
@@ -73,7 +84,7 @@ const App = () => {
                         }`}</Text>
                     </TestCase>
                     <TestCase id={2} title="Native call">
-                        <NewModuleButton handleLogs={logDebug} />
+                        <NewModuleButton />
                     </TestCase>
                     <TestCase id={3} title="Orientation support ">
                         <OrientationLocker
@@ -113,7 +124,7 @@ const App = () => {
                 }}
             >
                 <Text style={{ color: 'black' }}>{`Logs: `}</Text>
-                {logs.length
+                {logs
                     ? logs.map((it, idx) => (
                           <Text key={idx} style={{ color: 'black' }}>
                               {`${idx + 1}. ${it}`}

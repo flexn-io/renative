@@ -1,9 +1,11 @@
-const SplashScreen = (logDebug: (message: string) => void) => ({
+import { NotificationCallback } from '../types';
+
+const SplashScreen = (callback: NotificationCallback) => ({
     hide: () => {
-        logDebug('SplashScreen.hide not supported on this platform');
+        callback('SplashScreen.hide not supported on this platform');
     },
     show: () => {
-        logDebug('SplashScreen.show not supported on this platform');
+        callback('SplashScreen.show not supported on this platform');
     },
 });
 
