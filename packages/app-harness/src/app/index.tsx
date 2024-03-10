@@ -57,14 +57,11 @@ const AppContent = () => {
                     source={ICON_LOGO}
                     {...testProps('template-starter-home-screen-renative-image')}
                 />
-                <Text
-                    style={{ color: 'black', fontWeight: 'bold', marginHorizontal: 10 }}
-                    {...testProps('app-harness-home-screen-intro-text')}
-                >
+                <Text style={styles.introText} {...testProps('app-harness-home-screen-intro-text')}>
                     ReNative Harness
                 </Text>
                 <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                    <Text style={{ color: 'black' }}>
+                    <Text style={styles.dynamicText}>
                         {`v${config.version}, platform: ${Api.platform}, factor: ${Api.formFactor}, engine: ${Api.engine}`}
                     </Text>
                 </View>
@@ -123,10 +120,10 @@ const AppContent = () => {
                     paddingBottom: 10,
                 }}
             >
-                <Text style={{ color: 'black' }}>{`Logs: `}</Text>
+                <Text style={styles.dynamicText}>{`Logs: `}</Text>
                 {logs
                     ? logs.map((it, idx) => (
-                          <Text key={idx} style={{ color: 'black' }}>
+                          <Text key={idx} style={styles.dynamicText}>
                               {`${idx + 1}. ${it}`}
                           </Text>
                       ))
