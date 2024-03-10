@@ -29,9 +29,9 @@ export const launchKaiOSSimulator = async (c: RnvContext, target: string | boole
     if (simulatorPath && !fsExistsSync(simulatorPath)) {
         return Promise.reject(`Can't find simulator at path: ${simulatorPath}`);
     }
-
+    
     new Promise<void>((resolve, reject) => {
-        childProcess.exec(`(cd ${kaiosSdkPath} && ${simulatorPath} )`, (err: RnvError) => {
+        childProcess.exec(`(cd ${kaiosSdkPath}/${target}/kaiosrt && ${simulatorPath} )`, (err: RnvError) => {
             if (err) {
                 reject(err);
                 return;
