@@ -174,15 +174,8 @@ const _configureRenativeConfig = async (c: RnvContext) => {
         logInfo(
             `Your ${c.paths.project.config} needs to be updated with ${c.paths.template.configTemplate}. UPDATING...DONE`
         );
-        if (c.files.project.config_original && templateConfig) {
-            const mergedObj = mergeObjects<ConfigFileTemplate & ConfigFileProject>(
-                c,
-                templateConfig,
-                c.files.project.config_original,
-                false,
-                true
-            );
-
+        const mergedObj = getProjectTemplateMergedConfig(c, templateConfig);
+        if (mergedObj) {
             // Do not override supportedPlatforms
             mergedObj.defaults = mergedObj.defaults || {};
             mergedObj.defaults.supportedPlatforms = c.files.project.config_original?.defaults?.supportedPlatforms;
@@ -205,12 +198,28 @@ const _configureRenativeConfig = async (c: RnvContext) => {
     return true;
 };
 
+const getProjectTemplateMergedConfig = (c: RnvContext, templateConfig: ConfigFileTemplate | null) => {
+    if (c.files.project.config_original && templateConfig) {
+        const mergedObj = mergeObjects<ConfigFileTemplate & ConfigFileProject>(
+            c,
+            templateConfig,
+            c.files.project.config_original,
+            false,
+            true
+        );
+        return mergedObj;
+    }
+    return null;
+};
+
 export const configureTemplateFiles = async (c: RnvContext) => {
     logDefault('configureTemplateFiles');
 
     const templateConfig = readObjectSync<ConfigFileTemplate>(c.paths.template.configTemplate);
 
-    const includedPaths = templateConfig?.templateConfig?.includedPaths;
+    let mergedObj = getProjectTemplateMergedConfig(c, templateConfig);
+    const includedPaths = mergedObj?.templateConfig?.includedPaths;
+
     if (includedPaths) {
         includedPaths.forEach((name: string) => {
             if (c.paths.template.dir) {

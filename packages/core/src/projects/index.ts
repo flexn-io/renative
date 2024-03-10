@@ -467,7 +467,7 @@ export const copyAssetsFolder = async (
     // FOLDER MERGERS FROM EXTERNAL SOURCES
     if (validAssetSources.length > 0) {
         logInfo(
-            `Found custom assetSources at ${chalk().bold(
+            `Found custom assetSources at ${chalk().gray(
                 validAssetSources.join('/n')
             )}. Will be used to generate assets.`
         );

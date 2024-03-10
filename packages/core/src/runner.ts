@@ -4,7 +4,7 @@ import { loadIntegrations } from './integrations';
 import { checkAndMigrateProject } from './migrator';
 import { checkAndBootstrapIfRequired } from './projects';
 import { configureRuntimeDefaults } from './context/runtime';
-import { findSuitableTask, initializeTask } from './tasks';
+import { findSuitableGlobalTask, findSuitableTask, initializeTask } from './tasks';
 import { updateRenativeConfigs } from './plugins';
 
 export const executeRnvCore = async () => {
@@ -18,9 +18,17 @@ export const executeRnvCore = async () => {
     if (c.program.npxMode) {
         return;
     }
+
+    // Special Case for engine-core tasks
+    // they don't require other engines to be loaded if isGlobalScope = true
+    // ie rnv link
+    const initTask = await findSuitableGlobalTask();
+    if (initTask?.task && initTask.isGlobalScope) {
+        return initializeTask(c, initTask?.task);
+    }
+
     await loadIntegrations(c);
     const result = await loadEngines(c);
-
     // If false make sure we reload configs as it means it's freshly installed
     if (!result) {
         await updateRenativeConfigs(c);
@@ -34,6 +42,7 @@ export const executeRnvCore = async () => {
 
     // Some tasks might require all engines to be present (ie rnv platform list)
     const taskInstance = await findSuitableTask(c);
+
     if (c.command && !taskInstance?.ignoreEngines) {
         await registerMissingPlatformEngines(c, taskInstance);
     }

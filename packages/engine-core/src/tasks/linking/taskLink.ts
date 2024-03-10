@@ -21,6 +21,13 @@ const _linkPackage = (c: RnvContext, key: string, folder: string) => {
 
     if (fsExistsSync(rnvPathUnlinked)) {
         logInfo(`${key} is already linked. SKIPPING`);
+
+        try {
+            fsSymlinkSync(pkgDir, rnvPath);
+        } catch (e) {
+            // In case of corrupted symlinks we attempt to relink
+            // however existing symlinks will throw error
+        }
     } else if (fsExistsSync(rnvPath)) {
         fsRenameSync(rnvPath, rnvPathUnlinked);
         fsSymlinkSync(pkgDir, rnvPath);

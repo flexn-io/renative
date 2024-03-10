@@ -10,6 +10,7 @@ import {
     RnvApiChalk,
     RnvApiChalkFn,
 } from '@rnv/core';
+import path from 'path';
 
 const ICN_ROCKET = isSystemWin ? 'RNV' : '🚀';
 // const ICN_UNICORN = isSystemWin ? 'unicorn' : '🦄';
@@ -239,27 +240,27 @@ export const logSummary = (header = '✔ SUMMARY') => {
 
     // str += printIntoBox(`ReNative Version: ${_highlightColor(ctx.rnvVersion)}`);
     if (ctx.files?.project?.package?.name && ctx.files?.project?.package?.version) {
-        str += printIntoBox(`Project Name ($package.name): ${_highlightColor(ctx.files.project.package.name)}`);
         str += printIntoBox(
-            `Project Version ($package.version): ${_highlightColor(ctx.files.project.package.version)}`
+            `Project: ${currentChalk.gray(`${ctx.files.project.package.name}@${ctx.files.project.package.version}`)}`
         );
+        // str += printIntoBox(`Project Version: ${currentChalk.gray(ctx.files.project.package.version)}`);
     }
 
     if (ctx.buildConfig?.workspaceID) {
-        str += printIntoBox(`Workspace ($.workspaceID): ${_highlightColor(ctx.buildConfig.workspaceID)}`);
+        str += printIntoBox(`Workspace: ${currentChalk.gray(ctx.buildConfig.workspaceID)}`);
     }
     if (ctx.platform) {
         str += printIntoBox(`Platform (-p): ${_highlightColor(ctx.platform)}`);
     }
     if (ctx.runtime?.engine) {
-        let addon = '';
-        if (ctx.platform) {
-            addon = ` ($.platforms.${ctx.platform}.engine)`;
-        }
-        str += printIntoBox(`Engine${addon}: ${_highlightColor(ctx.runtime?.engine?.config?.id || '')}`);
+        // let addon = '';
+        // if (ctx.platform) {
+        //     addon = ` ($.platforms.${ctx.platform}.engine)`;
+        // }
+        str += printIntoBox(`Engine: ${currentChalk.gray(ctx.runtime?.engine?.config?.id || '')}`);
     }
     if (ctx.runtime?.activeTemplate) {
-        str += printIntoBox(`Template: ${_highlightColor(ctx.runtime?.activeTemplate)}`);
+        str += printIntoBox(`Template: ${currentChalk.gray(ctx.runtime?.activeTemplate)}`);
     }
     if (ctx.buildConfig?._meta?.currentAppConfigId) {
         str += printIntoBox(`App Config (-c): ${_highlightColor(ctx.buildConfig._meta?.currentAppConfigId)}`);
@@ -282,7 +283,9 @@ export const logSummary = (header = '✔ SUMMARY') => {
         str += printIntoBox(`Reset Project and Assets (-R): ${_highlightColor(!!ctx.program?.resetHard)}`);
     }
     if (ctx.runtime?.supportedPlatforms?.length) {
-        const plats = ctx.runtime.supportedPlatforms.map((v) => `${v.platform}${v.isConnected ? '' : '(ejected)'}`);
+        const plats = ctx.runtime.supportedPlatforms.map(
+            (v) => `${currentChalk.gray(v.platform)}${v.isConnected ? '' : '(ejected)'}`
+        );
         str += printArrIntoBox(plats, 'Supported Platforms: ');
     }
 
@@ -292,7 +295,9 @@ export const logSummary = (header = '✔ SUMMARY') => {
     }
 
     if (ctx.timeEnd) {
-        str += printIntoBox(`Executed Time: ${_msToTime(ctx.timeEnd.getTime() - ctx.timeStart.getTime())}`);
+        str += printIntoBox(
+            `Executed Time: ${currentChalk.gray(_msToTime(ctx.timeEnd.getTime() - ctx.timeStart.getTime()))}`
+        );
     }
 
     // str += printIntoBox('');
@@ -301,8 +306,9 @@ export const logSummary = (header = '✔ SUMMARY') => {
 
     // str += printIntoBox('');
     if (ctx.runtime?.platformBuildsProjectPath) {
-        str += printIntoBox('Project location:');
-        str += printIntoBox(`${currentChalk.bold(_sanitizePaths(ctx.runtime.platformBuildsProjectPath || ''))}`);
+        str += printIntoBox(
+            `Project location: ${currentChalk.gray(_sanitizePaths(ctx.runtime.platformBuildsProjectPath || ''))}`
+        );
     }
     str += printBoxEnd();
 
@@ -326,9 +332,20 @@ const _getCurrentTask = () => {
     return ctx._currentTask ? currentChalk.grey(`○ ${ctx._currentTask}:`) : '';
 };
 
-const CWD = process.cwd();
-const CWD_UP = CWD.split('/').slice(0, -1).join('/');
-const CWD_UP_UP = CWD.split('/').slice(0, -2).join('/');
+const CWD_ARR: { path: string; relative: string }[] = [];
+
+const _generateRelativePaths = () => {
+    const cwd = process.cwd();
+    const cwdArr = cwd.split(path.sep);
+    let relativeUp = '.';
+    for (let i = 1; i < cwdArr.length; i++) {
+        const absoluteUp = path.join(cwd, relativeUp).normalize();
+        CWD_ARR.push({ path: absoluteUp, relative: relativeUp });
+        relativeUp += i > 1 ? '/..' : '.';
+    }
+};
+
+_generateRelativePaths();
 
 const _sanitizePaths = (msg: string) => {
     // const ctx = getContext();
@@ -339,10 +356,13 @@ const _sanitizePaths = (msg: string) => {
     // }
 
     if (msg?.replace) {
-        return msg
-            .replace(new RegExp(CWD, 'g'), '.')
-            .replace(new RegExp(CWD_UP, 'g'), '..')
-            .replace(new RegExp(CWD_UP_UP, 'g'), '../..');
+        CWD_ARR.forEach((v) => {
+            msg = msg.replace(new RegExp(v.path, 'g'), v.relative);
+        });
+        // return msg
+        //     .replace(new RegExp(CWD, 'g'), '.')
+        //     .replace(new RegExp(CWD_UP, 'g'), '..')
+        //     .replace(new RegExp(CWD_UP_UP, 'g'), '../..');
     }
     return msg;
 };
@@ -583,7 +603,7 @@ export const logEnd = (code: number) => {
 
 export const logAppInfo = (c: RnvContext) => {
     if (!_jsonOnly) {
-        logInfo(`Current App Config: ${currentChalk.bold(c.runtime.appId)}`);
+        logInfo(`Current app config: ${currentChalk.bold(c.runtime.appId)}`);
     }
 };
 

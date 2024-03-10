@@ -57,7 +57,7 @@ export type _PluginPlatformMergedSchemaType = z.infer<typeof PluginPlatformMerge
 export type _PluginType = z.infer<typeof PluginSchema>;
 
 export const PluginsSchema = z
-    .record(z.string(), z.union([PluginSchema, z.string()]))
+    .record(z.string(), z.union([PluginSchema, z.string()]).nullable())
     .describe(
         'Define all plugins available in your project. you can then use `includedPlugins` and `excludedPlugins` props to define active and inactive plugins per each app config'
     );

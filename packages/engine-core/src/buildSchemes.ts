@@ -55,6 +55,6 @@ export const isBuildSchemeSupported = async (c: RnvContext) => {
         c.program.scheme = schemeVals[selectedScheme];
         c.runtime.scheme = c.program.scheme;
     }
-    logInfo(`Current Build Scheme: ${chalk().bold.white(c.runtime.scheme)}`);
+    logInfo(`Current Build Scheme: ${chalk().bold(c.runtime.scheme)}`);
     return true;
 };

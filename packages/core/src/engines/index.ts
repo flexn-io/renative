@@ -21,6 +21,7 @@ const ENGINE_CORE = 'engine-core';
 export const registerEngine = async (engine: RnvEngine, platform?: RnvPlatform, engConfig?: RnvEngineTemplate) => {
     const c = getContext();
     logDefault(`registerEngine:${engine.config.id}`);
+
     c.runtime.enginesById[engine.config.id] = engine;
 
     c.runtime.enginesByIndex.push(engine);
@@ -139,6 +140,7 @@ export const registerMissingPlatformEngines = async (c: RnvContext, taskInstance
 
 export const registerAllPlatformEngines = async (c: RnvContext) => {
     logDefault('registerAllPlatformEngines');
+
     if (!c.buildConfig?.defaults?.supportedPlatforms?.forEach) {
         c.runtime.hasAllEnginesRegistered = true;
         return true;
@@ -378,6 +380,7 @@ export const loadEngines = async (c: RnvContext, failOnMissingDeps?: boolean): P
             }
         } else {
             readyEngines.push(k);
+            logInfo(`Load engine: ${k} ${chalk().gray(`(${engineRootPath})`)}`);
             engineConfigs.push({
                 key: k,
                 engineRootPath,
@@ -471,8 +474,10 @@ const _resolvePkgPath = (c: RnvContext, packageName: string) => {
 
 const _registerPlatformEngine = async (c: RnvContext, platform: RnvPlatform | boolean): Promise<void> => {
     // Only register active platform engine to be faster
+
     if (platform === true || !platform) return;
     const selectedEngineTemplate = getEngineTemplateByPlatform(c, platform);
+
     if (selectedEngineTemplate) {
         const existingEngine = c.runtime.enginesById[selectedEngineTemplate.id];
         if (!existingEngine) {
@@ -521,7 +526,9 @@ export const hasEngineTask = (task: string, tasks: RnvTaskMap, isProjectScope?: 
     isProjectScope ? !!getEngineTask(task, tasks) : getEngineTask(task, tasks)?.isGlobalScope;
 
 export const getEngineSubTasks = (task: string, tasks: RnvTaskMap, exactMatch?: boolean) =>
-    Object.values(tasks).filter((v) => (exactMatch ? v.task.split(' ')[0] === task : v.task.startsWith(task)));
+    Object.values(tasks).filter((v) =>
+        exactMatch ? v.task.split(' ')[0] === task : v.task.split(' ')[0].startsWith(task)
+    );
 
 export const getEngineRunner = (c: RnvContext, task: string, customTasks?: RnvTaskMap, failOnMissingEngine = true) => {
     if (customTasks?.[task]) {

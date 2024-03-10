@@ -54,6 +54,7 @@ const Task: RnvTask = {
     fn: taskRun,
     fnHelp: taskRunHelp,
     task: RnvTaskName.run,
+    isPriorityOrder: true,
     // dependencies: {
     //     before: RnvTaskName.configure,
     // },

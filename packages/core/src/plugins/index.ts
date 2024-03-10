@@ -619,18 +619,10 @@ const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
     }
 
     if (flavourSource && fsExistsSync(flavourSource)) {
-        logInfo(
-            `${chalk().bold(dest.split('node_modules').pop())} overriden by: ${chalk().bold(
-                flavourSource.split('node_modules').pop()
-            )}`
-        );
+        logInfo(`${chalk().gray(dest)} overriden by: ${chalk().gray(flavourSource.split('node_modules').pop())}`);
         copyFolderContentsRecursiveSync(flavourSource, dest, false);
     } else if (fsExistsSync(source)) {
-        logInfo(
-            `${chalk().bold(dest.split('node_modules').pop())} overriden by: ${chalk().bold(
-                source.split('node_modules').pop()
-            )}`
-        );
+        logInfo(`${chalk().gray(dest)} overriden by: ${chalk().gray(source.split('node_modules').pop())}`);
         copyFolderContentsRecursiveSync(source, dest, false);
         // fsReaddirSync(pp).forEach((dir) => {
         //     copyFileSync(path.resolve(pp, file), path.resolve(c.paths.project.dir, 'node_modules', dir));
@@ -707,9 +699,7 @@ export const overrideFileContents = (dest: string, override: Record<string, stri
                 } else {
                     foundRegEx = true;
                     logInfo(
-                        `${chalk().bold(dest.split('node_modules').pop())} overriden by: ${chalk().bold(
-                            overridePath.split('node_modules').pop()
-                        )}`
+                        `${chalk().gray(dest)} overriden by: ${chalk().gray(overridePath.split('node_modules').pop())}`
                     );
                 }
             } else {

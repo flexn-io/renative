@@ -30,6 +30,11 @@ export const registerCustomTask = async (_c: RnvContext, task: RnvTask) => {
 
 export const initializeTask = async (c: RnvContext, task: string) => {
     logDefault('initializeTask', task);
+    logInfo(
+        `Current engine: ${chalk().bold(c.runtime.engine?.config.id)} ${chalk().grey(
+            `(${c.runtime.engine?.rootPath})`
+        )}`
+    );
     c.runtime.task = task;
     executedTasks = {};
 
@@ -118,6 +123,21 @@ export const getAllSuitableTasks = (c: RnvContext): Record<string, TaskPromptOpt
     return suitableTasks;
 };
 
+export const findSuitableGlobalTask = async () => {
+    const c = getContext();
+    if (!c.command) return undefined;
+    let task = '';
+
+    if (c.command) task = c.command;
+    if (c.subCommand) task += ` ${c.subCommand}`;
+
+    c.runtime.engine = getEngineRunner(c, task, undefined, false);
+
+    const tsk = getEngineTask(task, c.runtime.engine?.tasks);
+
+    return tsk;
+};
+
 export const findSuitableTask = async (c: RnvContext, specificTask?: string): Promise<RnvTask | undefined> => {
     logDefault('findSuitableTask');
     const REGISTERED_ENGINES = getRegisteredEngines(c);
@@ -184,16 +204,15 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
         if (c.command) task = c.command;
         if (c.subCommand) task += ` ${c.subCommand}`;
 
-        let suitableEngines = REGISTERED_ENGINES.filter((engine) =>
-            hasEngineTask(task, engine.tasks, c.paths.project.configExists)
-        );
+        let suitableEngines = REGISTERED_ENGINES.filter((engine) => {
+            return hasEngineTask(task, engine.tasks, c.paths.project.configExists);
+        });
 
         const autocompleteEngines = REGISTERED_ENGINES.filter(
             (engine) => getEngineSubTasks(task, engine.tasks, true).length
         );
 
         const isAutoComplete = !suitableEngines.length && !!c.command && !autocompleteEngines.length;
-
         if (!suitableEngines.length) {
             // Get all supported tasks
             const supportedSubtasksArr: Array<{
@@ -201,8 +220,11 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
                 taskKey: string;
             }> = [];
             REGISTERED_ENGINES.forEach((engine) => {
-                getEngineSubTasks(task, engine.tasks).forEach((taskInstance) => {
+                const st = getEngineSubTasks(task, engine.tasks);
+
+                st.forEach((taskInstance) => {
                     const isNotViable = !c.paths.project.configExists && !taskInstance.isGlobalScope;
+
                     if (!isNotViable) {
                         const taskKey = isAutoComplete ? taskInstance.task : taskInstance.task.split(' ')[1];
 
@@ -247,12 +269,13 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
                 };
             });
 
-            const message = isAutoComplete
-                ? `Autocomplete action for "${c.command}"`
-                : `Pick a subCommand for ${c.command}`;
-
             const subTasks = Object.keys(supportedSubtasks);
-            if (subTasks.length) {
+            if (subTasks.length && c.runtime.hasAllEnginesRegistered) {
+                // Only offer autocomple option if all engines are registered
+
+                const message = isAutoComplete
+                    ? `Autocomplete action for "${c.command}"`
+                    : `Pick a subCommand for ${c.command}`;
                 const { subCommand } = await inquirerPrompt({
                     type: 'list',
                     name: 'subCommand',
@@ -278,10 +301,9 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
                 );
             }
         }
-
         if (CUSTOM_TASKS[task]) {
             // Custom tasks are executed by core engine
-            logInfo(`Running custom task ${task}`);
+            logInfo(`Running custom task ${chalk().bold(task)}`);
         } else if (!suitableEngines.length) {
             if (!c.runtime.hasAllEnginesRegistered) {
                 // No platform was specified. we have no option other than load all engines and offer platform list next round
@@ -308,11 +330,6 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
             c.runtime.runtimeExtraProps = c.runtime.engine.runtimeExtraProps;
         }
 
-        logInfo(
-            `Current Engine: ${chalk().bold(c.runtime.engine?.config.id)} path: ${chalk().grey(
-                c.runtime.engine?.rootPath
-            )}`
-        );
         const customTask = CUSTOM_TASKS[task];
         if (customTask) {
             c.runtime.availablePlatforms = customTask.platforms;
