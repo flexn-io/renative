@@ -23,6 +23,10 @@
             "$schema": ".rnv/schema/rnv.project.json",
             "extendsTemplate": "@rnv/template-starter/renative.json"
         },
+        "rnvNewPatchDependencies": {
+            "pkg-dir": "7.0.0",
+            "xmlbuilder": "^15.1.1"
+        },
         "package_json": {
             "devDependencies": {
                 "typescript": "5.0.4",

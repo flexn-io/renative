@@ -548,6 +548,10 @@
                 }
               },
               "additionalProperties": true
+            },
+            "rnvNewPatchDependencies": {
+              "$ref": "#/definitions/rnv.project/properties/templateConfig/properties/package_json/properties/dependencies",
+              "description": "This ensures that the correct version of the npm packages will be used to run the project for the first time after creation"
             }
           },
           "additionalProperties": false,
