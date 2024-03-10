@@ -52,6 +52,8 @@ target 'RNVApp-tvOS' do
   config = use_native_modules!
   platform :tvos, '{{INJECT_PLUGIN_DEPLOYMENT_TARGET}}'
 
+  {{INJECT_PLUGIN_PATHS}}
+
   use_react_native!(
     :path => config[:reactNativePath],
     # Enables Flipper.
@@ -79,6 +81,7 @@ post_install do |installer|
     config[:reactNativePath],
     :mac_catalyst_enabled => false
   )
+  {{INJECT_POST_INSTALL}}
 end
 
 {{INJECT_PLUGIN_PODFILE_INJECT}}

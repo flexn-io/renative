@@ -1,34 +1,5 @@
 <html>
-
-<head>
-  <meta charset="UTF-8">
-  <title>App Shell</title>
-  <style>
-    body {
-      background-color: white;
-    }
-  </style>
-  {{APPSHELL_HTML_HEADER}}
-</head>
-
-<body style="margin:0px;padding:0px;overflow:hidden">
-  <iframe style="margin:0px;padding:0px;overflow:hidden" id="iframe" height="100%" width="100%" frameborder="0"
-    scrolling="no" allowfullscreen="true">
-  </iframe>
-  <script>
-    var href = '{{DEV_SERVER}}';
-
-    setTimeout( function () {
-      var iframe = document.getElementById( 'iframe' );
-      iframe.src = href
-      iframe.onload = function () {
-        if ( typeof tizen !== "undefined" ) iframe.contentWindow.tizen = tizen;
-        if ( typeof webapis !== "undefined" ) iframe.contentWindow.webapis = webapis;
-        if ( typeof webOS !== "undefined" ) iframe.contentWindow.webOS = webOS;
-        if ( typeof webOSDev !== "undefined" ) iframe.contentWindow.webOSDev = webOSDev;
-      }
-    }, 5000 );
-  </script>
-</body>
-
+    <head>
+        <meta http-equiv="refresh" content="0;url={{DEV_SERVER}}" />
+    </head>
 </html>

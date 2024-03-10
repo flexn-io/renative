@@ -2329,9 +2329,6 @@
                 "environment": {
                   "type": "string"
                 },
-                "hostedShellHeaders": {
-                  "type": "string"
-                },
                 "webpackConfig": {
                   "type": "object",
                   "properties": {
@@ -2461,9 +2458,6 @@
                       "environment": {
                         "$ref": "#/definitions/rnv.project/properties/platforms/properties/tizen/properties/environment"
                       },
-                      "hostedShellHeaders": {
-                        "$ref": "#/definitions/rnv.project/properties/platforms/properties/tizen/properties/hostedShellHeaders"
-                      },
                       "webpackConfig": {
                         "$ref": "#/definitions/rnv.project/properties/platforms/properties/tizen/properties/webpackConfig"
                       }
@@ -2583,9 +2577,6 @@
                 "environment": {
                   "$ref": "#/definitions/rnv.project/properties/platforms/properties/tizen/properties/environment"
                 },
-                "hostedShellHeaders": {
-                  "$ref": "#/definitions/rnv.project/properties/platforms/properties/tizen/properties/hostedShellHeaders"
-                },
                 "webpackConfig": {
                   "$ref": "#/definitions/rnv.project/properties/platforms/properties/tizen/properties/webpackConfig"
                 },
@@ -2695,9 +2686,6 @@
                       },
                       "environment": {
                         "$ref": "#/definitions/rnv.project/properties/platforms/properties/tizen/properties/environment"
-                      },
-                      "hostedShellHeaders": {
-                        "$ref": "#/definitions/rnv.project/properties/platforms/properties/tizen/properties/hostedShellHeaders"
                       },
                       "webpackConfig": {
                         "$ref": "#/definitions/rnv.project/properties/platforms/properties/tizen/properties/webpackConfig"
@@ -2836,9 +2824,6 @@
                 "environment": {
                   "$ref": "#/definitions/rnv.project/properties/platforms/properties/tizen/properties/environment"
                 },
-                "hostedShellHeaders": {
-                  "$ref": "#/definitions/rnv.project/properties/platforms/properties/tizen/properties/hostedShellHeaders"
-                },
                 "buildSchemes": {
                   "type": "object",
                   "additionalProperties": {
@@ -2957,9 +2942,6 @@
                       },
                       "environment": {
                         "$ref": "#/definitions/rnv.project/properties/platforms/properties/tizen/properties/environment"
-                      },
-                      "hostedShellHeaders": {
-                        "$ref": "#/definitions/rnv.project/properties/platforms/properties/tizen/properties/hostedShellHeaders"
                       }
                     },
                     "additionalProperties": false

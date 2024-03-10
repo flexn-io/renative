@@ -51,7 +51,6 @@ const _configureHostedIfRequired = async (c: RnvContext) => {
     logTask('_configureHostedIfRequired');
 
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
-    const hostedShellHeaders = getConfigProp(c, c.platform, 'hostedShellHeaders') || '';
 
     if (!bundleAssets && !existBuildsOverrideForTargetPathSync(c, path.join(getPlatformProjectDir(c)!, 'index.html'))) {
         logDebug('Running hosted build');
@@ -65,10 +64,6 @@ const _configureHostedIfRequired = async (c: RnvContext) => {
                     {
                         pattern: '{{DEV_SERVER}}',
                         override: `http://${ipAddress}:${c.runtime.port}`,
-                    },
-                    {
-                        pattern: '{{APPSHELL_HTML_HEADER}}',
-                        override: String(hostedShellHeaders || ''),
                     },
                 ],
                 undefined,
