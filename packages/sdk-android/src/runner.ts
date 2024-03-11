@@ -86,12 +86,13 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
     }
 
     const devicesAndEmulators = await getAndroidTargets(c, false, false, !!device);
-
+    console.log('devicesAndEmulators', devicesAndEmulators);
     const activeDevices = devicesAndEmulators.filter((d) => d.isActive);
     const inactiveDevices = devicesAndEmulators.filter((d) => !d.isActive);
     const foundDevice = devicesAndEmulators.find(
         (d) => d.udid.includes(target) || d.name.includes(target) || d.udid.includes(device) || d.name.includes(device)
     );
+    console.log('foundDevice', foundDevice);
 
     const askWhereToRun = async () => {
         if (activeDevices.length || inactiveDevices.length) {
