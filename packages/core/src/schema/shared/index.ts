@@ -44,29 +44,6 @@ export const BuildSchemeFragment = {
 
 const NpmDep = z.record(z.string(), z.string());
 
-const BootstrapQuestionsSchema = z
-    .array(
-        z.object({
-            options: z
-                .array(
-                    z.object({
-                        title: z.string(),
-                        value: z.object({}),
-                    })
-                )
-                .optional(),
-            configProp: z
-                .object({
-                    prop: z.string(),
-                    key: z.string(),
-                })
-                .optional(),
-            type: z.string(),
-            title: z.string(),
-        })
-    )
-    .describe('Defines list of custom bootstrap questions');
-
 export const TemplateConfig = z
     .object({
         disabled: z.boolean().optional(),
@@ -82,7 +59,7 @@ export const TemplateConfig = z
             )
             .describe('Defines list of all file/dir paths you want to include in template')
             .optional(),
-        bootstrapQuestions: BootstrapQuestionsSchema.optional(),
+        // bootstrapQuestions: BootstrapQuestionsSchema.optional(),
         renative_json: z
             .object({
                 $schema: z.string().optional(),

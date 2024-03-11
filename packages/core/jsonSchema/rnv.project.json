@@ -453,63 +453,6 @@
               },
               "description": "Defines list of all file/dir paths you want to include in template"
             },
-            "bootstrapQuestions": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "options": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "title": {
-                          "type": "string"
-                        },
-                        "value": {
-                          "type": "object",
-                          "properties": {},
-                          "additionalProperties": false
-                        }
-                      },
-                      "required": [
-                        "title",
-                        "value"
-                      ],
-                      "additionalProperties": false
-                    }
-                  },
-                  "configProp": {
-                    "type": "object",
-                    "properties": {
-                      "prop": {
-                        "type": "string"
-                      },
-                      "key": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "prop",
-                      "key"
-                    ],
-                    "additionalProperties": false
-                  },
-                  "type": {
-                    "type": "string"
-                  },
-                  "title": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "type",
-                  "title"
-                ],
-                "additionalProperties": false
-              },
-              "description": "Defines list of custom bootstrap questions"
-            },
             "renative_json": {
               "type": "object",
               "properties": {

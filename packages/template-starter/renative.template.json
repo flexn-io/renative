@@ -45,7 +45,9 @@
                 "@babel/traverse": "7.15.0",
                 "@types/react": "18.2.52"
             }
-        },
+        }
+    },
+    "bootstrapConfig": {
         "bootstrapQuestions": [
             {
                 "type": "textInput",
@@ -89,6 +91,15 @@
                     }
                 ]
             }
-        ]
+        ],
+        "configModifiers": {
+            "engines": [
+                {
+                    "name": "@rnv/engine-lightning",
+                    "supportedPlatforms": ["tizen", "webos"],
+                    "nullifyIfFalse": true
+                }
+            ]
+        }
     }
 }
