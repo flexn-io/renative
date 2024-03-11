@@ -224,9 +224,21 @@
                           "type": "string"
                         },
                         "value": {
-                          "type": "object",
-                          "properties": {},
-                          "additionalProperties": false
+                          "anyOf": [
+                            {
+                              "type": "object",
+                              "additionalProperties": {}
+                            },
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "boolean"
+                            }
+                          ]
                         }
                       },
                       "required": [

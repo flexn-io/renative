@@ -76,11 +76,11 @@
                 "options": [
                     {
                         "value": "aws",
-                        "name": "AWS"
+                        "title": "AWS"
                     },
                     {
                         "value": "firebase",
-                        "name": "Firebase"
+                        "title": "Firebase"
                     }
                 ],
                 "onConfirm": [

@@ -9,7 +9,7 @@ const BootstrapQuestionsSchema = z
                 .array(
                     z.object({
                         title: z.string(),
-                        value: z.object({}),
+                        value: z.union([z.record(z.string(), z.any()), z.string(), z.number(), z.boolean()]),
                     })
                 )
                 .optional(),
