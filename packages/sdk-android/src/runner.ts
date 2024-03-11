@@ -327,8 +327,10 @@ const _checkSigningCerts = async (c: Context) => {
     }
 };
 
-export const configureAndroidProperties = async (c: Context) => {
+export const configureAndroidProperties = async () => {
     logDefault('configureAndroidProperties');
+
+    const c = getContext();
 
     const appFolder = getAppFolder();
 
@@ -359,15 +361,13 @@ sdk.dir=${sdkDir}`
 };
 
 export const configureGradleProject = async () => {
-    const c = getContext();
-    const { platform } = c;
     logDefault('configureGradleProject');
 
-    if (!isPlatformActive(platform)) return;
+    if (!isPlatformActive()) return;
     await copyAssetsFolder('app/src/main');
-    await configureAndroidProperties(c);
-    await configureProject(c);
-    await copyBuildsFolder(platform);
+    await configureAndroidProperties();
+    await configureProject();
+    await copyBuildsFolder();
     return true;
 };
 
@@ -385,8 +385,9 @@ export const configureGradleProject = async () => {
 //     throw new Error('createJavaPackageFolders not implemented');
 // }
 
-export const configureProject = async (c: Context) => {
+export const configureProject = async () => {
     logDefault('configureProject');
+    const c = getContext();
     const { platform } = c;
 
     const appFolder = getAppFolder();

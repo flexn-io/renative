@@ -144,16 +144,14 @@ export const configureWebOSProject = async () => {
     const c = getContext();
     logDefault('configureWebOSProject');
 
-    const { platform } = c;
-
     c.runtime.platformBuildsProjectPath = getPlatformProjectDir()!;
 
-    if (!isPlatformActive(platform)) return;
+    if (!isPlatformActive()) return;
 
     await copyAssetsFolder();
     await configureCoreWebProject();
     await _configureProject(c);
-    return copyBuildsFolder(platform);
+    return copyBuildsFolder();
 };
 
 const _configureProject = async (c: RnvContext) => {

@@ -437,7 +437,7 @@ export const copyAssetsFolder = async (subPath?: string, customFn?: (c: RnvConte
     const c = getContext();
     const { platform } = c;
 
-    if (!isPlatformActive(platform)) return;
+    if (!isPlatformActive()) return;
 
     const assetFolderPlatform = getConfigProp(c, platform, 'assetFolderPlatform') || platform;
 
@@ -548,12 +548,13 @@ export const copyAssetsFolder = async (subPath?: string, customFn?: (c: RnvConte
 // }
 // };
 
-export const copyBuildsFolder = (platform: RnvPlatform) =>
+export const copyBuildsFolder = () =>
     new Promise<void>((resolve) => {
         logDefault('copyBuildsFolder');
         const c = getContext();
+        const { platform } = c;
 
-        if (!isPlatformActive(platform, resolve)) return;
+        if (!isPlatformActive(resolve)) return;
 
         const destPath = path.join(getAppFolder());
         const tsPathsConfig = getTimestampPathsConfig(c, platform);

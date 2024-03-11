@@ -8,6 +8,7 @@ import type { RnvPlatform, RnvPlatformWithAll } from '../types';
 import { updateProjectPlatforms } from '../configs/configProject';
 import { doResolve } from '../system/resolve';
 import { getContext } from '../context/provider';
+import { platform } from 'os';
 
 export const logErrorPlatform = () => {
     const c = getContext();
@@ -175,8 +176,9 @@ export const isPlatformSupportedSync = (platform: RnvPlatform, resolve?: () => v
     return true;
 };
 
-export const isPlatformActive = (platform: RnvPlatform, resolve?: () => void) => {
+export const isPlatformActive = (resolve?: () => void) => {
     const c = getContext();
+    const { platform } = c;
 
     if (!c.buildConfig || !c.buildConfig.platforms) {
         logError(

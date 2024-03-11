@@ -43,10 +43,8 @@ export const packageBundleForXcode = () => {
 
 const copyAppleAssets = (appFolderName: string) =>
     new Promise<void>((resolve) => {
-        const c = getContext();
-        const { platform } = c;
         logDefault('copyAppleAssets');
-        if (!isPlatformActive(platform, resolve)) return;
+        if (!isPlatformActive(resolve)) return;
 
         const appFolder = getAppFolder();
 
@@ -837,7 +835,7 @@ export const configureXcodeProject = async () => {
     await parsePodFile();
     await parseEntitlementsPlist();
     await parseInfoPlist();
-    await copyBuildsFolder(platform);
+    await copyBuildsFolder();
     await runCocoaPods();
     await parseXcodeProject();
     return true;

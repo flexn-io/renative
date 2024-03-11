@@ -79,7 +79,7 @@ const _runRemoteDebuggerChii = async (c: RnvContext, obj: { remoteDebuggerActive
     try {
         await commandExists('chii');
 
-        const resolvedDebugIp = debugIp || getDevServerHost(c);
+        const resolvedDebugIp = debugIp || getDevServerHost();
         logInfo(
             `Starting a remote debugger build with ip ${resolvedDebugIp}. If this IP is not correct, you can always override it with --debugIp`
         );
@@ -116,7 +116,7 @@ const _runRemoteDebuggerWeinre = async (c: RnvContext, obj: { remoteDebuggerActi
     try {
         await commandExists('weinre');
 
-        const resolvedDebugIp = debugIp || getDevServerHost(c);
+        const resolvedDebugIp = debugIp || getDevServerHost();
         logInfo(
             `Starting a remote debugger build with ip ${resolvedDebugIp}. If this IP is not correct, you can always override it with --debugIp`
         );
@@ -212,7 +212,7 @@ export const buildCoreWebpackProject = async () => {
     if (debug) {
         logInfo(
             `Starting a remote debugger build with ip ${
-                debugIp || getDevServerHost(c)
+                debugIp || getDevServerHost()
             }. If this IP is not correct, you can always override it with --debugIp`
         );
         // process.env.RNV_INJECTED_WEBPACK_SCRIPTS += `DEBUG_IP=${debugIp || ip.address()}`;
@@ -234,7 +234,7 @@ export const runWebpackServer = async (enableRemoteDebugger?: boolean) => {
 
     let devServerHost = c.runtime.localhost;
 
-    devServerHost = getDevServerHost(c);
+    devServerHost = getDevServerHost();
 
     const isPortActive = await checkPortInUse(port);
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
@@ -279,7 +279,7 @@ export const waitForWebpack = async (suffix = 'assets/bundle.js') => {
     const CHECK_INTEVAL = 2000;
     // const spinner = ora('Waiting for webpack to finish...').start();
 
-    const devServerHost = getDevServerHost(c);
+    const devServerHost = getDevServerHost();
     const url = `http://${devServerHost}:${c.runtime.port}/${suffix}`;
 
     return new Promise((resolve, reject) => {
@@ -317,16 +317,14 @@ export const configureWebProject = async () => {
     const c = getContext();
     logDefault('configureWebProject');
 
-    const { platform } = c;
-
     c.runtime.platformBuildsProjectPath = getPlatformProjectDir() || undefined;
 
-    if (!isPlatformActive(platform)) return;
+    if (!isPlatformActive()) return;
 
     await copyAssetsFolder();
     await configureCoreWebProject();
 
-    return copyBuildsFolder(platform);
+    return copyBuildsFolder();
 };
 
 // CHROMECAST
@@ -340,7 +338,7 @@ export const configureChromecastProject = async () => {
     await copyAssetsFolder();
     await configureCoreWebProject();
     await _configureProject(c);
-    return copyBuildsFolder(c.platform);
+    return copyBuildsFolder();
 };
 
 const _configureProject = async (c: RnvContext) => {

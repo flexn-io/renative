@@ -52,7 +52,7 @@ export const runWebNext = async () => {
 
     if (!c.platform) return;
 
-    const devServerHost = getDevServerHost(c);
+    const devServerHost = getDevServerHost();
 
     const isPortActive = await checkPortInUse(port);
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
@@ -135,7 +135,7 @@ export const buildWebNext = async () => {
 export const runWebDevServer = async (c: RnvContext) => {
     logDefault('runWebDevServer');
 
-    const devServerHost = getDevServerHost(c);
+    const devServerHost = getDevServerHost();
 
     const url = chalk().cyan(`http://${devServerHost}:${c.runtime.port}`);
     logRaw(`

@@ -11,6 +11,7 @@ import {
     logDefault,
     fsExistsSync,
     PlatformKey,
+    getContext,
 } from '@rnv/core';
 import axios from 'axios';
 import open from 'better-opn';
@@ -36,7 +37,8 @@ export const getValidLocalhost = (value: string, localhost: string) => {
 
 export const openBrowser = open;
 
-export const getDevServerHost = (c: RnvContext) => {
+export const getDevServerHost = () => {
+    const c = getContext();
     const devServerHostOrig = getConfigProp(c, c.platform, 'devServerHost');
 
     const devServerHostFixed = devServerHostOrig
@@ -53,7 +55,7 @@ export const waitForHost = async (c: RnvContext, suffix = 'assets/bundle.js') =>
     const CHECK_INTEVAL = 2000;
     // const spinner = ora('Waiting for webpack to finish...').start();
 
-    const devServerHost = getDevServerHost(c);
+    const devServerHost = getDevServerHost();
     const url = `http://${devServerHost}:${c.runtime.port}/${suffix}`;
 
     return new Promise((resolve, reject) => {

@@ -63,17 +63,18 @@ export const configureElectronProject = async (exitOnFail?: boolean) => {
 
     await configureCoreWebProject();
 
-    await configureProject(c, exitOnFail);
-    return copyBuildsFolder(platform);
+    await configureProject(exitOnFail);
+    return copyBuildsFolder();
 };
 const merge = require('deepmerge');
 
-const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
+const configureProject = (exitOnFail?: boolean) =>
     new Promise<void>((resolve, reject) => {
+        const c = getContext();
         logDefault('configureProject');
         const { platform } = c;
 
-        if (!isPlatformActive(platform, resolve)) return;
+        if (!isPlatformActive(resolve)) return;
 
         const platformProjectDir = getPlatformProjectDir()!;
         const engine = getEngineRunnerByPlatform(c.platform);

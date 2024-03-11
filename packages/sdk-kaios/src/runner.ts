@@ -19,16 +19,14 @@ export const configureKaiOSProject = async () => {
     const c = getContext();
     logDefault('configureKaiOSProject');
 
-    const { platform } = c;
-
     c.runtime.platformBuildsProjectPath = `${getPlatformProjectDir()}`;
 
-    if (!isPlatformActive(platform)) return;
+    if (!isPlatformActive()) return;
 
     await copyAssetsFolder();
     await configureCoreWebProject();
     await _configureProject(c);
-    return copyBuildsFolder(platform);
+    return copyBuildsFolder();
 };
 
 const _configureProject = (c: RnvContext) =>
@@ -36,7 +34,7 @@ const _configureProject = (c: RnvContext) =>
         logDefault('configureProject');
         const { platform } = c;
 
-        if (!isPlatformActive(platform, resolve)) return;
+        if (!isPlatformActive(resolve)) return;
 
         const appFolder = getPlatformProjectDir();
 

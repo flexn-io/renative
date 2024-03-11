@@ -51,8 +51,9 @@ export const checkTizenStudioCert = async (): Promise<boolean> => {
     }
 };
 
-export const configureTizenGlobal = (c: RnvContext) =>
+export const configureTizenGlobal = () =>
     new Promise<void>((resolve, reject) => {
+        const c = getContext();
         logDefault('configureTizenGlobal');
         // Check Tizen Cert
         // if (isPlatformActive(c, TIZEN) || isPlatformActive(c, TIZEN_WATCH)) {
@@ -194,23 +195,21 @@ export const configureTizenProject = async () => {
     const c = getContext();
     logDefault('configureTizenProject');
 
-    const { platform } = c;
-
     c.runtime.platformBuildsProjectPath = `${getPlatformProjectDir()}`;
 
-    if (!isPlatformActive(platform)) {
+    if (!isPlatformActive()) {
         return;
     }
 
     if (!_isGlobalConfigured && !c.program.hosted) {
         _isGlobalConfigured = true;
-        await configureTizenGlobal(c);
+        await configureTizenGlobal();
     }
 
     await copyAssetsFolder();
     await configureCoreWebProject();
     await _configureProject(c);
-    return copyBuildsFolder(platform);
+    return copyBuildsFolder();
 };
 
 const _configureProject = (c: RnvContext) =>
