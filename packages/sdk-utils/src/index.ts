@@ -286,7 +286,8 @@ export const confirmActiveBundler = async (c: RnvContext) => {
     });
 
     if (choices[0] === selectedOption) {
-        await killPort(c.runtime.port);
+        const result = await killPort(c.runtime.port);
+        console.log('WTFFF', result);
     } else {
         return false;
     }

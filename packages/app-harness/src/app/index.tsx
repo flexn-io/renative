@@ -3,7 +3,7 @@ import { Button, Image, ScrollView, Text, View } from 'react-native';
 import { Api } from '@rnv/renative';
 import { OrientationLocker, PORTRAIT, LANDSCAPE } from '../components/OrientationLocker';
 import { NewModuleButton } from '../components/NewModuleButton';
-import { SplashScreen } from '../components/SplashScreen';
+import { useSplashScreen } from '../components/SplashScreen';
 import { ICON_LOGO, testProps } from '../config';
 import styles from '../styles';
 import { addNotificationListeners, removeNotificationListeners } from '../components/Notifications';
@@ -13,7 +13,6 @@ import { TestCase } from '../components/TestCase';
 import config from '../../package.json';
 import { LoggerProvider, useLoggerContext } from '../context';
 import { NotificationCallback } from '../components/types';
-import { SplashscreenType } from '../components/SplashScreen/types';
 
 const App = () => (
     <LoggerProvider>
@@ -24,13 +23,10 @@ const App = () => (
 const AppContent = () => {
     const [showVideo, setShowVideo] = useState(false);
     const { logDebug, logs } = useLoggerContext();
+    const { SplashScreen } = useSplashScreen();
 
     useEffect(() => {
-        if (typeof SplashScreen === 'function') {
-            SplashScreen(handleNotification).hide();
-        } else {
-            (SplashScreen as SplashscreenType)?.hide();
-        }
+        SplashScreen.hide();
         addNotificationListeners(handleNotification);
 
         return () => {
@@ -104,6 +100,9 @@ const AppContent = () => {
                     </TestCase>
                     <TestCase id={5} title="Image Support">
                         <Image source={ICON_LOGO} style={{ width: 100, height: 100 }} />
+                    </TestCase>
+                    <TestCase id={6} title="Splash Screen">
+                        <Button onPress={() => SplashScreen.show()} title="Show SplashScreen" />
                     </TestCase>
                 </ScrollView>
             </View>

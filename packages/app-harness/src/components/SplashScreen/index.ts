@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { NotificationCallback } from '../types';
+import { useLoggerContext } from '../../context';
 
 const SplashScreen = (callback: NotificationCallback) => ({
     hide: () => {
@@ -9,4 +11,10 @@ const SplashScreen = (callback: NotificationCallback) => ({
     },
 });
 
-export { SplashScreen };
+export function useSplashScreen() {
+    const { logDebug } = useLoggerContext();
+    useEffect(() => {
+        //TODO: We could also cache SplashScreen here
+    }, []);
+    return { SplashScreen: SplashScreen(logDebug) };
+}

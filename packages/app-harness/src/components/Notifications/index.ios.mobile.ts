@@ -8,7 +8,7 @@ export const addNotificationListeners = (callback: NotificationCallback) => {
     PushNotificationIOS.addEventListener('registrationError', onError(callback));
 };
 
-export const removeNotificationListeners = (callback: NotificationCallback) => {
+export const removeNotificationListeners = () => {
     PushNotificationIOS.removeEventListener('notification');
     PushNotificationIOS.removeEventListener('register');
     PushNotificationIOS.removeEventListener('registrationError');
