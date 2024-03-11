@@ -14,7 +14,7 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     logTask('taskRun', `parent:${parentTask}`);
 
-    await executeOrSkipTask(c, RnvTaskName.configure, RnvTaskName.run, originTask);
+    await executeOrSkipTask(RnvTaskName.configure, RnvTaskName.run, originTask);
 
     if (shouldSkipTask(RnvTaskName.run, originTask)) return true;
 

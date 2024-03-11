@@ -9,10 +9,10 @@ import {
     SUPPORTED_PLATFORMS,
 } from '@rnv/core';
 
-const taskDeploy: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskDeploy: RnvTaskFn = async (_c, parentTask, originTask) => {
     logTask('taskDeploy', `parent:${parentTask}`);
 
-    await executeOrSkipTask(c, RnvTaskName.export, RnvTaskName.deploy, originTask);
+    await executeOrSkipTask(RnvTaskName.export, RnvTaskName.deploy, originTask);
 
     if (shouldSkipTask(RnvTaskName.deploy, originTask)) return true;
 

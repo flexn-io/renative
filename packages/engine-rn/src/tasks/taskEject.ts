@@ -29,7 +29,7 @@ const taskEject: RnvTaskFn = async (c, _parentTask, originTask) => {
 
     c.runtime._skipNativeDepResolutions = true;
 
-    await executeOrSkipTask(c, RnvTaskName.package, RnvTaskName.eject, originTask);
+    await executeOrSkipTask(RnvTaskName.package, RnvTaskName.eject, originTask);
 
     if (shouldSkipTask(RnvTaskName.eject, originTask)) return true;
 

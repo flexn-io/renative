@@ -14,7 +14,7 @@ const taskBuild: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskBuild');
     const { platform } = c;
 
-    await executeOrSkipTask(c, RnvTaskName.package, RnvTaskName.build, originTask);
+    await executeOrSkipTask(RnvTaskName.package, RnvTaskName.build, originTask);
 
     if (shouldSkipTask(RnvTaskName.build, originTask)) return true;
 

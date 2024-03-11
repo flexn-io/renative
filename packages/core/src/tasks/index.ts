@@ -433,7 +433,8 @@ To avoid that test your task code against parentTask and avoid executing same ta
 /**
  * @deprecated Use executeDependantTask instead
  */
-export const executeOrSkipTask = async (c: RnvContext, task: string, parentTask: string, originTask?: string) => {
+export const executeOrSkipTask = async (task: string, parentTask: string, originTask?: string) => {
+    const c = getContext();
     if (!c.program.only) {
         return executeTask(task, parentTask, originTask);
     }

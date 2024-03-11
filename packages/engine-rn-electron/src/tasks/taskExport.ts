@@ -14,7 +14,7 @@ const taskExport: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskExport', `parent:${parentTask}`);
     const { platform } = c;
 
-    await executeOrSkipTask(c, RnvTaskName.build, RnvTaskName.export, originTask);
+    await executeOrSkipTask(RnvTaskName.build, RnvTaskName.export, originTask);
 
     if (shouldSkipTask(RnvTaskName.export, originTask)) return true;
 
