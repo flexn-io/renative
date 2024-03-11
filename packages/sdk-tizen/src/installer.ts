@@ -103,7 +103,9 @@ const _attemptAutoFix = async (c: RnvContext) => {
     return true;
 };
 
-export const checkTizenSdk = async (c: RnvContext) => {
+export const checkTizenSdk = async () => {
+    const c = getContext();
+
     logDefault('checkTizenSdk');
     if (!_isSdkInstalled(c)) {
         logWarning(

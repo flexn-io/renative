@@ -221,7 +221,8 @@ export const copyFileWithInjectSync = (
     }
 };
 
-export const invalidatePodsChecksum = (c: RnvContext) => {
+export const invalidatePodsChecksum = () => {
+    const c = getContext();
     const appFolder = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}`);
     const podChecksumPath = path.join(appFolder, 'Podfile.checksum');
     if (fs.existsSync(podChecksumPath)) {

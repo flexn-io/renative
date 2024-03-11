@@ -190,7 +190,7 @@ const _configureProject = async (c: RnvContext) => {
         },
     ];
 
-    addSystemInjects(c, injects);
+    addSystemInjects(injects);
 
     const file = path.join(getPlatformProjectDir()!, configFile);
 

@@ -34,13 +34,13 @@ export const checkSdk = async () => {
         case 'androidtv':
         case 'firetv':
         case 'androidwear':
-            return checkAndroidSdk(c);
+            return checkAndroidSdk();
         case 'tizen':
         case 'tizenmobile':
         case 'tizenwatch':
-            return checkTizenSdk(c);
+            return checkTizenSdk();
         case 'webos':
-            return checkWebosSdk(c);
+            return checkWebosSdk();
         default:
             return true;
     }

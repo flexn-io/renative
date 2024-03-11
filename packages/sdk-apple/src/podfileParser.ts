@@ -26,7 +26,7 @@ export const parsePodFile = async () => {
 
     // PLUGINS
     c.payload.pluginConfigiOS.podfileInject = '';
-    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
+    parsePlugins((plugin, pluginPlat, key) => {
         const templateXcode = getFlavouredProp(pluginPlat, 'templateXcode');
 
         const podName = getFlavouredProp(pluginPlat, 'podName');
@@ -151,7 +151,7 @@ export const parsePodFile = async () => {
         },
     ];
 
-    addSystemInjects(c, injects);
+    addSystemInjects(injects);
 
     writeCleanFile(
         path.join(getAppTemplateFolder()!, 'Podfile'),

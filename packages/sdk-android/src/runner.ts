@@ -50,7 +50,7 @@ import {
 import { parseGradleWrapperSync } from './gradleWrapperParser';
 import { parseValuesStringsSync, injectPluginXmlValuesSync, parseValuesColorsSync } from './xmlValuesParser';
 import { ejectGradleProject } from './ejector';
-import { AndroidDevice, Context } from './types';
+import { AndroidDevice, Context, Payload } from './types';
 import {
     resetAdb,
     getAndroidTargets,
@@ -65,10 +65,9 @@ import { runReactNativeAndroid, packageReactNativeAndroid } from '@rnv/sdk-react
 import { getEntryFile } from '@rnv/sdk-utils';
 
 export const packageAndroid = async () => {
-    const c = getContext();
     logDefault('packageAndroid');
 
-    return packageReactNativeAndroid(c);
+    return packageReactNativeAndroid();
 };
 
 export const getAndroidDeviceToRunOn = async () => {
@@ -80,16 +79,15 @@ export const getAndroidDeviceToRunOn = async () => {
     if (!c.platform) return;
 
     const { target, device } = c.program;
-    const { platform } = c;
 
-    await resetAdb(c);
+    await resetAdb();
     const targetToConnectWiFi = _isString(target) ? target : device;
 
     if (_isString(targetToConnectWiFi) && net.isIP(targetToConnectWiFi.split(':')[0])) {
-        await connectToWifiDevice(c, targetToConnectWiFi);
+        await connectToWifiDevice(targetToConnectWiFi);
     }
 
-    const devicesAndEmulators = await getAndroidTargets(c, false, false, !!device);
+    const devicesAndEmulators = await getAndroidTargets(false, false, !!device);
 
     const activeDevices = devicesAndEmulators.filter((d) => d.isActive);
     const inactiveDevices = devicesAndEmulators.filter((d) => !d.isActive);
@@ -139,15 +137,15 @@ export const getAndroidDeviceToRunOn = async () => {
                 if (dev) return dev;
 
                 await launchAndroidSimulator(chosenTarget, true);
-                const device = await checkForActiveEmulator(c, chosenTarget);
+                const device = await checkForActiveEmulator(chosenTarget);
                 return device;
             }
         } else {
             if (c.program.device) {
                 return logError('No active devices found, please connect one or remove the device argument', true);
             }
-            await askForNewEmulator(c, platform);
-            const device = await checkForActiveEmulator(c);
+            await askForNewEmulator();
+            const device = await checkForActiveEmulator();
             return device;
         }
     };
@@ -159,7 +157,7 @@ export const getAndroidDeviceToRunOn = async () => {
                 return foundDevice;
             }
             await launchAndroidSimulator(foundDevice, true);
-            const device = await checkForActiveEmulator(c, foundDevice.name);
+            const device = await checkForActiveEmulator(foundDevice.name);
             return device;
         }
         logDebug('Target not found, asking where to run');
@@ -176,7 +174,7 @@ export const getAndroidDeviceToRunOn = async () => {
             return askWhereToRun();
         } else if (!foundDevice.isActive) {
             await launchAndroidSimulator(foundDevice, true);
-            const device = await checkForActiveEmulator(c, foundDevice.name);
+            const device = await checkForActiveEmulator(foundDevice.name);
             return device;
         }
         return foundDevice;
@@ -189,13 +187,8 @@ export const getAndroidDeviceToRunOn = async () => {
 
 export const runAndroid = async (device: AndroidDevice) => {
     logDefault('runAndroid', `target:${device.udid}`);
-    const c = getContext();
 
-    const { platform } = c;
-
-    if (!platform) return;
-
-    await runReactNativeAndroid(c, platform, device);
+    await runReactNativeAndroid(device);
 };
 
 const _checkSigningCerts = async (c: Context) => {
@@ -319,7 +312,7 @@ const _checkSigningCerts = async (c: Context) => {
             logSuccess(`Successfully updated private config file at ${chalk().bold(c.paths.workspace.appConfig.dir)}.`);
             // await configureProject(c);
             await updateRenativeConfigs();
-            await parseAppBuildGradleSync(c);
+            await parseAppBuildGradleSync();
             // await configureGradleProject(c);
         } else {
             return Promise.reject("You selected no. Can't proceed");
@@ -387,8 +380,7 @@ export const configureGradleProject = async () => {
 
 export const configureProject = async () => {
     logDefault('configureProject');
-    const c = getContext();
-    const { platform } = c;
+    const c = getContext<Payload>();
 
     const appFolder = getAppFolder();
 
@@ -400,7 +392,7 @@ export const configureProject = async () => {
     //     return true;
     // }
 
-    const outputFile = getEntryFile(c, platform);
+    const outputFile = getEntryFile();
 
     // await createJavaPackageFolders(c, appFolder);
     mkdirSync(path.join(appFolder, 'app/src/main/assets'));
@@ -453,11 +445,11 @@ export const configureProject = async () => {
     };
 
     // PLUGINS
-    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
-        injectPluginGradleSync(c, plugin, pluginPlat, key);
-        injectPluginKotlinSync(c, pluginPlat, key, pluginPlat.package);
+    parsePlugins((plugin, pluginPlat, key) => {
+        injectPluginGradleSync(plugin, pluginPlat, key);
+        injectPluginKotlinSync(pluginPlat, key, pluginPlat.package);
         injectPluginManifestSync();
-        injectPluginXmlValuesSync(c, pluginPlat);
+        injectPluginXmlValuesSync(pluginPlat);
     });
 
     c.payload.pluginConfigAndroid.pluginPackages = c.payload.pluginConfigAndroid.pluginPackages.substring(
@@ -489,18 +481,18 @@ export const configureProject = async () => {
             }
         }
     });
-    parseAndroidConfigObject(c);
-    parseSettingsGradleSync(c);
-    parseAppBuildGradleSync(c);
-    parseBuildGradleSync(c);
-    parseGradleWrapperSync(c);
-    parseMainActivitySync(c);
-    parseMainApplicationSync(c);
-    parseSplashActivitySync(c);
-    parseValuesStringsSync(c);
-    parseValuesColorsSync(c);
-    parseAndroidManifestSync(c);
-    parseGradlePropertiesSync(c);
+    parseAndroidConfigObject();
+    parseSettingsGradleSync();
+    parseAppBuildGradleSync();
+    parseBuildGradleSync();
+    parseGradleWrapperSync();
+    parseMainActivitySync();
+    parseMainApplicationSync();
+    parseSplashActivitySync();
+    parseValuesStringsSync();
+    parseValuesColorsSync();
+    parseAndroidManifestSync();
+    parseGradlePropertiesSync();
     // parseFlipperSync(c, 'debug');
     // parseFlipperSync(c, 'release');
     await _checkSigningCerts(c);

@@ -76,7 +76,7 @@ const taskProjectConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     await executeTask(RnvTaskName.install, RnvTaskName.projectConfigure, originTask);
     if (originTask !== RnvTaskName.cryptoDecrypt) {
         //If we explicitly running rnv crypto decrypt there is no need to check crypto
-        await checkCrypto(c, parentTask, originTask);
+        await checkCrypto(parentTask, originTask);
     }
 
     await configureRuntimeDefaults();

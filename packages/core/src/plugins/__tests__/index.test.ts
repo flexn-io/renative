@@ -34,7 +34,7 @@ describe('parsePlugins', () => {
         const includeDisabledPlugins = true;
 
         // WHEN
-        parsePlugins(c, platform, pluginCallback, ignorePlatformObjectCheck, includeDisabledPlugins);
+        parsePlugins(pluginCallback, ignorePlatformObjectCheck, includeDisabledPlugins);
 
         // THEN
         expect(pluginCallback).toHaveBeenCalledTimes(3);
@@ -68,7 +68,7 @@ describe('parsePlugins', () => {
         const includeDisabledPlugins = false;
 
         // WHEN
-        parsePlugins(c, platform, pluginCallback, ignorePlatformObjectCheck, includeDisabledPlugins);
+        parsePlugins(pluginCallback, ignorePlatformObjectCheck, includeDisabledPlugins);
 
         // THEN
         expect(pluginCallback).toHaveBeenCalledTimes(2);
@@ -97,7 +97,7 @@ describe('parsePlugins', () => {
         const includeDisabledPlugins = false;
 
         // WHEN
-        parsePlugins(c, platform, pluginCallback, ignorePlatformObjectCheck, includeDisabledPlugins);
+        parsePlugins(pluginCallback, ignorePlatformObjectCheck, includeDisabledPlugins);
 
         // THEN
         expect(pluginCallback).toHaveBeenCalledTimes(3);
@@ -136,7 +136,7 @@ describe('parsePlugins', () => {
         const includeDisabledPlugins = true;
 
         // WHEN
-        parsePlugins(c, platform, pluginCallback, ignorePlatformObjectCheck, includeDisabledPlugins);
+        parsePlugins(pluginCallback, ignorePlatformObjectCheck, includeDisabledPlugins);
 
         // THEN
         expect(pluginCallback).toHaveBeenCalledTimes(4);

@@ -112,7 +112,9 @@ const _attemptAutoFix = async (c: RnvContext) => {
     return true;
 };
 
-export const checkWebosSdk = async (c: RnvContext) => {
+export const checkWebosSdk = async () => {
+    const c = getContext();
+
     logDefault('checkWebosSdk');
     if (!_isSdkInstalled(c)) {
         logWarning(

@@ -8,9 +8,7 @@ import {
     logDefault,
     logInfo,
     logSuccess,
-    RnvContext,
     DEFAULTS,
-    RnvPlatform,
     CoreEnvVars,
     ExecOptionsPresets,
     getContext,
@@ -18,7 +16,8 @@ import {
 import { EnvVars } from './env';
 import { getEntryFile } from '@rnv/sdk-utils';
 
-export const packageReactNativeAndroid = async (c: RnvContext) => {
+export const packageReactNativeAndroid = async () => {
+    const c = getContext();
     logDefault('packageAndroid');
     const { platform } = c;
 
@@ -31,7 +30,7 @@ export const packageReactNativeAndroid = async (c: RnvContext) => {
         return true;
     }
 
-    const outputFile = getEntryFile(c, platform);
+    const outputFile = getEntryFile();
 
     const appFolder = getAppFolder();
     let reactNative = c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native';
@@ -86,11 +85,9 @@ export const packageReactNativeAndroid = async (c: RnvContext) => {
     }
 };
 
-export const runReactNativeAndroid = async (
-    c: RnvContext,
-    platform: RnvPlatform,
-    device: { udid?: string } | undefined
-) => {
+export const runReactNativeAndroid = async (device: { udid?: string } | undefined) => {
+    const c = getContext();
+    const { platform } = c;
     logDefault('_runGradleApp');
 
     const signingConfig = getConfigProp('signingConfig', 'Debug');
@@ -121,9 +118,7 @@ export const runReactNativeAndroid = async (
 };
 
 export const buildReactNativeAndroid = async () => {
-    const c = getContext();
     logDefault('buildAndroid');
-    const { platform } = c;
 
     const appFolder = getAppFolder();
     const signingConfig = getConfigProp('signingConfig') || DEFAULTS.signingConfig;

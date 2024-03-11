@@ -31,7 +31,6 @@ export const parseAppDelegate = (
 ) =>
     new Promise<void>((resolve) => {
         const c = getContext();
-        const { platform } = c;
         logDefault('parseAppDelegateSync');
         const appDelegateMm = 'AppDelegate.mm';
         const appDelegateH = 'AppDelegate.h';
@@ -48,7 +47,7 @@ export const parseAppDelegate = (
         // }
 
         // PLUGINS
-        parsePlugins(c, platform, (plugin, pluginPlat, key) => {
+        parsePlugins((plugin, pluginPlat, key) => {
             injectPluginObjectiveCSync(c, pluginPlat, key);
         });
 
@@ -262,7 +261,7 @@ export const parseAppDelegate = (
                     : '',
             },
         ];
-        addSystemInjects(c, injectsMm);
+        addSystemInjects(injectsMm);
 
         writeCleanFile(
             path.join(getAppTemplateFolder()!, appFolderName, appDelegateMm),
@@ -271,7 +270,7 @@ export const parseAppDelegate = (
             undefined,
             c
         );
-        addSystemInjects(c, injectsH);
+        addSystemInjects(injectsH);
 
         writeCleanFile(
             path.join(getAppTemplateFolder()!, appFolderName, appDelegateH),

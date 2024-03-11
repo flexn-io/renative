@@ -164,7 +164,7 @@ const configureProject = (exitOnFail?: boolean) =>
                 },
             ];
 
-            addSystemInjects(c, injects);
+            addSystemInjects(injects);
 
             writeCleanFile(
                 path.join(platformProjectDir, 'main.prod.js'),
@@ -197,7 +197,7 @@ const configureProject = (exitOnFail?: boolean) =>
                 },
             ];
 
-            addSystemInjects(c, injects);
+            addSystemInjects(injects);
 
             writeCleanFile(
                 path.join(platformProjectDir, 'main.dev.js'),

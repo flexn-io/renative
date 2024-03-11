@@ -169,7 +169,7 @@ export const installPackageDependencies = async (failOnError = false) => {
 
     try {
         await executeAsync(command);
-        await invalidatePodsChecksum(c);
+        await invalidatePodsChecksum();
     } catch (e) {
         if (failOnError) {
             logError(e);

@@ -53,7 +53,7 @@ describe('Test getDevServerHost', () => {
         c.runtime.localhost = '0.0.0.0 ';
         jest.mocked(getConfigProp).mockReturnValue(undefined);
         // WHEN
-        const result = getDevServerHost(c);
+        const result = getDevServerHost();
         // THEN
         expect(result).toBe(DEFAULTS.devServerHost);
     });
@@ -63,7 +63,7 @@ describe('Test getDevServerHost', () => {
         c.runtime.localhost = '0.0.0.0';
         jest.mocked(getConfigProp).mockReturnValue('localhost');
         // WHEN
-        const result = getDevServerHost(c);
+        const result = getDevServerHost();
         // THEN
         expect(result).toBe('0.0.0.0');
     });

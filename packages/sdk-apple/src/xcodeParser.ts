@@ -215,7 +215,7 @@ const _parseXcodeProject = (c: Context, platform: RnvPlatform) =>
             }
 
             // PLUGINS
-            parsePlugins(c, platform, (plugin, pluginPlat) => {
+            parsePlugins((plugin, pluginPlat) => {
                 const templateXcode = getFlavouredProp(pluginPlat, 'templateXcode');
 
                 const xcodeprojObj = templateXcode?.project_pbxproj;

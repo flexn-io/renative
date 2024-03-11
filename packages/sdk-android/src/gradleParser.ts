@@ -10,6 +10,7 @@ import {
     fsWriteFileSync,
     getAppFolder,
     getConfigProp,
+    getContext,
     includesPluginPath,
     isSystemWin,
     logDebug,
@@ -24,9 +25,9 @@ import { getBuildFilePath, getAppId, getAppVersion, getAppVersionCode, addSystem
 
 const currentOs = process.platform === 'darwin' ? 'osx' : process.platform === 'win32' ? 'win64' : 'linux64';
 
-export const parseBuildGradleSync = (c: Context) => {
+export const parseBuildGradleSync = () => {
+    const c = getContext();
     const appFolder = getAppFolder();
-    const { platform } = c;
 
     let dexOptions = '';
 
@@ -126,15 +127,9 @@ export const parseBuildGradleSync = (c: Context) => {
             }/sdks/hermesc/${currentOs}-bin/hermesc`,
         },
     ];
-    addSystemInjects(c, injects);
+    addSystemInjects(injects);
 
-    writeCleanFile(
-        getBuildFilePath(c, platform, 'build.gradle'),
-        path.join(appFolder, 'build.gradle'),
-        injects,
-        undefined,
-        c
-    );
+    writeCleanFile(getBuildFilePath('build.gradle'), path.join(appFolder, 'build.gradle'), injects, undefined, c);
 };
 
 const setReactNativeEngineDefault = (c: Context) => {
@@ -177,7 +172,8 @@ const setReactNativeEngineV8 = (c: Context) => {
     exclude '**/libjsc.so'`;
 };
 
-export const parseAppBuildGradleSync = (c: Context) => {
+export const parseAppBuildGradleSync = () => {
+    const c = getContext();
     logDefault('parseAppBuildGradleSync');
     const appFolder = getAppFolder();
     const { platform } = c;
@@ -487,9 +483,9 @@ ${chalk().bold(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
         },
     ];
 
-    addSystemInjects(c, injects);
+    addSystemInjects(injects);
     writeCleanFile(
-        getBuildFilePath(c, platform, 'app/build.gradle'),
+        getBuildFilePath('app/build.gradle'),
         path.join(appFolder, 'app/build.gradle'),
         injects,
         undefined,
@@ -497,10 +493,9 @@ ${chalk().bold(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
     );
 };
 
-export const parseSettingsGradleSync = (c: Context) => {
+export const parseSettingsGradleSync = () => {
+    const c = getContext();
     const appFolder = getAppFolder();
-    const { platform } = c;
-
     const rnCliLocation = doResolve('@react-native-community/cli-platform-android', true, { forceForwardPaths: true });
     const rnGradlePluginLocation = doResolve('@react-native/gradle-plugin', true, { forceForwardPaths: true });
 
@@ -531,18 +526,13 @@ export const parseSettingsGradleSync = (c: Context) => {
         },
     ];
 
-    addSystemInjects(c, injects);
+    addSystemInjects(injects);
 
-    writeCleanFile(
-        getBuildFilePath(c, platform, 'settings.gradle'),
-        path.join(appFolder, 'settings.gradle'),
-        injects,
-        undefined,
-        c
-    );
+    writeCleanFile(getBuildFilePath('settings.gradle'), path.join(appFolder, 'settings.gradle'), injects, undefined, c);
 };
 
-export const parseGradlePropertiesSync = (c: Context) => {
+export const parseGradlePropertiesSync = () => {
+    const c = getContext();
     const appFolder = getAppFolder();
     const { platform } = c;
 
@@ -588,23 +578,12 @@ export const parseGradlePropertiesSync = (c: Context) => {
         },
     ];
 
-    addSystemInjects(c, injects);
+    addSystemInjects(injects);
 
-    writeCleanFile(
-        getBuildFilePath(c, platform, gradleProperties),
-        path.join(appFolder, gradleProperties),
-        injects,
-        undefined,
-        c
-    );
+    writeCleanFile(getBuildFilePath(gradleProperties), path.join(appFolder, gradleProperties), injects, undefined, c);
 };
 
-export const injectPluginGradleSync = (
-    c: Context,
-    pluginRoot: RnvPlugin,
-    plugin: RenativeConfigPluginPlatform,
-    key: string
-) => {
+export const injectPluginGradleSync = (pluginRoot: RnvPlugin, plugin: RenativeConfigPluginPlatform, key: string) => {
     // const keyFixed = key.replace(/\//g, '-').replace(/@/g, '');
     // const packagePath = plugin.path ?? `${key}/android`;
     // let pathAbsolute;
@@ -624,6 +603,7 @@ export const injectPluginGradleSync = (
     // if (plugin.packageParams) {
     //     packageParams = plugin.packageParams.join(',');
     // }
+    const c = getContext();
     const pathFixed = plugin.path ? `${plugin.path}` : `${key}/android`;
     const skipPathResolutions = pluginRoot.disableNpm;
     let pathAbsolute;
@@ -641,15 +621,16 @@ export const injectPluginGradleSync = (
         c.payload.pluginConfigAndroid.appBuildGradleImplementations += `${plugin.implementation}\n`;
     }
 
-    parseAndroidConfigObject(c, plugin, key);
+    parseAndroidConfigObject(plugin, key);
 
     if (!skipPathResolutions && pathAbsolute) {
         _fixAndroidLegacy(c, pathAbsolute);
     }
 };
 
-export const parseAndroidConfigObject = (c: RnvContext, plugin?: RenativeConfigPluginPlatform, key = '') => {
+export const parseAndroidConfigObject = (plugin?: RenativeConfigPluginPlatform, key = '') => {
     // APP/BUILD.GRADLE
+    const c = getContext();
     const templateAndroid = plugin?.templateAndroid;
 
     const appBuildGradle = templateAndroid?.app_build_gradle;

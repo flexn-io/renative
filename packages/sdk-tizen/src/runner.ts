@@ -233,7 +233,7 @@ const _configureProject = (c: RnvContext) =>
             { pattern: '{{APP_VERSION}}', override: semver.valid(semver.coerce(getAppVersion())) || '' },
         ];
 
-        addSystemInjects(c, injects);
+        addSystemInjects(injects);
 
         const file = path.join(getPlatformProjectDir()!, configFile);
         writeCleanFile(file, file, injects, undefined, c);

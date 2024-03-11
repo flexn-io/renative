@@ -24,7 +24,7 @@ const taskPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
 
     const selPluginKey = c.program.rawArgs?.[4];
 
-    const o = getPluginList(c);
+    const o = getPluginList();
 
     const selPlugin = selPluginKey && o.allPlugins[selPluginKey];
     const selectedPlugins: Record<string, PluginListResponseItem> = {};

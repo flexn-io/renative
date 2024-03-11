@@ -765,7 +765,7 @@ export const configureXcodeProject = async () => {
     };
 
     // FONTS
-    // parsePlugins(c, platform, (plugin, pluginPlat) => {
+    // parsePlugins((plugin, pluginPlat) => {
     //     // const ignoreProjectFonts = getFlavouredProp(
     //     //     c,
     //     //     pluginPlat,

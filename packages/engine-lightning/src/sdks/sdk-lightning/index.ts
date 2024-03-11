@@ -140,7 +140,7 @@ const _configureProject = (c: RnvContext) =>
                       { pattern: '{{APP_VENDOR}}', override: getConfigProp('author') || DEFAULTS.author },
                   ];
 
-        addSystemInjects(c, injects);
+        addSystemInjects(injects);
 
         const configFile = platform === 'tizen' ? 'config.xml' : 'appinfo.json';
         const file = path.join(getPlatformProjectDir()!, configFile);

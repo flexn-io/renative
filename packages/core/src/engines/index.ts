@@ -140,7 +140,8 @@ export const registerMissingPlatformEngines = async (taskInstance?: RnvTask) => 
     return true;
 };
 
-export const registerAllPlatformEngines = async (c: RnvContext) => {
+export const registerAllPlatformEngines = async () => {
+    const c = getContext();
     logDefault('registerAllPlatformEngines');
 
     if (!c.buildConfig?.defaults?.supportedPlatforms?.forEach) {

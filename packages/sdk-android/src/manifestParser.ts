@@ -18,6 +18,7 @@ import {
     ConfigProp,
     _getConfigProp,
     ConfigFileBuildConfig,
+    getContext,
 } from '@rnv/core';
 import { Context } from './types';
 import { getBuildFilePath, getAppId, addSystemInjects } from '@rnv/sdk-utils';
@@ -212,7 +213,8 @@ const getConfigPropArray = <T extends ConfigPropKey>(c: RnvContext, platform: Rn
     return result;
 };
 
-export const parseAndroidManifestSync = (c: Context) => {
+export const parseAndroidManifestSync = () => {
+    const c = getContext();
     logDefault('parseAndroidManifestSync');
     const { platform } = c;
 
@@ -242,7 +244,7 @@ export const parseAndroidManifestSync = (c: Context) => {
         });
 
         // appConfigs/base/plugins.json PLUGIN CONFIG OVERRIDES
-        parsePlugins(c, platform, (_plugin, pluginPlat) => {
+        parsePlugins((_plugin, pluginPlat) => {
             const androidManifestPlugin = getFlavouredProp(pluginPlat, 'templateAndroid')?.AndroidManifest_xml;
             if (androidManifestPlugin) {
                 _mergeNodeChildren(baseManifestFile, androidManifestPlugin.children);
@@ -298,17 +300,11 @@ export const parseAndroidManifestSync = (c: Context) => {
         const manifestFile = 'app/src/main/AndroidManifest.xml';
 
         const injects = [{ pattern: '{{PLUGIN_MANIFEST_FILE}}', override: manifestXml || '' }];
-        addSystemInjects(c, injects);
+        addSystemInjects(injects);
 
         const appFolder = getAppFolder();
 
-        writeCleanFile(
-            getBuildFilePath(c, platform, manifestFile),
-            path.join(appFolder, manifestFile),
-            injects,
-            undefined,
-            c
-        );
+        writeCleanFile(getBuildFilePath(manifestFile), path.join(appFolder, manifestFile), injects, undefined, c);
 
         return;
     } catch (e) {

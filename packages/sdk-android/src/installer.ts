@@ -172,7 +172,8 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: SDKKe
     return true;
 };
 
-export const checkAndroidSdk = async (c: RnvContext) => {
+export const checkAndroidSdk = async () => {
+    const c = getContext();
     logDefault('checkAndroidSdk');
     if (!_isSdkInstalled(c)) {
         logWarning(

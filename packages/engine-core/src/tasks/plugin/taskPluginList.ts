@@ -6,7 +6,7 @@ const taskPluginList: RnvTaskFn = async (c, _parentTask, originTask) => {
 
     await executeTask(RnvTaskName.projectConfigure, RnvTaskName.pluginList, originTask);
 
-    const o = getPluginList(c);
+    const o = getPluginList();
 
     // console.log(o.asString);
     logToSummary(`Plugins:\n\n${o.asString}`);

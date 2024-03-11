@@ -21,7 +21,6 @@ import {
     RnvContext,
     waitForExecCLI,
     inquirerPrompt,
-    RnvPlatform,
     executeAsync,
     ExecOptionsPresets,
     PlatformKey,
@@ -70,7 +69,7 @@ export const launchAndroidSimulator = async (
         const {
             program: { device },
         } = c;
-        const list = await getAndroidTargets(c, false, device, device);
+        const list = await getAndroidTargets(false, device, device);
 
         const devicesString = composeDevicesArray(list);
         const choices = devicesString;
@@ -139,8 +138,8 @@ export const listAndroidTargets = async (c: RnvContext) => {
         program: { device },
     } = c;
 
-    await resetAdb(c);
-    const list = await getAndroidTargets(c, false, device, device);
+    await resetAdb();
+    const list = await getAndroidTargets(false, device, device);
     const devices = await composeDevicesString(list);
     logToSummary(`Android Targets:\n${devices}`);
     if (typeof devices === 'string' && devices.trim() === '') {
@@ -187,7 +186,8 @@ const _getDeviceAsObject = (device: AndroidDevice): DeviceInfo => {
     return { key: name, name: deviceString, value: name, icon: deviceIcon };
 };
 
-export const resetAdb = async (c: RnvContext, forceRun?: boolean, ranBefore?: boolean) => {
+export const resetAdb = async (forceRun?: boolean, ranBefore?: boolean) => {
+    const c = getContext();
     if (!c.program.resetAdb && !forceRun) return;
     try {
         if (!ranBefore) await execCLI(CLI_ANDROID_ADB, 'kill-server');
@@ -205,7 +205,8 @@ export const resetAdb = async (c: RnvContext, forceRun?: boolean, ranBefore?: bo
     }
 };
 
-export const getAndroidTargets = async (c: RnvContext, skipDevices: boolean, skipAvds: boolean, deviceOnly = false) => {
+export const getAndroidTargets = async (skipDevices: boolean, skipAvds: boolean, deviceOnly = false) => {
+    const c = getContext();
     logDefault('getAndroidTargets', `skipDevices:${!!skipDevices} skipAvds:${!!skipAvds} deviceOnly:${!!deviceOnly}`);
     // Temp workaround for race conditions receiving devices with offline status
     await new Promise((r) => setTimeout(r, 1000));
@@ -435,7 +436,7 @@ const getEmulatorName = async (words: Array<string>) => {
     return emulatorName;
 };
 
-export const connectToWifiDevice = async (c: RnvContext, target: string) => {
+export const connectToWifiDevice = async (target: string) => {
     let connect_str = `connect ${target}`;
 
     if (!target.includes(':')) {
@@ -582,7 +583,9 @@ const _getDeviceProp = (arr: Array<string>, prop: string) => {
     return '';
 };
 
-export const askForNewEmulator = async (c: RnvContext, platform: RnvPlatform) => {
+export const askForNewEmulator = async () => {
+    const c = getContext();
+    const { platform } = c;
     logDefault('askForNewEmulator');
     if (!platform) return;
 
@@ -652,8 +655,9 @@ const waitForEmulatorToBeReady = (emulator: string) =>
         return res;
     });
 
-export const checkForActiveEmulator = (c: RnvContext, emulatorName?: string) =>
+export const checkForActiveEmulator = (emulatorName?: string) =>
     new Promise<AndroidDevice | undefined>((resolve, reject) => {
+        const c = getContext();
         logDefault('checkForActiveEmulator');
         const { platform } = c;
 
@@ -669,7 +673,7 @@ export const checkForActiveEmulator = (c: RnvContext, emulatorName?: string) =>
             // Prevent the interval from running until enough promises return to make it stop or we get a result
             if (!running) {
                 running = true;
-                getAndroidTargets(c, false, true, false)
+                getAndroidTargets(false, true, false)
                     .then(async (v) => {
                         const simsOnly = v.filter((device) => !device.isDevice);
                         logDebug('Available devices after filtering', simsOnly);
@@ -687,7 +691,7 @@ export const checkForActiveEmulator = (c: RnvContext, emulatorName?: string) =>
                             attempts++;
                             const check: PlatformKey[] = ['androidtv', 'firetv', 'androidwear'];
                             if (check.includes(platform) && attempts === 2) {
-                                await resetAdb(c, true); // from time to time adb reports a recently started atv emu as being offline. Restarting adb fixes it
+                                await resetAdb(true); // from time to time adb reports a recently started atv emu as being offline. Restarting adb fixes it
                             }
                             if (attempts > maxAttempts) {
                                 clearInterval(poll);

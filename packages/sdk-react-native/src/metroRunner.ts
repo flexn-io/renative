@@ -63,7 +63,7 @@ export const startReactNative = async (opts: {
     }
     // logSummary('BUNDLER STARTED');
     const url = chalk().cyan(
-        `http://${c.runtime.localhost}:${c.runtime.port}/${getEntryFile(c, c.platform)}.bundle?platform=${
+        `http://${c.runtime.localhost}:${c.runtime.port}/${getEntryFile()}.bundle?platform=${
             BUNDLER_PLATFORMS[c.platform]
         }`
     );
@@ -71,7 +71,7 @@ export const startReactNative = async (opts: {
 Dev server running at: ${url}
 `);
     if (waitForBundler) {
-        const isRunning = await isBundlerActive(c);
+        const isRunning = await isBundlerActive();
         let resetCompleted = false;
         if (isRunning) {
             resetCompleted = await confirmActiveBundler();

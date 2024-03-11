@@ -5,9 +5,7 @@ export const EnvVars = {
         return { LNG_BUILD_FOLDER: getAppFolder(true) };
     },
     LNG_ENTRY_FILE: () => {
-        const ctx = getContext();
-
-        const entryFile = getConfigProp(ctx, ctx.platform, 'entryFile');
+        const entryFile = getConfigProp('entryFile');
         return { LNG_ENTRY_FILE: entryFile };
     },
     LNG_SERVE_PORT: () => {

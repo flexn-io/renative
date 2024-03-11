@@ -54,7 +54,7 @@ export const parseXcscheme = async () => {
         { pattern: '{{INJECT_COMMAND_LINE_ARGUMENTS}}', override: _commandLineArguments },
     ];
 
-    addSystemInjects(c, injects);
+    addSystemInjects(injects);
 
     writeCleanFile(path.join(appTemplateFolder!, schemePath), path.join(appFolder, schemePath), injects, undefined, c);
 

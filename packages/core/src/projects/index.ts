@@ -341,16 +341,11 @@ export const parseFonts = (callback: ParseFontsCallback) => {
         }
         _parseFontSources(c, getConfigProp('fontSources') || [], callback);
         // PLUGIN FONTS
-        parsePlugins(
-            c,
-            c.platform,
-            (plugin) => {
-                if (plugin.config?.fontSources) {
-                    _parseFontSources(c, plugin.config?.fontSources, callback);
-                }
-            },
-            true
-        );
+        parsePlugins((plugin) => {
+            if (plugin.config?.fontSources) {
+                _parseFontSources(c, plugin.config?.fontSources, callback);
+            }
+        }, true);
     }
 };
 

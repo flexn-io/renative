@@ -5,7 +5,6 @@ import {
     inquirerPrompt,
     logWarning,
     DEFAULTS,
-    RnvContext,
     RnvPlatform,
     getConfigProp,
     logDefault,
@@ -104,12 +103,8 @@ export const checkPortInUse = (port: number) =>
         });
     });
 
-export const getBuildFilePath = (
-    c: RnvContext,
-    platform: RnvPlatform,
-    filePath: string,
-    altTemplateFolder?: string
-) => {
+export const getBuildFilePath = (filePath: string, altTemplateFolder?: string) => {
+    const c = getContext();
     // P1 => platformTemplates
     let sp = path.join(altTemplateFolder || getAppTemplateFolder()!, filePath);
     // P2 => appConfigs/base + @buildSchemes
@@ -305,7 +300,8 @@ export const getAppTemplateFolder = () => {
     return platform ? path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`) : undefined;
 };
 
-export const addSystemInjects = (c: RnvContext, injects: OverridesOptions) => {
+export const addSystemInjects = (injects: OverridesOptions) => {
+    const c = getContext();
     if (!c.systemPropsInjects) c.systemPropsInjects = [];
     if (injects) {
         injects.forEach((item) => {

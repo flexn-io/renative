@@ -1,5 +1,4 @@
 import {
-    RnvContext,
     RnvTaskName,
     chalk,
     executeTask,
@@ -37,7 +36,8 @@ export const getEnvVar = () => {
     return envVar;
 };
 
-export const checkCrypto = async (c: RnvContext, parentTask?: string, originTask?: string) => {
+export const checkCrypto = async (parentTask?: string, originTask?: string) => {
+    const c = getContext();
     logTask('checkCrypto');
 
     if (c.program.ci || c.files.project.config?.crypto?.isOptional) return;

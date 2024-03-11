@@ -311,7 +311,7 @@ export const findSuitableTask = async (specificTask?: string): Promise<RnvTask |
         } else if (!suitableEngines.length) {
             if (!c.runtime.hasAllEnginesRegistered) {
                 // No platform was specified. we have no option other than load all engines and offer platform list next round
-                await registerAllPlatformEngines(c);
+                await registerAllPlatformEngines();
                 return findSuitableTask();
             }
 

@@ -54,7 +54,7 @@
 //         }
 
 //         // PLUGINS
-//         parsePlugins(c, platform, (plugin, pluginPlat, key) => {
+//         parsePlugins((plugin, pluginPlat, key) => {
 //             injectPluginSwiftSync(c, pluginPlat, key);
 //         });
 
@@ -244,7 +244,7 @@
 //             },
 //         ];
 
-//         addSystemInjects(c, injects);
+//         addSystemInjects(injects);
 
 //         writeCleanFile(
 //             path.join(getAppTemplateFolder()!, appFolderName, appDelegate),

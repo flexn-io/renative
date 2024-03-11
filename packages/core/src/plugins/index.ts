@@ -18,7 +18,6 @@ import { doResolve } from '../system/resolve';
 import { RnvContext } from '../context/types';
 import { PluginCallback, RnvPlugin, RnvPluginScope } from './types';
 import { RenativeConfigPaths, RenativeConfigPlugin, RenativeConfigPluginPlatform } from '../schema/types';
-import { RnvPlatform } from '../types';
 import { inquirerPrompt } from '../api';
 import { writeRenativeConfigFile } from '../configs/utils';
 import { installPackageDependencies } from '../projects/npm';
@@ -374,14 +373,12 @@ const _resolvePluginDependencies = async (
 };
 
 export const parsePlugins = (
-    c: RnvContext,
-    platform: RnvPlatform,
     pluginCallback: PluginCallback,
     ignorePlatformObjectCheck?: boolean,
     includeDisabledOrExcludedPlugins?: boolean
 ) => {
-    // const c = getContext();
-    // const { platform } = c;
+    const c = getContext();
+    const { platform } = c;
     logDefault('parsePlugins');
     if (c.buildConfig && platform) {
         const includedPluginsConfig = getConfigProp('includedPlugins');
@@ -838,47 +835,41 @@ export const overrideTemplatePlugins = async () => {
     const rnvPluginsDirs = c.paths.rnv.pluginTemplates.dirs;
     const appPluginDirs = c.paths.appConfig.pluginDirs;
 
-    parsePlugins(
-        c,
-        c.platform,
-        (plugin, pluginPlat, key) => {
-            if (!plugin.disablePluginTemplateOverrides) {
-                if (plugin?._scopes?.length) {
-                    plugin._scopes.forEach((pluginScope) => {
-                        const pluginOverridePath = rnvPluginsDirs[pluginScope];
-                        if (pluginOverridePath) {
-                            const rnvOverridePath = path.join(c.paths.rnv.pluginTemplates.overrideDir!, key);
-                            if (fsExistsSync(rnvOverridePath)) {
-                                _overridePlugin(c, c.paths.rnv.pluginTemplates.overrideDir!, key);
-                            } else {
-                                _overridePlugin(c, pluginOverridePath, key);
-                            }
+    parsePlugins((plugin, pluginPlat, key) => {
+        if (!plugin.disablePluginTemplateOverrides) {
+            if (plugin?._scopes?.length) {
+                plugin._scopes.forEach((pluginScope) => {
+                    const pluginOverridePath = rnvPluginsDirs[pluginScope];
+                    if (pluginOverridePath) {
+                        const rnvOverridePath = path.join(c.paths.rnv.pluginTemplates.overrideDir!, key);
+                        if (fsExistsSync(rnvOverridePath)) {
+                            _overridePlugin(c, c.paths.rnv.pluginTemplates.overrideDir!, key);
+                        } else {
+                            _overridePlugin(c, pluginOverridePath, key);
                         }
-                    });
-                }
-                if (appPluginDirs) {
-                    for (let k = 0; k < appPluginDirs.length; k++) {
-                        _overridePlugin(c, appPluginDirs[k], key);
                     }
-                }
-            } else {
-                logInfo(
-                    `Plugin overrides disabled for: ${chalk().bold(key)} with disablePluginTemplateOverrides. SKIPPING`
-                );
+                });
             }
-        },
-        true
-    );
+            if (appPluginDirs) {
+                for (let k = 0; k < appPluginDirs.length; k++) {
+                    _overridePlugin(c, appPluginDirs[k], key);
+                }
+            }
+        } else {
+            logInfo(
+                `Plugin overrides disabled for: ${chalk().bold(key)} with disablePluginTemplateOverrides. SKIPPING`
+            );
+        }
+    }, true);
     return true;
 };
 
 export const copyTemplatePluginsSync = (c: RnvContext) => {
-    const { platform } = c;
     const destPath = path.join(getAppFolder());
 
     logDefault('copyTemplatePluginsSync', `(${destPath})`);
 
-    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
+    parsePlugins((plugin, pluginPlat, key) => {
         const objectInject: OverridesOptions = []; // = { ...c.configPropsInjects };
         if (plugin.props) {
             Object.keys(plugin.props).forEach((v) => {

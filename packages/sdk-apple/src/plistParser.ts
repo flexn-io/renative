@@ -44,7 +44,7 @@ export const parseExportOptionsPlist = () =>
             }
         }
 
-        const bPath = getBuildFilePath(c, platform, 'exportOptions.plist');
+        const bPath = getBuildFilePath('exportOptions.plist');
 
         const injects = [
             { pattern: '{{TEAM_ID}}', override: tId },
@@ -54,7 +54,7 @@ export const parseExportOptionsPlist = () =>
             },
         ];
 
-        addSystemInjects(c, injects);
+        addSystemInjects(injects);
 
         writeCleanFile(bPath, path.join(appFolder, 'exportOptions.plist'), injects, undefined, c);
         resolve();
@@ -155,7 +155,7 @@ export const parseInfoPlist = () =>
         }
 
         // PLUGINS
-        parsePlugins(c, platform, (plugin, pluginPlat) => {
+        parsePlugins((plugin, pluginPlat) => {
             const plistPlug = getFlavouredProp(pluginPlat, 'templateXcode')?.Info_plist;
             if (plistPlug) {
                 plistObj = mergeObjects(c, plistObj, plistPlug, true, false);

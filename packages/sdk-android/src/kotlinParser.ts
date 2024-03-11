@@ -4,11 +4,10 @@ import {
     RnvContext,
     getAppFolder,
     getConfigProp,
+    getContext,
     writeCleanFile,
 } from '@rnv/core';
-// import { mkdirSync } from 'fs';
 import path from 'path';
-import { Context } from './types';
 import { getBuildFilePath, getEntryFile, getAppId, addSystemInjects } from '@rnv/sdk-utils';
 
 // const JS_BUNDLE_DEFAULTS: Partial<Record<PlatformKey, string>> = {
@@ -32,10 +31,10 @@ import { getBuildFilePath, getEntryFile, getAppId, addSystemInjects } from '@rnv
 
 //     const injects: OverridesOptions = [{ pattern: '{{APPLICATION_ID}}', override: getAppId() }];
 
-//     addSystemInjects(c, injects);
+//     addSystemInjects(injects);
 
 //     writeCleanFile(
-//         getBuildFilePath(c, platform, templatePath),
+//         getBuildFilePath(templatePath),
 //         path.join(appFolder, applicationPath),
 //         injects,
 //         undefined,
@@ -43,7 +42,8 @@ import { getBuildFilePath, getEntryFile, getAppId, addSystemInjects } from '@rnv
 //     );
 // };
 
-export const parseMainApplicationSync = (c: Context) => {
+export const parseMainApplicationSync = () => {
+    const c = getContext();
     const appFolder = getAppFolder();
     const { platform } = c;
 
@@ -74,7 +74,7 @@ export const parseMainApplicationSync = (c: Context) => {
 
     const injects: OverridesOptions = [
         { pattern: '{{APPLICATION_ID}}', override: getAppId() },
-        { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) || '' },
+        { pattern: '{{ENTRY_FILE}}', override: getEntryFile() || '' },
         // { pattern: '{{GET_JS_BUNDLE_FILE}}', override: bundleFile },
         {
             pattern: '{{PLUGIN_IMPORTS}}',
@@ -102,20 +102,14 @@ export const parseMainApplicationSync = (c: Context) => {
         },
     ];
 
-    addSystemInjects(c, injects);
+    addSystemInjects(injects);
 
-    writeCleanFile(
-        getBuildFilePath(c, platform, templatePath),
-        path.join(appFolder, templatePath),
-        injects,
-        undefined,
-        c
-    );
+    writeCleanFile(getBuildFilePath(templatePath), path.join(appFolder, templatePath), injects, undefined, c);
 };
 
-export const parseMainActivitySync = (c: RnvContext) => {
+export const parseMainActivitySync = () => {
+    const c = getContext();
     const appFolder = getAppFolder();
-    const { platform } = c;
 
     const templatePath = 'app/src/main/java/rnv_template/MainActivity.kt';
 
@@ -150,20 +144,14 @@ export const parseMainActivitySync = (c: RnvContext) => {
         },
     ];
 
-    addSystemInjects(c, injects);
+    addSystemInjects(injects);
 
-    writeCleanFile(
-        getBuildFilePath(c, platform, templatePath),
-        path.join(appFolder, templatePath),
-        injects,
-        undefined,
-        c
-    );
+    writeCleanFile(getBuildFilePath(templatePath), path.join(appFolder, templatePath), injects, undefined, c);
 };
 
-export const parseSplashActivitySync = (c: Context) => {
+export const parseSplashActivitySync = () => {
+    const c = getContext();
     const appFolder = getAppFolder();
-    const { platform } = c;
 
     const splashTemplatePath = 'app/src/main/java/rnv_template/SplashActivity.kt';
 
@@ -185,10 +173,10 @@ export const parseSplashActivitySync = (c: Context) => {
         },
     ];
 
-    addSystemInjects(c, injects);
+    addSystemInjects(injects);
 
     writeCleanFile(
-        getBuildFilePath(c, platform, splashTemplatePath),
+        getBuildFilePath(splashTemplatePath),
         path.join(appFolder, splashTemplatePath),
         injects,
         undefined,
@@ -196,12 +184,8 @@ export const parseSplashActivitySync = (c: Context) => {
     );
 };
 
-export const injectPluginKotlinSync = (
-    c: RnvContext,
-    plugin: RenativeConfigPluginPlatform,
-    key: string,
-    pkg: string | undefined
-) => {
+export const injectPluginKotlinSync = (plugin: RenativeConfigPluginPlatform, key: string, pkg: string | undefined) => {
+    const c = getContext();
     const templ = plugin.templateAndroid;
     const mainActivity = templ?.MainActivity_kt;
     if (mainActivity?.imports) {

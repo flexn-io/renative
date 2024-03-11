@@ -114,7 +114,7 @@ export const ejectGradleProject = async () => {
 
     const afterEvaluateFix: Array<{ match: string; replace: string }> = [];
 
-    parsePlugins(c, c.platform, (_plugin, pluginPlat, key: string) => {
+    parsePlugins((_plugin, pluginPlat, key: string) => {
         const pluginPath = doResolvePath(key);
 
         if (!pluginPath) return;
