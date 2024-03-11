@@ -1,4 +1,4 @@
-import { isPlatformIos } from '@rnv/renative';
+import { isPlatformIos, isFactorMobile, isFactorWatch } from '@rnv/renative';
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -18,12 +18,22 @@ const styles = StyleSheet.create({
     header: {
         marginTop: isPlatformIos ? 50 : 0, // TODO: remove once safe area view is implemented
         flexDirection: 'row',
-        height: 50,
+        height: 60,
         backgroundColor: 'white',
         borderBottomColor: 'black',
         borderBottomWidth: 1,
         alignItems: 'center',
         padding: 10,
+    },
+    introText: {
+        color: 'black',
+        fontWeight: 'bold',
+        marginHorizontal: 10,
+        display: isFactorMobile || isFactorWatch ? 'none' : 'flex',
+    },
+    dynamicText: {
+        color: 'black',
+        fontSize: isFactorWatch ? 10 : 14,
     },
 });
 

@@ -1,10 +1,12 @@
-const SplashScreen = {
+import { NotificationCallback } from '../types';
+
+const SplashScreen = (callback: NotificationCallback) => ({
     hide: () => {
-        console.log('SplashScreen.hide not supported on this platform');
+        callback('SplashScreen.hide not supported on this platform');
     },
     show: () => {
-        console.log('SplashScreen.show not supported on this platform');
+        callback('SplashScreen.show not supported on this platform');
     },
-};
+});
 
 export { SplashScreen };
