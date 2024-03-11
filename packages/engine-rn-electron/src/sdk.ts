@@ -254,7 +254,8 @@ const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
         resolve();
     });
 
-const buildElectron = async (c: RnvContext) => {
+const buildElectron = async () => {
+    const c = getContext();
     logDefault('buildElectron');
 
     await buildCoreWebpackProject();
@@ -284,7 +285,8 @@ const buildElectron = async (c: RnvContext) => {
     return true;
 };
 
-const exportElectron = async (c: RnvContext) => {
+const exportElectron = async () => {
+    const c = getContext();
     logDefault('exportElectron');
 
     const platformBuildDir = getAppFolder()!;
@@ -313,7 +315,8 @@ const exportElectron = async (c: RnvContext) => {
     logSuccess(`Your Exported App is located in ${chalk().cyan(path.join(platformBuildDir, 'export'))} .`);
 };
 
-export const runElectron = async (c: RnvContext) => {
+export const runElectron = async () => {
+    const c = getContext();
     logDefault('runElectron');
 
     const { platform } = c;
@@ -323,7 +326,7 @@ export const runElectron = async (c: RnvContext) => {
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
 
     if (bundleAssets) {
-        await buildElectron(c);
+        await buildElectron();
         await _runElectronSimulator(c);
     } else {
         const isPortActive = await checkPortInUse(port);

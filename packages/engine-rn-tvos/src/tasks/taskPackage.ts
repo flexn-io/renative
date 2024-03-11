@@ -24,7 +24,7 @@ const taskPackage: RnvTaskFn = async (c, parentTask, originTask) => {
         return true;
     }
 
-    if (shouldSkipTask(c, RnvTaskName.package, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.package, originTask)) return true;
 
     switch (platform) {
         case 'androidtv':
@@ -34,14 +34,14 @@ const taskPackage: RnvTaskFn = async (c, parentTask, originTask) => {
             const signingConfig = getConfigProp(c, c.platform, 'signingConfig');
 
             if (originTask === RnvTaskName.eject || signingConfig !== 'Release') {
-                return packageAndroid(c);
+                return packageAndroid();
             }
             return true;
         }
         case 'tvos':
-            return packageBundleForXcode(c);
+            return packageBundleForXcode();
         default:
-            logErrorPlatform(c);
+            logErrorPlatform();
             return false;
     }
 };

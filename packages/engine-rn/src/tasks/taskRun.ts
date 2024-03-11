@@ -33,12 +33,12 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
             // eslint-disable-next-line no-case-declarations
             const runDeviceArgs = await getIosDeviceToRunOn(c);
             if (!c.program.only) {
-                await startBundlerIfRequired(c, RnvTaskName.run, originTask);
+                await startBundlerIfRequired(RnvTaskName.run, originTask);
                 await runXcodeProject(runDeviceArgs);
                 if (!bundleAssets) {
                     logSummary('BUNDLER STARTED');
                 }
-                return waitForBundlerIfRequired(c);
+                return waitForBundlerIfRequired();
             }
             return runXcodeProject(runDeviceArgs);
         case 'android':
@@ -51,15 +51,15 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
                 c.runtime.target = runDevice?.name || runDevice?.udid;
             }
             if (!c.program.only) {
-                await startBundlerIfRequired(c, RnvTaskName.run, originTask);
+                await startBundlerIfRequired(RnvTaskName.run, originTask);
                 if (bundleAssets || platform === 'androidwear') {
-                    await packageAndroid(c);
+                    await packageAndroid();
                 }
                 await runAndroid(runDevice!);
                 if (!bundleAssets) {
                     logSummary('BUNDLER STARTED');
                 }
-                return waitForBundlerIfRequired(c);
+                return waitForBundlerIfRequired();
             }
             return runAndroid(runDevice!);
         default:

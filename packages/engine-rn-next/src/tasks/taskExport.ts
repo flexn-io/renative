@@ -16,14 +16,14 @@ const taskExport: RnvTaskFn = async (c, parentTask, originTask) => {
 
     await executeOrSkipTask(c, RnvTaskName.build, RnvTaskName.export, originTask);
 
-    if (shouldSkipTask(c, RnvTaskName.export, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.export, originTask)) return true;
 
     switch (platform) {
         case 'web':
         case 'chromecast':
-            return exportWebNext(c);
+            return exportWebNext();
         default:
-            logErrorPlatform(c);
+            logErrorPlatform();
     }
 };
 

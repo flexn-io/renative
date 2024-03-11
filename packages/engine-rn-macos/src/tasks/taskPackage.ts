@@ -23,13 +23,13 @@ const taskPackage: RnvTaskFn = async (c, parentTask, originTask) => {
         return true;
     }
 
-    if (shouldSkipTask(c, RnvTaskName.package, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.package, originTask)) return true;
 
     switch (platform) {
         case 'macos':
-            return packageBundleForXcode(c);
+            return packageBundleForXcode();
         default:
-            logErrorPlatform(c);
+            logErrorPlatform();
             return false;
     }
 };

@@ -28,9 +28,9 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
         case 'xbox':
         case 'windows':
             await clearWindowsTemporaryFiles(c);
-            await startBundlerIfRequired(c, RnvTaskName.run, originTask);
+            await startBundlerIfRequired(RnvTaskName.run, originTask);
             await ruWindowsProject(c);
-            return waitForBundlerIfRequired(c);
+            return waitForBundlerIfRequired();
         default:
             return logErrorPlatform();
     }

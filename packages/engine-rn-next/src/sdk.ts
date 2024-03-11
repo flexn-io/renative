@@ -116,7 +116,8 @@ export const getExportDir = (c: RnvContext) => {
     return maybeAbsolutePath;
 };
 
-export const buildWebNext = async (c: RnvContext) => {
+export const buildWebNext = async () => {
+    const c = getContext();
     logDefault('buildWebNext');
 
     await executeAsync('npx next build', {
@@ -157,7 +158,8 @@ Dev server running at: ${url}
     });
 };
 
-export const exportWebNext = async (c: RnvContext) => {
+export const exportWebNext = async () => {
+    const c = getContext();
     logDefault('exportWebNext');
 
     const exportDir = getExportDir(c);

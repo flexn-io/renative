@@ -16,7 +16,7 @@ const taskBuild: RnvTaskFn = async (c, parentTask, originTask) => {
 
     await executeOrSkipTask(c, RnvTaskName.package, RnvTaskName.build, originTask);
 
-    if (shouldSkipTask(c, RnvTaskName.build, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.build, originTask)) return true;
 
     switch (platform) {
         case 'macos':
@@ -24,9 +24,9 @@ const taskBuild: RnvTaskFn = async (c, parentTask, originTask) => {
                 // build task is not necessary when exporting macos
                 return true;
             }
-            return buildXcodeProject(c);
+            return buildXcodeProject();
         default:
-            return logErrorPlatform(c);
+            return logErrorPlatform();
     }
 };
 

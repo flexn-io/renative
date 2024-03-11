@@ -26,7 +26,8 @@ import { CLI_WEBOS_ARES_PACKAGE, runWebosSimOrDevice } from '@rnv/sdk-webos';
 import { getAppVersion, getAppTitle, getAppId, getAppDescription, addSystemInjects } from '@rnv/sdk-utils';
 import { EnvVars } from './env';
 
-export const runLightningProject = async (c: RnvContext) => {
+export const runLightningProject = async () => {
+    const c = getContext();
     logDefault('runLightningProject');
     const { platform } = c;
     const { hosted } = c.program;

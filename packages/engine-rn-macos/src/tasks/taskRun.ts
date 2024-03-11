@@ -23,23 +23,23 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
 
     await executeOrSkipTask(c, RnvTaskName.configure, RnvTaskName.run, originTask);
 
-    if (shouldSkipTask(c, RnvTaskName.run, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.run, originTask)) return true;
 
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
 
     switch (platform) {
         case 'macos':
             if (!c.program.only) {
-                await startBundlerIfRequired(c, RnvTaskName.run, originTask);
-                await runXcodeProject(c);
+                await startBundlerIfRequired(RnvTaskName.run, originTask);
+                await runXcodeProject();
                 if (!bundleAssets) {
                     logSummary('BUNDLER STARTED');
                 }
-                return waitForBundlerIfRequired(c);
+                return waitForBundlerIfRequired();
             }
-            return runXcodeProject(c);
+            return runXcodeProject();
         default:
-            return logErrorPlatform(c);
+            return logErrorPlatform();
     }
 };
 

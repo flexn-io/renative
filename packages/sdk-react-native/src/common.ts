@@ -17,7 +17,8 @@ import { confirmActiveBundler } from '@rnv/sdk-utils';
 
 let keepRNVRunning = false;
 
-export const startBundlerIfRequired = async (c: RnvContext, parentTask: string, originTask?: string) => {
+export const startBundlerIfRequired = async (parentTask: string, originTask?: string) => {
+    const c = getContext();
     logDefault('startBundlerIfRequired');
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
     if (bundleAssets === true) return;
@@ -40,7 +41,8 @@ export const startBundlerIfRequired = async (c: RnvContext, parentTask: string, 
     }
 };
 
-export const waitForBundlerIfRequired = async (c: RnvContext) => {
+export const waitForBundlerIfRequired = async () => {
+    const c = getContext();
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
     if (bundleAssets === true) return;
     // return a new promise that does...nothing, just to keep RNV running while the bundler is running

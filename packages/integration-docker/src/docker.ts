@@ -15,14 +15,15 @@ import {
     chalk,
     ExecOptionsPresets,
     getAppFolder,
+    getContext,
 } from '@rnv/core';
 
 const rootPath = path.join(__dirname, './');
 
 class Docker {
     c: RnvContext;
-    constructor(c: RnvContext) {
-        this.c = c;
+    constructor() {
+        this.c = getContext();
     }
 
     async buildImage() {

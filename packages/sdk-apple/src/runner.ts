@@ -37,8 +37,8 @@ import { ObjectEncodingOptions } from 'fs';
 import { packageReactNativeIOS, runCocoaPods, runReactNativeIOS, EnvVars } from '@rnv/sdk-react-native';
 import { registerDevice } from './fastlane';
 
-export const packageBundleForXcode = (c: Context) => {
-    return packageReactNativeIOS(c);
+export const packageBundleForXcode = () => {
+    return packageReactNativeIOS();
 };
 
 const copyAppleAssets = (appFolderName: string) =>
@@ -230,14 +230,14 @@ export const runXcodeProject = async (runDeviceArguments?: string) => {
         //const allowProvisioningUpdates = getConfigProp(c, c.platform, 'allowProvisioningUpdates', true);
         //if (allowProvisioningUpdates) p = `${p} --allowProvisioningUpdates`;
         if (bundleAssets) {
-            await packageReactNativeIOS(c, bundleIsDev);
+            await packageReactNativeIOS(bundleIsDev);
         }
         return _checkLockAndExec(c, appPath, schemeTarget, runScheme, runDeviceArguments);
     }
 
     if (c.platform === 'macos') {
         if (bundleAssets) {
-            await packageReactNativeIOS(c, bundleIsDev);
+            await packageReactNativeIOS(bundleIsDev);
         }
 
         try {

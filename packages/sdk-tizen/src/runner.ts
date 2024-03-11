@@ -160,7 +160,8 @@ export const runTizen = async (c: RnvContext, target?: string) => {
     }
 };
 
-export const buildTizenProject = async (c: RnvContext) => {
+export const buildTizenProject = async () => {
+    const c = getContext();
     logDefault('buildTizenProject');
 
     const { platform } = c;

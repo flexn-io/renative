@@ -64,7 +64,8 @@ import { CLI_ANDROID_ADB } from './constants';
 import { runReactNativeAndroid, packageReactNativeAndroid } from '@rnv/sdk-react-native';
 import { getEntryFile } from '@rnv/sdk-utils';
 
-export const packageAndroid = async (c: Context) => {
+export const packageAndroid = async () => {
+    const c = getContext();
     logDefault('packageAndroid');
 
     return packageReactNativeAndroid(c);

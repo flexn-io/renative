@@ -13,6 +13,7 @@ import {
     RnvPlatform,
     CoreEnvVars,
     ExecOptionsPresets,
+    getContext,
 } from '@rnv/core';
 import { EnvVars } from './env';
 import { getEntryFile } from '@rnv/sdk-utils';
@@ -119,7 +120,8 @@ export const runReactNativeAndroid = async (
     });
 };
 
-export const buildReactNativeAndroid = async (c: RnvContext) => {
+export const buildReactNativeAndroid = async () => {
+    const c = getContext();
     logDefault('buildAndroid');
     const { platform } = c;
 

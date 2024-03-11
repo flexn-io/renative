@@ -18,7 +18,7 @@ const taskPackage: RnvTaskFn = async (c, parentTask, originTask) => {
 
     await executeOrSkipTask(c, RnvTaskName.configure, RnvTaskName.package, originTask);
 
-    if (shouldSkipTask(c, RnvTaskName.package, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.package, originTask)) return true;
 
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
 
@@ -29,7 +29,7 @@ const taskPackage: RnvTaskFn = async (c, parentTask, originTask) => {
     switch (platform) {
         case 'ios':
         case 'macos':
-            return packageBundleForXcode(c);
+            return packageBundleForXcode();
         case 'android':
         case 'androidtv':
         case 'firetv':
@@ -41,12 +41,12 @@ const taskPackage: RnvTaskFn = async (c, parentTask, originTask) => {
 
             if (originTask === RnvTaskName.eject || signingConfig !== 'Release') {
                 //if bundleAssets === true AND signingConfig is not releaase RN will not trigger packaging
-                return packageAndroid(c);
+                return packageAndroid();
             }
             return true;
         }
         default:
-            logErrorPlatform(c);
+            logErrorPlatform();
             return false;
     }
 };

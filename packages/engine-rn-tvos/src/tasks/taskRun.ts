@@ -24,7 +24,7 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
 
     await executeOrSkipTask(c, RnvTaskName.configure, RnvTaskName.run, originTask);
 
-    if (shouldSkipTask(c, RnvTaskName.run, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.run, originTask)) return true;
 
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
 
@@ -32,33 +32,33 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
         case 'androidtv':
         case 'firetv':
             // eslint-disable-next-line no-case-declarations
-            const runDevice = await getAndroidDeviceToRunOn(c);
+            const runDevice = await getAndroidDeviceToRunOn();
             if (!c.program.only) {
-                await startBundlerIfRequired(c, RnvTaskName.run, originTask);
+                await startBundlerIfRequired(RnvTaskName.run, originTask);
                 if (bundleAssets) {
-                    await packageAndroid(c);
+                    await packageAndroid();
                 }
-                await runAndroid(c, runDevice!);
+                await runAndroid(runDevice!);
                 if (!bundleAssets) {
                     logSummary('BUNDLER STARTED');
                 }
-                return waitForBundlerIfRequired(c);
+                return waitForBundlerIfRequired();
             }
-            return runAndroid(c, runDevice!);
+            return runAndroid(runDevice!);
         case 'tvos':
             // eslint-disable-next-line no-case-declarations
             const runDeviceArgs = await getIosDeviceToRunOn(c);
             if (!c.program.only) {
-                await startBundlerIfRequired(c, RnvTaskName.run, originTask);
-                await runXcodeProject(c, runDeviceArgs);
+                await startBundlerIfRequired(RnvTaskName.run, originTask);
+                await runXcodeProject(runDeviceArgs);
                 if (!bundleAssets) {
                     logSummary('BUNDLER STARTED');
                 }
-                return waitForBundlerIfRequired(c);
+                return waitForBundlerIfRequired();
             }
-            return runXcodeProject(c, runDeviceArgs);
+            return runXcodeProject(runDeviceArgs);
         default:
-            return logErrorPlatform(c);
+            return logErrorPlatform();
     }
 };
 

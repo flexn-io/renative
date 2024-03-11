@@ -21,7 +21,8 @@ import shellQuote from 'shell-quote';
 import path from 'path';
 import crypto from 'crypto';
 
-export const packageReactNativeIOS = (c: RnvContext, isDev = false) => {
+export const packageReactNativeIOS = (isDev = false) => {
+    const c = getContext();
     logDefault('packageBundleForXcode');
 
     const entryFile = getConfigProp(c, c.platform, 'entryFile');

@@ -17,15 +17,15 @@ const taskBuild: RnvTaskFn = async (c, parentTask, originTask) => {
 
     await executeOrSkipTask(c, RnvTaskName.configure, RnvTaskName.build, originTask);
 
-    if (shouldSkipTask(c, RnvTaskName.build, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.build, originTask)) return true;
 
     switch (platform) {
         case 'tizen':
         case 'webos':
-            await buildLightningProject(c);
+            await buildLightningProject();
             return;
         default:
-            logErrorPlatform(c);
+            logErrorPlatform();
     }
 };
 

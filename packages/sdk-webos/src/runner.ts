@@ -113,7 +113,8 @@ export const runWebOS = async (c: RnvContext) => {
     }
 };
 
-export const buildWebOSProject = async (c: RnvContext) => {
+export const buildWebOSProject = async () => {
+    const c = getContext();
     logDefault('buildWebOSProject');
 
     await buildCoreWebpackProject();

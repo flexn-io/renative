@@ -11,11 +11,12 @@ import {
     doResolvePath,
     parseFonts,
     parsePlugins,
+    getContext,
 } from '@rnv/core';
 import { getAppFolderName } from './common';
-import { Context } from './types';
 
-export const ejectXcodeProject = async (c: Context) => {
+export const ejectXcodeProject = async () => {
+    const c = getContext();
     const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');
     const monoRoot = getConfigProp(c, c.platform, 'monoRoot');
 
