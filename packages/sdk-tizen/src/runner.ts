@@ -207,7 +207,7 @@ export const configureTizenProject = async () => {
         await configureTizenGlobal(c);
     }
 
-    await copyAssetsFolder(platform);
+    await copyAssetsFolder();
     await configureCoreWebProject();
     await _configureProject(c);
     return copyBuildsFolder(platform);

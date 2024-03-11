@@ -431,14 +431,11 @@ const _resolvePackage = (c: RnvContext, v: string) => {
 //     return false;
 // };
 
-export const copyAssetsFolder = async (
-    platform: RnvPlatform,
-    subPath?: string,
-    customFn?: (c: RnvContext, platform: RnvPlatform) => void
-) => {
+export const copyAssetsFolder = async (subPath?: string, customFn?: (c: RnvContext, platform: RnvPlatform) => void) => {
     logDefault('copyAssetsFolder');
 
     const c = getContext();
+    const { platform } = c;
 
     if (!isPlatformActive(platform)) return;
 

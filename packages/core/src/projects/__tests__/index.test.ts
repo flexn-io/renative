@@ -25,7 +25,7 @@ describe('copyAssetsFolder', () => {
         // GIVEN
         jest.mocked(isPlatformActive).mockReturnValue(false);
         // WHEN
-        const result = await copyAssetsFolder(c, platform);
+        const result = await copyAssetsFolder();
         //THEN
         expect(isPlatformActive).toHaveBeenCalled();
         expect(result).toBeUndefined();
@@ -39,7 +39,7 @@ describe('copyAssetsFolder', () => {
         jest.mocked(getConfigProp).mockReturnValueOnce(['./MOCK_PATH']); //assetSources
         jest.spyOn(path, 'join').mockReturnValue('MOCK_JOINED_PATH');
         //WHEN
-        await copyAssetsFolder(c, platform);
+        await copyAssetsFolder();
         //THEN
         expect(logWarning).toHaveBeenCalledWith(
             'AssetSources is specified as ./MOCK_PATH. But path MOCK_JOINED_PATH was not found.'

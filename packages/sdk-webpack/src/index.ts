@@ -323,7 +323,7 @@ export const configureWebProject = async () => {
 
     if (!isPlatformActive(platform)) return;
 
-    await copyAssetsFolder(platform);
+    await copyAssetsFolder();
     await configureCoreWebProject();
 
     return copyBuildsFolder(platform);
@@ -337,7 +337,7 @@ export const configureChromecastProject = async () => {
 
     c.runtime.platformBuildsProjectPath = `${getPlatformProjectDir()}`;
 
-    await copyAssetsFolder(c.platform);
+    await copyAssetsFolder();
     await configureCoreWebProject();
     await _configureProject(c);
     return copyBuildsFolder(c.platform);

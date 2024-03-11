@@ -57,7 +57,6 @@ export const configureElectronProject = async (exitOnFail?: boolean) => {
     const iconsetPath = path.join(c.paths.appConfig.dir, `assets/${platform}/resources/AppIcon.iconset`);
 
     await copyAssetsFolder(
-        platform,
         undefined,
         (platform === 'macos' || platform === 'linux') && fsExistsSync(iconsetPath) ? _generateICNS : undefined
     );

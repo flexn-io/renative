@@ -29,7 +29,7 @@ export const configureNextIfRequired = async () => {
 
     c.runtime.platformBuildsProjectPath = `${getAppFolder()}`;
 
-    await copyAssetsFolder(c.platform);
+    await copyAssetsFolder();
 
     const destPath = path.join(c.paths.project.dir, 'public');
 

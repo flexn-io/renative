@@ -101,7 +101,7 @@ export const configureLightningProject = async () => {
     if (!isPlatformActive(platform)) {
         return;
     }
-    await copyAssetsFolder(platform);
+    await copyAssetsFolder();
     await _configureProject(c);
     return copyBuildsFolder(platform);
 };

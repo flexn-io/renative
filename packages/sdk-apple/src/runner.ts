@@ -829,7 +829,7 @@ export const configureXcodeProject = async () => {
         );
     }
 
-    await copyAssetsFolder(platform, appFolderName);
+    await copyAssetsFolder(appFolderName);
     await copyAppleAssets(appFolderName);
     await parseAppDelegate(appFolder, appFolderName);
     await parseExportOptionsPlist();

@@ -364,7 +364,7 @@ export const configureGradleProject = async () => {
     logDefault('configureGradleProject');
 
     if (!isPlatformActive(platform)) return;
-    await copyAssetsFolder(platform, 'app/src/main');
+    await copyAssetsFolder('app/src/main');
     await configureAndroidProperties(c);
     await configureProject(c);
     await copyBuildsFolder(platform);

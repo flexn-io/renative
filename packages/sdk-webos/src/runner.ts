@@ -150,7 +150,7 @@ export const configureWebOSProject = async () => {
 
     if (!isPlatformActive(platform)) return;
 
-    await copyAssetsFolder(platform);
+    await copyAssetsFolder();
     await configureCoreWebProject();
     await _configureProject(c);
     return copyBuildsFolder(platform);

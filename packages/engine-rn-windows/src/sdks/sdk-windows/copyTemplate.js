@@ -386,7 +386,7 @@ export async function copyProjectTemplateAndReplace(c, options) {
     }
 
     // Firstly attempt to copy assets specified in project, if user has none specified use default from renative
-    await copyAssetsFolder(c, c.platform, c.runtime.appId);
+    await copyAssetsFolder(c.runtime.appId);
 
     // shared assets
     if (fs.existsSync(path.join(sharedPath, 'assets'))) {
