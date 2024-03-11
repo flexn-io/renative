@@ -5,6 +5,7 @@ import {
     executeTask,
     fsExistsSync,
     fsReadFileSync,
+    getContext,
     getRealPath,
     isSystemWin,
     logDebug,
@@ -21,7 +22,8 @@ export const getEnvExportCmd = (envVar: string, key: string) => {
     return `${chalk().bold(`export ${envVar}="${key}"`)}`;
 };
 
-export const getEnvVar = (c: RnvContext) => {
+export const getEnvVar = () => {
+    const c = getContext();
     if (!c.files.project.package.name) {
         logError('package.json requires `name` field. cannot generate ENV variables for crypto');
         return;

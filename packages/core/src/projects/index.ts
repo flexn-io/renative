@@ -449,7 +449,7 @@ export const copyAssetsFolder = async (subPath?: string, customFn?: (c: RnvConte
         );
     }
 
-    const tsPathsConfig = getTimestampPathsConfig(c, platform);
+    const tsPathsConfig = getTimestampPathsConfig();
 
     const assetSources = getConfigProp('assetSources') || [];
 
@@ -552,22 +552,21 @@ export const copyBuildsFolder = () =>
     new Promise<void>((resolve) => {
         logDefault('copyBuildsFolder');
         const c = getContext();
-        const { platform } = c;
 
         if (!isPlatformActive(resolve)) return;
 
         const destPath = path.join(getAppFolder());
-        const tsPathsConfig = getTimestampPathsConfig(c, platform);
+        const tsPathsConfig = getTimestampPathsConfig();
 
         generateConfigPropInjects();
         const allInjects = [...c.configPropsInjects, ...c.systemPropsInjects, ...c.runtimePropsInjects];
 
         // FOLDER MERGERS PROJECT CONFIG
-        const sourcePath1 = getAppConfigBuildsFolder(c, platform, c.paths.project.appConfigBase.dir);
+        const sourcePath1 = getAppConfigBuildsFolder(c.paths.project.appConfigBase.dir);
         copyFolderContentsRecursiveSync(sourcePath1, destPath, true, undefined, false, allInjects, tsPathsConfig);
 
         // FOLDER MERGERS PROJECT CONFIG (PRIVATE)
-        const sourcePath1sec = getAppConfigBuildsFolder(c, platform, c.paths.workspace.project.appConfigBase.dir);
+        const sourcePath1sec = getAppConfigBuildsFolder(c.paths.workspace.project.appConfigBase.dir);
         copyFolderContentsRecursiveSync(sourcePath1sec, destPath, true, undefined, false, allInjects, tsPathsConfig);
 
         // DEPRECATED SHARED
@@ -582,12 +581,12 @@ export const copyBuildsFolder = () =>
         // FOLDER MERGERS FROM APP CONFIG + EXTEND
         if (c.paths.appConfig.dirs) {
             c.paths.appConfig.dirs.forEach((v) => {
-                const sourceV = getAppConfigBuildsFolder(c, platform, v);
+                const sourceV = getAppConfigBuildsFolder(v);
                 copyFolderContentsRecursiveSync(sourceV, destPath, true, undefined, false, allInjects, tsPathsConfig);
             });
         } else {
             copyFolderContentsRecursiveSync(
-                getAppConfigBuildsFolder(c, platform, c.paths.appConfig.dir),
+                getAppConfigBuildsFolder(c.paths.appConfig.dir),
                 destPath,
                 true,
                 undefined,
@@ -598,7 +597,7 @@ export const copyBuildsFolder = () =>
         }
 
         // FOLDER MERGERS FROM APP CONFIG (PRIVATE)
-        const sourcePath0sec = getAppConfigBuildsFolder(c, platform, c.paths.workspace.appConfig.dir);
+        const sourcePath0sec = getAppConfigBuildsFolder(c.paths.workspace.appConfig.dir);
         copyFolderContentsRecursiveSync(sourcePath0sec, destPath, true, undefined, false, allInjects, tsPathsConfig);
 
         copyTemplatePluginsSync(c);

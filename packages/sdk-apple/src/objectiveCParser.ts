@@ -265,7 +265,7 @@ export const parseAppDelegate = (
         addSystemInjects(c, injectsMm);
 
         writeCleanFile(
-            path.join(getAppTemplateFolder(c, platform)!, appFolderName, appDelegateMm),
+            path.join(getAppTemplateFolder()!, appFolderName, appDelegateMm),
             path.join(appFolder, appFolderName, appDelegateMm),
             injectsMm,
             undefined,
@@ -274,7 +274,7 @@ export const parseAppDelegate = (
         addSystemInjects(c, injectsH);
 
         writeCleanFile(
-            path.join(getAppTemplateFolder(c, platform)!, appFolderName, appDelegateH),
+            path.join(getAppTemplateFolder()!, appFolderName, appDelegateH),
             path.join(appFolder, appFolderName, appDelegateH),
             injectsH,
             undefined,
@@ -285,7 +285,7 @@ export const parseAppDelegate = (
 
 export const injectPluginObjectiveCSync = (c: Context, plugin: RenativeConfigPluginPlatform, key: string) => {
     logDebug(`injectPluginObjectiveCSync:${c.platform}:${key}`);
-    const templateXcode = getFlavouredProp(c, plugin, 'templateXcode');
+    const templateXcode = getFlavouredProp(plugin, 'templateXcode');
     const appDelegateMmImports = templateXcode?.AppDelegate_mm?.appDelegateImports;
 
     if (appDelegateMmImports) {

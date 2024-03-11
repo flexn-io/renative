@@ -8,7 +8,6 @@ import type { RnvPlatform, RnvPlatformWithAll } from '../types';
 import { updateProjectPlatforms } from '../configs/configProject';
 import { doResolve } from '../system/resolve';
 import { getContext } from '../context/provider';
-import { platform } from 'os';
 
 export const logErrorPlatform = () => {
     const c = getContext();
@@ -86,7 +85,7 @@ export const createPlatformBuild = (platform: RnvPlatform) =>
                         }) || '',
                 },
             ],
-            getTimestampPathsConfig(c, platform),
+            getTimestampPathsConfig(),
             c
         );
 

@@ -1,5 +1,5 @@
 import { getAllSuitableTasks } from '..';
-import { createRnvContext, getContext } from '@rnv/core';
+import { createRnvContext } from '@rnv/core';
 import { getRegisteredEngines } from '../../engines';
 import { RnvEngine } from '../../engines/types';
 import { DEFAULT_TASK_DESCRIPTIONS } from '../constants';
@@ -64,10 +64,10 @@ const rnvEngineMock2: RnvEngine = {
 describe('Get suitable tasks', () => {
     it('should return all tasks for given 1 engine', () => {
         // GIVEN
-        const c = getContext();
+        // const c = getContext();
         jest.mocked(getRegisteredEngines).mockReturnValue([rnvEngineMock1]);
         // WHEN
-        const result = getAllSuitableTasks(c);
+        const result = getAllSuitableTasks();
         // THEN
         expect(Object.keys(result)).toEqual(['mock-task']);
         expect(result['mock-task'].description).toEqual('mock task 1');
@@ -75,12 +75,12 @@ describe('Get suitable tasks', () => {
 
     it('should return common description for tasks from 2 different engines but same name', () => {
         // GIVEN
-        const c = getContext();
+        // const c = getContext();
         jest.mocked(getRegisteredEngines).mockReturnValue([rnvEngineMock1, rnvEngineMock2]);
         DEFAULT_TASK_DESCRIPTIONS['mock-task'] = 'mock task common';
 
         // WHEN
-        const result = getAllSuitableTasks(c);
+        const result = getAllSuitableTasks();
         // THEN
         expect(Object.keys(result)).toEqual(['mock-task', 'mock-task-2']);
         expect(result['mock-task'].description).toEqual('mock task common');
@@ -88,11 +88,11 @@ describe('Get suitable tasks', () => {
 
     it('should return first task description for tasks from 2 different engines but same name if common desc not available', () => {
         // GIVEN
-        const c = getContext();
+        // const c = getContext();
         jest.mocked(getRegisteredEngines).mockReturnValue([rnvEngineMock2, rnvEngineMock1]);
         delete DEFAULT_TASK_DESCRIPTIONS['mock-task'];
         // WHEN
-        const result = getAllSuitableTasks(c);
+        const result = getAllSuitableTasks();
         // THEN
         expect(Object.keys(result)).toEqual(['mock-task-2', 'mock-task']);
         expect(result['mock-task'].description).toEqual('mock task 1');

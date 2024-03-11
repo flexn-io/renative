@@ -27,14 +27,14 @@ export const parsePodFile = async () => {
     // PLUGINS
     c.payload.pluginConfigiOS.podfileInject = '';
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
-        const templateXcode = getFlavouredProp(c, pluginPlat, 'templateXcode');
+        const templateXcode = getFlavouredProp(pluginPlat, 'templateXcode');
 
-        const podName = getFlavouredProp(c, pluginPlat, 'podName');
+        const podName = getFlavouredProp(pluginPlat, 'podName');
         if (podName && (pluginPlat.git || pluginPlat.commit || pluginPlat.buildType || pluginPlat.version)) {
             pluginInject += _injectPod(podName, pluginPlat, plugin, key);
         }
 
-        const podNames = getFlavouredProp(c, pluginPlat, 'podNames');
+        const podNames = getFlavouredProp(pluginPlat, 'podNames');
         if (podNames) {
             podNames.forEach((v) => {
                 pluginInject += `${v}\n`;
@@ -154,7 +154,7 @@ export const parsePodFile = async () => {
     addSystemInjects(c, injects);
 
     writeCleanFile(
-        path.join(getAppTemplateFolder(c, platform)!, 'Podfile'),
+        path.join(getAppTemplateFolder()!, 'Podfile'),
         path.join(appFolder, 'Podfile'),
         injects,
         undefined,

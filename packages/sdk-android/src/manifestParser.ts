@@ -202,7 +202,7 @@ const getConfigPropArray = <T extends ConfigPropKey>(c: RnvContext, platform: Rn
     configArr.forEach((config) => {
         if (config) {
             //TODO: this is bit of a hack. _getConfigProp expectes already merged obj needs to be redone
-            const val = _getConfigProp(key, null, config as ConfigFileBuildConfig);
+            const val = _getConfigProp(c, key, null, config as ConfigFileBuildConfig);
             if (val) {
                 result.push(val);
             }
@@ -243,7 +243,7 @@ export const parseAndroidManifestSync = (c: Context) => {
 
         // appConfigs/base/plugins.json PLUGIN CONFIG OVERRIDES
         parsePlugins(c, platform, (_plugin, pluginPlat) => {
-            const androidManifestPlugin = getFlavouredProp(c, pluginPlat, 'templateAndroid')?.AndroidManifest_xml;
+            const androidManifestPlugin = getFlavouredProp(pluginPlat, 'templateAndroid')?.AndroidManifest_xml;
             if (androidManifestPlugin) {
                 _mergeNodeChildren(baseManifestFile, androidManifestPlugin.children);
                 if (androidManifestPlugin.children) {

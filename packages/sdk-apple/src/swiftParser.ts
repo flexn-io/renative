@@ -247,7 +247,7 @@
 //         addSystemInjects(c, injects);
 
 //         writeCleanFile(
-//             path.join(getAppTemplateFolder(c, platform)!, appFolderName, appDelegate),
+//             path.join(getAppTemplateFolder()!, appFolderName, appDelegate),
 //             path.join(appFolder, appFolderName, appDelegate),
 //             injects,
 //             undefined,
@@ -258,7 +258,7 @@
 
 // export const injectPluginSwiftSync = (c: Context, plugin: RenativeConfigPluginPlatform, key: string) => {
 //     logDebug(`injectPluginSwiftSync:${c.platform}:${key}`);
-//     const templateXcode = getFlavouredProp(c, plugin, 'templateXcode');
+//     const templateXcode = getFlavouredProp(plugin, 'templateXcode');
 //     const appDelegateImports = templateXcode?.AppDelegate_mm?.appDelegateImports;
 //     if (appDelegateImports) {
 //         appDelegateImports.forEach((appDelegateImport) => {

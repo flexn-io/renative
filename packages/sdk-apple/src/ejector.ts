@@ -24,7 +24,7 @@ export const ejectXcodeProject = async () => {
     const rootProjectPath = c.paths.project.dir;
 
     const appFolder = getAppFolder();
-    const appFolderName = getAppFolderName(c, c.platform);
+    const appFolderName = getAppFolderName();
 
     //= ==========
     // xcodeproj

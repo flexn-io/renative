@@ -100,7 +100,7 @@ const _parseXcodeProject = (c: Context, platform: RnvPlatform) =>
         const xcode = require(xcodePath);
         // const xcode = require(`${c.paths.project.nodeModulesDir}/xcode`);
         const appFolder = getAppFolder();
-        const appFolderName = getAppFolderName(c, platform);
+        const appFolderName = getAppFolderName();
         const projectPath = path.join(appFolder, `${appFolderName}.xcodeproj/project.pbxproj`);
         const xcodeProj = xcode.project(projectPath);
         xcodeProj.parse(() => {
@@ -216,7 +216,7 @@ const _parseXcodeProject = (c: Context, platform: RnvPlatform) =>
 
             // PLUGINS
             parsePlugins(c, platform, (plugin, pluginPlat) => {
-                const templateXcode = getFlavouredProp(c, pluginPlat, 'templateXcode');
+                const templateXcode = getFlavouredProp(pluginPlat, 'templateXcode');
 
                 const xcodeprojObj = templateXcode?.project_pbxproj;
                 if (xcodeprojObj) {

@@ -56,22 +56,22 @@ export const _getConfigProp = <T extends ConfigPropKey>(
     let scheme;
     if (platformObj && ps) {
         scheme = platformObj.buildSchemes?.[ps] || {};
-        resultPlatforms = getFlavouredProp(c, platformObj, key as PlatPropKey);
+        resultPlatforms = getFlavouredProp(platformObj, key as PlatPropKey);
     } else {
         scheme = {};
     }
 
     const resultScheme = key && scheme[key as BuildSchemePropKey];
-    const resultCommonRoot = getFlavouredProp(c, sourceObj.common || {}, key as CommonPropKey);
+    const resultCommonRoot = getFlavouredProp(sourceObj.common || {}, key as CommonPropKey);
     const resultCommonScheme =
         c.runtime.scheme &&
-        getFlavouredProp(c, sourceObj.common?.buildSchemes?.[c.runtime.scheme] || {}, key as BuildSchemePropKey);
+        getFlavouredProp(sourceObj.common?.buildSchemes?.[c.runtime.scheme] || {}, key as BuildSchemePropKey);
 
     const resultCommon = resultCommonScheme || resultCommonRoot;
 
     let result = _getValueOrMergedObject(resultScheme, resultPlatforms, resultCommon);
     if (result === undefined) {
-        result = getFlavouredProp(c, sourceObj, key as BuildConfigPropKey);
+        result = getFlavouredProp(sourceObj, key as BuildConfigPropKey);
     }
 
     if (result === undefined) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
@@ -79,7 +79,8 @@ export const _getConfigProp = <T extends ConfigPropKey>(
     return result as ConfigProp[T];
 };
 
-export const getFlavouredProp = <T, K extends keyof T>(c: RnvContext, obj: T, key: K): T[K] | undefined => {
+export const getFlavouredProp = <T, K extends keyof T>(obj: T, key: K): T[K] | undefined => {
+    const c = getContext();
     if (!key || !obj || typeof key !== 'string') return undefined;
     const keyScoped = `${key}@${c.runtime.scheme}` as K;
     const val1 = obj[keyScoped];

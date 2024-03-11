@@ -23,6 +23,7 @@ import {
     copyFileSync,
     RnvTask,
     RnvTaskName,
+    getContext,
 } from '@rnv/core';
 import { statSync } from 'fs';
 import { getEnvExportCmd, getEnvVar } from './common';
@@ -37,7 +38,8 @@ const generateRandomKey = (length: number) =>
         .map((x) => x[Math.floor(Math.random() * x.length)])
         .join('');
 
-const initializeCryptoDirectory = async (c: RnvContext, sourceFolder: string) => {
+const initializeCryptoDirectory = async (sourceFolder: string) => {
+    const c = getContext();
     const configDir = path.join(sourceFolder, 'appConfigs');
     const targetFile = 'renative.private.json';
     mkdirSync(sourceFolder);
@@ -98,7 +100,7 @@ const _checkAndConfigureCrypto = async (c: RnvContext) => {
 
     const cnf = c.files.project.config_original;
     if (!cnf) return;
-    const envVar = getEnvVar(c);
+    const envVar = getEnvVar();
     if (!envVar) return;
 
     if (c.files.project.config && !c.files.project.config.crypto) {
@@ -127,7 +129,7 @@ const _checkAndConfigureCrypto = async (c: RnvContext) => {
             )} does not exist yet.
 RNV will create it for you, make sure you add whatever you want encrypted in it and then run the command again`
         );
-        await initializeCryptoDirectory(c, sourceFolder);
+        await initializeCryptoDirectory(sourceFolder);
         // writeFileSync(path.join(sourceFolder), c.files.project.config);
         await inquirerPrompt({
             type: 'confirm',
@@ -188,7 +190,7 @@ const taskCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask) => {
 
     const destRaw = c.files.project.config?.crypto?.path;
     const tsWorkspacePath = path.join(c.paths.workspace.dir, projectName, 'timestamp');
-    const envVar = getEnvVar(c);
+    const envVar = getEnvVar();
 
     if (!envVar) return;
 

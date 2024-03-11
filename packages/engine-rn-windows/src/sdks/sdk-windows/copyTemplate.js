@@ -75,7 +75,7 @@ export async function copyProjectTemplateAndReplace(c, options) {
         throw new Error('Need a path to copy to');
     }
 
-    const appTitle = getAppTitle(c, c.platform);
+    const appTitle = getAppTitle();
     const appFolder = getAppFolder(true);
     const RNIconsPluginPath = path.join(
         path.dirname(

@@ -60,7 +60,7 @@ const taskCryptoDecrypt: RnvTaskFn = async (c, parentTask, originTask) => {
     const projectName = c.files.project.config?.projectName;
 
     if (!crypto?.isOptional && sourceRaw) {
-        const envVar = getEnvVar(c);
+        const envVar = getEnvVar();
         if (!projectName || !envVar) return;
 
         const source = `${getRealPath(sourceRaw, 'crypto.path')}`;

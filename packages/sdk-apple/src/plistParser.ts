@@ -68,7 +68,7 @@ export const parseEntitlementsPlist = () =>
         const { platform } = c;
 
         const appFolder = getAppFolder();
-        const appFolderName = getAppFolderName(c, platform);
+        const appFolderName = getAppFolderName();
         const entitlementsPath = path.join(appFolder, `${appFolderName}/${appFolderName}.entitlements`);
         // PLUGIN ENTITLEMENTS
         let pluginsEntitlementsObj = getConfigProp('entitlements');
@@ -89,7 +89,7 @@ export const parseInfoPlist = () =>
         if (!platform) return;
 
         const appFolder = getAppFolder();
-        const appFolderName = getAppFolderName(c, platform);
+        const appFolderName = getAppFolderName();
         const orientationSupport = getConfigProp('orientationSupport');
         const urlScheme = getConfigProp('urlScheme');
 
@@ -156,7 +156,7 @@ export const parseInfoPlist = () =>
 
         // PLUGINS
         parsePlugins(c, platform, (plugin, pluginPlat) => {
-            const plistPlug = getFlavouredProp(c, pluginPlat, 'templateXcode')?.Info_plist;
+            const plistPlug = getFlavouredProp(pluginPlat, 'templateXcode')?.Info_plist;
             if (plistPlug) {
                 plistObj = mergeObjects(c, plistObj, plistPlug, true, false);
             }

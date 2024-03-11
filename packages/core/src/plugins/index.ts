@@ -380,6 +380,8 @@ export const parsePlugins = (
     ignorePlatformObjectCheck?: boolean,
     includeDisabledOrExcludedPlugins?: boolean
 ) => {
+    // const c = getContext();
+    // const { platform } = c;
     logDefault('parsePlugins');
     if (c.buildConfig && platform) {
         const includedPluginsConfig = getConfigProp('includedPlugins');
@@ -893,31 +895,21 @@ export const copyTemplatePluginsSync = (c: RnvContext) => {
         // }
 
         // FOLDER MERGES FROM PROJECT CONFIG PLUGIN
-        const sourcePath3 = getAppConfigBuildsFolder(
-            c,
-            platform,
-            path.join(c.paths.project.appConfigBase.dir, `plugins/${key}`)
-        );
+        const sourcePath3 = getAppConfigBuildsFolder(path.join(c.paths.project.appConfigBase.dir, `plugins/${key}`));
         copyFolderContentsRecursiveSync(sourcePath3, destPath, true, undefined, false, objectInject);
 
         // FOLDER MERGES FROM PROJECT CONFIG PLUGIN (PRIVATE)
         const sourcePath3sec = getAppConfigBuildsFolder(
-            c,
-            platform,
             path.join(c.paths.workspace.project.appConfigBase.dir, `plugins/${key}`)
         );
         copyFolderContentsRecursiveSync(sourcePath3sec, destPath, true, undefined, false, objectInject);
 
         // FOLDER MERGES FROM APP CONFIG PLUGIN
-        const sourcePath2 = getAppConfigBuildsFolder(c, platform, path.join(c.paths.appConfig.dir, `plugins/${key}`));
+        const sourcePath2 = getAppConfigBuildsFolder(path.join(c.paths.appConfig.dir, `plugins/${key}`));
         copyFolderContentsRecursiveSync(sourcePath2, destPath, true, undefined, false, objectInject);
 
         // FOLDER MERGES FROM APP CONFIG PLUGIN (PRIVATE)
-        const sourcePath2sec = getAppConfigBuildsFolder(
-            c,
-            platform,
-            path.join(c.paths.workspace.appConfig.dir, `plugins/${key}`)
-        );
+        const sourcePath2sec = getAppConfigBuildsFolder(path.join(c.paths.workspace.appConfig.dir, `plugins/${key}`));
         copyFolderContentsRecursiveSync(sourcePath2sec, destPath, true, undefined, false, objectInject);
 
         // FOLDER MERGES FROM SCOPED PLUGIN TEMPLATES
@@ -925,7 +917,7 @@ export const copyTemplatePluginsSync = (c: RnvContext) => {
             if (pathKey !== 'rnv') {
                 const pluginTemplatePath = c.paths.rnv.pluginTemplates.dirs[pathKey];
 
-                const sourcePath4sec = getAppConfigBuildsFolder(c, platform, path.join(pluginTemplatePath, key));
+                const sourcePath4sec = getAppConfigBuildsFolder(path.join(pluginTemplatePath, key));
                 copyFolderContentsRecursiveSync(sourcePath4sec, destPath, true, undefined, false, objectInject);
             }
         });

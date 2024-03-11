@@ -261,7 +261,7 @@ const _checkLockAndExec = async (
     logDefault('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme} p:${extraParamsString}`);
     if (!c.platform) return;
 
-    const appFolderName = getAppFolderName(c, c.platform);
+    const appFolderName = getAppFolderName();
 
     try {
         return runReactNativeIOS(c, scheme, runScheme, extraParamsString);
@@ -363,7 +363,7 @@ Type in your Apple Team ID to be used (will be saved to ${c.paths.appConfig?.con
 
 const _handleProvisioningIssues = async (c: Context, e: unknown, msg: string) => {
     const provisioningStyle = c.program.provisioningStyle || getConfigProp('provisioningStyle');
-    const appFolderName = getAppFolderName(c, c.platform); // Sometimes xcodebuild reports Automatic signing is disabled but it could be keychain not accepted by user
+    const appFolderName = getAppFolderName(); // Sometimes xcodebuild reports Automatic signing is disabled but it could be keychain not accepted by user
     const isProvAutomatic = provisioningStyle === 'Automatic';
     const proAutoText = isProvAutomatic
         ? ''
@@ -461,7 +461,7 @@ export const buildXcodeProject = async () => {
 
     const { platform } = c;
 
-    const appFolderName = getAppFolderName(c, platform);
+    const appFolderName = getAppFolderName();
     const runScheme = getConfigProp('runScheme', 'Debug');
     const schemeTarget = getConfigProp('schemeTarget') || 'RNVApp';
 
@@ -566,7 +566,7 @@ const archiveXcodeProject = () => {
     logDefault('archiveXcodeProject');
     const { platform } = c;
 
-    const appFolderName = getAppFolderName(c, c.platform);
+    const appFolderName = getAppFolderName();
     const schemeTarget = getConfigProp('schemeTarget', 'RNVApp');
     const runScheme = getConfigProp('runScheme', 'Debug');
     let sdk = getConfigProp('sdk');
@@ -647,14 +647,12 @@ export const exportXcodeProject = async () => {
     const c = getContext();
     logDefault('exportXcodeProject');
 
-    const { platform } = c;
-
     await archiveXcodeProject();
 
     const appPath = getAppFolder();
     const exportPath = path.join(appPath, 'release');
 
-    const appFolderName = getAppFolderName(c, c.platform);
+    const appFolderName = getAppFolderName();
     const allowProvisioningUpdates = getConfigProp('allowProvisioningUpdates', true);
     const ignoreLogs = getConfigProp('ignoreLogs');
 
@@ -723,7 +721,7 @@ export const configureXcodeProject = async () => {
     const { platform } = c;
     // const bundlerIp = device ? getIP() : 'localhost';
     const appFolder = getAppFolder();
-    const appFolderName = getAppFolderName(c, platform);
+    const appFolderName = getAppFolderName();
     c.runtime.platformBuildsProjectPath = `${appFolder}/${appFolderName}.xcworkspace`;
 
     // const bundleAssets = getConfigProp('bundleAssets') === true;

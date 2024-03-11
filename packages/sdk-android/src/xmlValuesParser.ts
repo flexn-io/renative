@@ -7,7 +7,7 @@ export const parseValuesStringsSync = (c: Context) => {
     const appFolder = getAppFolder();
     const stringsPath = 'app/src/main/res/values/strings.xml';
     let strings = '<resources>\n';
-    strings += `  <string name="app_name">${getAppTitle(c, c.platform)}</string>\n`;
+    strings += `  <string name="app_name">${getAppTitle()}</string>\n`;
     c.payload.pluginConfigAndroid.resourceStrings.forEach((v) => {
         strings += `  <${v.tag} name="${v.name}">${v.child_value}</${v.tag}>\n`;
     });
