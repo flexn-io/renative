@@ -19,7 +19,6 @@ import {
     copyFileSync,
     fsExistsSync,
     RnvContext,
-    RnvPlatform,
     CoreEnvVars,
     Env,
     getContext,
@@ -53,17 +52,12 @@ export const waitForUrl = (url: string) =>
         }, CHECK_INTEVAL);
     });
 
-const _runWebBrowser = (
-    c: RnvContext,
-    platform: RnvPlatform,
-    devServerHost: string,
-    port: number,
-    alreadyStarted: boolean
-) =>
+const _runWebBrowser = (devServerHost: string, port: number, alreadyStarted: boolean) =>
     new Promise<void>((resolve) => {
+        const c = getContext();
         logDefault('_runWebBrowser', `ip:${devServerHost} port:${port} openBrowser:${!!c.runtime.shouldOpenBrowser}`);
         if (!c.runtime.shouldOpenBrowser) return resolve();
-        const wait = waitForHost(c, '')
+        const wait = waitForHost('')
             .then(() => {
                 openBrowser(`http://${devServerHost}:${port}/`);
             })
@@ -251,7 +245,7 @@ export const runWebpackServer = async (enableRemoteDebugger?: boolean) => {
                 port
             )} is not running. Starting it up for you...`
         );
-        await _runWebBrowser(c, platform, devServerHost, port, false);
+        await _runWebBrowser(devServerHost, port, false);
         if (!bundleAssets) {
             logSummary('BUNDLER STARTED');
         }
@@ -260,13 +254,13 @@ export const runWebpackServer = async (enableRemoteDebugger?: boolean) => {
         const resetCompleted = await confirmActiveBundler(c);
 
         if (resetCompleted) {
-            await _runWebBrowser(c, platform, devServerHost, port, false);
+            await _runWebBrowser(devServerHost, port, false);
             if (!bundleAssets) {
                 logSummary('BUNDLER STARTED');
             }
             await _runWebDevServer(c, enableRemoteDebugger);
         } else {
-            await _runWebBrowser(c, platform, devServerHost, port, true);
+            await _runWebBrowser(devServerHost, port, true);
         }
     }
 };

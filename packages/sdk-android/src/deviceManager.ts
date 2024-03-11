@@ -233,7 +233,7 @@ const calculateDeviceDiagonal = (width: number, height: number, density: number)
     return Math.sqrt(widthInches * widthInches + heightInches * heightInches);
 };
 
-const getRunningDeviceProp = async (c: RnvContext, udid: string, prop: string): Promise<string> => {
+const getRunningDeviceProp = async (udid: string, prop: string): Promise<string> => {
     // avoid multiple calls to the same device
     if (currentDeviceProps[udid]) {
         // if (!prop) return currentDeviceProps[udid];
@@ -254,20 +254,20 @@ const getRunningDeviceProp = async (c: RnvContext, udid: string, prop: string): 
         });
     }
 
-    return getRunningDeviceProp(c, udid, prop);
+    return getRunningDeviceProp(udid, prop);
 };
 
 const decideIfTVRunning = async (c: RnvContext, device: AndroidDevice) => {
     const { udid, model, product } = device;
-    const mod = await getRunningDeviceProp(c, udid, 'ro.product.model');
-    const name = await getRunningDeviceProp(c, udid, 'ro.product.name');
-    const flavor = await getRunningDeviceProp(c, udid, 'ro.build.flavor');
-    const clientIdBase = await getRunningDeviceProp(c, udid, 'ro.com.google.clientidbase');
-    const description = await getRunningDeviceProp(c, udid, 'ro.build.description');
-    const hdmi = await getRunningDeviceProp(c, udid, 'init.svc.hdmi');
-    const modelGroup = await getRunningDeviceProp(c, udid, 'ro.nrdp.modelgroup');
-    const configuration = await getRunningDeviceProp(c, udid, 'ro.build.configuration');
-    const cecEnabled = await getRunningDeviceProp(c, udid, 'persist.sys.cec.enabled');
+    const mod = await getRunningDeviceProp(udid, 'ro.product.model');
+    const name = await getRunningDeviceProp(udid, 'ro.product.name');
+    const flavor = await getRunningDeviceProp(udid, 'ro.build.flavor');
+    const clientIdBase = await getRunningDeviceProp(udid, 'ro.com.google.clientidbase');
+    const description = await getRunningDeviceProp(udid, 'ro.build.description');
+    const hdmi = await getRunningDeviceProp(udid, 'init.svc.hdmi');
+    const modelGroup = await getRunningDeviceProp(udid, 'ro.nrdp.modelgroup');
+    const configuration = await getRunningDeviceProp(udid, 'ro.build.configuration');
+    const cecEnabled = await getRunningDeviceProp(udid, 'persist.sys.cec.enabled');
 
     let isTV = false;
     [mod, name, flavor, clientIdBase, description, model, product].forEach((string) => {
@@ -285,11 +285,11 @@ const decideIfTVRunning = async (c: RnvContext, device: AndroidDevice) => {
 
 const decideIfWearRunning = async (c: RnvContext, device: AndroidDevice) => {
     const { udid, model, product } = device;
-    const fingerprint = await getRunningDeviceProp(c, udid, 'ro.vendor.build.fingerprint');
-    const name = await getRunningDeviceProp(c, udid, 'ro.product.vendor.name');
-    const mod = await getRunningDeviceProp(c, udid, 'ro.product.vendor.model');
-    const flavor = await getRunningDeviceProp(c, udid, 'ro.build.flavor');
-    const description = await getRunningDeviceProp(c, udid, 'ro.build.description');
+    const fingerprint = await getRunningDeviceProp(udid, 'ro.vendor.build.fingerprint');
+    const name = await getRunningDeviceProp(udid, 'ro.product.vendor.name');
+    const mod = await getRunningDeviceProp(udid, 'ro.product.vendor.model');
+    const flavor = await getRunningDeviceProp(udid, 'ro.build.flavor');
+    const description = await getRunningDeviceProp(udid, 'ro.build.description');
 
     let isWear = false;
     [fingerprint, name, mod, flavor, description, model, product].forEach((string) => {
@@ -305,7 +305,7 @@ const getDeviceType = async (device: AndroidDevice, c: RnvContext) => {
     if (device.udid !== 'unknown') {
         const screenSizeResult = await execCLI(CLI_ANDROID_ADB, `-s ${device.udid} shell wm size`);
         const screenDensityResult = await execCLI(CLI_ANDROID_ADB, `-s ${device.udid} shell wm density`);
-        const arch = await getRunningDeviceProp(c, device.udid, 'ro.product.cpu.abi');
+        const arch = await getRunningDeviceProp(device.udid, 'ro.product.cpu.abi');
         let screenProps = {
             width: 0,
             height: 0,

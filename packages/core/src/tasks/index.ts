@@ -422,7 +422,7 @@ but issue migh not be necessarily with this task
 To avoid that test your task code against parentTask and avoid executing same task X from within task X`);
     }
     await executeEngineTask(task, parentTask, originTask, getEngineRunner(task, CUSTOM_TASKS)?.tasks, isFirstTask);
-    // await getEngineRunner(c, task, CUSTOM_TASKS).executeTask(c, task, parentTask, originTask, isFirstTask);
+    // await getEngineRunner(task, CUSTOM_TASKS).executeTask(task, parentTask, originTask, isFirstTask);
     executedTasks[task]++;
 
     c._currentTask = parentTask;

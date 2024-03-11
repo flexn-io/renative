@@ -408,7 +408,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
 
         // if (isHosted) {
         //     toReturn = startHostedServerIfRequired(c);
-        //     await waitForHost(c);
+        //     await waitForHost();
         // }
 
         if (platform !== 'tizenwatch' && platform !== 'tizenmobile' && hasDevice) {

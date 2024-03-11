@@ -142,7 +142,7 @@ export const runTizen = async (c: RnvContext, target?: string) => {
                     c.runtime.port
                 )} is not running. Starting it up for you...`
             );
-            waitForHost(c, '')
+            waitForHost('')
                 .then(() => runTizenSimOrDevice())
                 .catch(logError);
             await runWebpackServer(isWeinreEnabled);
@@ -150,7 +150,7 @@ export const runTizen = async (c: RnvContext, target?: string) => {
             const resetCompleted = await confirmActiveBundler(c);
 
             if (resetCompleted) {
-                waitForHost(c, '')
+                waitForHost('')
                     .then(() => runTizenSimOrDevice())
                     .catch(logError);
                 await runWebpackServer(isWeinreEnabled);

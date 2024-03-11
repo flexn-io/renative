@@ -29,7 +29,7 @@ const taskStart: RnvTaskFn = async (c, parentTask, originTask) => {
     if (shouldSkipTask(RnvTaskName.start, originTask)) return true;
 
     if (hosted) {
-        waitForHost(c, '')
+        waitForHost('')
             .then(() => openBrowser(`http://${c.runtime.localhost}:${port}/`))
             .catch(logError);
     }

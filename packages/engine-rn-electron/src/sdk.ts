@@ -336,7 +336,7 @@ export const runElectron = async () => {
                     port
                 )} is not running. Starting it up for you...`
             );
-            waitForHost(c, '')
+            waitForHost('')
                 .then(() => _runElectronSimulator(c))
                 .catch(logError);
             // await _runElectronSimulator(c);
@@ -344,7 +344,7 @@ export const runElectron = async () => {
         } else {
             const resetCompleted = await confirmActiveBundler(c);
             if (resetCompleted) {
-                waitForHost(c, '')
+                waitForHost('')
                     .then(() => _runElectronSimulator(c))
                     .catch(logError);
                 // await _runElectronSimulator(c);

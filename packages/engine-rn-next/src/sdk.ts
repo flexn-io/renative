@@ -12,7 +12,6 @@ import {
     logSummary,
     logSuccess,
     copyAssetsFolder,
-    RnvPlatform,
     CoreEnvVars,
     ExecOptionsPresets,
     getAppFolder,
@@ -63,7 +62,7 @@ export const runWebNext = async () => {
                 port
             )} is not running. Starting it up for you...`
         );
-        await _runWebBrowser(c, platform, devServerHost, port, false);
+        await _runWebBrowser(devServerHost, port, false);
 
         if (!bundleAssets) {
             logSummary('BUNDLER STARTED');
@@ -73,28 +72,23 @@ export const runWebNext = async () => {
         const resetCompleted = await confirmActiveBundler(c);
 
         if (resetCompleted) {
-            await _runWebBrowser(c, platform, devServerHost, port, false);
+            await _runWebBrowser(devServerHost, port, false);
             if (!bundleAssets) {
                 logSummary('BUNDLER STARTED');
             }
             await runWebDevServer(c);
         } else {
-            await _runWebBrowser(c, platform, devServerHost, port, true);
+            await _runWebBrowser(devServerHost, port, true);
         }
     }
 };
 
-const _runWebBrowser = (
-    c: RnvContext,
-    _platform: RnvPlatform,
-    devServerHost: string,
-    port: number,
-    alreadyStarted: boolean
-) =>
+const _runWebBrowser = (devServerHost: string, port: number, alreadyStarted: boolean) =>
     new Promise<void>((resolve) => {
+        const c = getContext();
         logDefault('_runWebBrowser', `ip:${devServerHost} port:${port} openBrowser:${!!c.runtime.shouldOpenBrowser}`);
         if (!c.runtime.shouldOpenBrowser) return resolve();
-        const wait = waitForHost(c, '')
+        const wait = waitForHost('')
             .then(() => {
                 openBrowser(`http://${devServerHost}:${port}/`);
             })

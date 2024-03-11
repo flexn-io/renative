@@ -93,7 +93,7 @@ export const runWebOS = async (c: RnvContext) => {
                     c.runtime.port
                 )} is not running. Starting it up for you...`
             );
-            waitForHost(c, '')
+            waitForHost('')
                 .then(() => {
                     runWebosSimOrDevice();
                 })
@@ -102,7 +102,7 @@ export const runWebOS = async (c: RnvContext) => {
         } else {
             const resetCompleted = await confirmActiveBundler(c);
             if (resetCompleted) {
-                waitForHost(c, '')
+                waitForHost('')
                     .then(() => runWebosSimOrDevice())
                     .catch(logError);
                 await runWebpackServer(isWeinreEnabled);
