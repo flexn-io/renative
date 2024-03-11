@@ -6,7 +6,7 @@ import {
     getConfigProp,
     writeCleanFile,
 } from '@rnv/core';
-import { mkdirSync } from 'fs';
+// import { mkdirSync } from 'fs';
 import path from 'path';
 import { Context } from './types';
 import { getBuildFilePath, getEntryFile, getAppId, addSystemInjects } from '@rnv/sdk-utils';
@@ -16,32 +16,32 @@ import { getBuildFilePath, getEntryFile, getAppId, addSystemInjects } from '@rnv
 //     androidwear: '"assets://index.androidwear.bundle"',
 // };
 
-export const parseFlipperSync = (c: Context, scheme: 'debug' | 'release') => {
-    const appFolder = getAppFolder(c);
-    const { platform } = c;
+// export const parseFlipperSync = (c: Context, scheme: 'debug' | 'release') => {
+//     const appFolder = getAppFolder(c);
+//     const { platform } = c;
 
-    const appId = getAppId(c, c.platform);
-    // console.log('appId', appId);
-    const javaPackageArray = appId?.split('.') || [];
+//     const appId = getAppId(c, c.platform);
+//     // console.log('appId', appId);
+//     const javaPackageArray = appId?.split('.') || [];
 
-    const javaPackagePath = `app/src/${scheme}/java/${javaPackageArray.join('/')}`;
-    mkdirSync(path.join(appFolder, javaPackagePath), { recursive: true });
+//     const javaPackagePath = `app/src/${scheme}/java/${javaPackageArray.join('/')}`;
+//     mkdirSync(path.join(appFolder, javaPackagePath), { recursive: true });
 
-    const templatePath = `app/src/${scheme}/java/rnv_template/ReactNativeFlipper.kt`;
-    const applicationPath = `${javaPackagePath}/ReactNativeFlipper.java`;
+//     const templatePath = `app/src/${scheme}/java/rnv_template/ReactNativeFlipper.kt`;
+//     const applicationPath = `${javaPackagePath}/ReactNativeFlipper.java`;
 
-    const injects: OverridesOptions = [{ pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) }];
+//     const injects: OverridesOptions = [{ pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) }];
 
-    addSystemInjects(c, injects);
+//     addSystemInjects(c, injects);
 
-    writeCleanFile(
-        getBuildFilePath(c, platform, templatePath),
-        path.join(appFolder, applicationPath),
-        injects,
-        undefined,
-        c
-    );
-};
+//     writeCleanFile(
+//         getBuildFilePath(c, platform, templatePath),
+//         path.join(appFolder, applicationPath),
+//         injects,
+//         undefined,
+//         c
+//     );
+// };
 
 export const parseMainApplicationSync = (c: Context) => {
     const appFolder = getAppFolder(c);
@@ -121,7 +121,7 @@ export const parseMainActivitySync = (c: RnvContext) => {
 
     const templateAndroid = getConfigProp(c, platform, 'templateAndroid', {});
 
-    const mainActivity = templateAndroid?.MainActivity_java;
+    const mainActivity = templateAndroid?.MainActivity_kt;
 
     c.payload.pluginConfigAndroid.injectActivityOnCreate =
         mainActivity?.onCreate || 'super.onCreate(savedInstanceState)';
@@ -203,7 +203,7 @@ export const injectPluginKotlinSync = (
     pkg: string | undefined
 ) => {
     const templ = plugin.templateAndroid;
-    const mainActivity = templ?.MainActivity_java;
+    const mainActivity = templ?.MainActivity_kt;
     if (mainActivity?.imports) {
         mainActivity.imports.forEach((activityImport) => {
             // Avoid duplicate imports
@@ -232,7 +232,7 @@ export const injectPluginKotlinSync = (
 
     _injectPackage(c, plugin, pkg);
 
-    const mainApplication = templ?.MainApplication_java;
+    const mainApplication = templ?.MainApplication_kt;
 
     if (mainApplication?.packages) {
         mainApplication.packages.forEach((v) => {
@@ -264,7 +264,7 @@ const _injectPackage = (c: RnvContext, plugin: RenativeConfigPluginPlatform, pkg
         c.payload.pluginConfigAndroid.pluginApplicationImports += `import ${pkg}\n`;
     }
     let packageParams = '';
-    const mainApplication = plugin.templateAndroid?.MainApplication_java;
+    const mainApplication = plugin.templateAndroid?.MainApplication_kt;
     if (mainApplication?.packageParams) {
         packageParams = mainApplication.packageParams.join(',');
     }

@@ -114,7 +114,7 @@ const _mergeNodeParameters = (
         const key = k as NodeKey;
         const val = nodeParamsExt[key];
 
-        if (val && !SYSTEM_TAGS.includes(k)) {
+        if (val !== 'undefined' && !SYSTEM_TAGS.includes(k)) {
             //TODO: fix this
             (node as Record<string, any>)[key] = val;
         }
@@ -240,7 +240,6 @@ export const parseAndroidManifestSync = (c: Context) => {
                 _mergeNodeChildren(baseManifestFile, manifestObj.children);
             }
         });
-        //TODO: Should be mark as deprecated
 
         // appConfigs/base/plugins.json PLUGIN CONFIG OVERRIDES
         parsePlugins(c, platform, (_plugin, pluginPlat) => {
