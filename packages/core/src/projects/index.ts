@@ -34,9 +34,12 @@ import { generateConfigPropInjects } from '../system/injectors';
 import { ConfigFileApp, ConfigFileEngine, ConfigFileProject, ConfigFileTemplate } from '../schema/configFiles/types';
 import { getConfigProp } from '../context/contextProps';
 import { ConfigName } from '../enums/configName';
+import { getContext } from '../context/provider';
 
-export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
+export const checkAndBootstrapIfRequired = async () => {
     logDefault('checkAndBootstrapIfRequired');
+    const c = getContext();
+
     const template: string = c.program?.template;
     if (!c.paths.project.configExists && template) {
         await executeAsync(`${isYarnInstalled() ? 'yarn' : 'npm'} add ${template}`, {
@@ -173,15 +176,15 @@ export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
             copyFolderContentsRecursiveSync(appConfigsPath, path.join(c.paths.project.appConfigsDir));
         }
 
-        await installPackageDependencies(c);
+        await installPackageDependencies();
 
         if (c.program.npxMode) {
             return;
         }
 
-        await parseRenativeConfigs(c);
+        await parseRenativeConfigs();
 
-        await configureTemplateFiles(c);
+        await configureTemplateFiles();
         await configureEntryPoint(c, c.platform);
         // await applyTemplate(c);
 
@@ -190,7 +193,9 @@ export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
     return true;
 };
 
-export const checkAndCreateGitignore = async (c: RnvContext) => {
+export const checkAndCreateGitignore = async () => {
+    const c = getContext();
+
     logDefault('checkAndCreateGitignore');
     const ignrPath = path.join(c.paths.project.dir, '.gitignore');
     if (!fsExistsSync(ignrPath)) {
@@ -201,12 +206,14 @@ export const checkAndCreateGitignore = async (c: RnvContext) => {
     return true;
 };
 
-export const configureFonts = async (c: RnvContext) => {
+export const configureFonts = async () => {
+    const c = getContext();
+
     // FONTS
     let fontsObj = 'export default [';
 
     const duplicateFontCheck: Array<string> = [];
-    parseFonts(c, (font, dir) => {
+    parseFonts((font, dir) => {
         if (font.includes('.ttf') || font.includes('.otf') || font.includes('.woff')) {
             const keOriginal = font.split('.')[0];
             const keyNormalised = keOriginal.replace(/__/g, ' ');
@@ -304,8 +311,10 @@ export const copyRuntimeAssets = async (c: RnvContext) => {
     return true;
 };
 
-export const parseFonts = (c: RnvContext, callback: ParseFontsCallback) => {
+export const parseFonts = (callback: ParseFontsCallback) => {
     logDefault('parseFonts');
+
+    const c = getContext();
 
     if (c.buildConfig) {
         // FONTS - PROJECT CONFIG
@@ -423,14 +432,15 @@ const _resolvePackage = (c: RnvContext, v: string) => {
 // };
 
 export const copyAssetsFolder = async (
-    c: RnvContext,
     platform: RnvPlatform,
     subPath?: string,
     customFn?: (c: RnvContext, platform: RnvPlatform) => void
 ) => {
     logDefault('copyAssetsFolder');
 
-    if (!isPlatformActive(c, platform)) return;
+    const c = getContext();
+
+    if (!isPlatformActive(platform)) return;
 
     const assetFolderPlatform = getConfigProp(c, platform, 'assetFolderPlatform') || platform;
 
@@ -541,10 +551,12 @@ export const copyAssetsFolder = async (
 // }
 // };
 
-export const copyBuildsFolder = (c: RnvContext, platform: RnvPlatform) =>
+export const copyBuildsFolder = (platform: RnvPlatform) =>
     new Promise<void>((resolve) => {
         logDefault('copyBuildsFolder');
-        if (!isPlatformActive(c, platform, resolve)) return;
+        const c = getContext();
+
+        if (!isPlatformActive(platform, resolve)) return;
 
         const destPath = path.join(getAppFolder(c));
         const tsPathsConfig = getTimestampPathsConfig(c, platform);
@@ -634,7 +646,7 @@ It is recommended that you run your rnv command with npx prefix: ${recCmd} . or 
             c.runtime.skipPackageUpdate = chosenAction === actionNoUpdate;
 
             if (chosenAction === actionUpgrade) {
-                upgradeProjectDependencies(c, c.runtime.rnvVersionRunner);
+                upgradeProjectDependencies(c.runtime.rnvVersionRunner);
             }
         }
     }

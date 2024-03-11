@@ -1,4 +1,4 @@
-import { logDefault, RnvContext } from '@rnv/core';
+import { getContext, logDefault, RnvContext } from '@rnv/core';
 import { checkAndConfigureAndroidSdks, checkAndroidSdk } from '@rnv/sdk-android';
 import { checkAndConfigureTizenSdks, checkTizenSdk } from '@rnv/sdk-tizen';
 import { checkAndConfigureWebosSdks, checkWebosSdk } from '@rnv/sdk-webos';
@@ -23,8 +23,9 @@ export const checkAndConfigureSdks = async (c: RnvContext) => {
     }
 };
 
-export const checkSdk = async (c: RnvContext) => {
+export const checkSdk = async () => {
     logDefault('checkSdk');
+    const c = getContext();
 
     switch (c.platform) {
         case 'android':

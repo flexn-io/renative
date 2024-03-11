@@ -22,14 +22,16 @@ let executedTasks: Record<string, number> = {};
 
 const CUSTOM_TASKS: RnvTaskMap = {};
 
-export const registerCustomTask = async (_c: RnvContext, task: RnvTask) => {
+export const registerCustomTask = async (task: RnvTask) => {
     if (task.task) {
         CUSTOM_TASKS[task.task] = task;
     }
 };
 
-export const initializeTask = async (c: RnvContext, task: string) => {
+export const initializeTask = async (task: string) => {
     logDefault('initializeTask', task);
+    const c = getContext();
+
     logInfo(
         `Current engine: ${chalk().bold(c.runtime.engine?.config.id)} ${chalk().grey(
             `(${c.runtime.engine?.rootPath})`
@@ -94,8 +96,8 @@ const _getTaskObj = (taskInstance: RnvTask) => {
     };
 };
 
-export const getAllSuitableTasks = (c: RnvContext): Record<string, TaskPromptOption> => {
-    const REGISTERED_ENGINES = getRegisteredEngines(c);
+export const getAllSuitableTasks = (): Record<string, TaskPromptOption> => {
+    const REGISTERED_ENGINES = getRegisteredEngines();
     const suitableTasks: Record<string, TaskPromptOption> = {};
 
     REGISTERED_ENGINES.forEach((engine) => {
@@ -131,20 +133,22 @@ export const findSuitableGlobalTask = async () => {
     if (c.command) task = c.command;
     if (c.subCommand) task += ` ${c.subCommand}`;
 
-    c.runtime.engine = getEngineRunner(c, task, undefined, false);
+    c.runtime.engine = getEngineRunner(task, undefined, false);
 
     const tsk = getEngineTask(task, c.runtime.engine?.tasks);
 
     return tsk;
 };
 
-export const findSuitableTask = async (c: RnvContext, specificTask?: string): Promise<RnvTask | undefined> => {
+export const findSuitableTask = async (specificTask?: string): Promise<RnvTask | undefined> => {
     logDefault('findSuitableTask');
-    const REGISTERED_ENGINES = getRegisteredEngines(c);
+    const c = getContext();
+
+    const REGISTERED_ENGINES = getRegisteredEngines();
     let task = '';
     if (!specificTask) {
         if (!c.command) {
-            const suitableTasks = getAllSuitableTasks(c);
+            const suitableTasks = getAllSuitableTasks();
 
             const taskInstances = Object.values(suitableTasks);
             let tasks: TaskPromptOption[];
@@ -308,23 +312,23 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
             if (!c.runtime.hasAllEnginesRegistered) {
                 // No platform was specified. we have no option other than load all engines and offer platform list next round
                 await registerAllPlatformEngines(c);
-                return findSuitableTask(c);
+                return findSuitableTask();
             }
 
             logInfo(`could not find suitable task for ${chalk().bold(c.command)}. GETTING OPTIONS...`);
             c.command = null;
             c.subCommand = null;
-            return findSuitableTask(c);
+            return findSuitableTask();
         }
         //TODO: special type case for c.platform
         if (!c.platform || c.program.platform === true) {
             await _selectPlatform(c, suitableEngines, task);
         }
-        c.runtime.engine = getEngineRunner(c, task, CUSTOM_TASKS, false);
+        c.runtime.engine = getEngineRunner(task, CUSTOM_TASKS, false);
         // Cover scenarios of -p xxxxxxxxx
         if (!c.runtime.engine) {
             await _selectPlatform(c, suitableEngines, task);
-            c.runtime.engine = getEngineRunner(c, task, CUSTOM_TASKS);
+            c.runtime.engine = getEngineRunner(task, CUSTOM_TASKS);
         }
         if (c.runtime.engine?.runtimeExtraProps) {
             c.runtime.runtimeExtraProps = c.runtime.engine.runtimeExtraProps;
@@ -338,7 +342,7 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
         }
     } else {
         task = specificTask;
-        c.runtime.engine = getEngineRunner(c, task);
+        c.runtime.engine = getEngineRunner(task);
     }
     const plats = c.runtime.engine?.platforms || [];
     c.runtime.availablePlatforms = Object.keys(plats) as PlatformKey[];
@@ -422,14 +426,7 @@ but issue migh not be necessarily with this task
 
 To avoid that test your task code against parentTask and avoid executing same task X from within task X`);
     }
-    await executeEngineTask(
-        c,
-        task,
-        parentTask,
-        originTask,
-        getEngineRunner(c, task, CUSTOM_TASKS)?.tasks,
-        isFirstTask
-    );
+    await executeEngineTask(c, task, parentTask, originTask, getEngineRunner(task, CUSTOM_TASKS)?.tasks, isFirstTask);
     // await getEngineRunner(c, task, CUSTOM_TASKS).executeTask(c, task, parentTask, originTask, isFirstTask);
     executedTasks[task]++;
 
@@ -583,7 +580,7 @@ ${t.options
     if (t && !t.isGlobalScope && isFirstTask) {
         if (c.files.project.package) {
             // This has to happen in order for hooks to be able to run
-            await checkIfProjectAndNodeModulesExists(c);
+            await checkIfProjectAndNodeModulesExists();
         }
     }
     if (isFirstTask) {

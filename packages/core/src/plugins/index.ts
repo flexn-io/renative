@@ -165,8 +165,10 @@ const _applyPackageDependency = (deps: Record<string, string>, key: string, vers
     }
 };
 
-export const configurePlugins = async (c: RnvContext) => {
+export const configurePlugins = async () => {
     logDefault('configurePlugins');
+
+    const c = getContext();
 
     if (c.program.skipDependencyCheck) return true;
 
@@ -292,12 +294,14 @@ ${ovMsg}`
 
 const _updatePackage = (c: RnvContext, override: Partial<NpmPackageFile>) => {
     const newPackage: NpmPackageFile = merge(c.files.project.package, override);
-    writeRenativeConfigFile(c, c.paths.project.package, newPackage);
+    writeRenativeConfigFile(c.paths.project.package, newPackage);
     c.files.project.package = newPackage;
     c._requiresNpmInstall = true;
 };
 
-export const resolvePluginDependants = async (c: RnvContext) => {
+export const resolvePluginDependants = async () => {
+    const c = getContext();
+
     logDefault('resolvePluginDependants');
     const { plugins } = c.buildConfig;
 
@@ -342,7 +346,7 @@ const _resolvePluginDependencies = async (
             });
             if (confirm && c.files.project.config_original?.plugins) {
                 c.files.project.config_original.plugins[key] = `source:${scope}`;
-                writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config_original);
+                writeRenativeConfigFile(c.paths.project.config, c.files.project.config_original);
                 logSuccess(`Plugin ${key} sucessfully installed`);
                 c._requiresNpmInstall = true;
             }
@@ -459,8 +463,10 @@ export const parsePlugins = (
     }
 };
 
-export const loadPluginTemplates = async (c: RnvContext) => {
+export const loadPluginTemplates = async () => {
     logDefault('loadPluginTemplates');
+
+    const c = getContext();
 
     //This comes from project dependency
     let flexnPluginsPath = doResolve('@flexn/plugins');
@@ -525,8 +531,8 @@ export const loadPluginTemplates = async (c: RnvContext) => {
             if (hasPackageChanged) {
                 _updatePackage(c, { dependencies });
                 logInfo('Found missing dependency scopes. INSTALLING...');
-                await installPackageDependencies(c);
-                await loadPluginTemplates(c);
+                await installPackageDependencies();
+                await loadPluginTemplates();
             } else {
                 missingDeps.forEach((npmDep) => {
                     logWarning(`Plugin scope ${npmDep} does not exists in package.json.`);
@@ -733,13 +739,13 @@ export const overrideFileContents = (dest: string, override: Record<string, stri
     }
 };
 
-export const installPackageDependenciesAndPlugins = async (c: RnvContext) => {
+export const installPackageDependenciesAndPlugins = async () => {
     logDefault('installPackageDependenciesAndPlugins');
 
-    await installPackageDependencies(c);
-    await overrideTemplatePlugins(c);
-    await configureFonts(c);
-    await checkForPluginDependencies(c);
+    await installPackageDependencies();
+    await overrideTemplatePlugins();
+    await configureFonts();
+    await checkForPluginDependencies();
 };
 
 const _getPluginConfiguration = (c: RnvContext, pluginName: string) => {
@@ -757,7 +763,9 @@ const _getPluginConfiguration = (c: RnvContext, pluginName: string) => {
     return renativePlugin;
 };
 
-export const checkForPluginDependencies = async (c: RnvContext) => {
+export const checkForPluginDependencies = async () => {
+    const c = getContext();
+
     const toAdd: Record<string, string> = {};
     if (!c.buildConfig.plugins) return;
 
@@ -809,19 +817,21 @@ export const checkForPluginDependencies = async (c: RnvContext) => {
                 ...(c.files.project.config_original.plugins || {}),
                 ...toAdd,
             };
-            writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config_original);
+            writeRenativeConfigFile(c.paths.project.config, c.files.project.config_original);
             // Need to reload merged files
-            await parseRenativeConfigs(c);
-            await configurePlugins(c);
-            await installPackageDependenciesAndPlugins(c);
+            await parseRenativeConfigs();
+            await configurePlugins();
+            await installPackageDependenciesAndPlugins();
         }
     }
 };
 
 // const getPluginPlatformFromString = (p: string): RnvPluginPlatform => p as RnvPluginPlatform;
 
-export const overrideTemplatePlugins = async (c: RnvContext) => {
+export const overrideTemplatePlugins = async () => {
     logDefault('overrideTemplatePlugins');
+
+    const c = getContext();
 
     const rnvPluginsDirs = c.paths.rnv.pluginTemplates.dirs;
     const appPluginDirs = c.paths.appConfig.pluginDirs;
@@ -953,8 +963,8 @@ export const getLocalRenativePlugin = () => ({
     },
 });
 
-export const updateRenativeConfigs = async (c: RnvContext) => {
-    await loadPluginTemplates(c);
-    await parseRenativeConfigs(c);
+export const updateRenativeConfigs = async () => {
+    await loadPluginTemplates();
+    await parseRenativeConfigs();
     return true;
 };

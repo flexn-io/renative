@@ -25,6 +25,7 @@ import { ConfigFileApp, ConfigFileProject, ConfigFileTemplate } from '../schema/
 import { PlatformKey } from '../schema/types';
 import { getConfigProp } from '../context/contextProps';
 import { ConfigName } from '../enums/configName';
+import { getContext } from '../context/provider';
 
 const _cleanProjectTemplateSync = (c: RnvContext) => {
     logDefault('_cleanProjectTemplateSync');
@@ -112,7 +113,7 @@ const _configureAppConfigs = async (c: RnvContext) => {
         // TODO: GET CORRECT PROJECT TEMPLATE
         copyFolderContentsRecursiveSync(c.paths.template.appConfigsDir, c.paths.project.appConfigsDir);
 
-        const appConfigIds = listAppConfigsFoldersSync(c, false);
+        const appConfigIds = listAppConfigsFoldersSync(false);
 
         // Update App Title to match package.json
         try {
@@ -140,7 +141,7 @@ const _configureAppConfigs = async (c: RnvContext) => {
                             });
                         }
 
-                        writeRenativeConfigFile(c, appConfigPath, appConfig);
+                        writeRenativeConfigFile(appConfigPath, appConfig);
                     }
                 }
             });
@@ -174,7 +175,7 @@ const _configureRenativeConfig = async (c: RnvContext) => {
         logInfo(
             `Your ${c.paths.project.config} needs to be updated with ${c.paths.template.configTemplate}. UPDATING...DONE`
         );
-        const mergedObjBase = getProjectTemplateMergedConfig(c, templateConfig);
+        const mergedObjBase = getProjectTemplateMergedConfig(templateConfig);
         if (mergedObjBase) {
             const mergedObj = { ...mergedObjBase, ...(mergedObjBase.templateConfig?.renative_json || {}) };
 
@@ -192,15 +193,16 @@ const _configureRenativeConfig = async (c: RnvContext) => {
             delete mergedObj.isNew;
             delete mergedObj.templateConfig;
             // c.files.project.config = mergedObj;
-            writeRenativeConfigFile(c, c.paths.project.config, mergedObj);
-            loadFileExtended(c, c.files.project, c.paths.project, 'config');
+            writeRenativeConfigFile(c.paths.project.config, mergedObj);
+            loadFileExtended(c.files.project, c.paths.project, 'config');
         }
     }
 
     return true;
 };
 
-const getProjectTemplateMergedConfig = (c: RnvContext, templateConfig: ConfigFileTemplate | null) => {
+const getProjectTemplateMergedConfig = (templateConfig: ConfigFileTemplate | null) => {
+    const c = getContext();
     if (c.files.project.config_original && templateConfig) {
         const mergedObj = mergeObjects<ConfigFileTemplate & ConfigFileProject>(
             c,
@@ -232,12 +234,14 @@ const _copyIncludedPath = (c: RnvContext, name: string) => {
     }
 };
 
-export const configureTemplateFiles = async (c: RnvContext) => {
+export const configureTemplateFiles = async () => {
     logDefault('configureTemplateFiles');
+
+    const c = getContext();
 
     const templateConfig = readObjectSync<ConfigFileTemplate>(c.paths.template.configTemplate);
 
-    let mergedObj = getProjectTemplateMergedConfig(c, templateConfig);
+    let mergedObj = getProjectTemplateMergedConfig(templateConfig);
     const includedPaths = mergedObj?.templateConfig?.includedPaths;
 
     if (includedPaths) {
@@ -308,7 +312,8 @@ export const getInstalledTemplateOptions = (c: RnvContext): PromptOptions | null
 export const isTemplateInstalled = (c: RnvContext) =>
     c.buildConfig.currentTemplate ? doResolve(c.buildConfig.currentTemplate) : false;
 
-export const applyTemplate = async (c: RnvContext, selectedTemplate?: string) => {
+export const applyTemplate = async (selectedTemplate?: string) => {
+    const c = getContext();
     logDefault('applyTemplate', `${c.buildConfig.currentTemplate}=>${selectedTemplate}`);
     if (c.files.project.config?.isTemplate) return true;
 
@@ -332,7 +337,7 @@ export const applyTemplate = async (c: RnvContext, selectedTemplate?: string) =>
             });
             c.buildConfig.currentTemplate = template;
             c.files.project.config.currentTemplate = template;
-            writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config);
+            writeRenativeConfigFile(c.paths.project.config, c.files.project.config);
         } else {
             logError('Could not find any installed templates');
         }
@@ -341,7 +346,7 @@ export const applyTemplate = async (c: RnvContext, selectedTemplate?: string) =>
     const templateIsInstalled = doResolve(c.buildConfig.currentTemplate);
     if (!templateIsInstalled) {
         // We Need template to be installed before other dependency resolutions (due to scoping)
-        await checkIfProjectAndNodeModulesExists(c);
+        await checkIfProjectAndNodeModulesExists();
     }
 
     await _applyTemplate(c);

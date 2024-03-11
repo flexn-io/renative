@@ -22,7 +22,7 @@ import {
 const taskAppCreate: RnvTaskFn = async (c) => {
     logTask('taskAppCreate');
 
-    await configureRuntimeDefaults(c);
+    await configureRuntimeDefaults();
 
     let sourcePath: string | undefined;
 
