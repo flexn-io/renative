@@ -26,15 +26,16 @@ import {
     initializeTask,
     findSuitableTask,
     RnvTaskFn,
-    RnvContext,
     generatePlatformAssetsRuntimeConfig,
     RnvTask,
     generateLocalJsonSchemas,
     RnvTaskName,
+    getContext,
 } from '@rnv/core';
 import { checkCrypto } from '../crypto/common';
 
-const checkIsRenativeProject = async (c: RnvContext) => {
+const checkIsRenativeProject = async () => {
+    const c = getContext();
     if (!c.paths.project.configExists) {
         return Promise.reject(
             `This directory is not ReNative project. Project config ${chalk().bold(
@@ -45,7 +46,8 @@ const checkIsRenativeProject = async (c: RnvContext) => {
     return true;
 };
 
-const configurePlatformBuilds = async (c: RnvContext) => {
+const configurePlatformBuilds = async () => {
+    const c = getContext();
     if (c.paths.project.builds.dir && !fsExistsSync(c.paths.project.builds.dir)) {
         logInfo(`Creating folder ${c.paths.project.builds.dir} ...DONE`);
         fsMkdirSync(c.paths.project.builds.dir);
@@ -55,53 +57,53 @@ const configurePlatformBuilds = async (c: RnvContext) => {
 const taskProjectConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskProjectConfigure');
 
-    await configurePlatformBuilds(c);
+    await configurePlatformBuilds();
     await checkAndMigrateProject();
-    await updateRenativeConfigs(c);
-    await checkIsRenativeProject(c);
+    await updateRenativeConfigs();
+    await checkIsRenativeProject();
     await generateLocalJsonSchemas();
 
-    await executeTask(c, RnvTaskName.workspaceConfigure, RnvTaskName.projectConfigure, originTask);
+    await executeTask(RnvTaskName.workspaceConfigure, RnvTaskName.projectConfigure, originTask);
 
     if (c.program.only && !!parentTask) {
-        await configureRuntimeDefaults(c);
-        await executeTask(c, RnvTaskName.appConfigure, RnvTaskName.projectConfigure, originTask);
-        await generatePlatformAssetsRuntimeConfig(c);
+        await configureRuntimeDefaults();
+        await executeTask(RnvTaskName.appConfigure, RnvTaskName.projectConfigure, originTask);
+        await generatePlatformAssetsRuntimeConfig();
         return true;
     }
 
-    await checkIfTemplateConfigured(c);
-    await executeTask(c, RnvTaskName.install, RnvTaskName.projectConfigure, originTask);
+    await checkIfTemplateConfigured();
+    await executeTask(RnvTaskName.install, RnvTaskName.projectConfigure, originTask);
     if (originTask !== RnvTaskName.cryptoDecrypt) {
         //If we explicitly running rnv crypto decrypt there is no need to check crypto
         await checkCrypto(c, parentTask, originTask);
     }
 
-    await configureRuntimeDefaults(c);
+    await configureRuntimeDefaults();
 
     if (originTask !== RnvTaskName.templateApply) {
-        if ((c.runtime.requiresBootstrap || !isTemplateInstalled(c)) && !c.files.project.config?.isTemplate) {
-            await applyTemplate(c);
+        if ((c.runtime.requiresBootstrap || !isTemplateInstalled()) && !c.files.project.config?.isTemplate) {
+            await applyTemplate();
             // We'll have to install the template first and reset current engine
             logInfo('Your template has been bootstraped. Command reset is required. RESTRATING...DONE');
 
-            const taskInstance = await findSuitableTask(c);
+            const taskInstance = await findSuitableTask();
             c.runtime.requiresBootstrap = false;
             if (taskInstance?.task) {
-                return initializeTask(c, taskInstance?.task);
+                return initializeTask(taskInstance?.task);
             }
         }
-        await applyTemplate(c);
-        await configureRuntimeDefaults(c);
-        await executeTask(c, RnvTaskName.install, RnvTaskName.projectConfigure, originTask);
-        await executeTask(c, RnvTaskName.appConfigure, RnvTaskName.projectConfigure, originTask);
+        await applyTemplate();
+        await configureRuntimeDefaults();
+        await executeTask(RnvTaskName.install, RnvTaskName.projectConfigure, originTask);
+        await executeTask(RnvTaskName.appConfigure, RnvTaskName.projectConfigure, originTask);
         // IMPORTANT: configurePlugins must run after appConfig present to ensure merge of all configs/plugins
         await versionCheck(c);
         await configureEngines(c);
-        await resolvePluginDependants(c);
-        await configurePlugins(c);
+        await resolvePluginDependants();
+        await configurePlugins();
 
-        await configureRuntimeDefaults(c);
+        await configureRuntimeDefaults();
         if (!c.runtime.disableReset) {
             if (c.program.resetHard) {
                 logInfo(
@@ -109,28 +111,28 @@ const taskProjectConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
                         './platformAssets'
                     )}" will be cleaned up first`
                 );
-                await cleanPlaformAssets(c);
+                await cleanPlaformAssets();
             } else if (c.program.resetAssets) {
                 logInfo(
                     `You passed ${chalk().bold('-a, --resetAssets')} argument. "${chalk().bold(
                         './platformAssets'
                     )}" will be cleaned up first`
                 );
-                await cleanPlaformAssets(c);
+                await cleanPlaformAssets();
             }
         }
 
-        await copyRuntimeAssets(c);
-        await configureTemplateFiles(c);
-        await checkAndCreateGitignore(c);
+        await copyRuntimeAssets();
+        await configureTemplateFiles();
+        await checkAndCreateGitignore();
         if (!c.buildConfig.platforms) {
-            await updateRenativeConfigs(c);
+            await updateRenativeConfigs();
         }
-        await generatePlatformAssetsRuntimeConfig(c);
-        await overrideTemplatePlugins(c);
+        await generatePlatformAssetsRuntimeConfig();
+        await overrideTemplatePlugins();
         // NOTE: this is needed to ensure missing rnv plugin sub-deps are caught
-        await checkForPluginDependencies(c);
-        await configureFonts(c);
+        await checkForPluginDependencies();
+        await configureFonts();
     }
 
     return true;

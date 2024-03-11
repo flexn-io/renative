@@ -19,9 +19,9 @@ import { launchKaiOSSimulator } from '@rnv/sdk-kaios';
 const taskTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskTargetLaunch');
 
-    await isPlatformSupported(c, true);
-    await checkAndConfigureSdks(c);
-    await executeTask(c, RnvTaskName.workspaceConfigure, RnvTaskName.targetLaunch, originTask);
+    await isPlatformSupported(true);
+    await checkAndConfigureSdks();
+    await executeTask(RnvTaskName.workspaceConfigure, RnvTaskName.targetLaunch, originTask);
 
     const { platform, program } = c;
     let target = program?.target;
@@ -51,7 +51,7 @@ const taskTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) => {
         }
     }
 
-    await checkSdk(c);
+    await checkSdk();
 
     switch (platform) {
         case 'android':

@@ -17,6 +17,7 @@ import {
     RnvContext,
     inquirerPrompt,
     ConfigFileWorkspace,
+    getContext,
 } from '@rnv/core';
 
 import { CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from './constants';
@@ -49,32 +50,27 @@ const _logSdkWarning = (c: RnvContext) => {
     logWarning(`Your ${c.paths.workspace.config} is missing SDK configuration object`);
 };
 
-export const checkAndConfigureAndroidSdks = async (c: RnvContext) => {
+export const checkAndConfigureAndroidSdks = async () => {
+    const c = getContext();
     const sdk = c.buildConfig?.sdks?.ANDROID_SDK;
     logDefault('checkAndConfigureAndroidSdks', `(${sdk})`);
 
     if (!sdk) return _logSdkWarning(c);
 
-    let sdkManagerPath = getRealPath(
-        c,
-        path.join(sdk, `cmdline-tools/latest/bin/sdkmanager${isSystemWin ? '.bat' : ''}`)
-    );
+    let sdkManagerPath = getRealPath(path.join(sdk, `cmdline-tools/latest/bin/sdkmanager${isSystemWin ? '.bat' : ''}`));
 
     if (!fsExistsSync(sdkManagerPath)) {
-        sdkManagerPath = getRealPath(c, path.join(sdk, `tools/bin/sdkmanager${isSystemWin ? '.bat' : ''}`));
+        sdkManagerPath = getRealPath(path.join(sdk, `tools/bin/sdkmanager${isSystemWin ? '.bat' : ''}`));
     }
 
-    let avdManagerPath = getRealPath(
-        c,
-        path.join(sdk, `cmdline-tools/latest/bin/avdmanager${isSystemWin ? '.bat' : ''}`)
-    );
+    let avdManagerPath = getRealPath(path.join(sdk, `cmdline-tools/latest/bin/avdmanager${isSystemWin ? '.bat' : ''}`));
 
     if (!fsExistsSync(avdManagerPath)) {
-        avdManagerPath = getRealPath(c, path.join(sdk, `tools/bin/avdmanager${isSystemWin ? '.bat' : ''}`));
+        avdManagerPath = getRealPath(path.join(sdk, `tools/bin/avdmanager${isSystemWin ? '.bat' : ''}`));
     }
 
-    c.cli[CLI_ANDROID_EMULATOR] = getRealPath(c, path.join(sdk, `emulator/emulator${isSystemWin ? '.exe' : ''}`));
-    c.cli[CLI_ANDROID_ADB] = getRealPath(c, path.join(sdk, `platform-tools/adb${isSystemWin ? '.exe' : ''}`));
+    c.cli[CLI_ANDROID_EMULATOR] = getRealPath(path.join(sdk, `emulator/emulator${isSystemWin ? '.exe' : ''}`));
+    c.cli[CLI_ANDROID_ADB] = getRealPath(path.join(sdk, `platform-tools/adb${isSystemWin ? '.exe' : ''}`));
     c.cli[CLI_ANDROID_AVDMANAGER] = avdManagerPath;
     c.cli[CLI_ANDROID_SDKMANAGER] = sdkManagerPath;
 };
@@ -88,7 +84,7 @@ const _isSdkInstalled = (c: RnvContext) => {
 
     const sdkPath = _getCurrentSdkPath(c);
 
-    return fsExistsSync(getRealPath(c, sdkPath));
+    return fsExistsSync(getRealPath(sdkPath));
 };
 
 const _findFolderWithFile = (dir: string, fileToFind: string) => {
@@ -158,8 +154,8 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: SDKKe
                 if (!c.files.workspace.config?.sdks) c.files.workspace.config.sdks = {};
                 c.files.workspace.config.sdks[sdkKey] = result;
                 writeFileSync(c.paths.workspace.config, c.files.workspace.config);
-                generateBuildConfig(c);
-                await checkAndConfigureAndroidSdks(c);
+                generateBuildConfig();
+                await checkAndConfigureAndroidSdks();
             } catch (e) {
                 logError(e);
             }
@@ -172,7 +168,7 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: SDKKe
 
     // const setupInstance = PlatformSetup(c);
     // await setupInstance.askToInstallSDK(sdkPlatform);
-    generateBuildConfig(c);
+    generateBuildConfig();
     return true;
 };
 
@@ -196,7 +192,7 @@ export const checkAndroidSdk = async (c: RnvContext) => {
                 return true;
         }
     } else {
-        await checkAndConfigureAndroidSdks(c);
+        await checkAndConfigureAndroidSdks();
     }
     return true;
 };

@@ -13,9 +13,9 @@ import {
 const taskHooksPipes: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskHooksPipes');
 
-    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.hooksPipes, originTask);
+    await executeTask(RnvTaskName.projectConfigure, RnvTaskName.hooksPipes, originTask);
 
-    await buildHooks(c);
+    await buildHooks();
 
     const pipeOpts = generateOptions(c.buildPipes);
     logRaw(`Pipes:\n${pipeOpts.asString}`);

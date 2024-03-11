@@ -265,8 +265,9 @@ export const configureTemplateFiles = async () => {
     }
 };
 
-export const configureEntryPoint = async (c: RnvContext, platform: RnvPlatform) => {
+export const configureEntryPoint = async (platform: RnvPlatform) => {
     logDefault('configureEntryPoint');
+    const c = getContext();
 
     if (c.files.project.config?.isTemplate) return true;
 
@@ -300,7 +301,8 @@ export const configureEntryPoint = async (c: RnvContext, platform: RnvPlatform) 
     return true;
 };
 
-export const getInstalledTemplateOptions = (c: RnvContext): PromptOptions | null => {
+export const getInstalledTemplateOptions = (): PromptOptions | null => {
+    const c = getContext();
     if (c.files.project.config?.isTemplate) return null;
     if (c.buildConfig.templates) {
         return generateOptions(c.buildConfig.templates);
@@ -309,8 +311,10 @@ export const getInstalledTemplateOptions = (c: RnvContext): PromptOptions | null
     return null;
 };
 
-export const isTemplateInstalled = (c: RnvContext) =>
-    c.buildConfig.currentTemplate ? doResolve(c.buildConfig.currentTemplate) : false;
+export const isTemplateInstalled = () => {
+    const c = getContext();
+    return c.buildConfig.currentTemplate ? doResolve(c.buildConfig.currentTemplate) : false;
+};
 
 export const applyTemplate = async (selectedTemplate?: string) => {
     const c = getContext();
@@ -326,7 +330,7 @@ export const applyTemplate = async (selectedTemplate?: string) => {
 
     if (!c.buildConfig.currentTemplate) {
         logWarning("You don't have any current template selected");
-        const opts = getInstalledTemplateOptions(c);
+        const opts = getInstalledTemplateOptions();
 
         if (opts) {
             const { template } = await inquirerPrompt({

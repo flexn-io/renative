@@ -22,19 +22,19 @@ import { isBuildSchemeSupported } from '../../buildSchemes';
 const taskPlatformConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskPlatformConfigure', '');
 
-    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.platformConfigure, originTask);
+    await executeTask(RnvTaskName.projectConfigure, RnvTaskName.platformConfigure, originTask);
 
     if (shouldSkipTask(c, RnvTaskName.platformConfigure, originTask)) return true;
 
-    await isPlatformSupported(c);
-    await isBuildSchemeSupported(c);
-    await checkAndConfigureSdks(c);
-    await checkSdk(c);
-    await configureRuntimeDefaults(c);
+    await isPlatformSupported();
+    await isBuildSchemeSupported();
+    await checkAndConfigureSdks();
+    await checkSdk();
+    await configureRuntimeDefaults();
 
     if (c.program.only && !!parentTask) return true;
 
-    await executeTask(c, RnvTaskName.install, RnvTaskName.platformConfigure, originTask);
+    await executeTask(RnvTaskName.install, RnvTaskName.platformConfigure, originTask);
 
     const hasBuild = fsExistsSync(c.paths.project.builds.dir);
     logTask('', `taskPlatformConfigure hasBuildFolderPresent:${hasBuild}`);
@@ -45,11 +45,11 @@ const taskPlatformConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
                 getAppFolder(c)
             )}" CLEANING...DONE`
         );
-        await cleanPlatformBuild(c, c.platform);
+        await cleanPlatformBuild(c.platform);
     }
 
-    await createPlatformBuild(c, c.platform);
-    await injectPlatformDependencies(c);
+    await createPlatformBuild(c.platform);
+    await injectPlatformDependencies();
     // await _runCopyPlatforms(c);
     return true;
 };

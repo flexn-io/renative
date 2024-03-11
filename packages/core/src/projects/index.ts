@@ -185,7 +185,7 @@ export const checkAndBootstrapIfRequired = async () => {
         await parseRenativeConfigs();
 
         await configureTemplateFiles();
-        await configureEntryPoint(c, c.platform);
+        await configureEntryPoint(c.platform);
         // await applyTemplate(c);
 
         // copyFolderContentsRecursiveSync(templatePath, c.paths.project.dir);
@@ -279,9 +279,9 @@ export const configureFonts = async () => {
     return true;
 };
 
-export const copyRuntimeAssets = async (c: RnvContext) => {
+export const copyRuntimeAssets = async () => {
     logDefault('copyRuntimeAssets');
-
+    const c = getContext();
     const destPath = path.join(c.paths.project.assets.dir, 'runtime');
 
     // FOLDER MERGERS FROM APP CONFIG + EXTEND
@@ -653,7 +653,8 @@ It is recommended that you run your rnv command with npx prefix: ${recCmd} . or 
     return true;
 };
 
-export const cleanPlaformAssets = async (c: RnvContext) => {
+export const cleanPlaformAssets = async () => {
+    const c = getContext();
     logDefault('cleanPlaformAssets');
 
     await cleanFolder(c.paths.project.assets.dir);

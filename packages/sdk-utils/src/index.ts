@@ -85,7 +85,7 @@ export const waitForHost = async (c: RnvContext, suffix = 'assets/bundle.js') =>
     });
 };
 
-export const checkPortInUse = (c: RnvContext, platform: RnvPlatform, port: number) =>
+export const checkPortInUse = (port: number) =>
     new Promise((resolve, reject) => {
         if (port === undefined || port === null) {
             resolve(false);

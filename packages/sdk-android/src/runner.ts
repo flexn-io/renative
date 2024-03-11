@@ -285,7 +285,7 @@ const _checkSigningCerts = async (c: Context) => {
                     const keystorePath = path.join(c.paths.workspace.appConfig.dir, 'release.keystore');
                     mkdirSync(c.paths.workspace.appConfig.dir);
                     const keytoolCmd = `keytool -genkey -v -keystore ${keystorePath} -alias ${keyAlias} -keypass ${keyPassword} -storepass ${storePassword} -keyalg RSA -keysize 2048 -validity 10000`;
-                    await executeAsync(c, keytoolCmd, {
+                    await executeAsync(keytoolCmd, {
                         shell: true,
                         stdio: 'inherit',
                         silent: true,
@@ -312,7 +312,7 @@ const _checkSigningCerts = async (c: Context) => {
             updateObjectSync(c.paths.workspace.appConfig.configPrivate, c.files.workspace.appConfig.configPrivate);
             logSuccess(`Successfully updated private config file at ${chalk().bold(c.paths.workspace.appConfig.dir)}.`);
             // await configureProject(c);
-            await updateRenativeConfigs(c);
+            await updateRenativeConfigs();
             await parseAppBuildGradleSync(c);
             // await configureGradleProject(c);
         } else {
@@ -329,8 +329,8 @@ export const configureAndroidProperties = async (c: Context) => {
     c.runtime.platformBuildsProjectPath = appFolder;
 
     const addNDK = c.buildConfig?.sdks?.ANDROID_NDK && !c.buildConfig.sdks.ANDROID_NDK.includes('<USER>');
-    let ndkString = `ndk.dir=${getRealPath(c, c.buildConfig?.sdks?.ANDROID_NDK)}`;
-    let sdkDir = getRealPath(c, c.buildConfig?.sdks?.ANDROID_SDK);
+    let ndkString = `ndk.dir=${getRealPath(c.buildConfig?.sdks?.ANDROID_NDK)}`;
+    let sdkDir = getRealPath(c.buildConfig?.sdks?.ANDROID_SDK);
 
     if (!sdkDir) {
         logError(`Cannot resolve c.buildConfig?.sdks?.ANDROID_SDK: ${c.buildConfig?.sdks?.ANDROID_SDK}`);
@@ -356,11 +356,11 @@ export const configureGradleProject = async (c: Context) => {
     const { platform } = c;
     logDefault('configureGradleProject');
 
-    if (!isPlatformActive(c, platform)) return;
-    await copyAssetsFolder(c, platform, 'app/src/main');
+    if (!isPlatformActive(platform)) return;
+    await copyAssetsFolder(platform, 'app/src/main');
     await configureAndroidProperties(c);
     await configureProject(c);
-    await copyBuildsFolder(c, platform);
+    await copyBuildsFolder(platform);
     return true;
 };
 
@@ -459,7 +459,7 @@ export const configureProject = async (c: Context) => {
 
     // FONTS
     const includedFonts = getConfigProp(c, c.platform, 'includedFonts') || [];
-    parseFonts(c, (font: string, dir: string) => {
+    parseFonts((font: string, dir: string) => {
         if (font.includes('.ttf') || font.includes('.otf')) {
             const key = font.split('.')[0];
 

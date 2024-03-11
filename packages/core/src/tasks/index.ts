@@ -45,7 +45,7 @@ export const initializeTask = async (task: string) => {
         platform: c.platform,
     });
 
-    await executeTask(c, task, undefined, task, true);
+    await executeTask(task, undefined, task, true);
     return true;
 };
 
@@ -401,17 +401,12 @@ const _selectPlatform = async (c: RnvContext, suitableEngines: Array<RnvEngine>,
 };
 
 const _executePipe = async (c: RnvContext, task: string, phase: string) =>
-    executePipe(c, `${task.split(' ').join(':')}:${phase}`);
+    executePipe(`${task.split(' ').join(':')}:${phase}`);
 
 const TASK_LIMIT = 20;
 
-export const executeTask = async (
-    c: RnvContext,
-    task: string,
-    parentTask?: string,
-    originTask?: string,
-    isFirstTask?: boolean
-) => {
+export const executeTask = async (task: string, parentTask?: string, originTask?: string, isFirstTask?: boolean) => {
+    const c = getContext();
     // const pt = parentTask ? `=> [${parentTask}] ` : '';
     c._currentTask = task;
     // logInitTask(`${pt}=> [${chalk().bold.rgb(170, 106, 170)(task)}]`);
@@ -426,7 +421,7 @@ but issue migh not be necessarily with this task
 
 To avoid that test your task code against parentTask and avoid executing same task X from within task X`);
     }
-    await executeEngineTask(c, task, parentTask, originTask, getEngineRunner(task, CUSTOM_TASKS)?.tasks, isFirstTask);
+    await executeEngineTask(task, parentTask, originTask, getEngineRunner(task, CUSTOM_TASKS)?.tasks, isFirstTask);
     // await getEngineRunner(c, task, CUSTOM_TASKS).executeTask(c, task, parentTask, originTask, isFirstTask);
     executedTasks[task]++;
 
@@ -440,9 +435,9 @@ To avoid that test your task code against parentTask and avoid executing same ta
  */
 export const executeOrSkipTask = async (c: RnvContext, task: string, parentTask: string, originTask?: string) => {
     if (!c.program.only) {
-        return executeTask(c, task, parentTask, originTask);
+        return executeTask(task, parentTask, originTask);
     }
-    return executeTask(c, 'configureSoft', parentTask, originTask);
+    return executeTask('configureSoft', parentTask, originTask);
 };
 
 export const executeDependantTask = async ({
@@ -458,10 +453,10 @@ export const executeDependantTask = async ({
 }) => {
     const ctx = getContext();
     if (!ctx.program.only) {
-        return executeTask(ctx, task, parentTask, originTask);
+        return executeTask(task, parentTask, originTask);
     }
     if (alternativeTask) {
-        return executeTask(ctx, alternativeTask, parentTask, originTask);
+        return executeTask(alternativeTask, parentTask, originTask);
     }
     return true;
 };
@@ -474,7 +469,8 @@ const _logSkip = (task: string) => {
     logInfo(`Original RNV task ${chalk().bold(task)} marked to ignore. SKIPPING...`);
 };
 
-export const shouldSkipTask = (c: RnvContext, taskKey: string, originRnvTaskName?: string) => {
+export const shouldSkipTask = (taskKey: string, originRnvTaskName?: string) => {
+    const c = getContext();
     const task = taskKey as RenativeConfigRnvTaskName;
     const originTask = originRnvTaskName as RenativeConfigRnvTaskName;
     const tasks = c.buildConfig?.tasks;
@@ -541,13 +537,13 @@ export const shouldSkipTask = (c: RnvContext, taskKey: string, originRnvTaskName
 };
 
 export const executeEngineTask = async (
-    c: RnvContext,
     task: string,
     parentTask?: string,
     originTask?: string,
     tasks?: Record<string, RnvTask>,
     isFirstTask?: boolean
 ) => {
+    const c = getContext();
     const needsHelp = Object.prototype.hasOwnProperty.call(c.program, 'help');
 
     const t = getEngineTask(task, tasks, CUSTOM_TASKS);

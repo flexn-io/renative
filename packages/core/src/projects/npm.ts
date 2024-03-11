@@ -212,7 +212,8 @@ export const installPackageDependencies = async (failOnError = false) => {
     }
 };
 
-export const jetifyIfRequired = async (c: RnvContext) => {
+export const jetifyIfRequired = async () => {
+    const c = getContext();
     logDefault('jetifyIfRequired');
     if (c.files.project.configLocal?._meta?.requiresJetify) {
         if (doResolve('jetifier')) {

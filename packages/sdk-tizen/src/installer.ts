@@ -14,6 +14,7 @@ import {
     generateBuildConfig,
     RnvContext,
     inquirerPrompt,
+    getContext,
 } from '@rnv/core';
 import { CLI_SDB_TIZEN, CLI_TIZEN, CLI_TIZEN_EMULATOR } from './constants';
 
@@ -27,16 +28,16 @@ const _logSdkWarning = (c: RnvContext) => {
     logWarning(`Your ${c.paths.workspace.config} is missing SDK configuration object`);
 };
 
-export const checkAndConfigureTizenSdks = async (c: RnvContext) => {
+export const checkAndConfigureTizenSdks = async () => {
+    const c = getContext();
     logDefault(`checkAndConfigureTizenSdks:${c.platform}`);
     const sdk = c.buildConfig?.sdks?.TIZEN_SDK;
     if (sdk) {
         c.cli[CLI_TIZEN_EMULATOR] = getRealPath(
-            c,
             path.join(sdk, `tools/emulator/bin/em-cli${isSystemWin ? '.bat' : ''}`)
         );
-        c.cli[CLI_TIZEN] = getRealPath(c, path.join(sdk, `tools/ide/bin/tizen${isSystemWin ? '.bat' : ''}`));
-        c.cli[CLI_SDB_TIZEN] = getRealPath(c, path.join(sdk, `tools/sdb${isSystemWin ? '.exe' : ''}`));
+        c.cli[CLI_TIZEN] = getRealPath(path.join(sdk, `tools/ide/bin/tizen${isSystemWin ? '.bat' : ''}`));
+        c.cli[CLI_SDB_TIZEN] = getRealPath(path.join(sdk, `tools/sdb${isSystemWin ? '.exe' : ''}`));
     } else {
         _logSdkWarning(c);
     }
@@ -51,7 +52,7 @@ const _isSdkInstalled = (c: RnvContext) => {
 
     const sdkPath = _getCurrentSdkPath(c);
 
-    return fsExistsSync(getRealPath(c, sdkPath));
+    return fsExistsSync(getRealPath(sdkPath));
 };
 
 const _attemptAutoFix = async (c: RnvContext) => {
@@ -84,8 +85,8 @@ const _attemptAutoFix = async (c: RnvContext) => {
                 c.files.workspace.config.sdks.TIZEN_SDK = result;
                 //TODO: use config_original here?
                 writeFileSync(c.paths.workspace.config, c.files.workspace.config);
-                generateBuildConfig(c);
-                await checkAndConfigureTizenSdks(c);
+                generateBuildConfig();
+                await checkAndConfigureTizenSdks();
             } catch (e) {
                 logError(e);
             }
@@ -98,7 +99,7 @@ const _attemptAutoFix = async (c: RnvContext) => {
 
     // const setupInstance = PlatformSetup(c);
     // await setupInstance.askToInstallSDK(sdkPlatform);
-    generateBuildConfig(c);
+    generateBuildConfig();
     return true;
 };
 

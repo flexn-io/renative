@@ -176,7 +176,7 @@ Make sure you take into account special characters that might need to be escaped
 const taskCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskCryptoEncrypt');
 
-    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.cryptoEncrypt, originTask);
+    await executeTask(RnvTaskName.projectConfigure, RnvTaskName.cryptoEncrypt, originTask);
 
     const projectName = c.files.project.config?.projectName;
 
@@ -195,7 +195,7 @@ const taskCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask) => {
     const key = c.program.key || c.process.env[envVar];
 
     if (destRaw) {
-        const dest = `${getRealPath(c, destRaw, 'crypto.path')}`;
+        const dest = `${getRealPath(destRaw, 'crypto.path')}`;
         const destTemp = `${path.join(c.paths.workspace.dir, projectName.replace('/', '-'))}.tgz`;
         const timestamp = new Date().getTime();
 

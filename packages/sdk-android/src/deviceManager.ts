@@ -89,7 +89,6 @@ export const launchAndroidSimulator = async (
 
         if (isIndependentThread) {
             executeAsync(
-                c,
                 `${c.cli[CLI_ANDROID_EMULATOR]} -avd ${actualTarget}`,
                 ExecOptionsPresets.FIRE_AND_FORGET
             ).catch((err) => {
@@ -108,7 +107,6 @@ export const launchAndroidSimulator = async (
 
         try {
             await executeAsync(
-                c,
                 `${c.cli[CLI_ANDROID_EMULATOR]} -avd ${actualTarget}`,
                 ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY
             );
@@ -191,12 +189,12 @@ const _getDeviceAsObject = (device: AndroidDevice): DeviceInfo => {
 export const resetAdb = async (c: RnvContext, forceRun?: boolean, ranBefore?: boolean) => {
     if (!c.program.resetAdb && !forceRun) return;
     try {
-        if (!ranBefore) await execCLI(c, CLI_ANDROID_ADB, 'kill-server');
+        if (!ranBefore) await execCLI(CLI_ANDROID_ADB, 'kill-server');
     } catch (e) {
         logWarning(e);
     }
     try {
-        await execCLI(c, CLI_ANDROID_ADB, 'start-server');
+        await execCLI(CLI_ANDROID_ADB, 'start-server');
     } catch (e) {
         if (ranBefore) {
             return Promise.reject(e);
@@ -216,10 +214,10 @@ export const getAndroidTargets = async (c: RnvContext, skipDevices: boolean, ski
         let avdResult: string | undefined;
 
         if (!skipDevices) {
-            devicesResult = await execCLI(c, CLI_ANDROID_ADB, 'devices -l');
+            devicesResult = await execCLI(CLI_ANDROID_ADB, 'devices -l');
         }
         if (!skipAvds) {
-            avdResult = await execCLI(c, CLI_ANDROID_EMULATOR, '-list-avds');
+            avdResult = await execCLI(CLI_ANDROID_EMULATOR, '-list-avds');
         }
         return _parseDevicesResult(c, devicesResult, avdResult, deviceOnly);
     } catch (e) {
@@ -240,7 +238,7 @@ const getRunningDeviceProp = async (c: RnvContext, udid: string, prop: string): 
         // if (!prop) return currentDeviceProps[udid];
         return currentDeviceProps[udid][prop];
     }
-    const rawProps = await execCLI(c, CLI_ANDROID_ADB, `-s ${udid} shell getprop`);
+    const rawProps = await execCLI(CLI_ANDROID_ADB, `-s ${udid} shell getprop`);
     const reg = /\[.+\]: \[.*\n?[^[]*\]/gm;
     const lines = rawProps.match(reg);
 
@@ -304,8 +302,8 @@ const getDeviceType = async (device: AndroidDevice, c: RnvContext) => {
     logDebug('getDeviceType - in', { device });
 
     if (device.udid !== 'unknown') {
-        const screenSizeResult = await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} shell wm size`);
-        const screenDensityResult = await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} shell wm density`);
+        const screenSizeResult = await execCLI(CLI_ANDROID_ADB, `-s ${device.udid} shell wm size`);
+        const screenDensityResult = await execCLI(CLI_ANDROID_ADB, `-s ${device.udid} shell wm density`);
         const arch = await getRunningDeviceProp(c, device.udid, 'ro.product.cpu.abi');
         let screenProps = {
             width: 0,
@@ -425,11 +423,11 @@ const getAvdDetails = (c: RnvContext, deviceName: string) => {
     return results;
 };
 
-const getEmulatorName = async (c: RnvContext, words: Array<string>) => {
+const getEmulatorName = async (words: Array<string>) => {
     const emulator = words[0];
     const port = emulator.split('-')[1];
 
-    const emulatorReply = await executeTelnet(c, port, 'avd name');
+    const emulatorReply = await executeTelnet(port, 'avd name');
     const emulatorReplyArray = emulatorReply.split('OK');
     const emulatorNameStr = emulatorReplyArray[emulatorReplyArray.length - 2];
     const emulatorName = emulatorNameStr?.trim?.() || '(err: could not parse emulator name)';
@@ -443,7 +441,7 @@ export const connectToWifiDevice = async (c: RnvContext, target: string) => {
         connect_str = `connect ${target}:5555`;
     }
 
-    const deviceResponse = await execCLI(c, CLI_ANDROID_ADB, connect_str);
+    const deviceResponse = await execCLI(CLI_ANDROID_ADB, connect_str);
     if (deviceResponse.includes('connected')) return true;
     logError(`Failed to ${connect_str}`, false, true);
     return false;
@@ -476,8 +474,8 @@ const _parseDevicesResult = async (
                         const product = _getDeviceProp(words, 'product:');
                         logDebug('_parseDevicesResult 4', { name });
                         if (!isDevice) {
-                            await waitForEmulatorToBeReady(c, words[0]);
-                            name = await getEmulatorName(c, words);
+                            await waitForEmulatorToBeReady(words[0]);
+                            name = await getEmulatorName(words);
                             logDebug('_parseDevicesResult 5', { name });
                         }
                         logDebug('_parseDevicesResult 6', {
@@ -634,10 +632,9 @@ export const askForNewEmulator = async (c: RnvContext, platform: RnvPlatform) =>
 const _createEmulator = (c: RnvContext, apiVersion: string, emuPlatform: string, emuName: string, arch = 'x86') => {
     logDefault('_createEmulator');
 
-    return execCLI(c, CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};${arch}"`)
+    return execCLI(CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};${arch}"`)
         .then(() =>
             execCLI(
-                c,
                 CLI_ANDROID_AVDMANAGER,
                 `create avd -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};x86"`,
                 ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER
@@ -646,8 +643,8 @@ const _createEmulator = (c: RnvContext, apiVersion: string, emuPlatform: string,
         .catch((e) => logError(e, true));
 };
 
-const waitForEmulatorToBeReady = (c: RnvContext, emulator: string) =>
-    waitForExecCLI(c, CLI_ANDROID_ADB, `-s ${emulator} shell getprop init.svc.bootanim`, (res) => {
+const waitForEmulatorToBeReady = (emulator: string) =>
+    waitForExecCLI(CLI_ANDROID_ADB, `-s ${emulator} shell getprop init.svc.bootanim`, (res) => {
         if (typeof res === 'string') {
             return res.includes('stopped');
         }

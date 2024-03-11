@@ -17,10 +17,10 @@ import { configureFonts } from '@rnv/sdk-react-native';
 const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskConfigure');
 
-    await executeTask(c, RnvTaskName.platformConfigure, RnvTaskName.configure, originTask);
+    await executeTask(RnvTaskName.platformConfigure, RnvTaskName.configure, originTask);
     if (shouldSkipTask(c, RnvTaskName.configure, originTask)) return true;
 
-    await configureEntryPoint(c, c.platform);
+    await configureEntryPoint(c.platform);
 
     if (c.program.only && !!parentTask) {
         return true;

@@ -11,7 +11,7 @@ import {
 const taskConfig: RnvTaskFn = async (c, _, originTask) => {
     logTask('taskConfig');
 
-    await executeTask(c, RnvTaskName.configureSoft, RnvTaskName.config, originTask);
+    await executeTask(RnvTaskName.configureSoft, RnvTaskName.config, originTask);
 
     console.log(JSON.stringify(c.buildConfig, null, 2));
 

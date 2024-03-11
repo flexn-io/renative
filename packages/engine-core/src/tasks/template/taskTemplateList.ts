@@ -13,9 +13,9 @@ const taskTemplateList: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskTemplateList');
 
     if (c.paths.project.configExists) {
-        await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.templateList, originTask);
+        await executeTask(RnvTaskName.projectConfigure, RnvTaskName.templateList, originTask);
     }
-    const opts = getTemplateOptions(c, !c.paths.project.configExists);
+    const opts = getTemplateOptions(!c.paths.project.configExists);
     logToSummary(`Templates:\n\n${opts.asString}`);
     return true;
 };

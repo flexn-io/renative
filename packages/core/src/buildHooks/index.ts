@@ -3,14 +3,15 @@ import { build } from 'esbuild';
 import { logDebug, logError, logHook, logInfo } from '../logger';
 import { fsExistsSync, copyFolderContentsRecursiveSync } from '../system/fs';
 import { doResolve } from '../system/resolve';
-import { RnvContext } from '../context/types';
 import { inquirerPrompt } from '../api';
 import { getConfigProp } from '../context/contextProps';
+import { getContext } from '../context/provider';
 
-export const executePipe = async (c: RnvContext, key: string) => {
+export const executePipe = async (key: string) => {
+    const c = getContext();
     logDebug('executePipe', c?.program?.json ? key : `('${key}')`);
 
-    await buildHooks(c);
+    await buildHooks();
 
     const pipes = c.buildPipes ? c.buildPipes[key] : null;
 
@@ -24,9 +25,9 @@ export const executePipe = async (c: RnvContext, key: string) => {
     }
 };
 
-export const buildHooks = async (c: RnvContext) => {
+export const buildHooks = async () => {
     logDebug('buildHooks');
-
+    const c = getContext();
     const enableHookRebuild = getConfigProp(c, c.platform, 'enableHookRebuild');
 
     let shouldBuildHook =

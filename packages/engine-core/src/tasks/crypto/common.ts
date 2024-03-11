@@ -47,7 +47,7 @@ export const checkCrypto = async (c: RnvContext, parentTask?: string, originTask
     }
 
     if (sourceRaw) {
-        const source = `${getRealPath(c, sourceRaw, 'crypto.path')}`;
+        const source = `${getRealPath(sourceRaw, 'crypto.path')}`;
         const tsProjectPath = `${source}.timestamp`;
         const wsPath = path.join(c.paths.workspace.dir, c.files.project.package.name);
         const tsWorkspacePath = path.join(wsPath, 'timestamp');
@@ -69,7 +69,7 @@ export const checkCrypto = async (c: RnvContext, parentTask?: string, originTask
 project timestamp: ${chalk().grey(`${tsProject} - ${new Date(tsProject)}`)}
 workspace timestamp: ${chalk().grey(`${tsWorkspace} - ${new Date(tsWorkspace)}`)}
 you should run decrypt`);
-                await executeTask(c, RnvTaskName.cryptoDecrypt, parentTask, originTask);
+                await executeTask(RnvTaskName.cryptoDecrypt, parentTask, originTask);
                 return;
             }
 

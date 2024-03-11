@@ -11,16 +11,16 @@ import {
 import { checkAndConfigureSdks, checkSdk } from '../../common';
 import { isBuildSchemeSupported } from '../../buildSchemes';
 
-const taskConfigureSoft: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskConfigureSoft: RnvTaskFn = async (_c, parentTask, originTask) => {
     logTask('taskConfigureSoft');
 
-    await configureRuntimeDefaults(c);
-    await executeTask(c, RnvTaskName.appConfigure, parentTask, originTask);
-    await isPlatformSupported(c);
-    await isBuildSchemeSupported(c);
-    await checkAndConfigureSdks(c);
-    await checkSdk(c);
-    await configureRuntimeDefaults(c);
+    await configureRuntimeDefaults();
+    await executeTask(RnvTaskName.appConfigure, parentTask, originTask);
+    await isPlatformSupported();
+    await isBuildSchemeSupported();
+    await checkAndConfigureSdks();
+    await checkSdk();
+    await configureRuntimeDefaults();
     return true;
 };
 
