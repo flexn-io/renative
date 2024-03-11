@@ -46,7 +46,7 @@ const AppContent = () => {
     };
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={styles.wrapper}>
             <View style={styles.header}>
                 <Image
                     style={styles.logo}

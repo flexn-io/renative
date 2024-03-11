@@ -2,6 +2,7 @@ import { isPlatformIos, isFactorMobile, isFactorWatch } from '@rnv/renative';
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+    wrapper: { position: 'absolute', left: 0, right: 0, bottom: 0, top: 0 },
     container: {
         flex: 1,
         justifyContent: 'center',
