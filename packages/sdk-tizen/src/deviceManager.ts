@@ -19,9 +19,6 @@ import {
     executeAsync,
     ExecOptionsPresets,
     ConfigName,
-    fsExistsSync,
-    fsMkdirSync,
-    copyFileSync,
 } from '@rnv/core';
 import { CLI_SDB_TIZEN, CLI_TIZEN, CLI_TIZEN_EMULATOR } from './constants';
 

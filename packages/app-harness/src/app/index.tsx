@@ -21,7 +21,7 @@ const App = () => {
     }, []);
 
     return (
-        <View style={styles.screen}>
+        <View style={{ flex: 1 }}>
             <View style={styles.header}>
                 <Image
                     style={styles.logo}
