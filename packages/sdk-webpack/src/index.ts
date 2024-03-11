@@ -231,7 +231,7 @@ export const runWebpackServer = async (enableRemoteDebugger?: boolean) => {
     devServerHost = getDevServerHost();
 
     const isPortActive = await checkPortInUse(port);
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
+    const bundleAssets = getConfigProp('bundleAssets', false);
 
     if (bundleAssets) {
         logSuccess('bundleAssets set to true. webpack dev server will not run');
@@ -251,7 +251,7 @@ export const runWebpackServer = async (enableRemoteDebugger?: boolean) => {
         }
         await _runWebDevServer(c, enableRemoteDebugger);
     } else {
-        const resetCompleted = await confirmActiveBundler(c);
+        const resetCompleted = await confirmActiveBundler();
 
         if (resetCompleted) {
             await _runWebBrowser(devServerHost, port, false);

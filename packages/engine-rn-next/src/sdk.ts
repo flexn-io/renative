@@ -54,7 +54,7 @@ export const runWebNext = async () => {
     const devServerHost = getDevServerHost();
 
     const isPortActive = await checkPortInUse(port);
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
+    const bundleAssets = getConfigProp('bundleAssets', false);
 
     if (!isPortActive) {
         logInfo(
@@ -69,7 +69,7 @@ export const runWebNext = async () => {
         }
         await runWebDevServer(c);
     } else {
-        const resetCompleted = await confirmActiveBundler(c);
+        const resetCompleted = await confirmActiveBundler();
 
         if (resetCompleted) {
             await _runWebBrowser(devServerHost, port, false);
@@ -100,7 +100,7 @@ const _runWebBrowser = (devServerHost: string, port: number, alreadyStarted: boo
     });
 
 export const getExportDir = (c: RnvContext) => {
-    const exportDir = getConfigProp(c, c.platform, 'exportDir');
+    const exportDir = getConfigProp('exportDir');
     const maybeAbsolutePath = exportDir || path.join(getAppFolder()!, 'output');
 
     // if path is absolute, make it relative to project root. Next 14 doesn't seem to like absolute paths
@@ -136,7 +136,7 @@ export const runWebDevServer = async (c: RnvContext) => {
 Dev server running at: ${url}
 `);
 
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
+    const bundleAssets = getConfigProp('bundleAssets', false);
     const opts = !c.program?.json
         ? ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER
         : ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY;

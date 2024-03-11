@@ -28,10 +28,10 @@ export const parseExportOptionsPlist = () =>
         // EXPORT OPTIONS
         const c = getContext();
         const { platform } = c;
-        const tId = getConfigProp(c, platform, 'teamID');
+        const tId = getConfigProp('teamID');
         const appFolder = getAppFolder();
-        const exportOptions = getConfigProp(c, platform, 'exportOptions') || {};
-        const id = getConfigProp(c, platform, 'id');
+        const exportOptions = getConfigProp('exportOptions') || {};
+        const id = getConfigProp('id');
 
         c.payload.pluginConfigiOS.exportOptions = objToPlist(exportOptions);
 
@@ -71,7 +71,7 @@ export const parseEntitlementsPlist = () =>
         const appFolderName = getAppFolderName(c, platform);
         const entitlementsPath = path.join(appFolder, `${appFolderName}/${appFolderName}.entitlements`);
         // PLUGIN ENTITLEMENTS
-        let pluginsEntitlementsObj = getConfigProp(c, platform, 'entitlements');
+        let pluginsEntitlementsObj = getConfigProp('entitlements');
         if (!pluginsEntitlementsObj) {
             pluginsEntitlementsObj =
                 readObjectSync(path.join(__dirname, '../supportFiles/entitlements.json')) || undefined;
@@ -90,23 +90,23 @@ export const parseInfoPlist = () =>
 
         const appFolder = getAppFolder();
         const appFolderName = getAppFolderName(c, platform);
-        const orientationSupport = getConfigProp(c, c.platform, 'orientationSupport');
-        const urlScheme = getConfigProp(c, c.platform, 'urlScheme');
+        const orientationSupport = getConfigProp('orientationSupport');
+        const urlScheme = getConfigProp('urlScheme');
 
         const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
 
         // PLIST
         let plistObj =
             readObjectSync<FilePlistJSON>(path.join(__dirname, `../supportFiles/info.plist.${platform}.json`)) || {};
-        plistObj.CFBundleDisplayName = getAppTitle(c, platform);
-        plistObj.CFBundleShortVersionString = getAppVersion(c, platform);
-        plistObj.CFBundleVersion = getAppVersionCode(c, platform);
+        plistObj.CFBundleDisplayName = getAppTitle();
+        plistObj.CFBundleShortVersionString = getAppVersion();
+        plistObj.CFBundleVersion = getAppVersionCode();
         // FONTS
         if (c.payload.pluginConfigiOS.embeddedFonts.length) {
             plistObj.UIAppFonts = c.payload.pluginConfigiOS.embeddedFonts;
         }
         // PERMISSIONS
-        const includedPermissions = getConfigProp(c, platform, 'includedPermissions');
+        const includedPermissions = getConfigProp('includedPermissions');
         if (includedPermissions && c.buildConfig.permissions) {
             const platPrem = 'ios'; // c.buildConfig.permissions[platform] ? platform : 'ios';
             const pc = c.buildConfig.permissions[platPrem] || {};
@@ -149,7 +149,7 @@ export const parseInfoPlist = () =>
 
         // PLIST
 
-        const plist = getConfigProp(c, platform, 'templateXcode')?.Info_plist;
+        const plist = getConfigProp('templateXcode')?.Info_plist;
         if (plist) {
             plistObj = mergeObjects(c, plistObj, plist, true, true);
         }

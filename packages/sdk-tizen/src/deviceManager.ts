@@ -295,7 +295,7 @@ export const runTizenSimOrDevice = async () => {
 
     if (!platform) return;
 
-    const appName = getConfigProp(c, platform, 'appName');
+    const appName = getConfigProp('appName');
 
     if (!appName) {
         throw new Error(
@@ -307,8 +307,8 @@ export const runTizenSimOrDevice = async () => {
     const tBuild = path.join(tDir, 'build');
     const intermediate = path.join(tDir, 'intermediate');
     const tOut = path.join(tDir, 'output');
-    const tId = getConfigProp(c, platform, 'id');
-    const certProfile = getConfigProp(c, platform, 'certificateProfile') || DEFAULTS.certificateProfile;
+    const tId = getConfigProp('id');
+    const certProfile = getConfigProp('certificateProfile') || DEFAULTS.certificateProfile;
 
     const wgt = `${appName}.wgt`;
     // the tizen CLI cannot handle .wgt files with spaces correctly.

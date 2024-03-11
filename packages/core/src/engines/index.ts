@@ -232,7 +232,7 @@ export const loadEnginePackageDeps = async (engineConfigs: Array<RnvEngineInstal
                     const deps = c.files.project.package.devDependencies || {};
                     Object.keys(npm.devDependencies).forEach((k) => {
                         if (!deps[k]) {
-                            const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');
+                            const isMonorepo = getConfigProp('isMonorepo');
                             if (isMonorepo) {
                                 logInfo(
                                     `Engine ${ecf.key} requires npm devDependency ${k} for platform ${platform}. project marked as monorepo. SKIPPING`
@@ -470,7 +470,7 @@ const _resolvePkgPath = (c: RnvContext, packageName: string) => {
     if (fsExistsSync(pkgPath)) {
         return pkgPath;
     }
-    const monoRoot = getConfigProp(c, c.platform, 'monoRoot');
+    const monoRoot = getConfigProp('monoRoot');
     pkgPath = path.join(c.paths.project.dir, monoRoot || '../..', 'node_modules', packageName);
     if (fsExistsSync(pkgPath)) {
         return pkgPath;

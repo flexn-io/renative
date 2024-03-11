@@ -200,7 +200,7 @@ export const runAndroid = async (device: AndroidDevice) => {
 
 const _checkSigningCerts = async (c: Context) => {
     logDefault('_checkSigningCerts');
-    const signingConfig = getConfigProp(c, c.platform, 'signingConfig', 'Debug');
+    const signingConfig = getConfigProp('signingConfig', 'Debug');
     const isRelease = signingConfig === 'Release';
 
     if (!c.platform) return;
@@ -466,7 +466,7 @@ export const configureProject = async () => {
     );
 
     // FONTS
-    const includedFonts = getConfigProp(c, c.platform, 'includedFonts') || [];
+    const includedFonts = getConfigProp('includedFonts') || [];
     parseFonts((font: string, dir: string) => {
         if (font.includes('.ttf') || font.includes('.otf')) {
             const key = font.split('.')[0];

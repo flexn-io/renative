@@ -3,7 +3,7 @@ import { RnvContext } from './types';
 import { chalk, logError, logWarning } from '../logger';
 import { ConfigFileBuildConfig } from '../schema';
 import { ConfigProp, ConfigPropKey } from '../schema/types';
-import { BuildConfigPropKey, BuildSchemePropKey, CommonPropKey, PlatPropKey, RnvPlatform } from '../types';
+import { BuildConfigPropKey, BuildSchemePropKey, CommonPropKey, PlatPropKey } from '../types';
 import { TimestampPathsConfig } from '../system/types';
 import path from 'path';
 import { fsExistsSync } from '../system/fs';
@@ -28,25 +28,24 @@ const _getValueOrMergedObject = (resultScheme: object, resultPlatforms: object, 
 };
 
 export const getConfigProp: GetConfigPropFn = <T extends ConfigPropKey>(
-    c: RnvContext,
-    platform: RnvPlatform,
     key: T,
     defaultVal?: ConfigProp[T]
 ): ConfigProp[T] => {
+    const c = getContext();
     if (!c.buildConfig) {
         logError('getConfigProp: c.buildConfig is undefined!');
         return undefined;
     }
-    return _getConfigProp<T>(c, platform, key, defaultVal, c.buildConfig);
+    return _getConfigProp<T>(c, key, defaultVal, c.buildConfig);
 };
 
 export const _getConfigProp = <T extends ConfigPropKey>(
     c: RnvContext,
-    platform: RnvPlatform,
     key: T,
     defaultVal?: ConfigProp[T],
     sourceObj?: Partial<ConfigFileBuildConfig>
 ): ConfigProp[T] => {
+    const { platform } = c;
     if (!sourceObj || !platform) return undefined;
 
     const platformObj = sourceObj.platforms?.[platform];
@@ -88,11 +87,13 @@ export const getFlavouredProp = <T, K extends keyof T>(c: RnvContext, obj: T, ke
     return obj[key];
 };
 
-export const getTimestampPathsConfig = (c: RnvContext, platform: RnvPlatform): TimestampPathsConfig | undefined => {
+export const getTimestampPathsConfig = (): TimestampPathsConfig | undefined => {
+    const c = getContext();
+    const { platform } = c;
     let timestampBuildFiles: Array<string> = [];
     const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
     if (platform === 'web') {
-        timestampBuildFiles = (getConfigProp(c, platform, 'timestampBuildFiles') || []).map((v) => path.join(pPath, v));
+        timestampBuildFiles = (getConfigProp('timestampBuildFiles') || []).map((v) => path.join(pPath, v));
     }
     if (timestampBuildFiles?.length && c.runtime.timestamp) {
         return { paths: timestampBuildFiles, timestamp: c.runtime.timestamp };
@@ -121,7 +122,9 @@ export const getPlatformProjectDir = () => {
     return path.join(getAppFolder(), c.runtime.engine.projectDirName || '');
 };
 
-export const getAppConfigBuildsFolder = (c: RnvContext, platform: RnvPlatform, customPath?: string) => {
+export const getAppConfigBuildsFolder = (customPath?: string) => {
+    const c = getContext();
+    const { platform } = c;
     const pp = customPath || c.paths.appConfig.dir;
     if (!pp) {
         logWarning(

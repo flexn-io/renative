@@ -33,7 +33,7 @@ const taskStart: RnvTaskFn = async (c, parentTask, originTask) => {
             .then(() => openBrowser(`http://${c.runtime.localhost}:${port}/`))
             .catch(logError);
     }
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
+    const bundleAssets = getConfigProp('bundleAssets');
     const isWeinreEnabled = REMOTE_DEBUGGER_ENABLED_PLATFORMS.includes(platform) && !bundleAssets && !hosted;
 
     switch (platform) {

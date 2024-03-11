@@ -14,8 +14,8 @@ import {
 
 export const ejectGradleProject = async () => {
     const c = getContext();
-    const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');
-    const monoRoot = getConfigProp(c, c.platform, 'monoRoot');
+    const isMonorepo = getConfigProp('isMonorepo');
+    const monoRoot = getConfigProp('monoRoot');
 
     const rootMonoProjectPath = isMonorepo ? path.join(c.paths.project.dir, monoRoot || '../..') : c.paths.project.dir;
     // const rootProjectPath = c.paths.project.dir;

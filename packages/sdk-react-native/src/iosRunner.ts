@@ -25,7 +25,7 @@ export const packageReactNativeIOS = (isDev = false) => {
     const c = getContext();
     logDefault('packageBundleForXcode');
 
-    const entryFile = getConfigProp(c, c.platform, 'entryFile');
+    const entryFile = getConfigProp('entryFile');
 
     if (!c.platform) return;
     // const { maxErrorLength } = c.program;
@@ -44,7 +44,7 @@ export const packageReactNativeIOS = (isDev = false) => {
         `${getAppFolder()}/main.jsbundle`,
     ];
 
-    if (getConfigProp(c, c.platform, 'enableSourceMaps', false)) {
+    if (getConfigProp('enableSourceMaps', false)) {
         args.push('--sourcemap-output');
         args.push(`${getAppFolder()}/main.jsbundle.map`);
     }

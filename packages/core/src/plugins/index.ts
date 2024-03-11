@@ -382,11 +382,11 @@ export const parsePlugins = (
 ) => {
     logDefault('parsePlugins');
     if (c.buildConfig && platform) {
-        const includedPluginsConfig = getConfigProp(c, platform, 'includedPlugins');
+        const includedPluginsConfig = getConfigProp('includedPlugins');
         // default to all plugins if it's not defined (null allowed for overrides)
         const includedPlugins = includedPluginsConfig === undefined ? ['*'] : includedPluginsConfig;
 
-        const excludedPlugins = getConfigProp(c, platform, 'excludedPlugins') || [];
+        const excludedPlugins = getConfigProp('excludedPlugins') || [];
 
         const handleActivePlugin = (plugin: RnvPlugin, pluginPlat: RenativeConfigPluginPlatform, key: string) => {
             // log deprecated if present

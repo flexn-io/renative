@@ -86,17 +86,17 @@ export async function copyProjectTemplateAndReplace(c, options) {
         'Fonts'
     );
 
-    const language = getConfigProp(c, c.platform, 'language', options.language);
+    const language = getConfigProp('language', options.language);
     const experimentalNuGetDependency = getConfigProp(
         c,
         c.platform,
         'experimentalNuGetDependency',
         options.experimentalNuGetDependency
     );
-    const useWinUI3 = getConfigProp(c, c.platform, 'useWinUI3', options.useWinUI3);
-    const nuGetTestVersion = getConfigProp(c, c.platform, 'nuGetTestVersion', options.nuGetTestVersion);
-    const useHermes = !!getConfigProp(c, c.platform, 'reactNativeEngine', options.reactNativeEngine) === 'hermes';
-    const nuGetTestFeed = getConfigProp(c, c.platform, 'nuGetTestFeed', options.nuGetTestFeed);
+    const useWinUI3 = getConfigProp('useWinUI3', options.useWinUI3);
+    const nuGetTestVersion = getConfigProp('nuGetTestVersion', options.nuGetTestVersion);
+    const useHermes = !!getConfigProp('reactNativeEngine', options.reactNativeEngine) === 'hermes';
+    const nuGetTestFeed = getConfigProp('nuGetTestFeed', options.nuGetTestFeed);
 
     generator_common_1.createDir(path.join(c.paths.project.dir, appFolder));
     generator_common_1.createDir(path.join(c.paths.project.dir, appFolder, c.runtime.appId));
@@ -222,8 +222,8 @@ export async function copyProjectTemplateAndReplace(c, options) {
         });
     }
 
-    const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo', false);
-    const monoRoot = getConfigProp(c, c.platform, 'monoRoot') || '..\\..';
+    const isMonorepo = getConfigProp('isMonorepo', false);
+    const monoRoot = getConfigProp('monoRoot') || '..\\..';
 
     const templateVars = {
         rnwPackagePath: isMonorepo

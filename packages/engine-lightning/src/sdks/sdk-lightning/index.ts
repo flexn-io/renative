@@ -31,7 +31,7 @@ export const runLightningProject = async () => {
     logDefault('runLightningProject');
     const { platform } = c;
     const { hosted } = c.program;
-    const isHosted = hosted && !getConfigProp(c, platform, 'bundleAssets');
+    const isHosted = hosted && !getConfigProp('bundleAssets');
 
     if (isHosted) {
         await executeAsync('lng dev', {
@@ -63,9 +63,9 @@ export const buildLightningProject = async () => {
     const { platform } = c;
     if (!platform) return;
 
-    const certProfile = getConfigProp(c, c.platform, 'certificateProfile') || DEFAULTS.certificateProfile;
+    const certProfile = getConfigProp('certificateProfile') || DEFAULTS.certificateProfile;
 
-    const target = getConfigProp(c, platform, 'target', 'es6');
+    const target = getConfigProp('target', 'es6');
     const tBuild = getPlatformProjectDir();
 
     const tOut = path.join(tBuild || '', 'output');
@@ -115,9 +115,9 @@ const _configureProject = (c: RnvContext) =>
             return;
         }
 
-        const pkg = getConfigProp(c, c.platform, 'package') || '';
-        const id = getConfigProp(c, c.platform, 'id') || '';
-        const appName = getConfigProp(c, c.platform, 'appName') || '';
+        const pkg = getConfigProp('package') || '';
+        const id = getConfigProp('id') || '';
+        const appName = getConfigProp('appName') || '';
 
         const injects: OverridesOptions =
             platform === 'tizen'
@@ -127,17 +127,17 @@ const _configureProject = (c: RnvContext) =>
                       { pattern: '{{APP_NAME}}', override: appName },
                       {
                           pattern: '{{APP_VERSION}}',
-                          override: semver.coerce(getAppVersion(c, platform))?.format(),
+                          override: semver.coerce(getAppVersion())?.format(),
                       },
                   ]
                 : [
-                      { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform)?.toLowerCase() },
-                      { pattern: '{{APP_TITLE}}', override: getAppTitle(c, platform) },
-                      { pattern: '{{APP_VERSION}}', override: semver.coerce(getAppVersion(c, platform))?.format() },
-                      { pattern: '{{APP_DESCRIPTION}}', override: getAppDescription(c, platform) },
-                      { pattern: '{{APP_BG_COLOR}}', override: getConfigProp(c, platform, 'backgroundColor', '#fff') },
-                      { pattern: '{{APP_ICON_COLOR}}', override: getConfigProp(c, platform, 'iconColor', '#000') },
-                      { pattern: '{{APP_VENDOR}}', override: getConfigProp(c, platform, 'author') || DEFAULTS.author },
+                      { pattern: '{{APPLICATION_ID}}', override: getAppId()?.toLowerCase() },
+                      { pattern: '{{APP_TITLE}}', override: getAppTitle() },
+                      { pattern: '{{APP_VERSION}}', override: semver.coerce(getAppVersion())?.format() },
+                      { pattern: '{{APP_DESCRIPTION}}', override: getAppDescription() },
+                      { pattern: '{{APP_BG_COLOR}}', override: getConfigProp('backgroundColor', '#fff') },
+                      { pattern: '{{APP_ICON_COLOR}}', override: getConfigProp('iconColor', '#000') },
+                      { pattern: '{{APP_VENDOR}}', override: getConfigProp('author') || DEFAULTS.author },
                   ];
 
         addSystemInjects(c, injects);

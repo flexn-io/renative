@@ -271,7 +271,7 @@ export const configureEntryPoint = async (platform: RnvPlatform) => {
 
     if (c.files.project.config?.isTemplate) return true;
 
-    const entryFile = getConfigProp(c, platform, 'entryFile');
+    const entryFile = getConfigProp('entryFile');
 
     try {
         const source = path.join(c.paths.template.dir, `${entryFile}.js`);

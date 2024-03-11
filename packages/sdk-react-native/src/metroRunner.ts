@@ -74,7 +74,7 @@ Dev server running at: ${url}
         const isRunning = await isBundlerActive(c);
         let resetCompleted = false;
         if (isRunning) {
-            resetCompleted = await confirmActiveBundler(c);
+            resetCompleted = await confirmActiveBundler();
         }
 
         if (!isRunning || (isRunning && resetCompleted)) {

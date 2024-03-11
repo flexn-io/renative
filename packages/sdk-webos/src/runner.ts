@@ -43,20 +43,20 @@ export const runWebOS = async (c: RnvContext) => {
 
     if (!platform) return;
 
-    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
+    const bundleAssets = getConfigProp('bundleAssets') === true;
     const isHosted = hosted && !bundleAssets;
 
     if (isHosted) {
         const isPortActive = await checkPortInUse(c.runtime.port);
         if (isPortActive) {
-            const resetCompleted = await confirmActiveBundler(c);
+            const resetCompleted = await confirmActiveBundler();
             c.runtime.skipActiveServerCheck = !resetCompleted;
         }
         logDefault('runWebOS', `target:${target} hosted:${!!isHosted}`);
         return;
     }
 
-    const env = getConfigProp(c, platform, 'environment');
+    const env = getConfigProp('environment');
     if (env !== 'production') {
         process.env.RNV_INJECTED_WEBPACK_SCRIPTS = `${
             process.env.RNV_INJECTED_WEBPACK_SCRIPTS || ''
@@ -100,7 +100,7 @@ export const runWebOS = async (c: RnvContext) => {
                 .catch(logError);
             await runWebpackServer(isWeinreEnabled);
         } else {
-            const resetCompleted = await confirmActiveBundler(c);
+            const resetCompleted = await confirmActiveBundler();
             if (resetCompleted) {
                 waitForHost('')
                     .then(() => runWebosSimOrDevice())
@@ -156,38 +156,37 @@ export const configureWebOSProject = async () => {
 
 const _configureProject = async (c: RnvContext) => {
     logDefault('_configureProject');
-    const { platform } = c;
 
     const configFile = 'appinfo.json';
 
     const injects: OverridesOptions = [
         {
             pattern: '{{APPLICATION_ID}}',
-            override: getAppId(c, platform)?.toLowerCase(),
+            override: getAppId()?.toLowerCase(),
         },
         {
             pattern: '{{APP_TITLE}}',
-            override: getAppTitle(c, platform),
+            override: getAppTitle(),
         },
         {
             pattern: '{{APP_VERSION}}',
-            override: semver.coerce(getAppVersion(c, platform))?.format(),
+            override: semver.coerce(getAppVersion())?.format(),
         },
         {
             pattern: '{{APP_DESCRIPTION}}',
-            override: getAppDescription(c, platform),
+            override: getAppDescription(),
         },
         {
             pattern: '{{APP_BG_COLOR}}',
-            override: getConfigProp(c, platform, 'backgroundColor') || DEFAULTS.backgroundColor,
+            override: getConfigProp('backgroundColor') || DEFAULTS.backgroundColor,
         },
         {
             pattern: '{{APP_ICON_COLOR}}',
-            override: getConfigProp(c, platform, 'iconColor', '#000'),
+            override: getConfigProp('iconColor', '#000'),
         },
         {
             pattern: '{{APP_VENDOR}}',
-            override: getConfigProp(c, platform, 'author') || 'Unspecified',
+            override: getConfigProp('author') || 'Unspecified',
         },
     ];
 

@@ -20,7 +20,7 @@ let keepRNVRunning = false;
 export const startBundlerIfRequired = async (parentTask: string, originTask?: string) => {
     const c = getContext();
     logDefault('startBundlerIfRequired');
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
+    const bundleAssets = getConfigProp('bundleAssets');
     if (bundleAssets === true) return;
 
     const isRunning = await isBundlerActive(c);
@@ -31,7 +31,7 @@ export const startBundlerIfRequired = async (parentTask: string, originTask?: st
         keepRNVRunning = true;
         await waitForBundler(c);
     } else {
-        const resetCompleted = await confirmActiveBundler(c);
+        const resetCompleted = await confirmActiveBundler();
         if (resetCompleted) {
             await executeTask(RnvTaskName.start, parentTask, originTask);
 
@@ -43,7 +43,7 @@ export const startBundlerIfRequired = async (parentTask: string, originTask?: st
 
 export const waitForBundlerIfRequired = async () => {
     const c = getContext();
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
+    const bundleAssets = getConfigProp('bundleAssets');
     if (bundleAssets === true) return;
     // return a new promise that does...nothing, just to keep RNV running while the bundler is running
     if (keepRNVRunning)
@@ -57,7 +57,7 @@ const _isBundlerRunning = async (c: RnvContext) => {
     logDefault('_isBundlerRunning');
     try {
         const { data } = await axios.get(
-            `http://${c.runtime.localhost}:${c.runtime.port}/${getConfigProp(c, c.platform, 'entryFile')}.js`
+            `http://${c.runtime.localhost}:${c.runtime.port}/${getConfigProp('entryFile')}.js`
         );
         if (data.includes('import')) {
             logDefault('_isBundlerRunning', '(YES)');
@@ -116,7 +116,7 @@ export const configureFonts = async () => {
     parseFonts((font, dir) => {
         if (font.includes('.ttf') || font.includes('.otf')) {
             const key = font.split('.')[0];
-            const includedFonts = getConfigProp(c, c.platform, 'includedFonts');
+            const includedFonts = getConfigProp('includedFonts');
             if (includedFonts && (includedFonts.includes('*') || includedFonts.includes(key))) {
                 const fontSource = path.join(dir, font);
                 if (fsExistsSync(fontSource)) {

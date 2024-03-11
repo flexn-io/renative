@@ -82,12 +82,12 @@ const configureProject = (exitOnFail?: boolean) =>
         if (!engine || !platform) return;
 
         const platformBuildDir = getAppFolder()!;
-        const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
+        const bundleAssets = getConfigProp('bundleAssets') === true;
         const electronConfigPath = path.join(platformBuildDir, 'electronConfig.json');
         const packagePath = path.join(platformBuildDir, 'package.json');
         // If path does not exist for png, try iconset
         const pngIconPath = path.join(c.paths.appConfig.dir, `assets/${platform}/resources/icon.png`);
-        const appId = getAppId(c, platform);
+        const appId = getAppId();
 
         if (!fsExistsSync(packagePath)) {
             if (exitOnFail) {
@@ -105,11 +105,11 @@ const configureProject = (exitOnFail?: boolean) =>
         const packageJson = readObjectSync<FileElectronPackage>(pkgJson) || {};
 
         packageJson.name = `${c.runtime.appId}-${platform}`;
-        packageJson.productName = `${getAppTitle(c, platform)}`;
-        packageJson.version = `${getAppVersion(c, platform)}`;
-        packageJson.description = `${getAppDescription(c, platform)}`;
-        packageJson.author = getAppAuthor(c, platform);
-        packageJson.license = `${getAppLicense(c, platform)}`;
+        packageJson.productName = `${getAppTitle()}`;
+        packageJson.version = `${getAppVersion()}`;
+        packageJson.description = `${getAppDescription()}`;
+        packageJson.author = getAppAuthor();
+        packageJson.license = `${getAppLicense()}`;
         packageJson.main = './main.js';
 
         // check if project includes @electron/remote
@@ -135,12 +135,12 @@ const configureProject = (exitOnFail?: boolean) =>
                     ? path.join(platformProjectDir, 'resources', 'icon.icns')
                     : path.join(platformProjectDir, 'resources', 'icon.png'),
         };
-        const browserWindowExt = getConfigProp(c, platform, 'BrowserWindow');
+        const browserWindowExt = getConfigProp('BrowserWindow');
         if (browserWindowExt) {
             browserWindow = merge(browserWindow, browserWindowExt);
         }
         const browserWindowStr = JSON.stringify(browserWindow, null, 2);
-        const electronConfigExt = getConfigProp(c, platform, 'electronConfig');
+        const electronConfigExt = getConfigProp('electronConfig');
         const mainInjection = electronConfigExt?.mainInjection || '';
         const mainHeadInjection = electronConfigExt?.mainHeadInjection || '';
 
@@ -322,8 +322,8 @@ export const runElectron = async () => {
     const { platform } = c;
     const { port } = c.runtime;
 
-    // const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
-    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
+    // const bundleIsDev = getConfigProp('bundleIsDev') === true;
+    const bundleAssets = getConfigProp('bundleAssets') === true;
 
     if (bundleAssets) {
         await buildElectron();
@@ -342,7 +342,7 @@ export const runElectron = async () => {
             // await _runElectronSimulator(c);
             await runWebpackServer();
         } else {
-            const resetCompleted = await confirmActiveBundler(c);
+            const resetCompleted = await confirmActiveBundler();
             if (resetCompleted) {
                 waitForHost('')
                     .then(() => _runElectronSimulator(c))
@@ -360,7 +360,7 @@ const _runElectronSimulator = async (c: RnvContext) => {
     logDefault(`_runElectronSimulator:${c.platform}`);
     // const appFolder = getAppFolder(c.platform);
     // const elc = `${doResolve('electron')}/cli.js`;
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets') === true;
+    const bundleAssets = getConfigProp('bundleAssets') === true;
     let platformProjectDir = getPlatformProjectDir()!;
 
     if (bundleAssets) {

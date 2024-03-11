@@ -69,7 +69,7 @@
 //         //     }
 //         // }
 
-//         const clr = sanitizeColor(getConfigProp(c, platform, 'backgroundColor'), 'backgroundColor').rgbDecimal;
+//         const clr = sanitizeColor(getConfigProp('backgroundColor'), 'backgroundColor').rgbDecimal;
 //         const pluginBgColor = `vc.view.backgroundColor = UIColor(red: ${clr[0]}, green: ${clr[1]}, blue: ${clr[2]}, alpha: ${clr[3]})`;
 //         const methods: SwiftAppDelegate = {
 //             application: {

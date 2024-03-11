@@ -30,7 +30,7 @@ import { getBuildFilePath, getEntryFile, getAppId, addSystemInjects } from '@rnv
 //     const templatePath = `app/src/${scheme}/java/rnv_template/ReactNativeFlipper.kt`;
 //     const applicationPath = `${javaPackagePath}/ReactNativeFlipper.java`;
 
-//     const injects: OverridesOptions = [{ pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) }];
+//     const injects: OverridesOptions = [{ pattern: '{{APPLICATION_ID}}', override: getAppId() }];
 
 //     addSystemInjects(c, injects);
 
@@ -58,7 +58,7 @@ export const parseMainApplicationSync = (c: Context) => {
 
     const templatePath = 'app/src/main/java/rnv_template/MainApplication.kt';
     // const applicationPath = `${javaPackagePath}/MainApplication.java`;
-    // const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
+    // const bundleAssets = getConfigProp('bundleAssets');
 
     // const bundleDefault = JS_BUNDLE_DEFAULTS[platform];
     // const bundleFile: string =
@@ -73,7 +73,7 @@ export const parseMainApplicationSync = (c: Context) => {
     // }
 
     const injects: OverridesOptions = [
-        { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+        { pattern: '{{APPLICATION_ID}}', override: getAppId() },
         { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) || '' },
         // { pattern: '{{GET_JS_BUNDLE_FILE}}', override: bundleFile },
         {
@@ -119,7 +119,7 @@ export const parseMainActivitySync = (c: RnvContext) => {
 
     const templatePath = 'app/src/main/java/rnv_template/MainActivity.kt';
 
-    const templateAndroid = getConfigProp(c, platform, 'templateAndroid', {});
+    const templateAndroid = getConfigProp('templateAndroid', {});
 
     const mainActivity = templateAndroid?.MainActivity_kt;
 
@@ -127,7 +127,7 @@ export const parseMainActivitySync = (c: RnvContext) => {
         mainActivity?.onCreate || 'super.onCreate(savedInstanceState)';
 
     const injects = [
-        { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+        { pattern: '{{APPLICATION_ID}}', override: getAppId() },
         {
             pattern: '{{PLUGIN_ACTIVITY_IMPORTS}}',
             override: c.payload.pluginConfigAndroid.pluginActivityImports,
@@ -168,7 +168,7 @@ export const parseSplashActivitySync = (c: Context) => {
     const splashTemplatePath = 'app/src/main/java/rnv_template/SplashActivity.kt';
 
     // TODO This is temporary ANDROIDX support. whole kotlin parser will be refactored in the near future
-    const enableAndroidX = getConfigProp(c, platform, 'enableAndroidX', true);
+    const enableAndroidX = getConfigProp('enableAndroidX', true);
     if (enableAndroidX === true) {
         c.payload.pluginConfigAndroid.pluginSplashActivityImports +=
             'import androidx.appcompat.app.AppCompatActivity;\n';
@@ -178,7 +178,7 @@ export const parseSplashActivitySync = (c: Context) => {
     }
 
     const injects = [
-        { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+        { pattern: '{{APPLICATION_ID}}', override: getAppId() },
         {
             pattern: '{{PLUGIN_SPLASH_ACTIVITY_IMPORTS}}',
             override: c.payload.pluginConfigAndroid.pluginSplashActivityImports,

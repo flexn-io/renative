@@ -17,7 +17,7 @@ export const generatePlatformAssetsRuntimeConfig = async () => {
         c.assetConfig,
         c.platform ? c.buildConfig.platforms?.[c.platform]?.runtime || {} : {}
     );
-    c.assetConfig = mergeObjects(c, c.assetConfig, getConfigProp(c, c.platform, 'runtime') || {});
+    c.assetConfig = mergeObjects(c, c.assetConfig, getConfigProp('runtime') || {});
 
     if (fsExistsSync(c.paths.project.assets.dir)) {
         const sanitizedConfig = sanitizeDynamicProps(c.assetConfig, {

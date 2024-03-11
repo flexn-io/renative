@@ -17,8 +17,8 @@ import { getAppFolderName } from './common';
 
 export const ejectXcodeProject = async () => {
     const c = getContext();
-    const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');
-    const monoRoot = getConfigProp(c, c.platform, 'monoRoot');
+    const isMonorepo = getConfigProp('isMonorepo');
+    const monoRoot = getConfigProp('monoRoot');
 
     const rootMonoProjectPath = isMonorepo ? path.join(c.paths.project.dir, monoRoot || '../..') : c.paths.project.dir;
     const rootProjectPath = c.paths.project.dir;
@@ -115,7 +115,7 @@ export const ejectXcodeProject = async () => {
     parseFonts((font, dir) => {
         if (font.includes('.ttf') || font.includes('.otf')) {
             const key = font.split('.')[0];
-            const includedFonts = getConfigProp(c, c.platform, 'includedFonts');
+            const includedFonts = getConfigProp('includedFonts');
             if (includedFonts && (includedFonts.includes('*') || includedFonts.includes(key))) {
                 const fontSource = path.join(dir, font);
                 if (fsExistsSync(fontSource)) {

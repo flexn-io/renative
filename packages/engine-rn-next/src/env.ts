@@ -13,7 +13,7 @@ export const EnvVars = {
     },
     NODE_ENV: () => {
         const c = getContext();
-        const env = getConfigProp(c, c.platform, 'environment');
+        const env = getConfigProp('environment');
 
         return {
             NODE_ENV: env || 'development',
@@ -23,7 +23,7 @@ export const EnvVars = {
 
 const getTranspileModules = () => {
     const c = getContext();
-    const transModules = getConfigProp(c, c.platform, 'nextTranspileModules') || [];
+    const transModules = getConfigProp('nextTranspileModules') || [];
 
     parsePlugins(
         c,
@@ -50,7 +50,7 @@ const getTranspileModules = () => {
 
 const _checkPagesDir = () => {
     const c = getContext();
-    const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
+    const pagesDir = getConfigProp('pagesDir');
     const distDir = getExportDir(c);
     const isExport = c._currentTask === 'export';
 

@@ -9,7 +9,6 @@ import { addSystemInjects, getAppTemplateFolder } from '@rnv/sdk-utils';
 export const parseXcscheme = async () => {
     logDefault('parseXcscheme');
     const c = getContext();
-    const { platform } = c;
     // XCSCHEME
     // const allowProvisioningUpdates = getConfigProp(
     //     c,
@@ -27,8 +26,8 @@ export const parseXcscheme = async () => {
     // Since RN 61+ this must be set to true otherwise debug apps install but not launch
     const poisxSpawn = true;
     const appFolder = getAppFolder();
-    const appFolderName = getAppFolderName(c, platform);
-    const appTemplateFolder = getAppTemplateFolder(c, platform);
+    const appFolderName = getAppFolderName();
+    const appTemplateFolder = getAppTemplateFolder();
 
     const debuggerId = poisxSpawn ? '' : 'Xcode.DebuggerFoundation.Debugger.LLDB';
     const launcherId = poisxSpawn
@@ -37,7 +36,7 @@ export const parseXcscheme = async () => {
     const schemePath = `${appFolderName}.xcodeproj/xcshareddata/xcschemes/${appFolderName}.xcscheme`;
 
     let _commandLineArguments = '';
-    const commandLineArguments = getConfigProp(c, c.platform, 'commandLineArguments');
+    const commandLineArguments = getConfigProp('commandLineArguments');
     if (commandLineArguments?.length) {
         commandLineArguments.forEach((arg) => {
             _commandLineArguments += `

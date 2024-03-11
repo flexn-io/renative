@@ -40,7 +40,7 @@ export const getEngineTemplateByPlatform = (platform: RnvPlatform): RnvEngineTem
     if (!platform) return null;
     const engineId =
         c.program.engine ||
-        getConfigProp(c, platform, 'engine') ||
+        getConfigProp('engine') ||
         //Adding this as default engines moved from platforms into platformTemplates
         c.files.rnv.projectTemplates.config?.platformTemplates?.[platform]?.engine;
     let selectedEngineConfig: RnvEngineTemplate | null = null;

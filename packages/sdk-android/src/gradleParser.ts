@@ -185,19 +185,17 @@ export const parseAppBuildGradleSync = (c: Context) => {
     if (!platform) return;
 
     // ANDROID PROPS
-    c.payload.pluginConfigAndroid.minSdkVersion = getConfigProp(c, platform, 'minSdkVersion') || 24;
-    c.payload.pluginConfigAndroid.targetSdkVersion = getConfigProp(c, platform, 'targetSdkVersion') || 34;
-    c.payload.pluginConfigAndroid.compileSdkVersion = getConfigProp(c, platform, 'compileSdkVersion') || 34;
-    c.payload.pluginConfigAndroid.ndkVersion = getConfigProp(c, platform, 'ndkVersion') || '25.1.8937393';
-    c.payload.pluginConfigAndroid.gradleBuildToolsVersion =
-        getConfigProp(c, platform, 'gradleBuildToolsVersion') || '4.2.2';
-    c.payload.pluginConfigAndroid.supportLibVersion = getConfigProp(c, platform, 'supportLibVersion') || '28.0.0';
-    c.payload.pluginConfigAndroid.buildToolsVersion = getConfigProp(c, platform, 'buildToolsVersion') || '34.0.0';
-    c.payload.pluginConfigAndroid.kotlinVersion = getConfigProp(c, platform, 'kotlinVersion') || '1.8.0';
-    c.payload.pluginConfigAndroid.googleServicesVersion =
-        getConfigProp(c, platform, 'googleServicesVersion') || '4.2.0';
+    c.payload.pluginConfigAndroid.minSdkVersion = getConfigProp('minSdkVersion') || 24;
+    c.payload.pluginConfigAndroid.targetSdkVersion = getConfigProp('targetSdkVersion') || 34;
+    c.payload.pluginConfigAndroid.compileSdkVersion = getConfigProp('compileSdkVersion') || 34;
+    c.payload.pluginConfigAndroid.ndkVersion = getConfigProp('ndkVersion') || '25.1.8937393';
+    c.payload.pluginConfigAndroid.gradleBuildToolsVersion = getConfigProp('gradleBuildToolsVersion') || '4.2.2';
+    c.payload.pluginConfigAndroid.supportLibVersion = getConfigProp('supportLibVersion') || '28.0.0';
+    c.payload.pluginConfigAndroid.buildToolsVersion = getConfigProp('buildToolsVersion') || '34.0.0';
+    c.payload.pluginConfigAndroid.kotlinVersion = getConfigProp('kotlinVersion') || '1.8.0';
+    c.payload.pluginConfigAndroid.googleServicesVersion = getConfigProp('googleServicesVersion') || '4.2.0';
 
-    const reactNativeEngine = getConfigProp(c, c.platform, 'reactNativeEngine') || 'hermes';
+    const reactNativeEngine = getConfigProp('reactNativeEngine') || 'hermes';
 
     switch (reactNativeEngine) {
         case 'jsc': {
@@ -243,11 +241,11 @@ export const parseAppBuildGradleSync = (c: Context) => {
     release`;
     c.payload.pluginConfigAndroid.localProperties = '';
 
-    const storeFile = getConfigProp(c, c.platform, 'storeFile');
-    const keyAlias = getConfigProp(c, c.platform, 'keyAlias');
-    const storePassword = getConfigProp(c, c.platform, 'storePassword');
-    const keyPassword = getConfigProp(c, c.platform, 'keyPassword');
-    const minifyEnabled = getConfigProp(c, c.platform, 'minifyEnabled', false);
+    const storeFile = getConfigProp('storeFile');
+    const keyAlias = getConfigProp('keyAlias');
+    const storePassword = getConfigProp('storePassword');
+    const keyPassword = getConfigProp('keyPassword');
+    const minifyEnabled = getConfigProp('minifyEnabled', false);
 
     c.payload.pluginConfigAndroid.store = {
         storeFile: storeFile,
@@ -312,12 +310,12 @@ ${chalk().bold(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
     }
 
     // BUILD_TYPES
-    const templateAndroid = getConfigProp(c, c.platform, 'templateAndroid');
+    const templateAndroid = getConfigProp('templateAndroid');
     // const pluginConfig = c.buildConfig ?? {};
     const appBuildGradle = templateAndroid?.app_build_gradle;
     const debugBuildTypes = appBuildGradle?.buildTypes?.debug ?? [];
     const releaseBuildTypes: string[] = appBuildGradle?.buildTypes?.release ?? [];
-    const isSigningDisabled = getConfigProp(c, platform, 'disableSigning') === true;
+    const isSigningDisabled = getConfigProp('disableSigning') === true;
     c.payload.pluginConfigAndroid.buildTypes = `
     debug {
         minifyEnabled ${minifyEnabled}
@@ -332,8 +330,8 @@ ${chalk().bold(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
     }`;
 
     // MULTI APK
-    // const versionCodeOffset = getConfigProp(c, platform, 'versionCodeOffset', 0);
-    const isMultiApk = getConfigProp(c, platform, 'multipleAPKs', false) === true;
+    // const versionCodeOffset = getConfigProp('versionCodeOffset', 0);
+    const isMultiApk = getConfigProp('multipleAPKs', false) === true;
     c.payload.pluginConfigAndroid.multiAPKs = '';
     if (isMultiApk) {
         // TODO migrate this to gradle.properties + it's enabled by default
@@ -395,14 +393,14 @@ ${chalk().bold(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
             pattern: '{{PLUGIN_APPLY}}',
             override: c.payload.pluginConfigAndroid.applyPlugin,
         },
-        { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+        { pattern: '{{APPLICATION_ID}}', override: getAppId() },
         {
             pattern: '{{VERSION_CODE}}',
-            override: getAppVersionCode(c, platform),
+            override: getAppVersionCode(),
         },
         {
             pattern: '{{VERSION_NAME}}',
-            override: getAppVersion(c, platform),
+            override: getAppVersion(),
         },
         {
             pattern: '{{PLUGIN_IMPLEMENTATIONS}}',
@@ -552,7 +550,7 @@ export const parseGradlePropertiesSync = (c: Context) => {
     // GRADLE.PROPERTIES
     let pluginGradleProperties = '';
 
-    const templateAndroid = getConfigProp(c, c.platform, 'templateAndroid');
+    const templateAndroid = getConfigProp('templateAndroid');
 
     const gradleProps = templateAndroid?.gradle_properties;
 
@@ -564,8 +562,8 @@ export const parseGradlePropertiesSync = (c: Context) => {
 
     const gradleProperties = 'gradle.properties';
 
-    const newArchEnabled = getConfigProp(c, c.platform, 'newArchEnabled', false);
-    const reactNativeEngine = getConfigProp(c, c.platform, 'reactNativeEngine') || 'hermes';
+    const newArchEnabled = getConfigProp('newArchEnabled', false);
+    const reactNativeEngine = getConfigProp('reactNativeEngine') || 'hermes';
 
     const injects = [
         {
@@ -582,11 +580,11 @@ export const parseGradlePropertiesSync = (c: Context) => {
         },
         {
             pattern: '{{ENABLE_JETIFIER}}',
-            override: getConfigProp(c, platform, 'enableJetifier', true) ? 'true' : 'false',
+            override: getConfigProp('enableJetifier', true) ? 'true' : 'false',
         },
         {
             pattern: '{{ENABLE_ANDROID_X}}',
-            override: getConfigProp(c, platform, 'enableAndroidX', true) ? 'true' : 'false',
+            override: getConfigProp('enableAndroidX', true) ? 'true' : 'false',
         },
     ];
 

@@ -41,9 +41,9 @@ const _configureProject = (c: RnvContext) =>
         const manifestFilePath = path.join(appFolder!, 'manifest.webapp');
         const manifestFile = JSON.parse(fsReadFileSync(manifestFilePath).toString());
 
-        manifestFile.name = `${getAppTitle(c, platform)}`;
-        manifestFile.description = `${getAppDescription(c, platform)}`;
-        manifestFile.developer = getAppAuthor(c, platform);
+        manifestFile.name = `${getAppTitle()}`;
+        manifestFile.description = `${getAppDescription()}`;
+        manifestFile.developer = getAppAuthor();
 
         fsWriteFileSync(manifestFilePath, JSON.stringify(manifestFile, null, 2));
 

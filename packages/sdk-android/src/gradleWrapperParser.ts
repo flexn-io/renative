@@ -33,7 +33,7 @@ export const parseGradleWrapperSync = (c: Context) => {
     const { platform } = c;
 
     c.payload.pluginConfigAndroid.gradleWrapperVersion =
-        getConfigProp(c, platform, 'gradleWrapperVersion') || DEFAULTS.gradleWrapperVersion;
+        getConfigProp('gradleWrapperVersion') || DEFAULTS.gradleWrapperVersion;
     const injects = [
         {
             pattern: '{{INJECT_GRADLE_WRAPPER_VERSION}}',

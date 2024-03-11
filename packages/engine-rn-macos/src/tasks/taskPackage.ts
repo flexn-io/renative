@@ -17,7 +17,7 @@ const taskPackage: RnvTaskFn = async (c, parentTask, originTask) => {
 
     await executeOrSkipTask(RnvTaskName.configure, RnvTaskName.package, originTask);
 
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
+    const bundleAssets = getConfigProp('bundleAssets');
 
     if (!bundleAssets) {
         return true;

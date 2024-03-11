@@ -217,7 +217,7 @@ export const configureFonts = async () => {
         if (font.includes('.ttf') || font.includes('.otf') || font.includes('.woff')) {
             const keOriginal = font.split('.')[0];
             const keyNormalised = keOriginal.replace(/__/g, ' ');
-            const includedFonts = getConfigProp(c, c.platform, 'includedFonts');
+            const includedFonts = getConfigProp('includedFonts');
             if (includedFonts) {
                 if (
                     includedFonts.includes('*') ||
@@ -339,7 +339,7 @@ export const parseFonts = (callback: ParseFontsCallback) => {
                 if (callback) callback(font, c.paths.appConfig.fontsDir);
             });
         }
-        _parseFontSources(c, getConfigProp(c, c.platform, 'fontSources') || [], callback);
+        _parseFontSources(c, getConfigProp('fontSources') || [], callback);
         // PLUGIN FONTS
         parsePlugins(
             c,
@@ -439,7 +439,7 @@ export const copyAssetsFolder = async (subPath?: string, customFn?: (c: RnvConte
 
     if (!isPlatformActive()) return;
 
-    const assetFolderPlatform = getConfigProp(c, platform, 'assetFolderPlatform') || platform;
+    const assetFolderPlatform = getConfigProp('assetFolderPlatform') || platform;
 
     if (assetFolderPlatform !== platform) {
         logInfo(
@@ -451,7 +451,7 @@ export const copyAssetsFolder = async (subPath?: string, customFn?: (c: RnvConte
 
     const tsPathsConfig = getTimestampPathsConfig(c, platform);
 
-    const assetSources = getConfigProp(c, platform, 'assetSources') || [];
+    const assetSources = getConfigProp('assetSources') || [];
 
     const validAssetSources: Array<string> = [];
 

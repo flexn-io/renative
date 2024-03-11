@@ -26,7 +26,7 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
 
     if (shouldSkipTask(RnvTaskName.run, originTask)) return true;
 
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
+    const bundleAssets = getConfigProp('bundleAssets', false);
 
     switch (platform) {
         case 'androidtv':

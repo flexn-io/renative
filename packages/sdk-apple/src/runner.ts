@@ -217,15 +217,15 @@ export const runXcodeProject = async (runDeviceArguments?: string) => {
     logDefault('runXcodeProject', `targetArgs:${runDeviceArguments}`);
 
     const appPath = getAppFolder();
-    const schemeTarget = getConfigProp(c, c.platform, 'schemeTarget') || 'RNVApp';
-    const runScheme = getConfigProp(c, c.platform, 'runScheme') || 'Debug';
-    const bundleIsDev = getConfigProp(c, c.platform, 'bundleIsDev') === true;
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets') === true;
+    const schemeTarget = getConfigProp('schemeTarget') || 'RNVApp';
+    const runScheme = getConfigProp('runScheme') || 'Debug';
+    const bundleIsDev = getConfigProp('bundleIsDev') === true;
+    const bundleAssets = getConfigProp('bundleAssets') === true;
 
     if (runDeviceArguments) {
         // await launchAppleSimulator(c, c.runtime.target); @TODO - do we still need this? RN CLI does it as well
 
-        //const allowProvisioningUpdates = getConfigProp(c, c.platform, 'allowProvisioningUpdates', true);
+        //const allowProvisioningUpdates = getConfigProp('allowProvisioningUpdates', true);
         //if (allowProvisioningUpdates) p = `${p} --allowProvisioningUpdates`;
         if (bundleAssets) {
             await packageReactNativeIOS(bundleIsDev);
@@ -282,9 +282,7 @@ const _checkLockAndExec = async (
                 logWarning(
                     `${c.platform} DEVICE: ${chalk().bold(c.runtime.target)} with UDID: ${chalk().bold(
                         c.runtime.targetUDID
-                    )} is not included in your provisionong profile in TEAM: ${chalk().bold(
-                        getConfigProp(c, c.platform, 'teamID')
-                    )}`
+                    )} is not included in your provisionong profile in TEAM: ${chalk().bold(getConfigProp('teamID'))}`
                 );
                 const { confirm } = await inquirerPrompt({
                     name: 'confirm',
@@ -364,7 +362,7 @@ Type in your Apple Team ID to be used (will be saved to ${c.paths.appConfig?.con
 };
 
 const _handleProvisioningIssues = async (c: Context, e: unknown, msg: string) => {
-    const provisioningStyle = c.program.provisioningStyle || getConfigProp(c, c.platform, 'provisioningStyle');
+    const provisioningStyle = c.program.provisioningStyle || getConfigProp('provisioningStyle');
     const appFolderName = getAppFolderName(c, c.platform); // Sometimes xcodebuild reports Automatic signing is disabled but it could be keychain not accepted by user
     const isProvAutomatic = provisioningStyle === 'Automatic';
     const proAutoText = isProvAutomatic
@@ -464,8 +462,8 @@ export const buildXcodeProject = async () => {
     const { platform } = c;
 
     const appFolderName = getAppFolderName(c, platform);
-    const runScheme = getConfigProp(c, platform, 'runScheme', 'Debug');
-    const schemeTarget = getConfigProp(c, c.platform, 'schemeTarget') || 'RNVApp';
+    const runScheme = getConfigProp('runScheme', 'Debug');
+    const schemeTarget = getConfigProp('schemeTarget') || 'RNVApp';
 
     let destinationPlatform = '';
     switch (c.platform) {
@@ -495,8 +493,8 @@ export const buildXcodeProject = async () => {
 
     const appPath = getAppFolder();
     const buildPath = path.join(appPath, `build/${appFolderName}`);
-    const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates') || true;
-    const ignoreLogs = getConfigProp(c, platform, 'ignoreLogs');
+    const allowProvisioningUpdates = getConfigProp('allowProvisioningUpdates') || true;
+    const ignoreLogs = getConfigProp('ignoreLogs');
     let ps = '';
     if (c.program.xcodebuildArgs) {
         ps = c.program.xcodebuildArgs;
@@ -569,9 +567,9 @@ const archiveXcodeProject = () => {
     const { platform } = c;
 
     const appFolderName = getAppFolderName(c, c.platform);
-    const schemeTarget = getConfigProp(c, platform, 'schemeTarget', 'RNVApp');
-    const runScheme = getConfigProp(c, platform, 'runScheme', 'Debug');
-    let sdk = getConfigProp(c, platform, 'sdk');
+    const schemeTarget = getConfigProp('schemeTarget', 'RNVApp');
+    const runScheme = getConfigProp('runScheme', 'Debug');
+    let sdk = getConfigProp('sdk');
     if (!sdk) {
         if (platform === 'ios') sdk = 'iphoneos';
         // if (platform === MACOS) sdk = 'macosx';
@@ -585,8 +583,8 @@ const archiveXcodeProject = () => {
     const appPath = getAppFolder();
     const exportPath = path.join(appPath, 'release');
 
-    const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
-    const ignoreLogs = getConfigProp(c, platform, 'ignoreLogs');
+    const allowProvisioningUpdates = getConfigProp('allowProvisioningUpdates', true);
+    const ignoreLogs = getConfigProp('ignoreLogs');
     const exportPathArchive = `${exportPath}/${appFolderName}.xcarchive`;
     let ps = '';
     if (c.program.xcodebuildArchiveArgs) {
@@ -657,8 +655,8 @@ export const exportXcodeProject = async () => {
     const exportPath = path.join(appPath, 'release');
 
     const appFolderName = getAppFolderName(c, c.platform);
-    const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
-    const ignoreLogs = getConfigProp(c, platform, 'ignoreLogs');
+    const allowProvisioningUpdates = getConfigProp('allowProvisioningUpdates', true);
+    const ignoreLogs = getConfigProp('ignoreLogs');
 
     let ps = '';
     if (c.program.xcodebuildExportArgs) {
@@ -728,7 +726,7 @@ export const configureXcodeProject = async () => {
     const appFolderName = getAppFolderName(c, platform);
     c.runtime.platformBuildsProjectPath = `${appFolder}/${appFolderName}.xcworkspace`;
 
-    // const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
+    // const bundleAssets = getConfigProp('bundleAssets') === true;
     // INJECTORS
     c.payload.pluginConfigiOS = {
         podfileHeader: '',
@@ -790,7 +788,7 @@ export const configureXcodeProject = async () => {
     parseFonts((font, dir) => {
         if (font.includes('.ttf') || font.includes('.otf')) {
             const key = font.split('.')[0];
-            const includedFonts = getConfigProp(c, c.platform, 'includedFonts');
+            const includedFonts = getConfigProp('includedFonts');
             if (includedFonts && (includedFonts.includes('*') || includedFonts.includes(key))) {
                 const fontSource = path.join(dir, font);
                 if (fsExistsSync(fontSource)) {
@@ -818,7 +816,7 @@ export const configureXcodeProject = async () => {
     });
 
     // CHECK TEAM ID IF DEVICE
-    const tId = getConfigProp(c, platform, 'teamID');
+    const tId = getConfigProp('teamID');
     if (device && (!tId || tId === '')) {
         logError(
             `You're missing teamID in your ${chalk().bold(

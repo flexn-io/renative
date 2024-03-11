@@ -22,7 +22,7 @@ export const parseValuesColorsSync = (c: Context) => {
     const injects = [
         {
             pattern: '{{PLUGIN_COLORS_BG}}',
-            override: sanitizeColor(getConfigProp(c, c.platform, 'backgroundColor'), 'backgroundColor').hex,
+            override: sanitizeColor(getConfigProp('backgroundColor'), 'backgroundColor').hex,
         },
     ];
 

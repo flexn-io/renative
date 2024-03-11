@@ -55,7 +55,7 @@ class Docker {
 
         // save the docker files
         logDefault('docker:Dockerfile:create');
-        const deployOptions = getConfigProp(c, platform, 'custom').deploy;
+        const deployOptions = getConfigProp('custom').deploy;
         const healthCheck = deployOptions?.docker?.healthcheckProbe;
 
         let additionalCommands = '';
@@ -111,7 +111,7 @@ class Docker {
             )} and then opening ${chalk().bold('http://localhost:8081')}`
         );
 
-        const deployOptions = getConfigProp(c, platform, 'custom').deploy;
+        const deployOptions = getConfigProp('custom').deploy;
         const zipImage = deployOptions?.docker?.zipImage;
 
         if (zipImage) {

@@ -115,13 +115,13 @@ export const runTizen = async (c: RnvContext, target?: string) => {
 
     if (!platform) return;
 
-    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
+    const bundleAssets = getConfigProp('bundleAssets') === true;
     const isHosted = hosted && !bundleAssets;
 
     if (isHosted) {
         const isPortActive = await checkPortInUse(c.runtime.port);
         if (isPortActive) {
-            const resetCompleted = await confirmActiveBundler(c);
+            const resetCompleted = await confirmActiveBundler();
             c.runtime.skipActiveServerCheck = !resetCompleted;
         }
         logDefault('runTizen', `target:${target} hosted:${!!isHosted}`);
@@ -147,7 +147,7 @@ export const runTizen = async (c: RnvContext, target?: string) => {
                 .catch(logError);
             await runWebpackServer(isWeinreEnabled);
         } else {
-            const resetCompleted = await confirmActiveBundler(c);
+            const resetCompleted = await confirmActiveBundler();
 
             if (resetCompleted) {
                 waitForHost('')
@@ -169,7 +169,7 @@ export const buildTizenProject = async () => {
 
     if (!platform) return;
 
-    const certProfile = getConfigProp(c, c.platform, 'certificateProfile') || DEFAULTS.certificateProfile;
+    const certProfile = getConfigProp('certificateProfile') || DEFAULTS.certificateProfile;
     const tDir = getPlatformProjectDir()!;
 
     await buildCoreWebpackProject();
@@ -222,15 +222,15 @@ const _configureProject = (c: RnvContext) =>
         const configFile = 'config.xml';
         // const p = c.buildConfig.platforms?.[platform];
 
-        const pkg = getConfigProp(c, c.platform, 'package') || '';
-        const id = getConfigProp(c, c.platform, 'id') || '';
-        const appName = getConfigProp(c, c.platform, 'appName') || '';
+        const pkg = getConfigProp('package') || '';
+        const id = getConfigProp('id') || '';
+        const appName = getConfigProp('appName') || '';
 
         const injects: OverridesOptions = [
             { pattern: '{{PACKAGE}}', override: pkg },
             { pattern: '{{ID}}', override: id },
             { pattern: '{{APP_NAME}}', override: appName },
-            { pattern: '{{APP_VERSION}}', override: semver.valid(semver.coerce(getAppVersion(c, platform))) || '' },
+            { pattern: '{{APP_VERSION}}', override: semver.valid(semver.coerce(getAppVersion())) || '' },
         ];
 
         addSystemInjects(c, injects);

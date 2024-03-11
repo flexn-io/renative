@@ -6,7 +6,7 @@ export const registerDevice = async () => {
     const c = getContext();
     logDefault(`registerDevice:${c.platform}`);
 
-    const teamID = getConfigProp(c, c.platform, 'teamID');
+    const teamID = getConfigProp('teamID');
     const udid = c.runtime.targetUDID;
     const deviceName = c.runtime.target;
 
@@ -48,10 +48,10 @@ export const updateProfile = async (): Promise<boolean> => {
 
     const { appId } = c.runtime;
 
-    const id = getAppId(c, platform);
-    const teamID = getConfigProp(c, platform, 'teamID');
-    const pMethod = getConfigProp(c, platform, 'exportOptions')?.method;
-    const runScheme = getConfigProp(c, platform, 'runScheme');
+    const id = getAppId();
+    const teamID = getConfigProp('teamID');
+    const pMethod = getConfigProp('exportOptions')?.method;
+    const runScheme = getConfigProp('runScheme');
     let provisioning;
     if (pMethod === 'ad-hoc') provisioning = 'adhoc';
     if (pMethod === 'development' || runScheme === 'Debug') {

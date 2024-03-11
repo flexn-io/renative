@@ -190,7 +190,7 @@ const installAndLaunchApp = async (target: string, appPath: string, tId: string)
     }
     // const { hosted } = c.program;
     // const { platform } = c;
-    // const isHosted = hosted || !getConfigProp(c, platform, 'bundleAssets');
+    // const isHosted = hosted || !getConfigProp('bundleAssets');
     const toReturn = true;
     // if (isHosted) {
     //     toReturn = startHostedServerIfRequired(c);
@@ -241,7 +241,7 @@ export const runWebosSimOrDevice = async () => {
     if (!tDir) {
         return Promise.reject(`Cannot determine getPlatformProjectDir value`);
     }
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
+    const bundleAssets = getConfigProp('bundleAssets');
     const appLocation = bundleAssets ? path.join(tDir, 'build') : tDir;
 
     if (!appLocation) {

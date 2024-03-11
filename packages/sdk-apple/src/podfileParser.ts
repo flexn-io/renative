@@ -20,7 +20,7 @@ export const parsePodFile = async () => {
     const { platform } = c;
 
     const appFolder = getAppFolder();
-    const useHermes = getConfigProp(c, c.platform, 'reactNativeEngine') === 'hermes';
+    const useHermes = getConfigProp('reactNativeEngine') === 'hermes';
 
     let pluginInject = '';
 
@@ -75,10 +75,10 @@ export const parsePodFile = async () => {
     });
 
     // WARNINGS
-    const ignoreWarnings = getConfigProp(c, platform, 'ignoreWarnings');
+    const ignoreWarnings = getConfigProp('ignoreWarnings');
     const podWarnings = ignoreWarnings ? 'inhibit_all_warnings!' : '';
 
-    const templateXcode = getConfigProp(c, c.platform, 'templateXcode');
+    const templateXcode = getConfigProp('templateXcode');
     const podfile = templateXcode?.Podfile;
     if (podfile) {
         const { injectLines, post_install, header, sources } = podfile;
@@ -111,7 +111,7 @@ export const parsePodFile = async () => {
     }
 
     // DEPLOYMENT TARGET
-    const deploymentTarget = getConfigProp(c, platform, 'deploymentTarget') || DEFAULTS.deploymentTarget;
+    const deploymentTarget = getConfigProp('deploymentTarget') || DEFAULTS.deploymentTarget;
     c.payload.pluginConfigiOS.deploymentTarget = deploymentTarget;
 
     const injects: OverridesOptions = [

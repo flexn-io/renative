@@ -28,7 +28,7 @@ export const executePipe = async (key: string) => {
 export const buildHooks = async () => {
     logDebug('buildHooks');
     const c = getContext();
-    const enableHookRebuild = getConfigProp(c, c.platform, 'enableHookRebuild');
+    const enableHookRebuild = getConfigProp('enableHookRebuild');
 
     let shouldBuildHook =
         c.program.reset ||

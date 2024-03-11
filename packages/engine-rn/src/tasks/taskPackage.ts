@@ -20,7 +20,7 @@ const taskPackage: RnvTaskFn = async (c, parentTask, originTask) => {
 
     if (shouldSkipTask(RnvTaskName.package, originTask)) return true;
 
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
+    const bundleAssets = getConfigProp('bundleAssets');
 
     if (!bundleAssets) {
         return true;
@@ -37,7 +37,7 @@ const taskPackage: RnvTaskFn = async (c, parentTask, originTask) => {
             // NOTE: react-native v0.73 triggers packaging automatically so we skipping it unless we need to
             // package it explicitly for tasks where it is not triggered automatically
 
-            const signingConfig = getConfigProp(c, c.platform, 'signingConfig');
+            const signingConfig = getConfigProp('signingConfig');
 
             if (originTask === RnvTaskName.eject || signingConfig !== 'Release') {
                 //if bundleAssets === true AND signingConfig is not releaase RN will not trigger packaging

@@ -161,7 +161,7 @@ const _mergeFeatures = (
     configKey: 'includedFeatures' | 'excludedFeatures',
     value: boolean
 ) => {
-    const features = getConfigProp(c, c.platform, configKey);
+    const features = getConfigProp(configKey);
 
     if (features) {
         const featuresObj: Array<AndroidManifestNode> = [];
@@ -202,7 +202,7 @@ const getConfigPropArray = <T extends ConfigPropKey>(c: RnvContext, platform: Rn
     configArr.forEach((config) => {
         if (config) {
             //TODO: this is bit of a hack. _getConfigProp expectes already merged obj needs to be redone
-            const val = _getConfigProp(c, platform, key, null, config as ConfigFileBuildConfig);
+            const val = _getConfigProp(key, null, config as ConfigFileBuildConfig);
             if (val) {
                 result.push(val);
             }
@@ -226,7 +226,7 @@ export const parseAndroidManifestSync = (c: Context) => {
             return;
         }
 
-        baseManifestFile.package = getAppId(c, platform);
+        baseManifestFile.package = getAppId();
 
         const objArr = getConfigPropArray(c, c.platform, 'templateAndroid');
 
@@ -255,8 +255,8 @@ export const parseAndroidManifestSync = (c: Context) => {
         // appConfig PERMISSIONS OVERRIDES
         const configPermissions = c.buildConfig?.permissions;
 
-        const includedPermissions = getConfigProp(c, platform, 'includedPermissions');
-        const excludedPermissions = getConfigProp(c, platform, 'excludedPermissions');
+        const includedPermissions = getConfigProp('includedPermissions');
+        const excludedPermissions = getConfigProp('excludedPermissions');
         if (includedPermissions?.forEach && configPermissions) {
             const platPerm = 'android'; //configPermissions[platform] ? platform : 'android';
             const pc = configPermissions[platPerm];

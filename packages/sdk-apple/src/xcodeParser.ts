@@ -30,22 +30,22 @@ export const parseXcodeProject = async () => {
     // PROJECT
     c.payload.xcodeProj = {};
     c.payload.xcodeProj.provisioningStyle =
-        c.program.provisioningStyle || getConfigProp(c, platform, 'provisioningStyle', 'Automatic');
-    c.payload.xcodeProj.deploymentTarget = getConfigProp(c, platform, 'deploymentTarget', '14.0');
+        c.program.provisioningStyle || getConfigProp('provisioningStyle', 'Automatic');
+    c.payload.xcodeProj.deploymentTarget = getConfigProp('deploymentTarget', '14.0');
     c.payload.xcodeProj.provisionProfileSpecifier =
-        c.program.provisionProfileSpecifier || getConfigProp(c, platform, 'provisionProfileSpecifier');
-    c.payload.xcodeProj.provisionProfileSpecifiers = getConfigProp(c, platform, 'provisionProfileSpecifiers') || {};
+        c.program.provisionProfileSpecifier || getConfigProp('provisionProfileSpecifier');
+    c.payload.xcodeProj.provisionProfileSpecifiers = getConfigProp('provisionProfileSpecifiers') || {};
     c.payload.xcodeProj.codeSignIdentity =
-        c.program.codeSignIdentity || getConfigProp(c, platform, 'codeSignIdentity', 'iPhone Developer');
+        c.program.codeSignIdentity || getConfigProp('codeSignIdentity', 'iPhone Developer');
 
-    c.payload.xcodeProj.codeSignIdentities = getConfigProp(c, platform, 'codeSignIdentities');
+    c.payload.xcodeProj.codeSignIdentities = getConfigProp('codeSignIdentities');
 
-    c.payload.xcodeProj.systemCapabilities = getConfigProp(c, platform, 'systemCapabilities');
-    c.payload.xcodeProj.excludedArchs = getConfigProp(c, platform, 'excludedArchs');
-    c.payload.xcodeProj.runScheme = getConfigProp(c, platform, 'runScheme');
-    c.payload.xcodeProj.teamID = getConfigProp(c, platform, 'teamID');
-    c.payload.xcodeProj.id = getConfigProp(c, platform, 'id');
-    c.payload.xcodeProj.appId = getAppId(c, platform);
+    c.payload.xcodeProj.systemCapabilities = getConfigProp('systemCapabilities');
+    c.payload.xcodeProj.excludedArchs = getConfigProp('excludedArchs');
+    c.payload.xcodeProj.runScheme = getConfigProp('runScheme');
+    c.payload.xcodeProj.teamID = getConfigProp('teamID');
+    c.payload.xcodeProj.id = getConfigProp('id');
+    c.payload.xcodeProj.appId = getAppId();
 
     if (c.payload.xcodeProj.provisioningStyle !== 'Automatic' && !c.payload.xcodeProj.provisionProfileSpecifier) {
         const result = await parseProvisioningProfiles(c);
@@ -195,7 +195,7 @@ const _parseXcodeProject = (c: Context, platform: RnvPlatform) =>
                 xcodeProj.addTargetAttribute('SystemCapabilities', sysCapObj);
             }
 
-            const templateXcode = getConfigProp(c, c.platform, 'templateXcode');
+            const templateXcode = getConfigProp('templateXcode');
 
             const xcodeprojObj1 = templateXcode?.project_pbxproj;
 

@@ -50,7 +50,7 @@ const existBuildsOverrideForTargetPathSync = (c: RnvContext, destPath: string) =
 const _configureHostedIfRequired = async (c: RnvContext) => {
     logTask('_configureHostedIfRequired');
 
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
+    const bundleAssets = getConfigProp('bundleAssets', false);
 
     if (!bundleAssets && !existBuildsOverrideForTargetPathSync(c, path.join(getPlatformProjectDir()!, 'index.html'))) {
         logDebug('Running hosted build');
