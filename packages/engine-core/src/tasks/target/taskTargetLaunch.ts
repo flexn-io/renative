@@ -28,7 +28,7 @@ const taskTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) => {
     const options = [];
 
     if (platform && !target) {
-const projectTarget = c.files.project.configLocal?.defaultTargets?.[platform];
+        const projectTarget = c.files.project.configLocal?.defaultTargets?.[platform];
         if (projectTarget) {
             options.push({ name: `${projectTarget} (project default)`, value: projectTarget });
         }
