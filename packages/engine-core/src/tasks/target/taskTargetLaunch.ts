@@ -28,12 +28,11 @@ const taskTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) => {
     const options = [];
 
     if (platform && !target) {
-        const projectTarget = c.files.project.configLocal?.defaultTargets?.[platform];
+const projectTarget = c.files.project.configLocal?.defaultTargets?.[platform];
         if (projectTarget) {
             options.push({ name: `${projectTarget} (project default)`, value: projectTarget });
         }
         const workspaceTarget = c.files.workspace.config?.defaultTargets?.[platform];
-
         if (workspaceTarget) {
             options.push({ name: `${workspaceTarget} (global default)`, value: workspaceTarget });
         }
@@ -68,7 +67,7 @@ const taskTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) => {
         case 'webos':
             return launchWebOSimulator(c, target);
         case 'kaios':
-            return launchKaiOSSimulator(c);
+            return launchKaiOSSimulator(c, target);
         default:
             return Promise.reject(
                 `"target launch" command does not support ${chalk().white.bold(

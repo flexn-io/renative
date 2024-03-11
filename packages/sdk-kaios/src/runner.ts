@@ -54,7 +54,7 @@ export const runKaiOSProject = async (c: RnvContext) => {
     logDefault('runKaiOSProject');
 
     await buildCoreWebpackProject(c);
-    await launchKaiOSSimulator(c);
+    await launchKaiOSSimulator(c, true);
     return true;
 };
 
