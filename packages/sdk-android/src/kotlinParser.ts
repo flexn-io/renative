@@ -44,7 +44,7 @@ import { getBuildFilePath, getEntryFile, getAppId, addSystemInjects } from '@rnv
 // };
 
 export const parseMainApplicationSync = (c: Context) => {
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
     const { platform } = c;
 
     if (!platform) return;
@@ -114,7 +114,7 @@ export const parseMainApplicationSync = (c: Context) => {
 };
 
 export const parseMainActivitySync = (c: RnvContext) => {
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
     const { platform } = c;
 
     const templatePath = 'app/src/main/java/rnv_template/MainActivity.kt';
@@ -162,7 +162,7 @@ export const parseMainActivitySync = (c: RnvContext) => {
 };
 
 export const parseSplashActivitySync = (c: Context) => {
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
     const { platform } = c;
 
     const splashTemplatePath = 'app/src/main/java/rnv_template/SplashActivity.kt';

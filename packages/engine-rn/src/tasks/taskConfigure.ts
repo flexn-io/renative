@@ -18,7 +18,7 @@ const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskConfigure');
 
     await executeTask(RnvTaskName.platformConfigure, RnvTaskName.configure, originTask);
-    if (shouldSkipTask(c, RnvTaskName.configure, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.configure, originTask)) return true;
 
     await configureEntryPoint(c.platform);
 
@@ -36,10 +36,10 @@ const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
         case 'firetv':
         case 'androidwear':
             await configureGradleProject(c);
-            await jetifyIfRequired(c);
+            await jetifyIfRequired();
             break;
         default:
-            logErrorPlatform(c);
+            logErrorPlatform();
             break;
     }
 

@@ -30,6 +30,7 @@ import {
     RnvPlatform,
     logInfo,
     PlatformKey,
+    getContext,
 } from '@rnv/core';
 import { parseAndroidManifestSync, injectPluginManifestSync } from './manifestParser';
 import {
@@ -324,7 +325,7 @@ const _checkSigningCerts = async (c: Context) => {
 export const configureAndroidProperties = async (c: Context) => {
     logDefault('configureAndroidProperties');
 
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
 
     c.runtime.platformBuildsProjectPath = appFolder;
 
@@ -352,7 +353,8 @@ sdk.dir=${sdkDir}`
     return true;
 };
 
-export const configureGradleProject = async (c: Context) => {
+export const configureGradleProject = async () => {
+    const c = getContext();
     const { platform } = c;
     logDefault('configureGradleProject');
 
@@ -382,7 +384,7 @@ export const configureProject = async (c: Context) => {
     logDefault('configureProject');
     const { platform } = c;
 
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
 
     // if (!fsExistsSync(gradlew)) {
     //     logWarning(`Your ${chalk().bold(platform)} platformBuild is misconfigured!. let's repair it.`);
@@ -501,7 +503,8 @@ export const configureProject = async (c: Context) => {
 };
 
 // Resolve or reject will not be called so this will keep running
-export const runAndroidLog = async (c: Context) => {
+export const runAndroidLog = async () => {
+    const c = getContext();
     logDefault('runAndroidLog');
     const filter = c.program.filter || '';
     const child = execaCommand(`${c.cli[CLI_ANDROID_ADB]} logcat`);

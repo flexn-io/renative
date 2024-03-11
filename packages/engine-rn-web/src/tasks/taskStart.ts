@@ -23,10 +23,10 @@ const taskStart: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskStart', `parent:${parentTask} port:${port} hosted:${!!hosted}`);
 
     if (!parentTask) {
-        await executeTask(c, RnvTaskName.configure, RnvTaskName.start, originTask);
+        await executeTask(RnvTaskName.configure, RnvTaskName.start, originTask);
     }
 
-    if (shouldSkipTask(c, RnvTaskName.start, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.start, originTask)) return true;
 
     if (hosted) {
         waitForHost(c, '')
@@ -44,12 +44,12 @@ const taskStart: RnvTaskFn = async (c, parentTask, originTask) => {
         case 'tizenmobile':
         case 'tizenwatch':
             // c.runtime.keepSessionActive = true;
-            return runWebpackServer(c, isWeinreEnabled);
+            return runWebpackServer(isWeinreEnabled);
         default:
             if (hosted) {
                 return logError('This platform does not support hosted mode', true);
             }
-            return logErrorPlatform(c);
+            return logErrorPlatform();
     }
 };
 

@@ -32,7 +32,7 @@ export const packageReactNativeAndroid = async (c: RnvContext) => {
 
     const outputFile = getEntryFile(c, platform);
 
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
     let reactNative = c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native';
 
     if (isSystemWin) {
@@ -68,7 +68,7 @@ export const packageReactNativeAndroid = async (c: RnvContext) => {
             )}`;
         }
 
-        await executeAsync(c, cmd, {
+        await executeAsync(cmd, {
             env: {
                 ...CoreEnvVars.BASE(),
                 ...CoreEnvVars.RNV_EXTENSIONS(),
@@ -93,7 +93,7 @@ export const runReactNativeAndroid = async (
     logDefault('_runGradleApp');
 
     const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
 
     const udid = device?.udid;
 
@@ -105,7 +105,7 @@ export const runReactNativeAndroid = async (
         command += ` --deviceId=${udid}`;
     }
 
-    return executeAsync(c, command, {
+    return executeAsync(command, {
         env: {
             ...CoreEnvVars.BASE(),
             ...CoreEnvVars.RNV_EXTENSIONS(),
@@ -123,7 +123,7 @@ export const buildReactNativeAndroid = async (c: RnvContext) => {
     logDefault('buildAndroid');
     const { platform } = c;
 
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
     const signingConfig = getConfigProp(c, platform, 'signingConfig') || DEFAULTS.signingConfig;
     const outputAab = getConfigProp(c, platform, 'aab', false);
     const extraGradleParams = getConfigProp(c, platform, 'extraGradleParams', '');
@@ -136,7 +136,7 @@ export const buildReactNativeAndroid = async (c: RnvContext) => {
         command += ` --extra-params ${extraGradleParams}`;
     }
 
-    await executeAsync(c, command, {
+    await executeAsync(command, {
         cwd: appFolder,
         env: {
             ...CoreEnvVars.BASE(),

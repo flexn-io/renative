@@ -14,17 +14,17 @@ import { runAndroidLog, checkAndConfigureAndroidSdks } from '@rnv/sdk-android';
 const taskLog: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskLog', `parent:${parentTask}`);
 
-    await executeTask(c, RnvTaskName.workspaceConfigure, RnvTaskName.projectConfigure, originTask);
+    await executeTask(RnvTaskName.workspaceConfigure, RnvTaskName.projectConfigure, originTask);
 
     switch (c.platform) {
         case 'androidtv':
         case 'firetv':
-            await checkAndConfigureAndroidSdks(c);
-            return runAndroidLog(c);
+            await checkAndConfigureAndroidSdks();
+            return runAndroidLog();
         case 'tvos':
-            return runAppleLog(c);
+            return runAppleLog();
         default:
-            return logErrorPlatform(c);
+            return logErrorPlatform();
     }
 };
 

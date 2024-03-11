@@ -1,7 +1,6 @@
 import {
     CoreEnvVars,
     PlatformKey,
-    RnvContext,
     chalk,
     executeAsync,
     logError,
@@ -9,6 +8,7 @@ import {
     logInfo,
     logRaw,
     logDefault,
+    getContext,
 } from '@rnv/core';
 import { isBundlerActive } from './common';
 import { EnvVars } from './env';
@@ -23,14 +23,16 @@ BUNDLER_PLATFORMS['androidtv'] = 'android';
 BUNDLER_PLATFORMS['firetv'] = 'android';
 BUNDLER_PLATFORMS['androidwear'] = 'android';
 
-export const startReactNative = async (
-    c: RnvContext,
-    opts: { waitForBundler?: boolean; customCliPath?: string; metroConfigName?: string }
-) => {
+export const startReactNative = async (opts: {
+    waitForBundler?: boolean;
+    customCliPath?: string;
+    metroConfigName?: string;
+}) => {
+    const c = getContext();
     logDefault('startReactNative');
 
     if (!c.platform) {
-        logErrorPlatform(c);
+        logErrorPlatform();
         return false;
     }
 
@@ -76,7 +78,7 @@ Dev server running at: ${url}
         }
 
         if (!isRunning || (isRunning && resetCompleted)) {
-            return executeAsync(c, startCmd, {
+            return executeAsync(startCmd, {
                 stdio: 'inherit',
                 silent: true,
                 env: {
@@ -89,7 +91,7 @@ Dev server running at: ${url}
             });
         }
         if (resetCompleted) {
-            return executeAsync(c, startCmd, {
+            return executeAsync(startCmd, {
                 stdio: 'inherit',
                 silent: true,
                 env: {
@@ -103,7 +105,7 @@ Dev server running at: ${url}
 
         return true;
     }
-    executeAsync(c, startCmd, {
+    executeAsync(startCmd, {
         stdio: 'inherit',
         silent: true,
         env: {

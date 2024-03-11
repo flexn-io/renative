@@ -40,12 +40,12 @@ export const packageReactNativeIOS = (c: RnvContext, isDev = false) => {
         // SECURITY-PATCH https://github.com/flexn-io/renative/security/code-scanning/112
         shellQuote.quote([`${entryFile}.js`]),
         '--bundle-output',
-        `${getAppFolder(c)}/main.jsbundle`,
+        `${getAppFolder()}/main.jsbundle`,
     ];
 
     if (getConfigProp(c, c.platform, 'enableSourceMaps', false)) {
         args.push('--sourcemap-output');
-        args.push(`${getAppFolder(c)}/main.jsbundle.map`);
+        args.push(`${getAppFolder()}/main.jsbundle.map`);
     }
 
     if (c.program.info) {
@@ -53,7 +53,6 @@ export const packageReactNativeIOS = (c: RnvContext, isDev = false) => {
     }
 
     return executeAsync(
-        c,
         `node ${doResolve(
             c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'
         )}/local-cli/cli.js ${args.join(' ')} --config=${
@@ -93,7 +92,7 @@ export const runReactNativeIOS = async (
     try {
         // Inherit full logs
         // return executeAsync(c, cmd, { stdio: 'inherit', silent: true });
-        return executeAsync(c, cmd, {
+        return executeAsync(cmd, {
             env,
         });
     } catch (e) {
@@ -112,7 +111,7 @@ export const generateChecksum = (str: string, algorithm?: string, encoding?: 'ba
 
 const generateCombinedChecksum = () => {
     const c = getContext();
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
 
     const podContentChecksum = generateChecksum(fsReadFileSync(path.join(appFolder, 'Podfile')).toString());
     const pluginVersionsChecksum = generateChecksum(JSON.stringify(c.runtime.pluginVersions));
@@ -128,7 +127,7 @@ const checkIfPodsIsRequired = (c: RnvContext): { result: boolean; reason: string
     if (c.program.updatePods) {
         return { result: true, reason: 'You passed --updatePods option', code: 2 };
     }
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
 
     const podLockPath = path.join(appFolder, 'Podfile.lock');
     if (!fsExistsSync(podLockPath)) {
@@ -149,9 +148,9 @@ const checkIfPodsIsRequired = (c: RnvContext): { result: boolean; reason: string
     return { result: false, reason: 'Podfile.checksum matches current value', code: 6 };
 };
 
-const updatePodsChecksum = (c: RnvContext) => {
+const updatePodsChecksum = () => {
     logDefault('updatePodsChecksum');
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
     const podChecksumPath = path.join(appFolder, 'Podfile.checksum');
 
     const combinedChecksum = generateCombinedChecksum();
@@ -179,7 +178,7 @@ export const runCocoaPods = async (c: RnvContext) => {
 
     // logInfo(`Will execute pod command. Reason: ${checkResult.reason}`);
 
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
 
     if (!fsExistsSync(appFolder)) {
         return Promise.reject(`Location ${appFolder} does not exists!`);
@@ -190,7 +189,7 @@ export const runCocoaPods = async (c: RnvContext) => {
     const option3 = "Skip and don't ask again";
 
     const runPods = async () => {
-        await executeAsync(c, 'bundle install');
+        await executeAsync('bundle install');
 
         const env = {
             ...CoreEnvVars.BASE(),
@@ -200,18 +199,18 @@ export const runCocoaPods = async (c: RnvContext) => {
         };
 
         if (c.program.updatePods) {
-            await executeAsync(c, 'bundle exec pod update', {
+            await executeAsync('bundle exec pod update', {
                 cwd: appFolder,
                 env,
             });
         } else {
-            await executeAsync(c, 'bundle exec pod install', {
+            await executeAsync('bundle exec pod install', {
                 cwd: appFolder,
                 env,
             });
         }
 
-        updatePodsChecksum(c);
+        updatePodsChecksum();
     };
 
     if (checkResult.code === 3) {
@@ -234,6 +233,6 @@ export const runCocoaPods = async (c: RnvContext) => {
         return false;
     }
 
-    updatePodsChecksum(c);
+    updatePodsChecksum();
     return false;
 };

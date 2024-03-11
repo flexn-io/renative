@@ -19,9 +19,9 @@ import {
 const taskCryptoInstallProfiles: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskCryptoInstallProfiles');
 
-    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.cryptoInstallProfiles, originTask);
+    await executeTask(RnvTaskName.projectConfigure, RnvTaskName.cryptoInstallProfiles, originTask);
 
-    if (shouldSkipTask(c, RnvTaskName.cryptoInstallProfiles, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.cryptoInstallProfiles, originTask)) return true;
 
     if (c.platform !== 'tvos') {
         logError(`taskCryptoInstallProfiles: platform ${c.platform} not supported`);

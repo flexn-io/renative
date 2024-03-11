@@ -17,6 +17,7 @@ import {
     CoreEnvVars,
     getAppFolder,
     logDefault,
+    getContext,
 } from '@rnv/core';
 import semver from 'semver';
 
@@ -32,7 +33,7 @@ export const runLightningProject = async (c: RnvContext) => {
     const isHosted = hosted && !getConfigProp(c, platform, 'bundleAssets');
 
     if (isHosted) {
-        await executeAsync(c, 'lng dev', {
+        await executeAsync('lng dev', {
             stdio: 'inherit',
             silent: false,
             env: {
@@ -67,7 +68,7 @@ export const buildLightningProject = async (c: RnvContext) => {
 
     const tOut = path.join(tBuild || '', 'output');
 
-    await executeAsync(c, `lng dist --${target}`, {
+    await executeAsync(`lng dist --${target}`, {
         stdio: 'inherit',
         silent: false,
         env: {
@@ -78,11 +79,11 @@ export const buildLightningProject = async (c: RnvContext) => {
     });
 
     if (platform === 'tizen') {
-        await execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`);
+        await execCLI(CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`);
 
         logSuccess(`Your WGT package is located in ${chalk().cyan(tOut)} .`);
     } else {
-        await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tBuild} -n`);
+        await execCLI(CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tBuild} -n`);
 
         logSuccess(`Your IPK package is located in ${chalk().cyan(tOut)} .`);
     }
@@ -90,16 +91,17 @@ export const buildLightningProject = async (c: RnvContext) => {
     return true;
 };
 
-export const configureLightningProject = async (c: RnvContext) => {
+export const configureLightningProject = async () => {
     logTask('configureLightningProject');
+    const c = getContext();
     const { platform } = c;
     c.runtime.platformBuildsProjectPath = `${getAppFolder(c)}`;
-    if (!isPlatformActive(c, platform)) {
+    if (!isPlatformActive(platform)) {
         return;
     }
-    await copyAssetsFolder(c, platform);
+    await copyAssetsFolder(platform);
     await _configureProject(c);
-    return copyBuildsFolder(c, platform);
+    return copyBuildsFolder(platform);
 };
 
 const _configureProject = (c: RnvContext) =>

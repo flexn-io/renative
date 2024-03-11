@@ -7,6 +7,7 @@ import { BuildConfigPropKey, BuildSchemePropKey, CommonPropKey, PlatPropKey, Rnv
 import { TimestampPathsConfig } from '../system/types';
 import path from 'path';
 import { fsExistsSync } from '../system/fs';
+import { getContext } from './provider';
 
 const _getValueOrMergedObject = (resultScheme: object, resultPlatforms: object, resultCommon: object) => {
     if (resultScheme !== undefined) {
@@ -100,7 +101,8 @@ export const getTimestampPathsConfig = (c: RnvContext, platform: RnvPlatform): T
 };
 
 //TODO: rename to getPlatformBuildAppDir ???
-export const getAppFolder = (c: RnvContext, isRelativePath?: boolean) => {
+export const getAppFolder = (isRelativePath?: boolean) => {
+    const c = getContext();
     if (isRelativePath) {
         return `platformBuilds/${c.runtime.appId}_${c.platform}${c.runtime._platformBuildsSuffix || ''}`;
     }
@@ -110,7 +112,8 @@ export const getAppFolder = (c: RnvContext, isRelativePath?: boolean) => {
     );
 };
 
-export const getPlatformProjectDir = (c: RnvContext) => {
+export const getPlatformProjectDir = () => {
+    const c = getContext();
     if (!c.runtime.engine) {
         logError('getPlatformProjectDir not available without specific engine');
         return null;

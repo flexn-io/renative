@@ -20,6 +20,7 @@ import {
     OverridesOptions,
     DEFAULTS,
     copyFileSync,
+    getContext,
 } from '@rnv/core';
 import semver from 'semver';
 import { CLI_TIZEN } from './constants';
@@ -41,9 +42,9 @@ import {
 
 const DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION = `${DEFAULT_CERTIFICATE_NAME}.p12`;
 
-export const checkTizenStudioCert = async (c: RnvContext): Promise<boolean> => {
+export const checkTizenStudioCert = async (): Promise<boolean> => {
     try {
-        await execCLI(c, CLI_TIZEN, `security-profiles list -n ${DEFAULTS.certificateProfile}`);
+        await execCLI(CLI_TIZEN, `security-profiles list -n ${DEFAULTS.certificateProfile}`);
         return true;
     } catch (e) {
         return false;
@@ -58,7 +59,7 @@ export const configureTizenGlobal = (c: RnvContext) =>
         const tizenAuthorCert = path.join(c.paths.workspace.dir, DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION);
 
         if (fsExistsSync(tizenAuthorCert)) {
-            checkTizenStudioCert(c)
+            checkTizenStudioCert()
                 .then((certificateExists) => {
                     if (certificateExists) {
                         logDebug(`${DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION} file exists in Tizen Studio!`);
@@ -94,8 +95,8 @@ export const configureTizenGlobal = (c: RnvContext) =>
         // }
     });
 
-const _copyRequiredFiles = (c: RnvContext) => {
-    const tDir = getPlatformProjectDir(c)!;
+const _copyRequiredFiles = () => {
+    const tDir = getPlatformProjectDir()!;
     const tBuild = path.join(tDir, 'build');
 
     const requiredFiles = ['.project', '.tproject', 'config.xml', 'icon.png'];
@@ -117,7 +118,7 @@ export const runTizen = async (c: RnvContext, target?: string) => {
     const isHosted = hosted && !bundleAssets;
 
     if (isHosted) {
-        const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
+        const isPortActive = await checkPortInUse(c.runtime.port);
         if (isPortActive) {
             const resetCompleted = await confirmActiveBundler(c);
             c.runtime.skipActiveServerCheck = !resetCompleted;
@@ -127,11 +128,11 @@ export const runTizen = async (c: RnvContext, target?: string) => {
     }
 
     if (bundleAssets) {
-        await buildCoreWebpackProject(c);
-        _copyRequiredFiles(c);
-        await runTizenSimOrDevice(c);
+        await buildCoreWebpackProject();
+        _copyRequiredFiles();
+        await runTizenSimOrDevice();
     } else {
-        const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
+        const isPortActive = await checkPortInUse(c.runtime.port);
         const isWeinreEnabled = REMOTE_DEBUGGER_ENABLED_PLATFORMS.includes(platform) && !bundleAssets && !hosted;
 
         if (!isPortActive) {
@@ -141,19 +142,19 @@ export const runTizen = async (c: RnvContext, target?: string) => {
                 )} is not running. Starting it up for you...`
             );
             waitForHost(c, '')
-                .then(() => runTizenSimOrDevice(c))
+                .then(() => runTizenSimOrDevice())
                 .catch(logError);
-            await runWebpackServer(c, isWeinreEnabled);
+            await runWebpackServer(isWeinreEnabled);
         } else {
             const resetCompleted = await confirmActiveBundler(c);
 
             if (resetCompleted) {
                 waitForHost(c, '')
-                    .then(() => runTizenSimOrDevice(c))
+                    .then(() => runTizenSimOrDevice())
                     .catch(logError);
-                await runWebpackServer(c, isWeinreEnabled);
+                await runWebpackServer(isWeinreEnabled);
             } else {
-                await runTizenSimOrDevice(c);
+                await runTizenSimOrDevice();
             }
         }
     }
@@ -167,18 +168,18 @@ export const buildTizenProject = async (c: RnvContext) => {
     if (!platform) return;
 
     const certProfile = getConfigProp(c, c.platform, 'certificateProfile') || DEFAULTS.certificateProfile;
-    const tDir = getPlatformProjectDir(c)!;
+    const tDir = getPlatformProjectDir()!;
 
-    await buildCoreWebpackProject(c);
+    await buildCoreWebpackProject();
 
     if (!c.program.hosted) {
-        _copyRequiredFiles(c);
+        _copyRequiredFiles();
         const tOut = path.join(tDir, 'output');
         const tIntermediate = path.join(tDir, 'intermediate');
         const tBuild = path.join(tDir, 'build');
 
-        await execCLI(c, CLI_TIZEN, `build-web -- ${tBuild} -out ${tIntermediate}`);
-        await execCLI(c, CLI_TIZEN, `package -- ${tIntermediate} -s ${certProfile} -t wgt -o ${tOut}`);
+        await execCLI(CLI_TIZEN, `build-web -- ${tBuild} -out ${tIntermediate}`);
+        await execCLI(CLI_TIZEN, `package -- ${tIntermediate} -s ${certProfile} -t wgt -o ${tOut}`);
 
         logSuccess(`Your WGT package is located in ${chalk().cyan(tOut)} .`);
     }
@@ -188,14 +189,15 @@ export const buildTizenProject = async (c: RnvContext) => {
 
 let _isGlobalConfigured = false;
 
-export const configureTizenProject = async (c: RnvContext) => {
+export const configureTizenProject = async () => {
+    const c = getContext();
     logDefault('configureTizenProject');
 
     const { platform } = c;
 
-    c.runtime.platformBuildsProjectPath = `${getPlatformProjectDir(c)}`;
+    c.runtime.platformBuildsProjectPath = `${getPlatformProjectDir()}`;
 
-    if (!isPlatformActive(c, platform)) {
+    if (!isPlatformActive(platform)) {
         return;
     }
 
@@ -204,10 +206,10 @@ export const configureTizenProject = async (c: RnvContext) => {
         await configureTizenGlobal(c);
     }
 
-    await copyAssetsFolder(c, platform);
+    await copyAssetsFolder(platform);
     await configureCoreWebProject();
     await _configureProject(c);
-    return copyBuildsFolder(c, platform);
+    return copyBuildsFolder(platform);
 };
 
 const _configureProject = (c: RnvContext) =>
@@ -233,7 +235,7 @@ const _configureProject = (c: RnvContext) =>
 
         addSystemInjects(c, injects);
 
-        const file = path.join(getPlatformProjectDir(c)!, configFile);
+        const file = path.join(getPlatformProjectDir()!, configFile);
         writeCleanFile(file, file, injects, undefined, c);
 
         resolve();

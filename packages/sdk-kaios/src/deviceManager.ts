@@ -1,12 +1,13 @@
-import { fsExistsSync, getRealPath, logDefault, RnvError, RnvContext, inquirerPrompt, getDirectories } from '@rnv/core';
+import { fsExistsSync, getRealPath, logDefault, RnvError, inquirerPrompt, getDirectories, getContext } from '@rnv/core';
 import path from 'path';
 
 const childProcess = require('child_process');
 
-export const launchKaiOSSimulator = async (c: RnvContext, target: string | boolean) => {
+export const launchKaiOSSimulator = async (target: string | boolean) => {
+    const c = getContext();
     logDefault(`launchKaiOSSimulator: ${target}`);
 
-    const kaiosSdkPath = getRealPath(c, c.buildConfig?.sdks?.KAIOS_SDK);
+    const kaiosSdkPath = getRealPath(c.buildConfig?.sdks?.KAIOS_SDK);
 
     if (!kaiosSdkPath) {
         return Promise.reject(`c.buildConfig.sdks.KAIOS_SDK undefined`);

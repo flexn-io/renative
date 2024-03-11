@@ -16,18 +16,20 @@ import {
     CoreEnvVars,
     ExecOptionsPresets,
     getAppFolder,
+    getContext,
 } from '@rnv/core';
 import { checkPortInUse, confirmActiveBundler, getDevServerHost, openBrowser, waitForHost } from '@rnv/sdk-utils';
 import { EnvVars } from './env';
 
-export const configureNextIfRequired = async (c: RnvContext) => {
+export const configureNextIfRequired = async () => {
+    const c = getContext();
     logDefault('configureNextIfRequired');
 
     if (!c.platform) return;
 
-    c.runtime.platformBuildsProjectPath = `${getAppFolder(c)}`;
+    c.runtime.platformBuildsProjectPath = `${getAppFolder()}`;
 
-    await copyAssetsFolder(c, c.platform);
+    await copyAssetsFolder(c.platform);
 
     const destPath = path.join(c.paths.project.dir, 'public');
 
@@ -42,7 +44,8 @@ export const configureNextIfRequired = async (c: RnvContext) => {
     }
 };
 
-export const runWebNext = async (c: RnvContext) => {
+export const runWebNext = async () => {
+    const c = getContext();
     const { port } = c.runtime;
     logDefault('runWebNext', `port:${port}`);
     const { platform } = c;
@@ -51,7 +54,7 @@ export const runWebNext = async (c: RnvContext) => {
 
     const devServerHost = getDevServerHost(c);
 
-    const isPortActive = await checkPortInUse(c, platform, port);
+    const isPortActive = await checkPortInUse(port);
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
 
     if (!isPortActive) {
@@ -104,7 +107,7 @@ const _runWebBrowser = (
 
 export const getExportDir = (c: RnvContext) => {
     const exportDir = getConfigProp(c, c.platform, 'exportDir');
-    const maybeAbsolutePath = exportDir || path.join(getAppFolder(c)!, 'output');
+    const maybeAbsolutePath = exportDir || path.join(getAppFolder()!, 'output');
 
     // if path is absolute, make it relative to project root. Next 14 doesn't seem to like absolute paths
     if (path.isAbsolute(maybeAbsolutePath)) {
@@ -116,7 +119,7 @@ export const getExportDir = (c: RnvContext) => {
 export const buildWebNext = async (c: RnvContext) => {
     logDefault('buildWebNext');
 
-    await executeAsync(c, 'npx next build', {
+    await executeAsync('npx next build', {
         env: {
             ...CoreEnvVars.BASE(),
             ...CoreEnvVars.RNV_EXTENSIONS(),
@@ -142,7 +145,7 @@ Dev server running at: ${url}
     const opts = !c.program?.json
         ? ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER
         : ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY;
-    return executeAsync(c, `npx next ${bundleAssets ? 'start' : 'dev'} --port ${c.runtime.port}`, {
+    return executeAsync(`npx next ${bundleAssets ? 'start' : 'dev'} --port ${c.runtime.port}`, {
         env: {
             ...CoreEnvVars.BASE(),
             ...CoreEnvVars.RNV_EXTENSIONS(),
@@ -159,7 +162,7 @@ export const exportWebNext = async (c: RnvContext) => {
 
     const exportDir = getExportDir(c);
 
-    await executeAsync(c, `npx next build`, {
+    await executeAsync(`npx next build`, {
         env: {
             ...CoreEnvVars.BASE(),
             ...CoreEnvVars.RNV_EXTENSIONS(),

@@ -25,7 +25,7 @@ import { runKaiOSProject } from '@rnv/sdk-kaios';
 import { getIP } from '@rnv/sdk-utils';
 
 const existBuildsOverrideForTargetPathSync = (c: RnvContext, destPath: string) => {
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
     const relativePath = path.relative(appFolder, destPath);
     let result = false;
 
@@ -52,14 +52,14 @@ const _configureHostedIfRequired = async (c: RnvContext) => {
 
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
 
-    if (!bundleAssets && !existBuildsOverrideForTargetPathSync(c, path.join(getPlatformProjectDir(c)!, 'index.html'))) {
+    if (!bundleAssets && !existBuildsOverrideForTargetPathSync(c, path.join(getPlatformProjectDir()!, 'index.html'))) {
         logDebug('Running hosted build');
         const ipAddress = c.program.hostIp || getIP();
 
         if (c.runtime.currentEngine?.rootPath) {
             writeCleanFile(
                 path.join(c.runtime.currentEngine.rootPath, 'templates', 'appShell', 'index.html'),
-                path.join(getPlatformProjectDir(c)!, 'index.html'),
+                path.join(getPlatformProjectDir()!, 'index.html'),
                 [
                     {
                         pattern: '{{DEV_SERVER}}',
@@ -85,16 +85,16 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
     if (hosted) {
         c.runtime.shouldOpenBrowser = true;
         // return _taskStart(c);
-        return executeTask(c, RnvTaskName.start, RnvTaskName.run, originTask);
+        return executeTask(RnvTaskName.start, RnvTaskName.run, originTask);
     }
 
-    if (shouldSkipTask(c, RnvTaskName.run, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.run, originTask)) return true;
 
     switch (platform) {
         case 'web':
         case 'webtv':
             c.runtime.shouldOpenBrowser = true;
-            return runWebpackServer(c);
+            return runWebpackServer();
         case 'tizen':
         case 'tizenmobile':
         case 'tizenwatch':
@@ -108,14 +108,14 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
             }
             return runWebOS(c);
         case 'kaios':
-            return runKaiOSProject(c);
+            return runKaiOSProject();
         case 'chromecast':
             if (!c.program.only) {
                 await _configureHostedIfRequired(c);
             }
             return runChromecast(c);
         default:
-            return logErrorPlatform(c);
+            return logErrorPlatform();
     }
 };
 

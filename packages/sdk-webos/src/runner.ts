@@ -18,6 +18,7 @@ import {
     DEFAULTS,
     OverridesOptions,
     getAppFolder,
+    getContext,
 } from '@rnv/core';
 import semver from 'semver';
 import { runWebosSimOrDevice } from './deviceManager';
@@ -46,7 +47,7 @@ export const runWebOS = async (c: RnvContext) => {
     const isHosted = hosted && !bundleAssets;
 
     if (isHosted) {
-        const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
+        const isPortActive = await checkPortInUse(c.runtime.port);
         if (isPortActive) {
             const resetCompleted = await confirmActiveBundler(c);
             c.runtime.skipActiveServerCheck = !resetCompleted;
@@ -63,9 +64,9 @@ export const runWebOS = async (c: RnvContext) => {
     }
 
     if (bundleAssets) {
-        await buildCoreWebpackProject(c);
+        await buildCoreWebpackProject();
 
-        const appPath = getAppFolder(c);
+        const appPath = getAppFolder();
 
         if (!appPath) {
             throw new Error('Failed to resolve appPath');
@@ -81,7 +82,7 @@ export const runWebOS = async (c: RnvContext) => {
         });
         await runWebosSimOrDevice(c);
     } else {
-        const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
+        const isPortActive = await checkPortInUse(c.runtime.port);
         const isWeinreEnabled = platform
             ? REMOTE_DEBUGGER_ENABLED_PLATFORMS.includes(platform) && !bundleAssets && !hosted
             : false;
@@ -97,14 +98,14 @@ export const runWebOS = async (c: RnvContext) => {
                     runWebosSimOrDevice(c);
                 })
                 .catch(logError);
-            await runWebpackServer(c, isWeinreEnabled);
+            await runWebpackServer(isWeinreEnabled);
         } else {
             const resetCompleted = await confirmActiveBundler(c);
             if (resetCompleted) {
                 waitForHost(c, '')
                     .then(() => runWebosSimOrDevice(c))
                     .catch(logError);
-                await runWebpackServer(c, isWeinreEnabled);
+                await runWebpackServer(isWeinreEnabled);
             } else {
                 await runWebosSimOrDevice(c);
             }
@@ -115,42 +116,43 @@ export const runWebOS = async (c: RnvContext) => {
 export const buildWebOSProject = async (c: RnvContext) => {
     logDefault('buildWebOSProject');
 
-    await buildCoreWebpackProject(c);
+    await buildCoreWebpackProject();
 
     if (!c.program.hosted) {
-        const tDir = path.join(getPlatformProjectDir(c)!, 'build');
-        const tOut = path.join(getAppFolder(c)!, 'output');
+        const tDir = path.join(getPlatformProjectDir()!, 'build');
+        const tOut = path.join(getAppFolder()!, 'output');
 
-        const appinfoSrc = path.join(getPlatformProjectDir(c)!, 'appinfo.json');
+        const appinfoSrc = path.join(getPlatformProjectDir()!, 'appinfo.json');
         const appinfoDest = path.join(tDir, 'appinfo.json');
 
         copyFileSync(appinfoSrc, appinfoDest);
-        copyFileSync(path.join(getPlatformProjectDir(c)!, 'icon.png'), path.join(tDir, 'icon.png'));
-        copyFileSync(path.join(getPlatformProjectDir(c)!, 'largeIcon.png'), path.join(tDir, 'largeIcon.png'));
+        copyFileSync(path.join(getPlatformProjectDir()!, 'icon.png'), path.join(tDir, 'icon.png'));
+        copyFileSync(path.join(getPlatformProjectDir()!, 'largeIcon.png'), path.join(tDir, 'largeIcon.png'));
         copyFileSync(
-            path.join(getPlatformProjectDir(c)!, 'splashBackground.png'),
+            path.join(getPlatformProjectDir()!, 'splashBackground.png'),
             path.join(tDir, 'splashBackground.png')
         );
 
-        await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`);
+        await execCLI(CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`);
 
         logSuccess(`Your IPK package is located in ${chalk().cyan(tOut)} .`);
     }
 };
 
-export const configureWebOSProject = async (c: RnvContext) => {
+export const configureWebOSProject = async () => {
+    const c = getContext();
     logDefault('configureWebOSProject');
 
     const { platform } = c;
 
-    c.runtime.platformBuildsProjectPath = getPlatformProjectDir(c)!;
+    c.runtime.platformBuildsProjectPath = getPlatformProjectDir()!;
 
-    if (!isPlatformActive(c, platform)) return;
+    if (!isPlatformActive(platform)) return;
 
-    await copyAssetsFolder(c, platform);
+    await copyAssetsFolder(platform);
     await configureCoreWebProject();
     await _configureProject(c);
-    return copyBuildsFolder(c, platform);
+    return copyBuildsFolder(platform);
 };
 
 const _configureProject = async (c: RnvContext) => {
@@ -192,7 +194,7 @@ const _configureProject = async (c: RnvContext) => {
 
     addSystemInjects(c, injects);
 
-    const file = path.join(getPlatformProjectDir(c)!, configFile);
+    const file = path.join(getPlatformProjectDir()!, configFile);
 
     writeCleanFile(file, file, injects, undefined, c);
 

@@ -24,7 +24,7 @@ const taskPlatformConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
 
     await executeTask(RnvTaskName.projectConfigure, RnvTaskName.platformConfigure, originTask);
 
-    if (shouldSkipTask(c, RnvTaskName.platformConfigure, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.platformConfigure, originTask)) return true;
 
     await isPlatformSupported();
     await isBuildSchemeSupported();

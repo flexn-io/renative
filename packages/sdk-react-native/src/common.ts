@@ -11,6 +11,7 @@ import {
     parseFonts,
     getApi,
     RnvTaskName,
+    getContext,
 } from '@rnv/core';
 import { confirmActiveBundler } from '@rnv/sdk-utils';
 
@@ -24,14 +25,14 @@ export const startBundlerIfRequired = async (c: RnvContext, parentTask: string, 
     const isRunning = await isBundlerActive(c);
     if (!isRunning) {
         // _taskStart(c, parentTask, originTask);
-        await executeTask(c, RnvTaskName.start, parentTask, originTask);
+        await executeTask(RnvTaskName.start, parentTask, originTask);
 
         keepRNVRunning = true;
         await waitForBundler(c);
     } else {
         const resetCompleted = await confirmActiveBundler(c);
         if (resetCompleted) {
-            await executeTask(c, RnvTaskName.start, parentTask, originTask);
+            await executeTask(RnvTaskName.start, parentTask, originTask);
 
             keepRNVRunning = true;
             await waitForBundler(c);
@@ -107,9 +108,10 @@ const poll = (fn: () => Promise<boolean>, timeout = 30000, interval = 1000) => {
     return new Promise<void>(checkCondition);
 };
 
-export const configureFonts = async (c: RnvContext) => {
+export const configureFonts = async () => {
+    const c = getContext();
     const fontFolders = new Set<string>();
-    parseFonts(c, (font, dir) => {
+    parseFonts((font, dir) => {
         if (font.includes('.ttf') || font.includes('.otf')) {
             const key = font.split('.')[0];
             const includedFonts = getConfigProp(c, c.platform, 'includedFonts');

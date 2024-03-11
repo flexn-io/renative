@@ -1,9 +1,9 @@
 import path from 'path';
-import { getConfigProp, chalk, logDefault, logWarning, logSuccess, executeAsync } from '@rnv/core';
-import { Context } from './types';
+import { getConfigProp, chalk, logDefault, logWarning, logSuccess, executeAsync, getContext } from '@rnv/core';
 import { getAppId } from '@rnv/sdk-utils';
 
-export const registerDevice = async (c: Context) => {
+export const registerDevice = async () => {
+    const c = getContext();
     logDefault(`registerDevice:${c.platform}`);
 
     const teamID = getConfigProp(c, c.platform, 'teamID');
@@ -13,7 +13,7 @@ export const registerDevice = async (c: Context) => {
     const args = ['run', 'register_device', `team_id:"${teamID}"`, `udid:"${udid}"`, `name:"${deviceName}"`];
 
     try {
-        await executeAsync(c, `fastlane ${args.join(' ')}`, {
+        await executeAsync(`fastlane ${args.join(' ')}`, {
             shell: true,
             stdio: 'inherit',
             silent: true,
@@ -26,8 +26,9 @@ export const registerDevice = async (c: Context) => {
     }
 };
 
-export const updateProfile = async (c: Context): Promise<boolean> => {
+export const updateProfile = async (): Promise<boolean> => {
     logDefault(`updateProfile`, chalk().grey);
+    const c = getContext();
 
     // TODO: run trough all schemes
     // const schemes = c.buildConfig.platforms?.[c.platform]?.buildSchemes
@@ -79,7 +80,7 @@ export const updateProfile = async (c: Context): Promise<boolean> => {
     }
 
     try {
-        await executeAsync(c, `fastlane ${args.join(' ')}`, {
+        await executeAsync(`fastlane ${args.join(' ')}`, {
             shell: true,
             stdio: 'inherit',
             silent: true,

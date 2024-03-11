@@ -15,14 +15,14 @@ import { updateProfile } from '@rnv/sdk-apple';
 const _updateProfile = (c: RnvContext, v: string) =>
     new Promise<void>((resolve, reject) => {
         logTask(`_updateProfile:${v}`, chalk().grey);
-        updateProfile(c)
+        updateProfile()
             .then(() => resolve())
             .catch((e) => reject(e));
     });
 
 const _updateProfiles = (c: RnvContext) => {
     logTask('_updateProfiles', chalk().grey);
-    const acList = listAppConfigsFoldersSync(c, true);
+    const acList = listAppConfigsFoldersSync(true);
 
     return acList.reduce((previousPromise, v) => previousPromise.then(() => _updateProfile(c, v)), Promise.resolve());
 };
@@ -30,9 +30,9 @@ const _updateProfiles = (c: RnvContext) => {
 const taskCryptoUpdateProfiles: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskCryptoUpdateProfiles');
 
-    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.cryptoUpdateProfiles, originTask);
+    await executeTask(RnvTaskName.projectConfigure, RnvTaskName.cryptoUpdateProfiles, originTask);
 
-    if (shouldSkipTask(c, RnvTaskName.cryptoUpdateProfiles, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.cryptoUpdateProfiles, originTask)) return true;
 
     switch (c.platform) {
         case 'ios':
