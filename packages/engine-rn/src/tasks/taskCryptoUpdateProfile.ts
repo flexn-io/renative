@@ -8,7 +8,7 @@ const taskCryptoUpdateProfile: RnvTaskFn = async (c, _parentTask, originTask) =>
 
     if (shouldSkipTask(RnvTaskName.cryptoUpdateProfile, originTask)) return true;
 
-    await updateProfile(c);
+    await updateProfile();
 };
 
 const Task: RnvTask = {

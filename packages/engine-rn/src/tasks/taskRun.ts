@@ -23,7 +23,7 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
 
     await executeOrSkipTask(c, RnvTaskName.configure, RnvTaskName.run, originTask);
 
-    if (shouldSkipTask(c, RnvTaskName.run, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.run, originTask)) return true;
 
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
 
@@ -34,19 +34,19 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
             const runDeviceArgs = await getIosDeviceToRunOn(c);
             if (!c.program.only) {
                 await startBundlerIfRequired(c, RnvTaskName.run, originTask);
-                await runXcodeProject(c, runDeviceArgs);
+                await runXcodeProject(runDeviceArgs);
                 if (!bundleAssets) {
                     logSummary('BUNDLER STARTED');
                 }
                 return waitForBundlerIfRequired(c);
             }
-            return runXcodeProject(c, runDeviceArgs);
+            return runXcodeProject(runDeviceArgs);
         case 'android':
         case 'androidtv':
         case 'firetv':
         case 'androidwear':
             // eslint-disable-next-line no-case-declarations
-            const runDevice = await getAndroidDeviceToRunOn(c);
+            const runDevice = await getAndroidDeviceToRunOn();
             if (runDevice) {
                 c.runtime.target = runDevice?.name || runDevice?.udid;
             }
@@ -55,15 +55,15 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
                 if (bundleAssets || platform === 'androidwear') {
                     await packageAndroid(c);
                 }
-                await runAndroid(c, runDevice!);
+                await runAndroid(runDevice!);
                 if (!bundleAssets) {
                     logSummary('BUNDLER STARTED');
                 }
                 return waitForBundlerIfRequired(c);
             }
-            return runAndroid(c, runDevice!);
+            return runAndroid(runDevice!);
         default:
-            return logErrorPlatform(c);
+            return logErrorPlatform();
     }
 };
 

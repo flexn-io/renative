@@ -872,7 +872,7 @@ export const overrideTemplatePlugins = async () => {
 
 export const copyTemplatePluginsSync = (c: RnvContext) => {
     const { platform } = c;
-    const destPath = path.join(getAppFolder(c));
+    const destPath = path.join(getAppFolder());
 
     logDefault('copyTemplatePluginsSync', `(${destPath})`);
 

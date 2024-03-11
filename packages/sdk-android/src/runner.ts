@@ -70,7 +70,9 @@ export const packageAndroid = async (c: Context) => {
     return packageReactNativeAndroid(c);
 };
 
-export const getAndroidDeviceToRunOn = async (c: Context) => {
+export const getAndroidDeviceToRunOn = async () => {
+    const c = getContext();
+
     const defaultTarget = c.runtime.target;
     logDefault('getAndroidDeviceToRunOn', `default:${defaultTarget}`);
 
@@ -135,7 +137,7 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
                 const dev = activeDevices.find((d) => d.name === chosenTarget);
                 if (dev) return dev;
 
-                await launchAndroidSimulator(c, chosenTarget, true);
+                await launchAndroidSimulator(chosenTarget, true);
                 const device = await checkForActiveEmulator(c, chosenTarget);
                 return device;
             }
@@ -155,7 +157,7 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
             if (foundDevice.isActive) {
                 return foundDevice;
             }
-            await launchAndroidSimulator(c, foundDevice, true);
+            await launchAndroidSimulator(foundDevice, true);
             const device = await checkForActiveEmulator(c, foundDevice.name);
             return device;
         }
@@ -172,7 +174,7 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
             logDebug('Target not provided, asking where to run');
             return askWhereToRun();
         } else if (!foundDevice.isActive) {
-            await launchAndroidSimulator(c, foundDevice, true);
+            await launchAndroidSimulator(foundDevice, true);
             const device = await checkForActiveEmulator(c, foundDevice.name);
             return device;
         }
@@ -184,8 +186,10 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
     }
 };
 
-export const runAndroid = async (c: Context, device: AndroidDevice) => {
+export const runAndroid = async (device: AndroidDevice) => {
     logDefault('runAndroid', `target:${device.udid}`);
+    const c = getContext();
+
     const { platform } = c;
 
     if (!platform) return;

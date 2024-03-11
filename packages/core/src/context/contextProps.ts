@@ -118,7 +118,7 @@ export const getPlatformProjectDir = () => {
         logError('getPlatformProjectDir not available without specific engine');
         return null;
     }
-    return path.join(getAppFolder(c), c.runtime.engine.projectDirName || '');
+    return path.join(getAppFolder(), c.runtime.engine.projectDirName || '');
 };
 
 export const getAppConfigBuildsFolder = (c: RnvContext, platform: RnvPlatform, customPath?: string) => {

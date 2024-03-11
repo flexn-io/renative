@@ -35,7 +35,7 @@ const taskTargetList: RnvTaskFn = async (c, _parentTask, originTask) => {
         case 'tvos':
             return listAppleDevices(c);
         case 'tizen':
-            return listTizenTargets(c);
+            return listTizenTargets();
         case 'webos':
             return listWebOSTargets(c);
         default:

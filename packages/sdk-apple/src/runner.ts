@@ -21,7 +21,6 @@ import {
     logSuccess,
     logRaw,
     inquirerPrompt,
-    RnvPlatform,
     CoreEnvVars,
     getContext,
 } from '@rnv/core';
@@ -42,8 +41,10 @@ export const packageBundleForXcode = (c: Context) => {
     return packageReactNativeIOS(c);
 };
 
-const copyAppleAssets = (c: Context, platform: RnvPlatform, appFolderName: string) =>
+const copyAppleAssets = (appFolderName: string) =>
     new Promise<void>((resolve) => {
+        const c = getContext();
+        const { platform } = c;
         logDefault('copyAppleAssets');
         if (!isPlatformActive(platform, resolve)) return;
 
@@ -213,7 +214,8 @@ export const getIosDeviceToRunOn = async (c: Context) => {
     return p;
 };
 
-export const runXcodeProject = async (c: Context, runDeviceArguments?: string) => {
+export const runXcodeProject = async (runDeviceArguments?: string) => {
+    const c = getContext();
     logDefault('runXcodeProject', `targetArgs:${runDeviceArguments}`);
 
     const appPath = getAppFolder();
@@ -828,15 +830,15 @@ export const configureXcodeProject = async () => {
     }
 
     await copyAssetsFolder(platform, appFolderName);
-    await copyAppleAssets(c, platform, appFolderName);
-    await parseAppDelegate(c, platform, appFolder, appFolderName);
-    await parseExportOptionsPlist(c, platform);
-    await parseXcscheme(c, platform);
-    await parsePodFile(c, platform);
-    await parseEntitlementsPlist(c, platform);
-    await parseInfoPlist(c, platform);
+    await copyAppleAssets(appFolderName);
+    await parseAppDelegate(appFolder, appFolderName);
+    await parseExportOptionsPlist();
+    await parseXcscheme();
+    await parsePodFile();
+    await parseEntitlementsPlist();
+    await parseInfoPlist();
     await copyBuildsFolder(platform);
-    await runCocoaPods(c);
-    await parseXcodeProject(c);
+    await runCocoaPods();
+    await parseXcodeProject();
     return true;
 };

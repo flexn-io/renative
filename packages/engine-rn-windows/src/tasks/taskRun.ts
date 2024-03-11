@@ -22,7 +22,7 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
 
     await executeOrSkipTask(c, RnvTaskName.configure, RnvTaskName.run, originTask);
 
-    if (shouldSkipTask(c, RnvTaskName.run, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.run, originTask)) return true;
 
     switch (platform) {
         case 'xbox':
@@ -32,7 +32,7 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
             await ruWindowsProject(c);
             return waitForBundlerIfRequired(c);
         default:
-            return logErrorPlatform(c);
+            return logErrorPlatform();
     }
 };
 

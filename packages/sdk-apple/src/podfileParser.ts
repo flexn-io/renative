@@ -9,16 +9,17 @@ import {
     logDefault,
     parsePlugins,
     writeCleanFile,
-    RnvPlatform,
     DEFAULTS,
+    getContext,
 } from '@rnv/core';
-import { Context } from './types';
 import { addSystemInjects, getAppTemplateFolder } from '@rnv/sdk-utils';
 
-export const parsePodFile = async (c: Context, platform: RnvPlatform) => {
+export const parsePodFile = async () => {
     logDefault('parsePodFile');
+    const c = getContext();
+    const { platform } = c;
 
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
     const useHermes = getConfigProp(c, c.platform, 'reactNativeEngine') === 'hermes';
 
     let pluginInject = '';

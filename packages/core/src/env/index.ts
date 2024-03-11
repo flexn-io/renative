@@ -23,7 +23,7 @@ const _generateEnvVars = (c: RnvContext) => {
     const envConfig: RnvEnvContext = {
         RNV_ENGINE_PATH: c.runtime.engine?.rootPath,
         RNV_PROJECT_ROOT: c.paths.project.dir,
-        RNV_APP_BUILD_DIR: getRelativePath(c.paths.project.dir, getAppFolder(c)),
+        RNV_APP_BUILD_DIR: getRelativePath(c.paths.project.dir, getAppFolder()),
         RNV_IS_MONOREPO: isMonorepo,
         RNV_MONO_ROOT: isMonorepo ? path.join(c.paths.project.dir, monoRoot) : c.paths.project.dir,
         RNV_ENGINE: c.runtime.engine?.config.id,

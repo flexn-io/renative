@@ -430,8 +430,8 @@ const taskNew = async (c: RnvContext) => {
     data.optionWorkspaces.selectedOption = inputWorkspace;
     c.runtime.selectedWorkspace = inputWorkspace;
 
-    await updateRenativeConfigs(c);
-    data.optionTemplates = getTemplateOptions(c);
+    await updateRenativeConfigs();
+    data.optionTemplates = getTemplateOptions();
 
     const options = [];
     const values = data.optionTemplates.valuesAsObject;
@@ -488,7 +488,7 @@ const taskNew = async (c: RnvContext) => {
     if (checkInputValue(templateVersion)) {
         inputTemplateVersion = templateVersion;
     } else {
-        inputTemplateVersion = await listAndSelectNpmVersion(c, data.optionTemplates.selectedOption || '');
+        inputTemplateVersion = await listAndSelectNpmVersion(data.optionTemplates.selectedOption || '');
     }
 
     data.optionTemplates.selectedVersion = inputTemplateVersion;
@@ -546,7 +546,7 @@ const taskNew = async (c: RnvContext) => {
                 }
                 configFile.projectTemplates[selectedInputTemplate] = {};
                 writeFileSync(c.paths.workspace.config, configFile);
-                await updateRenativeConfigs(c);
+                await updateRenativeConfigs();
 
                 logInfo(`Updating ${c.paths.workspace.config}...DONE`);
             }
@@ -777,7 +777,7 @@ const taskNew = async (c: RnvContext) => {
     writeFileSync(c.paths.project.config, config);
 
     if (data.gitEnabled) {
-        await checkAndCreateGitignore(c);
+        await checkAndCreateGitignore();
         await configureGit(c);
     }
 

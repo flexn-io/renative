@@ -17,7 +17,7 @@ import { getBuildFilePath, getEntryFile, getAppId, addSystemInjects } from '@rnv
 // };
 
 // export const parseFlipperSync = (c: Context, scheme: 'debug' | 'release') => {
-//     const appFolder = getAppFolder(c);
+//     const appFolder = getAppFolder();
 //     const { platform } = c;
 
 //     const appId = getAppId(c, c.platform);

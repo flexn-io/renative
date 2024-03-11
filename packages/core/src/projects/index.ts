@@ -472,7 +472,7 @@ export const copyAssetsFolder = async (
         });
     }
 
-    const destPath = path.join(getPlatformProjectDir(c)!, subPath || '');
+    const destPath = path.join(getPlatformProjectDir()!, subPath || '');
 
     // FOLDER MERGERS FROM EXTERNAL SOURCES
     if (validAssetSources.length > 0) {
@@ -558,7 +558,7 @@ export const copyBuildsFolder = (platform: RnvPlatform) =>
 
         if (!isPlatformActive(platform, resolve)) return;
 
-        const destPath = path.join(getAppFolder(c));
+        const destPath = path.join(getAppFolder());
         const tsPathsConfig = getTimestampPathsConfig(c, platform);
 
         generateConfigPropInjects();
@@ -578,7 +578,7 @@ export const copyBuildsFolder = (platform: RnvPlatform) =>
             if (fsExistsSync(sourcePathShared)) {
                 logWarning('Folder builds/_shared is DEPRECATED. use builds/<PLATFORM> instead ');
             }
-            copyFolderContentsRecursiveSync(sourcePathShared, getAppFolder(c), true, undefined, false, allInjects);
+            copyFolderContentsRecursiveSync(sourcePathShared, getAppFolder(), true, undefined, false, allInjects);
         }
 
         // FOLDER MERGERS FROM APP CONFIG + EXTEND

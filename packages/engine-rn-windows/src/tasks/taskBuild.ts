@@ -16,14 +16,14 @@ const taskBuild: RnvTaskFn = async (c, _parentTask, originTask) => {
 
     await executeOrSkipTask(c, RnvTaskName.package, RnvTaskName.build, originTask);
 
-    if (shouldSkipTask(c, RnvTaskName.build, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.build, originTask)) return true;
 
     switch (platform) {
         case 'xbox':
         case 'windows':
             return ruWindowsProject(c, { release: true, launch: false, deploy: false, logging: false });
         default:
-            return logErrorPlatform(c);
+            return logErrorPlatform();
     }
 };
 

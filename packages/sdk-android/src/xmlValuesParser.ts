@@ -4,7 +4,7 @@ import { Context } from './types';
 import { getBuildFilePath, getAppTitle, sanitizeColor, addSystemInjects } from '@rnv/sdk-utils';
 
 export const parseValuesStringsSync = (c: Context) => {
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
     const stringsPath = 'app/src/main/res/values/strings.xml';
     let strings = '<resources>\n';
     strings += `  <string name="app_name">${getAppTitle(c, c.platform)}</string>\n`;
@@ -16,7 +16,7 @@ export const parseValuesStringsSync = (c: Context) => {
 };
 
 export const parseValuesColorsSync = (c: Context) => {
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
     const stringsPath = 'app/src/main/res/values/colors.xml';
 
     const injects = [

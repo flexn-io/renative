@@ -24,6 +24,7 @@ import {
     logSuccess,
     getConfigProp,
     getAppFolder,
+    getContext,
 } from '@rnv/core';
 import { WebosDevice } from './types';
 import {
@@ -37,8 +38,9 @@ import {
 import semver from 'semver';
 import { isUrlLocalhost } from '@rnv/sdk-utils';
 
-export const launchWebOSimulator = async (c: RnvContext, target: string | boolean) => {
+export const launchWebOSimulator = async (target: string | boolean) => {
     logTask('launchWebOSimulator', `${target}`);
+    const c = getContext();
     const webosSdkPath = getRealPath(c.buildConfig?.sdks?.WEBOS_SDK);
     if (!webosSdkPath) {
         return Promise.reject(`c.buildConfig.sdks.WEBOS_SDK undefined`);
@@ -60,7 +62,7 @@ export const launchWebOSimulator = async (c: RnvContext, target: string | boolea
                 c.paths.GLOBAL_RNV_CONFIG
             )}`
         );
-        await launchWebOSimulator(c, true);
+        await launchWebOSimulator(true);
         return true;
     }
 
@@ -225,7 +227,8 @@ export const listWebOSTargets = async (c: RnvContext) => {
     return true;
 };
 
-export const runWebosSimOrDevice = async (c: RnvContext) => {
+export const runWebosSimOrDevice = async () => {
+    const c = getContext();
     const { device } = c.program;
 
     const platDir = getAppFolder();

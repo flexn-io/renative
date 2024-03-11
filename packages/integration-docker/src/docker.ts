@@ -29,12 +29,12 @@ class Docker {
         const { c } = this;
         const { runtime, platform, files } = c;
         let outputDir = 'output';
-        let projectBuildWeb = path.join(getAppFolder(c)!, outputDir);
+        let projectBuildWeb = path.join(getAppFolder()!, outputDir);
         if (!fsExistsSync(projectBuildWeb)) {
             outputDir = 'project';
-            projectBuildWeb = path.join(getAppFolder(c)!, outputDir);
+            projectBuildWeb = path.join(getAppFolder()!, outputDir);
         }
-        const dockerDestination = path.join(getAppFolder(c)!, 'export', 'docker');
+        const dockerDestination = path.join(getAppFolder()!, 'export', 'docker');
 
         const dockerFile = path.join(rootPath, '../Dockerfile');
         const nginxConfFile = path.join(rootPath, '../nginx/default.conf');
@@ -92,7 +92,7 @@ class Docker {
         const imageName = runtime.appId?.toLowerCase();
         const appVersion = files.project.package.version;
 
-        const dockerDestination = path.join(getAppFolder(c)!, 'export', 'docker');
+        const dockerDestination = path.join(getAppFolder()!, 'export', 'docker');
         const dockerSaveFile = path.join(dockerDestination, `${imageName}_${appVersion}.tar`);
 
         logDefault('docker:Dockerfile:build');

@@ -166,7 +166,8 @@ const updatePodsChecksum = () => {
     return fsWriteFileSync(podChecksumPath, combinedChecksum);
 };
 
-export const runCocoaPods = async (c: RnvContext) => {
+export const runCocoaPods = async () => {
+    const c = getContext();
     logDefault('runCocoaPods', `forceUpdate:${!!c.program.updatePods}`);
 
     const checkResult = await checkIfPodsIsRequired(c);

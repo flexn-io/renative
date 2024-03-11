@@ -29,13 +29,13 @@ const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     switch (c.platform) {
         case 'ios':
         case 'macos':
-            await configureXcodeProject(c);
+            await configureXcodeProject();
             break;
         case 'android':
         case 'androidtv':
         case 'firetv':
         case 'androidwear':
-            await configureGradleProject(c);
+            await configureGradleProject();
             await jetifyIfRequired();
             break;
         default:
@@ -43,7 +43,7 @@ const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
             break;
     }
 
-    await configureFonts(c);
+    await configureFonts();
     return true;
 };
 

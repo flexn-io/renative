@@ -13,9 +13,9 @@ import { addSystemInjects, getBuildFilePath } from '@rnv/sdk-utils';
 
 const GRADLE_SOURCE_PATH = path.join(__dirname, '../templates/gradleProject');
 
-const copyGradleProjectTemplate = async (c: Context) => {
+const copyGradleProjectTemplate = async () => {
     logDefault('copyGradleProjectTemplate');
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
 
     copyFolderContentsRecursiveSync(GRADLE_SOURCE_PATH, appFolder);
 
@@ -27,9 +27,9 @@ const copyGradleProjectTemplate = async (c: Context) => {
 export const parseGradleWrapperSync = (c: Context) => {
     logDefault('parseGradleWrapperSync');
 
-    copyGradleProjectTemplate(c);
+    copyGradleProjectTemplate();
 
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
     const { platform } = c;
 
     c.payload.pluginConfigAndroid.gradleWrapperVersion =

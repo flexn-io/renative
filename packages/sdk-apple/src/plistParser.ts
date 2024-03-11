@@ -11,7 +11,7 @@ import {
     mergeObjects,
     writeCleanFile,
     fsWriteFileSync,
-    RnvPlatform,
+    getContext,
 } from '@rnv/core';
 import { getAppFolderName } from './common';
 import { Context, FilePlistJSON } from './types';
@@ -23,11 +23,13 @@ const isString = (value: unknown) => typeof value === 'string' || value instance
 const isArray = (value: unknown) => value && typeof value === 'object' && value.constructor === Array;
 const isObject = (value: unknown) => value && typeof value === 'object' && value.constructor === Object;
 
-export const parseExportOptionsPlist = (c: Context, platform: RnvPlatform) =>
+export const parseExportOptionsPlist = () =>
     new Promise<void>((resolve) => {
         // EXPORT OPTIONS
+        const c = getContext();
+        const { platform } = c;
         const tId = getConfigProp(c, platform, 'teamID');
-        const appFolder = getAppFolder(c);
+        const appFolder = getAppFolder();
         const exportOptions = getConfigProp(c, platform, 'exportOptions') || {};
         const id = getConfigProp(c, platform, 'id');
 
@@ -58,11 +60,14 @@ export const parseExportOptionsPlist = (c: Context, platform: RnvPlatform) =>
         resolve();
     });
 
-export const parseEntitlementsPlist = (c: Context, platform: RnvPlatform) =>
+export const parseEntitlementsPlist = () =>
     new Promise<void>((resolve) => {
         logDefault('parseEntitlementsPlist');
 
-        const appFolder = getAppFolder(c);
+        const c = getContext();
+        const { platform } = c;
+
+        const appFolder = getAppFolder();
         const appFolderName = getAppFolderName(c, platform);
         const entitlementsPath = path.join(appFolder, `${appFolderName}/${appFolderName}.entitlements`);
         // PLUGIN ENTITLEMENTS
@@ -76,13 +81,14 @@ export const parseEntitlementsPlist = (c: Context, platform: RnvPlatform) =>
         resolve();
     });
 
-export const parseInfoPlist = (c: Context, platform: RnvPlatform) =>
+export const parseInfoPlist = () =>
     new Promise<void>((resolve) => {
+        const c = getContext();
         logDefault('parseInfoPlist');
-
+        const { platform } = c;
         if (!platform) return;
 
-        const appFolder = getAppFolder(c);
+        const appFolder = getAppFolder();
         const appFolderName = getAppFolderName(c, platform);
         const orientationSupport = getConfigProp(c, c.platform, 'orientationSupport');
         const urlScheme = getConfigProp(c, c.platform, 'urlScheme');

@@ -71,7 +71,8 @@ const formatXMLObject = (
     return {};
 };
 
-export const launchTizenSimulator = async (c: RnvContext, name: string | true): Promise<boolean> => {
+export const launchTizenSimulator = async (name: string | true): Promise<boolean> => {
+    const c = getContext();
     logDefault(`launchTizenSimulator:${name}`);
 
     if (name === true) {
@@ -102,7 +103,7 @@ export const launchTizenSimulator = async (c: RnvContext, name: string | true): 
             if (typeof e === 'string') {
                 if (e.includes(ERROR_MSG.UNKNOWN_VM)) {
                     logError(`The VM "${name}" does not exist.`);
-                    return launchTizenSimulator(c, true);
+                    return launchTizenSimulator(true);
                 }
 
                 if (e.includes(ERROR_MSG.ALREADY_RUNNING)) {
@@ -331,7 +332,7 @@ export const runTizenSimOrDevice = async () => {
                 return;
             }
             try {
-                await launchTizenSimulator(c, defaultTarget);
+                await launchTizenSimulator(defaultTarget);
                 deviceID = defaultTarget;
                 await _waitForEmulatorToBeReady(defaultTarget);
                 return continueLaunching();
@@ -339,7 +340,7 @@ export const runTizenSimOrDevice = async () => {
                 logDebug(`askForEmulator:ERRROR: ${e}`);
                 try {
                     await execCLI(CLI_TIZEN_EMULATOR, `create -n ${defaultTarget} -p tv-samsung-5.0-x86`);
-                    await launchTizenSimulator(c, defaultTarget);
+                    await launchTizenSimulator(defaultTarget);
                     deviceID = defaultTarget;
                     await _waitForEmulatorToBeReady(defaultTarget);
                     return continueLaunching();
@@ -367,7 +368,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
         } catch (e) {
             if (typeof e === 'string' && e.includes('No device matching')) {
                 if (target) {
-                    await launchTizenSimulator(c, target);
+                    await launchTizenSimulator(target);
                     hasDevice = await _waitForEmulatorToBeReady(target);
                 } else {
                     return Promise.reject('Not target specified. (-t)');
@@ -396,7 +397,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
             );
 
             if (target) {
-                await launchTizenSimulator(c, target);
+                await launchTizenSimulator(target);
                 hasDevice = await _waitForEmulatorToBeReady(target);
             } else {
                 return Promise.reject('Not target specified. (-t)');
@@ -441,7 +442,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
         }
         try {
             // try to launch it, see if it's a simulator that's not started yet
-            await launchTizenSimulator(c, target);
+            await launchTizenSimulator(target);
             await _waitForEmulatorToBeReady(target);
             deviceID = target;
             return continueLaunching();

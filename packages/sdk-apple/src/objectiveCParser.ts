@@ -9,8 +9,8 @@ import {
     logWarning,
     parsePlugins,
     writeCleanFile,
-    RnvPlatform,
     RenativeConfigAppDelegateMethod,
+    getContext,
 } from '@rnv/core';
 import {
     Context,
@@ -25,13 +25,13 @@ import {
 import { addSystemInjects, getAppTemplateFolder, sanitizeColor } from '@rnv/sdk-utils';
 
 export const parseAppDelegate = (
-    c: Context,
-    platform: RnvPlatform,
     appFolder: string,
     appFolderName: string
     // isBundled = false,
 ) =>
     new Promise<void>((resolve) => {
+        const c = getContext();
+        const { platform } = c;
         logDefault('parseAppDelegateSync');
         const appDelegateMm = 'AppDelegate.mm';
         const appDelegateH = 'AppDelegate.h';

@@ -80,7 +80,7 @@ export const runWebOS = async (c: RnvContext) => {
                 copyFileSync(requiredFilePath, path.join(appPath, 'build', requiredFile));
             }
         });
-        await runWebosSimOrDevice(c);
+        await runWebosSimOrDevice();
     } else {
         const isPortActive = await checkPortInUse(c.runtime.port);
         const isWeinreEnabled = platform
@@ -95,7 +95,7 @@ export const runWebOS = async (c: RnvContext) => {
             );
             waitForHost(c, '')
                 .then(() => {
-                    runWebosSimOrDevice(c);
+                    runWebosSimOrDevice();
                 })
                 .catch(logError);
             await runWebpackServer(isWeinreEnabled);
@@ -103,11 +103,11 @@ export const runWebOS = async (c: RnvContext) => {
             const resetCompleted = await confirmActiveBundler(c);
             if (resetCompleted) {
                 waitForHost(c, '')
-                    .then(() => runWebosSimOrDevice(c))
+                    .then(() => runWebosSimOrDevice())
                     .catch(logError);
                 await runWebpackServer(isWeinreEnabled);
             } else {
-                await runWebosSimOrDevice(c);
+                await runWebosSimOrDevice();
             }
         }
     }

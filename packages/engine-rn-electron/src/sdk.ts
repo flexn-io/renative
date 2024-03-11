@@ -355,7 +355,7 @@ export const runElectron = async (c: RnvContext) => {
 
 const _runElectronSimulator = async (c: RnvContext) => {
     logDefault(`_runElectronSimulator:${c.platform}`);
-    // const appFolder = getAppFolder(c, c.platform);
+    // const appFolder = getAppFolder(c.platform);
     // const elc = `${doResolve('electron')}/cli.js`;
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets') === true;
     let platformProjectDir = getPlatformProjectDir()!;

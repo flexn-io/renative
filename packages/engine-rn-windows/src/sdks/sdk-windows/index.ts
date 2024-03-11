@@ -121,13 +121,13 @@ const getOptions = (c: RnvContext, injectedOptions: InjectOptions = {}) => {
     const deploy = getConfigProp<ConfigKey>(c, c.platform, 'deploy', defaultOptions.deploy);
     const sln = getConfigProp<ConfigKey>(c, c.platform, 'sln', defaultOptions.sln);
     const proj = getConfigProp<ConfigKey>(c, c.platform, 'proj', c.paths.project.dir);
-    const appPath = getConfigProp<ConfigKey>(c, c.platform, 'appPath', getAppFolder(c));
+    const appPath = getConfigProp<ConfigKey>(c, c.platform, 'appPath', getAppFolder());
     const msbuildprops = getConfigProp<ConfigKey>(c, c.platform, 'msbuildprops', defaultOptions.msbuildprops);
     const buildLogDirectory = getConfigProp<ConfigKey>(
         c,
         c.platform,
         'buildLogDirectory',
-        path.join(getAppFolder(c), 'BuildLogs')
+        path.join(getAppFolder(), 'BuildLogs')
     );
     const info = getConfigProp<ConfigKey>(c, c.platform, 'info', defaultOptions.info);
     const directDebugging = getConfigProp<ConfigKey>(c, c.platform, 'directDebugging', defaultOptions.directDebugging);
@@ -209,7 +209,7 @@ export const ruWindowsProject = async (c: RnvContext, injectedOptions?: InjectOp
     }
 
     const cnfg = {
-        sourceDir: getAppFolder(c, true),
+        sourceDir: getAppFolder(true),
         solutionFile: `${c.runtime.appId}.sln`,
         project: {
             projectName: c.runtime.appId,
@@ -315,11 +315,11 @@ const packageBundleForWindows = (c: RnvContext, isDev = false) => {
         '--dev',
         isDev,
         '--assets-dest',
-        `${getAppFolder(c).replace(/\//g, '\\')}\\${c.runtime.appId}\\Bundle`,
+        `${getAppFolder().replace(/\//g, '\\')}\\${c.runtime.appId}\\Bundle`,
         '--entry-file',
         `${entryFile}.js`,
         '--bundle-output',
-        `${getAppFolder(c).replace(/\//g, '\\')}\\${c.runtime.appId}\\Bundle\\index.windows.bundle`,
+        `${getAppFolder().replace(/\//g, '\\')}\\${c.runtime.appId}\\Bundle\\index.windows.bundle`,
     ];
 
     if (c.program.info) {
@@ -328,7 +328,7 @@ const packageBundleForWindows = (c: RnvContext, isDev = false) => {
 
     if (getConfigProp<ConfigKey>(c, c.platform, 'enableSourceMaps', false)) {
         // Directory might not exist yet (created during builds proccess)
-        const dir = path.join(getAppFolder(c), 'Release', c.runtime.appId, 'sourcemaps', 'react');
+        const dir = path.join(getAppFolder(), 'Release', c.runtime.appId, 'sourcemaps', 'react');
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir, { recursive: true });
         }
@@ -338,7 +338,6 @@ const packageBundleForWindows = (c: RnvContext, isDev = false) => {
     }
 
     return executeAsync(
-        c,
         `node ${doResolve('react-native', true, { forceForwardPaths: false })}\\local-cli\\cli.js ${args.join(
             ' '
         )} --config=metro.config.js`,
@@ -374,7 +373,7 @@ const pushd = (pathArg: string) => {
 
 // Copied from @react-native-windows/cli/overrides/lib-commonjs/runWindows/utils/deploy.js
 const getWindowsStoreAppUtils = (c: RnvContext) => {
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
     const RNWinPath = path.join(
         path.dirname(
             require.resolve('@react-native-windows/cli/package.json', {
@@ -395,7 +394,7 @@ const getWindowsStoreAppUtils = (c: RnvContext) => {
 
 function getAppPackage(c: RnvContext, injectedOptions?: InjectOptions) {
     const options = getOptions(c, injectedOptions);
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
 
     let appPackage;
     const rootGlob = `${appFolder.replace(/\\/g, '/')}/{*/AppPackages,AppPackages/*}`;
@@ -450,7 +449,7 @@ const installWindowsApp = async (c: RnvContext, script: string, windowsStoreAppU
 const packageWindowsApp = async (c: RnvContext, injectedOptions?: InjectOptions) => {
     if (!c.runtime.appId) return;
     try {
-        const appFolder = getAppFolder(c);
+        const appFolder = getAppFolder();
         const windowsStoreAppUtils = getWindowsStoreAppUtils(c);
         const appPackage = getAppPackage(c, injectedOptions);
 

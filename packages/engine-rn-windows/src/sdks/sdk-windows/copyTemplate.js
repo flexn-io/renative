@@ -30,7 +30,7 @@ const bundleDir = 'Bundle';
 // FUNCTIONS
 async function generateCertificate(srcPath, currentUser, c, options) {
     logDefault('Generating self-signed certificate');
-    const appFolder = getAppFolder(c, true);
+    const appFolder = getAppFolder(true);
     if (os.platform() === 'win32') {
         try {
             // TODO. What's with this timeout?
@@ -76,7 +76,7 @@ export async function copyProjectTemplateAndReplace(c, options) {
     }
 
     const appTitle = getAppTitle(c, c.platform);
-    const appFolder = getAppFolder(c, true);
+    const appFolder = getAppFolder(true);
     const RNIconsPluginPath = path.join(
         path.dirname(
             require.resolve('react-native-vector-icons/package.json', {
@@ -401,7 +401,7 @@ export async function copyProjectTemplateAndReplace(c, options) {
     }
 
     // Non relative path to appFolder is needed
-    const appFolderFull = getAppFolder(c);
+    const appFolderFull = getAppFolder();
     // react native vector icons fonts
     // Only copy the files if the plugin is added to the project, aka plugin dir exists
     if (RNIconsPluginPath && fs.existsSync(RNIconsPluginPath)) {

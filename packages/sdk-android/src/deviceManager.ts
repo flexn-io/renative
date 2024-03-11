@@ -25,6 +25,7 @@ import {
     executeAsync,
     ExecOptionsPresets,
     PlatformKey,
+    getContext,
 } from '@rnv/core';
 import { CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from './constants';
 
@@ -55,10 +56,10 @@ const ERROR_MSG = {
 };
 
 export const launchAndroidSimulator = async (
-    c: RnvContext,
     target: true | { name: string } | string,
     isIndependentThread = false
 ): Promise<boolean> => {
+    const c = getContext();
     logDefault(
         'launchAndroidSimulator',
         `target:${typeof target === 'object' ? target?.name : target} independentThread:${!!isIndependentThread}`
@@ -119,7 +120,7 @@ export const launchAndroidSimulator = async (
                             newTarget
                         )} does not exist. You can update it here: ${chalk().cyan(c.paths.GLOBAL_RNV_CONFIG)}`
                     );
-                    await launchAndroidSimulator(c, true, false);
+                    await launchAndroidSimulator(true, false);
                     return true;
                 } else if (e.includes(ERROR_MSG.TARGET_EXISTS)) {
                     logToSummary(`Target with name ${chalk().red(newTarget)} already running. SKIPPING.`);
@@ -612,15 +613,15 @@ export const askForNewEmulator = async (c: RnvContext, platform: RnvPlatform) =>
         switch (platform) {
             case 'android':
                 return _createEmulator(c, sdk, 'google_apis', emuName, arch).then(() =>
-                    launchAndroidSimulator(c, emuLaunch, true)
+                    launchAndroidSimulator(emuLaunch, true)
                 );
             case 'androidtv':
                 return _createEmulator(c, sdk, 'android-tv', emuName, arch).then(() =>
-                    launchAndroidSimulator(c, emuLaunch, true)
+                    launchAndroidSimulator(emuLaunch, true)
                 );
             case 'androidwear':
                 return _createEmulator(c, sdk, 'android-wear', emuName, arch).then(() =>
-                    launchAndroidSimulator(c, emuLaunch, true)
+                    launchAndroidSimulator(emuLaunch, true)
                 );
             default:
                 return Promise.reject('Cannot find any active or created emulators');

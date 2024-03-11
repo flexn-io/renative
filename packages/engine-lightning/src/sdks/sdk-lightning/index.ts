@@ -44,18 +44,19 @@ export const runLightningProject = async (c: RnvContext) => {
             },
         });
     } else {
-        await buildLightningProject(c);
+        await buildLightningProject();
         if (platform === 'tizen') {
-            await runTizenSimOrDevice(c);
+            await runTizenSimOrDevice();
         } else {
-            await runWebosSimOrDevice(c);
+            await runWebosSimOrDevice();
         }
     }
 
     return true;
 };
 
-export const buildLightningProject = async (c: RnvContext) => {
+export const buildLightningProject = async () => {
+    const c = getContext();
     logDefault('buildLightningProject');
 
     const { platform } = c;
@@ -64,7 +65,7 @@ export const buildLightningProject = async (c: RnvContext) => {
     const certProfile = getConfigProp(c, c.platform, 'certificateProfile') || DEFAULTS.certificateProfile;
 
     const target = getConfigProp(c, platform, 'target', 'es6');
-    const tBuild = getPlatformProjectDir(c);
+    const tBuild = getPlatformProjectDir();
 
     const tOut = path.join(tBuild || '', 'output');
 
@@ -95,7 +96,7 @@ export const configureLightningProject = async () => {
     logTask('configureLightningProject');
     const c = getContext();
     const { platform } = c;
-    c.runtime.platformBuildsProjectPath = `${getAppFolder(c)}`;
+    c.runtime.platformBuildsProjectPath = `${getAppFolder()}`;
     if (!isPlatformActive(platform)) {
         return;
     }
@@ -142,7 +143,7 @@ const _configureProject = (c: RnvContext) =>
         addSystemInjects(c, injects);
 
         const configFile = platform === 'tizen' ? 'config.xml' : 'appinfo.json';
-        const file = path.join(getPlatformProjectDir(c)!, configFile);
+        const file = path.join(getPlatformProjectDir()!, configFile);
         writeCleanFile(file, file, injects, undefined, c);
 
         resolve();

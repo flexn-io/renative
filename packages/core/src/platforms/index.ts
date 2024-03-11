@@ -47,7 +47,7 @@ export const cleanPlatformBuild = async (platform: RnvPlatform) => {
             }
         });
     } else if (isPlatformSupportedSync(platform)) {
-        const pPath = getAppFolder(c);
+        const pPath = getAppFolder();
         cleanTasks.push(cleanFolder(pPath));
     }
 
@@ -67,7 +67,7 @@ export const createPlatformBuild = (platform: RnvPlatform) =>
             return;
         }
 
-        const pPath = getAppFolder(c);
+        const pPath = getAppFolder();
         const ptPath = path.join(ptDir, `${platform}`);
 
         copyFolderContentsRecursiveSync(
@@ -201,7 +201,7 @@ export const copySharedPlatforms = () =>
         if (c.platform) {
             copyFolderContentsRecursiveSync(
                 path.resolve(c.paths.project.platformTemplatesDirs[c.platform], '_shared'),
-                getAppFolder(c)
+                getAppFolder()
             );
         }
 

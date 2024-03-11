@@ -22,7 +22,7 @@ export const ejectXcodeProject = async (c: Context) => {
     const rootMonoProjectPath = isMonorepo ? path.join(c.paths.project.dir, monoRoot || '../..') : c.paths.project.dir;
     const rootProjectPath = c.paths.project.dir;
 
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
     const appFolderName = getAppFolderName(c, c.platform);
 
     //= ==========
@@ -111,7 +111,7 @@ export const ejectXcodeProject = async (c: Context) => {
     // Fonts
     //= ==========
 
-    parseFonts(c, (font, dir) => {
+    parseFonts((font, dir) => {
         if (font.includes('.ttf') || font.includes('.otf')) {
             const key = font.split('.')[0];
             const includedFonts = getConfigProp(c, c.platform, 'includedFonts');

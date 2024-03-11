@@ -25,7 +25,7 @@ import { getBuildFilePath, getAppId, getAppVersion, getAppVersionCode, addSystem
 const currentOs = process.platform === 'darwin' ? 'osx' : process.platform === 'win32' ? 'win64' : 'linux64';
 
 export const parseBuildGradleSync = (c: Context) => {
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
     const { platform } = c;
 
     let dexOptions = '';
@@ -179,7 +179,7 @@ const setReactNativeEngineV8 = (c: Context) => {
 
 export const parseAppBuildGradleSync = (c: Context) => {
     logDefault('parseAppBuildGradleSync');
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
     const { platform } = c;
 
     if (!platform) return;
@@ -500,7 +500,7 @@ ${chalk().bold(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
 };
 
 export const parseSettingsGradleSync = (c: Context) => {
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
     const { platform } = c;
 
     const rnCliLocation = doResolve('@react-native-community/cli-platform-android', true, { forceForwardPaths: true });
@@ -545,7 +545,7 @@ export const parseSettingsGradleSync = (c: Context) => {
 };
 
 export const parseGradlePropertiesSync = (c: Context) => {
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
     const { platform } = c;
 
     if (!platform) return;

@@ -13,6 +13,7 @@ import {
     logWarning,
     parsePlugins,
     writeFileSync,
+    getContext,
 } from '@rnv/core';
 import { provision } from 'ios-mobileprovision-finder';
 import path from 'path';
@@ -21,7 +22,8 @@ import { parseProvisioningProfiles } from './provisionParser';
 import { Context } from './types';
 import { getAppId } from '@rnv/sdk-utils';
 
-export const parseXcodeProject = async (c: Context) => {
+export const parseXcodeProject = async () => {
+    const c = getContext();
     logDefault('parseXcodeProject');
     const { platform } = c;
     if (!platform) return;
@@ -97,7 +99,7 @@ const _parseXcodeProject = (c: Context, platform: RnvPlatform) =>
         }
         const xcode = require(xcodePath);
         // const xcode = require(`${c.paths.project.nodeModulesDir}/xcode`);
-        const appFolder = getAppFolder(c);
+        const appFolder = getAppFolder();
         const appFolderName = getAppFolderName(c, platform);
         const projectPath = path.join(appFolder, `${appFolderName}.xcodeproj/project.pbxproj`);
         const xcodeProj = xcode.project(projectPath);

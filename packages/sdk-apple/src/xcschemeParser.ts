@@ -1,14 +1,15 @@
 import path from 'path';
-import { getAppFolder, getConfigProp, logDefault, writeCleanFile, RnvPlatform } from '@rnv/core';
+import { getAppFolder, getConfigProp, logDefault, writeCleanFile, getContext } from '@rnv/core';
 import { getAppFolderName } from './common';
-import { Context } from './types';
 import { addSystemInjects, getAppTemplateFolder } from '@rnv/sdk-utils';
 
 // const xml2js = require('xml2js');
 // const parser = new xml2js.Parser();
 
-export const parseXcscheme = async (c: Context, platform: RnvPlatform) => {
+export const parseXcscheme = async () => {
     logDefault('parseXcscheme');
+    const c = getContext();
+    const { platform } = c;
     // XCSCHEME
     // const allowProvisioningUpdates = getConfigProp(
     //     c,
@@ -25,7 +26,7 @@ export const parseXcscheme = async (c: Context, platform: RnvPlatform) => {
     // const poisxSpawn = runScheme === 'Release' && !allowProvisioningUpdates && provisioningStyle === 'Manual';
     // Since RN 61+ this must be set to true otherwise debug apps install but not launch
     const poisxSpawn = true;
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
     const appFolderName = getAppFolderName(c, platform);
     const appTemplateFolder = getAppTemplateFolder(c, platform);
 

@@ -16,7 +16,7 @@ import { launchTizenSimulator } from '@rnv/sdk-tizen';
 import { launchWebOSimulator } from '@rnv/sdk-webos';
 import { launchKaiOSSimulator } from '@rnv/sdk-kaios';
 
-const taskTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskTargetLaunch: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskTargetLaunch');
 
     await isPlatformSupported(true);
@@ -58,16 +58,16 @@ const taskTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) => {
         case 'androidtv':
         case 'firetv':
         case 'androidwear':
-            return launchAndroidSimulator(c, target);
+            return launchAndroidSimulator(target);
         case 'ios':
         case 'tvos':
-            return launchAppleSimulator(c, target);
+            return launchAppleSimulator(target);
         case 'tizen':
-            return launchTizenSimulator(c, target);
+            return launchTizenSimulator(target);
         case 'webos':
-            return launchWebOSimulator(c, target);
+            return launchWebOSimulator(target);
         case 'kaios':
-            return launchKaiOSSimulator(c, target);
+            return launchKaiOSSimulator(target);
         default:
             return Promise.reject(
                 `"target launch" command does not support ${chalk().white.bold(

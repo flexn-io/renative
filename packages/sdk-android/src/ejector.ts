@@ -19,7 +19,7 @@ export const ejectGradleProject = async (c: RnvContext) => {
     const rootMonoProjectPath = isMonorepo ? path.join(c.paths.project.dir, monoRoot || '../..') : c.paths.project.dir;
     // const rootProjectPath = c.paths.project.dir;
 
-    const appFolder = path.join(getAppFolder(c), '..');
+    const appFolder = path.join(getAppFolder(), '..');
 
     //= ==========
     // settings.gradle

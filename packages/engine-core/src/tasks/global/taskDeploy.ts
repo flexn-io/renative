@@ -14,7 +14,7 @@ const taskDeploy: RnvTaskFn = async (c, parentTask, originTask) => {
 
     await executeOrSkipTask(c, RnvTaskName.export, RnvTaskName.deploy, originTask);
 
-    if (shouldSkipTask(c, RnvTaskName.deploy, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.deploy, originTask)) return true;
 
     // Deploy simply trggets hook
     return true;
