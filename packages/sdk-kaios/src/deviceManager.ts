@@ -1,7 +1,14 @@
-import { fsExistsSync, getRealPath, logDefault, RnvError, inquirerPrompt, getDirectories, getContext } from '@rnv/core';
+import {
+    fsExistsSync,
+    getRealPath,
+    logDefault,
+    inquirerPrompt,
+    getDirectories,
+    getContext,
+    executeAsync,
+    ExecOptionsPresets,
+} from '@rnv/core';
 import path from 'path';
-
-const childProcess = require('child_process');
 
 export const launchKaiOSSimulator = async (target: string | boolean) => {
     const c = getContext();
@@ -33,13 +40,15 @@ export const launchKaiOSSimulator = async (target: string | boolean) => {
         return Promise.reject(`Can't find simulator at path: ${simulatorPath}`);
     }
 
-    new Promise<void>((resolve, reject) => {
-        childProcess.exec(`(cd ${kaiosSdkPath}/${target}/kaiosrt && ${simulatorPath} )`, (err: RnvError) => {
-            if (err) {
-                reject(err);
-                return;
-            }
-            resolve();
-        });
-    });
+    executeAsync(`${simulatorPath}`, ExecOptionsPresets.NO_SPINNER_FULL_ERROR_SUMMARY);
+
+    // new Promise<void>((resolve, reject) => {
+    //     childProcess.exec(`(cd ${kaiosSdkPath}/${target}/kaiosrt && ${simulatorPath} )`, (err: RnvError) => {
+    //         if (err) {
+    //             reject(err);
+    //             return;
+    //         }
+    //         resolve();
+    //     });
+    // });
 };
