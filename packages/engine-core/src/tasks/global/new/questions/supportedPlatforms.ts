@@ -6,7 +6,7 @@ export const inquirySupportedPlatforms = async (data: NewProjectData) => {
     const c = getContext();
     const { platform } = c.program;
     const supportedPlatforms =
-        data.renativeTemplateConfig?.defaults?.supportedPlatforms ||
+        data.files.template.renativeTemplateConfig?.defaults?.supportedPlatforms ||
         data.renativeConfig?.defaults?.supportedPlatforms ||
         [];
 

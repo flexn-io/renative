@@ -6,23 +6,26 @@ import { inquiryHasNodeModules } from './questions/hasNodeModules';
 import { inquiryConfirm } from './questions/confirmOverview';
 import { inquiryProjectName } from './questions/projectName';
 import { inquiryWorkspace } from './questions/workspace';
-import { inquiryTemplate } from './questions/template';
 import { inquirySupportedPlatforms } from './questions/supportedPlatforms';
 import { generateNewProject, initNewProject, telemetryNewProject } from './projectGenerator';
 import { inquiryAppTitle } from './questions/appTitle';
 import { inquiryAppID } from './questions/appID';
 import { inquiryAppVersion } from './questions/appVersion';
+import { inquiryInstallTemplate } from './questions/installTemplate';
+import { inquiryApplyTemplate } from './questions/applyTemplate';
+import { inquiryBookmarkTemplate } from './questions/bookmarkTemplate';
 
 const taskNew = async () => {
     logTask('taskNew');
     // Initialize Project
     const payload = await initNewProject();
     // Interactive Questions Required
+    await inquiryProjectName(payload);
     await inquiryIsRenativeProject(payload);
     await inquiryHasNodeModules(payload);
-    await inquiryTemplate(payload);
+    await inquiryInstallTemplate(payload);
+    await inquiryApplyTemplate(payload);
     // Interactive Questions Optional
-    await inquiryProjectName(payload);
     await inquiryAppTitle(payload);
     await inquiryAppID(payload);
     await inquiryAppVersion(payload);
@@ -30,6 +33,7 @@ const taskNew = async () => {
     await inquirySupportedPlatforms(payload);
     await inquiryBootstrapQuestions(payload);
     await inquiryGit(payload);
+    await inquiryBookmarkTemplate(payload);
     await inquiryConfirm(payload);
     // Generate Project
     await generateNewProject(payload);

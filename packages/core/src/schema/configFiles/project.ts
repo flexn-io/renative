@@ -214,16 +214,16 @@ const UseTemplate = z.object({
 //LEVEl 0 (ROOT)
 
 const RootProjectBaseFragment = {
-    workspaceID: WorkspaceID,
-    projectVersion: z.string(),
-    projectName: ProjectName,
+    workspaceID: WorkspaceID.optional(),
+    projectVersion: z.string().optional(),
+    projectName: ProjectName.optional(),
     isMonorepo: z.optional(IsMonoRepo),
     useTemplate: z.optional(UseTemplate),
     isTemplate: z.boolean().optional(),
     defaults: z.optional(DefaultsSchema),
     pipes: z.optional(Pipes),
-    templates: Templates,
-    currentTemplate: CurrentTemplate,
+    templates: Templates.optional(),
+    currentTemplate: CurrentTemplate.optional(),
     crypto: z.optional(Crypto),
     paths: z.optional(Paths),
     permissions: z.optional(Permissions),

@@ -8,6 +8,7 @@ import {
     getWorkspaceOptions,
     logDebug,
     logTask,
+    updateRenativeConfigs,
     writeFileSync,
 } from '@rnv/core';
 import path from 'path';
@@ -30,7 +31,18 @@ export const initNewProject = async () => {
         optionPlatforms: {},
         optionTemplates: {},
         optionWorkspaces: getWorkspaceOptions(),
+        files: {
+            project: {
+                renativeConfig: {},
+            },
+            template: {
+                renativeTemplateConfig: {},
+                renativeConfig: {},
+            },
+        },
     };
+    // TODO: This enforces to generate initial runtime configs. find more reliable way to do this
+    await updateRenativeConfigs();
     return data;
 };
 
@@ -43,7 +55,7 @@ export const generateNewProject = async (data: NewProjectData) => {
     if (!data.optionTemplates.selectedVersion) {
         return Promise.reject('No template version selected');
     }
-    if (!data.renativeTemplateConfig) {
+    if (!data.files.template.renativeTemplateConfig) {
         return Promise.reject('No renativeTemplateConfig found');
     }
     if (!data.optionTemplates.selectedOption) {
@@ -59,12 +71,12 @@ export const generateNewProject = async (data: NewProjectData) => {
         };
     }
 
-    delete data.renativeTemplateConfig.templateConfig;
-    delete data.renativeTemplateConfig.bootstrapConfig;
+    delete data.files.template.renativeTemplateConfig.templateConfig;
+    delete data.files.template.renativeTemplateConfig.bootstrapConfig;
 
     const config: ConfigFileProject = {
         platforms: {},
-        ...data.renativeTemplateConfig,
+        ...data.files.template.renativeTemplateConfig,
         ...data.renativeTemplateConfigExt,
         projectName: data.projectName || 'my-project',
         projectVersion: data.inputVersion || '0.1.0',
@@ -104,7 +116,7 @@ export const generateNewProject = async (data: NewProjectData) => {
         }
     });
 
-    const tplEngines = data.renativeTemplateConfig.engines;
+    const tplEngines = data.files.template.renativeTemplateConfig.engines;
     if (tplEngines) {
         // Remove unused engines based on selected platforms
         supPlats.forEach((k) => {

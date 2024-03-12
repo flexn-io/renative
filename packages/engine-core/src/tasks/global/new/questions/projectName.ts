@@ -1,4 +1,4 @@
-import { cleanFolder, fsExistsSync, getContext, inquirerPrompt, mkdirSync } from '@rnv/core';
+import { ConfigName, cleanFolder, fsExistsSync, getContext, inquirerPrompt, mkdirSync } from '@rnv/core';
 import type { NewProjectData } from '../types';
 import path from 'path';
 import { checkInputValue } from '../utils';
@@ -22,6 +22,8 @@ export const inquiryProjectName = async (data: NewProjectData) => {
 
     data.projectName = inputProjectName.replace(/(\s+)/g, '_');
     c.paths.project.dir = path.join(c.paths.CURRENT_DIR, data.projectName);
+    c.paths.project.package = path.join(c.paths.project.dir, 'package.json');
+    c.paths.project.config = path.join(c.paths.project.dir, ConfigName.renative);
 
     if (fsExistsSync(c.paths.project.dir)) {
         const { confirm } = await inquirerPrompt({

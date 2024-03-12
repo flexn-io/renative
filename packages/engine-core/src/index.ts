@@ -24,7 +24,7 @@ import taskClean from './tasks/global/taskClean';
 import taskStatus from './tasks/global/taskStatus';
 import taskConfig from './tasks/global/taskConfig';
 import taskHelp from './tasks/global/taskHelp';
-import taskNew from './tasks/global/taskNew';
+import taskNew from './tasks/global/new/taskNew';
 import taskInstall from './tasks/global/taskInstall';
 import taskProjectConfigure from './tasks/project/taskProjectConfigure';
 import taskProjectUpgrade from './tasks/project/taskProjectUpgrade';

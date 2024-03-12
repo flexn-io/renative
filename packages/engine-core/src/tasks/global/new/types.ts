@@ -53,10 +53,18 @@ export type NewProjectData = {
     defaultWorkspace?: string;
     inputSupportedPlatforms?: Array<string>;
     inputWorkspace?: string;
-    renativeTemplateConfig?: ConfigFileTemplate;
-    renativeConfig?: ConfigFileProject;
+
     selectedInputTemplate?: string;
     renativeTemplateConfigExt?: any;
     confirmDeleteNodeModules?: boolean;
     confirmInRnvProject?: boolean;
+    files: {
+        template: {
+            renativeTemplateConfig: ConfigFileTemplate;
+            renativeConfig: ConfigFileProject;
+        };
+        project: {
+            renativeConfig: ConfigFileProject;
+        };
+    };
 };
