@@ -193,19 +193,6 @@ export const checkAndBootstrapIfRequired = async () => {
     return true;
 };
 
-export const checkAndCreateGitignore = async () => {
-    const c = getContext();
-
-    logDefault('checkAndCreateGitignore');
-    const ignrPath = path.join(c.paths.project.dir, '.gitignore');
-    if (!fsExistsSync(ignrPath)) {
-        logInfo('Your .gitignore is missing. CREATING...DONE');
-
-        copyFileSync(path.join(c.paths.rnv.dir, 'coreTemplateFiles/.gitignore.tpl'), ignrPath);
-    }
-    return true;
-};
-
 export const configureFonts = async () => {
     const c = getContext();
 

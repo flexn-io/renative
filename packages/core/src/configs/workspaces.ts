@@ -82,12 +82,14 @@ export const getWorkspaceConnectionString = (obj?: ConfigFileWorkspaces['workspa
     return connectMsg;
 };
 
-export const getWorkspaceOptions = (c: RnvContext) =>
-    generateOptions(c.files.rnv.configWorkspaces?.workspaces, false, null, (i, obj, mapping, defaultVal) => {
+export const getWorkspaceOptions = () => {
+    const c = getContext();
+    return generateOptions(c.files.rnv.configWorkspaces?.workspaces, false, null, (i, obj, mapping, defaultVal) => {
         logDebug('getWorkspaceOptions');
 
         return ` [${chalk().grey(i + 1)}]> ${chalk().bold(defaultVal)} ${getWorkspaceConnectionString(obj)}\n`;
     });
+};
 
 export const loadWorkspacesConfigSync = () => {
     const c = getContext();

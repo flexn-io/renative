@@ -18,7 +18,6 @@ import {
     RnvTaskOptionPresets,
     copyRuntimeAssets,
     cleanPlaformAssets,
-    checkAndCreateGitignore,
     versionCheck,
     configureFonts,
     configureEngines,
@@ -124,7 +123,7 @@ const taskProjectConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
 
         await copyRuntimeAssets();
         await configureTemplateFiles();
-        await checkAndCreateGitignore();
+
         if (!c.buildConfig.platforms) {
             await updateRenativeConfigs();
         }
