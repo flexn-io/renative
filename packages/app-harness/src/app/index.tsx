@@ -39,7 +39,7 @@ const AppContent = () => {
     const handleRequestPermissions = async () => {
         try {
             const permission = await requestPermissions();
-            logDebug(`Permissions: ${permission}`);
+            logDebug('Permissions:', permission);
         } catch (error) {
             logDebug(`${error}`);
         }
@@ -119,11 +119,11 @@ const AppContent = () => {
                     paddingBottom: 10,
                 }}
             >
-                <Text style={styles.dynamicText}>{`Logs: `}</Text>
+                <Text style={[styles.dynamicText, { fontWeight: 'bold' }]}>{`Logs: `}</Text>
                 {logs
                     ? logs.map((it, idx) => (
                           <Text key={idx} style={styles.dynamicText}>
-                              {`${idx + 1}. ${it}`}
+                              {it}
                           </Text>
                       ))
                     : null}
