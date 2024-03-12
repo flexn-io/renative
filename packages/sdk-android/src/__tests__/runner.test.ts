@@ -16,6 +16,42 @@ afterEach(() => {
 });
 
 describe('getAndroidDeviceToRunOn', () => {
+    it('should fail if a device is provided but no active device exists', async () => {
+        //GIVEN
+        const ctx = getContext();
+        ctx.platform = 'android';
+        ctx.program.target = true;
+        ctx.program.device = 'device1';
+        ctx.runtime.target = 'defaultTarget';
+        const mockFoundDevice = { name: 'simulator1', isActive: false, udid: '', isDevice: false };
+
+        jest.mocked(getAndroidTargets).mockResolvedValue([mockFoundDevice]);
+
+        //WHEN
+        await expect(getAndroidDeviceToRunOn(ctx)).resolves.toBe(undefined);
+
+        //THEN
+    });
+    it('should fail if targetToConnectWiFi is not a valid IP address - npx rnv -p android -t -d <invalidIPAdress>', async () => {
+        //GIVEN
+        const targetToConnectWiFi = 'invalidIPAdress';
+        const ctx = getContext();
+        ctx.platform = 'android';
+        ctx.program.target = true;
+        ctx.runtime.target = 'defaultTarget';
+        ctx.program.device = targetToConnectWiFi;
+        const mockFoundDevice = { name: 'simulator1', isActive: false, udid: '', isDevice: false };
+
+        net.isIP = jest.fn().mockReturnValue(false);
+
+        jest.mocked(getAndroidTargets).mockResolvedValue([mockFoundDevice]);
+
+        //WHEN
+        await expect(getAndroidDeviceToRunOn(ctx)).resolves.toBe(undefined);
+
+        //THEN
+        expect(connectToWifiDevice).not.toHaveBeenCalled();
+    });
     it('should connect to WiFi device if targetToConnectWiFi is a string and a valid IP address', async () => {
         //GIVEN
         const targetToConnectWiFi = '192.168.0.1';
@@ -36,6 +72,20 @@ describe('getAndroidDeviceToRunOn', () => {
 
         //THEN
         expect(connectToWifiDevice).toHaveBeenCalledWith(ctx, targetToConnectWiFi);
+        expect(result).toEqual(mockFoundDevice);
+    });
+    it('should return defaultTarget if it exists and -t is not specified', async () => {
+        //GIVEN
+        const ctx = getContext();
+        ctx.platform = 'android';
+        ctx.program.target = undefined;
+        ctx.runtime.target = 'defaultTarget';
+        const mockFoundDevice = { name: 'defaultTarget', isActive: true, udid: '', isDevice: false };
+
+        jest.mocked(getAndroidTargets).mockResolvedValue([mockFoundDevice]);
+
+        const result = await getAndroidDeviceToRunOn(ctx);
+        //THEN
         expect(result).toEqual(mockFoundDevice);
     });
     it('should return found sim if target is provided and found - npx rnv -p android -t <target>', async () => {
