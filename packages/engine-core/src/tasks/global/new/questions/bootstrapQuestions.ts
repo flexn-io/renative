@@ -15,7 +15,7 @@ type QuestionResults = Record<
 
 export const inquiryBootstrapQuestions = async (data: NewProjectData) => {
     const c = getContext();
-    data.files.template.renativeTemplateConfigExt = {};
+    data.renativeTemplateConfigExt = {};
     const bootstrapQuestions = data.files.template.renativeTemplateConfig?.bootstrapConfig?.bootstrapQuestions || [];
     const results: QuestionResults = {};
     const providedAnswers: Record<string, any> = {};
@@ -45,7 +45,7 @@ export const inquiryBootstrapQuestions = async (data: NewProjectData) => {
         logDebug('setting', targetKey, objValue);
 
         if (targetKey) {
-            lSet(data.files.template.renativeTemplateConfigExt, targetKey, objValue);
+            lSet(data.renativeTemplateConfigExt, targetKey, objValue);
         }
     });
 };

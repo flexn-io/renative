@@ -7,7 +7,7 @@ export const inquirySupportedPlatforms = async (data: NewProjectData) => {
     const { platform } = c.program;
     const supportedPlatforms =
         data.files.template.renativeTemplateConfig?.defaults?.supportedPlatforms ||
-        data.renativeConfig?.defaults?.supportedPlatforms ||
+        data.files.template.renativeConfig?.defaults?.supportedPlatforms ||
         [];
 
     if (supportedPlatforms.length === 0) {

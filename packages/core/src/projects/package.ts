@@ -55,7 +55,7 @@ export const checkAndCreateProjectPackage = async () => {
 
         if (templateName) {
             pkgJson.devDependencies[templateName] =
-                c.files.project.config?.templates[templateName]?.version || 'latest';
+                c.files.project.config?.templates?.[templateName]?.version || 'latest';
         }
         const pkgJsonStringClean = JSON.stringify(pkgJson, null, 2);
         fsWriteFileSync(c.paths.project.package, pkgJsonStringClean);
