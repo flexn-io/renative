@@ -3,6 +3,8 @@ import { Text, Image, View, PixelRatio, TouchableOpacity, StatusBar, ScrollView 
 import { Api } from '@rnv/renative';
 import { ICON_LOGO, CONFIG, ThemeProvider, ThemeContext, testProps } from '../config';
 import packageJson from '../../package.json';
+import { CastButton } from '../component/CastButton';
+import { isFactorDesktop } from '@rnv/renative';
 
 const App = () => (
     <ThemeProvider>
@@ -52,6 +54,16 @@ const AppThemed = () => {
                     {...testProps('template-starter-home-screen-try-my-button')}
                 >
                     <Text style={theme.styles.buttonText}>Try me!</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => {
+                        if (!isFactorDesktop) {
+                            return <CastButton />;
+                        }
+                    }}
+                    style={theme.styles.button}
+                >
+                    <Text style={theme.styles.buttonText}>Cast</Text>
                 </TouchableOpacity>
             </ScrollView>
         </View>
