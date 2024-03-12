@@ -5,11 +5,13 @@ import { inquiryIsRenativeProject } from './questions/isRenativeProject';
 import { inquiryHasNodeModules } from './questions/hasNodeModules';
 import { inquiryConfirm } from './questions/confirmOverview';
 import { inquiryProjectName } from './questions/projectName';
-import { inquiryProjectDetails } from './questions/projectDetails';
 import { inquiryWorkspace } from './questions/workspace';
 import { inquiryTemplate } from './questions/template';
 import { inquirySupportedPlatforms } from './questions/supportedPlatforms';
 import { generateNewProject, initNewProject, telemetryNewProject } from './projectGenerator';
+import { inquiryAppTitle } from './questions/appTitle';
+import { inquiryAppID } from './questions/appID';
+import { inquiryAppVersion } from './questions/appVersion';
 
 const taskNew = async () => {
     logTask('taskNew');
@@ -21,7 +23,9 @@ const taskNew = async () => {
     await inquiryTemplate(payload);
     // Interactive Questions Optional
     await inquiryProjectName(payload);
-    await inquiryProjectDetails(payload);
+    await inquiryAppTitle(payload);
+    await inquiryAppID(payload);
+    await inquiryAppVersion(payload);
     await inquiryWorkspace(payload);
     await inquirySupportedPlatforms(payload);
     await inquiryBootstrapQuestions(payload);

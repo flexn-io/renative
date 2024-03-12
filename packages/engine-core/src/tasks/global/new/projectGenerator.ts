@@ -26,6 +26,7 @@ export const initNewProject = async () => {
         defaultProjectName: 'helloRenative',
         defaultAppTitle: 'Hello Renative',
         defaultWorkspace: 'rnv',
+        teamID: '',
         optionPlatforms: {},
         optionTemplates: {},
         optionWorkspaces: getWorkspaceOptions(),
