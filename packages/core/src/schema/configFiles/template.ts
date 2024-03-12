@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { DefaultsSchema, EnginesSchema } from './project';
-import { TemplateConfig } from '../shared';
+import { NpmDep, TemplateConfig } from '../shared';
 
 const BootstrapQuestionsSchema = z
     .array(
@@ -34,18 +34,25 @@ const BootstrapQuestionsSchema = z
     )
     .describe('Defines list of custom bootstrap questions');
 
-const BootstrapConfig = z.object({
-    bootstrapQuestions: BootstrapQuestionsSchema,
-    configModifiers: z.object({
-        engines: z.array(
-            z.object({
-                name: z.string(),
-                supportedPlatforms: z.array(z.string()),
-                nullifyIfFalse: z.boolean().optional(),
-            })
-        ),
-    }),
-});
+const BootstrapConfig = z
+    .object({
+        bootstrapQuestions: BootstrapQuestionsSchema,
+        rnvNewPatchDependencies: z
+            .optional(NpmDep)
+            .describe(
+                'This ensures that the correct version of the npm packages will be used to run the project for the first time after creation'
+            ),
+        configModifiers: z.object({
+            engines: z.array(
+                z.object({
+                    name: z.string(),
+                    supportedPlatforms: z.array(z.string()),
+                    nullifyIfFalse: z.boolean().optional(),
+                })
+            ),
+        }),
+    })
+    .partial();
 
 export const RootTemplateSchema = z.object({
     defaults: z.optional(DefaultsSchema),

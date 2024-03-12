@@ -42,7 +42,7 @@ export const BuildSchemeFragment = {
     ),
 };
 
-const NpmDep = z.record(z.string(), z.string());
+export const NpmDep = z.record(z.string(), z.string());
 
 export const TemplateConfig = z
     .object({
@@ -79,10 +79,5 @@ export const TemplateConfig = z
                 })
                 .passthrough()
         ),
-        rnvNewPatchDependencies: z
-            .optional(NpmDep)
-            .describe(
-                'This ensures that the correct version of the npm packages will be used to run the project for the first time after creation'
-            ),
     })
     .describe('Used in `renative.template.json` allows you to define template behaviour.');

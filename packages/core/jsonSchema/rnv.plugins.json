@@ -380,7 +380,7 @@
                         },
                         "additionalProperties": false
                       },
-                      "MainActivity_java": {
+                      "MainActivity_kt": {
                         "type": "object",
                         "properties": {
                           "onCreate": {
@@ -415,7 +415,7 @@
                         },
                         "additionalProperties": false
                       },
-                      "MainApplication_java": {
+                      "MainApplication_kt": {
                         "type": "object",
                         "properties": {
                           "imports": {

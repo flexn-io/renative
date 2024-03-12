@@ -198,10 +198,6 @@
                 }
               },
               "additionalProperties": true
-            },
-            "rnvNewPatchDependencies": {
-              "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/package_json/properties/dependencies",
-              "description": "This ensures that the correct version of the npm packages will be used to run the project for the first time after creation"
             }
           },
           "additionalProperties": false,
@@ -301,6 +297,10 @@
               },
               "description": "Defines list of custom bootstrap questions"
             },
+            "rnvNewPatchDependencies": {
+              "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/package_json/properties/dependencies",
+              "description": "This ensures that the correct version of the npm packages will be used to run the project for the first time after creation"
+            },
             "configModifiers": {
               "type": "object",
               "properties": {
@@ -336,10 +336,6 @@
               "additionalProperties": false
             }
           },
-          "required": [
-            "bootstrapQuestions",
-            "configModifiers"
-          ],
           "additionalProperties": false
         },
         "$schema": {

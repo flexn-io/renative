@@ -688,7 +688,7 @@
                       "properties": {},
                       "additionalProperties": false
                     },
-                    "MainActivity_java": {
+                    "MainActivity_kt": {
                       "type": "object",
                       "properties": {
                         "onCreate": {
@@ -723,7 +723,7 @@
                       },
                       "additionalProperties": false
                     },
-                    "MainApplication_java": {
+                    "MainApplication_kt": {
                       "type": "object",
                       "properties": {
                         "imports": {
@@ -3393,11 +3393,11 @@
                                 },
                                 "additionalProperties": false
                               },
-                              "MainActivity_java": {
-                                "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/templateAndroid/properties/MainActivity_java"
+                              "MainActivity_kt": {
+                                "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/templateAndroid/properties/MainActivity_kt"
                               },
-                              "MainApplication_java": {
-                                "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/templateAndroid/properties/MainApplication_java"
+                              "MainApplication_kt": {
+                                "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/templateAndroid/properties/MainApplication_kt"
                               }
                             },
                             "additionalProperties": false

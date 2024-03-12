@@ -518,7 +518,7 @@ const taskNew = async (c: RnvContext) => {
             path.join(c.paths.project.dir, 'node_modules', selectedInputTemplate, ConfigName.renativeTemplate)
         ) || {};
 
-    const rnvNewPatchDependencies = renativeTemplateConfig.templateConfig?.rnvNewPatchDependencies;
+    const rnvNewPatchDependencies = renativeTemplateConfig.bootstrapConfig?.rnvNewPatchDependencies;
 
     if (rnvNewPatchDependencies) {
         const patchDeps = Object.entries(rnvNewPatchDependencies);
@@ -707,6 +707,7 @@ const taskNew = async (c: RnvContext) => {
     }
 
     delete renativeTemplateConfig.templateConfig;
+    delete renativeTemplateConfig.bootstrapConfig;
 
     if (!data.optionTemplates.selectedOption) {
         logError('Current template not selected!');
