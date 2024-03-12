@@ -4,7 +4,7 @@
         "ANDROID_NDK": "/Users/<USER>/Library/Android/sdk/ndk-bundle",
         "TIZEN_SDK": "/Users/<USER>/tizen-studio",
         "WEBOS_SDK": "/Users/<USER>/Library/webOS_TV_SDK",
-        "KAIOS_SDK": "/Users/<USER>/Library/KaiosSimulators"
+        "KAIOS_SDK": "/Applications/KaiosSimulators"
     },
     "defaultTargets": {
         "android": "Nexus_5X_API_26",

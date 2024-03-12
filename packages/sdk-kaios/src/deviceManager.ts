@@ -40,15 +40,8 @@ export const launchKaiOSSimulator = async (target: string | boolean) => {
         return Promise.reject(`Can't find simulator at path: ${simulatorPath}`);
     }
 
-    await executeAsync(`${simulatorPath}`, ExecOptionsPresets.NO_SPINNER_FULL_ERROR_SUMMARY);
-
-    // new Promise<void>((resolve, reject) => {
-    //     childProcess.exec(`(cd ${kaiosSdkPath}/${target}/kaiosrt && ${simulatorPath} )`, (err: RnvError) => {
-    //         if (err) {
-    //             reject(err);
-    //             return;
-    //         }
-    //         resolve();
-    //     });
-    // });
+    await executeAsync(simulatorPath, {
+        cwd: `${kaiosSdkPath}/${target}/kaiosrt`,
+        ...ExecOptionsPresets.NO_SPINNER_FULL_ERROR_SUMMARY,
+    });
 };
