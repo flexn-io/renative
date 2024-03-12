@@ -17,11 +17,8 @@ import { addSystemInjects, getAppTemplateFolder } from '@rnv/sdk-utils';
 export const parsePodFile = async () => {
     logDefault('parsePodFile');
     const c = getContext();
-    const { platform } = c;
-
     const appFolder = getAppFolder();
     const useHermes = getConfigProp('reactNativeEngine') === 'hermes';
-
     let pluginInject = '';
 
     // PLUGINS

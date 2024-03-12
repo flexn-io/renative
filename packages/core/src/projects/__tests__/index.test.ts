@@ -1,10 +1,10 @@
 import { copyAssetsFolder } from '..';
-import { RnvPlatform } from '../../types';
 import { logWarning } from '../../logger';
 import path from 'path';
 import { isPlatformActive } from '../../platforms';
 import { getTimestampPathsConfig, getConfigProp } from '../../context/contextProps';
 import { generateContextDefaults } from '../../context/defaults';
+import { getContext } from '../../context/provider';
 
 jest.mock('fs');
 jest.mock('path');
@@ -18,11 +18,11 @@ afterEach(() => {
 });
 
 describe('copyAssetsFolder', () => {
-    const platform: RnvPlatform = 'web';
-    const c = generateContextDefaults();
-
     it('should exit when platform is not active', async () => {
         // GIVEN
+        const c = generateContextDefaults();
+        c.platform = 'web';
+        jest.mocked(getContext).mockReturnValue(c);
         jest.mocked(isPlatformActive).mockReturnValue(false);
         // WHEN
         const result = await copyAssetsFolder();
@@ -33,6 +33,9 @@ describe('copyAssetsFolder', () => {
 
     it('shows warning when assetSources is declared but actual folder is missing', async () => {
         //GIVEN
+        const c = generateContextDefaults();
+        c.platform = 'web';
+        jest.mocked(getContext).mockReturnValue(c);
         jest.mocked(isPlatformActive).mockReturnValue(true);
         jest.mocked(getConfigProp).mockReturnValueOnce('web'); //assetFolderPlatform
         jest.mocked(getTimestampPathsConfig).mockReturnValueOnce(undefined);
@@ -44,8 +47,8 @@ describe('copyAssetsFolder', () => {
         expect(logWarning).toHaveBeenCalledWith(
             'AssetSources is specified as ./MOCK_PATH. But path MOCK_JOINED_PATH was not found.'
         );
-        expect(getConfigProp).toHaveBeenCalledWith(c, platform, 'assetFolderPlatform');
-        expect(getConfigProp).toHaveBeenCalledWith(c, platform, 'assetSources');
+        expect(getConfigProp).toHaveBeenCalledWith('assetFolderPlatform');
+        expect(getConfigProp).toHaveBeenCalledWith('assetSources');
         expect(getConfigProp).toHaveBeenCalledTimes(2);
     });
 });

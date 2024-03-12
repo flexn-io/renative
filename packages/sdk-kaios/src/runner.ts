@@ -1,7 +1,6 @@
 import { buildCoreWebpackProject, configureCoreWebProject } from '@rnv/sdk-webpack';
 import path from 'path';
 import {
-    RnvContext,
     getPlatformProjectDir,
     fsWriteFileSync,
     fsReadFileSync,
@@ -25,15 +24,13 @@ export const configureKaiOSProject = async () => {
 
     await copyAssetsFolder();
     await configureCoreWebProject();
-    await _configureProject(c);
+    await _configureProject();
     return copyBuildsFolder();
 };
 
-const _configureProject = (c: RnvContext) =>
+const _configureProject = () =>
     new Promise<void>((resolve) => {
         logDefault('configureProject');
-        const { platform } = c;
-
         if (!isPlatformActive(resolve)) return;
 
         const appFolder = getPlatformProjectDir();

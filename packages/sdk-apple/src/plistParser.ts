@@ -27,7 +27,6 @@ export const parseExportOptionsPlist = () =>
     new Promise<void>((resolve) => {
         // EXPORT OPTIONS
         const c = getContext();
-        const { platform } = c;
         const tId = getConfigProp('teamID');
         const appFolder = getAppFolder();
         const exportOptions = getConfigProp('exportOptions') || {};
@@ -63,10 +62,7 @@ export const parseExportOptionsPlist = () =>
 export const parseEntitlementsPlist = () =>
     new Promise<void>((resolve) => {
         logDefault('parseEntitlementsPlist');
-
         const c = getContext();
-        const { platform } = c;
-
         const appFolder = getAppFolder();
         const appFolderName = getAppFolderName();
         const entitlementsPath = path.join(appFolder, `${appFolderName}/${appFolderName}.entitlements`);

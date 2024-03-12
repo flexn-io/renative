@@ -28,7 +28,7 @@ class Docker {
 
     async buildImage() {
         const { c } = this;
-        const { runtime, platform, files } = c;
+        const { runtime, files } = c;
         let outputDir = 'output';
         let projectBuildWeb = path.join(getAppFolder()!, outputDir);
         if (!fsExistsSync(projectBuildWeb)) {
@@ -86,7 +86,6 @@ class Docker {
         const {
             runtime,
             files,
-            platform,
             program: { scheme = 'debug' },
         } = c;
 

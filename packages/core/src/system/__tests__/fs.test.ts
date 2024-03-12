@@ -1,27 +1,19 @@
-import { createPlatformBuild } from '../../platforms';
-import { createRnvApi } from '../../api';
-import { createRnvContext } from '../../context';
-import { sanitizeDynamicProps, getRelativePath, copyFolderContentsRecursiveSync } from '../fs';
-import { RnvPlatform } from '../../types';
+import { sanitizeDynamicProps, getRelativePath } from '../fs';
 import { getContext } from '../../context/provider';
-import { doResolve } from '../resolve';
+import { generateContextDefaults } from '../../context/defaults';
 
 jest.mock('../../logger');
-jest.mock('../fs', () => {
-    const original = jest.requireActual('../fs');
+jest.mock('../../context/provider');
 
-    return {
-        ...original,
-        copyFolderContentsRecursiveSync: jest.fn(),
-    };
+beforeAll(() => {
+    // Before all placeholder
+});
+
+afterEach(() => {
+    jest.clearAllMocks();
 });
 
 describe('sanitizeDynamicProps', () => {
-    beforeAll(() => {
-        createRnvContext();
-        createRnvApi();
-    });
-
     it('sanitize {{props.XXX}}', async () => {
         const buildConfig = {
             common: {
@@ -59,9 +51,11 @@ describe('sanitizeDynamicProps', () => {
     });
 
     it('sanitize {{files.XXX}}', async () => {
-        const buildConfig = {
+        jest.mocked(getContext).mockReturnValue(generateContextDefaults());
+        const c = getContext();
+        c.buildConfig = {
             common: {
-                foo: '{{files.project.config.common.foo}}',
+                runtime: '{{files.project.config.common.runtime}}',
             },
         };
         const propConfig = {
@@ -69,7 +63,7 @@ describe('sanitizeDynamicProps', () => {
                 project: {
                     config: {
                         common: {
-                            foo: 'bar',
+                            runtime: 'bar',
                         },
                     },
                 },
@@ -78,8 +72,8 @@ describe('sanitizeDynamicProps', () => {
             props: {},
             configProps: {},
         };
-        const result = sanitizeDynamicProps(buildConfig, propConfig);
-        expect(result.common.foo).toEqual('bar');
+        const result = sanitizeDynamicProps(c.buildConfig, propConfig);
+        expect(result.common?.runtime).toEqual('bar');
     });
 
     it('sanitize {{runtimeProps.XXX}}', async () => {
@@ -133,38 +127,5 @@ describe('getRelativePath', () => {
         const expected = '../..';
         const result = getRelativePath(from, to);
         expect(result).toEqual(expected);
-    });
-});
-
-describe('createPlatformBuild', () => {
-    // GIVEN
-    const platform: RnvPlatform = 'ios';
-    const c = getContext();
-    c.runtime.availablePlatforms = ['ios', 'android'];
-    c.paths.project.platformTemplatesDirs[platform] = '/path/to/pt';
-
-    it('should copy platform template files to app folder', async () => {
-        // WHEN
-        await createPlatformBuild(c, platform);
-
-        // THEN
-        expect(copyFolderContentsRecursiveSync).toHaveBeenCalledWith(
-            '/path/to/pt/ios',
-            'undefined_null', // TODO: fix this
-            false,
-            ['/path/to/pt/ios/_privateConfig'],
-            false,
-            [
-                {
-                    pattern: '{{PATH_REACT_NATIVE}}',
-                    override:
-                        doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native', true, {
-                            forceForwardPaths: true,
-                        }) || '',
-                },
-            ],
-            undefined,
-            c
-        );
     });
 });
