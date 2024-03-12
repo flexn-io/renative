@@ -11,7 +11,7 @@ import {
 import type { NewProjectData } from '../types';
 import path from 'path';
 
-export const inquiryGit = async ({ data }: { data: NewProjectData }) => {
+export const inquiryGit = async (data: NewProjectData) => {
     const c = getContext();
     const { gitEnabled, ci } = c.program;
     data.gitEnabled = gitEnabled === 'true' || gitEnabled === true;

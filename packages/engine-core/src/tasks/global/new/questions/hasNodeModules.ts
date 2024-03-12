@@ -1,6 +1,7 @@
 import { fsExistsSync, getContext, inquirerPrompt, logWarning, removeDirs } from '@rnv/core';
+import { NewProjectData } from '../types';
 
-export const inquiryHasNodeModules = async () => {
+export const inquiryHasNodeModules = async (data: NewProjectData) => {
     const c = getContext();
     if (fsExistsSync(c.paths.project.nodeModulesDir)) {
         logWarning(
@@ -11,6 +12,7 @@ export const inquiryHasNodeModules = async () => {
             type: 'confirm',
             message: 'Are you sure you want to continue?',
         });
+        data.confirmDeleteNodeModules = confirmDeleteNodeModules;
         if (confirmDeleteNodeModules) {
             await removeDirs([c.paths.project.nodeModulesDir]);
         }

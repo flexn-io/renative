@@ -9,7 +9,7 @@ import {
 } from '@rnv/core';
 import type { NewProjectData } from '../types';
 
-export const inquiryConfirm = async ({ data }: { data: NewProjectData }) => {
+export const inquiryConfirm = async (data: NewProjectData) => {
     const c = getContext();
     const { ci } = c.program;
     _prepareProjectOverview(data);

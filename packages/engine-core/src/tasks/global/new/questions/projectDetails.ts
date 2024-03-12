@@ -3,7 +3,7 @@ import type { NewProjectData } from '../types';
 import { checkInputValue } from '../utils';
 import semver from 'semver';
 
-export const inquiryProjectDetails = async ({ data }: { data: NewProjectData }) => {
+export const inquiryProjectDetails = async (data: NewProjectData) => {
     const c = getContext();
     const { title, id, appVersion, ci } = c.program;
     const validator = {

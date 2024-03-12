@@ -57,4 +57,6 @@ export type NewProjectData = {
     renativeConfig?: ConfigFileProject;
     selectedInputTemplate?: string;
     renativeTemplateConfigExt?: any;
+    confirmDeleteNodeModules?: boolean;
+    confirmInRnvProject?: boolean;
 };

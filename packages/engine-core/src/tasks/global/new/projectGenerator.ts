@@ -33,7 +33,7 @@ export const initNewProject = async () => {
     return data;
 };
 
-export const generateNewProject = async ({ data }: { data: NewProjectData }) => {
+export const generateNewProject = async (data: NewProjectData) => {
     logTask(
         `generateNewProject:${data.optionTemplates.selectedOption}:${data.optionTemplates.selectedVersion}`,
         chalk().grey
@@ -129,7 +129,7 @@ export const generateNewProject = async ({ data }: { data: NewProjectData }) => 
     }
 };
 
-export const logTelemetry = async ({ data }: { data: NewProjectData }) => {
+export const telemetryNewProject = async (data: NewProjectData) => {
     try {
         await getApi().analytics.captureEvent({
             type: 'newProject',

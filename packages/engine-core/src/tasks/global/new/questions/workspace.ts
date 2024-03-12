@@ -2,7 +2,7 @@ import { getContext, inquirerPrompt, updateRenativeConfigs } from '@rnv/core';
 import type { NewProjectData } from '../types';
 import { checkInputValue } from '../utils';
 
-export const inquiryWorkspace = async ({ data }: { data: NewProjectData }) => {
+export const inquiryWorkspace = async (data: NewProjectData) => {
     const c = getContext();
     const { ci, workspace } = c.program;
     let inputWorkspace;

@@ -2,7 +2,7 @@ import { getContext, inquirerPrompt, logError } from '@rnv/core';
 import type { NewProjectData } from '../types';
 import { checkInputValue } from '../utils';
 
-export const inquirySupportedPlatforms = async ({ data }: { data: NewProjectData }) => {
+export const inquirySupportedPlatforms = async (data: NewProjectData) => {
     const c = getContext();
     const { platform } = c.program;
     const supportedPlatforms =

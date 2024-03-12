@@ -3,7 +3,7 @@ import type { NewProjectData } from '../types';
 import path from 'path';
 import { checkInputValue } from '../utils';
 
-export const inquiryProjectName = async ({ data }: { data: NewProjectData }) => {
+export const inquiryProjectName = async (data: NewProjectData) => {
     let inputProjectName: string;
 
     const c = getContext();

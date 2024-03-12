@@ -2,7 +2,18 @@ import { ConfigFileTemplate, PromptParams, getContext, inquirerPrompt, logDebug 
 import lSet from 'lodash/set';
 import type { NewProjectData } from '../types';
 
-export const inquiryBootstrapQuestions = async ({ data }: { data: NewProjectData }) => {
+type ConfigProp = Required<Required<ConfigFileTemplate>['bootstrapConfig']>['bootstrapQuestions'][number]['configProp'];
+type BootstrapQuestions = Required<Required<ConfigFileTemplate>['bootstrapConfig']>['bootstrapQuestions'];
+type QuestionResults = Record<
+    string,
+    {
+        answer: string;
+        configProp: ConfigProp;
+        value: string;
+    }
+>;
+
+export const inquiryBootstrapQuestions = async (data: NewProjectData) => {
     const c = getContext();
     data.renativeTemplateConfigExt = {};
     const bootstrapQuestions = data.renativeTemplateConfig?.bootstrapConfig?.bootstrapQuestions || [];
@@ -38,19 +49,6 @@ export const inquiryBootstrapQuestions = async ({ data }: { data: NewProjectData
         }
     });
 };
-
-type ConfigProp = Required<Required<ConfigFileTemplate>['bootstrapConfig']>['bootstrapQuestions'][number]['configProp'];
-
-type BootstrapQuestions = Required<Required<ConfigFileTemplate>['bootstrapConfig']>['bootstrapQuestions'];
-
-type QuestionResults = Record<
-    string,
-    {
-        answer: string;
-        configProp: ConfigProp;
-        value: string;
-    }
->;
 
 const interactiveQuestion = async (
     results: QuestionResults,

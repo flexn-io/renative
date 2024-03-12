@@ -9,28 +9,31 @@ import { inquiryProjectDetails } from './questions/projectDetails';
 import { inquiryWorkspace } from './questions/workspace';
 import { inquiryTemplate } from './questions/template';
 import { inquirySupportedPlatforms } from './questions/supportedPlatforms';
-import { initNewProject, logTelemetry } from './projectGenerator';
+import { generateNewProject, initNewProject, telemetryNewProject } from './projectGenerator';
 
 const taskNew = async () => {
     logTask('taskNew');
-
-    const data = await initNewProject();
-
-    await inquiryIsRenativeProject();
-    await inquiryHasNodeModules();
-    await inquiryProjectName({ data });
-    await inquiryProjectDetails({ data });
-    await inquiryWorkspace({ data });
-    await inquiryTemplate({ data });
-    await inquirySupportedPlatforms({ data });
-    await inquiryBootstrapQuestions({ data });
-    await inquiryGit({ data });
-    await inquiryConfirm({ data });
-
-    await logTelemetry({ data });
+    // Initialize Project
+    const payload = await initNewProject();
+    // Interactive Questions Required
+    await inquiryIsRenativeProject(payload);
+    await inquiryHasNodeModules(payload);
+    await inquiryTemplate(payload);
+    // Interactive Questions Optional
+    await inquiryProjectName(payload);
+    await inquiryProjectDetails(payload);
+    await inquiryWorkspace(payload);
+    await inquirySupportedPlatforms(payload);
+    await inquiryBootstrapQuestions(payload);
+    await inquiryGit(payload);
+    await inquiryConfirm(payload);
+    // Generate Project
+    await generateNewProject(payload);
+    // Telementry
+    await telemetryNewProject(payload);
 
     logSuccess(
-        `Your project is ready! navigate to project ${chalk().bold(`cd ${data.projectName}`)} and run ${chalk().bold(
+        `Your project is ready! navigate to project ${chalk().bold(`cd ${payload.projectName}`)} and run ${chalk().bold(
             'npx rnv run'
         )} to see magic happen!`
     );

@@ -20,7 +20,7 @@ import type { NewProjectData } from '../types';
 import path from 'path';
 import { checkInputValue } from '../utils';
 
-export const inquiryTemplate = async ({ data }: { data: NewProjectData }) => {
+export const inquiryTemplate = async (data: NewProjectData) => {
     const customTemplate = 'Custom Template ...';
 
     const c = getContext();
