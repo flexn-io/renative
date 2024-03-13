@@ -191,6 +191,7 @@ export type RnvContextPaths = {
     IS_LINKED: boolean;
     IS_NPX_MODE: boolean;
     CURRENT_DIR: string;
+    RNV_CORE_HOME_DIR: string;
     RNV_NODE_MODULES_DIR: string;
     //=======
     rnv: {

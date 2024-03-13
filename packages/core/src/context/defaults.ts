@@ -96,6 +96,7 @@ export const generateContextDefaults = (): RnvContext => ({
     injectableConfigProps: {},
     runtime,
     paths: {
+        RNV_CORE_HOME_DIR: '',
         CURRENT_DIR: '',
         IS_LINKED: false,
         IS_NPX_MODE: false,

@@ -191,7 +191,7 @@ export const configurePlugins = async () => {
 
         if (!plugin) {
             if (c.buildConfig?.plugins?.[k] === null) {
-                // Skip Warning as this is intentional "plugin":null
+                // Skip Warning as this is intentional "plugin":null override
             } else {
                 logWarning(
                     `Plugin with name ${chalk().bold(
@@ -424,15 +424,20 @@ export const parsePlugins = (
                         //TODO: consider supportedPlatforms for plugins
                         const isPluginPlatDisabled = pluginPlat.disabled === true;
                         const isPluginDisabled = plugin.disabled === true;
+                        const isPluginPlatSupported = plugin.supportedPlatforms
+                            ? plugin.supportedPlatforms.includes(platform)
+                            : true;
 
                         if (ignorePlatformObjectCheck || includeDisabledOrExcludedPlugins) {
                             if (isPluginDisabled) {
                                 logInfo(`Plugin ${key} is marked disabled. skipping.`);
                             } else if (isPluginPlatDisabled) {
                                 logInfo(`Plugin ${key} is marked disabled for platform ${platform} skipping.`);
+                            } else if (!isPluginPlatSupported) {
+                                logInfo(`Plugin ${key} supportedPlatforms does not include ${platform} skipping.`);
                             }
                             handleActivePlugin(plugin, pluginPlat, key);
-                        } else if (!isPluginPlatDisabled && !isPluginDisabled) {
+                        } else if (!isPluginPlatDisabled && !isPluginDisabled && isPluginPlatSupported) {
                             handleActivePlugin(plugin, pluginPlat, key);
                         }
                     } else if (includeDisabledOrExcludedPlugins) {
