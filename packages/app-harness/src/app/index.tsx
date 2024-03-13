@@ -13,6 +13,7 @@ import { TestCase } from '../components/TestCase';
 import config from '../../package.json';
 import { LoggerProvider, useLoggerContext } from '../context';
 import { NotificationCallback } from '../components/types';
+import { PhotoEditorButton } from '../components/PhotoEditor';
 
 const App = () => (
     <LoggerProvider>
@@ -103,6 +104,23 @@ const AppContent = () => {
                     </TestCase>
                     <TestCase id={6} title="Splash Screen">
                         <Button onPress={() => SplashScreen.show()} title="Show SplashScreen" />
+                    </TestCase>
+                    <TestCase id={7} title="PhotoEditor">
+                        <PhotoEditorButton />
+                        {/* <Button
+                            onPress={() => {
+                                RNPhotoEditor.Edit({
+                                    path: RNFS.DocumentDirectoryPath + ICON_LOGO,
+                                    onDone: () => {
+                                        console.log('on done');
+                                    },
+                                    onCancel: () => {
+                                        console.log('on cancel');
+                                    },
+                                });
+                            }}
+                            title="Show PhotoEditor"
+                        /> */}
                     </TestCase>
                 </ScrollView>
             </View>

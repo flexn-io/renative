@@ -129,13 +129,15 @@
                 "package": "ui.photoeditor.RNPhotoEditorPackage"
             },
             "ios": {
-                "podName": "iOSPhotoEditor",
-                "git": "https://github.com/prscX/photo-editor",
-                "commit": "4924e9ec984d25d03644e58aa148282642171de9",
-                "buildType": "dynamic"
+                "templateXcode": {
+                    "Podfile": {
+                        "post_install": []
+                    }
+                },
+                "podName": "RNPhotoEditor"
             },
             "pluginDependencies": null,
-            "version": "1.0.13"
+            "version": "https://github.com/AppGyver/react-native-photo-editor"
         },
         "react-native-permissions": {
             "ios": {
@@ -214,6 +216,12 @@
             },
             "NSContactsUsageDescription": {
                 "desc": "Contacts usage description"
+            },
+            "NSPhotoLibraryAddUsageDescription": {
+                "desc": "Application needs permission to write photos..."
+            },
+            "NSPhotoLibraryUsageDescription": {
+                "desc": "iOS 10 needs permission to write photos..."
             }
         }
     }
