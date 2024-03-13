@@ -269,7 +269,7 @@ export const configureEntryPoint = async (platform: RnvPlatform) => {
     logDefault('configureEntryPoint');
     const c = getContext();
 
-    if (c.files.project.config?.isTemplate) return true;
+    if (c.buildConfig?.isTemplate) return true;
 
     const entryFile = getConfigProp('entryFile');
 
@@ -303,7 +303,7 @@ export const configureEntryPoint = async (platform: RnvPlatform) => {
 
 export const getInstalledTemplateOptions = (): PromptOptions | null => {
     const c = getContext();
-    if (c.files.project.config?.isTemplate) return null;
+    if (c.buildConfig?.isTemplate) return null;
     if (c.buildConfig.templates) {
         return generateOptions(c.buildConfig.templates);
     }
@@ -319,7 +319,7 @@ export const isTemplateInstalled = () => {
 export const applyTemplate = async (selectedTemplate?: string) => {
     const c = getContext();
     logDefault('applyTemplate', `${c.buildConfig.currentTemplate}=>${selectedTemplate}`);
-    if (c.files.project.config?.isTemplate) return true;
+    if (c.buildConfig?.isTemplate) return true;
 
     if (!c.files.project.config) {
         logError('Project config not loaded. cannot apply template');

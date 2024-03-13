@@ -2,6 +2,8 @@
     "$schema": "../../.rnv/schema/rnv.app.json",
     "extend": "base",
     "id": "template",
+    "isTemplate": true,
+    "isMonorepo": true,
     "skipBootstrapCopy": true,
     "common": {
         "id": "renative.helloworld",

@@ -181,7 +181,7 @@ export const configurePlugins = async () => {
         return;
     }
 
-    const isTemplate = c.files.project.config?.isTemplate;
+    const isTemplate = c.buildConfig?.isTemplate;
     const newDeps: Record<string, string> = {};
     const newDevDeps: Record<string, string> = {};
     const { dependencies, devDependencies } = c.files.project.package;

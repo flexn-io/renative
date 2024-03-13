@@ -8,20 +8,13 @@
         "@rnv/engine-rn-tvos": "source:rnv",
         "@rnv/engine-rn-web": "source:rnv"
     },
-    "isTemplate": true,
     "projectName": "@rnv/template-starter",
     "enableHookRebuild": false,
     "workspaceID": "rnv",
-    "isMonorepo": true,
     "paths": {
         "appConfigsDir": "./appConfigs",
         "platformAssetsDir": "./platformAssets",
         "platformBuildsDir": "./platformBuilds"
-    },
-    "tasks": {
-        "install": {
-            "script": "yarn bootstrap"
-        }
     },
     "defaults": {
         "ports": {

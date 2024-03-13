@@ -15,7 +15,7 @@ const taskTemplateApply: RnvTaskFn = async (c, _parentTask, originTask) => {
 
     await executeTask(RnvTaskName.projectConfigure, RnvTaskName.templateApply, originTask);
 
-    if (c.files.project.config?.isTemplate) {
+    if (c.buildConfig?.isTemplate) {
         return Promise.reject('Template projects cannot use template apply command');
     }
 

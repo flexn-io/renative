@@ -164,7 +164,7 @@ export const loadEnginePluginDeps = async (engineConfigs: Array<RnvEngineInstall
     logDefault('loadEnginePluginDeps');
     const c = getContext();
 
-    if (c.files.project.config?.isTemplate) return 0;
+    if (c.buildConfig?.isTemplate) return 0;
 
     const cnf = c.files.project.config_original;
     if (!cnf) return 0;
@@ -221,7 +221,7 @@ export const loadEnginePackageDeps = async (engineConfigs: Array<RnvEngineInstal
     logDefault('loadEnginePackageDeps');
     const c = getContext();
 
-    if (c.program.skipDependencyCheck || c.files.project.config?.isTemplate) return 0;
+    if (c.program.skipDependencyCheck || c.buildConfig?.isTemplate) return 0;
     // Check engine dependencies
     const addedDeps = [];
     engineConfigs.forEach((ecf) => {
@@ -255,7 +255,7 @@ export const loadEnginePackageDeps = async (engineConfigs: Array<RnvEngineInstal
                     const deps = c.files.project.package.dependencies || {};
                     Object.keys(npm.dependencies).forEach((k) => {
                         if (!deps[k]) {
-                            if (c.files.project.config?.isTemplate) {
+                            if (c.buildConfig?.isTemplate) {
                                 if (!c.files.project.package.devDependencies?.[k]) {
                                     logWarning(
                                         `Engine ${ecf.key} requires npm dependency ${k} for platform ${platform}. which in template project should be placed in devDependencies`
