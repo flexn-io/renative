@@ -7,7 +7,12 @@ import { inquiryConfirm } from './questions/confirmOverview';
 import { inquiryProjectName } from './questions/projectName';
 import { inquiryWorkspace } from './questions/workspace';
 import { inquirySupportedPlatforms } from './questions/supportedPlatforms';
-import { generateNewProject, initNewProject, telemetryNewProject } from './projectGenerator';
+import {
+    generateNewProject,
+    initNewProject,
+    saveProgressIntoProjectConfig,
+    telemetryNewProject,
+} from './projectGenerator';
 import { inquiryAppTitle } from './questions/appTitle';
 import { inquiryAppID } from './questions/appID';
 import { inquiryAppVersion } from './questions/appVersion';
@@ -25,11 +30,14 @@ const taskNew = async () => {
     await inquiryHasNodeModules(payload);
     await inquiryInstallTemplate(payload);
     await inquiryApplyTemplate(payload);
+    await saveProgressIntoProjectConfig(payload);
     // Interactive Questions Optional
     await inquiryAppTitle(payload);
     await inquiryAppID(payload);
     await inquiryAppVersion(payload);
     await inquiryWorkspace(payload);
+    await saveProgressIntoProjectConfig(payload);
+
     await inquirySupportedPlatforms(payload);
     await inquiryBootstrapQuestions(payload);
     await inquiryGit(payload);

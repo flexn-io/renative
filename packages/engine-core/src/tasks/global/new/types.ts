@@ -1,4 +1,4 @@
-import { ConfigFileProject, ConfigFileTemplate, PlatformKey } from '@rnv/core';
+import { ConfigFileProject, ConfigFileTemplate, NpmPackageFile, PlatformKey } from '@rnv/core';
 
 export type NewProjectData = {
     appTitle?: string;
@@ -65,6 +65,7 @@ export type NewProjectData = {
         };
         project: {
             renativeConfig: ConfigFileProject;
+            packageJson: NpmPackageFile;
         };
     };
 };

@@ -15,9 +15,9 @@ import {
     RnvTaskFn,
     RnvTask,
     RnvTaskName,
+    NpmPackageFile,
+    ConfigFileProject,
 } from '@rnv/core';
-import { NpmPackageFile } from '@rnv/core/lib/configs/types';
-import { ConfigFileProject } from '@rnv/core/lib/schema/configFiles/types';
 
 const taskProjectUpgrade: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskProjectUpgrade');

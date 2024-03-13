@@ -28,9 +28,9 @@ import {
     getAppFolder,
     RnvTaskName,
     getContext,
+    NpmPackageFile,
 } from '@rnv/core';
 import { FileElectronPackage } from './types';
-import { NpmPackageFile } from '@rnv/core/lib/configs/types';
 import {
     checkPortInUse,
     waitForHost,

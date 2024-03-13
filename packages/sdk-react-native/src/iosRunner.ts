@@ -14,8 +14,8 @@ import {
     getContext,
     getCurrentCommand,
     inquirerPrompt,
+    RnvEnvContext,
 } from '@rnv/core';
-import { RnvEnvContext } from '@rnv/core/lib/env/types';
 import { EnvVars } from './env';
 import shellQuote from 'shell-quote';
 import path from 'path';

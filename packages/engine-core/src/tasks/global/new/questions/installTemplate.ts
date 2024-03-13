@@ -1,4 +1,5 @@
 import {
+    NpmPackageFile,
     chalk,
     copyFileSync,
     copyFolderRecursiveSync,
@@ -18,7 +19,6 @@ import {
 import type { NewProjectData } from '../types';
 import path from 'path';
 import { checkInputValue } from '../utils';
-import { NpmPackageFile } from '@rnv/core/lib/configs/types';
 
 export const inquiryInstallTemplate = async (data: NewProjectData) => {
     const customTemplate = 'Custom Template...';

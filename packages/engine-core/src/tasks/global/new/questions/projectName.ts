@@ -24,6 +24,8 @@ export const inquiryProjectName = async (data: NewProjectData) => {
     c.paths.project.package = path.join(c.paths.project.dir, 'package.json');
     c.paths.project.config = path.join(c.paths.project.dir, ConfigName.renative);
 
+    data.files.project.renativeConfig.projectName = data.projectName;
+
     if (fsExistsSync(c.paths.project.dir)) {
         logWarning(`Folder ${c.paths.project.dir} already exists. RNV will override it.`);
         const { confirm } = await inquirerPrompt({

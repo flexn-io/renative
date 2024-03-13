@@ -5,7 +5,6 @@ import {
     getContext,
     inquirerPrompt,
     readObjectSync,
-    writeFileSync,
 } from '@rnv/core';
 import type { NewProjectData } from '../types';
 import path from 'path';
@@ -44,10 +43,13 @@ export const inquiryApplyTemplate = async (data: NewProjectData) => {
         const rnvConfig = data.files.template.renativeTemplateConfig.templateConfig?.renative_json || {
             extendsTemplate: `${data.optionTemplates.selectedOption}/renative.json`,
         };
-        writeFileSync(c.paths.project.config, rnvConfig);
+        data.files.project.renativeConfig = rnvConfig;
     } else if (configOption === optCopy) {
-        writeFileSync(c.paths.project.config, data.files.template.renativeConfig);
+        data.files.project.renativeConfig = data.files.template.renativeConfig;
     }
+
+    const packageJson = data.files.template.renativeTemplateConfig.templateConfig?.package_json || {};
+    data.files.project.packageJson = packageJson;
 
     // const rnvNewPatchDependencies = renativeTemplateConfig.bootstrapConfig?.rnvNewPatchDependencies;
 

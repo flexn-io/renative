@@ -15,6 +15,12 @@ import path from 'path';
 import { NewProjectData } from './types';
 import { configureGit } from './questions/confirmGit';
 
+export const saveProgressIntoProjectConfig = async (data: NewProjectData) => {
+    const c = getContext();
+    writeFileSync(c.paths.project.config, data.files.project.renativeConfig);
+    writeFileSync(c.paths.project.package, data.files.project.packageJson);
+};
+
 export const initNewProject = async () => {
     const c = getContext();
 
@@ -34,6 +40,7 @@ export const initNewProject = async () => {
         files: {
             project: {
                 renativeConfig: {},
+                packageJson: {},
             },
             template: {
                 renativeTemplateConfig: {},

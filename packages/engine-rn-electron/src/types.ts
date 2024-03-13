@@ -1,4 +1,4 @@
-import { NpmPackageFile } from '@rnv/core/lib/configs/types';
+import { NpmPackageFile } from '@rnv/core';
 
 export type FileElectronPackage = NpmPackageFile & {
     productName?: string;

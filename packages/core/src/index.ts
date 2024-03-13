@@ -64,6 +64,8 @@ export * from './projects/types';
 export * from './schema/types';
 export * from './tasks/types';
 export * from './system/types';
+export * from './configs/types';
+export * from './env/types';
 export * from './api/types';
 export * from './types';
 export * from './schema/types';
