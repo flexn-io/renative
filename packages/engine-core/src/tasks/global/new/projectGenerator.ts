@@ -72,7 +72,7 @@ export const generateNewProject = async (data: NewProjectData) => {
         return Promise.reject('Current template not selected!');
     }
 
-    // const c = getContext();
+    const c = getContext();
     // const templates: Record<string, { version: string }> = {};
 
     // if (data.optionTemplates.selectedOption) {
@@ -126,30 +126,49 @@ export const generateNewProject = async (data: NewProjectData) => {
     //     }
     // });
 
-    // const tplEngines = data.files.template.renativeTemplateConfig.engines;
-    // if (tplEngines) {
-    //     // Remove unused engines based on selected platforms
-    //     supPlats.forEach((k) => {
-    //         const selectedEngineId =
-    //             platforms[k]?.engine || c.files.rnv.projectTemplates.config?.platformTemplates?.[k]?.engine;
-    //         if (selectedEngineId) {
-    //             const selectedEngine = findEngineKeyById(selectedEngineId);
-    //             if (selectedEngine?.key) {
-    //                 engines[selectedEngine.key] = tplEngines[selectedEngine.key];
-    //             }
-    //         }
-    //     });
-    // }
+    const supPlats = data.optionPlatforms.selectedOptions || [];
+
+    console.log('SSSSS', supPlats);
+
+    // This is project config override only
+    const cnf = data.files.project.renativeConfig;
+    cnf.defaults = cnf.defaults || {};
+    cnf.defaults.supportedPlatforms = supPlats;
+    cnf.engines = cnf.engines || {};
+
+    // This is merged config result
+    const loadedConf = c.files.project.config;
+
+    const engines = loadedConf?.engines;
+    if (engines) {
+        // Remove unused engines based on selected platforms
+        supPlats.forEach((k) => {
+            const selectedEngineId =
+                loadedConf?.platforms?.[k]?.engine ||
+                c.files.rnv.projectTemplates.config?.platformTemplates?.[k]?.engine;
+            console.log('SSSSS2', k, selectedEngineId);
+
+            if (selectedEngineId) {
+                const selectedEngine = findEngineKeyById(selectedEngineId);
+                console.log('SSSSS3', k, selectedEngine);
+                if (selectedEngine?.key && cnf.engines) {
+                    cnf.engines[selectedEngine.key] = engines[selectedEngine.key];
+                }
+            }
+        });
+    }
+
+    await saveProgressIntoProjectConfig(data);
+
+    await applyTemplate();
+    await configureTemplateFiles();
+    await generateLocalJsonSchemas();
 
     // config.platforms = platforms;
     // config.engines = engines;
     // config.defaults = defaults;
 
     // writeFileSync(c.paths.project.config, config);
-
-    await applyTemplate();
-    await configureTemplateFiles();
-    await generateLocalJsonSchemas();
 
     if (data.gitEnabled) {
         await configureGit();
@@ -168,19 +187,19 @@ export const telemetryNewProject = async (data: NewProjectData) => {
     }
 };
 
-// const findEngineKeyById = (id: string) => {
-//     const c = getContext();
-//     const engineTemplates = c.files.rnv.projectTemplates.config?.engineTemplates;
-//     if (engineTemplates) {
-//         const etk = Object.keys(engineTemplates);
-//         for (let i = 0; i < etk.length; i++) {
-//             const engine = engineTemplates[etk[i]];
-//             if (engine) {
-//                 if (engine.id === id) {
-//                     engine.key = etk[i];
-//                     return engine;
-//                 }
-//             }
-//         }
-//     }
-// };
+const findEngineKeyById = (id: string) => {
+    const c = getContext();
+    const engineTemplates = c.files.rnv.projectTemplates.config?.engineTemplates;
+    if (engineTemplates) {
+        const etk = Object.keys(engineTemplates);
+        for (let i = 0; i < etk.length; i++) {
+            const engine = engineTemplates[etk[i]];
+            if (engine) {
+                if (engine.id === id) {
+                    engine.key = etk[i];
+                    return engine;
+                }
+            }
+        }
+    }
+};

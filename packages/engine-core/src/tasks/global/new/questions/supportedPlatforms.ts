@@ -1,4 +1,4 @@
-import { getContext, inquirerPrompt, logError } from '@rnv/core';
+import { PlatformKey, getContext, inquirerPrompt, logError } from '@rnv/core';
 import type { NewProjectData } from '../types';
 import { checkInputValue } from '../utils';
 
@@ -16,7 +16,6 @@ export const inquirySupportedPlatforms = async (data: NewProjectData) => {
         );
     }
 
-    let inputSupportedPlatforms;
     if (checkInputValue(platform)) {
         data.inputSupportedPlatforms = platform.split(',');
     } else {
@@ -31,5 +30,5 @@ export const inquirySupportedPlatforms = async (data: NewProjectData) => {
         });
         data.inputSupportedPlatforms = answer?.inputSupportedPlatforms;
     }
-    data.optionPlatforms.selectedOptions = inputSupportedPlatforms;
+    data.optionPlatforms.selectedOptions = (data.inputSupportedPlatforms || []) as Array<PlatformKey>;
 };
