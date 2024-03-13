@@ -14,23 +14,23 @@
               },
               "propertyNames": {
                 "enum": [
+                  "web",
                   "ios",
                   "android",
                   "androidtv",
-                  "androidwear",
                   "firetv",
-                  "web",
-                  "webtv",
-                  "tizen",
-                  "tizenmobile",
                   "tvos",
-                  "webos",
                   "macos",
-                  "windows",
                   "linux",
-                  "tizenwatch",
-                  "kaios",
+                  "windows",
+                  "tizen",
+                  "webos",
                   "chromecast",
+                  "kaios",
+                  "webtv",
+                  "androidwear",
+                  "tizenwatch",
+                  "tizenmobile",
                   "xbox"
                 ]
               },
@@ -41,23 +41,23 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "web",
                   "ios",
                   "android",
                   "androidtv",
-                  "androidwear",
                   "firetv",
-                  "web",
-                  "webtv",
-                  "tizen",
-                  "tizenmobile",
                   "tvos",
-                  "webos",
                   "macos",
-                  "windows",
                   "linux",
-                  "tizenwatch",
-                  "kaios",
+                  "windows",
+                  "tizen",
+                  "webos",
                   "chromecast",
+                  "kaios",
+                  "webtv",
+                  "androidwear",
+                  "tizenwatch",
+                  "tizenmobile",
                   "xbox"
                 ]
               },
@@ -88,23 +88,23 @@
               },
               "propertyNames": {
                 "enum": [
+                  "web",
                   "ios",
                   "android",
                   "androidtv",
-                  "androidwear",
                   "firetv",
-                  "web",
-                  "webtv",
-                  "tizen",
-                  "tizenmobile",
                   "tvos",
-                  "webos",
                   "macos",
-                  "windows",
                   "linux",
-                  "tizenwatch",
-                  "kaios",
+                  "windows",
+                  "tizen",
+                  "webos",
                   "chromecast",
+                  "kaios",
+                  "webtv",
+                  "androidwear",
+                  "tizenwatch",
+                  "tizenmobile",
                   "xbox"
                 ]
               },
@@ -334,6 +334,10 @@
                 "engines"
               ],
               "additionalProperties": false
+            },
+            "defaultSelectedPlatforms": {
+              "$ref": "#/definitions/rnv.template/properties/defaults/properties/supportedPlatforms",
+              "description": "Array list of all supported platforms in current project"
             }
           },
           "additionalProperties": false

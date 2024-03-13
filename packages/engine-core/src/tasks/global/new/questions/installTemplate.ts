@@ -91,7 +91,6 @@ export const inquiryInstallTemplate = async (data: NewProjectData) => {
         } else {
             selectedInputTemplate = getTemplateKey(inputTemplate);
         }
-        console.log('JSDDDJJD', inputTemplate);
     }
 
     const nmDir = path.join(c.paths.project.dir, '.rnv/npm_cache');
