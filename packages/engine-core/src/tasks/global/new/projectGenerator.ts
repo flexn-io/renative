@@ -1,6 +1,7 @@
 import {
     // ConfigFileProject,
     ConfigName,
+    PlatformKey,
     // PlatformKey,
     applyTemplate,
     chalk,
@@ -73,62 +74,14 @@ export const generateNewProject = async (data: NewProjectData) => {
     }
 
     const c = getContext();
-    // const templates: Record<string, { version: string }> = {};
 
-    // if (data.optionTemplates.selectedOption) {
-    //     templates[data.optionTemplates.selectedOption] = {
-    //         version: data.optionTemplates.selectedVersion,
-    //     };
-    // }
-
-    // delete data.files.template.renativeTemplateConfig.templateConfig;
-    // delete data.files.template.renativeTemplateConfig.bootstrapConfig;
-
-    // const config: ConfigFileProject = {
-    //     platforms: {},
-    //     ...data.files.template.renativeTemplateConfig,
-    //     ...data.renativeTemplateConfigExt,
-    //     projectName: data.projectName || 'my-project',
-    //     projectVersion: data.inputVersion || '0.1.0',
-    //     //TODO: TEMPORARY WORKAROUND this neds to use bootstrap_metadata to work properly
+    //TODO: TEMPORARY WORKAROUND this neds to use bootstrap_metadata to work properly
     //     common: {
     //         id: data.inputAppID || 'com.mycompany.myapp',
     //         title: data.inputAppTitle || 'My App',
     //     },
-    //     workspaceID: data.optionWorkspaces.selectedOption || 'project description',
-    //     // paths: {
-    //     //     appConfigsDir: './appConfigs',
-    //     //     entryDir: './',
-    //     //     platformAssetsDir: './platformAssets',
-    //     //     platformBuildsDir: './platformBuilds',
-    //     // },
-    //     defaults: {
-    //         supportedPlatforms: data.optionPlatforms.selectedOptions,
-    //     },
-    //     engines: {},
-    //     templates,
-    //     currentTemplate: data.optionTemplates.selectedOption,
-    //     isNew: true,
-    //     isMonorepo: false,
-    // };
-
-    // const platforms: ConfigFileProject['platforms'] = config.platforms || {};
-    // // const engines: ConfigFileProject['engines'] = config.engines || {};
-    // // const defaults: ConfigFileProject['defaults'] = config.defaults || {};
-
-    // const supPlats = defaults.supportedPlatforms || [];
-
-    // // Remove unused platforms
-    // Object.keys(platforms).forEach((k) => {
-    //     const key = k as PlatformKey;
-    //     if (!supPlats.includes(key)) {
-    //         delete platforms[key];
-    //     }
-    // });
 
     const supPlats = data.optionPlatforms.selectedOptions || [];
-
-    console.log('SSSSS', supPlats);
 
     // This is project config override only
     const cnf = data.files.project.renativeConfig;
@@ -139,6 +92,7 @@ export const generateNewProject = async (data: NewProjectData) => {
     // This is merged config result
     const loadedConf = c.files.project.config;
 
+    // Configure only required engines based on supportedPlatforms
     const engines = loadedConf?.engines;
     if (engines) {
         // Remove unused engines based on selected platforms
@@ -146,11 +100,9 @@ export const generateNewProject = async (data: NewProjectData) => {
             const selectedEngineId =
                 loadedConf?.platforms?.[k]?.engine ||
                 c.files.rnv.projectTemplates.config?.platformTemplates?.[k]?.engine;
-            console.log('SSSSS2', k, selectedEngineId);
 
             if (selectedEngineId) {
                 const selectedEngine = findEngineKeyById(selectedEngineId);
-                console.log('SSSSS3', k, selectedEngine);
                 if (selectedEngine?.key && cnf.engines) {
                     cnf.engines[selectedEngine.key] = engines[selectedEngine.key];
                 }
@@ -158,17 +110,23 @@ export const generateNewProject = async (data: NewProjectData) => {
         });
     }
 
+    // In case of copied config instead of extended we want to cleanup unused platforms
+    if (cnf.platforms) {
+        Object.keys(cnf.platforms).forEach((k) => {
+            const key = k as PlatformKey;
+            if (!supPlats.includes(key) && cnf.platforms) {
+                delete cnf.platforms[key];
+            }
+        });
+    }
+
+    // Save all progress into ./renative.json
     await saveProgressIntoProjectConfig(data);
 
+    // Now we can apply template
     await applyTemplate();
     await configureTemplateFiles();
     await generateLocalJsonSchemas();
-
-    // config.platforms = platforms;
-    // config.engines = engines;
-    // config.defaults = defaults;
-
-    // writeFileSync(c.paths.project.config, config);
 
     if (data.gitEnabled) {
         await configureGit();

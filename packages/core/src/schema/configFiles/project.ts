@@ -1,6 +1,6 @@
 import { AnyZodObject, z } from 'zod';
 import { CommonSchema } from '../common';
-import { Ext, ExtendTemplate, PlatformsKeys, Runtime, TemplateConfig } from '../shared';
+import { Ext, ExtendTemplate, PlatformsKeys, Runtime, SupportedPlatforms, TemplateConfig } from '../shared';
 import { PlatformsSchema } from '../platforms';
 import { PluginsSchema } from '../plugins';
 
@@ -17,8 +17,6 @@ const Ports = z
     .describe(
         'Allows you to assign custom port per each supported platform specific to this project. this is useful if you foten switch between multiple projects and do not want to experience constant port conflicts'
     );
-
-const SupportedPlatforms = z.array(PlatformsKeys).describe('Array list of all supported platforms in current project');
 
 const PortOffset = z.number().describe('Offset each port default value by increment');
 

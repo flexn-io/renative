@@ -81,3 +81,7 @@ export const TemplateConfig = z
         ),
     })
     .describe('Used in `renative.template.json` allows you to define template behaviour.');
+
+export const SupportedPlatforms = z
+    .array(PlatformsKeys)
+    .describe('Array list of all supported platforms in current project');
