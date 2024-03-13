@@ -62,7 +62,8 @@
         "static",
         "tsconfig.json",
         "typings",
-        "webpack.config.js"
+        "webpack.config.js",
+        ".gitignore"
     ],
     "repository": {
         "type": "git",

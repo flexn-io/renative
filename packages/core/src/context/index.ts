@@ -63,9 +63,14 @@ Make sure all your rnv dependencies are of same version and you are executing wi
     c.command = ctx?.cmd || c.command;
     c.subCommand = ctx?.subCmd || c.subCommand;
     c.isSystemWin = isSystemWin;
-
     c.paths.rnv.dir = ctx?.RNV_HOME_DIR || c.paths.rnv.dir;
 
+    populateContextPaths(c);
+
+    global.RNV_CONTEXT = c;
+};
+
+export const populateContextPaths = (c: RnvContext) => {
     c.paths.CURRENT_DIR = path.resolve('.');
     c.paths.RNV_NODE_MODULES_DIR = path.join(c.paths.rnv.dir, 'node_modules');
 
@@ -122,8 +127,6 @@ Make sure all your rnv dependencies are of same version and you are executing wi
     c.paths.project.builds.dir = path.join(c.paths.project.dir, 'platformBuilds');
 
     generateContextPaths(c.paths.workspace, c.paths.GLOBAL_RNV_DIR);
-
-    global.RNV_CONTEXT = c;
 };
 
 createRnvContext();

@@ -4,6 +4,7 @@ import {
     ConfigName,
     getContext,
     inquirerPrompt,
+    mergeObjects,
     readObjectSync,
 } from '@rnv/core';
 import type { NewProjectData } from '../types';
@@ -57,13 +58,7 @@ export const inquiryApplyTemplate = async (data: NewProjectData) => {
     }
 
     const packageJson = data.files.template.renativeTemplateConfig.templateConfig?.package_json || {};
-    data.files.project.packageJson = packageJson;
-
-    if (tplName && data.optionTemplates.selectedVersion) {
-        const devDependencies = data.files.project.packageJson.devDependencies || {};
-        devDependencies[tplName] = data.optionTemplates.selectedVersion;
-        data.files.project.packageJson.devDependencies = devDependencies;
-    }
+    data.files.project.packageJson = mergeObjects(c, data.files.project.packageJson, packageJson);
 
     // const rnvNewPatchDependencies = renativeTemplateConfig.bootstrapConfig?.rnvNewPatchDependencies;
 

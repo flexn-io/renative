@@ -1,7 +1,7 @@
 import {
     chalk,
-    getContext,
-    inquirerPrompt,
+    // getContext,
+    // inquirerPrompt,
     printArrIntoBox,
     printBoxEnd,
     printBoxStart,
@@ -10,21 +10,21 @@ import {
 import type { NewProjectData } from '../types';
 
 export const inquiryConfirm = async (data: NewProjectData) => {
-    const c = getContext();
-    const { ci } = c.program;
+    // const c = getContext();
+    // const { ci } = c.program;
     _prepareProjectOverview(data);
-    if (!ci) {
-        const { confirm } = await inquirerPrompt({
-            type: 'confirm',
-            name: 'confirm',
-            message: `\n${data.confirmString}\nIs all this correct?`,
-        });
+    // if (!ci) {
+    //     const { confirm } = await inquirerPrompt({
+    //         type: 'confirm',
+    //         name: 'confirm',
+    //         message: `\n${data.confirmString}\nIs all this correct?`,
+    //     });
 
-        if (!confirm) {
-            // TOOD: this should reset the whole process
-            return;
-        }
-    }
+    //     if (!confirm) {
+    //         // TOOD: this should reset the whole process
+    //         return;
+    //     }
+    // }
 };
 
 const _prepareProjectOverview = (data: NewProjectData) => {

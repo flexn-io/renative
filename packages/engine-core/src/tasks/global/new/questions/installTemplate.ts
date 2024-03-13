@@ -19,6 +19,7 @@ import {
 import type { NewProjectData } from '../types';
 import path from 'path';
 import { checkInputValue } from '../utils';
+import { saveProgressIntoProjectConfig } from '../projectGenerator';
 
 export const inquiryInstallTemplate = async (data: NewProjectData) => {
     const customTemplate = { name: 'Custom Template...', value: 'custom' };
@@ -84,7 +85,7 @@ export const inquiryInstallTemplate = async (data: NewProjectData) => {
         }
     }
 
-    const nmDir = path.join(c.paths.project.dir, 'node_modules');
+    const nmDir = path.join(c.paths.project.dir, '.rnv/npm_cache');
 
     if (localTemplatePath) {
         if (!fsExistsSync(localTemplatePath)) {
@@ -109,13 +110,6 @@ export const inquiryInstallTemplate = async (data: NewProjectData) => {
 
         logInfo(`Found local template: ${data.optionTemplates.selectedOption}@${pkg.version}`);
 
-        // await executeAsync(
-        //     `${isYarnInstalled() ? 'yarn' : 'npm'} add ${data.optionTemplates.selectedOption}@${pkg.version} --dev`,
-        //     {
-        //         cwd: c.paths.project.dir,
-        //     }
-        // );
-
         mkdirSync(nmTemplatePath);
 
         // TODO: read .npmignore and .gitignore and apply those rules
@@ -139,6 +133,17 @@ export const inquiryInstallTemplate = async (data: NewProjectData) => {
                     copyFileSync(sourcePath, destPath);
                 }
             }
+        });
+
+        // NOTE: this is a workaround for npm/yarn bug where manually added packages are overriden on next install
+        data.files.project.packageJson = {
+            devDependencies: {
+                [data.optionTemplates.selectedOption]: `file:.rnv/npm_cache/${data.optionTemplates.selectedOption}`,
+            },
+        };
+        await saveProgressIntoProjectConfig(data);
+        await executeAsync(`${isYarnInstalled() ? 'yarn' : 'npm install'}`, {
+            cwd: c.paths.project.dir,
         });
     } else {
         data.optionTemplates.selectedOption = selectedInputTemplate;

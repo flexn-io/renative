@@ -4,7 +4,7 @@
         "disabled": false,
         "includedPaths": [
             {
-                "paths": ["buildHooks", "src", "index.js", "tsconfig.json", "babel.config.js", "typings"]
+                "paths": ["buildHooks", "src", "index.js", "tsconfig.json", "babel.config.js", "typings", ".gitignore"]
             },
             {
                 "paths": ["Gemfile", "metro.config.js", ".bundle", "react-native.config.js"],

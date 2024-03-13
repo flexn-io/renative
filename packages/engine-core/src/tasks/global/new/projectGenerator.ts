@@ -1,8 +1,11 @@
 import {
-    ConfigFileProject,
+    // ConfigFileProject,
     ConfigName,
-    PlatformKey,
+    // PlatformKey,
+    applyTemplate,
     chalk,
+    configureTemplateFiles,
+    generateLocalJsonSchemas,
     getApi,
     getContext,
     getWorkspaceOptions,
@@ -69,80 +72,84 @@ export const generateNewProject = async (data: NewProjectData) => {
         return Promise.reject('Current template not selected!');
     }
 
-    const c = getContext();
-    const templates: Record<string, { version: string }> = {};
+    // const c = getContext();
+    // const templates: Record<string, { version: string }> = {};
 
-    if (data.optionTemplates.selectedOption) {
-        templates[data.optionTemplates.selectedOption] = {
-            version: data.optionTemplates.selectedVersion,
-        };
-    }
+    // if (data.optionTemplates.selectedOption) {
+    //     templates[data.optionTemplates.selectedOption] = {
+    //         version: data.optionTemplates.selectedVersion,
+    //     };
+    // }
 
-    delete data.files.template.renativeTemplateConfig.templateConfig;
-    delete data.files.template.renativeTemplateConfig.bootstrapConfig;
+    // delete data.files.template.renativeTemplateConfig.templateConfig;
+    // delete data.files.template.renativeTemplateConfig.bootstrapConfig;
 
-    const config: ConfigFileProject = {
-        platforms: {},
-        ...data.files.template.renativeTemplateConfig,
-        ...data.renativeTemplateConfigExt,
-        projectName: data.projectName || 'my-project',
-        projectVersion: data.inputVersion || '0.1.0',
-        //TODO: TEMPORARY WORKAROUND this neds to use bootstrap_metadata to work properly
-        common: {
-            id: data.inputAppID || 'com.mycompany.myapp',
-            title: data.inputAppTitle || 'My App',
-        },
-        workspaceID: data.optionWorkspaces.selectedOption || 'project description',
-        // paths: {
-        //     appConfigsDir: './appConfigs',
-        //     entryDir: './',
-        //     platformAssetsDir: './platformAssets',
-        //     platformBuildsDir: './platformBuilds',
-        // },
-        defaults: {
-            supportedPlatforms: data.optionPlatforms.selectedOptions,
-        },
-        engines: {},
-        templates,
-        currentTemplate: data.optionTemplates.selectedOption,
-        isNew: true,
-        isMonorepo: false,
-    };
+    // const config: ConfigFileProject = {
+    //     platforms: {},
+    //     ...data.files.template.renativeTemplateConfig,
+    //     ...data.renativeTemplateConfigExt,
+    //     projectName: data.projectName || 'my-project',
+    //     projectVersion: data.inputVersion || '0.1.0',
+    //     //TODO: TEMPORARY WORKAROUND this neds to use bootstrap_metadata to work properly
+    //     common: {
+    //         id: data.inputAppID || 'com.mycompany.myapp',
+    //         title: data.inputAppTitle || 'My App',
+    //     },
+    //     workspaceID: data.optionWorkspaces.selectedOption || 'project description',
+    //     // paths: {
+    //     //     appConfigsDir: './appConfigs',
+    //     //     entryDir: './',
+    //     //     platformAssetsDir: './platformAssets',
+    //     //     platformBuildsDir: './platformBuilds',
+    //     // },
+    //     defaults: {
+    //         supportedPlatforms: data.optionPlatforms.selectedOptions,
+    //     },
+    //     engines: {},
+    //     templates,
+    //     currentTemplate: data.optionTemplates.selectedOption,
+    //     isNew: true,
+    //     isMonorepo: false,
+    // };
 
-    const platforms: ConfigFileProject['platforms'] = config.platforms || {};
-    const engines: ConfigFileProject['engines'] = config.engines || {};
-    const defaults: ConfigFileProject['defaults'] = config.defaults || {};
+    // const platforms: ConfigFileProject['platforms'] = config.platforms || {};
+    // // const engines: ConfigFileProject['engines'] = config.engines || {};
+    // // const defaults: ConfigFileProject['defaults'] = config.defaults || {};
 
-    const supPlats = defaults.supportedPlatforms || [];
+    // const supPlats = defaults.supportedPlatforms || [];
 
-    // Remove unused platforms
-    Object.keys(platforms).forEach((k) => {
-        const key = k as PlatformKey;
-        if (!supPlats.includes(key)) {
-            delete platforms[key];
-        }
-    });
+    // // Remove unused platforms
+    // Object.keys(platforms).forEach((k) => {
+    //     const key = k as PlatformKey;
+    //     if (!supPlats.includes(key)) {
+    //         delete platforms[key];
+    //     }
+    // });
 
-    const tplEngines = data.files.template.renativeTemplateConfig.engines;
-    if (tplEngines) {
-        // Remove unused engines based on selected platforms
-        supPlats.forEach((k) => {
-            const selectedEngineId =
-                platforms[k]?.engine || c.files.rnv.projectTemplates.config?.platformTemplates?.[k]?.engine;
-            if (selectedEngineId) {
-                const selectedEngine = findEngineKeyById(selectedEngineId);
-                if (selectedEngine?.key) {
-                    engines[selectedEngine.key] = tplEngines[selectedEngine.key];
-                }
-            }
-        });
-    }
+    // const tplEngines = data.files.template.renativeTemplateConfig.engines;
+    // if (tplEngines) {
+    //     // Remove unused engines based on selected platforms
+    //     supPlats.forEach((k) => {
+    //         const selectedEngineId =
+    //             platforms[k]?.engine || c.files.rnv.projectTemplates.config?.platformTemplates?.[k]?.engine;
+    //         if (selectedEngineId) {
+    //             const selectedEngine = findEngineKeyById(selectedEngineId);
+    //             if (selectedEngine?.key) {
+    //                 engines[selectedEngine.key] = tplEngines[selectedEngine.key];
+    //             }
+    //         }
+    //     });
+    // }
 
-    config.platforms = platforms;
-    config.engines = engines;
-    config.defaults = defaults;
+    // config.platforms = platforms;
+    // config.engines = engines;
+    // config.defaults = defaults;
 
-    writeFileSync(c.paths.project.config, config);
+    // writeFileSync(c.paths.project.config, config);
+
+    await applyTemplate();
+    await configureTemplateFiles();
+    await generateLocalJsonSchemas();
 
     if (data.gitEnabled) {
         await configureGit();
@@ -161,19 +168,19 @@ export const telemetryNewProject = async (data: NewProjectData) => {
     }
 };
 
-const findEngineKeyById = (id: string) => {
-    const c = getContext();
-    const engineTemplates = c.files.rnv.projectTemplates.config?.engineTemplates;
-    if (engineTemplates) {
-        const etk = Object.keys(engineTemplates);
-        for (let i = 0; i < etk.length; i++) {
-            const engine = engineTemplates[etk[i]];
-            if (engine) {
-                if (engine.id === id) {
-                    engine.key = etk[i];
-                    return engine;
-                }
-            }
-        }
-    }
-};
+// const findEngineKeyById = (id: string) => {
+//     const c = getContext();
+//     const engineTemplates = c.files.rnv.projectTemplates.config?.engineTemplates;
+//     if (engineTemplates) {
+//         const etk = Object.keys(engineTemplates);
+//         for (let i = 0; i < etk.length; i++) {
+//             const engine = engineTemplates[etk[i]];
+//             if (engine) {
+//                 if (engine.id === id) {
+//                     engine.key = etk[i];
+//                     return engine;
+//                 }
+//             }
+//         }
+//     }
+// };

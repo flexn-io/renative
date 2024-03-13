@@ -1,8 +1,10 @@
-import { getContext, inquirerPrompt } from '@rnv/core';
+import { getContext, inquirerPrompt, populateContextPaths } from '@rnv/core';
 
 export const processChdirToProject = async () => {
     const c = getContext();
+    // In order to execute rnv from new origin (sub folder we need to reset paths to new cwd())
     process.chdir(c.paths.project.dir);
+    populateContextPaths(c);
     return true;
 };
 
