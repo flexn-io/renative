@@ -1,8 +1,9 @@
 {
     "$schema": "../../.rnv/schema/rnv.app.json",
     "extendsTemplate": "@rnv/template-starter/appConfigs/base/renative.json",
-    "id": "com.app",
+    "id": "app",
     "common": {
+        "id": "com.app",
         "description": "ReNative App",
         "buildSchemes": {},
         "runtime": {

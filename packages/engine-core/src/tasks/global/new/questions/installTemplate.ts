@@ -10,6 +10,7 @@ import {
     getContext,
     getTemplateOptions,
     inquirerPrompt,
+    inquirerSeparator,
     isYarnInstalled,
     listAndSelectNpmVersion,
     logInfo,
@@ -22,8 +23,9 @@ import { checkInputValue } from '../utils';
 import { saveProgressIntoProjectConfig } from '../projectGenerator';
 
 export const inquiryInstallTemplate = async (data: NewProjectData) => {
-    const customTemplate = { name: 'Custom Template...', value: 'custom' };
-    const localTemplate = { name: 'Local Template...', value: 'local' };
+    const customTemplate = { name: 'Custom Template (npm)...', value: { key: 'custom' } };
+    const localTemplate = { name: 'Local Template...', value: { key: 'local' } };
+    const noTemplate = { name: 'No Template (blank project)', value: { key: 'none' } };
 
     const c = getContext();
     const { templateVersion, projectTemplate } = c.program;
@@ -49,8 +51,10 @@ export const inquiryInstallTemplate = async (data: NewProjectData) => {
     const getTemplateKey = (val: string) => data.optionTemplates.valuesAsArray?.find((v) => v.title === val)?.key;
 
     // data.optionTemplates.keysAsArray.push(customTemplate);
+    options.push(inquirerSeparator('Advanced:----------------'));
     options.push(customTemplate);
     options.push(localTemplate);
+    options.push(noTemplate);
     let selectedInputTemplate;
     let localTemplatePath: string | undefined;
     if (checkInputValue(projectTemplate)) {
@@ -61,28 +65,33 @@ export const inquiryInstallTemplate = async (data: NewProjectData) => {
             type: 'list',
             message: 'What template to use?',
             default: data.defaultTemplate,
+            loop: false,
             choices: options,
         });
 
-        if (inputTemplate.key === customTemplate.value) {
+        if (inputTemplate.key === customTemplate.value.key) {
             const { inputTemplateCustom } = await inquirerPrompt({
                 name: 'inputTemplateCustom',
                 type: 'input',
-                message: 'Type exact name of your template NPM package.',
+                message: 'NPM package name:',
             });
             selectedInputTemplate = inputTemplateCustom;
-        } else if (inputTemplate.key === localTemplate.value) {
+        } else if (inputTemplate.key === localTemplate.value.key) {
             const { inputTemplateLocal } = await inquirerPrompt({
                 name: 'inputTemplateLocal',
                 type: 'input',
                 message: 'Path (absolute):',
             });
             localTemplatePath = inputTemplateLocal;
+        } else if (inputTemplate.key === noTemplate.value.key) {
+            // TODO: add support for no templates
+            return Promise.reject('No templates NOT SUPPORTED YET');
         } else if (inputTemplate.path) {
             localTemplatePath = inputTemplate.path;
         } else {
             selectedInputTemplate = getTemplateKey(inputTemplate);
         }
+        console.log('JSDDDJJD', inputTemplate);
     }
 
     const nmDir = path.join(c.paths.project.dir, '.rnv/npm_cache');
