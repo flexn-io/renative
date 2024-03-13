@@ -1,4 +1,10 @@
-import { inquirerPrompt } from '@rnv/core';
+import { getContext, inquirerPrompt } from '@rnv/core';
+
+export const processChdirToProject = async () => {
+    const c = getContext();
+    process.chdir(c.paths.project.dir);
+    return true;
+};
 
 export const checkInputValue = (value: string | boolean): boolean => {
     return value && typeof value === 'string' && value !== '' ? true : false;

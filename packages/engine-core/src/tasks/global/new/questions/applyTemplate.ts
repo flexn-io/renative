@@ -12,10 +12,11 @@ import path from 'path';
 export const inquiryApplyTemplate = async (data: NewProjectData) => {
     const c = getContext();
 
-    if (!data.optionTemplates.selectedOption) {
+    const tplName = data.optionTemplates.selectedOption;
+    if (!tplName) {
         return Promise.reject('Template not selected');
     }
-    const templateDir = path.join(c.paths.project.dir, 'node_modules', data.optionTemplates.selectedOption);
+    const templateDir = path.join(c.paths.project.dir, 'node_modules', tplName);
 
     const renativeTemplateConfig =
         readObjectSync<ConfigFileTemplate>(path.join(templateDir, ConfigName.renativeTemplate)) || {};
@@ -39,17 +40,30 @@ export const inquiryApplyTemplate = async (data: NewProjectData) => {
         choices: options,
     });
 
+    if (!tplName) {
+        return Promise.reject('Template not selected');
+    }
+
     if (configOption === optExtend) {
         const rnvConfig = data.files.template.renativeTemplateConfig.templateConfig?.renative_json || {
-            extendsTemplate: `${data.optionTemplates.selectedOption}/renative.json`,
+            extendsTemplate: `${tplName}/renative.json`,
         };
-        data.files.project.renativeConfig = rnvConfig;
+        data.files.project.renativeConfig = { ...rnvConfig, ...data.files.project.renativeConfig };
     } else if (configOption === optCopy) {
-        data.files.project.renativeConfig = data.files.template.renativeConfig;
+        data.files.project.renativeConfig = {
+            ...data.files.template.renativeConfig,
+            ...data.files.project.renativeConfig,
+        };
     }
 
     const packageJson = data.files.template.renativeTemplateConfig.templateConfig?.package_json || {};
     data.files.project.packageJson = packageJson;
+
+    if (tplName && data.optionTemplates.selectedVersion) {
+        const devDependencies = data.files.project.packageJson.devDependencies || {};
+        devDependencies[tplName] = data.optionTemplates.selectedVersion;
+        data.files.project.packageJson.devDependencies = devDependencies;
+    }
 
     // const rnvNewPatchDependencies = renativeTemplateConfig.bootstrapConfig?.rnvNewPatchDependencies;
 

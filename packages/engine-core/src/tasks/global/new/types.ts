@@ -23,6 +23,7 @@ export type NewProjectData = {
                 title: string;
                 key: string;
                 description: string;
+                path?: string;
             }
         >;
         valuesAsArray?: Array<{

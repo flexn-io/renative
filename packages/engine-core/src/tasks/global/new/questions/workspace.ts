@@ -24,5 +24,6 @@ export const inquiryWorkspace = async (data: NewProjectData) => {
     data.optionWorkspaces.selectedOption = inputWorkspace;
     c.runtime.selectedWorkspace = inputWorkspace;
 
+    data.files.project.renativeConfig.workspaceID = inputWorkspace;
     await updateRenativeConfigs();
 };

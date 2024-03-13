@@ -19,6 +19,7 @@ import { inquiryAppVersion } from './questions/appVersion';
 import { inquiryInstallTemplate } from './questions/installTemplate';
 import { inquiryApplyTemplate } from './questions/applyTemplate';
 import { inquiryBookmarkTemplate } from './questions/bookmarkTemplate';
+import { processChdirToProject } from './utils';
 
 const taskNew = async () => {
     logTask('taskNew');
@@ -26,6 +27,7 @@ const taskNew = async () => {
     const payload = await initNewProject();
     // Interactive Questions Required
     await inquiryProjectName(payload);
+    await processChdirToProject();
     await inquiryIsRenativeProject(payload);
     await inquiryHasNodeModules(payload);
     await inquiryInstallTemplate(payload);
@@ -35,9 +37,9 @@ const taskNew = async () => {
     await inquiryAppTitle(payload);
     await inquiryAppID(payload);
     await inquiryAppVersion(payload);
-    await inquiryWorkspace(payload);
     await saveProgressIntoProjectConfig(payload);
 
+    await inquiryWorkspace(payload);
     await inquirySupportedPlatforms(payload);
     await inquiryBootstrapQuestions(payload);
     await inquiryGit(payload);

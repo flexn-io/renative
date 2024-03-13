@@ -21,8 +21,8 @@ import path from 'path';
 import { checkInputValue } from '../utils';
 
 export const inquiryInstallTemplate = async (data: NewProjectData) => {
-    const customTemplate = 'Custom Template...';
-    const localTemplate = 'Local Template...';
+    const customTemplate = { name: 'Custom Template...', value: 'custom' };
+    const localTemplate = { name: 'Local Template...', value: 'local' };
 
     const c = getContext();
     const { templateVersion, projectTemplate } = c.program;
@@ -34,14 +34,14 @@ export const inquiryInstallTemplate = async (data: NewProjectData) => {
     if (values) {
         Object.keys(values).forEach((k) => {
             const val = values[k];
-            if (val.description) {
-                val.title = `${k} ${chalk().grey(`- ${val.description}`)}`;
+            if (val.description || val.path) {
+                val.title = `${k} ${chalk().grey(`- ${val.path || val.description}`)}`;
             } else {
                 val.title = k;
             }
 
             val.key = k;
-            options.push(val.title);
+            options.push({ name: val.title, value: val });
         });
     }
 
@@ -63,20 +63,22 @@ export const inquiryInstallTemplate = async (data: NewProjectData) => {
             choices: options,
         });
 
-        if (inputTemplate === customTemplate) {
+        if (inputTemplate.key === customTemplate.value) {
             const { inputTemplateCustom } = await inquirerPrompt({
                 name: 'inputTemplateCustom',
                 type: 'input',
                 message: 'Type exact name of your template NPM package.',
             });
             selectedInputTemplate = inputTemplateCustom;
-        } else if (inputTemplate === localTemplate) {
+        } else if (inputTemplate.key === localTemplate.value) {
             const { inputTemplateLocal } = await inquirerPrompt({
                 name: 'inputTemplateLocal',
                 type: 'input',
                 message: 'Path (absolute):',
             });
             localTemplatePath = inputTemplateLocal;
+        } else if (inputTemplate.path) {
+            localTemplatePath = inputTemplate.path;
         } else {
             selectedInputTemplate = getTemplateKey(inputTemplate);
         }
@@ -88,6 +90,9 @@ export const inquiryInstallTemplate = async (data: NewProjectData) => {
         if (!fsExistsSync(localTemplatePath)) {
             return Promise.reject(`Local template path ${localTemplatePath} does not exist`);
         }
+        // await executeAsync(`${isYarnInstalled() ? 'yarn' : 'npm'} add file:${localTemplatePath} --dev`, {
+        //     cwd: c.paths.project.dir,
+        // });
         const localTemplatePkgPath = path.join(localTemplatePath, 'package.json');
         if (!fsExistsSync(localTemplatePath)) {
             return Promise.reject(`Local template package ${localTemplatePkgPath} does not exist`);
@@ -104,25 +109,32 @@ export const inquiryInstallTemplate = async (data: NewProjectData) => {
 
         logInfo(`Found local template: ${data.optionTemplates.selectedOption}@${pkg.version}`);
 
+        // await executeAsync(
+        //     `${isYarnInstalled() ? 'yarn' : 'npm'} add ${data.optionTemplates.selectedOption}@${pkg.version} --dev`,
+        //     {
+        //         cwd: c.paths.project.dir,
+        //     }
+        // );
+
         mkdirSync(nmTemplatePath);
 
+        // TODO: read .npmignore and .gitignore and apply those rules
         const ignorePaths = [
             'node_modules',
             'package-lock.json',
             'yarn.lock',
             'platformBuilds',
-            'dist',
             'builds',
-            'platfomAssets',
+            'platformAssets',
+            'secrets',
             '.rnv',
-            'lib',
         ];
         fsReaddirSync(localTemplatePath).forEach((file) => {
             if (!ignorePaths.includes(file) && localTemplatePath) {
                 const sourcePath = path.join(localTemplatePath, file);
                 const destPath = path.join(nmTemplatePath, file);
                 if (fsLstatSync(sourcePath).isDirectory()) {
-                    copyFolderRecursiveSync(sourcePath, destPath);
+                    copyFolderRecursiveSync(sourcePath, nmTemplatePath);
                 } else {
                     copyFileSync(sourcePath, destPath);
                 }
