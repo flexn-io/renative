@@ -3203,6 +3203,13 @@
                   {
                     "type": "object",
                     "properties": {
+                      "supportedPlatforms": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/definitions/rnv.app/properties/common/properties/buildSchemes/additionalProperties/properties/extendPlatform"
+                        },
+                        "description": "Array list of all supported platforms in current project"
+                      },
                       "disabled": {
                         "type": "boolean",
                         "default": false,

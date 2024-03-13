@@ -4,6 +4,33 @@
     "rnv.plugin": {
       "type": "object",
       "properties": {
+        "supportedPlatforms": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "web",
+              "ios",
+              "android",
+              "androidtv",
+              "firetv",
+              "tvos",
+              "macos",
+              "linux",
+              "windows",
+              "tizen",
+              "webos",
+              "chromecast",
+              "kaios",
+              "webtv",
+              "androidwear",
+              "tizenwatch",
+              "tizenmobile",
+              "xbox"
+            ]
+          },
+          "description": "Array list of all supported platforms in current project"
+        },
         "disabled": {
           "type": "boolean",
           "default": false,

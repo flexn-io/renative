@@ -313,10 +313,7 @@
                         "type": "string"
                       },
                       "supportedPlatforms": {
-                        "type": "array",
-                        "items": {
-                          "type": "string"
-                        }
+                        "$ref": "#/definitions/rnv.template/properties/defaults/properties/supportedPlatforms"
                       },
                       "nullifyIfFalse": {
                         "type": "boolean"

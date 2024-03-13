@@ -46,7 +46,7 @@ const BootstrapConfig = z
             engines: z.array(
                 z.object({
                     name: z.string(),
-                    supportedPlatforms: z.array(z.string()),
+                    supportedPlatforms: SupportedPlatforms,
                     nullifyIfFalse: z.boolean().optional(),
                 })
             ),

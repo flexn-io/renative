@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { SupportedPlatforms } from '../../shared';
 
 const Disabled = z.boolean().default(false).describe('Marks plugin disabled');
 
@@ -50,6 +51,7 @@ const Deprecated = z
 const DisablePluginTemplateOverrides = z.boolean().describe('Disables plugin overrides for selected plugin');
 
 export const PluginBaseFragment = {
+    supportedPlatforms: SupportedPlatforms.optional(),
     disabled: z.optional(Disabled),
     props: z.optional(Props),
     version: z.optional(Version),

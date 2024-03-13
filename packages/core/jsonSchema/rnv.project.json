@@ -3661,6 +3661,10 @@
                   {
                     "type": "object",
                     "properties": {
+                      "supportedPlatforms": {
+                        "$ref": "#/definitions/rnv.project/properties/defaults/properties/supportedPlatforms",
+                        "description": "Array list of all supported platforms in current project"
+                      },
                       "disabled": {
                         "type": "boolean",
                         "default": false,
