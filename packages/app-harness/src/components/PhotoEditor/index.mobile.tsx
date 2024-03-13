@@ -14,6 +14,9 @@ export const PhotoEditorButton = () => {
             const binaryFile = Image.resolveAssetSource(ICON_LOGO);
             try {
                 const resp = await RNFetchBlob.config({ fileCache: true }).fetch('GET', binaryFile.uri);
+                if (await RNFS.exists(photoPath)) {
+                    await RNFS.unlink(photoPath);
+                }
                 await RNFS.moveFile(resp.path(), photoPath);
                 logDebug('FILE WRITTEN!');
             } catch (error) {

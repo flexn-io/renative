@@ -17975,9 +17975,9 @@ react-native-permissions@4.1.4:
   resolved "https://registry.yarnpkg.com/react-native-permissions/-/react-native-permissions-4.1.4.tgz#7e105470acea7fc1748bb36915095fd3304cd9da"
   integrity sha512-el6u90VZNFDEtmHpSheirwRhGvs6M5rSZcoqIqB128IPO00f2c1q+PP4kEaM1u19Q0ldQ+R+S7C/l8Zrduy6JQ==
 
-"react-native-photo-editor@https://github.com/AppGyver/react-native-photo-editor":
+"react-native-photo-editor@github:AppGyver/react-native-photo-editor#v0.1.2":
   version "0.1.1"
-  resolved "https://github.com/AppGyver/react-native-photo-editor#ed05b06d13df9945433bf84366b3e4f01787c0ae"
+  resolved "https://codeload.github.com/AppGyver/react-native-photo-editor/tar.gz/ed05b06d13df9945433bf84366b3e4f01787c0ae"
   dependencies:
     pod-installer "0.0.0"
 

@@ -131,13 +131,16 @@
             "ios": {
                 "templateXcode": {
                     "Podfile": {
-                        "post_install": []
+                        "header": ["plugin 'cocoapods-user-defined-build-types'", "enable_user_defined_build_types!"]
                     }
                 },
-                "podName": "RNPhotoEditor"
+                "podName": "iOSPhotoEditor",
+                "git": "https://github.com/prscX/photo-editor",
+                "commit": "4924e9ec984d25d03644e58aa148282642171de9",
+                "buildType": "dynamic"
             },
             "pluginDependencies": null,
-            "version": "https://github.com/AppGyver/react-native-photo-editor"
+            "version": "github:AppGyver/react-native-photo-editor#v0.1.2"
         },
         "react-native-permissions": {
             "ios": {
