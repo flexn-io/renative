@@ -107,20 +107,6 @@ const AppContent = () => {
                     </TestCase>
                     <TestCase id={7} title="PhotoEditor">
                         <PhotoEditorButton />
-                        {/* <Button
-                            onPress={() => {
-                                RNPhotoEditor.Edit({
-                                    path: RNFS.DocumentDirectoryPath + ICON_LOGO,
-                                    onDone: () => {
-                                        console.log('on done');
-                                    },
-                                    onCancel: () => {
-                                        console.log('on cancel');
-                                    },
-                                });
-                            }}
-                            title="Show PhotoEditor"
-                        /> */}
                     </TestCase>
                 </ScrollView>
             </View>
