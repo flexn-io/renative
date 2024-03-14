@@ -55,16 +55,16 @@ const AppThemed = () => {
                 >
                     <Text style={theme.styles.buttonText}>Try me!</Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => {
-                        if (!isFactorDesktop) {
+                {!isFactorDesktop && (
+                    <TouchableOpacity
+                        onPress={() => {
                             return <CastButton />;
-                        }
-                    }}
-                    style={theme.styles.button}
-                >
-                    <Text style={theme.styles.buttonText}>Cast</Text>
-                </TouchableOpacity>
+                        }}
+                        style={theme.styles.button}
+                    >
+                        <Text style={theme.styles.buttonText}>Cast</Text>
+                    </TouchableOpacity>
+                )}
             </ScrollView>
         </View>
     );
