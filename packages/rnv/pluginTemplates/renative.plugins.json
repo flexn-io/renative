@@ -7,6 +7,63 @@
                 "moduleAliases": true,
                 "modulePaths": true
             }
+        },
+        "react-native-google-cast": {
+            "version": "4.8.0",
+            "props": {
+                "applicationID": "CC1AD845"
+            },
+            "ios": {
+                "isStatic": true,
+                "podName": "react-native-google-cast",
+                "path": "node_modules/react-native-google-cast/ios",
+                "appDelegateImports": [
+                    "GoogleCast"
+                ],
+                "appDelegateMethods": {
+                    "application": {
+                        "didFinishLaunchingWithOptions": [
+                            "let criteria = GCKDiscoveryCriteria(applicationID:\"{{props.applicationID}}\")",
+                            "let options = GCKCastOptions(discoveryCriteria: criteria)",
+                            "options.physicalVolumeButtonsWillControlDeviceVolume = true;",
+                            "GCKCastContext.setSharedInstanceWith(options)"
+                        ]
+                    }
+                }
+            },
+            "android": {
+                "implementations": [
+                    "'com.google.android.gms:play-services-cast-framework:21.4.0'"
+                ],
+                "MainApplication": {
+                    "packages": [
+                        "com.reactnative.googlecast.GoogleCastPackage"
+                    ]
+                },
+                "mainActivity": {
+                    "imports": [
+                        "com.google.android.gms.cast.framework.CastContext"
+                    ],
+                    "createMethods": [
+                        "CastContext.getSharedInstance(this)"
+                    ]
+                },
+                "AndroidManifest": {
+                    "children": [
+                        {
+                            "tag": "application",
+                            "android:name": ".MainApplication",
+                            "children": [
+                                {
+                                    "tag": "meta-data",
+                                    "android:name": "com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME",
+                                    "android:value": "{{configProps.id}}.CastOptionsProvider"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
         }
     }
 }
