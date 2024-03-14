@@ -13,11 +13,14 @@ import { TestCase } from '../components/TestCase';
 import config from '../../package.json';
 import { LoggerProvider, useLoggerContext } from '../context';
 import { NotificationCallback } from '../components/types';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const App = () => (
-    <LoggerProvider>
-        <AppContent />
-    </LoggerProvider>
+    <SafeAreaProvider>
+        <LoggerProvider>
+            <AppContent />
+        </LoggerProvider>
+    </SafeAreaProvider>
 );
 
 const AppContent = () => {

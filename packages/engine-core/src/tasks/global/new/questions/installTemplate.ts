@@ -21,6 +21,7 @@ import type { NewProjectData } from '../types';
 import path from 'path';
 import { checkInputValue } from '../utils';
 import { saveProgressIntoProjectConfig } from '../projectGenerator';
+import { merge } from 'lodash';
 
 export const inquiryInstallTemplate = async (data: NewProjectData) => {
     const customTemplate = { name: 'Custom Template (npm)...', value: { key: 'custom' } };
@@ -144,12 +145,21 @@ export const inquiryInstallTemplate = async (data: NewProjectData) => {
         });
 
         // NOTE: this is a workaround for npm/yarn bug where manually added packages are overriden on next install
-        data.files.project.packageJson = {
+        data.files.project.packageJson = merge(data.files.project.packageJson, {
             devDependencies: {
                 [data.optionTemplates.selectedOption]: `file:.rnv/npm_cache/${data.optionTemplates.selectedOption}`,
             },
-        };
+        });
+        data.files.project.renativeConfig = merge(data.files.project.renativeConfig, {
+            templates: {
+                [data.optionTemplates.selectedOption]: {
+                    version: `file:.rnv/npm_cache/${data.optionTemplates.selectedOption}`,
+                },
+            },
+        });
+
         await saveProgressIntoProjectConfig(data);
+
         await executeAsync(`${isYarnInstalled() ? 'yarn' : 'npm install'}`, {
             cwd: c.paths.project.dir,
         });

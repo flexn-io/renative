@@ -17,23 +17,6 @@
         "platformBuildsDir": "./platformBuilds"
     },
     "defaults": {
-        "ports": {
-            "ios": 8082,
-            "android": 8083,
-            "androidtv": 8084,
-            "firetv": 8098,
-            "tvos": 8085,
-            "macos": 8086,
-            "web": 8080,
-            "tizen": 8087,
-            "webos": 8088,
-            "androidwear": 8089,
-            "tizenwatch": 8090,
-            "tizenmobile": 8091,
-            "windows": 8092,
-            "xbox": 8099,
-            "kaios": 8093
-        },
         "supportedPlatforms": [
             "ios",
             "android",

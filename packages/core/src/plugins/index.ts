@@ -201,8 +201,12 @@ export const configurePlugins = async () => {
                     )}`
                 );
             }
-        } else if (dependencies && dependencies[k]) {
-            if (plugin.disabled !== true && plugin.disableNpm !== true) {
+        } else if (
+            plugin && plugin.disabled !== true && plugin.disableNpm !== true && c.platform && plugin.supportedPlatforms
+                ? plugin.supportedPlatforms.includes(c.platform)
+                : true
+        ) {
+            if (dependencies && dependencies[k]) {
                 if (!plugin.version) {
                     if (!c.runtime._skipPluginScopeWarnings) {
                         logInfo(`Plugin ${k} not ready yet (waiting for scope ${plugin.scope}). SKIPPING...`);
@@ -210,17 +214,15 @@ export const configurePlugins = async () => {
                 } else if (dependencies[k] !== plugin.version) {
                     logWarning(
                         `Version mismatch of dependency ${chalk().bold(k)} between:
-${chalk().bold(c.paths.project.package)}: v(${chalk().red(dependencies[k])}) and
-${chalk().bold(c.paths.project.builds.config)}: v(${chalk().green(plugin.version)}).
-${ovMsg}`
+    ${chalk().bold(c.paths.project.package)}: v(${chalk().red(dependencies[k])}) and
+    ${chalk().bold(c.paths.project.builds.config)}: v(${chalk().green(plugin.version)}).
+    ${ovMsg}`
                     );
 
                     hasPackageChanged = true;
                     _applyPackageDependency(newDeps, k, plugin.version);
                 }
-            }
-        } else if (devDependencies && devDependencies[k]) {
-            if (plugin.disabled !== true && plugin.disableNpm !== true) {
+            } else if (devDependencies && devDependencies[k]) {
                 if (!plugin.version) {
                     if (!c.runtime._skipPluginScopeWarnings) {
                         logInfo(`Plugin ${k} not ready yet (waiting for scope ${plugin.scope}). SKIPPING...`);
@@ -234,17 +236,19 @@ ${ovMsg}`
                     hasPackageChanged = true;
                     _applyPackageDependency(newDevDeps, k, plugin.version);
                 }
-            }
-        } else if (plugin.disabled !== true && plugin.disableNpm !== true) {
-            // Dependency does not exists
-            if (plugin.version) {
-                logInfo(
-                    `Missing dependency ${chalk().bold(k)} v(${chalk().red(plugin.version)}) in package.json. ${ovMsg}`
-                );
-
-                hasPackageChanged = true;
+            } else {
+                // Dependency does not exists
                 if (plugin.version) {
-                    _applyPackageDependency(newDeps, k, plugin.version);
+                    logInfo(
+                        `Missing dependency ${chalk().bold(k)} v(${chalk().red(
+                            plugin.version
+                        )}) in package.json. ${ovMsg}`
+                    );
+
+                    hasPackageChanged = true;
+                    if (plugin.version) {
+                        _applyPackageDependency(newDeps, k, plugin.version);
+                    }
                 }
             }
         }

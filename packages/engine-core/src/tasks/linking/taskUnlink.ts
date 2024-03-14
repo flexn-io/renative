@@ -2,7 +2,6 @@ import path from 'path';
 import {
     logInfo,
     logTask,
-    logSuccess,
     RnvTaskOptionPresets,
     fsExistsSync,
     fsRenameSync,
@@ -25,7 +24,7 @@ const _unlinkPackage = (c: RnvContext, key: string) => {
         if (fsLstatSync(rnvPath).isSymbolicLink()) {
             fsUnlinkSync(rnvPath);
             fsRenameSync(rnvPathUnlinked, rnvPath);
-            logSuccess(`${key} => unlink => SUCCESS`);
+            logInfo(`${key} => unlink => SUCCESS`);
         } else {
             logInfo(`${key} is not a symlink anymore. SKIPPING`);
         }

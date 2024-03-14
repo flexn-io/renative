@@ -21,6 +21,4 @@ export const inquiryAppTitle = async (data: NewProjectData) => {
 
     data.inputAppTitle = result;
     data.appTitle = data.inputAppTitle || data.defaultAppTitle;
-
-    data.packageName = data?.appTitle?.replace(/\s+/g, '-').toLowerCase();
 };

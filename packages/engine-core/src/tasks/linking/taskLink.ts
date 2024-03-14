@@ -2,7 +2,6 @@ import path from 'path';
 import {
     logInfo,
     logTask,
-    logSuccess,
     RnvTaskOptionPresets,
     fsExistsSync,
     fsRenameSync,
@@ -31,7 +30,7 @@ const _linkPackage = (c: RnvContext, key: string, folder: string) => {
     } else if (fsExistsSync(rnvPath)) {
         fsRenameSync(rnvPath, rnvPathUnlinked);
         fsSymlinkSync(pkgDir, rnvPath);
-        logSuccess(`${key} => link => SUCCESS`);
+        logInfo(`${key} => link => SUCCESS`);
     }
 };
 
