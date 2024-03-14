@@ -905,12 +905,13 @@ export const copyTemplatePluginsSync = (c: RnvContext) => {
 
         // FOLDER MERGES FROM SCOPED PLUGIN TEMPLATES
         Object.keys(c.paths.rnv.pluginTemplates.dirs).forEach((pathKey) => {
-            if (pathKey !== 'rnv') {
-                const pluginTemplatePath = c.paths.rnv.pluginTemplates.dirs[pathKey];
+            // TODO: required for external rnv scoped templates to take effect. need to test full implications
+            // if (pathKey !== 'rnv') {
+            const pluginTemplatePath = c.paths.rnv.pluginTemplates.dirs[pathKey];
 
-                const sourcePath4sec = getAppConfigBuildsFolder(path.join(pluginTemplatePath, key));
-                copyFolderContentsRecursiveSync(sourcePath4sec, destPath, true, undefined, false, objectInject);
-            }
+            const sourcePath4sec = getAppConfigBuildsFolder(path.join(pluginTemplatePath, key));
+            copyFolderContentsRecursiveSync(sourcePath4sec, destPath, true, undefined, false, objectInject);
+            // }
         });
     });
 };

@@ -129,7 +129,26 @@
                 "package": "ui.photoeditor.RNPhotoEditorPackage"
             },
             "ios": {
-                "disabled": true
+                "podName": "iOSPhotoEditor",
+                "git": "https://github.com/prscX/photo-editor",
+                "commit": "4924e9ec984d25d03644e58aa148282642171de9",
+                "buildType": "dynamic",
+                "templateXcode": {
+                    "Podfile": {
+                        "header": ["plugin 'cocoapods-user-defined-build-types'", "enable_user_defined_build_types!"]
+                    },
+                    "project_pbxproj": {
+                        "resourceFiles": [
+                            "Resources/arrow1.png",
+                            "Resources/arrow2.png",
+                            "Resources/arrow3.png",
+                            "Resources/arrow4.png",
+                            "Resources/arrow5.png"
+                        ],
+                        "sourceFiles": ["RNPhotoEditor/RNPhotoEditor.m"],
+                        "headerFiles": ["RNPhotoEditor/RNPhotoEditor.h"]
+                    }
+                }
             },
             "tvos": {
                 "disabled": true
