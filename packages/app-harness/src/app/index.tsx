@@ -40,7 +40,7 @@ const AppContent = () => {
     const handleRequestPermissions = async () => {
         try {
             const permission = await requestPermissions();
-            logDebug('Permissions:', permission);
+            logDebug(`Permissions: ${permission}`);
         } catch (error) {
             logDebug(`${error}`);
         }

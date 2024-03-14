@@ -1,9 +1,0 @@
-{
-    "overrides": {
-        "android/build.gradle": {
-            "compile ": "implementation ",
-            "com.github.prscX:photo-editor-android:master-SNAPSHOT": "com.github.prscX:photo-editor-android:master",
-            "compileSdkVersion 28": "compileSdkVersion 33"
-        }
-    }
-}
