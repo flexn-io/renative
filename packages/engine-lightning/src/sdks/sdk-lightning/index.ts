@@ -17,6 +17,8 @@ import {
     CoreEnvVars,
     getAppFolder,
     logDefault,
+    fsExistsSync,
+    copyFolderContentsRecursiveSync,
 } from '@rnv/core';
 import semver from 'semver';
 
@@ -37,9 +39,12 @@ export const runLightningProject = async (c: RnvContext) => {
             silent: false,
             env: {
                 ...CoreEnvVars.BASE(),
+                ...CoreEnvVars.RNV_EXTENSIONS(),
+                ...EnvVars.LNG_AUTO_UPDATE(),
                 ...EnvVars.LNG_BUILD_FOLDER(),
                 ...EnvVars.LNG_ENTRY_FILE(),
                 ...EnvVars.LNG_SERVE_PORT(),
+                ...EnvVars.LNG_STATIC_FOLDER(),
             },
         });
     } else {
@@ -63,7 +68,7 @@ export const buildLightningProject = async (c: RnvContext) => {
     const certProfile = getConfigProp(c, c.platform, 'certificateProfile') || DEFAULTS.certificateProfile;
 
     const target = getConfigProp(c, platform, 'target', 'es6');
-    const tBuild = getPlatformProjectDir(c);
+    const tBuild = EnvVars.LNG_DIST_FOLDER().LNG_DIST_FOLDER;
 
     const tOut = path.join(tBuild || '', 'output');
 
@@ -72,8 +77,11 @@ export const buildLightningProject = async (c: RnvContext) => {
         silent: false,
         env: {
             ...CoreEnvVars.BASE(),
+            ...CoreEnvVars.RNV_EXTENSIONS(),
+            ...EnvVars.LNG_AUTO_UPDATE(),
             ...EnvVars.LNG_DIST_FOLDER(),
             ...EnvVars.LNG_ENTRY_FILE(),
+            ...EnvVars.LNG_STATIC_FOLDER(),
         },
     });
 
@@ -99,7 +107,23 @@ export const configureLightningProject = async (c: RnvContext) => {
     }
     await copyAssetsFolder(c, platform);
     await _configureProject(c);
+    console.log('configureLightningProject', JSON.stringify(c.paths, null, 2));
+    _copyAssets(c);
     return copyBuildsFolder(c, platform);
+};
+
+const _copyAssets = (c: RnvContext) => {
+    logTask('copyLightningAssets');
+    const staticFolder = path.join(getAppFolder(c, true), 'static');
+
+    // copy fonts
+    const fontsSrcs = c.paths.appConfig.fontsDirs;
+    const fontsDest = path.join(staticFolder, 'fonts');
+    fontsSrcs.forEach((fontSrc) => {
+        if (fsExistsSync(fontSrc)) {
+            copyFolderContentsRecursiveSync(fontSrc, fontsDest);
+        }
+    });
 };
 
 const _configureProject = (c: RnvContext) =>

@@ -1,10 +1,11 @@
 import { getAppFolder, getConfigProp, getContext } from '@rnv/core';
+import { join } from 'path';
 
 export const EnvVars = {
     LNG_BUILD_FOLDER: () => {
         const ctx = getContext();
-
-        return { LNG_BUILD_FOLDER: getAppFolder(ctx, true) };
+        const folder = join(getAppFolder(ctx, true), 'build');
+        return { LNG_BUILD_FOLDER: folder };
     },
     LNG_ENTRY_FILE: () => {
         const ctx = getContext();
@@ -20,6 +21,15 @@ export const EnvVars = {
     },
     LNG_DIST_FOLDER: () => {
         const ctx = getContext();
-        return { LNG_DIST_FOLDER: getAppFolder(ctx, true) };
+        const folder = join(getAppFolder(ctx, true), 'build');
+        return { LNG_DIST_FOLDER: folder };
+    },
+    LNG_AUTO_UPDATE: () => {
+        return { LNG_AUTO_UPDATE: false };
+    },
+    LNG_STATIC_FOLDER: () => {
+        const ctx = getContext();
+        const folder = join(getAppFolder(ctx, true), 'static');
+        return { LNG_STATIC_FOLDER: folder };
     },
 };
