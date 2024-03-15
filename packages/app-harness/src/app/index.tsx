@@ -15,11 +15,11 @@ import { LoggerProvider, useLoggerContext } from '../context';
 import { NotificationCallback } from '../components/types';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { observe as observeLogBoxLogs, symbolicateLogNow } from 'react-native/Libraries/LogBox/Data/LogBoxData';
+// import { observe as observeLogBoxLogs, symbolicateLogNow } from 'react-native/Libraries/LogBox/Data/LogBoxData';
 
 // LogBox keeps all logs that you have not viewed yet.
 // When a new log comes in, we only want to print out the new ones.
-let lastCount = 0;
+// let lastCount = 0;
 
 // observeLogBoxLogs((data) => {
 //     const logs = Array.from(data.logs);
@@ -35,13 +35,13 @@ let lastCount = 0;
 //     logs.filter((log) => log.symbolicated.status === 'NONE').forEach((log) => symbolicateLogNow(log));
 // });
 
-function formatLog(log) {
-    const stackLines = (log.symbolicated.stack || [])
-        .filter((line) => !line.collapse)
-        .map((line) => `    at ${line.methodName} (${line.file}:${line.lineNumber}:${line.column})`)
-        .join('\n');
-    return `Error has been symbolicated\nError: ${log.message.content}\n${stackLines}`;
-}
+// function formatLog(log) {
+//     const stackLines = (log.symbolicated.stack || [])
+//         .filter((line) => !line.collapse)
+//         .map((line) => `    at ${line.methodName} (${line.file}:${line.lineNumber}:${line.column})`)
+//         .join('\n');
+//     return `Error has been symbolicated\nError: ${log.message.content}\n${stackLines}`;
+// }
 
 const App = () => (
     <SafeAreaProvider>

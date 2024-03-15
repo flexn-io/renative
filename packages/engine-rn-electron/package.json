@@ -37,6 +37,7 @@
         "@rnv/sdk-react-native": "1.0.0-rc.12",
         "@rnv/sdk-utils": "1.0.0-rc.12",
         "@rnv/sdk-webpack": "1.0.0-rc.12",
+        "@rnv/adapter": "1.0.0-rc.12",
         "electron": "26.3.0",
         "electron-builder": "24.6.4",
         "electron-notarize": "1.2.2"

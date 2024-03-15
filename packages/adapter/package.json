@@ -1,47 +1,37 @@
 {
-    "name": "@rnv/engine-rn-web",
+    "name": "@rnv/adapter",
     "version": "1.0.0-rc.12",
-    "description": "ReNative Engine to build web based platforms with react native support.",
-    "keywords": [
-        "react-native"
-    ],
+    "description": "ReNative Adapters for babel, metro, next and other build configs",
+    "keywords": [],
     "homepage": "https://github.com/flexn-io/renative#readme",
     "bugs": {
         "url": "https://github.com/flexn-io/renative/issues"
     },
     "license": "MIT",
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
-    "contributors": [],
     "files": [
         "LICENSE",
         "lib",
-        "renative.engine.json",
-        "templates"
+        "types.d.ts"
     ],
     "main": "lib/index.js",
     "repository": {
         "type": "git",
-        "url": "git://github.com/flexn-io/renative.git"
+        "url": "git+https://github.com/flexn-io/renative.git"
     },
     "scripts": {
+        "bootstrap": "yarn && yarn build && npm link",
         "build": "yarn clean && yarn compile",
         "clean": "rimraf -I ./lib && rimraf -I tsconfig.tsbuildinfo",
         "compile": "tsc -b tsconfig.json",
         "compile:prod": "tsc -b tsconfig.json",
-        "prepublishOnly": "yarn clean && yarn compile:prod",
+        "lint": "eslint . --ext .ts",
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@react-native/babel-preset": "0.73.21",
-        "@rnv/sdk-tizen": "1.0.0-rc.12",
-        "@rnv/sdk-utils": "1.0.0-rc.12",
-        "@rnv/sdk-webos": "1.0.0-rc.12",
-        "@rnv/sdk-webpack": "1.0.0-rc.12",
-        "@rnv/adapter": "1.0.0-rc.12"
+        "babel-plugin-module-resolver": "^5.0.0"
     },
-    "peerDependencies": {
-        "@rnv/core": "^1.0.0-rc.12"
-    },
+    "peerDependencies": {},
     "private": false,
     "publishConfig": {
         "access": "public"

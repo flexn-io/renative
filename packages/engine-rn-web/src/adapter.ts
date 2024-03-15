@@ -1,4 +1,4 @@
-import { BabelConfig } from '@rnv/core';
+import { BabelConfig, withBabelPluginModuleResolver } from '@rnv/adapter';
 import { withRNVWebpack } from '@rnv/sdk-webpack';
 
 const withRNVBabel = (cnf: BabelConfig): BabelConfig => {
@@ -8,15 +8,7 @@ const withRNVBabel = (cnf: BabelConfig): BabelConfig => {
         retainLines: true,
         presets: [['module:metro-react-native-babel-preset', { useTransformReactJSXExperimental: true }]],
         ...cnf,
-        plugins: [
-            [
-                require.resolve('babel-plugin-module-resolver'),
-                {
-                    root: [process.env.RNV_MONO_ROOT || '.'],
-                },
-            ],
-            ...plugins,
-        ],
+        plugins: [withBabelPluginModuleResolver(), ...plugins],
     };
 };
 

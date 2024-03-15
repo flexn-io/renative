@@ -1,17 +1,18 @@
 import fs from 'fs';
-import { BabelApi, BabelConfig, logInfo } from '@rnv/core';
+import type { BabelApi, BabelConfig, BabelConfigPlugin } from './types';
 
-export const withDefaultRNVBabel = (cnf: BabelConfig): BabelConfig => ({
+export const withBabelPluginModuleResolver = (cnf?: any): BabelConfigPlugin => [
+    require.resolve('babel-plugin-module-resolver'),
+    {
+        root: [process.env.RNV_MONO_ROOT || '.'],
+        ...(cnf || {}),
+    },
+];
+
+const _withDefaultRNVBabel = (cnf: BabelConfig): BabelConfig => ({
     retainLines: true,
     presets: [['@babel/preset-env', {}]],
-    plugins: [
-        [
-            require.resolve('babel-plugin-module-resolver'),
-            {
-                root: [process.env.RNV_MONO_ROOT || '.'],
-            },
-        ],
-    ],
+    plugins: [withBabelPluginModuleResolver()],
     ...cnf,
 });
 
@@ -20,9 +21,9 @@ export const withRNVBabel =
     (api: BabelApi): BabelConfig => {
         api.cache(true);
         if (process.env.RNV_ENGINE_PATH && !fs.existsSync(process.env.RNV_ENGINE_PATH)) {
-            logInfo(`Path to engine cannot be resolved: ${process.env.RNV_ENGINE_PATH}. Will use default one`);
+            console.warn(`Path to engine cannot be resolved: ${process.env.RNV_ENGINE_PATH}. Will use default one`);
             api.cache(false);
-            return withDefaultRNVBabel(cnf);
+            return _withDefaultRNVBabel(cnf);
         }
 
         if (process.env.RNV_ENGINE_PATH) {
@@ -52,6 +53,28 @@ export const withRNVRNConfig = (cnf: unknown) => {
         const engine = require(process.env.RNV_ENGINE_PATH);
         if (engine.withRNVRNConfig) {
             return engine.withRNVRNConfig(cnf);
+        }
+    }
+
+    return cnf;
+};
+
+export const withRNVNext = (cnf: unknown) => {
+    if (process.env.RNV_ENGINE_PATH) {
+        const engine = require(process.env.RNV_ENGINE_PATH);
+        if (engine.withRNVNext) {
+            return engine.withRNVNext(cnf);
+        }
+    }
+
+    return cnf;
+};
+
+export const withRNVWebpack = (cnf: unknown) => {
+    if (process.env.RNV_ENGINE_PATH) {
+        const engine = require(process.env.RNV_ENGINE_PATH);
+        if (engine.withRNVNext) {
+            return engine.withRNVNext(cnf);
         }
     }
 

@@ -30,6 +30,7 @@ const VERSIONED_PACKAGES = [
     'sdk-utils',
     'renative',
     'integration-docker',
+    'adapter',
 ];
 
 type PackageConfig = {
