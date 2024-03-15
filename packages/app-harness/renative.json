@@ -198,6 +198,11 @@
             "android": {
                 "implementation": "// TEST"
             }
+        },
+        "react-native-google-cast": {
+            "android": {
+                "implementation": "// TEST"
+            }
         }
     },
 
