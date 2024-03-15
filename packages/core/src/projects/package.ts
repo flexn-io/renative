@@ -1,11 +1,12 @@
 import path from 'path';
 import { fsExistsSync, fsWriteFileSync, loadFile, readObjectSync } from '../system/fs';
 import { logDefault, logWarning, logInfo } from '../logger';
-import { RnvContext } from '../context/types';
 import { ConfigFileTemplate } from '../schema/configFiles/types';
 import { ConfigName } from '../enums/configName';
+import { getContext } from '../context/provider';
 
-const packageJsonIsValid = (c: RnvContext) => {
+const packageJsonIsValid = () => {
+    const c = getContext();
     if (!fsExistsSync(c.paths.project.package)) return false;
     const pkg = readObjectSync(c.paths.project.package);
     if (!pkg) return false;
@@ -14,10 +15,12 @@ const packageJsonIsValid = (c: RnvContext) => {
     return true;
 };
 
-export const checkAndCreateProjectPackage = async (c: RnvContext) => {
+export const checkAndCreateProjectPackage = async () => {
     logDefault('checkAndCreateProjectPackage');
 
-    if (!packageJsonIsValid(c)) {
+    const c = getContext();
+
+    if (!packageJsonIsValid()) {
         logInfo(`Your ${c.paths.project.package} is missing. CREATING...DONE`);
 
         const packageName = c.files.project.config?.projectName || c.paths.project.dir.split('/').pop();
@@ -39,7 +42,7 @@ export const checkAndCreateProjectPackage = async (c: RnvContext) => {
 
         const templateObj = readObjectSync<ConfigFileTemplate>(c.paths.template.configTemplate);
 
-        const pkgJson = templateObj?.templateConfig?.packageTemplate || {};
+        const pkgJson = templateObj?.templateConfig?.package_json || {};
         pkgJson.name = packageName;
         pkgJson.version = packageVersion;
         pkgJson.dependencies = pkgJson.dependencies || {};

@@ -1,11 +1,12 @@
 import { generateOptions } from '../api';
-import { RnvContext } from '../context/types';
+import { getContext } from '../context/provider';
 import { chalk, logInfo, logDefault, logWarning } from '../logger';
 import { doResolve } from '../system/resolve';
 import { writeRenativeConfigFile } from './utils';
 
-export const checkIfTemplateConfigured = async (c: RnvContext) => {
+export const checkIfTemplateConfigured = async () => {
     logDefault('checkIfTemplateConfigured');
+    const c = getContext();
     if (c.program.skipDependencyCheck || c.files.project.config?.isTemplate) return true;
     if (!c.buildConfig.templates) {
         logWarning(
@@ -33,12 +34,13 @@ export const checkIfTemplateConfigured = async (c: RnvContext) => {
         }
     });
 
-    writeRenativeConfigFile(c, c.paths.project.package, c.files.project.package);
+    writeRenativeConfigFile(c.paths.project.package, c.files.project.package);
 
     return true;
 };
 
-export const getTemplateOptions = (c: RnvContext, isGlobalScope?: boolean) => {
+export const getTemplateOptions = (isGlobalScope?: boolean) => {
+    const c = getContext();
     let defaultProjectTemplates;
     if (isGlobalScope) {
         defaultProjectTemplates = c.files.rnv.projectTemplates.config?.projectTemplates;

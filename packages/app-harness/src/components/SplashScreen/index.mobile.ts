@@ -1,3 +1,5 @@
 import SplashScreen from 'react-native-splash-screen';
 
-export { SplashScreen };
+export function useSplashScreen() {
+    return { SplashScreen };
+}

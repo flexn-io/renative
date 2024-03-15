@@ -9,8 +9,7 @@
         "react-art": "source:rnv",
         "react-dom": "source:rnv",
         "react-native": "source:rnv",
-        "react-native-tvos": "source:rnv",
-        "react-native-web": "source:rnv"
+        "react-native-tvos": "source:rnv"
     },
     "npm": {
         "devDependencies": {}

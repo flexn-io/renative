@@ -9,8 +9,8 @@ import {
     logWarning,
     parsePlugins,
     writeCleanFile,
-    RnvPlatform,
     RenativeConfigAppDelegateMethod,
+    getContext,
 } from '@rnv/core';
 import {
     Context,
@@ -25,13 +25,12 @@ import {
 import { addSystemInjects, getAppTemplateFolder, sanitizeColor } from '@rnv/sdk-utils';
 
 export const parseAppDelegate = (
-    c: Context,
-    platform: RnvPlatform,
     appFolder: string,
     appFolderName: string
     // isBundled = false,
 ) =>
     new Promise<void>((resolve) => {
+        const c = getContext();
         logDefault('parseAppDelegateSync');
         const appDelegateMm = 'AppDelegate.mm';
         const appDelegateH = 'AppDelegate.h';
@@ -48,7 +47,7 @@ export const parseAppDelegate = (
         // }
 
         // PLUGINS
-        parsePlugins(c, platform, (plugin, pluginPlat, key) => {
+        parsePlugins((plugin, pluginPlat, key) => {
             injectPluginObjectiveCSync(c, pluginPlat, key);
         });
 
@@ -63,7 +62,7 @@ export const parseAppDelegate = (
         //     }
         // }
 
-        const clr = sanitizeColor(getConfigProp(c, platform, 'backgroundColor'), 'backgroundColor').rgbDecimal;
+        const clr = sanitizeColor(getConfigProp('backgroundColor'), 'backgroundColor').rgbDecimal;
         const pluginBgColor = `vc.view.backgroundColor = UIColor(red: ${clr[0]}, green: ${clr[1]}, blue: ${clr[2]}, alpha: ${clr[3]})`;
         const methods: ObjectiveCAppDelegate = {
             application: {
@@ -262,19 +261,19 @@ export const parseAppDelegate = (
                     : '',
             },
         ];
-        addSystemInjects(c, injectsMm);
+        addSystemInjects(injectsMm);
 
         writeCleanFile(
-            path.join(getAppTemplateFolder(c, platform)!, appFolderName, appDelegateMm),
+            path.join(getAppTemplateFolder()!, appFolderName, appDelegateMm),
             path.join(appFolder, appFolderName, appDelegateMm),
             injectsMm,
             undefined,
             c
         );
-        addSystemInjects(c, injectsH);
+        addSystemInjects(injectsH);
 
         writeCleanFile(
-            path.join(getAppTemplateFolder(c, platform)!, appFolderName, appDelegateH),
+            path.join(getAppTemplateFolder()!, appFolderName, appDelegateH),
             path.join(appFolder, appFolderName, appDelegateH),
             injectsH,
             undefined,
@@ -285,7 +284,7 @@ export const parseAppDelegate = (
 
 export const injectPluginObjectiveCSync = (c: Context, plugin: RenativeConfigPluginPlatform, key: string) => {
     logDebug(`injectPluginObjectiveCSync:${c.platform}:${key}`);
-    const templateXcode = getFlavouredProp(c, plugin, 'templateXcode');
+    const templateXcode = getFlavouredProp(plugin, 'templateXcode');
     const appDelegateMmImports = templateXcode?.AppDelegate_mm?.appDelegateImports;
 
     if (appDelegateMmImports) {
@@ -316,26 +315,29 @@ export const injectPluginObjectiveCSync = (c: Context, plugin: RenativeConfigPlu
     if (appDelegateMethods) {
         const admk = Object.keys(appDelegateMethods) as Array<PayloadAppDelegateKey>;
         admk.forEach((delKey) => {
-            const amdk2 = Object.keys(appDelegateMethods[delKey]) as Array<PayloadAppDelegateSubKey>;
-            amdk2.forEach((key2) => {
-                const plugArr: Array<RenativeConfigAppDelegateMethod> =
-                    c.payload.pluginConfigiOS.appDelegateMmMethods[delKey][key2];
-                if (!plugArr) {
-                    logWarning(`appDelegateMethods.${delKey}.${chalk().red(key2)} not supported. SKIPPING.`);
-                } else {
-                    const plugVal: Array<RenativeConfigAppDelegateMethod> = appDelegateMethods[delKey][key2];
-                    if (plugVal) {
-                        plugVal.forEach((v) => {
-                            const isString = typeof v === 'string';
-                            plugArr.push({
-                                order: isString ? 0 : v?.order || 0,
-                                value: isString ? v : v?.value,
-                                weight: isString ? 0 : v?.weight || 0,
+            const apDelMet = appDelegateMethods[delKey];
+            if (apDelMet) {
+                const amdk2 = Object.keys(apDelMet) as Array<PayloadAppDelegateSubKey>;
+                amdk2.forEach((key2) => {
+                    const plugArr: Array<RenativeConfigAppDelegateMethod> =
+                        c.payload.pluginConfigiOS.appDelegateMmMethods[delKey][key2];
+                    if (!plugArr) {
+                        logWarning(`appDelegateMethods.${delKey}.${chalk().red(key2)} not supported. SKIPPING.`);
+                    } else {
+                        const plugVal: Array<RenativeConfigAppDelegateMethod> = apDelMet[key2];
+                        if (plugVal) {
+                            plugVal.forEach((v) => {
+                                const isString = typeof v === 'string';
+                                plugArr.push({
+                                    order: isString ? 0 : v?.order || 0,
+                                    value: isString ? v : v?.value,
+                                    weight: isString ? 0 : v?.weight || 0,
+                                });
                             });
-                        });
+                        }
                     }
-                }
-            });
+                });
+            }
         });
     }
 };

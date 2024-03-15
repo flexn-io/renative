@@ -17,8 +17,9 @@ import { PlatformKey } from '../schema/types';
 
 const _arrayMergeOverride = (_destinationArray: Array<string>, sourceArray: Array<string>) => sourceArray;
 
-const getEnginesPluginDelta = (c: RnvContext) => {
+const getEnginesPluginDelta = () => {
     logDebug('getEnginesPluginDelta');
+    const c = getContext();
 
     if (!c.buildConfig) return;
 
@@ -44,10 +45,10 @@ const getEnginesPluginDelta = (c: RnvContext) => {
     return enginePlugins;
 };
 
-export const generateBuildConfig = (_c?: RnvContext) => {
+export const generateBuildConfig = () => {
     logDebug('generateBuildConfig');
 
-    const c = _c || getContext();
+    const c = getContext();
 
     const mergeOrder = [
         c.paths.defaultWorkspace.config,
@@ -88,7 +89,7 @@ export const generateBuildConfig = (_c?: RnvContext) => {
         });
     }
 
-    const extraPlugins = getEnginesPluginDelta(c);
+    const extraPlugins = getEnginesPluginDelta();
 
     const mergeFiles = [
         c.files.defaultWorkspace.config,

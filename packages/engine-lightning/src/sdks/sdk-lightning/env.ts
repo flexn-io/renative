@@ -2,14 +2,10 @@ import { getAppFolder, getConfigProp, getContext } from '@rnv/core';
 
 export const EnvVars = {
     LNG_BUILD_FOLDER: () => {
-        const ctx = getContext();
-
-        return { LNG_BUILD_FOLDER: getAppFolder(ctx, true) };
+        return { LNG_BUILD_FOLDER: getAppFolder(true) };
     },
     LNG_ENTRY_FILE: () => {
-        const ctx = getContext();
-
-        const entryFile = getConfigProp(ctx, ctx.platform, 'entryFile');
+        const entryFile = getConfigProp('entryFile');
         return { LNG_ENTRY_FILE: entryFile };
     },
     LNG_SERVE_PORT: () => {
@@ -19,7 +15,6 @@ export const EnvVars = {
         };
     },
     LNG_DIST_FOLDER: () => {
-        const ctx = getContext();
-        return { LNG_DIST_FOLDER: getAppFolder(ctx, true) };
+        return { LNG_DIST_FOLDER: getAppFolder(true) };
     },
 };

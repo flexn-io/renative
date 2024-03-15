@@ -21,8 +21,8 @@ import {
     logSuccess,
     logRaw,
     inquirerPrompt,
-    RnvPlatform,
     CoreEnvVars,
+    getContext,
 } from '@rnv/core';
 import { getAppleDevices } from './deviceManager';
 
@@ -37,16 +37,16 @@ import { ObjectEncodingOptions } from 'fs';
 import { packageReactNativeIOS, runCocoaPods, runReactNativeIOS, EnvVars } from '@rnv/sdk-react-native';
 import { registerDevice } from './fastlane';
 
-export const packageBundleForXcode = (c: Context) => {
-    return packageReactNativeIOS(c);
+export const packageBundleForXcode = () => {
+    return packageReactNativeIOS();
 };
 
-const copyAppleAssets = (c: Context, platform: RnvPlatform, appFolderName: string) =>
+const copyAppleAssets = (appFolderName: string) =>
     new Promise<void>((resolve) => {
         logDefault('copyAppleAssets');
-        if (!isPlatformActive(c, platform, resolve)) return;
+        if (!isPlatformActive(resolve)) return;
 
-        const appFolder = getAppFolder(c);
+        const appFolder = getAppFolder();
 
         // ASSETS
         fsWriteFileSync(path.join(appFolder, 'main.jsbundle'), '{}');
@@ -212,39 +212,39 @@ export const getIosDeviceToRunOn = async (c: Context) => {
     return p;
 };
 
-export const runXcodeProject = async (c: Context, runDeviceArguments?: string) => {
+export const runXcodeProject = async (runDeviceArguments?: string) => {
+    const c = getContext();
     logDefault('runXcodeProject', `targetArgs:${runDeviceArguments}`);
 
-    const appPath = getAppFolder(c);
-    const schemeTarget = getConfigProp(c, c.platform, 'schemeTarget') || 'RNVApp';
-    const runScheme = getConfigProp(c, c.platform, 'runScheme') || 'Debug';
-    const bundleIsDev = getConfigProp(c, c.platform, 'bundleIsDev') === true;
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets') === true;
+    const appPath = getAppFolder();
+    const schemeTarget = getConfigProp('schemeTarget') || 'RNVApp';
+    const runScheme = getConfigProp('runScheme') || 'Debug';
+    const bundleIsDev = getConfigProp('bundleIsDev') === true;
+    const bundleAssets = getConfigProp('bundleAssets') === true;
 
     if (runDeviceArguments) {
         // await launchAppleSimulator(c, c.runtime.target); @TODO - do we still need this? RN CLI does it as well
 
-        //const allowProvisioningUpdates = getConfigProp(c, c.platform, 'allowProvisioningUpdates', true);
+        //const allowProvisioningUpdates = getConfigProp('allowProvisioningUpdates', true);
         //if (allowProvisioningUpdates) p = `${p} --allowProvisioningUpdates`;
         if (bundleAssets) {
-            await packageReactNativeIOS(c, bundleIsDev);
+            await packageReactNativeIOS(bundleIsDev);
         }
         return _checkLockAndExec(c, appPath, schemeTarget, runScheme, runDeviceArguments);
     }
 
     if (c.platform === 'macos') {
         if (bundleAssets) {
-            await packageReactNativeIOS(c, bundleIsDev);
+            await packageReactNativeIOS(bundleIsDev);
         }
 
         try {
-            await buildXcodeProject(c);
+            await buildXcodeProject();
         } catch (e) {
             await _handleMissingTeam(c, e);
         }
 
         return executeAsync(
-            c,
             `open ${path.join(appPath, `build/RNVApp/Build/Products/${runScheme}-maccatalyst/RNVApp.app`)}`
         );
     }
@@ -261,7 +261,7 @@ const _checkLockAndExec = async (
     logDefault('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme} p:${extraParamsString}`);
     if (!c.platform) return;
 
-    const appFolderName = getAppFolderName(c, c.platform);
+    const appFolderName = getAppFolderName();
 
     try {
         return runReactNativeIOS(c, scheme, runScheme, extraParamsString);
@@ -282,9 +282,7 @@ const _checkLockAndExec = async (
                 logWarning(
                     `${c.platform} DEVICE: ${chalk().bold(c.runtime.target)} with UDID: ${chalk().bold(
                         c.runtime.targetUDID
-                    )} is not included in your provisionong profile in TEAM: ${chalk().bold(
-                        getConfigProp(c, c.platform, 'teamID')
-                    )}`
+                    )} is not included in your provisionong profile in TEAM: ${chalk().bold(getConfigProp('teamID'))}`
                 );
                 const { confirm } = await inquirerPrompt({
                     name: 'confirm',
@@ -292,7 +290,7 @@ const _checkLockAndExec = async (
                     type: 'confirm',
                 });
                 if (confirm) {
-                    await registerDevice(c);
+                    await registerDevice();
                     return Promise.reject('Updated. Re-run your last command');
                     // TODO: Tot picking up if re-run from here. forcing users to do it themselves for now
                     // await configureXcodeProject(c, c.platform);
@@ -364,8 +362,8 @@ Type in your Apple Team ID to be used (will be saved to ${c.paths.appConfig?.con
 };
 
 const _handleProvisioningIssues = async (c: Context, e: unknown, msg: string) => {
-    const provisioningStyle = c.program.provisioningStyle || getConfigProp(c, c.platform, 'provisioningStyle');
-    const appFolderName = getAppFolderName(c, c.platform); // Sometimes xcodebuild reports Automatic signing is disabled but it could be keychain not accepted by user
+    const provisioningStyle = c.program.provisioningStyle || getConfigProp('provisioningStyle');
+    const appFolderName = getAppFolderName(); // Sometimes xcodebuild reports Automatic signing is disabled but it could be keychain not accepted by user
     const isProvAutomatic = provisioningStyle === 'Automatic';
     const proAutoText = isProvAutomatic
         ? ''
@@ -373,7 +371,7 @@ const _handleProvisioningIssues = async (c: Context, e: unknown, msg: string) =>
               c.platform
           }, scheme: ${c.runtime.scheme}`;
     const fixCommand = `rnv crypto updateProfile -p ${c.platform} -s ${c.runtime.scheme}`;
-    const workspacePath = chalk().bold(`${getAppFolder(c)}/${appFolderName}.xcworkspace`);
+    const workspacePath = chalk().bold(`${getAppFolder()}/${appFolderName}.xcworkspace`);
     logError(e);
     logWarning(`${msg}. To fix try:
 ${chalk().bold('[1]>')} Configure your certificates, provisioning profiles correctly manually
@@ -457,14 +455,15 @@ const composeXcodeArgsFromCLI = (string: string) => {
     return unescapedValues;
 };
 
-export const buildXcodeProject = async (c: Context) => {
+export const buildXcodeProject = async () => {
+    const c = getContext();
     logDefault('buildXcodeProject');
 
     const { platform } = c;
 
-    const appFolderName = getAppFolderName(c, platform);
-    const runScheme = getConfigProp(c, platform, 'runScheme', 'Debug');
-    const schemeTarget = getConfigProp(c, c.platform, 'schemeTarget') || 'RNVApp';
+    const appFolderName = getAppFolderName();
+    const runScheme = getConfigProp('runScheme', 'Debug');
+    const schemeTarget = getConfigProp('schemeTarget') || 'RNVApp';
 
     let destinationPlatform = '';
     switch (c.platform) {
@@ -492,10 +491,10 @@ export const buildXcodeProject = async (c: Context) => {
             logError(`platform ${c.platform} not supported`);
     }
 
-    const appPath = getAppFolder(c);
+    const appPath = getAppFolder();
     const buildPath = path.join(appPath, `build/${appFolderName}`);
-    const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates') || true;
-    const ignoreLogs = getConfigProp(c, platform, 'ignoreLogs');
+    const allowProvisioningUpdates = getConfigProp('allowProvisioningUpdates') || true;
+    const ignoreLogs = getConfigProp('ignoreLogs');
     let ps = '';
     if (c.program.xcodebuildArgs) {
         ps = c.program.xcodebuildArgs;
@@ -562,14 +561,15 @@ export const buildXcodeProject = async (c: Context) => {
     });
 };
 
-const archiveXcodeProject = (c: Context) => {
+const archiveXcodeProject = () => {
+    const c = getContext();
     logDefault('archiveXcodeProject');
     const { platform } = c;
 
-    const appFolderName = getAppFolderName(c, c.platform);
-    const schemeTarget = getConfigProp(c, platform, 'schemeTarget', 'RNVApp');
-    const runScheme = getConfigProp(c, platform, 'runScheme', 'Debug');
-    let sdk = getConfigProp(c, platform, 'sdk');
+    const appFolderName = getAppFolderName();
+    const schemeTarget = getConfigProp('schemeTarget', 'RNVApp');
+    const runScheme = getConfigProp('runScheme', 'Debug');
+    let sdk = getConfigProp('sdk');
     if (!sdk) {
         if (platform === 'ios') sdk = 'iphoneos';
         // if (platform === MACOS) sdk = 'macosx';
@@ -580,11 +580,11 @@ const archiveXcodeProject = (c: Context) => {
         sdkArr.push(sdk);
     }
 
-    const appPath = getAppFolder(c);
+    const appPath = getAppFolder();
     const exportPath = path.join(appPath, 'release');
 
-    const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
-    const ignoreLogs = getConfigProp(c, platform, 'ignoreLogs');
+    const allowProvisioningUpdates = getConfigProp('allowProvisioningUpdates', true);
+    const ignoreLogs = getConfigProp('ignoreLogs');
     const exportPathArchive = `${exportPath}/${appFolderName}.xcarchive`;
     let ps = '';
     if (c.program.xcodebuildArchiveArgs) {
@@ -643,19 +643,18 @@ const archiveXcodeProject = (c: Context) => {
     });
 };
 
-export const exportXcodeProject = async (c: Context) => {
+export const exportXcodeProject = async () => {
+    const c = getContext();
     logDefault('exportXcodeProject');
 
-    const { platform } = c;
+    await archiveXcodeProject();
 
-    await archiveXcodeProject(c);
-
-    const appPath = getAppFolder(c);
+    const appPath = getAppFolder();
     const exportPath = path.join(appPath, 'release');
 
-    const appFolderName = getAppFolderName(c, c.platform);
-    const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
-    const ignoreLogs = getConfigProp(c, platform, 'ignoreLogs');
+    const appFolderName = getAppFolderName();
+    const allowProvisioningUpdates = getConfigProp('allowProvisioningUpdates', true);
+    const ignoreLogs = getConfigProp('ignoreLogs');
 
     let ps = '';
     if (c.program.xcodebuildExportArgs) {
@@ -682,14 +681,15 @@ export const exportXcodeProject = async (c: Context) => {
 
     logDefault('exportXcodeProject', 'STARTING xcodebuild EXPORT...');
 
-    return executeAsync(c, `xcodebuild ${p.join(' ')}`).then(() => {
+    return executeAsync(`xcodebuild ${p.join(' ')}`).then(() => {
         logSuccess(`Your IPA is located in ${chalk().cyan(exportPath)} .`);
     });
 };
 
 // Resolve or reject will not be called so this will keep running
-export const runAppleLog = (c: Context) =>
+export const runAppleLog = () =>
     new Promise(() => {
+        const c = getContext();
         logDefault('runAppleLog');
         const filter = c.program.filter || 'RNV';
         const opts: ObjectEncodingOptions & ExecFileOptions = {}; //{ stdio: 'inherit', customFds: [0, 1, 2] };
@@ -713,17 +713,18 @@ export const runAppleLog = (c: Context) =>
         }
     });
 
-export const configureXcodeProject = async (c: Context) => {
+export const configureXcodeProject = async () => {
+    const c = getContext();
     logDefault('configureXcodeProject');
 
     const { device } = c.program;
     const { platform } = c;
     // const bundlerIp = device ? getIP() : 'localhost';
-    const appFolder = getAppFolder(c);
-    const appFolderName = getAppFolderName(c, platform);
+    const appFolder = getAppFolder();
+    const appFolderName = getAppFolderName();
     c.runtime.platformBuildsProjectPath = `${appFolder}/${appFolderName}.xcworkspace`;
 
-    // const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
+    // const bundleAssets = getConfigProp('bundleAssets') === true;
     // INJECTORS
     c.payload.pluginConfigiOS = {
         podfileHeader: '',
@@ -764,7 +765,7 @@ export const configureXcodeProject = async (c: Context) => {
     };
 
     // FONTS
-    // parsePlugins(c, platform, (plugin, pluginPlat) => {
+    // parsePlugins((plugin, pluginPlat) => {
     //     // const ignoreProjectFonts = getFlavouredProp(
     //     //     c,
     //     //     pluginPlat,
@@ -782,10 +783,10 @@ export const configureXcodeProject = async (c: Context) => {
     //     // }
     // });
     const embeddedFontSourcesCheck: Array<string> = [];
-    parseFonts(c, (font, dir) => {
+    parseFonts((font, dir) => {
         if (font.includes('.ttf') || font.includes('.otf')) {
             const key = font.split('.')[0];
-            const includedFonts = getConfigProp(c, c.platform, 'includedFonts');
+            const includedFonts = getConfigProp('includedFonts');
             if (includedFonts && (includedFonts.includes('*') || includedFonts.includes(key))) {
                 const fontSource = path.join(dir, font);
                 if (fsExistsSync(fontSource)) {
@@ -813,7 +814,7 @@ export const configureXcodeProject = async (c: Context) => {
     });
 
     // CHECK TEAM ID IF DEVICE
-    const tId = getConfigProp(c, platform, 'teamID');
+    const tId = getConfigProp('teamID');
     if (device && (!tId || tId === '')) {
         logError(
             `You're missing teamID in your ${chalk().bold(
@@ -822,16 +823,16 @@ export const configureXcodeProject = async (c: Context) => {
         );
     }
 
-    await copyAssetsFolder(c, platform, appFolderName);
-    await copyAppleAssets(c, platform, appFolderName);
-    await parseAppDelegate(c, platform, appFolder, appFolderName);
-    await parseExportOptionsPlist(c, platform);
-    await parseXcscheme(c, platform);
-    await parsePodFile(c, platform);
-    await parseEntitlementsPlist(c, platform);
-    await parseInfoPlist(c, platform);
-    await copyBuildsFolder(c, platform);
-    await runCocoaPods(c);
-    await parseXcodeProject(c);
+    await copyAssetsFolder(appFolderName);
+    await copyAppleAssets(appFolderName);
+    await parseAppDelegate(appFolder, appFolderName);
+    await parseExportOptionsPlist();
+    await parseXcscheme();
+    await parsePodFile();
+    await parseEntitlementsPlist();
+    await parseInfoPlist();
+    await copyBuildsFolder();
+    await runCocoaPods();
+    await parseXcodeProject();
     return true;
 };

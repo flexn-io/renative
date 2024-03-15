@@ -21,11 +21,11 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { hosted } = c.program;
     logTask('taskRun', `parent:${parentTask} port:${port} hosted:${hosted}`);
 
-    await executeOrSkipTask(c, RnvTaskName.configure, RnvTaskName.run, originTask);
+    await executeOrSkipTask(RnvTaskName.configure, RnvTaskName.run, originTask);
 
-    if (shouldSkipTask(c, RnvTaskName.run, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.run, originTask)) return true;
 
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
+    const bundleAssets = getConfigProp('bundleAssets', false);
 
     switch (platform) {
         case 'ios':
@@ -33,37 +33,37 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
             // eslint-disable-next-line no-case-declarations
             const runDeviceArgs = await getIosDeviceToRunOn(c);
             if (!c.program.only) {
-                await startBundlerIfRequired(c, RnvTaskName.run, originTask);
-                await runXcodeProject(c, runDeviceArgs);
+                await startBundlerIfRequired(RnvTaskName.run, originTask);
+                await runXcodeProject(runDeviceArgs);
                 if (!bundleAssets) {
                     logSummary('BUNDLER STARTED');
                 }
-                return waitForBundlerIfRequired(c);
+                return waitForBundlerIfRequired();
             }
-            return runXcodeProject(c, runDeviceArgs);
+            return runXcodeProject(runDeviceArgs);
         case 'android':
         case 'androidtv':
         case 'firetv':
         case 'androidwear':
             // eslint-disable-next-line no-case-declarations
-            const runDevice = await getAndroidDeviceToRunOn(c);
+            const runDevice = await getAndroidDeviceToRunOn();
             if (runDevice) {
                 c.runtime.target = runDevice?.name || runDevice?.udid;
             }
             if (!c.program.only) {
-                await startBundlerIfRequired(c, RnvTaskName.run, originTask);
+                await startBundlerIfRequired(RnvTaskName.run, originTask);
                 if (bundleAssets || platform === 'androidwear') {
-                    await packageAndroid(c);
+                    await packageAndroid();
                 }
-                await runAndroid(c, runDevice!);
+                await runAndroid(runDevice!);
                 if (!bundleAssets) {
                     logSummary('BUNDLER STARTED');
                 }
-                return waitForBundlerIfRequired(c);
+                return waitForBundlerIfRequired();
             }
-            return runAndroid(c, runDevice!);
+            return runAndroid(runDevice!);
         default:
-            return logErrorPlatform(c);
+            return logErrorPlatform();
     }
 };
 
@@ -78,6 +78,7 @@ const Task: RnvTask = {
     fn: taskRun,
     fnHelp: taskRunHelp,
     task: RnvTaskName.run,
+    isPriorityOrder: true,
     // dependencies: {
     //     before: RnvTaskName.configure,
     // },

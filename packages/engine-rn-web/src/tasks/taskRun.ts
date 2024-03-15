@@ -25,7 +25,7 @@ import { runKaiOSProject } from '@rnv/sdk-kaios';
 import { getIP } from '@rnv/sdk-utils';
 
 const existBuildsOverrideForTargetPathSync = (c: RnvContext, destPath: string) => {
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
     const relativePath = path.relative(appFolder, destPath);
     let result = false;
 
@@ -33,7 +33,7 @@ const existBuildsOverrideForTargetPathSync = (c: RnvContext, destPath: string) =
 
     if (c.paths.appConfig.dirs) {
         c.paths.appConfig.dirs.forEach((v) => {
-            const bf = getAppConfigBuildsFolder(c, c.platform, v);
+            const bf = getAppConfigBuildsFolder(v);
             if (bf) pathsToCheck.push();
         });
     }
@@ -50,16 +50,16 @@ const existBuildsOverrideForTargetPathSync = (c: RnvContext, destPath: string) =
 const _configureHostedIfRequired = async (c: RnvContext) => {
     logTask('_configureHostedIfRequired');
 
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
+    const bundleAssets = getConfigProp('bundleAssets', false);
 
-    if (!bundleAssets && !existBuildsOverrideForTargetPathSync(c, path.join(getPlatformProjectDir(c)!, 'index.html'))) {
+    if (!bundleAssets && !existBuildsOverrideForTargetPathSync(c, path.join(getPlatformProjectDir()!, 'index.html'))) {
         logDebug('Running hosted build');
         const ipAddress = c.program.hostIp || getIP();
 
         if (c.runtime.currentEngine?.rootPath) {
             writeCleanFile(
                 path.join(c.runtime.currentEngine.rootPath, 'templates', 'appShell', 'index.html'),
-                path.join(getPlatformProjectDir(c)!, 'index.html'),
+                path.join(getPlatformProjectDir()!, 'index.html'),
                 [
                     {
                         pattern: '{{DEV_SERVER}}',
@@ -80,21 +80,21 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { hosted } = c.program;
     logTask('taskRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
-    await executeOrSkipTask(c, RnvTaskName.configure, RnvTaskName.run, originTask);
+    await executeOrSkipTask(RnvTaskName.configure, RnvTaskName.run, originTask);
 
     if (hosted) {
         c.runtime.shouldOpenBrowser = true;
         // return _taskStart(c);
-        return executeTask(c, RnvTaskName.start, RnvTaskName.run, originTask);
+        return executeTask(RnvTaskName.start, RnvTaskName.run, originTask);
     }
 
-    if (shouldSkipTask(c, RnvTaskName.run, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.run, originTask)) return true;
 
     switch (platform) {
         case 'web':
         case 'webtv':
             c.runtime.shouldOpenBrowser = true;
-            return runWebpackServer(c);
+            return runWebpackServer();
         case 'tizen':
         case 'tizenmobile':
         case 'tizenwatch':
@@ -108,14 +108,14 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
             }
             return runWebOS(c);
         case 'kaios':
-            return runKaiOSProject(c);
+            return runKaiOSProject();
         case 'chromecast':
             if (!c.program.only) {
                 await _configureHostedIfRequired(c);
             }
             return runChromecast(c);
         default:
-            return logErrorPlatform(c);
+            return logErrorPlatform();
     }
 };
 
@@ -123,6 +123,7 @@ const Task: RnvTask = {
     description: 'Run your app in browser',
     fn: taskRun,
     task: RnvTaskName.run,
+    isPriorityOrder: true,
     options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun())),
     platforms: ['web', 'webtv', 'tizen', 'webos', 'tizenmobile', 'tizenwatch', 'kaios', 'chromecast'],
 };

@@ -1,4 +1,5 @@
 {
+    "$schema": ".rnv/schema/rnv.project.json",
     "engines": {
         "@rnv/engine-lightning": "source:rnv",
         "@rnv/engine-rn": "source:rnv",
@@ -7,7 +8,6 @@
         "@rnv/engine-rn-tvos": "source:rnv",
         "@rnv/engine-rn-web": "source:rnv"
     },
-    "$schema": ".rnv/schema/rnv.project.json",
     "isTemplate": true,
     "projectName": "@rnv/template-starter",
     "enableHookRebuild": false,
@@ -95,7 +95,7 @@
                     "org.gradle.parallel": true,
                     "org.gradle.configureondemand": true
                 },
-                "MainActivity_java": {
+                "MainActivity_kt": {
                     "onCreate": "super.onCreate(null)"
                 }
             }
@@ -135,40 +135,16 @@
         }
     },
     "plugins": {
-        "@rnv/renative": {
-            "source": "rnv",
-            "webpackConfig": {
-                "modulePaths": true
-            }
-        },
+        "@rnv/renative": "source:rnv",
         "react": "source:rnv",
         "react-art": "source:rnv",
         "react-dom": "source:rnv",
-        "react-native-gesture-handler": {
-            "version": "2.14.1",
-            "disablePluginTemplateOverrides": true
-        },
-        "@react-native-community/cli-platform-ios": {
-            "version": "11.3.7",
-            "disablePluginTemplateOverrides": false,
-            "disableNpm": true
-        },
-        "react-native": {
-            "version": "0.73.4"
-        },
-        "next": {
-            "version": "14.1.0",
-            "disablePluginTemplateOverrides": true
-        },
-        "react-native-web": {
-            "version": "0.19.9",
-            "webpackConfig": {
-                "modulePaths": true
-            }
-        },
-        "react-native-tvos": {
-            "version": "0.73.1-3"
-        }
+        "react-native-gesture-handler": "source:rnv",
+        "@react-native-community/cli-platform-ios": "source:rnv",
+        "react-native": "source:rnv",
+        "next": "source:rnv",
+        "react-native-web": "source:rnv",
+        "react-native-tvos": "source:rnv"
     },
     "permissions": {
         "ios": {},

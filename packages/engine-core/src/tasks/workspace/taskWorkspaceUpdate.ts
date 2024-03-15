@@ -1,10 +1,10 @@
 import { logTask, executeTask, RnvTaskOptionPresets, RnvTaskFn, RnvTask, RnvTaskName } from '@rnv/core';
 
-const taskWorkspaceUpdate: RnvTaskFn = async (c, _parentTask, originTask) => {
+const taskWorkspaceUpdate: RnvTaskFn = async (_c, _parentTask, originTask) => {
     // TODO: taskWorkspaceUpdate
     logTask('taskWorkspaceUpdate');
 
-    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.workspaceUpdate, originTask);
+    await executeTask(RnvTaskName.projectConfigure, RnvTaskName.workspaceUpdate, originTask);
 
     return true;
 };

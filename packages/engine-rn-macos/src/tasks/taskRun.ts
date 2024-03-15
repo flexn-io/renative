@@ -21,25 +21,25 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { hosted } = c.program;
     logTask('taskRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
-    await executeOrSkipTask(c, RnvTaskName.configure, RnvTaskName.run, originTask);
+    await executeOrSkipTask(RnvTaskName.configure, RnvTaskName.run, originTask);
 
-    if (shouldSkipTask(c, RnvTaskName.run, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.run, originTask)) return true;
 
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
+    const bundleAssets = getConfigProp('bundleAssets', false);
 
     switch (platform) {
         case 'macos':
             if (!c.program.only) {
-                await startBundlerIfRequired(c, RnvTaskName.run, originTask);
-                await runXcodeProject(c);
+                await startBundlerIfRequired(RnvTaskName.run, originTask);
+                await runXcodeProject();
                 if (!bundleAssets) {
                     logSummary('BUNDLER STARTED');
                 }
-                return waitForBundlerIfRequired(c);
+                return waitForBundlerIfRequired();
             }
-            return runXcodeProject(c);
+            return runXcodeProject();
         default:
-            return logErrorPlatform(c);
+            return logErrorPlatform();
     }
 };
 
@@ -54,6 +54,7 @@ const Task: RnvTask = {
     fn: taskRun,
     fnHelp: taskRunHelp,
     task: RnvTaskName.run,
+    isPriorityOrder: true,
     // dependencies: {
     //     before: RnvTaskName.configure,
     // },

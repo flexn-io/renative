@@ -1,10 +1,10 @@
 import {
-    RnvContext,
     RnvTaskName,
     chalk,
     executeTask,
     fsExistsSync,
     fsReadFileSync,
+    getContext,
     getRealPath,
     isSystemWin,
     logDebug,
@@ -21,7 +21,8 @@ export const getEnvExportCmd = (envVar: string, key: string) => {
     return `${chalk().bold(`export ${envVar}="${key}"`)}`;
 };
 
-export const getEnvVar = (c: RnvContext) => {
+export const getEnvVar = () => {
+    const c = getContext();
     if (!c.files.project.package.name) {
         logError('package.json requires `name` field. cannot generate ENV variables for crypto');
         return;
@@ -35,7 +36,8 @@ export const getEnvVar = (c: RnvContext) => {
     return envVar;
 };
 
-export const checkCrypto = async (c: RnvContext, parentTask?: string, originTask?: string) => {
+export const checkCrypto = async (parentTask?: string, originTask?: string) => {
+    const c = getContext();
     logTask('checkCrypto');
 
     if (c.program.ci || c.files.project.config?.crypto?.isOptional) return;
@@ -47,7 +49,7 @@ export const checkCrypto = async (c: RnvContext, parentTask?: string, originTask
     }
 
     if (sourceRaw) {
-        const source = `${getRealPath(c, sourceRaw, 'crypto.path')}`;
+        const source = `${getRealPath(sourceRaw, 'crypto.path')}`;
         const tsProjectPath = `${source}.timestamp`;
         const wsPath = path.join(c.paths.workspace.dir, c.files.project.package.name);
         const tsWorkspacePath = path.join(wsPath, 'timestamp');
@@ -69,7 +71,7 @@ export const checkCrypto = async (c: RnvContext, parentTask?: string, originTask
 project timestamp: ${chalk().grey(`${tsProject} - ${new Date(tsProject)}`)}
 workspace timestamp: ${chalk().grey(`${tsWorkspace} - ${new Date(tsWorkspace)}`)}
 you should run decrypt`);
-                await executeTask(c, RnvTaskName.cryptoDecrypt, parentTask, originTask);
+                await executeTask(RnvTaskName.cryptoDecrypt, parentTask, originTask);
                 return;
             }
 

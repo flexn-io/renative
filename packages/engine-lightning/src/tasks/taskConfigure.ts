@@ -12,7 +12,7 @@ import { configureLightningProject } from '../sdks/sdk-lightning';
 const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskConfigure');
 
-    await executeTask(c, RnvTaskName.platformConfigure, RnvTaskName.configure, originTask);
+    await executeTask(RnvTaskName.platformConfigure, RnvTaskName.configure, originTask);
 
     if (c.program.only && !!parentTask) {
         return true;
@@ -21,9 +21,9 @@ const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     switch (c.platform) {
         case 'tizen':
         case 'webos':
-            return configureLightningProject(c);
+            return configureLightningProject();
         default:
-            return logErrorPlatform(c);
+            return logErrorPlatform();
     }
 };
 

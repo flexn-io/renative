@@ -20,19 +20,19 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { hosted } = c.program;
     logTask('taskRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
-    await executeOrSkipTask(c, RnvTaskName.configure, RnvTaskName.run, originTask);
+    await executeOrSkipTask(RnvTaskName.configure, RnvTaskName.run, originTask);
 
-    if (shouldSkipTask(c, RnvTaskName.run, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.run, originTask)) return true;
 
     switch (platform) {
         case 'xbox':
         case 'windows':
             await clearWindowsTemporaryFiles(c);
-            await startBundlerIfRequired(c, RnvTaskName.run, originTask);
+            await startBundlerIfRequired(RnvTaskName.run, originTask);
             await ruWindowsProject(c);
-            return waitForBundlerIfRequired(c);
+            return waitForBundlerIfRequired();
         default:
-            return logErrorPlatform(c);
+            return logErrorPlatform();
     }
 };
 
@@ -40,6 +40,7 @@ const Task: RnvTask = {
     description: 'Run your app in a window on desktop',
     fn: taskRun,
     task: RnvTaskName.run,
+    isPriorityOrder: true,
     options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun())),
     platforms: ['windows', 'xbox'],
 };

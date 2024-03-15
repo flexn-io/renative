@@ -1,19 +1,19 @@
 import path from 'path';
-import { getConfigProp, chalk, logDefault, logWarning, logSuccess, executeAsync } from '@rnv/core';
-import { Context } from './types';
+import { getConfigProp, chalk, logDefault, logWarning, logSuccess, executeAsync, getContext } from '@rnv/core';
 import { getAppId } from '@rnv/sdk-utils';
 
-export const registerDevice = async (c: Context) => {
+export const registerDevice = async () => {
+    const c = getContext();
     logDefault(`registerDevice:${c.platform}`);
 
-    const teamID = getConfigProp(c, c.platform, 'teamID');
+    const teamID = getConfigProp('teamID');
     const udid = c.runtime.targetUDID;
     const deviceName = c.runtime.target;
 
     const args = ['run', 'register_device', `team_id:"${teamID}"`, `udid:"${udid}"`, `name:"${deviceName}"`];
 
     try {
-        await executeAsync(c, `fastlane ${args.join(' ')}`, {
+        await executeAsync(`fastlane ${args.join(' ')}`, {
             shell: true,
             stdio: 'inherit',
             silent: true,
@@ -26,8 +26,9 @@ export const registerDevice = async (c: Context) => {
     }
 };
 
-export const updateProfile = async (c: Context): Promise<boolean> => {
+export const updateProfile = async (): Promise<boolean> => {
     logDefault(`updateProfile`, chalk().grey);
+    const c = getContext();
 
     // TODO: run trough all schemes
     // const schemes = c.buildConfig.platforms?.[c.platform]?.buildSchemes
@@ -47,10 +48,10 @@ export const updateProfile = async (c: Context): Promise<boolean> => {
 
     const { appId } = c.runtime;
 
-    const id = getAppId(c, platform);
-    const teamID = getConfigProp(c, platform, 'teamID');
-    const pMethod = getConfigProp(c, platform, 'exportOptions')?.method;
-    const runScheme = getConfigProp(c, platform, 'runScheme');
+    const id = getAppId();
+    const teamID = getConfigProp('teamID');
+    const pMethod = getConfigProp('exportOptions')?.method;
+    const runScheme = getConfigProp('runScheme');
     let provisioning;
     if (pMethod === 'ad-hoc') provisioning = 'adhoc';
     if (pMethod === 'development' || runScheme === 'Debug') {
@@ -79,7 +80,7 @@ export const updateProfile = async (c: Context): Promise<boolean> => {
     }
 
     try {
-        await executeAsync(c, `fastlane ${args.join(' ')}`, {
+        await executeAsync(`fastlane ${args.join(' ')}`, {
             shell: true,
             stdio: 'inherit',
             silent: true,

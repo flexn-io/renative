@@ -23,17 +23,17 @@ const taskProjectUpgrade: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskProjectUpgrade');
     const upgradedPaths = [];
     if (fsExistsSync(c.paths.project.config)) {
-        await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.projectUpgrade, originTask);
-        const selectedVersion = await listAndSelectNpmVersion(c, 'rnv');
+        await executeTask(RnvTaskName.projectConfigure, RnvTaskName.projectUpgrade, originTask);
+        const selectedVersion = await listAndSelectNpmVersion('rnv');
 
-        upgradedPaths.push(...upgradeProjectDependencies(c, selectedVersion));
+        upgradedPaths.push(...upgradeProjectDependencies(selectedVersion));
 
-        await installPackageDependenciesAndPlugins(c);
+        await installPackageDependenciesAndPlugins();
     } else {
         logInfo('Your are running rnv upgrade outside of renative project');
         const packagesPath = path.join(c.paths.project.dir, 'packages');
         if (fsExistsSync(c.paths.project.package) && fsExistsSync(packagesPath)) {
-            const selectedVersion = await listAndSelectNpmVersion(c, 'rnv');
+            const selectedVersion = await listAndSelectNpmVersion('rnv');
 
             upgradedPaths.push(
                 ...upgradeDependencies(

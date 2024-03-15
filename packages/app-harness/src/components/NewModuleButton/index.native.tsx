@@ -1,17 +1,23 @@
 import React from 'react';
 import { NativeModules, Button } from 'react-native';
+import { useLoggerContext } from '../../context';
 
 export const NewModuleButton = () => {
     const { TestNativeModule } = NativeModules;
+    const { logDebug } = useLoggerContext();
     const callback = (error: any, result: string) => {
         if (error) {
-            console.log(error);
+            logDebug(error);
         } else {
-            console.log(result);
+            logDebug(result);
         }
     };
     const onPress = () => {
-        TestNativeModule.createTestEvent('testName', 'testLocation', callback);
+        if (TestNativeModule) {
+            TestNativeModule.createTestEvent('testName', 'testLocation', callback);
+        } else {
+            logDebug('NativeModules not supported for this platform');
+        }
     };
     return <Button title="Click to invoke native module!" color="#841584" onPress={onPress} />;
 };

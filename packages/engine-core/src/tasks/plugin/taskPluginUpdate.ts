@@ -14,7 +14,7 @@ import {
 const taskPluginUpdate: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskPluginUpdate');
 
-    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.pluginUpdate, originTask);
+    await executeTask(RnvTaskName.projectConfigure, RnvTaskName.pluginUpdate, originTask);
 
     // const pluginList = getPluginList(c, true);
 

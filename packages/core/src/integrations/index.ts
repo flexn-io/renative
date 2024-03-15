@@ -1,12 +1,14 @@
 import path from 'path';
-import { RnvContext } from '../context/types';
 import { fsExistsSync } from '../system/fs';
 import { logDefault, logWarning } from '../logger';
 import { registerCustomTask } from '../tasks';
 import { RnvIntegration } from './types';
+import { getContext } from '../context/provider';
 
-export const loadIntegrations = async (c: RnvContext) => {
+export const loadIntegrations = async () => {
     logDefault('loadIntegrations');
+    const c = getContext();
+
     const integrations = c.buildConfig?.integrations;
 
     if (integrations) {
@@ -20,7 +22,7 @@ export const loadIntegrations = async (c: RnvContext) => {
                 const instance: RnvIntegration = require(intPath)?.default;
                 if (instance) {
                     instance.getTasks().forEach((task) => {
-                        registerCustomTask(c, task);
+                        registerCustomTask(task);
                     });
                 }
             } catch (err) {

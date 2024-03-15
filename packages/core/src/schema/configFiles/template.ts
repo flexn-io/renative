@@ -1,7 +1,6 @@
 import { z } from 'zod';
 import { DefaultsSchema, EnginesSchema } from './project';
-
-const NpmDep = z.record(z.string(), z.string());
+import { NpmDep, TemplateConfig } from '../shared';
 
 const BootstrapQuestionsSchema = z
     .array(
@@ -10,7 +9,7 @@ const BootstrapQuestionsSchema = z
                 .array(
                     z.object({
                         title: z.string(),
-                        value: z.object({}),
+                        value: z.union([z.record(z.string(), z.any()), z.string(), z.number(), z.boolean()]),
                     })
                 )
                 .optional(),
@@ -22,33 +21,44 @@ const BootstrapQuestionsSchema = z
                 .optional(),
             type: z.string(),
             title: z.string(),
+            onConfirm: z
+                .array(
+                    z.object({
+                        action: z.string(),
+                        prop: z.string().optional(),
+                        path: z.string(),
+                    })
+                )
+                .optional(),
         })
     )
     .describe('Defines list of custom bootstrap questions');
 
+const BootstrapConfig = z
+    .object({
+        bootstrapQuestions: BootstrapQuestionsSchema,
+        rnvNewPatchDependencies: z
+            .optional(NpmDep)
+            .describe(
+                'This ensures that the correct version of the npm packages will be used to run the project for the first time after creation'
+            ),
+        configModifiers: z.object({
+            engines: z.array(
+                z.object({
+                    name: z.string(),
+                    supportedPlatforms: z.array(z.string()),
+                    nullifyIfFalse: z.boolean().optional(),
+                })
+            ),
+        }),
+    })
+    .partial();
+
 export const RootTemplateSchema = z.object({
     defaults: z.optional(DefaultsSchema),
     engines: z.optional(EnginesSchema),
-    templateConfig: z
-        .object({
-            includedPaths: z
-                .array(z.string())
-                .describe('Defines list of all file/dir paths you want to include in template')
-                .optional(),
-            bootstrapQuestions: BootstrapQuestionsSchema,
-            packageTemplate: z.optional(
-                z.object({
-                    dependencies: z.optional(NpmDep),
-                    devDependencies: z.optional(NpmDep),
-                    peerDependencies: z.optional(NpmDep),
-                    optionalDependencies: z.optional(NpmDep),
-                    name: z.string().optional(),
-                    version: z.string().optional(),
-                })
-            ),
-        })
-        .describe('Used in `renative.template.json` allows you to define template behaviour.')
-        .optional(),
+    templateConfig: TemplateConfig.optional(),
+    bootstrapConfig: BootstrapConfig.optional(),
 });
 
 // {

@@ -22,14 +22,21 @@ let executedTasks: Record<string, number> = {};
 
 const CUSTOM_TASKS: RnvTaskMap = {};
 
-export const registerCustomTask = async (_c: RnvContext, task: RnvTask) => {
+export const registerCustomTask = async (task: RnvTask) => {
     if (task.task) {
         CUSTOM_TASKS[task.task] = task;
     }
 };
 
-export const initializeTask = async (c: RnvContext, task: string) => {
+export const initializeTask = async (task: string) => {
     logDefault('initializeTask', task);
+    const c = getContext();
+
+    logInfo(
+        `Current engine: ${chalk().bold(c.runtime.engine?.config.id)} ${chalk().grey(
+            `(${c.runtime.engine?.rootPath})`
+        )}`
+    );
     c.runtime.task = task;
     executedTasks = {};
 
@@ -38,7 +45,7 @@ export const initializeTask = async (c: RnvContext, task: string) => {
         platform: c.platform,
     });
 
-    await executeTask(c, task, undefined, task, true);
+    await executeTask(task, undefined, task, true);
     return true;
 };
 
@@ -89,8 +96,8 @@ const _getTaskObj = (taskInstance: RnvTask) => {
     };
 };
 
-export const getAllSuitableTasks = (c: RnvContext): Record<string, TaskPromptOption> => {
-    const REGISTERED_ENGINES = getRegisteredEngines(c);
+export const getAllSuitableTasks = (): Record<string, TaskPromptOption> => {
+    const REGISTERED_ENGINES = getRegisteredEngines();
     const suitableTasks: Record<string, TaskPromptOption> = {};
 
     REGISTERED_ENGINES.forEach((engine) => {
@@ -118,13 +125,30 @@ export const getAllSuitableTasks = (c: RnvContext): Record<string, TaskPromptOpt
     return suitableTasks;
 };
 
-export const findSuitableTask = async (c: RnvContext, specificTask?: string): Promise<RnvTask | undefined> => {
+export const findSuitableGlobalTask = async () => {
+    const c = getContext();
+    if (!c.command) return undefined;
+    let task = '';
+
+    if (c.command) task = c.command;
+    if (c.subCommand) task += ` ${c.subCommand}`;
+
+    c.runtime.engine = getEngineRunner(task, undefined, false);
+
+    const tsk = getEngineTask(task, c.runtime.engine?.tasks);
+
+    return tsk;
+};
+
+export const findSuitableTask = async (specificTask?: string): Promise<RnvTask | undefined> => {
     logDefault('findSuitableTask');
-    const REGISTERED_ENGINES = getRegisteredEngines(c);
+    const c = getContext();
+
+    const REGISTERED_ENGINES = getRegisteredEngines();
     let task = '';
     if (!specificTask) {
         if (!c.command) {
-            const suitableTasks = getAllSuitableTasks(c);
+            const suitableTasks = getAllSuitableTasks();
 
             const taskInstances = Object.values(suitableTasks);
             let tasks: TaskPromptOption[];
@@ -184,16 +208,15 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
         if (c.command) task = c.command;
         if (c.subCommand) task += ` ${c.subCommand}`;
 
-        let suitableEngines = REGISTERED_ENGINES.filter((engine) =>
-            hasEngineTask(task, engine.tasks, c.paths.project.configExists)
-        );
+        let suitableEngines = REGISTERED_ENGINES.filter((engine) => {
+            return hasEngineTask(task, engine.tasks, c.paths.project.configExists);
+        });
 
         const autocompleteEngines = REGISTERED_ENGINES.filter(
             (engine) => getEngineSubTasks(task, engine.tasks, true).length
         );
 
         const isAutoComplete = !suitableEngines.length && !!c.command && !autocompleteEngines.length;
-
         if (!suitableEngines.length) {
             // Get all supported tasks
             const supportedSubtasksArr: Array<{
@@ -201,8 +224,11 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
                 taskKey: string;
             }> = [];
             REGISTERED_ENGINES.forEach((engine) => {
-                getEngineSubTasks(task, engine.tasks).forEach((taskInstance) => {
+                const st = getEngineSubTasks(task, engine.tasks);
+
+                st.forEach((taskInstance) => {
                     const isNotViable = !c.paths.project.configExists && !taskInstance.isGlobalScope;
+
                     if (!isNotViable) {
                         const taskKey = isAutoComplete ? taskInstance.task : taskInstance.task.split(' ')[1];
 
@@ -247,12 +273,13 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
                 };
             });
 
-            const message = isAutoComplete
-                ? `Autocomplete action for "${c.command}"`
-                : `Pick a subCommand for ${c.command}`;
-
             const subTasks = Object.keys(supportedSubtasks);
-            if (subTasks.length) {
+            if (subTasks.length && c.runtime.hasAllEnginesRegistered) {
+                // Only offer autocomple option if all engines are registered
+
+                const message = isAutoComplete
+                    ? `Autocomplete action for "${c.command}"`
+                    : `Pick a subCommand for ${c.command}`;
                 const { subCommand } = await inquirerPrompt({
                     type: 'list',
                     name: 'subCommand',
@@ -278,41 +305,35 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
                 );
             }
         }
-
         if (CUSTOM_TASKS[task]) {
             // Custom tasks are executed by core engine
-            logInfo(`Running custom task ${task}`);
+            logInfo(`Running custom task ${chalk().bold(task)}`);
         } else if (!suitableEngines.length) {
             if (!c.runtime.hasAllEnginesRegistered) {
                 // No platform was specified. we have no option other than load all engines and offer platform list next round
-                await registerAllPlatformEngines(c);
-                return findSuitableTask(c);
+                await registerAllPlatformEngines();
+                return findSuitableTask();
             }
 
             logInfo(`could not find suitable task for ${chalk().bold(c.command)}. GETTING OPTIONS...`);
             c.command = null;
             c.subCommand = null;
-            return findSuitableTask(c);
+            return findSuitableTask();
         }
         //TODO: special type case for c.platform
         if (!c.platform || c.program.platform === true) {
             await _selectPlatform(c, suitableEngines, task);
         }
-        c.runtime.engine = getEngineRunner(c, task, CUSTOM_TASKS, false);
+        c.runtime.engine = getEngineRunner(task, CUSTOM_TASKS, false);
         // Cover scenarios of -p xxxxxxxxx
         if (!c.runtime.engine) {
             await _selectPlatform(c, suitableEngines, task);
-            c.runtime.engine = getEngineRunner(c, task, CUSTOM_TASKS);
+            c.runtime.engine = getEngineRunner(task, CUSTOM_TASKS);
         }
         if (c.runtime.engine?.runtimeExtraProps) {
             c.runtime.runtimeExtraProps = c.runtime.engine.runtimeExtraProps;
         }
 
-        logInfo(
-            `Current Engine: ${chalk().bold(c.runtime.engine?.config.id)} path: ${chalk().grey(
-                c.runtime.engine?.rootPath
-            )}`
-        );
         const customTask = CUSTOM_TASKS[task];
         if (customTask) {
             c.runtime.availablePlatforms = customTask.platforms;
@@ -321,7 +342,7 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
         }
     } else {
         task = specificTask;
-        c.runtime.engine = getEngineRunner(c, task);
+        c.runtime.engine = getEngineRunner(task);
     }
     const plats = c.runtime.engine?.platforms || [];
     c.runtime.availablePlatforms = Object.keys(plats) as PlatformKey[];
@@ -380,17 +401,12 @@ const _selectPlatform = async (c: RnvContext, suitableEngines: Array<RnvEngine>,
 };
 
 const _executePipe = async (c: RnvContext, task: string, phase: string) =>
-    executePipe(c, `${task.split(' ').join(':')}:${phase}`);
+    executePipe(`${task.split(' ').join(':')}:${phase}`);
 
 const TASK_LIMIT = 20;
 
-export const executeTask = async (
-    c: RnvContext,
-    task: string,
-    parentTask?: string,
-    originTask?: string,
-    isFirstTask?: boolean
-) => {
+export const executeTask = async (task: string, parentTask?: string, originTask?: string, isFirstTask?: boolean) => {
+    const c = getContext();
     // const pt = parentTask ? `=> [${parentTask}] ` : '';
     c._currentTask = task;
     // logInitTask(`${pt}=> [${chalk().bold.rgb(170, 106, 170)(task)}]`);
@@ -405,15 +421,8 @@ but issue migh not be necessarily with this task
 
 To avoid that test your task code against parentTask and avoid executing same task X from within task X`);
     }
-    await executeEngineTask(
-        c,
-        task,
-        parentTask,
-        originTask,
-        getEngineRunner(c, task, CUSTOM_TASKS)?.tasks,
-        isFirstTask
-    );
-    // await getEngineRunner(c, task, CUSTOM_TASKS).executeTask(c, task, parentTask, originTask, isFirstTask);
+    await executeEngineTask(task, parentTask, originTask, getEngineRunner(task, CUSTOM_TASKS)?.tasks, isFirstTask);
+    // await getEngineRunner(task, CUSTOM_TASKS).executeTask(task, parentTask, originTask, isFirstTask);
     executedTasks[task]++;
 
     c._currentTask = parentTask;
@@ -424,11 +433,12 @@ To avoid that test your task code against parentTask and avoid executing same ta
 /**
  * @deprecated Use executeDependantTask instead
  */
-export const executeOrSkipTask = async (c: RnvContext, task: string, parentTask: string, originTask?: string) => {
+export const executeOrSkipTask = async (task: string, parentTask: string, originTask?: string) => {
+    const c = getContext();
     if (!c.program.only) {
-        return executeTask(c, task, parentTask, originTask);
+        return executeTask(task, parentTask, originTask);
     }
-    return executeTask(c, 'configureSoft', parentTask, originTask);
+    return executeTask('configureSoft', parentTask, originTask);
 };
 
 export const executeDependantTask = async ({
@@ -444,10 +454,10 @@ export const executeDependantTask = async ({
 }) => {
     const ctx = getContext();
     if (!ctx.program.only) {
-        return executeTask(ctx, task, parentTask, originTask);
+        return executeTask(task, parentTask, originTask);
     }
     if (alternativeTask) {
-        return executeTask(ctx, alternativeTask, parentTask, originTask);
+        return executeTask(alternativeTask, parentTask, originTask);
     }
     return true;
 };
@@ -460,7 +470,8 @@ const _logSkip = (task: string) => {
     logInfo(`Original RNV task ${chalk().bold(task)} marked to ignore. SKIPPING...`);
 };
 
-export const shouldSkipTask = (c: RnvContext, taskKey: string, originRnvTaskName?: string) => {
+export const shouldSkipTask = (taskKey: string, originRnvTaskName?: string) => {
+    const c = getContext();
     const task = taskKey as RenativeConfigRnvTaskName;
     const originTask = originRnvTaskName as RenativeConfigRnvTaskName;
     const tasks = c.buildConfig?.tasks;
@@ -527,13 +538,13 @@ export const shouldSkipTask = (c: RnvContext, taskKey: string, originRnvTaskName
 };
 
 export const executeEngineTask = async (
-    c: RnvContext,
     task: string,
     parentTask?: string,
     originTask?: string,
     tasks?: Record<string, RnvTask>,
     isFirstTask?: boolean
 ) => {
+    const c = getContext();
     const needsHelp = Object.prototype.hasOwnProperty.call(c.program, 'help');
 
     const t = getEngineTask(task, tasks, CUSTOM_TASKS);
@@ -566,7 +577,7 @@ ${t.options
     if (t && !t.isGlobalScope && isFirstTask) {
         if (c.files.project.package) {
             // This has to happen in order for hooks to be able to run
-            await checkIfProjectAndNodeModulesExists(c);
+            await checkIfProjectAndNodeModulesExists();
         }
     }
     if (isFirstTask) {

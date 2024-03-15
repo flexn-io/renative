@@ -21,6 +21,7 @@ const ENGINE_CORE = 'engine-core';
 export const registerEngine = async (engine: RnvEngine, platform?: RnvPlatform, engConfig?: RnvEngineTemplate) => {
     const c = getContext();
     logDefault(`registerEngine:${engine.config.id}`);
+
     c.runtime.enginesById[engine.config.id] = engine;
 
     c.runtime.enginesByIndex.push(engine);
@@ -117,8 +118,10 @@ export const configureEngines = async (c: RnvContext) => {
     return true;
 };
 
-export const registerMissingPlatformEngines = async (c: RnvContext, taskInstance?: RnvTask) => {
+export const registerMissingPlatformEngines = async (taskInstance?: RnvTask) => {
     logDefault('registerMissingPlatformEngines');
+    const c = getContext();
+
     if (
         !taskInstance ||
         (!taskInstance.isGlobalScope && taskInstance?.platforms?.length === 0) ||
@@ -137,8 +140,10 @@ export const registerMissingPlatformEngines = async (c: RnvContext, taskInstance
     return true;
 };
 
-export const registerAllPlatformEngines = async (c: RnvContext) => {
+export const registerAllPlatformEngines = async () => {
+    const c = getContext();
     logDefault('registerAllPlatformEngines');
+
     if (!c.buildConfig?.defaults?.supportedPlatforms?.forEach) {
         c.runtime.hasAllEnginesRegistered = true;
         return true;
@@ -155,8 +160,10 @@ export const registerAllPlatformEngines = async (c: RnvContext) => {
     return true;
 };
 
-export const loadEnginePluginDeps = async (c: RnvContext, engineConfigs: Array<RnvEngineInstallConfig>) => {
+export const loadEnginePluginDeps = async (engineConfigs: Array<RnvEngineInstallConfig>) => {
     logDefault('loadEnginePluginDeps');
+    const c = getContext();
+
     if (c.files.project.config?.isTemplate) return 0;
 
     const cnf = c.files.project.config_original;
@@ -204,14 +211,16 @@ If you don't want to use this dependency make sure you remove platform which req
             logInfo(`Adding ${addedPluginsKeys.join(',')}. ...DONE`);
             // Prepare original file to be decorated (as addon plugins as we can't edit template itself)
             cnf.plugins = originalProjectPlugins;
-            writeRenativeConfigFile(c, c.paths.project.config, cnf);
+            writeRenativeConfigFile(c.paths.project.config, cnf);
         }
     }
     return Object.keys(addedPlugins).length;
 };
 
-export const loadEnginePackageDeps = async (c: RnvContext, engineConfigs: Array<RnvEngineInstallConfig>) => {
+export const loadEnginePackageDeps = async (engineConfigs: Array<RnvEngineInstallConfig>) => {
     logDefault('loadEnginePackageDeps');
+    const c = getContext();
+
     if (c.program.skipDependencyCheck || c.files.project.config?.isTemplate) return 0;
     // Check engine dependencies
     const addedDeps = [];
@@ -224,7 +233,7 @@ export const loadEnginePackageDeps = async (c: RnvContext, engineConfigs: Array<
                     const deps = c.files.project.package.devDependencies || {};
                     Object.keys(npm.devDependencies).forEach((k) => {
                         if (!deps[k]) {
-                            const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');
+                            const isMonorepo = getConfigProp('isMonorepo');
                             if (isMonorepo) {
                                 logInfo(
                                     `Engine ${ecf.key} requires npm devDependency ${k} for platform ${platform}. project marked as monorepo. SKIPPING`
@@ -355,8 +364,10 @@ const getScopedVersion = (
     return null;
 };
 
-export const loadEngines = async (c: RnvContext, failOnMissingDeps?: boolean): Promise<boolean> => {
+export const loadEngines = async (failOnMissingDeps?: boolean): Promise<boolean> => {
     logDefault('loadEngines');
+    const c = getContext();
+
     if (!fsExistsSync(c.paths.project.config)) return true;
 
     const filteredEngines: Record<string, string> = _getFilteredEngines(c);
@@ -378,6 +389,7 @@ export const loadEngines = async (c: RnvContext, failOnMissingDeps?: boolean): P
             }
         } else {
             readyEngines.push(k);
+            logInfo(`Load engine: ${k} ${chalk().gray(`(${engineRootPath})`)}`);
             engineConfigs.push({
                 key: k,
                 engineRootPath,
@@ -395,7 +407,7 @@ ${enginesToInstall.map((v) => `> ${v.key}@${v.version} path: ${v.engineRootPath}
 ${enginesToInstall.map((v) => `> ${v.key}@${v.version}`).join('\n')}
  ADDING TO PACKAGE.JSON...DONE`);
 
-        await checkAndCreateProjectPackage(c);
+        await checkAndCreateProjectPackage();
         const pkg = c.files.project.package;
         const devDeps = pkg.devDependencies || {};
         pkg.devDependencies = devDeps;
@@ -406,17 +418,17 @@ ${enginesToInstall.map((v) => `> ${v.key}@${v.version}`).join('\n')}
         });
         writeFileSync(c.paths.project.package, c.files.project.package);
 
-        await installPackageDependencies(c);
-        return loadEngines(c, true);
+        await installPackageDependencies();
+        return loadEngines(true);
     }
-    const plugDepsCount = await loadEnginePluginDeps(c, engineConfigs);
-    const pkgDepsCount = await loadEnginePackageDeps(c, engineConfigs);
+    const plugDepsCount = await loadEnginePluginDeps(engineConfigs);
+    const pkgDepsCount = await loadEnginePackageDeps(engineConfigs);
 
     if (plugDepsCount + pkgDepsCount > 0) {
         c.runtime._skipPluginScopeWarnings = true;
-        await configurePlugins(c); // TODO: This is too early as scoped plugin have not been installed
+        await configurePlugins(); // TODO: This is too early as scoped plugin have not been installed
         c.runtime._skipPluginScopeWarnings = false;
-        await installPackageDependencies(c);
+        await installPackageDependencies();
     }
 
     // All engines ready to be registered
@@ -459,7 +471,7 @@ const _resolvePkgPath = (c: RnvContext, packageName: string) => {
     if (fsExistsSync(pkgPath)) {
         return pkgPath;
     }
-    const monoRoot = getConfigProp(c, c.platform, 'monoRoot');
+    const monoRoot = getConfigProp('monoRoot');
     pkgPath = path.join(c.paths.project.dir, monoRoot || '../..', 'node_modules', packageName);
     if (fsExistsSync(pkgPath)) {
         return pkgPath;
@@ -471,8 +483,10 @@ const _resolvePkgPath = (c: RnvContext, packageName: string) => {
 
 const _registerPlatformEngine = async (c: RnvContext, platform: RnvPlatform | boolean): Promise<void> => {
     // Only register active platform engine to be faster
+
     if (platform === true || !platform) return;
-    const selectedEngineTemplate = getEngineTemplateByPlatform(c, platform);
+    const selectedEngineTemplate = getEngineTemplateByPlatform(platform);
+
     if (selectedEngineTemplate) {
         const existingEngine = c.runtime.enginesById[selectedEngineTemplate.id];
         if (!existingEngine) {
@@ -492,8 +506,10 @@ Maybe you forgot to define platforms.${platform}.engine in your renative.json?`)
     }
 };
 
-export const getEngineRunnerByPlatform = (c: RnvContext, platform: RnvPlatform, ignoreMissingError?: boolean) => {
+export const getEngineRunnerByPlatform = (platform: RnvPlatform, ignoreMissingError?: boolean) => {
     if (!platform) return undefined;
+    const c = getContext();
+
     const selectedEngine = c.runtime.enginesByPlatform[platform];
     if (!selectedEngine && !ignoreMissingError) {
         logDebug(`ERROR: Engine for platform: ${platform} does not exists or is not registered ${new Error()}`);
@@ -521,9 +537,13 @@ export const hasEngineTask = (task: string, tasks: RnvTaskMap, isProjectScope?: 
     isProjectScope ? !!getEngineTask(task, tasks) : getEngineTask(task, tasks)?.isGlobalScope;
 
 export const getEngineSubTasks = (task: string, tasks: RnvTaskMap, exactMatch?: boolean) =>
-    Object.values(tasks).filter((v) => (exactMatch ? v.task.split(' ')[0] === task : v.task.startsWith(task)));
+    Object.values(tasks).filter((v) =>
+        exactMatch ? v.task.split(' ')[0] === task : v.task.split(' ')[0].startsWith(task)
+    );
 
-export const getEngineRunner = (c: RnvContext, task: string, customTasks?: RnvTaskMap, failOnMissingEngine = true) => {
+export const getEngineRunner = (task: string, customTasks?: RnvTaskMap, failOnMissingEngine = true) => {
+    const c = getContext();
+
     if (customTasks?.[task]) {
         return c.runtime.enginesById[ENGINE_CORE];
     }
@@ -552,4 +572,4 @@ export const getEngineRunner = (c: RnvContext, task: string, customTasks?: RnvTa
     return undefined;
 };
 
-export const getRegisteredEngines = (c: RnvContext) => c.runtime.enginesByIndex;
+export const getRegisteredEngines = () => getContext().runtime.enginesByIndex;

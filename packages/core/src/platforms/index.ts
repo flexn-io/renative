@@ -3,13 +3,15 @@ import { chalk, logDefault, logError, logWarning, logDebug } from '../logger';
 import { cleanFolder, copyFolderContentsRecursiveSync } from '../system/fs';
 import { getTimestampPathsConfig, getAppFolder } from '../context/contextProps';
 import { SUPPORTED_PLATFORMS } from '../constants';
-import type { RnvContext } from '../context/types';
 import { generateOptions, inquirerPrompt } from '../api';
 import type { RnvPlatform, RnvPlatformWithAll } from '../types';
 import { updateProjectPlatforms } from '../configs/configProject';
 import { doResolve } from '../system/resolve';
+import { getContext } from '../context/provider';
 
-export const logErrorPlatform = (c: RnvContext) => {
+export const logErrorPlatform = () => {
+    const c = getContext();
+
     logError(
         `Platform: ${chalk().bold(c.platform)} doesn't support command: ${chalk().bold(c.command)}`,
         true // kill it if we're not supporting this
@@ -17,7 +19,9 @@ export const logErrorPlatform = (c: RnvContext) => {
     return false;
 };
 
-export const generatePlatformChoices = (c: RnvContext) => {
+export const generatePlatformChoices = () => {
+    const c = getContext();
+
     const options = c.runtime.supportedPlatforms.map((v) => ({
         name: `${v.platform} - ${
             v.isConnected ? chalk().green('(connected)') : chalk().yellow('(ejected)')
@@ -28,31 +32,34 @@ export const generatePlatformChoices = (c: RnvContext) => {
     return options;
 };
 
-export const cleanPlatformBuild = async (c: RnvContext, platform: RnvPlatform) => {
+export const cleanPlatformBuild = async (platform: RnvPlatform) => {
     logDebug('cleanPlatformBuild');
+
+    const c = getContext();
 
     const cleanTasks = [];
 
     if ((platform as RnvPlatformWithAll) === 'all' && c.buildConfig.platforms) {
         Object.keys(c.buildConfig.platforms).forEach((k) => {
-            if (isPlatformSupportedSync(c, k as RnvPlatform)) {
+            if (isPlatformSupportedSync(k as RnvPlatform)) {
                 const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${k}`);
                 cleanTasks.push(cleanFolder(pPath));
             }
         });
-    } else if (isPlatformSupportedSync(c, platform)) {
-        const pPath = getAppFolder(c);
+    } else if (isPlatformSupportedSync(platform)) {
+        const pPath = getAppFolder();
         cleanTasks.push(cleanFolder(pPath));
     }
 
     await Promise.all(cleanTasks);
 };
 
-export const createPlatformBuild = (c: RnvContext, platform: RnvPlatform) =>
+export const createPlatformBuild = (platform: RnvPlatform) =>
     new Promise<void>((resolve, reject) => {
         logDefault('createPlatformBuild');
+        const c = getContext();
 
-        if (!platform || !isPlatformSupportedSync(c, platform, undefined, reject)) return;
+        if (!platform || !isPlatformSupportedSync(platform, undefined, reject)) return;
 
         const ptDir = c.paths.project.platformTemplatesDirs[platform];
         if (!ptDir) {
@@ -60,7 +67,7 @@ export const createPlatformBuild = (c: RnvContext, platform: RnvPlatform) =>
             return;
         }
 
-        const pPath = getAppFolder(c);
+        const pPath = getAppFolder();
         const ptPath = path.join(ptDir, `${platform}`);
 
         copyFolderContentsRecursiveSync(
@@ -78,14 +85,16 @@ export const createPlatformBuild = (c: RnvContext, platform: RnvPlatform) =>
                         }) || '',
                 },
             ],
-            getTimestampPathsConfig(c, platform),
+            getTimestampPathsConfig(),
             c
         );
 
         resolve();
     });
 
-export const isPlatformSupported = async (c: RnvContext, isGlobalScope = false) => {
+export const isPlatformSupported = async (isGlobalScope = false) => {
+    const c = getContext();
+
     if (c.platform && c.program.platform !== true && isGlobalScope) {
         return c.platform;
     }
@@ -122,7 +131,7 @@ export const isPlatformSupported = async (c: RnvContext, isGlobalScope = false) 
 
         if (confirm) {
             const newPlatforms = [...configuredPlatforms, c.platform];
-            updateProjectPlatforms(c, newPlatforms);
+            updateProjectPlatforms(newPlatforms);
             c.buildConfig.defaults = c.buildConfig.defaults || {};
             c.buildConfig.defaults.supportedPlatforms = newPlatforms;
             // await configureEntryPoints(c);
@@ -134,12 +143,7 @@ export const isPlatformSupported = async (c: RnvContext, isGlobalScope = false) 
     return c.platform;
 };
 
-export const isPlatformSupportedSync = (
-    c: RnvContext,
-    platform: RnvPlatform,
-    resolve?: () => void,
-    reject?: (e: string) => void
-) => {
+export const isPlatformSupportedSync = (platform: RnvPlatform, resolve?: () => void, reject?: (e: string) => void) => {
     if (!platform) {
         if (reject) {
             reject(
@@ -153,6 +157,8 @@ export const isPlatformSupportedSync = (
         }
         return false;
     }
+    const c = getContext();
+
     if (!c.runtime.availablePlatforms.includes(platform)) {
         if (reject) {
             reject(
@@ -169,7 +175,10 @@ export const isPlatformSupportedSync = (
     return true;
 };
 
-export const isPlatformActive = (c: RnvContext, platform: RnvPlatform, resolve?: () => void) => {
+export const isPlatformActive = (resolve?: () => void) => {
+    const c = getContext();
+    const { platform } = c;
+
     if (!c.buildConfig || !c.buildConfig.platforms) {
         logError(
             `Your appConfigFile is not configured properly! check ${chalk().bold(c.paths.appConfig.config)} location.`
@@ -184,21 +193,25 @@ export const isPlatformActive = (c: RnvContext, platform: RnvPlatform, resolve?:
     }
     return true;
 };
-export const copySharedPlatforms = (c: RnvContext) =>
+export const copySharedPlatforms = () =>
     new Promise<void>((resolve) => {
+        const c = getContext();
+
         logDefault('copySharedPlatforms');
 
         if (c.platform) {
             copyFolderContentsRecursiveSync(
                 path.resolve(c.paths.project.platformTemplatesDirs[c.platform], '_shared'),
-                getAppFolder(c)
+                getAppFolder()
             );
         }
 
         resolve();
     });
 
-export const ejectPlatform = (c: RnvContext, platform: string) => {
+export const ejectPlatform = (platform: string) => {
+    const c = getContext();
+
     const engine = c.runtime.enginesByPlatform[platform];
     const destDir = path.join(c.paths.project.dir, 'platformTemplates', platform);
     const sourcePlatformDir = engine.originalTemplatePlatformsDir;

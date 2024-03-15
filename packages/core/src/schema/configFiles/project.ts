@@ -1,6 +1,6 @@
 import { AnyZodObject, z } from 'zod';
 import { CommonSchema } from '../common';
-import { Ext, ExtendTemplate, PlatformsKeys, Runtime } from '../shared';
+import { Ext, ExtendTemplate, PlatformsKeys, Runtime, TemplateConfig } from '../shared';
 import { PlatformsSchema } from '../platforms';
 import { PluginsSchema } from '../plugins';
 
@@ -205,6 +205,12 @@ const Paths = z
     })
     .describe('Define custom paths for RNV to look into');
 
+const UseTemplate = z.object({
+    name: z.string(),
+    version: z.string(),
+    excludedPaths: z.optional(z.array(z.string())),
+});
+
 //LEVEl 0 (ROOT)
 
 const RootProjectBaseFragment = {
@@ -212,6 +218,7 @@ const RootProjectBaseFragment = {
     projectVersion: z.string(),
     projectName: ProjectName,
     isMonorepo: z.optional(IsMonoRepo),
+    useTemplate: z.optional(UseTemplate),
     isTemplate: z.boolean().optional(),
     defaults: z.optional(DefaultsSchema),
     pipes: z.optional(Pipes),
@@ -229,6 +236,7 @@ const RootProjectBaseFragment = {
     integrations: z.optional(Integrations),
     env: z.optional(Env),
     runtime: z.optional(Runtime),
+    templateConfig: TemplateConfig.optional(),
     skipAutoUpdate: z
         .boolean()
         .optional()

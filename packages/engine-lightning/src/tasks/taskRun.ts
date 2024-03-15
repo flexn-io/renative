@@ -17,14 +17,14 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { hosted } = c.program;
     logTask('taskRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
-    await executeOrSkipTask(c, RnvTaskName.configure, RnvTaskName.run, originTask);
+    await executeOrSkipTask(RnvTaskName.configure, RnvTaskName.run, originTask);
 
     switch (platform) {
         case 'tizen':
         case 'webos':
-            return runLightningProject(c);
+            return runLightningProject();
         default:
-            return logErrorPlatform(c);
+            return logErrorPlatform();
     }
 };
 
@@ -39,6 +39,7 @@ const Task: RnvTask = {
     fn: taskRun,
     fnHelp: taskRunHelp,
     task: RnvTaskName.run,
+    isPriorityOrder: true,
     // dependencies: {
     //     before: RnvTaskName.configure,
     // },

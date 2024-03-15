@@ -11,10 +11,10 @@ import {
     RnvTaskName,
 } from '@rnv/core';
 
-const taskWorkspaceAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
+const taskWorkspaceAdd: RnvTaskFn = async (_c, _parentTask, originTask) => {
     logTask('taskWorkspaceAdd');
 
-    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.workspaceAdd, originTask);
+    await executeTask(RnvTaskName.projectConfigure, RnvTaskName.workspaceAdd, originTask);
 
     const { workspace } = await inquirerPrompt({
         name: 'workspace',
@@ -43,7 +43,7 @@ const taskWorkspaceAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
     });
 
     workspaceID = workspaceIDInput || workspaceID;
-    createWorkspace(c, workspaceID, workspacePath);
+    createWorkspace(workspaceID, workspacePath);
 
     return true;
 };

@@ -25,7 +25,7 @@ const taskInstall: RnvTaskFn = async (c, parentTask, _) => {
             logInfo('node_modules folder is out of date. INSTALLING...');
         }
         c._requiresNpmInstall = false;
-        await installPackageDependenciesAndPlugins(c);
+        await installPackageDependenciesAndPlugins();
     }
     return true;
 };

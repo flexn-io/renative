@@ -52,7 +52,7 @@ const taskCryptoDecrypt: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskCryptoDecrypt');
 
     if (!parentTask) {
-        await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.cryptoDecrypt, originTask);
+        await executeTask(RnvTaskName.projectConfigure, RnvTaskName.cryptoDecrypt, originTask);
     }
 
     const crypto = c.files.project.config?.crypto;
@@ -60,10 +60,10 @@ const taskCryptoDecrypt: RnvTaskFn = async (c, parentTask, originTask) => {
     const projectName = c.files.project.config?.projectName;
 
     if (!crypto?.isOptional && sourceRaw) {
-        const envVar = getEnvVar(c);
+        const envVar = getEnvVar();
         if (!projectName || !envVar) return;
 
-        const source = `${getRealPath(c, sourceRaw, 'crypto.path')}`;
+        const source = `${getRealPath(sourceRaw, 'crypto.path')}`;
         const ts = `${source}.timestamp`;
         const destFolder = path.join(c.paths.workspace.dir, projectName);
         const destTemp = `${path.join(c.paths.workspace.dir, projectName.replace('/', '-'))}.tgz`;

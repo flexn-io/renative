@@ -14,7 +14,7 @@ const SDKsSchema = z
 // ANDROID_NDK: '~/Library/Android/sdk/ndk-bundle',
 // TIZEN_SDK: '~/tizen-studio',
 // WEBOS_SDK: '/opt/webOS_TV_SDK',
-// KAIOS_SDK: '/Applications/Kaiosrt.app',
+// KAIOS_SDK: '~/Applications/KaiosSimulators',
 
 //LEVEl 0 (ROOT)
 

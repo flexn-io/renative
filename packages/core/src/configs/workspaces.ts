@@ -8,7 +8,8 @@ import { RnvContext } from '../context/types';
 import { generateOptions, inquirerPrompt } from '../api';
 import { ConfigFileWorkspace, ConfigFileWorkspaces } from '../schema/configFiles/types';
 
-export const createWorkspace = async (c: RnvContext, workspaceID: string, workspacePath: string) => {
+export const createWorkspace = async (workspaceID: string, workspacePath: string) => {
+    const c = getContext();
     const cnf = c.files.rnv.configWorkspaces;
 
     if (!cnf) return;
@@ -63,7 +64,7 @@ export const getWorkspaceDirPath = async (c: RnvContext) => {
                     c.runtime.isWSConfirmed = true;
                 }
                 if (confirm) {
-                    await createWorkspace(c, ws, wsDir);
+                    await createWorkspace(ws, wsDir);
                 }
             }
         }

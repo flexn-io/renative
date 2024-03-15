@@ -18,6 +18,7 @@ import {
     ConfigProp,
     _getConfigProp,
     ConfigFileBuildConfig,
+    getContext,
 } from '@rnv/core';
 import { Context } from './types';
 import { getBuildFilePath, getAppId, addSystemInjects } from '@rnv/sdk-utils';
@@ -114,7 +115,7 @@ const _mergeNodeParameters = (
         const key = k as NodeKey;
         const val = nodeParamsExt[key];
 
-        if (val && !SYSTEM_TAGS.includes(k)) {
+        if (val !== 'undefined' && !SYSTEM_TAGS.includes(k)) {
             //TODO: fix this
             (node as Record<string, any>)[key] = val;
         }
@@ -161,7 +162,7 @@ const _mergeFeatures = (
     configKey: 'includedFeatures' | 'excludedFeatures',
     value: boolean
 ) => {
-    const features = getConfigProp(c, c.platform, configKey);
+    const features = getConfigProp(configKey);
 
     if (features) {
         const featuresObj: Array<AndroidManifestNode> = [];
@@ -202,7 +203,7 @@ const getConfigPropArray = <T extends ConfigPropKey>(c: RnvContext, platform: Rn
     configArr.forEach((config) => {
         if (config) {
             //TODO: this is bit of a hack. _getConfigProp expectes already merged obj needs to be redone
-            const val = _getConfigProp(c, platform, key, null, config as ConfigFileBuildConfig);
+            const val = _getConfigProp(c, key, null, config as ConfigFileBuildConfig);
             if (val) {
                 result.push(val);
             }
@@ -212,7 +213,8 @@ const getConfigPropArray = <T extends ConfigPropKey>(c: RnvContext, platform: Rn
     return result;
 };
 
-export const parseAndroidManifestSync = (c: Context) => {
+export const parseAndroidManifestSync = () => {
+    const c = getContext();
     logDefault('parseAndroidManifestSync');
     const { platform } = c;
 
@@ -226,7 +228,7 @@ export const parseAndroidManifestSync = (c: Context) => {
             return;
         }
 
-        baseManifestFile.package = getAppId(c, platform);
+        baseManifestFile.package = getAppId();
 
         const objArr = getConfigPropArray(c, c.platform, 'templateAndroid');
 
@@ -240,11 +242,10 @@ export const parseAndroidManifestSync = (c: Context) => {
                 _mergeNodeChildren(baseManifestFile, manifestObj.children);
             }
         });
-        //TODO: Should be mark as deprecated
 
         // appConfigs/base/plugins.json PLUGIN CONFIG OVERRIDES
-        parsePlugins(c, platform, (_plugin, pluginPlat) => {
-            const androidManifestPlugin = getFlavouredProp(c, pluginPlat, 'templateAndroid')?.AndroidManifest_xml;
+        parsePlugins((_plugin, pluginPlat) => {
+            const androidManifestPlugin = getFlavouredProp(pluginPlat, 'templateAndroid')?.AndroidManifest_xml;
             if (androidManifestPlugin) {
                 _mergeNodeChildren(baseManifestFile, androidManifestPlugin.children);
                 if (androidManifestPlugin.children) {
@@ -256,8 +257,8 @@ export const parseAndroidManifestSync = (c: Context) => {
         // appConfig PERMISSIONS OVERRIDES
         const configPermissions = c.buildConfig?.permissions;
 
-        const includedPermissions = getConfigProp(c, platform, 'includedPermissions');
-        const excludedPermissions = getConfigProp(c, platform, 'excludedPermissions');
+        const includedPermissions = getConfigProp('includedPermissions');
+        const excludedPermissions = getConfigProp('excludedPermissions');
         if (includedPermissions?.forEach && configPermissions) {
             const platPerm = 'android'; //configPermissions[platform] ? platform : 'android';
             const pc = configPermissions[platPerm];
@@ -299,17 +300,11 @@ export const parseAndroidManifestSync = (c: Context) => {
         const manifestFile = 'app/src/main/AndroidManifest.xml';
 
         const injects = [{ pattern: '{{PLUGIN_MANIFEST_FILE}}', override: manifestXml || '' }];
-        addSystemInjects(c, injects);
+        addSystemInjects(injects);
 
-        const appFolder = getAppFolder(c);
+        const appFolder = getAppFolder();
 
-        writeCleanFile(
-            getBuildFilePath(c, platform, manifestFile),
-            path.join(appFolder, manifestFile),
-            injects,
-            undefined,
-            c
-        );
+        writeCleanFile(getBuildFilePath(manifestFile), path.join(appFolder, manifestFile), injects, undefined, c);
 
         return;
     } catch (e) {
