@@ -9,11 +9,11 @@ import styles from '../styles';
 import { addNotificationListeners, removeNotificationListeners } from '../components/Notifications';
 import { requestPermissions } from '../components/Permissions';
 import { TestCase } from '../components/TestCase';
-
 import config from '../../package.json';
 import { LoggerProvider, useLoggerContext } from '../context';
 import { NotificationCallback } from '../components/types';
 import { SafeAreaProvider } from '../components/SafeArea';
+import { PhotoEditorButton } from '../components/PhotoEditor';
 
 // import { observe as observeLogBoxLogs, symbolicateLogNow } from 'react-native/Libraries/LogBox/Data/LogBoxData';
 
@@ -70,7 +70,7 @@ const AppContent = () => {
     const handleRequestPermissions = async () => {
         try {
             const permission = await requestPermissions();
-            logDebug('Permissions:', permission);
+            logDebug(`Permissions: ${permission}`);
         } catch (error) {
             logDebug(`${error}`);
         }
@@ -134,6 +134,9 @@ const AppContent = () => {
                     </TestCase>
                     <TestCase id={6} title="Splash Screen">
                         <Button onPress={() => SplashScreen.show()} title="Show SplashScreen" />
+                    </TestCase>
+                    <TestCase id={7} title="PhotoEditor">
+                        <PhotoEditorButton />
                     </TestCase>
                 </ScrollView>
             </View>

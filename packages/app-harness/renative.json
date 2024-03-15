@@ -49,6 +49,7 @@
                 "forceLinking": true
             }
         },
+        "rn-fetch-blob": { "tvos": { "disabled": true }, "version": "0.12.0" },
         "react-native-carplay": {
             "ios": {
                 "templateXcode": {
@@ -115,8 +116,7 @@
                                         "tag": "activity",
                                         "android:name": "com.ahmedadeltito.photoeditor.PhotoEditorActivity",
                                         "children": []
-                                    },
-                                    { "tag": "activity", "android:name": "com.yalantis.ucrop.UCropActivity" }
+                                    }
                                 ]
                             }
                         ]
@@ -134,10 +134,29 @@
                 "podName": "iOSPhotoEditor",
                 "git": "https://github.com/prscX/photo-editor",
                 "commit": "4924e9ec984d25d03644e58aa148282642171de9",
-                "buildType": "dynamic"
+                "buildType": "dynamic",
+                "templateXcode": {
+                    "Podfile": {
+                        "header": ["plugin 'cocoapods-user-defined-build-types'", "enable_user_defined_build_types!"]
+                    },
+                    "project_pbxproj": {
+                        "resourceFiles": [
+                            "Resources/arrow1.png",
+                            "Resources/arrow2.png",
+                            "Resources/arrow3.png",
+                            "Resources/arrow4.png",
+                            "Resources/arrow5.png"
+                        ],
+                        "sourceFiles": ["RNPhotoEditor/RNPhotoEditor.m"],
+                        "headerFiles": ["RNPhotoEditor/RNPhotoEditor.h"]
+                    }
+                }
+            },
+            "tvos": {
+                "disabled": true
             },
             "pluginDependencies": null,
-            "version": "1.0.13"
+            "version": "github:AppGyver/react-native-photo-editor#v0.1.2"
         },
         "react-native-permissions": {
             "ios": {
@@ -216,6 +235,12 @@
             },
             "NSContactsUsageDescription": {
                 "desc": "Contacts usage description"
+            },
+            "NSPhotoLibraryAddUsageDescription": {
+                "desc": "Application needs permission to write photos..."
+            },
+            "NSPhotoLibraryUsageDescription": {
+                "desc": "iOS 10 needs permission to write photos..."
             }
         }
     }

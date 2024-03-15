@@ -217,7 +217,7 @@ export const runXcodeProject = async (runDeviceArguments?: string) => {
     logDefault('runXcodeProject', `targetArgs:${runDeviceArguments}`);
 
     const appPath = getAppFolder();
-    const schemeTarget = getConfigProp('schemeTarget') || 'RNVApp';
+    const schemeTarget = getConfigProp('schemeTarget') || _getDefaultSchemeTarget(c.platform!);
     const runScheme = getConfigProp('runScheme') || 'Debug';
     const bundleIsDev = getConfigProp('bundleIsDev') === true;
     const bundleAssets = getConfigProp('bundleAssets') === true;
@@ -463,7 +463,7 @@ export const buildXcodeProject = async () => {
 
     const appFolderName = getAppFolderName();
     const runScheme = getConfigProp('runScheme', 'Debug');
-    const schemeTarget = getConfigProp('schemeTarget') || 'RNVApp';
+    const schemeTarget = getConfigProp('schemeTarget') || _getDefaultSchemeTarget(c.platform!);
 
     let destinationPlatform = '';
     switch (c.platform) {
@@ -567,7 +567,8 @@ const archiveXcodeProject = () => {
     const { platform } = c;
 
     const appFolderName = getAppFolderName();
-    const schemeTarget = getConfigProp('schemeTarget', 'RNVApp');
+    const schemeTarget = getConfigProp('schemeTarget', _getDefaultSchemeTarget(c.platform!));
+
     const runScheme = getConfigProp('runScheme', 'Debug');
     let sdk = getConfigProp('sdk');
     if (!sdk) {
@@ -836,3 +837,5 @@ export const configureXcodeProject = async () => {
     await parseXcodeProject();
     return true;
 };
+
+const _getDefaultSchemeTarget = (platform: string) => (platform === 'ios' ? 'RNVApp' : 'RNVApp-tvOS');

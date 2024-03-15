@@ -303,8 +303,10 @@ export const runTizenSimOrDevice = async () => {
         );
     }
 
+    const bundleAssets = getConfigProp('bundleAssets') === true;
     const tDir = getPlatformProjectDir()!;
-    const tBuild = path.join(tDir, 'build');
+    // use build folder only if webpack is used, i.e. bundleAssets is true
+    const tBuild = bundleAssets ? path.join(tDir, 'build') : tDir;
     const intermediate = path.join(tDir, 'intermediate');
     const tOut = path.join(tDir, 'output');
     const tId = getConfigProp('id');
