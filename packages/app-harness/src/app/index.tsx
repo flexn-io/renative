@@ -8,6 +8,7 @@ import styles from '../styles';
 import { addNotificationListeners, removeNotificationListeners } from '../components/Notifications';
 import { requestPermissions } from '../components/Permissions';
 import { TestCase } from '../components/TestCase';
+import { CastButton } from '../components/CastButton';
 
 const App = () => {
     const [showVideo, setShowVideo] = useState(false);
@@ -76,6 +77,9 @@ const App = () => {
                     </TestCase>
                     <TestCase id={5} title="Image Support">
                         <Image source={ICON_LOGO} style={{ width: 100, height: 100 }} />
+                    </TestCase>
+                    <TestCase id={6} title="Cast Support">
+                        <CastButton />
                     </TestCase>
                 </ScrollView>
             </View>
