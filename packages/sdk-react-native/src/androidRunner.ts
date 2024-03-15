@@ -74,6 +74,7 @@ export const packageReactNativeAndroid = async () => {
                 ...CoreEnvVars.RNV_EXTENSIONS(),
                 ...EnvVars.RNV_REACT_NATIVE_PATH(),
                 ...EnvVars.RNV_APP_ID(),
+                ...EnvVars.RNV_SKIP_LINKING(),
             },
         });
 
@@ -110,6 +111,7 @@ export const runReactNativeAndroid = async (device: { udid?: string } | undefine
             ...EnvVars.RCT_METRO_PORT(),
             ...EnvVars.RNV_REACT_NATIVE_PATH(),
             ...EnvVars.RNV_APP_ID(),
+            ...EnvVars.RNV_SKIP_LINKING(),
         },
         cwd: appFolder,
         //This is required to make rn cli logs visible in rnv executed terminal
@@ -141,6 +143,7 @@ export const buildReactNativeAndroid = async () => {
             ...CoreEnvVars.RNV_EXTENSIONS(),
             ...EnvVars.RNV_REACT_NATIVE_PATH(),
             ...EnvVars.RNV_APP_ID(),
+            ...EnvVars.RNV_SKIP_LINKING(),
         },
     });
 
