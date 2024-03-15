@@ -136,10 +136,14 @@ const _doResolveExternalPackage = (aPath: string, options: ResolveOptions) => {
             .replace(/(\\|\/)package.json$/, '');
         return options.keepSuffix ?? false ? `${resolvedPath}/${packageSuffix}` : resolvedPath;
     } catch (e) {
-        //Last resort we try to resolve it as standard require.resolve
-        const fallback = require.resolve(aPath);
-        if (fallback) {
-            return fallback.replace(/(\\|\/)package.json$/, '').replace(/(\\|\/)index.js$/, '');
+        try {
+            //Last resort we try to resolve it as standard require.resolve
+            const fallback = require.resolve(aPath);
+            if (fallback) {
+                return fallback.replace(/(\\|\/)package.json$/, '').replace(/(\\|\/)index.js$/, '');
+            }
+        } catch (e) {
+            return null;
         }
         return null;
     }

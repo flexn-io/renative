@@ -1,0 +1,33 @@
+{
+    "templateConfig": {
+        "name": "@rnv/template-starter",
+        "version": "1.0.0-rc.12"
+    },
+    "modsConfig": {
+        "name": "@rnv/mods",
+        "version": "3.3.9",
+        "namespace": "rnv"
+    },
+    "pluginsConfig": {
+        "name": "@rnv/plugins",
+        "version": "1.3.9"
+    },
+    "platformsConfig": {},
+    "projectConfig": {
+        "appConfigsDir": "./appConfigs",
+        "platformAssetsDir": "./platformAssets",
+        "platformBuildsDir": "./platformBuilds",
+        "defaultCommandSchemes": {
+            "run": "debug"
+        },
+        "defaultTargets": {}
+    },
+    "appConfigs": {},
+    "tasks": {},
+    "engines": {},
+    "mods": {},
+    "platforms": {},
+    "plugins": {},
+    "permissions": {},
+    "supportedPlatforms": ["ios", "android"]
+}
