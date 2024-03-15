@@ -17935,10 +17935,10 @@ react-native-gesture-handler@2.14.1:
     lodash "^4.17.21"
     prop-types "^15.7.2"
 
-react-native-google-cast@4.8.0:
-  version "4.8.0"
-  resolved "https://registry.yarnpkg.com/react-native-google-cast/-/react-native-google-cast-4.8.0.tgz#7af427bc8a44d1da62e6d2238c3c74136d098297"
-  integrity sha512-1BjHueIWO5NvR9VjJLeB8SvC8cidTJaZopztI8KbBc64GIiF9jWcfoV/MGK+IRsBZ9E8mDJ2syJmS+AAqgWiEA==
+react-native-google-cast@4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/react-native-google-cast/-/react-native-google-cast-4.6.0.tgz#5b8e8e8424a9fe5873d48299cc04ff04b377d1ef"
+  integrity sha512-YZP2muHAq0XtfwldJ4ztSPq51n1mEUoGfz5n/jUyg9hTRsawyOC+1wedzL1lVwJvCuspPEyl631v90/2S8BJFg==
 
 react-native-orientation-locker@1.5.0:
   version "1.5.0"
