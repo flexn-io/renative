@@ -25,7 +25,6 @@ export const withRNVBabel = (cnf: BabelConfig): BabelConfig => {
                         'react-native-tvos/Libraries/StyleSheet/flattenStyle',
                 },
             }),
-
             ...plugins,
         ],
     };

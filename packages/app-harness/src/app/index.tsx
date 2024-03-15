@@ -13,7 +13,7 @@ import { TestCase } from '../components/TestCase';
 import config from '../../package.json';
 import { LoggerProvider, useLoggerContext } from '../context';
 import { NotificationCallback } from '../components/types';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaProvider } from '../components/SafeArea';
 
 // import { observe as observeLogBoxLogs, symbolicateLogNow } from 'react-native/Libraries/LogBox/Data/LogBoxData';
 
