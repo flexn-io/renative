@@ -65,6 +65,7 @@ export const packageReactNativeIOS = (isDev = false) => {
                 ...CoreEnvVars.RNV_EXTENSIONS(),
                 ...EnvVars.RNV_REACT_NATIVE_PATH(),
                 ...EnvVars.RNV_APP_ID(),
+                ...EnvVars.RNV_SKIP_LINKING(),
             },
         }
     );
@@ -88,6 +89,7 @@ export const runReactNativeIOS = async (
         ...EnvVars.RCT_METRO_PORT(),
         ...EnvVars.RNV_REACT_NATIVE_PATH(),
         ...EnvVars.RNV_APP_ID(),
+        ...EnvVars.RNV_SKIP_LINKING(),
     };
 
     try {
