@@ -28,7 +28,7 @@ describe('getAndroidDeviceToRunOn', () => {
         jest.mocked(getAndroidTargets).mockResolvedValue([mockFoundDevice]);
 
         //WHEN
-        await expect(getAndroidDeviceToRunOn(ctx)).resolves.toBe(undefined);
+        await expect(getAndroidDeviceToRunOn()).resolves.toBe(undefined);
 
         //THEN
     });
@@ -47,7 +47,7 @@ describe('getAndroidDeviceToRunOn', () => {
         jest.mocked(getAndroidTargets).mockResolvedValue([mockFoundDevice]);
 
         //WHEN
-        await expect(getAndroidDeviceToRunOn(ctx)).resolves.toBe(undefined);
+        await expect(getAndroidDeviceToRunOn()).resolves.toBe(undefined);
 
         //THEN
         expect(connectToWifiDevice).not.toHaveBeenCalled();
@@ -68,10 +68,10 @@ describe('getAndroidDeviceToRunOn', () => {
         jest.mocked(checkForActiveEmulator).mockResolvedValue(mockFoundDevice);
 
         //WHEN
-        const result = await getAndroidDeviceToRunOn(ctx);
+        const result = await getAndroidDeviceToRunOn();
 
         //THEN
-        expect(connectToWifiDevice).toHaveBeenCalledWith(ctx, targetToConnectWiFi);
+        expect(connectToWifiDevice).toHaveBeenCalledWith(targetToConnectWiFi);
         expect(result).toEqual(mockFoundDevice);
     });
     it('should return defaultTarget if it exists and -t is not specified', async () => {
@@ -84,7 +84,7 @@ describe('getAndroidDeviceToRunOn', () => {
 
         jest.mocked(getAndroidTargets).mockResolvedValue([mockFoundDevice]);
 
-        const result = await getAndroidDeviceToRunOn(ctx);
+        const result = await getAndroidDeviceToRunOn();
         //THEN
         expect(result).toEqual(mockFoundDevice);
     });
@@ -97,7 +97,7 @@ describe('getAndroidDeviceToRunOn', () => {
         const mockFoundDevice = { name: 'existingTarget', isActive: true, udid: '' };
         jest.mocked(getAndroidTargets).mockResolvedValueOnce([mockFoundDevice]);
         //WHEN
-        const result = await getAndroidDeviceToRunOn(ctx);
+        const result = await getAndroidDeviceToRunOn();
         //THEN
         expect(result).toEqual(mockFoundDevice);
     });
@@ -133,7 +133,7 @@ describe('getAndroidDeviceToRunOn', () => {
             ]);
         jest.mocked(inquirerPrompt).mockResolvedValue({ chosenTarget: 'simulator1' });
         //WHEN
-        const result = await getAndroidDeviceToRunOn(ctx);
+        const result = await getAndroidDeviceToRunOn();
         //THEN
         expect(result).toEqual(mockDevicesAndEmulators[0]);
     });
