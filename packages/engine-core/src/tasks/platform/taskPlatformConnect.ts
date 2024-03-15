@@ -20,7 +20,7 @@ import {
 const taskPlatformConnect: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskPlatformConnect');
 
-    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.platformConnect, originTask);
+    await executeTask(RnvTaskName.projectConfigure, RnvTaskName.platformConnect, originTask);
 
     const configOriginal = c.files.project.config_original;
     if (!configOriginal) {
@@ -41,7 +41,7 @@ const taskPlatformConnect: RnvTaskFn = async (c, _parentTask, originTask) => {
             message:
                 'This will point platformTemplates folders from your local project to ReNative managed one. Select platforms you would like to connect',
             type: 'checkbox',
-            choices: generatePlatformChoices(c).map((choice) => ({
+            choices: generatePlatformChoices().map((choice) => ({
                 ...choice,
                 disabled: choice.isConnected,
             })),

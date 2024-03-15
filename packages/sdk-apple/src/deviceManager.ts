@@ -12,6 +12,7 @@ import {
     ExecOptionsPresets,
     logInfo,
     logSuccess,
+    getContext,
 } from '@rnv/core';
 import { AppiumAppleDevice, AppleDevice } from './types';
 import { execFileSync } from 'child_process';
@@ -181,7 +182,8 @@ const _parseIOSDevicesList = (
     return devices;
 };
 
-export const launchAppleSimulator = async (c: RnvContext, target: string | boolean) => {
+export const launchAppleSimulator = async (target: string | boolean) => {
+    const c = getContext();
     logDefault('launchAppleSimulator', `${target}`);
 
     const devicesArr = await getAppleDevices(c, true);

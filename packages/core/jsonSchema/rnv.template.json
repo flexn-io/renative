@@ -125,13 +125,87 @@
         "templateConfig": {
           "type": "object",
           "properties": {
+            "disabled": {
+              "type": "boolean"
+            },
             "includedPaths": {
               "type": "array",
               "items": {
-                "type": "string"
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "paths": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "engines": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "required": [
+                      "paths"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
               },
               "description": "Defines list of all file/dir paths you want to include in template"
             },
+            "renative_json": {
+              "type": "object",
+              "properties": {
+                "$schema": {
+                  "type": "string"
+                },
+                "extendsTemplate": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": true
+            },
+            "package_json": {
+              "type": "object",
+              "properties": {
+                "dependencies": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                },
+                "devDependencies": {
+                  "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/package_json/properties/dependencies"
+                },
+                "peerDependencies": {
+                  "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/package_json/properties/dependencies"
+                },
+                "optionalDependencies": {
+                  "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/package_json/properties/dependencies"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "version": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": false,
+          "description": "Used in `renative.template.json` allows you to define template behaviour."
+        },
+        "bootstrapConfig": {
+          "type": "object",
+          "properties": {
             "bootstrapQuestions": {
               "type": "array",
               "items": {
@@ -146,9 +220,21 @@
                           "type": "string"
                         },
                         "value": {
-                          "type": "object",
-                          "properties": {},
-                          "additionalProperties": false
+                          "anyOf": [
+                            {
+                              "type": "object",
+                              "additionalProperties": {}
+                            },
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "boolean"
+                            }
+                          ]
                         }
                       },
                       "required": [
@@ -179,6 +265,28 @@
                   },
                   "title": {
                     "type": "string"
+                  },
+                  "onConfirm": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "action": {
+                          "type": "string"
+                        },
+                        "prop": {
+                          "type": "string"
+                        },
+                        "path": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "action",
+                        "path"
+                      ],
+                      "additionalProperties": false
+                    }
                   }
                 },
                 "required": [
@@ -189,36 +297,46 @@
               },
               "description": "Defines list of custom bootstrap questions"
             },
-            "packageTemplate": {
+            "rnvNewPatchDependencies": {
+              "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/package_json/properties/dependencies",
+              "description": "This ensures that the correct version of the npm packages will be used to run the project for the first time after creation"
+            },
+            "configModifiers": {
               "type": "object",
               "properties": {
-                "dependencies": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "string"
+                "engines": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "supportedPlatforms": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "nullifyIfFalse": {
+                        "type": "boolean"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "supportedPlatforms"
+                    ],
+                    "additionalProperties": false
                   }
-                },
-                "devDependencies": {
-                  "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/packageTemplate/properties/dependencies"
-                },
-                "peerDependencies": {
-                  "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/packageTemplate/properties/dependencies"
-                },
-                "optionalDependencies": {
-                  "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/packageTemplate/properties/dependencies"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "version": {
-                  "type": "string"
                 }
               },
+              "required": [
+                "engines"
+              ],
               "additionalProperties": false
             }
           },
-          "additionalProperties": false,
-          "description": "Used in `renative.template.json` allows you to define template behaviour."
+          "additionalProperties": false
         },
         "$schema": {
           "type": "string",

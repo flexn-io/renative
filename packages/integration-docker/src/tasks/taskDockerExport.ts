@@ -15,13 +15,13 @@ const taskDockerExport: RnvTaskFn = async (c, parentTask, originTask) => {
 
     if (c.program.only) {
         // If run as standalone command skip all the export
-        await executeOrSkipTask(c, RnvTaskName.export, 'docker export', originTask);
+        await executeOrSkipTask(RnvTaskName.export, 'docker export', originTask);
     } else {
-        const taskInstance = await findSuitableTask(c, RnvTaskName.export);
-        if (taskInstance) await initializeTask(c, taskInstance.task);
+        const taskInstance = await findSuitableTask(RnvTaskName.export);
+        if (taskInstance) await initializeTask(taskInstance.task);
     }
 
-    const docker = new Docker(c);
+    const docker = new Docker();
     await docker.doExport();
     return true;
 };

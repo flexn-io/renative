@@ -17,11 +17,11 @@ const { configureWindowsProject } = SDKWindows;
 const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskConfigure');
 
-    await executeTask(c, RnvTaskName.platformConfigure, RnvTaskName.configure, originTask);
-    if (shouldSkipTask(c, RnvTaskName.configure, originTask)) return true;
-    await configureEntryPoint(c, c.platform);
+    await executeTask(RnvTaskName.platformConfigure, RnvTaskName.configure, originTask);
+    if (shouldSkipTask(RnvTaskName.configure, originTask)) return true;
+    await configureEntryPoint(c.platform);
 
-    await copySharedPlatforms(c);
+    await copySharedPlatforms();
 
     if (c.program.only && !!parentTask) {
         return true;
@@ -32,7 +32,7 @@ const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
         case 'windows':
             return configureWindowsProject(c);
         default:
-            return logErrorPlatform(c);
+            return logErrorPlatform();
     }
 };
 

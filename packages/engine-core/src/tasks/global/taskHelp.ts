@@ -10,7 +10,7 @@ import {
     generateStringFromTaskOption,
 } from '@rnv/core';
 
-const taskHelp: RnvTaskFn = async (c) => {
+const taskHelp: RnvTaskFn = async () => {
     logTask('taskHelp');
 
     // PARAMS
@@ -22,7 +22,7 @@ const taskHelp: RnvTaskFn = async (c) => {
 
     // TASKS
     const commands: Array<string> = [];
-    const engines = getRegisteredEngines(c);
+    const engines = getRegisteredEngines();
 
     engines.forEach((engine) => {
         Object.values(engine.tasks).forEach(({ task }) => {

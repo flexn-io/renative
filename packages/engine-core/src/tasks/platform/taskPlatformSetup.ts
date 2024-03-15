@@ -12,7 +12,7 @@ import {
 const taskPlatformSetup: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskPlatformSetup');
 
-    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.platformSetup, originTask);
+    await executeTask(RnvTaskName.projectConfigure, RnvTaskName.platformSetup, originTask);
 
     const currentPlatforms = c.files.project.config?.defaults?.supportedPlatforms || [];
 
@@ -26,7 +26,7 @@ const taskPlatformSetup: RnvTaskFn = async (c, _parentTask, originTask) => {
         choices: c.runtime.availablePlatforms,
     });
 
-    updateProjectPlatforms(c, inputSupportedPlatforms);
+    updateProjectPlatforms(inputSupportedPlatforms);
 };
 
 const Task: RnvTask = {

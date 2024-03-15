@@ -102,44 +102,37 @@ const defaultOptions = {
 type ConfigKey = any;
 
 const getOptions = (c: RnvContext, injectedOptions: InjectOptions = {}) => {
-    const language = getConfigProp<ConfigKey>(c, c.platform, 'language', defaultOptions.language);
-    const release = getConfigProp<ConfigKey>(c, c.platform, 'release', defaultOptions.release);
-    const root = getConfigProp<ConfigKey>(c, c.platform, 'root', c.paths.project.dir);
-    const arch = getConfigProp<ConfigKey>(c, c.platform, 'arch', defaultOptions.arch);
-    const singleproc = getConfigProp<ConfigKey>(c, c.platform, 'singleproc', defaultOptions.singleproc);
-    const emulator = getConfigProp<ConfigKey>(c, c.platform, 'emulator', defaultOptions.emulator);
-    const device = getConfigProp<ConfigKey>(c, c.platform, 'device', defaultOptions.device);
-    const target = getConfigProp<ConfigKey>(c, c.platform, 'target', defaultOptions.target);
-    const overwrite = getConfigProp<ConfigKey>(c, c.platform, 'overwrite', defaultOptions.overwrite);
-    const remoteDebugging = getConfigProp<ConfigKey>(c, c.platform, 'remoteDebugging', defaultOptions.remoteDebugging);
-    const logging = getConfigProp<ConfigKey>(c, c.platform, 'logging', defaultOptions.logging);
-    const packager = getConfigProp<ConfigKey>(c, c.platform, 'packager', defaultOptions.packager);
-    const bundle = getConfigProp<ConfigKey>(c, c.platform, 'bundle', defaultOptions.bundle);
-    const launch = getConfigProp<ConfigKey>(c, c.platform, 'launch', defaultOptions.launch);
-    const autolink = getConfigProp<ConfigKey>(c, c.platform, 'autolink', defaultOptions.autolink);
-    const build = getConfigProp<ConfigKey>(c, c.platform, 'build', defaultOptions.build);
-    const deploy = getConfigProp<ConfigKey>(c, c.platform, 'deploy', defaultOptions.deploy);
-    const sln = getConfigProp<ConfigKey>(c, c.platform, 'sln', defaultOptions.sln);
-    const proj = getConfigProp<ConfigKey>(c, c.platform, 'proj', c.paths.project.dir);
-    const appPath = getConfigProp<ConfigKey>(c, c.platform, 'appPath', getAppFolder(c));
-    const msbuildprops = getConfigProp<ConfigKey>(c, c.platform, 'msbuildprops', defaultOptions.msbuildprops);
-    const buildLogDirectory = getConfigProp<ConfigKey>(
-        c,
-        c.platform,
-        'buildLogDirectory',
-        path.join(getAppFolder(c), 'BuildLogs')
-    );
-    const info = getConfigProp<ConfigKey>(c, c.platform, 'info', defaultOptions.info);
-    const directDebugging = getConfigProp<ConfigKey>(c, c.platform, 'directDebugging', defaultOptions.directDebugging);
-    const telemetry = getConfigProp<ConfigKey>(c, c.platform, 'telemetry', defaultOptions.telemetry);
-    const devPort = getConfigProp<ConfigKey>(c, c.platform, 'devPort', c.runtime.port);
-    const env = getConfigProp<ConfigKey>(c, c.platform, 'environment');
+    const language = getConfigProp<ConfigKey>('language', defaultOptions.language);
+    const release = getConfigProp<ConfigKey>('release', defaultOptions.release);
+    const root = getConfigProp<ConfigKey>('root', c.paths.project.dir);
+    const arch = getConfigProp<ConfigKey>('arch', defaultOptions.arch);
+    const singleproc = getConfigProp<ConfigKey>('singleproc', defaultOptions.singleproc);
+    const emulator = getConfigProp<ConfigKey>('emulator', defaultOptions.emulator);
+    const device = getConfigProp<ConfigKey>('device', defaultOptions.device);
+    const target = getConfigProp<ConfigKey>('target', defaultOptions.target);
+    const overwrite = getConfigProp<ConfigKey>('overwrite', defaultOptions.overwrite);
+    const remoteDebugging = getConfigProp<ConfigKey>('remoteDebugging', defaultOptions.remoteDebugging);
+    const logging = getConfigProp<ConfigKey>('logging', defaultOptions.logging);
+    const packager = getConfigProp<ConfigKey>('packager', defaultOptions.packager);
+    const bundle = getConfigProp<ConfigKey>('bundle', defaultOptions.bundle);
+    const launch = getConfigProp<ConfigKey>('launch', defaultOptions.launch);
+    const autolink = getConfigProp<ConfigKey>('autolink', defaultOptions.autolink);
+    const build = getConfigProp<ConfigKey>('build', defaultOptions.build);
+    const deploy = getConfigProp<ConfigKey>('deploy', defaultOptions.deploy);
+    const sln = getConfigProp<ConfigKey>('sln', defaultOptions.sln);
+    const proj = getConfigProp<ConfigKey>('proj', c.paths.project.dir);
+    const appPath = getConfigProp<ConfigKey>('appPath', getAppFolder());
+    const msbuildprops = getConfigProp<ConfigKey>('msbuildprops', defaultOptions.msbuildprops);
+    const buildLogDirectory = getConfigProp<ConfigKey>('buildLogDirectory', path.join(getAppFolder(), 'BuildLogs'));
+    const info = getConfigProp<ConfigKey>('info', defaultOptions.info);
+    const directDebugging = getConfigProp<ConfigKey>('directDebugging', defaultOptions.directDebugging);
+    const telemetry = getConfigProp<ConfigKey>('telemetry', defaultOptions.telemetry);
+    const devPort = getConfigProp<ConfigKey>('devPort', c.runtime.port);
+    const env = getConfigProp<ConfigKey>('environment');
     // Aditional ReNative property configurations
-    const bundleAssets = getConfigProp<ConfigKey>(c, c.platform, 'bundleAssets') === true;
-    const bundleIsDev = getConfigProp<ConfigKey>(c, c.platform, 'bundleIsDev') === true;
+    const bundleAssets = getConfigProp<ConfigKey>('bundleAssets') === true;
+    const bundleIsDev = getConfigProp<ConfigKey>('bundleIsDev') === true;
     const additionalMetroOptions = getConfigProp<ConfigKey>(
-        c,
-        c.platform,
         'additionalMetroOptions',
         defaultOptions.additionalMetroOptions
     );
@@ -209,7 +202,7 @@ export const ruWindowsProject = async (c: RnvContext, injectedOptions?: InjectOp
     }
 
     const cnfg = {
-        sourceDir: getAppFolder(c, true),
+        sourceDir: getAppFolder(true),
         solutionFile: `${c.runtime.appId}.sln`,
         project: {
             projectName: c.runtime.appId,
@@ -276,7 +269,7 @@ const copyWindowsTemplateProject = async (c: RnvContext, injectedOptions = {}) =
 
 function clearWindowsTemporaryFiles(c: RnvContext) {
     logDefault('clearWindowsTemporaryFiles');
-    const logging = getConfigProp<ConfigKey>(c, c.platform, 'logging', defaultOptions.logging);
+    const logging = getConfigProp<ConfigKey>('logging', defaultOptions.logging);
     const opts = {
         cwd: c.paths.project.dir,
         detached: false,
@@ -304,7 +297,7 @@ function clearWindowsTemporaryFiles(c: RnvContext) {
 const packageBundleForWindows = (c: RnvContext, isDev = false) => {
     logDefault('packageBundleForWindows');
     // const { maxErrorLength } = c.program;
-    const entryFile = getConfigProp(c, c.platform, 'entryFile');
+    const entryFile = getConfigProp('entryFile');
 
     if (!c.runtime.appId) return;
 
@@ -315,20 +308,20 @@ const packageBundleForWindows = (c: RnvContext, isDev = false) => {
         '--dev',
         isDev,
         '--assets-dest',
-        `${getAppFolder(c).replace(/\//g, '\\')}\\${c.runtime.appId}\\Bundle`,
+        `${getAppFolder().replace(/\//g, '\\')}\\${c.runtime.appId}\\Bundle`,
         '--entry-file',
         `${entryFile}.js`,
         '--bundle-output',
-        `${getAppFolder(c).replace(/\//g, '\\')}\\${c.runtime.appId}\\Bundle\\index.windows.bundle`,
+        `${getAppFolder().replace(/\//g, '\\')}\\${c.runtime.appId}\\Bundle\\index.windows.bundle`,
     ];
 
     if (c.program.info) {
         args.push('--verbose');
     }
 
-    if (getConfigProp<ConfigKey>(c, c.platform, 'enableSourceMaps', false)) {
+    if (getConfigProp<ConfigKey>('enableSourceMaps', false)) {
         // Directory might not exist yet (created during builds proccess)
-        const dir = path.join(getAppFolder(c), 'Release', c.runtime.appId, 'sourcemaps', 'react');
+        const dir = path.join(getAppFolder(), 'Release', c.runtime.appId, 'sourcemaps', 'react');
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir, { recursive: true });
         }
@@ -338,7 +331,6 @@ const packageBundleForWindows = (c: RnvContext, isDev = false) => {
     }
 
     return executeAsync(
-        c,
         `node ${doResolve('react-native', true, { forceForwardPaths: false })}\\local-cli\\cli.js ${args.join(
             ' '
         )} --config=metro.config.js`,
@@ -350,7 +342,7 @@ const setSingleBuildProcessForWindows = (c: RnvContext) => {
     logDefault('setSingleBuildProcessForWindows');
     // eslint-disable-next-line eqeqeq
     if (env.MSBUILDDISABLENODEREUSE != 1) {
-        const logging = getConfigProp<ConfigKey>(c, c.platform, 'logging', defaultOptions.logging);
+        const logging = getConfigProp<ConfigKey>('logging', defaultOptions.logging);
         const opts = {
             cwd: c.paths.project.dir,
             detached: false,
@@ -374,7 +366,7 @@ const pushd = (pathArg: string) => {
 
 // Copied from @react-native-windows/cli/overrides/lib-commonjs/runWindows/utils/deploy.js
 const getWindowsStoreAppUtils = (c: RnvContext) => {
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
     const RNWinPath = path.join(
         path.dirname(
             require.resolve('@react-native-windows/cli/package.json', {
@@ -395,7 +387,7 @@ const getWindowsStoreAppUtils = (c: RnvContext) => {
 
 function getAppPackage(c: RnvContext, injectedOptions?: InjectOptions) {
     const options = getOptions(c, injectedOptions);
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
 
     let appPackage;
     const rootGlob = `${appFolder.replace(/\\/g, '/')}/{*/AppPackages,AppPackages/*}`;
@@ -418,7 +410,7 @@ function getAppPackage(c: RnvContext, injectedOptions?: InjectOptions) {
 
 const signWindowsApp = async (c: RnvContext, script: string, windowsStoreAppUtils: string) => {
     try {
-        const logging = getConfigProp<ConfigKey>(c, c.platform, 'logging', defaultOptions.logging);
+        const logging = getConfigProp<ConfigKey>('logging', defaultOptions.logging);
         // TODO Installs the app instead of just saving a certificate
         await runPowerShellScriptFunction(
             'Saving certificate in the local certificate store',
@@ -432,7 +424,7 @@ const signWindowsApp = async (c: RnvContext, script: string, windowsStoreAppUtil
 };
 
 const installWindowsApp = async (c: RnvContext, script: string, windowsStoreAppUtils: string) => {
-    const logging = getConfigProp<ConfigKey>(c, c.platform, 'logging', defaultOptions.logging);
+    const logging = getConfigProp<ConfigKey>('logging', defaultOptions.logging);
     await runPowerShellScriptFunction(
         'Removing old version of the app',
         windowsStoreAppUtils,
@@ -450,16 +442,16 @@ const installWindowsApp = async (c: RnvContext, script: string, windowsStoreAppU
 const packageWindowsApp = async (c: RnvContext, injectedOptions?: InjectOptions) => {
     if (!c.runtime.appId) return;
     try {
-        const appFolder = getAppFolder(c);
+        const appFolder = getAppFolder();
         const windowsStoreAppUtils = getWindowsStoreAppUtils(c);
         const appPackage = getAppPackage(c, injectedOptions);
 
         // TODO For the most part package generated by runWindows with release option set to true is enough
         // but you might want to package and sign the app manually with a different certificate
-        // const arch = getConfigProp<ConfigKey>(c, c.platform, 'arch', defaultOptions.arch);
-        // const logging = getConfigProp<ConfigKey>(c, c.platform, 'logging', defaultOptions.logging);
-        // const packageExtension = getConfigProp<ConfigKey>(c, c.platform, 'packageExtension', defaultOptions.packageExtension);
-        // // const packageExtension = getConfigProp<ConfigKey>(c, c.platform, 'packageExtension', defaultOptions.packageExtension);
+        // const arch = getConfigProp<ConfigKey>('arch', defaultOptions.arch);
+        // const logging = getConfigProp<ConfigKey>('logging', defaultOptions.logging);
+        // const packageExtension = getConfigProp<ConfigKey>('packageExtension', defaultOptions.packageExtension);
+        // // const packageExtension = getConfigProp<ConfigKey>('packageExtension', defaultOptions.packageExtension);
         // // Find available SDKs, which have MakeAppx tool
         // const sdks = msBuildTools.getAllAvailableUAPVersions();
         // const packageTaskDescription = 'Packaging UWP Application';

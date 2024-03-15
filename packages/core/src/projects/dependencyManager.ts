@@ -12,14 +12,17 @@ import { inquirerPrompt } from '../api';
 import { writeRenativeConfigFile } from '../configs/utils';
 import { fsExistsSync } from '../system/fs';
 import { NpmDepKey, NpmPackageFile } from '../configs/types';
+import { getContext } from '../context/provider';
 
-export const checkIfProjectAndNodeModulesExists = async (c: RnvContext) => {
+export const checkIfProjectAndNodeModulesExists = async () => {
     logDefault('checkIfProjectAndNodeModulesExists');
+
+    const c = getContext();
 
     if (c.paths.project.configExists && !fsExistsSync(c.paths.project.nodeModulesDir)) {
         c._requiresNpmInstall = false;
         logInfo('node_modules folder is missing. INSTALLING...');
-        await installPackageDependencies(c);
+        await installPackageDependencies();
     }
 };
 
@@ -38,11 +41,11 @@ const injectProjectDependency = async (
         const dep = currentPackage[type] || {};
         currentPackage[type] = dep;
         dep[dependency] = version;
-        writeRenativeConfigFile(c, existingPath, currentPackage);
+        writeRenativeConfigFile(existingPath, currentPackage);
         if (!skipInstall) {
-            await installPackageDependencies(c);
-            await overrideTemplatePlugins(c);
-            await configureFonts(c);
+            await installPackageDependencies();
+            await overrideTemplatePlugins();
+            await configureFonts();
         }
         return true;
     }
@@ -125,10 +128,11 @@ export const checkRequiredPackage = async (
     return false;
 };
 
-export const injectPlatformDependencies = async (c: RnvContext) => {
+export const injectPlatformDependencies = async () => {
     logDefault('injectPlatformDependencies');
+    const c = getContext();
     const { platform } = c;
-    const engine = getEngineRunnerByPlatform(c, platform);
+    const engine = getEngineRunnerByPlatform(platform);
     const npmDepsBase = engine?.config?.npm || {};
     const npmDepsExt = platform ? engine?.config?.platforms?.[platform]?.npm || {} : {};
 
@@ -163,9 +167,9 @@ export const injectPlatformDependencies = async (c: RnvContext) => {
                 logInfo(
                     `Found extra npm dependencies required by ${chalk().bold(engine.config.id)} engine. ADDING...DONE`
                 );
-                await installPackageDependencies(c);
-                await overrideTemplatePlugins(c);
-                await configureFonts(c);
+                await installPackageDependencies();
+                await overrideTemplatePlugins();
+                await configureFonts();
             }
         }
     }

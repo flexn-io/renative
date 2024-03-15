@@ -14,7 +14,7 @@ const taskWorkspaceList: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskWorkspaceList');
 
     if (c.paths.project.configExists) {
-        await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.workspaceList, originTask);
+        await executeTask(RnvTaskName.projectConfigure, RnvTaskName.workspaceList, originTask);
     }
 
     const opts = generateOptions(

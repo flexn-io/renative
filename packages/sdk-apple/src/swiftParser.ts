@@ -54,7 +54,7 @@
 //         }
 
 //         // PLUGINS
-//         parsePlugins(c, platform, (plugin, pluginPlat, key) => {
+//         parsePlugins((plugin, pluginPlat, key) => {
 //             injectPluginSwiftSync(c, pluginPlat, key);
 //         });
 
@@ -69,7 +69,7 @@
 //         //     }
 //         // }
 
-//         const clr = sanitizeColor(getConfigProp(c, platform, 'backgroundColor'), 'backgroundColor').rgbDecimal;
+//         const clr = sanitizeColor(getConfigProp('backgroundColor'), 'backgroundColor').rgbDecimal;
 //         const pluginBgColor = `vc.view.backgroundColor = UIColor(red: ${clr[0]}, green: ${clr[1]}, blue: ${clr[2]}, alpha: ${clr[3]})`;
 //         const methods: SwiftAppDelegate = {
 //             application: {
@@ -244,10 +244,10 @@
 //             },
 //         ];
 
-//         addSystemInjects(c, injects);
+//         addSystemInjects(injects);
 
 //         writeCleanFile(
-//             path.join(getAppTemplateFolder(c, platform)!, appFolderName, appDelegate),
+//             path.join(getAppTemplateFolder()!, appFolderName, appDelegate),
 //             path.join(appFolder, appFolderName, appDelegate),
 //             injects,
 //             undefined,
@@ -258,7 +258,7 @@
 
 // export const injectPluginSwiftSync = (c: Context, plugin: RenativeConfigPluginPlatform, key: string) => {
 //     logDebug(`injectPluginSwiftSync:${c.platform}:${key}`);
-//     const templateXcode = getFlavouredProp(c, plugin, 'templateXcode');
+//     const templateXcode = getFlavouredProp(plugin, 'templateXcode');
 //     const appDelegateImports = templateXcode?.AppDelegate_mm?.appDelegateImports;
 //     if (appDelegateImports) {
 //         appDelegateImports.forEach((appDelegateImport) => {

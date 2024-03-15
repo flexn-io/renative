@@ -20,6 +20,7 @@ jobs:
               run: |
                   yarn
                   yarn bootstrap
+                  yarn lint
                   yarn test
               env:
                   CI: true

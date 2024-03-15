@@ -5,12 +5,12 @@ import {
     inquirerPrompt,
     logWarning,
     DEFAULTS,
-    RnvContext,
     RnvPlatform,
     getConfigProp,
     logDefault,
     fsExistsSync,
     PlatformKey,
+    getContext,
 } from '@rnv/core';
 import axios from 'axios';
 import open from 'better-opn';
@@ -36,8 +36,9 @@ export const getValidLocalhost = (value: string, localhost: string) => {
 
 export const openBrowser = open;
 
-export const getDevServerHost = (c: RnvContext) => {
-    const devServerHostOrig = getConfigProp(c, c.platform, 'devServerHost');
+export const getDevServerHost = () => {
+    const c = getContext();
+    const devServerHostOrig = getConfigProp('devServerHost');
 
     const devServerHostFixed = devServerHostOrig
         ? getValidLocalhost(devServerHostOrig, c.runtime.localhost || DEFAULTS.devServerHost)
@@ -46,14 +47,15 @@ export const getDevServerHost = (c: RnvContext) => {
     return devServerHostFixed;
 };
 
-export const waitForHost = async (c: RnvContext, suffix = 'assets/bundle.js') => {
+export const waitForHost = async (suffix = 'assets/bundle.js') => {
+    const c = getContext();
     logDefault('waitForHost', `port:${c.runtime.port}`);
     let attempts = 0;
     const maxAttempts = 10;
     const CHECK_INTEVAL = 2000;
     // const spinner = ora('Waiting for webpack to finish...').start();
 
-    const devServerHost = getDevServerHost(c);
+    const devServerHost = getDevServerHost();
     const url = `http://${devServerHost}:${c.runtime.port}/${suffix}`;
 
     return new Promise((resolve, reject) => {
@@ -85,7 +87,7 @@ export const waitForHost = async (c: RnvContext, suffix = 'assets/bundle.js') =>
     });
 };
 
-export const checkPortInUse = (c: RnvContext, platform: RnvPlatform, port: number) =>
+export const checkPortInUse = (port: number) =>
     new Promise((resolve, reject) => {
         if (port === undefined || port === null) {
             resolve(false);
@@ -101,23 +103,19 @@ export const checkPortInUse = (c: RnvContext, platform: RnvPlatform, port: numbe
         });
     });
 
-export const getBuildFilePath = (
-    c: RnvContext,
-    platform: RnvPlatform,
-    filePath: string,
-    altTemplateFolder?: string
-) => {
+export const getBuildFilePath = (filePath: string, altTemplateFolder?: string) => {
+    const c = getContext();
     // P1 => platformTemplates
-    let sp = path.join(altTemplateFolder || getAppTemplateFolder(c, platform)!, filePath);
+    let sp = path.join(altTemplateFolder || getAppTemplateFolder()!, filePath);
     // P2 => appConfigs/base + @buildSchemes
-    const sp2bf = getAppConfigBuildsFolder(c, platform, c.paths.project.appConfigBase.dir);
+    const sp2bf = getAppConfigBuildsFolder(c.paths.project.appConfigBase.dir);
     if (sp2bf) {
         const sp2 = path.join(sp2bf, filePath);
         if (fsExistsSync(sp2)) sp = sp2;
     }
 
     // P3 => appConfigs + @buildSchemes
-    const sp3bf = getAppConfigBuildsFolder(c, platform);
+    const sp3bf = getAppConfigBuildsFolder();
 
     if (sp3bf) {
         const sp3 = path.join(sp3bf, filePath);
@@ -127,36 +125,34 @@ export const getBuildFilePath = (
     return sp;
 };
 
-export const getAppId = (c: RnvContext, platform: RnvPlatform) => {
-    const id = getConfigProp(c, platform, 'id');
-    const idSuffix = getConfigProp(c, platform, 'idSuffix');
+export const getAppId = () => {
+    const id = getConfigProp('id');
+    const idSuffix = getConfigProp('idSuffix');
     return idSuffix ? `${id}${idSuffix}` : id;
 };
 
-export const getAppTitle = (c: RnvContext, platform: RnvPlatform) => getConfigProp(c, platform, 'title');
+export const getAppTitle = () => getConfigProp('title');
 
-export const getAppAuthor = (c: RnvContext, platform: RnvPlatform) =>
-    getConfigProp(c, platform, 'author') || c.files.project.package?.author;
+export const getAppAuthor = () => getConfigProp('author') || getContext().files.project.package?.author;
 
-export const getAppLicense = (c: RnvContext, platform: RnvPlatform) =>
-    getConfigProp(c, platform, 'license') || c.files.project.package?.license;
+export const getAppLicense = () => getConfigProp('license') || getContext().files.project.package?.license;
 
-export const getEntryFile = (c: RnvContext, platform: RnvPlatform) =>
-    platform ? c.buildConfig.platforms?.[platform]?.entryFile : undefined;
+export const getEntryFile = () => {
+    const c = getContext();
+    return c.platform ? c.buildConfig.platforms?.[c.platform]?.entryFile : undefined;
+};
 
-export const getGetJsBundleFile = (c: RnvContext, platform: RnvPlatform) =>
-    getConfigProp(c, platform, 'getJsBundleFile');
+export const getGetJsBundleFile = () => getConfigProp('getJsBundleFile');
 
-export const getAppDescription = (c: RnvContext, platform: RnvPlatform) =>
-    getConfigProp(c, platform, 'description') || c.files.project.package?.description;
+export const getAppDescription = () => getConfigProp('description') || getContext().files.project.package?.description;
 
-export const getAppVersion = (c: RnvContext, platform: RnvPlatform) => {
-    const version = getConfigProp(c, platform, 'version') || c.files.project.package?.version;
+export const getAppVersion = () => {
+    const version = getConfigProp('version') || getContext().files.project.package?.version;
     if (!version) {
         logWarning('You are missing version prop in your config. will default to 0');
         return '0';
     }
-    const versionFormat = getConfigProp(c, platform, 'versionFormat');
+    const versionFormat = getConfigProp('versionFormat');
     if (!versionFormat) return version;
     const versionCodeArr = versionFormat.split('.');
     const dotLength = versionCodeArr.length;
@@ -201,12 +197,13 @@ const _androidLikePlatform = (platform: RnvPlatform) =>
  * @returns The version code as a string.
  * @throws An error if the version code is not a positive integer for Android platforms.
  */
-export const getAppVersionCode = (c: RnvContext, platform: RnvPlatform) => {
-    const versionCode = getConfigProp(c, platform, 'versionCode');
+export const getAppVersionCode = () => {
+    const c = getContext();
+    const versionCode = getConfigProp('versionCode');
 
     if (versionCode) {
         // android platforms don't allow versionCode to be a string, only positive integer
-        if (_androidLikePlatform(platform)) {
+        if (_androidLikePlatform(c.platform)) {
             const isValidVersionCode = Number.isInteger(Number(versionCode)) && Number(versionCode) > 0;
             if (!isValidVersionCode) {
                 throw new Error(`'versionCode' should be a positive integer. Check your config`);
@@ -215,12 +212,12 @@ export const getAppVersionCode = (c: RnvContext, platform: RnvPlatform) => {
         return versionCode;
     }
 
-    const version = getConfigProp(c, platform, 'version') || c.files.project.package?.version;
+    const version = getConfigProp('version') || c.files.project.package?.version;
     if (!version || typeof version !== 'string') {
         logWarning('You are missing version prop in your config. will default to 0');
         return '0';
     }
-    const versionCodeFormat = getConfigProp(c, platform, 'versionCodeFormat') || '00.00.00';
+    const versionCodeFormat = getConfigProp('versionCodeFormat') || '00.00.00';
     const vFormatArr = versionCodeFormat.split('.').map((v: string) => v.length);
     const versionCodeMaxCount = vFormatArr.length;
     const verArr = [];
@@ -267,7 +264,8 @@ export const getAppVersionCode = (c: RnvContext, platform: RnvPlatform) => {
     return output;
 };
 
-export const confirmActiveBundler = async (c: RnvContext) => {
+export const confirmActiveBundler = async () => {
+    const c = getContext();
     if (c.runtime.skipActiveServerCheck) return true;
 
     if (c.program.ci) {
@@ -286,7 +284,8 @@ export const confirmActiveBundler = async (c: RnvContext) => {
     });
 
     if (choices[0] === selectedOption) {
-        await killPort(c.runtime.port);
+        const result = await killPort(c.runtime.port);
+        console.log('WTFFF', result);
     } else {
         return false;
     }
@@ -295,10 +294,14 @@ export const confirmActiveBundler = async (c: RnvContext) => {
 
 export const getIP = () => ip.address();
 
-export const getAppTemplateFolder = (c: RnvContext, platform: RnvPlatform) =>
-    platform ? path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`) : undefined;
+export const getAppTemplateFolder = () => {
+    const c = getContext();
+    const { platform } = c;
+    return platform ? path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`) : undefined;
+};
 
-export const addSystemInjects = (c: RnvContext, injects: OverridesOptions) => {
+export const addSystemInjects = (injects: OverridesOptions) => {
+    const c = getContext();
     if (!c.systemPropsInjects) c.systemPropsInjects = [];
     if (injects) {
         injects.forEach((item) => {

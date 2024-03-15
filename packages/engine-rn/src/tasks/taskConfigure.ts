@@ -17,10 +17,10 @@ import { configureFonts } from '@rnv/sdk-react-native';
 const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskConfigure');
 
-    await executeTask(c, RnvTaskName.platformConfigure, RnvTaskName.configure, originTask);
-    if (shouldSkipTask(c, RnvTaskName.configure, originTask)) return true;
+    await executeTask(RnvTaskName.platformConfigure, RnvTaskName.configure, originTask);
+    if (shouldSkipTask(RnvTaskName.configure, originTask)) return true;
 
-    await configureEntryPoint(c, c.platform);
+    await configureEntryPoint(c.platform);
 
     if (c.program.only && !!parentTask) {
         return true;
@@ -29,21 +29,21 @@ const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     switch (c.platform) {
         case 'ios':
         case 'macos':
-            await configureXcodeProject(c);
+            await configureXcodeProject();
             break;
         case 'android':
         case 'androidtv':
         case 'firetv':
         case 'androidwear':
-            await configureGradleProject(c);
-            await jetifyIfRequired(c);
+            await configureGradleProject();
+            await jetifyIfRequired();
             break;
         default:
-            logErrorPlatform(c);
+            logErrorPlatform();
             break;
     }
 
-    await configureFonts(c);
+    await configureFonts();
     return true;
 };
 

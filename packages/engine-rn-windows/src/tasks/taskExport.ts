@@ -18,9 +18,9 @@ const taskExport: RnvTaskFn = async (c, parentTask, originTask) => {
 
     const { platform } = c;
 
-    await executeOrSkipTask(c, RnvTaskName.build, RnvTaskName.export, originTask);
+    await executeOrSkipTask(RnvTaskName.build, RnvTaskName.export, originTask);
 
-    if (shouldSkipTask(c, RnvTaskName.export, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.export, originTask)) return true;
 
     switch (platform) {
         case 'xbox':
@@ -28,7 +28,7 @@ const taskExport: RnvTaskFn = async (c, parentTask, originTask) => {
             await clearWindowsTemporaryFiles(c);
             return packageWindowsApp(c);
         default:
-            logErrorPlatform(c);
+            logErrorPlatform();
     }
 };
 

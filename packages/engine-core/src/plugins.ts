@@ -1,7 +1,9 @@
-import { PluginListResponse, RnvContext, chalk } from '@rnv/core';
+import { PluginListResponse, chalk, getContext } from '@rnv/core';
 import intersection from 'lodash/intersection';
 
-export const getPluginList = (c: RnvContext, isUpdate = false) => {
+export const getPluginList = (isUpdate = false) => {
+    const c = getContext();
+
     const output: PluginListResponse = {
         asString: '',
         asArray: [],

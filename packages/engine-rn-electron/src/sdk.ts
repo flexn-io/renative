@@ -27,6 +27,7 @@ import {
     ExecOptionsPresets,
     getAppFolder,
     RnvTaskName,
+    getContext,
 } from '@rnv/core';
 import { FileElectronPackage } from './types';
 import { NpmPackageFile } from '@rnv/core/lib/configs/types';
@@ -43,56 +44,56 @@ import {
     addSystemInjects,
 } from '@rnv/sdk-utils';
 
-export const configureElectronProject = async (c: RnvContext, exitOnFail?: boolean) => {
+export const configureElectronProject = async (exitOnFail?: boolean) => {
+    const c = getContext();
     logDefault('configureElectronProject');
 
     const { platform } = c;
 
-    c.runtime.platformBuildsProjectPath = `${getPlatformProjectDir(c)}`;
+    c.runtime.platformBuildsProjectPath = `${getPlatformProjectDir()}`;
     c.runtime.webpackTarget = 'electron-main';
 
     // If path does not exist for png, try iconset
     const iconsetPath = path.join(c.paths.appConfig.dir, `assets/${platform}/resources/AppIcon.iconset`);
 
     await copyAssetsFolder(
-        c,
-        platform,
         undefined,
         (platform === 'macos' || platform === 'linux') && fsExistsSync(iconsetPath) ? _generateICNS : undefined
     );
 
     await configureCoreWebProject();
 
-    await configureProject(c, exitOnFail);
-    return copyBuildsFolder(c, platform);
+    await configureProject(exitOnFail);
+    return copyBuildsFolder();
 };
 const merge = require('deepmerge');
 
-const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
+const configureProject = (exitOnFail?: boolean) =>
     new Promise<void>((resolve, reject) => {
+        const c = getContext();
         logDefault('configureProject');
         const { platform } = c;
 
-        if (!isPlatformActive(c, platform, resolve)) return;
+        if (!isPlatformActive(resolve)) return;
 
-        const platformProjectDir = getPlatformProjectDir(c)!;
-        const engine = getEngineRunnerByPlatform(c, c.platform);
+        const platformProjectDir = getPlatformProjectDir()!;
+        const engine = getEngineRunnerByPlatform(c.platform);
 
         if (!engine || !platform) return;
 
-        const platformBuildDir = getAppFolder(c)!;
-        const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
+        const platformBuildDir = getAppFolder()!;
+        const bundleAssets = getConfigProp('bundleAssets') === true;
         const electronConfigPath = path.join(platformBuildDir, 'electronConfig.json');
         const packagePath = path.join(platformBuildDir, 'package.json');
         // If path does not exist for png, try iconset
         const pngIconPath = path.join(c.paths.appConfig.dir, `assets/${platform}/resources/icon.png`);
-        const appId = getAppId(c, platform);
+        const appId = getAppId();
 
         if (!fsExistsSync(packagePath)) {
             if (exitOnFail) {
                 logWarning(`Your ${chalk().bold(platform)} platformBuild is misconfigured!. let's repair it.`);
-                createPlatformBuild(c, platform)
-                    .then(() => configureElectronProject(c, true))
+                createPlatformBuild(platform)
+                    .then(() => configureElectronProject(true))
                     .then(() => resolve())
                     .catch((e) => reject(e));
                 return;
@@ -104,11 +105,11 @@ const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
         const packageJson = readObjectSync<FileElectronPackage>(pkgJson) || {};
 
         packageJson.name = `${c.runtime.appId}-${platform}`;
-        packageJson.productName = `${getAppTitle(c, platform)}`;
-        packageJson.version = `${getAppVersion(c, platform)}`;
-        packageJson.description = `${getAppDescription(c, platform)}`;
-        packageJson.author = getAppAuthor(c, platform);
-        packageJson.license = `${getAppLicense(c, platform)}`;
+        packageJson.productName = `${getAppTitle()}`;
+        packageJson.version = `${getAppVersion()}`;
+        packageJson.description = `${getAppDescription()}`;
+        packageJson.author = getAppAuthor();
+        packageJson.license = `${getAppLicense()}`;
         packageJson.main = './main.js';
 
         // check if project includes @electron/remote
@@ -134,12 +135,12 @@ const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
                     ? path.join(platformProjectDir, 'resources', 'icon.icns')
                     : path.join(platformProjectDir, 'resources', 'icon.png'),
         };
-        const browserWindowExt = getConfigProp(c, platform, 'BrowserWindow');
+        const browserWindowExt = getConfigProp('BrowserWindow');
         if (browserWindowExt) {
             browserWindow = merge(browserWindow, browserWindowExt);
         }
         const browserWindowStr = JSON.stringify(browserWindow, null, 2);
-        const electronConfigExt = getConfigProp(c, platform, 'electronConfig');
+        const electronConfigExt = getConfigProp('electronConfig');
         const mainInjection = electronConfigExt?.mainInjection || '';
         const mainHeadInjection = electronConfigExt?.mainHeadInjection || '';
 
@@ -163,7 +164,7 @@ const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
                 },
             ];
 
-            addSystemInjects(c, injects);
+            addSystemInjects(injects);
 
             writeCleanFile(
                 path.join(platformProjectDir, 'main.prod.js'),
@@ -196,7 +197,7 @@ const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
                 },
             ];
 
-            addSystemInjects(c, injects);
+            addSystemInjects(injects);
 
             writeCleanFile(
                 path.join(platformProjectDir, 'main.dev.js'),
@@ -253,13 +254,14 @@ const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
         resolve();
     });
 
-const buildElectron = async (c: RnvContext) => {
+const buildElectron = async () => {
+    const c = getContext();
     logDefault('buildElectron');
 
-    await buildCoreWebpackProject(c);
+    await buildCoreWebpackProject();
     // Webpack 5 deletes build folder but does not copy package json
 
-    const platformBuildDir = getAppFolder(c)!;
+    const platformBuildDir = getAppFolder()!;
 
     // workaround: electron-builder fails export in npx mode due to trying install node_modules. we trick it not to do that
     mkdirSync(path.join(platformBuildDir, 'build', 'node_modules'));
@@ -283,10 +285,11 @@ const buildElectron = async (c: RnvContext) => {
     return true;
 };
 
-const exportElectron = async (c: RnvContext) => {
+const exportElectron = async () => {
+    const c = getContext();
     logDefault('exportElectron');
 
-    const platformBuildDir = getAppFolder(c)!;
+    const platformBuildDir = getAppFolder()!;
     const buildPath = path.join(platformBuildDir, 'build', 'release');
 
     if (fsExistsSync(buildPath)) {
@@ -306,46 +309,46 @@ const exportElectron = async (c: RnvContext) => {
         electronBuilderPath = 'npx electron-builder';
     }
     await executeAsync(
-        c,
         `${electronBuilderPath} --config ${path.join(platformBuildDir, 'electronConfig.json')} --${c.platform}`
     );
 
     logSuccess(`Your Exported App is located in ${chalk().cyan(path.join(platformBuildDir, 'export'))} .`);
 };
 
-export const runElectron = async (c: RnvContext) => {
+export const runElectron = async () => {
+    const c = getContext();
     logDefault('runElectron');
 
     const { platform } = c;
     const { port } = c.runtime;
 
-    // const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
-    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
+    // const bundleIsDev = getConfigProp('bundleIsDev') === true;
+    const bundleAssets = getConfigProp('bundleAssets') === true;
 
     if (bundleAssets) {
-        await buildElectron(c);
+        await buildElectron();
         await _runElectronSimulator(c);
     } else {
-        const isPortActive = await checkPortInUse(c, platform, port);
+        const isPortActive = await checkPortInUse(port);
         if (!isPortActive) {
             logInfo(
                 `Your ${chalk().bold(platform)} devServer at port ${chalk().bold(
                     port
                 )} is not running. Starting it up for you...`
             );
-            waitForHost(c, '')
+            waitForHost('')
                 .then(() => _runElectronSimulator(c))
                 .catch(logError);
             // await _runElectronSimulator(c);
-            await runWebpackServer(c);
+            await runWebpackServer();
         } else {
-            const resetCompleted = await confirmActiveBundler(c);
+            const resetCompleted = await confirmActiveBundler();
             if (resetCompleted) {
-                waitForHost(c, '')
+                waitForHost('')
                     .then(() => _runElectronSimulator(c))
                     .catch(logError);
                 // await _runElectronSimulator(c);
-                await runWebpackServer(c);
+                await runWebpackServer();
             } else {
                 await _runElectronSimulator(c);
             }
@@ -355,17 +358,17 @@ export const runElectron = async (c: RnvContext) => {
 
 const _runElectronSimulator = async (c: RnvContext) => {
     logDefault(`_runElectronSimulator:${c.platform}`);
-    // const appFolder = getAppFolder(c, c.platform);
+    // const appFolder = getAppFolder(c.platform);
     // const elc = `${doResolve('electron')}/cli.js`;
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets') === true;
-    let platformProjectDir = getPlatformProjectDir(c)!;
+    const bundleAssets = getConfigProp('bundleAssets') === true;
+    let platformProjectDir = getPlatformProjectDir()!;
 
     if (bundleAssets) {
-        platformProjectDir = path.join(getAppFolder(c)!, 'build');
+        platformProjectDir = path.join(getAppFolder()!, 'build');
     }
 
     const cmd = `node ${doResolve('electron')}/cli.js ${path.join(platformProjectDir, '/main.js')}`;
-    await executeAsync(c, cmd, ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER);
+    await executeAsync(cmd, ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER);
 };
 
 const _generateICNS = (c: RnvContext) =>
@@ -386,7 +389,7 @@ const _generateICNS = (c: RnvContext) =>
             source = path.join(c.paths.appConfig.dir, `assets/${platform}/AppIcon.iconset`);
         }
 
-        const dest = path.join(getPlatformProjectDir(c)!, 'resources/icon.icns');
+        const dest = path.join(getPlatformProjectDir()!, 'resources/icon.icns');
 
         // It's ok if icns are not generated as png is also valid https://www.electron.build/icons.html#macos
         if (!source) {
@@ -405,11 +408,11 @@ const _generateICNS = (c: RnvContext) =>
             return;
         }
 
-        mkdirSync(path.join(getPlatformProjectDir(c)!, 'resources'));
+        mkdirSync(path.join(getPlatformProjectDir()!, 'resources'));
 
         const p = ['--convert', 'icns', source, '--output', dest];
         try {
-            executeAsync(c, `iconutil ${p.join(' ')}`);
+            executeAsync(`iconutil ${p.join(' ')}`);
             resolve();
         } catch (e) {
             reject(e);

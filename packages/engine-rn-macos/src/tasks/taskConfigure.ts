@@ -14,10 +14,10 @@ import { configureXcodeProject } from '@rnv/sdk-apple';
 const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskConfigure');
 
-    await executeTask(c, RnvTaskName.platformConfigure, RnvTaskName.configure, originTask);
-    if (shouldSkipTask(c, RnvTaskName.configure, originTask)) return true;
+    await executeTask(RnvTaskName.platformConfigure, RnvTaskName.configure, originTask);
+    if (shouldSkipTask(RnvTaskName.configure, originTask)) return true;
 
-    await configureEntryPoint(c, c.platform);
+    await configureEntryPoint(c.platform);
 
     if (c.program.only && !!parentTask) {
         return true;
@@ -25,10 +25,10 @@ const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
 
     switch (c.platform) {
         case 'macos':
-            await configureXcodeProject(c);
+            await configureXcodeProject();
             return true;
         default:
-            await logErrorPlatform(c);
+            await logErrorPlatform();
             return true;
     }
 };

@@ -12,7 +12,7 @@
         "react-native-splash-screen": {
             "android": {
                 "templateAndroid": {
-                    "MainActivity_java": {
+                    "MainActivity_kt": {
                         "createMethods": ["SplashScreen.show(this)"],
                         "imports": ["org.devio.rn.splashscreen.SplashScreen"]
                     }
@@ -40,7 +40,7 @@
         "TestNativeModule": {
             "android": {
                 "templateAndroid": {
-                    "MainApplication_java": {
+                    "MainApplication_kt": {
                         "packages": ["MyAppPackage"]
                     }
                 },
@@ -101,6 +101,11 @@
                         "android:name": "",
                         "children": [
                             {
+                                "tag": "uses-permission ",
+                                "android:name": "android.permission.WRITE_EXTERNAL_STORAGE",
+                                "children": []
+                            },
+                            {
                                 "tag": "application",
                                 "android:name": ".MainApplication",
                                 "children": [
@@ -108,7 +113,8 @@
                                         "tag": "activity",
                                         "android:name": "com.ahmedadeltito.photoeditor.PhotoEditorActivity",
                                         "children": []
-                                    }
+                                    },
+                                    { "tag": "activity", "android:name": "com.yalantis.ucrop.UCropActivity" }
                                 ]
                             }
                         ]

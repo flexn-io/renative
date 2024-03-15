@@ -23,5 +23,5 @@ test('Execute task.rnv.run', async () => {
     // WHEN
     await taskRun.fn?.(ctx, undefined, undefined);
     // THEN
-    expect(runXcodeProject).toHaveBeenCalledWith(ctx, 'MOCK_DEVICE_ARGS');
+    expect(runXcodeProject).toHaveBeenCalledWith('MOCK_DEVICE_ARGS');
 });

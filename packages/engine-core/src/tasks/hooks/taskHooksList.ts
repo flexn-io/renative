@@ -13,8 +13,8 @@ import {
 const taskHooksList: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskHooksList');
 
-    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.hooksList, originTask);
-    await buildHooks(c);
+    await executeTask(RnvTaskName.projectConfigure, RnvTaskName.hooksList, originTask);
+    await buildHooks();
 
     if (c.buildHooks) {
         const hookOpts = generateOptions(c.buildHooks);

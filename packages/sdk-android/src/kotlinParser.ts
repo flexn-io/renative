@@ -4,11 +4,10 @@ import {
     RnvContext,
     getAppFolder,
     getConfigProp,
+    getContext,
     writeCleanFile,
 } from '@rnv/core';
-import { mkdirSync } from 'fs';
 import path from 'path';
-import { Context } from './types';
 import { getBuildFilePath, getEntryFile, getAppId, addSystemInjects } from '@rnv/sdk-utils';
 
 // const JS_BUNDLE_DEFAULTS: Partial<Record<PlatformKey, string>> = {
@@ -16,35 +15,36 @@ import { getBuildFilePath, getEntryFile, getAppId, addSystemInjects } from '@rnv
 //     androidwear: '"assets://index.androidwear.bundle"',
 // };
 
-export const parseFlipperSync = (c: Context, scheme: 'debug' | 'release') => {
-    const appFolder = getAppFolder(c);
-    const { platform } = c;
+// export const parseFlipperSync = (c: Context, scheme: 'debug' | 'release') => {
+//     const appFolder = getAppFolder();
+//     const { platform } = c;
 
-    const appId = getAppId(c, c.platform);
-    // console.log('appId', appId);
-    const javaPackageArray = appId?.split('.') || [];
+//     const appId = getAppId(c, c.platform);
+//     // console.log('appId', appId);
+//     const javaPackageArray = appId?.split('.') || [];
 
-    const javaPackagePath = `app/src/${scheme}/java/${javaPackageArray.join('/')}`;
-    mkdirSync(path.join(appFolder, javaPackagePath), { recursive: true });
+//     const javaPackagePath = `app/src/${scheme}/java/${javaPackageArray.join('/')}`;
+//     mkdirSync(path.join(appFolder, javaPackagePath), { recursive: true });
 
-    const templatePath = `app/src/${scheme}/java/rnv_template/ReactNativeFlipper.kt`;
-    const applicationPath = `${javaPackagePath}/ReactNativeFlipper.java`;
+//     const templatePath = `app/src/${scheme}/java/rnv_template/ReactNativeFlipper.kt`;
+//     const applicationPath = `${javaPackagePath}/ReactNativeFlipper.java`;
 
-    const injects: OverridesOptions = [{ pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) }];
+//     const injects: OverridesOptions = [{ pattern: '{{APPLICATION_ID}}', override: getAppId() }];
 
-    addSystemInjects(c, injects);
+//     addSystemInjects(injects);
 
-    writeCleanFile(
-        getBuildFilePath(c, platform, templatePath),
-        path.join(appFolder, applicationPath),
-        injects,
-        undefined,
-        c
-    );
-};
+//     writeCleanFile(
+//         getBuildFilePath(templatePath),
+//         path.join(appFolder, applicationPath),
+//         injects,
+//         undefined,
+//         c
+//     );
+// };
 
-export const parseMainApplicationSync = (c: Context) => {
-    const appFolder = getAppFolder(c);
+export const parseMainApplicationSync = () => {
+    const c = getContext();
+    const appFolder = getAppFolder();
     const { platform } = c;
 
     if (!platform) return;
@@ -58,7 +58,7 @@ export const parseMainApplicationSync = (c: Context) => {
 
     const templatePath = 'app/src/main/java/rnv_template/MainApplication.kt';
     // const applicationPath = `${javaPackagePath}/MainApplication.java`;
-    // const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
+    // const bundleAssets = getConfigProp('bundleAssets');
 
     // const bundleDefault = JS_BUNDLE_DEFAULTS[platform];
     // const bundleFile: string =
@@ -73,8 +73,8 @@ export const parseMainApplicationSync = (c: Context) => {
     // }
 
     const injects: OverridesOptions = [
-        { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
-        { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) || '' },
+        { pattern: '{{APPLICATION_ID}}', override: getAppId() },
+        { pattern: '{{ENTRY_FILE}}', override: getEntryFile() || '' },
         // { pattern: '{{GET_JS_BUNDLE_FILE}}', override: bundleFile },
         {
             pattern: '{{PLUGIN_IMPORTS}}',
@@ -102,32 +102,26 @@ export const parseMainApplicationSync = (c: Context) => {
         },
     ];
 
-    addSystemInjects(c, injects);
+    addSystemInjects(injects);
 
-    writeCleanFile(
-        getBuildFilePath(c, platform, templatePath),
-        path.join(appFolder, templatePath),
-        injects,
-        undefined,
-        c
-    );
+    writeCleanFile(getBuildFilePath(templatePath), path.join(appFolder, templatePath), injects, undefined, c);
 };
 
-export const parseMainActivitySync = (c: RnvContext) => {
-    const appFolder = getAppFolder(c);
-    const { platform } = c;
+export const parseMainActivitySync = () => {
+    const c = getContext();
+    const appFolder = getAppFolder();
 
     const templatePath = 'app/src/main/java/rnv_template/MainActivity.kt';
 
-    const templateAndroid = getConfigProp(c, platform, 'templateAndroid', {});
+    const templateAndroid = getConfigProp('templateAndroid', {});
 
-    const mainActivity = templateAndroid?.MainActivity_java;
+    const mainActivity = templateAndroid?.MainActivity_kt;
 
     c.payload.pluginConfigAndroid.injectActivityOnCreate =
         mainActivity?.onCreate || 'super.onCreate(savedInstanceState)';
 
     const injects = [
-        { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+        { pattern: '{{APPLICATION_ID}}', override: getAppId() },
         {
             pattern: '{{PLUGIN_ACTIVITY_IMPORTS}}',
             override: c.payload.pluginConfigAndroid.pluginActivityImports,
@@ -150,25 +144,19 @@ export const parseMainActivitySync = (c: RnvContext) => {
         },
     ];
 
-    addSystemInjects(c, injects);
+    addSystemInjects(injects);
 
-    writeCleanFile(
-        getBuildFilePath(c, platform, templatePath),
-        path.join(appFolder, templatePath),
-        injects,
-        undefined,
-        c
-    );
+    writeCleanFile(getBuildFilePath(templatePath), path.join(appFolder, templatePath), injects, undefined, c);
 };
 
-export const parseSplashActivitySync = (c: Context) => {
-    const appFolder = getAppFolder(c);
-    const { platform } = c;
+export const parseSplashActivitySync = () => {
+    const c = getContext();
+    const appFolder = getAppFolder();
 
     const splashTemplatePath = 'app/src/main/java/rnv_template/SplashActivity.kt';
 
     // TODO This is temporary ANDROIDX support. whole kotlin parser will be refactored in the near future
-    const enableAndroidX = getConfigProp(c, platform, 'enableAndroidX', true);
+    const enableAndroidX = getConfigProp('enableAndroidX', true);
     if (enableAndroidX === true) {
         c.payload.pluginConfigAndroid.pluginSplashActivityImports +=
             'import androidx.appcompat.app.AppCompatActivity;\n';
@@ -178,17 +166,17 @@ export const parseSplashActivitySync = (c: Context) => {
     }
 
     const injects = [
-        { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+        { pattern: '{{APPLICATION_ID}}', override: getAppId() },
         {
             pattern: '{{PLUGIN_SPLASH_ACTIVITY_IMPORTS}}',
             override: c.payload.pluginConfigAndroid.pluginSplashActivityImports,
         },
     ];
 
-    addSystemInjects(c, injects);
+    addSystemInjects(injects);
 
     writeCleanFile(
-        getBuildFilePath(c, platform, splashTemplatePath),
+        getBuildFilePath(splashTemplatePath),
         path.join(appFolder, splashTemplatePath),
         injects,
         undefined,
@@ -196,14 +184,10 @@ export const parseSplashActivitySync = (c: Context) => {
     );
 };
 
-export const injectPluginKotlinSync = (
-    c: RnvContext,
-    plugin: RenativeConfigPluginPlatform,
-    key: string,
-    pkg: string | undefined
-) => {
+export const injectPluginKotlinSync = (plugin: RenativeConfigPluginPlatform, key: string, pkg: string | undefined) => {
+    const c = getContext();
     const templ = plugin.templateAndroid;
-    const mainActivity = templ?.MainActivity_java;
+    const mainActivity = templ?.MainActivity_kt;
     if (mainActivity?.imports) {
         mainActivity.imports.forEach((activityImport) => {
             // Avoid duplicate imports
@@ -232,7 +216,7 @@ export const injectPluginKotlinSync = (
 
     _injectPackage(c, plugin, pkg);
 
-    const mainApplication = templ?.MainApplication_java;
+    const mainApplication = templ?.MainApplication_kt;
 
     if (mainApplication?.packages) {
         mainApplication.packages.forEach((v) => {
@@ -264,7 +248,7 @@ const _injectPackage = (c: RnvContext, plugin: RenativeConfigPluginPlatform, pkg
         c.payload.pluginConfigAndroid.pluginApplicationImports += `import ${pkg}\n`;
     }
     let packageParams = '';
-    const mainApplication = plugin.templateAndroid?.MainApplication_java;
+    const mainApplication = plugin.templateAndroid?.MainApplication_kt;
     if (mainApplication?.packageParams) {
         packageParams = mainApplication.packageParams.join(',');
     }

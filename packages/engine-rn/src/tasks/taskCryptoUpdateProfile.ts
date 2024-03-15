@@ -4,11 +4,11 @@ import { updateProfile } from '@rnv/sdk-apple';
 const taskCryptoUpdateProfile: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskCryptoUpdateProfile');
 
-    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.cryptoUpdateProfile, originTask);
+    await executeTask(RnvTaskName.projectConfigure, RnvTaskName.cryptoUpdateProfile, originTask);
 
-    if (shouldSkipTask(c, RnvTaskName.cryptoUpdateProfile, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.cryptoUpdateProfile, originTask)) return true;
 
-    await updateProfile(c);
+    await updateProfile();
 };
 
 const Task: RnvTask = {

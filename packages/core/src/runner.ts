@@ -10,11 +10,12 @@ import { updateRenativeConfigs } from './plugins';
 export const executeRnvCore = async () => {
     const c = getContext();
 
-    await configureRuntimeDefaults(c);
+    await configureRuntimeDefaults();
     await checkAndMigrateProject();
-    await updateRenativeConfigs(c);
-    await checkAndBootstrapIfRequired(c);
+    await updateRenativeConfigs();
+    await checkAndBootstrapIfRequired();
 
+    // TODO: rename to something more meaningful or DEPRECATE entirely
     if (c.program.npxMode) {
         return;
     }
@@ -24,28 +25,28 @@ export const executeRnvCore = async () => {
     // ie rnv link
     const initTask = await findSuitableGlobalTask();
     if (initTask?.task && initTask.isGlobalScope) {
-        return initializeTask(c, initTask?.task);
+        return initializeTask(initTask?.task);
     }
 
-    await loadIntegrations(c);
-    const result = await loadEngines(c);
+    await loadIntegrations();
+    const result = await loadEngines();
     // If false make sure we reload configs as it means it's freshly installed
     if (!result) {
-        await updateRenativeConfigs(c);
+        await updateRenativeConfigs();
     }
 
     // for root rnv we simply load all engines upfront
     const { configExists } = c.paths.project;
     if (!c.command && configExists) {
-        await registerMissingPlatformEngines(c);
+        await registerMissingPlatformEngines();
     }
 
     // Some tasks might require all engines to be present (ie rnv platform list)
-    const taskInstance = await findSuitableTask(c);
+    const taskInstance = await findSuitableTask();
 
     if (c.command && !taskInstance?.ignoreEngines) {
-        await registerMissingPlatformEngines(c, taskInstance);
+        await registerMissingPlatformEngines(taskInstance);
     }
 
-    if (taskInstance?.task) await initializeTask(c, taskInstance?.task);
+    if (taskInstance?.task) await initializeTask(taskInstance?.task);
 };

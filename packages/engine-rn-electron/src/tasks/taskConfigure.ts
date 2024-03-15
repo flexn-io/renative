@@ -15,13 +15,13 @@ import { configureElectronProject } from '../sdk';
 const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskConfigure');
 
-    await executeTask(c, RnvTaskName.platformConfigure, RnvTaskName.configure, originTask);
+    await executeTask(RnvTaskName.platformConfigure, RnvTaskName.configure, originTask);
 
-    if (shouldSkipTask(c, RnvTaskName.configure, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.configure, originTask)) return true;
 
-    await configureEntryPoint(c, c.platform);
+    await configureEntryPoint(c.platform);
 
-    await copySharedPlatforms(c);
+    await copySharedPlatforms();
 
     if (c.program.only && !!parentTask) {
         return true;
@@ -31,9 +31,9 @@ const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
         case 'macos':
         case 'windows':
         case 'linux':
-            return configureElectronProject(c);
+            return configureElectronProject();
         default:
-            return logErrorPlatform(c);
+            return logErrorPlatform();
     }
 };
 

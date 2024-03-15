@@ -22,7 +22,7 @@ test('Execute task.rnv.start with no parent', async () => {
     await taskStart.fn?.(ctx, undefined, undefined);
     // THEN
     expect(executeTask).toHaveBeenCalledTimes(1);
-    expect(startReactNative).toHaveBeenCalledWith(ctx, {
+    expect(startReactNative).toHaveBeenCalledWith({
         waitForBundler: true,
         customCliPath: 'MOCKED_PATH/local-cli/cli.js',
         metroConfigName: 'metro.config.js',
@@ -37,7 +37,7 @@ test('Execute task.rnv.start', async () => {
     // WHEN
     await taskStart.fn?.(ctx, 'parent', undefined);
     // THEN
-    expect(startReactNative).toHaveBeenCalledWith(ctx, {
+    expect(startReactNative).toHaveBeenCalledWith({
         waitForBundler: false,
         customCliPath: 'MOCKED_PATH/local-cli/cli.js',
         metroConfigName: 'metro.config.js',

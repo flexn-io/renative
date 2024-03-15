@@ -1,10 +1,10 @@
 import { getRealPath, writeFileSync } from '../system/fs';
 import { chalk, logDefault, logWarning } from '../logger';
-import { RnvContext } from '../context/types';
 import { RnvPlatform } from '../types';
 import { PlatformKey } from '../schema/types';
 import { NpmPackageFile } from './types';
 import { ConfigFileProject } from '../schema/configFiles/types';
+import { getContext } from '../context/provider';
 
 const SYNCED_DEPS = [
     'rnv',
@@ -22,8 +22,10 @@ const SYNCED_DEPS = [
 
 const SYNCED_TEMPLATES = ['@rnv/template-starter'];
 
-export const upgradeProjectDependencies = (c: RnvContext, version: string) => {
+export const upgradeProjectDependencies = (version: string) => {
     logDefault('upgradeProjectDependencies');
+
+    const c = getContext();
 
     // const templates = c.files.project.config?.templates;
     // TODO: Make this dynamically injected
@@ -81,7 +83,9 @@ const _fixDeps = (deps: Record<string, string> | undefined, version: string) => 
     });
 };
 
-export const updateProjectPlatforms = (c: RnvContext, platforms: Array<PlatformKey>) => {
+export const updateProjectPlatforms = (platforms: Array<PlatformKey>) => {
+    const c = getContext();
+
     const {
         project: { config },
     } = c.paths;
@@ -95,8 +99,10 @@ export const updateProjectPlatforms = (c: RnvContext, platforms: Array<PlatformK
     }
 };
 
-export const generatePlatformTemplatePaths = (c: RnvContext) => {
+export const generatePlatformTemplatePaths = () => {
     logDefault('generatePlatformTemplatePaths');
+    const c = getContext();
+
     if (!c.buildConfig.paths) {
         logWarning(`You're missing paths object in your ${chalk().red(c.paths.project.config)}`);
         c.buildConfig.paths = {
@@ -117,14 +123,14 @@ export const generatePlatformTemplatePaths = (c: RnvContext) => {
 
                     if (originalPath) {
                         if (!pt[platform]) {
-                            const pt1 = getRealPath(c, originalPath, 'platformTemplatesDir', originalPath);
+                            const pt1 = getRealPath(originalPath, 'platformTemplatesDir', originalPath);
                             if (pt1) {
                                 result[platform] = pt1;
                             } else {
                                 logWarning(`Cannot resolve originalTemplatePlatformsDir: ${originalPath}. SKIPPING...`);
                             }
                         } else {
-                            const pt2 = getRealPath(c, pt[platform], 'platformTemplatesDir', originalPath);
+                            const pt2 = getRealPath(pt[platform], 'platformTemplatesDir', originalPath);
                             if (pt2) {
                                 result[platform] = pt2;
                             } else {

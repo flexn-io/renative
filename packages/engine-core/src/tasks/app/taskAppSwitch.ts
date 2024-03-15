@@ -15,11 +15,11 @@ const taskSwitch: RnvTaskFn = async (c, _parentTask, originTask) => {
 
     c.program.appConfigID = true;
 
-    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.appSwitch, originTask);
+    await executeTask(RnvTaskName.projectConfigure, RnvTaskName.appSwitch, originTask);
 
-    await copyRuntimeAssets(c);
-    await generatePlatformAssetsRuntimeConfig(c);
-    await configureFonts(c);
+    await copyRuntimeAssets();
+    await generatePlatformAssetsRuntimeConfig();
+    await configureFonts();
 
     return true;
 };

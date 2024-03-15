@@ -149,7 +149,7 @@ const _setAppId = (c: RnvContext, appId: string) => {
 const taskAppConfigure = async (c: RnvContext) => {
     logTask('taskAppConfigure');
 
-    c.paths.project.appConfigsDirNames = listAppConfigsFoldersSync(c, true);
+    c.paths.project.appConfigsDirNames = listAppConfigsFoldersSync(true);
     c.paths.project.appConfigsDirNames.forEach((dirName) => {
         c.paths.project.appConfigsDirs.push(path.join(c.paths.project.appConfigsDir, dirName));
     });
@@ -157,7 +157,7 @@ const taskAppConfigure = async (c: RnvContext) => {
     const appConfigsDirsExt = c.buildConfig?.paths?.appConfigsDirs;
     if (appConfigsDirsExt) {
         appConfigsDirsExt.forEach((apePath) => {
-            const appConfigsExt = listAppConfigsFoldersSync(c, true, apePath);
+            const appConfigsExt = listAppConfigsFoldersSync(true, apePath);
             appConfigsExt.forEach((appExtName) => {
                 c.paths.project.appConfigsDirNames.push(appExtName);
                 c.paths.project.appConfigsDirs.push(path.join(apePath, appExtName));
@@ -199,7 +199,7 @@ const taskAppConfigure = async (c: RnvContext) => {
             c.paths.project.appConfigsDirs[c.paths.project.appConfigsDirNames.indexOf(c.runtime.appId)];
     }
 
-    await updateRenativeConfigs(c);
+    await updateRenativeConfigs();
     logAppInfo(c);
 
     return true;

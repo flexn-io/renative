@@ -31,23 +31,23 @@ const taskStart: RnvTaskFn = async (c, parentTask, originTask) => {
     // Disable reset for other commands (ie. cleaning platforms)
     c.runtime.disableReset = true;
     if (!parentTask) {
-        await executeTask(c, RnvTaskName.configureSoft, RnvTaskName.start, originTask);
+        await executeTask(RnvTaskName.configureSoft, RnvTaskName.start, originTask);
     }
 
-    if (shouldSkipTask(c, RnvTaskName.start, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.start, originTask)) return true;
 
     switch (platform) {
         case 'androidtv':
         case 'firetv':
         case 'tvos': {
-            return startReactNative(c, {
+            return startReactNative({
                 waitForBundler: !parentTask,
                 customCliPath: `${doResolve('react-native-tvos')}/local-cli/cli.js`,
                 metroConfigName: 'metro.config.js',
             });
         }
         default:
-            return logErrorPlatform(c);
+            return logErrorPlatform();
     }
 };
 
