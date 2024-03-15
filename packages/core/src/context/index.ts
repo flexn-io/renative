@@ -28,7 +28,7 @@ const populateLinkingInfo = (ctx: RnvContext) => {
 };
 
 export const createRnvContext = (ctx?: CreateContextOptions) => {
-    console.log('WTF IS THIS', !!ctx, !!global.RNV_CONTEXT, global.RNV_CONTEXT?.isDefault);
+    // console.log('CREATE_RNV_CONTEXT', !!ctx, !!global.RNV_CONTEXT, global.RNV_CONTEXT?.isDefault);
 
     let haltExecution = false;
     // Handle new imports of @rnv/core

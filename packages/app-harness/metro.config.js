@@ -1,3 +1,7 @@
 const { withRNVMetro } = require('rnv');
 
-module.exports = withRNVMetro({});
+module.exports = withRNVMetro({
+    resolver: {
+        unstable_enableSymlinks: true,
+    },
+});
