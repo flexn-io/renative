@@ -22,7 +22,7 @@ describe('taskStart', () => {
         // WHEN
         await taskStart.fn?.(ctx, undefined, undefined);
         // THEN
-        expect(startReactNative).toHaveBeenCalledWith(ctx, { waitForBundler: true });
+        expect(startReactNative).toHaveBeenCalledWith({ waitForBundler: true });
     });
     it('Execute task.rnv.start', async () => {
         // GIVEN
@@ -31,6 +31,6 @@ describe('taskStart', () => {
         // WHEN
         await taskStart.fn?.(ctx, 'parent', undefined);
         // THEN
-        expect(startReactNative).toHaveBeenCalledWith(ctx, { waitForBundler: false });
+        expect(startReactNative).toHaveBeenCalledWith({ waitForBundler: false });
     });
 });

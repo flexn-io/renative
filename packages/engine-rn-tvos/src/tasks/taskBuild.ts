@@ -15,22 +15,22 @@ const taskBuild: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskBuild');
     const { platform } = c;
 
-    await executeOrSkipTask(c, RnvTaskName.package, RnvTaskName.build, originTask);
+    await executeOrSkipTask(RnvTaskName.package, RnvTaskName.build, originTask);
 
-    if (shouldSkipTask(c, RnvTaskName.build, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.build, originTask)) return true;
 
     switch (platform) {
         case 'androidtv':
         case 'firetv':
-            return buildReactNativeAndroid(c);
+            return buildReactNativeAndroid();
         case 'tvos':
             if (parentTask === RnvTaskName.export) {
                 // build task is not necessary when exporting ios
                 return true;
             }
-            return buildXcodeProject(c);
+            return buildXcodeProject();
         default:
-            return logErrorPlatform(c);
+            return logErrorPlatform();
     }
 };
 

@@ -158,7 +158,7 @@ const _prepareProjectOverview = (c: RnvContext, data: NewProjectData) => {
     data.confirmString = str;
 };
 
-type ConfigProp = Required<Required<ConfigFileTemplate>['templateConfig']>['bootstrapQuestions'][number]['configProp'];
+type ConfigProp = Required<Required<ConfigFileTemplate>['bootstrapConfig']>['bootstrapQuestions'][number]['configProp'];
 
 type QuestionResults = Record<
     string,
@@ -169,7 +169,7 @@ type QuestionResults = Record<
     }
 >;
 
-type BootstrapQuestions = Required<Required<ConfigFileTemplate>['templateConfig']>['bootstrapQuestions'];
+type BootstrapQuestions = Required<Required<ConfigFileTemplate>['bootstrapConfig']>['bootstrapQuestions'];
 
 const interactiveQuestion = async (
     results: QuestionResults,
@@ -430,8 +430,8 @@ const taskNew = async (c: RnvContext) => {
     data.optionWorkspaces.selectedOption = inputWorkspace;
     c.runtime.selectedWorkspace = inputWorkspace;
 
-    await updateRenativeConfigs(c);
-    data.optionTemplates = getTemplateOptions(c);
+    await updateRenativeConfigs();
+    data.optionTemplates = getTemplateOptions();
 
     const options = [];
     const values = data.optionTemplates.valuesAsObject;
@@ -488,7 +488,7 @@ const taskNew = async (c: RnvContext) => {
     if (checkInputValue(templateVersion)) {
         inputTemplateVersion = templateVersion;
     } else {
-        inputTemplateVersion = await listAndSelectNpmVersion(c, data.optionTemplates.selectedOption || '');
+        inputTemplateVersion = await listAndSelectNpmVersion(data.optionTemplates.selectedOption || '');
     }
 
     data.optionTemplates.selectedVersion = inputTemplateVersion;
@@ -501,10 +501,6 @@ const taskNew = async (c: RnvContext) => {
     await executeAsync(`${isYarnInstalled() ? 'yarn' : 'npm'} add rnv@${c.rnvVersion}`, {
         cwd: c.paths.project.dir,
     });
-    // Add pkg-dir to have the correct version before the first run
-    await executeAsync(`${isYarnInstalled() ? 'yarn' : 'npm'} add pkg-dir@7.0.0`, {
-        cwd: c.paths.project.dir,
-    });
 
     // Check if node_modules folder exists
     if (!fsExistsSync(path.join(c.paths.project.dir, 'node_modules'))) {
@@ -514,6 +510,22 @@ const taskNew = async (c: RnvContext) => {
             } add ${selectedInputTemplate}@${inputTemplateVersion} : FAILED. this could happen if you have package.json accidentally created somewhere in parent directory`
         );
         return;
+    }
+    // This ensures that the correct version of the npm packages will be used to run the project for the first time after creation
+
+    const renativeTemplateConfig =
+        readObjectSync<ConfigFileTemplate>(
+            path.join(c.paths.project.dir, 'node_modules', selectedInputTemplate, ConfigName.renativeTemplate)
+        ) || {};
+
+    const rnvNewPatchDependencies = renativeTemplateConfig.bootstrapConfig?.rnvNewPatchDependencies;
+
+    if (rnvNewPatchDependencies) {
+        const patchDeps = Object.entries(rnvNewPatchDependencies);
+        for (const [dependency, version] of patchDeps) {
+            const command = `${isYarnInstalled() ? 'yarn' : 'npm'} add ${dependency}@${version}`;
+            await executeAsync(command, { cwd: c.paths.project.dir });
+        }
     }
 
     if (!data.optionTemplates.keysAsArray?.includes(selectedInputTemplate)) {
@@ -534,17 +546,12 @@ const taskNew = async (c: RnvContext) => {
                 }
                 configFile.projectTemplates[selectedInputTemplate] = {};
                 writeFileSync(c.paths.workspace.config, configFile);
-                await updateRenativeConfigs(c);
+                await updateRenativeConfigs();
 
                 logInfo(`Updating ${c.paths.workspace.config}...DONE`);
             }
         }
     }
-
-    const renativeTemplateConfig =
-        readObjectSync<ConfigFileTemplate>(
-            path.join(c.paths.project.dir, 'node_modules', selectedInputTemplate, ConfigName.renativeTemplate)
-        ) || {};
 
     const renativeConfig = readObjectSync<ConfigFileProject>(
         path.join(c.paths.project.dir, 'node_modules', selectedInputTemplate, ConfigName.renative)
@@ -583,7 +590,7 @@ const taskNew = async (c: RnvContext) => {
     // INPUT: Custom Questions
     // ==================================================
     const renativeTemplateConfigExt = {};
-    const bootstrapQuestions = renativeTemplateConfig?.templateConfig?.bootstrapQuestions || [];
+    const bootstrapQuestions = renativeTemplateConfig?.bootstrapConfig?.bootstrapQuestions || [];
     const results: QuestionResults = {};
     const providedAnswers: Record<string, any> = {};
 
@@ -700,6 +707,7 @@ const taskNew = async (c: RnvContext) => {
     }
 
     delete renativeTemplateConfig.templateConfig;
+    delete renativeTemplateConfig.bootstrapConfig;
 
     if (!data.optionTemplates.selectedOption) {
         logError('Current template not selected!');
@@ -770,7 +778,7 @@ const taskNew = async (c: RnvContext) => {
     writeFileSync(c.paths.project.config, config);
 
     if (data.gitEnabled) {
-        await checkAndCreateGitignore(c);
+        await checkAndCreateGitignore();
         await configureGit(c);
     }
 

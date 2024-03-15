@@ -8,31 +8,31 @@ import {
     logDefault,
     logInfo,
     logSuccess,
-    RnvContext,
     DEFAULTS,
-    RnvPlatform,
     CoreEnvVars,
     ExecOptionsPresets,
+    getContext,
 } from '@rnv/core';
 import { EnvVars } from './env';
 import { getEntryFile } from '@rnv/sdk-utils';
 
-export const packageReactNativeAndroid = async (c: RnvContext) => {
+export const packageReactNativeAndroid = async () => {
+    const c = getContext();
     logDefault('packageAndroid');
     const { platform } = c;
 
     if (!c.platform) return;
 
-    const bundleAssets = getConfigProp(c, platform, 'bundleAssets', false) === true;
+    const bundleAssets = getConfigProp('bundleAssets', false) === true;
 
     if (!bundleAssets && platform !== 'androidwear') {
         logInfo(`bundleAssets in scheme ${chalk().bold(c.runtime.scheme)} marked false. SKIPPING PACKAGING...`);
         return true;
     }
 
-    const outputFile = getEntryFile(c, platform);
+    const outputFile = getEntryFile();
 
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
     let reactNative = c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native';
 
     if (isSystemWin) {
@@ -57,7 +57,7 @@ export const packageReactNativeAndroid = async (c: RnvContext) => {
             `${outputFile}.bundle`
         )} --config=metro.config.js`;
 
-        if (getConfigProp(c, c.platform, 'enableSourceMaps', false)) {
+        if (getConfigProp('enableSourceMaps', false)) {
             cmd += ` --sourcemap-output ${path.join(
                 appFolder,
                 'app',
@@ -68,12 +68,13 @@ export const packageReactNativeAndroid = async (c: RnvContext) => {
             )}`;
         }
 
-        await executeAsync(c, cmd, {
+        await executeAsync(cmd, {
             env: {
                 ...CoreEnvVars.BASE(),
                 ...CoreEnvVars.RNV_EXTENSIONS(),
                 ...EnvVars.RNV_REACT_NATIVE_PATH(),
                 ...EnvVars.RNV_APP_ID(),
+                ...EnvVars.RNV_SKIP_LINKING(),
             },
         });
 
@@ -85,15 +86,13 @@ export const packageReactNativeAndroid = async (c: RnvContext) => {
     }
 };
 
-export const runReactNativeAndroid = async (
-    c: RnvContext,
-    platform: RnvPlatform,
-    device: { udid?: string } | undefined
-) => {
+export const runReactNativeAndroid = async (device: { udid?: string } | undefined) => {
+    const c = getContext();
+    const { platform } = c;
     logDefault('_runGradleApp');
 
-    const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
-    const appFolder = getAppFolder(c);
+    const signingConfig = getConfigProp('signingConfig', 'Debug');
+    const appFolder = getAppFolder();
 
     const udid = device?.udid;
 
@@ -105,13 +104,14 @@ export const runReactNativeAndroid = async (
         command += ` --deviceId=${udid}`;
     }
 
-    return executeAsync(c, command, {
+    return executeAsync(command, {
         env: {
             ...CoreEnvVars.BASE(),
             ...CoreEnvVars.RNV_EXTENSIONS(),
             ...EnvVars.RCT_METRO_PORT(),
             ...EnvVars.RNV_REACT_NATIVE_PATH(),
             ...EnvVars.RNV_APP_ID(),
+            ...EnvVars.RNV_SKIP_LINKING(),
         },
         cwd: appFolder,
         //This is required to make rn cli logs visible in rnv executed terminal
@@ -119,14 +119,13 @@ export const runReactNativeAndroid = async (
     });
 };
 
-export const buildReactNativeAndroid = async (c: RnvContext) => {
+export const buildReactNativeAndroid = async () => {
     logDefault('buildAndroid');
-    const { platform } = c;
 
-    const appFolder = getAppFolder(c);
-    const signingConfig = getConfigProp(c, platform, 'signingConfig') || DEFAULTS.signingConfig;
-    const outputAab = getConfigProp(c, platform, 'aab', false);
-    const extraGradleParams = getConfigProp(c, platform, 'extraGradleParams', '');
+    const appFolder = getAppFolder();
+    const signingConfig = getConfigProp('signingConfig') || DEFAULTS.signingConfig;
+    const outputAab = getConfigProp('aab', false);
+    const extraGradleParams = getConfigProp('extraGradleParams', '');
 
     let command = `npx react-native build-android --mode=${signingConfig} --tasks ${
         outputAab ? 'bundle' : 'assemble'
@@ -136,7 +135,7 @@ export const buildReactNativeAndroid = async (c: RnvContext) => {
         command += ` --extra-params ${extraGradleParams}`;
     }
 
-    await executeAsync(c, command, {
+    await executeAsync(command, {
         cwd: appFolder,
         env: {
             ...CoreEnvVars.BASE(),
@@ -144,6 +143,7 @@ export const buildReactNativeAndroid = async (c: RnvContext) => {
             ...CoreEnvVars.RNV_EXTENSIONS(),
             ...EnvVars.RNV_REACT_NATIVE_PATH(),
             ...EnvVars.RNV_APP_ID(),
+            ...EnvVars.RNV_SKIP_LINKING(),
         },
     });
 

@@ -15,9 +15,9 @@ import {
 const taskCryptoInstallCerts: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskCryptoInstallCerts');
 
-    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.cryptoInstallCerts, originTask);
+    await executeTask(RnvTaskName.projectConfigure, RnvTaskName.cryptoInstallCerts, originTask);
 
-    if (shouldSkipTask(c, RnvTaskName.cryptoInstallCerts, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.cryptoInstallCerts, originTask)) return true;
 
     if (c.platform !== 'tvos') {
         logError(`_installTempCerts: platform ${c.platform} not supported`);
@@ -29,7 +29,7 @@ const taskCryptoInstallCerts: RnvTaskFn = async (c, _parentTask, originTask) => 
     const cerArr = list.filter((v) => v.endsWith('.cer'));
 
     try {
-        Promise.all(cerArr.map((v) => executeAsync(c, `security import ${v} -k ${kChain} -A`)));
+        Promise.all(cerArr.map((v) => executeAsync(`security import ${v} -k ${kChain} -A`)));
     } catch (e) {
         logWarning(e);
         return true;

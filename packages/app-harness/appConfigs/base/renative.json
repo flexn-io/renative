@@ -31,8 +31,7 @@
             "{{resolvePackage(react-native-vector-icons)}}/Fonts"
         ],
         "excludedPlugins": [
-            "@react-native-firebase/app",
-            "react-native-photo-editor"
+            "@react-native-firebase/app"
         ]
     },
     "platforms": {

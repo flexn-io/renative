@@ -16,32 +16,32 @@ const taskPackage: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskPackage', `parent:${parentTask}`);
     const { platform } = c;
 
-    await executeOrSkipTask(c, RnvTaskName.configure, RnvTaskName.package, originTask);
+    await executeOrSkipTask(RnvTaskName.configure, RnvTaskName.package, originTask);
 
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
+    const bundleAssets = getConfigProp('bundleAssets');
 
     if (!bundleAssets) {
         return true;
     }
 
-    if (shouldSkipTask(c, RnvTaskName.package, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.package, originTask)) return true;
 
     switch (platform) {
         case 'androidtv':
         case 'firetv': {
             // NOTE: react-native v0.73 triggers packaging automatically so we skipping it unless we need to
             // package it explicitly for tasks where it is not triggered automatically
-            const signingConfig = getConfigProp(c, c.platform, 'signingConfig');
+            const signingConfig = getConfigProp('signingConfig');
 
             if (originTask === RnvTaskName.eject || signingConfig !== 'Release') {
-                return packageAndroid(c);
+                return packageAndroid();
             }
             return true;
         }
         case 'tvos':
-            return packageBundleForXcode(c);
+            return packageBundleForXcode();
         default:
-            logErrorPlatform(c);
+            logErrorPlatform();
             return false;
     }
 };

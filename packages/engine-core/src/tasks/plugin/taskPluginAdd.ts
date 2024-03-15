@@ -20,11 +20,11 @@ import { getPluginList } from '../../plugins';
 const taskPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskPluginAdd');
 
-    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.pluginAdd, originTask);
+    await executeTask(RnvTaskName.projectConfigure, RnvTaskName.pluginAdd, originTask);
 
     const selPluginKey = c.program.rawArgs?.[4];
 
-    const o = getPluginList(c);
+    const o = getPluginList();
 
     const selPlugin = selPluginKey && o.allPlugins[selPluginKey];
     const selectedPlugins: Record<string, PluginListResponseItem> = {};
@@ -89,11 +89,11 @@ const taskPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
         .spinner(`Installing: ${installMessage.join(', ')}`)
         .start('');
 
-    writeRenativeConfigFile(c, c.paths.project.config, cnfOriginal);
+    writeRenativeConfigFile(c.paths.project.config, cnfOriginal);
 
-    await resolvePluginDependants(c);
+    await resolvePluginDependants();
 
-    await executeTask(c, RnvTaskName.install, RnvTaskName.pluginAdd, originTask);
+    await executeTask(RnvTaskName.install, RnvTaskName.pluginAdd, originTask);
 
     spinner.succeed('All plugins installed!');
     logSuccess('Plugins installed successfully!');

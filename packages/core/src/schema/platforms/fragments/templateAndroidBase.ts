@@ -91,7 +91,7 @@ export const TemplateAndroidBaseFragment = {
             ),
         })
     ),
-    MainActivity_java: z.optional(
+    MainActivity_kt: z.optional(
         z.object({
             onCreate: z
                 .string({})
@@ -104,7 +104,7 @@ export const TemplateAndroidBaseFragment = {
             resultMethods: z.array(z.string()).optional(),
         })
     ),
-    MainApplication_java: z.optional(
+    MainApplication_kt: z.optional(
         z
             .object({
                 imports: z.array(z.string()).optional(),

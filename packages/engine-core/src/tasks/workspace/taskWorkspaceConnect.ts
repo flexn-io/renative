@@ -16,7 +16,7 @@ const taskWorkspaceConnect: RnvTaskFn = async (c, _parentTask, originTask) => {
     if (!c.paths.project.configExists) {
         return Promise.reject(`${RnvTaskName.projectConfigure} not supported outside of renative project`);
     }
-    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.workspaceConnect, originTask);
+    await executeTask(RnvTaskName.projectConfigure, RnvTaskName.workspaceConnect, originTask);
 
     const cnf = c.files.rnv.configWorkspaces;
     if (!cnf) return;

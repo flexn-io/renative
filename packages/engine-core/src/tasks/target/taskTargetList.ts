@@ -17,13 +17,13 @@ import { checkAndConfigureSdks, checkSdk } from '../../common';
 const taskTargetList: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskTargetList');
 
-    await isPlatformSupported(c, true);
-    await checkAndConfigureSdks(c);
-    await executeTask(c, RnvTaskName.workspaceConfigure, RnvTaskName.targetList, originTask);
+    await isPlatformSupported(true);
+    await checkAndConfigureSdks();
+    await executeTask(RnvTaskName.workspaceConfigure, RnvTaskName.targetList, originTask);
 
     const { platform } = c;
 
-    await checkSdk(c);
+    await checkSdk();
 
     switch (platform) {
         case 'android':
@@ -35,7 +35,7 @@ const taskTargetList: RnvTaskFn = async (c, _parentTask, originTask) => {
         case 'tvos':
             return listAppleDevices(c);
         case 'tizen':
-            return listTizenTargets(c);
+            return listTizenTargets();
         case 'webos':
             return listWebOSTargets(c);
         default:

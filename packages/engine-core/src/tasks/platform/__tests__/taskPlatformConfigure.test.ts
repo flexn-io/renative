@@ -19,5 +19,5 @@ test('Execute task.rnv.platform.configure', async () => {
     //WHEN
     await expect(taskPlatformConfigure.fn?.(ctx)).resolves.toEqual(true);
     //THEN
-    expect(executeTask).toHaveBeenCalledWith(ctx, 'project configure', 'platform configure', undefined);
+    expect(executeTask).toHaveBeenCalledWith('project configure', 'platform configure', undefined);
 });

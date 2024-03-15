@@ -25,9 +25,9 @@ const configTargets = [
 const taskDoctor: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskDoctor');
 
-    await configureRuntimeDefaults(c);
-    await executeTask(c, RnvTaskName.appConfigure, parentTask, originTask);
-    await configureRuntimeDefaults(c);
+    await configureRuntimeDefaults();
+    await executeTask(RnvTaskName.appConfigure, parentTask, originTask);
+    await configureRuntimeDefaults();
 
     const configPaths: Array<string> = [];
 

@@ -5,8 +5,8 @@ import { Context } from './types';
 
 export const parseProvisioningProfiles = async (c: Context) => {
     // PROJECT
-    const teamID = getConfigProp(c, c.platform, 'teamID');
-    const id = getConfigProp(c, c.platform, 'id');
+    const teamID = getConfigProp('teamID');
+    const id = getConfigProp('id');
     const certificates = cert.read();
     try {
         const provisionProfiles = provision.read();

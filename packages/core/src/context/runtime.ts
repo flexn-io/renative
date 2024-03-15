@@ -6,8 +6,11 @@ import { RnvContext, RnvContextPlatform } from './types';
 import { generateRuntimePropInjects } from '../system/injectors';
 import { getConfigProp } from './contextProps';
 import { logDebug, logDefault } from '../logger';
+import { getContext } from './provider';
 
-export const configureRuntimeDefaults = async (c: RnvContext) => {
+export const configureRuntimeDefaults = async () => {
+    const c = getContext();
+
     c.runtime.appId = c.files.project?.configLocal?._meta?.currentAppConfigId || _getAppId(c);
     if (c.runtime.appId) {
         c.runtime.appConfigDir = path.join(c.paths.project.appConfigsDir, c.runtime.appId);
@@ -46,7 +49,7 @@ export const configureRuntimeDefaults = async (c: RnvContext) => {
 
     generateRuntimePropInjects();
     if (c.buildConfig) {
-        c.runtime.bundleAssets = getConfigProp(c, c.platform, 'bundleAssets') || false;
+        c.runtime.bundleAssets = getConfigProp('bundleAssets') || false;
         const { hosted } = c.program;
         c.runtime.hosted = hosted && c.runtime.currentPlatform?.isWebHosted;
 
@@ -54,7 +57,7 @@ export const configureRuntimeDefaults = async (c: RnvContext) => {
             c.runtime.supportedPlatforms = [];
             c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
                 //TODO: migrate to singular platform engine
-                const engine = getEngineRunnerByPlatform(c, platform);
+                const engine = getEngineRunnerByPlatform(platform);
                 if (engine) {
                     const dir = engine.originalTemplatePlatformsDir;
 
@@ -63,7 +66,7 @@ export const configureRuntimeDefaults = async (c: RnvContext) => {
                     const pDir = c.paths.project.platformTemplatesDirs?.[platform];
                     if (pDir) {
                         isValid = true;
-                        isConnected = pDir?.includes?.(getRealPath(c, dir) || 'UNDEFINED');
+                        isConnected = pDir?.includes?.(getRealPath(dir) || 'UNDEFINED');
                     }
                     const port = c.buildConfig.defaults?.ports?.[platform] || c.runtime.currentPlatform?.defaultPort;
                     const cp: RnvContextPlatform = {

@@ -12,7 +12,7 @@ import {
 const taskDebug: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskDebug', `parent:${parentTask}`);
 
-    if (shouldSkipTask(c, RnvTaskName.debug, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.debug, originTask)) return true;
 
     const { platform } = c;
 
@@ -20,9 +20,9 @@ const taskDebug: RnvTaskFn = async (c, parentTask, originTask) => {
         case 'web':
         case 'webtv':
         case 'tizen':
-            return executeAsync(c, 'npx weinre --boundHost -all-');
+            return executeAsync('npx weinre --boundHost -all-');
         default:
-            logErrorPlatform(c);
+            logErrorPlatform();
     }
 };
 

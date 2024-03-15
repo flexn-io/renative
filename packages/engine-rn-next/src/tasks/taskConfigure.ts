@@ -13,9 +13,9 @@ import { configureNextIfRequired } from '../sdk';
 const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskConfigure');
 
-    await executeTask(c, RnvTaskName.platformConfigure, RnvTaskName.configure, originTask);
+    await executeTask(RnvTaskName.platformConfigure, RnvTaskName.configure, originTask);
 
-    if (shouldSkipTask(c, RnvTaskName.configure, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.configure, originTask)) return true;
 
     if (c.program.only && !!parentTask) {
         return true;
@@ -24,9 +24,9 @@ const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     switch (c.platform) {
         case 'web':
         case 'chromecast':
-            return configureNextIfRequired(c);
+            return configureNextIfRequired();
         default:
-            return logErrorPlatform(c);
+            return logErrorPlatform();
     }
 };
 

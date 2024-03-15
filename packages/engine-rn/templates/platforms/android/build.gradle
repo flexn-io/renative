@@ -11,9 +11,20 @@ buildscript {
         ndkVersion = '{{NDK_VERSION}}'
         kotlinVersion = '{{INJECT_KOTLIN_VERSION}}'
     }
+    subprojects { subproject ->
+    afterEvaluate{
+        if((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
+            android {
+                compileSdkVersion rootProject.ext.compileSdkVersion
+                buildToolsVersion rootProject.ext.buildToolsVersion
+            }
+        }
+    }
+}
     repositories {
         google()
         mavenCentral()
+        maven { url = uri("https://www.jitpack.io" ) }
     }
     dependencies {
         classpath("com.android.tools.build:gradle")

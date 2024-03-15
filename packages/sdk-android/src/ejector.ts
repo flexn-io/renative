@@ -1,6 +1,5 @@
 import path from 'path';
 import {
-    RnvContext,
     fsExistsSync,
     copyFileSync,
     fsWriteFileSync,
@@ -10,16 +9,18 @@ import {
     getConfigProp,
     doResolvePath,
     parsePlugins,
+    getContext,
 } from '@rnv/core';
 
-export const ejectGradleProject = async (c: RnvContext) => {
-    const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');
-    const monoRoot = getConfigProp(c, c.platform, 'monoRoot');
+export const ejectGradleProject = async () => {
+    const c = getContext();
+    const isMonorepo = getConfigProp('isMonorepo');
+    const monoRoot = getConfigProp('monoRoot');
 
     const rootMonoProjectPath = isMonorepo ? path.join(c.paths.project.dir, monoRoot || '../..') : c.paths.project.dir;
     // const rootProjectPath = c.paths.project.dir;
 
-    const appFolder = path.join(getAppFolder(c), '..');
+    const appFolder = path.join(getAppFolder(), '..');
 
     //= ==========
     // settings.gradle
@@ -113,7 +114,7 @@ export const ejectGradleProject = async (c: RnvContext) => {
 
     const afterEvaluateFix: Array<{ match: string; replace: string }> = [];
 
-    parsePlugins(c, c.platform, (_plugin, pluginPlat, key: string) => {
+    parsePlugins((_plugin, pluginPlat, key: string) => {
         const pluginPath = doResolvePath(key);
 
         if (!pluginPath) return;

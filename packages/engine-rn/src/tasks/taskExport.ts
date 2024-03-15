@@ -14,21 +14,21 @@ const taskExport: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskExport', `parent:${parentTask}`);
     const { platform } = c;
 
-    await executeOrSkipTask(c, RnvTaskName.build, RnvTaskName.export, originTask);
+    await executeOrSkipTask(RnvTaskName.build, RnvTaskName.export, originTask);
 
-    if (shouldSkipTask(c, RnvTaskName.export, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.export, originTask)) return true;
 
     switch (platform) {
         case 'ios':
         case 'macos':
-            return exportXcodeProject(c);
+            return exportXcodeProject();
         case 'android':
         case 'androidtv':
         case 'androidwear':
             // Android Platforms don't need extra export step
             return true;
         default:
-            return logErrorPlatform(c);
+            return logErrorPlatform();
     }
 };
 

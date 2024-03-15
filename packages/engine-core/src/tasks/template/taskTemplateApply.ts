@@ -13,21 +13,21 @@ import {
 const taskTemplateApply: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskTemplateApply', `template: ${c.program.template}`);
 
-    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.templateApply, originTask);
+    await executeTask(RnvTaskName.projectConfigure, RnvTaskName.templateApply, originTask);
 
     if (c.files.project.config?.isTemplate) {
         return Promise.reject('Template projects cannot use template apply command');
     }
 
     if (c.program.template) {
-        await applyTemplate(c, c.program.template);
+        await applyTemplate(c.program.template);
         if (c.program.appConfigID) {
-            await executeTask(c, RnvTaskName.appConfigure, RnvTaskName.templateApply, originTask);
+            await executeTask(RnvTaskName.appConfigure, RnvTaskName.templateApply, originTask);
         }
 
         return true;
     }
-    const opts = getInstalledTemplateOptions(c);
+    const opts = getInstalledTemplateOptions();
 
     const { template } = await inquirerPrompt({
         type: 'list',
@@ -36,9 +36,9 @@ const taskTemplateApply: RnvTaskFn = async (c, _parentTask, originTask) => {
         choices: opts?.keysAsArray,
     });
 
-    await applyTemplate(c, template);
+    await applyTemplate(template);
     if (c.program.appConfigID) {
-        await executeTask(c, RnvTaskName.appConfigure, RnvTaskName.templateApply, originTask);
+        await executeTask(RnvTaskName.appConfigure, RnvTaskName.templateApply, originTask);
     }
     return true;
 };

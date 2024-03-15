@@ -30,7 +30,7 @@ const bundleDir = 'Bundle';
 // FUNCTIONS
 async function generateCertificate(srcPath, currentUser, c, options) {
     logDefault('Generating self-signed certificate');
-    const appFolder = getAppFolder(c, true);
+    const appFolder = getAppFolder(true);
     if (os.platform() === 'win32') {
         try {
             // TODO. What's with this timeout?
@@ -75,8 +75,8 @@ export async function copyProjectTemplateAndReplace(c, options) {
         throw new Error('Need a path to copy to');
     }
 
-    const appTitle = getAppTitle(c, c.platform);
-    const appFolder = getAppFolder(c, true);
+    const appTitle = getAppTitle();
+    const appFolder = getAppFolder(true);
     const RNIconsPluginPath = path.join(
         path.dirname(
             require.resolve('react-native-vector-icons/package.json', {
@@ -86,17 +86,17 @@ export async function copyProjectTemplateAndReplace(c, options) {
         'Fonts'
     );
 
-    const language = getConfigProp(c, c.platform, 'language', options.language);
+    const language = getConfigProp('language', options.language);
     const experimentalNuGetDependency = getConfigProp(
         c,
         c.platform,
         'experimentalNuGetDependency',
         options.experimentalNuGetDependency
     );
-    const useWinUI3 = getConfigProp(c, c.platform, 'useWinUI3', options.useWinUI3);
-    const nuGetTestVersion = getConfigProp(c, c.platform, 'nuGetTestVersion', options.nuGetTestVersion);
-    const useHermes = !!getConfigProp(c, c.platform, 'reactNativeEngine', options.reactNativeEngine) === 'hermes';
-    const nuGetTestFeed = getConfigProp(c, c.platform, 'nuGetTestFeed', options.nuGetTestFeed);
+    const useWinUI3 = getConfigProp('useWinUI3', options.useWinUI3);
+    const nuGetTestVersion = getConfigProp('nuGetTestVersion', options.nuGetTestVersion);
+    const useHermes = !!getConfigProp('reactNativeEngine', options.reactNativeEngine) === 'hermes';
+    const nuGetTestFeed = getConfigProp('nuGetTestFeed', options.nuGetTestFeed);
 
     generator_common_1.createDir(path.join(c.paths.project.dir, appFolder));
     generator_common_1.createDir(path.join(c.paths.project.dir, appFolder, c.runtime.appId));
@@ -222,8 +222,8 @@ export async function copyProjectTemplateAndReplace(c, options) {
         });
     }
 
-    const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo', false);
-    const monoRoot = getConfigProp(c, c.platform, 'monoRoot') || '..\\..';
+    const isMonorepo = getConfigProp('isMonorepo', false);
+    const monoRoot = getConfigProp('monoRoot') || '..\\..';
 
     const templateVars = {
         rnwPackagePath: isMonorepo
@@ -386,7 +386,7 @@ export async function copyProjectTemplateAndReplace(c, options) {
     }
 
     // Firstly attempt to copy assets specified in project, if user has none specified use default from renative
-    await copyAssetsFolder(c, c.platform, c.runtime.appId);
+    await copyAssetsFolder(c.runtime.appId);
 
     // shared assets
     if (fs.existsSync(path.join(sharedPath, 'assets'))) {
@@ -401,7 +401,7 @@ export async function copyProjectTemplateAndReplace(c, options) {
     }
 
     // Non relative path to appFolder is needed
-    const appFolderFull = getAppFolder(c);
+    const appFolderFull = getAppFolder();
     // react native vector icons fonts
     // Only copy the files if the plugin is added to the project, aka plugin dir exists
     if (RNIconsPluginPath && fs.existsSync(RNIconsPluginPath)) {

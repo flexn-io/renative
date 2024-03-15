@@ -1,9 +1,9 @@
 import merge from 'deepmerge';
-import { RnvContext, chalk, inquirerPrompt, logDefault, logError, logInfo, logWarning } from '@rnv/core';
+import { chalk, getContext, inquirerPrompt, logDefault, logError, logInfo, logWarning } from '@rnv/core';
 
-export const isBuildSchemeSupported = async (c: RnvContext) => {
+export const isBuildSchemeSupported = async () => {
     logDefault('isBuildSchemeSupported');
-
+    const c = getContext();
     const { scheme } = c.program;
 
     if (!c.platform) return;

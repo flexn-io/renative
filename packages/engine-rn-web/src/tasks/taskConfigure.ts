@@ -18,11 +18,11 @@ import { configureTizenProject } from '@rnv/sdk-tizen';
 const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskConfigure');
 
-    await executeTask(c, RnvTaskName.platformConfigure, RnvTaskName.configure, originTask);
-    if (shouldSkipTask(c, RnvTaskName.configure, originTask)) return true;
-    await configureEntryPoint(c, c.platform);
+    await executeTask(RnvTaskName.platformConfigure, RnvTaskName.configure, originTask);
+    if (shouldSkipTask(RnvTaskName.configure, originTask)) return true;
+    await configureEntryPoint(c.platform);
 
-    await copySharedPlatforms(c);
+    await copySharedPlatforms();
 
     if (c.program.only && !!parentTask) {
         return true;
@@ -31,19 +31,19 @@ const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     switch (c.platform) {
         case 'web':
         case 'webtv':
-            return configureWebProject(c);
+            return configureWebProject();
         case 'tizen':
         case 'tizenmobile':
         case 'tizenwatch':
-            return configureTizenProject(c);
+            return configureTizenProject();
         case 'webos':
-            return configureWebOSProject(c);
+            return configureWebOSProject();
         case 'chromecast':
-            return configureChromecastProject(c);
+            return configureChromecastProject();
         case 'kaios':
-            return configureKaiOSProject(c);
+            return configureKaiOSProject();
         default:
-            return logErrorPlatform(c);
+            return logErrorPlatform();
     }
 };
 

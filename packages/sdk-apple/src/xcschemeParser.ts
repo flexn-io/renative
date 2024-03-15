@@ -1,14 +1,14 @@
 import path from 'path';
-import { getAppFolder, getConfigProp, logDefault, writeCleanFile, RnvPlatform } from '@rnv/core';
+import { getAppFolder, getConfigProp, logDefault, writeCleanFile, getContext } from '@rnv/core';
 import { getAppFolderName } from './common';
-import { Context } from './types';
 import { addSystemInjects, getAppTemplateFolder } from '@rnv/sdk-utils';
 
 // const xml2js = require('xml2js');
 // const parser = new xml2js.Parser();
 
-export const parseXcscheme = async (c: Context, platform: RnvPlatform) => {
+export const parseXcscheme = async () => {
     logDefault('parseXcscheme');
+    const c = getContext();
     // XCSCHEME
     // const allowProvisioningUpdates = getConfigProp(
     //     c,
@@ -25,9 +25,9 @@ export const parseXcscheme = async (c: Context, platform: RnvPlatform) => {
     // const poisxSpawn = runScheme === 'Release' && !allowProvisioningUpdates && provisioningStyle === 'Manual';
     // Since RN 61+ this must be set to true otherwise debug apps install but not launch
     const poisxSpawn = true;
-    const appFolder = getAppFolder(c);
-    const appFolderName = getAppFolderName(c, platform);
-    const appTemplateFolder = getAppTemplateFolder(c, platform);
+    const appFolder = getAppFolder();
+    const appFolderName = getAppFolderName();
+    const appTemplateFolder = getAppTemplateFolder();
 
     const debuggerId = poisxSpawn ? '' : 'Xcode.DebuggerFoundation.Debugger.LLDB';
     const launcherId = poisxSpawn
@@ -36,7 +36,7 @@ export const parseXcscheme = async (c: Context, platform: RnvPlatform) => {
     const schemePath = `${appFolderName}.xcodeproj/xcshareddata/xcschemes/${appFolderName}.xcscheme`;
 
     let _commandLineArguments = '';
-    const commandLineArguments = getConfigProp(c, c.platform, 'commandLineArguments');
+    const commandLineArguments = getConfigProp('commandLineArguments');
     if (commandLineArguments?.length) {
         commandLineArguments.forEach((arg) => {
             _commandLineArguments += `
@@ -54,7 +54,7 @@ export const parseXcscheme = async (c: Context, platform: RnvPlatform) => {
         { pattern: '{{INJECT_COMMAND_LINE_ARGUMENTS}}', override: _commandLineArguments },
     ];
 
-    addSystemInjects(c, injects);
+    addSystemInjects(injects);
 
     writeCleanFile(path.join(appTemplateFolder!, schemePath), path.join(appFolder, schemePath), injects, undefined, c);
 
