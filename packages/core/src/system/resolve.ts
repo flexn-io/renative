@@ -26,6 +26,7 @@ export const doResolve: DoResolveFn = (aPath, mandatory = true, options = {}) =>
             return _withPathFix(_doResolveFSPath(aPath, options), options?.forceForwardPaths);
         }
         const pth = _doResolveExternalPackage(aPath, options);
+
         if (pth) {
             return _withPathFix(pth, options?.forceForwardPaths);
         }
@@ -122,7 +123,6 @@ const _doResolveFSPath = (aPath: string, options: ResolveOptions) => {
  */
 const _doResolveExternalPackage = (aPath: string, options: ResolveOptions) => {
     const [packageBase, packageSuffix] = _getPackagePathParts(aPath);
-
     try {
         const resolvedPath = resolve
             .sync(packageBase, {
@@ -136,6 +136,11 @@ const _doResolveExternalPackage = (aPath: string, options: ResolveOptions) => {
             .replace(/(\\|\/)package.json$/, '');
         return options.keepSuffix ?? false ? `${resolvedPath}/${packageSuffix}` : resolvedPath;
     } catch (e) {
+        //Last resort we try to resolve it as standard require.resolve
+        const fallback = require.resolve(aPath);
+        if (fallback) {
+            return fallback.replace(/(\\|\/)package.json$/, '').replace(/(\\|\/)index.js$/, '');
+        }
         return null;
     }
 };
