@@ -202,9 +202,11 @@ export const configurePlugins = async () => {
                 );
             }
         } else if (
-            plugin && plugin.disabled !== true && plugin.disableNpm !== true && c.platform && plugin.supportedPlatforms
-                ? plugin.supportedPlatforms.includes(c.platform)
-                : true
+            plugin &&
+            plugin.disabled !== true &&
+            plugin.disableNpm !== true &&
+            c.platform &&
+            (plugin.supportedPlatforms ? plugin.supportedPlatforms.includes(c.platform) : true)
         ) {
             if (dependencies && dependencies[k]) {
                 if (!plugin.version) {
