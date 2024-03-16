@@ -1,11 +1,11 @@
 {
     "templateConfig": {
         "name": "@rnv/template-starter",
-        "version": "1.0.0-rc.12"
+        "version": "0.0.0"
     },
     "modsConfig": {
         "name": "@rnv/mods",
-        "version": "3.3.9",
+        "version": "0.0.0",
         "namespace": "rnv"
     },
     "pluginsConfig": {

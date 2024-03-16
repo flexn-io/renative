@@ -45,6 +45,7 @@ export const initNewProject = async () => {
             project: {
                 renativeConfig: {},
                 packageJson: {},
+                renativeAppConfig: {},
             },
             template: {
                 renativeTemplateConfig: {},

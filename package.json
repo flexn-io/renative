@@ -148,6 +148,5 @@
             "**/@wdio/*",
             "**/@react-native/metro-babel-transformer"
         ]
-    },
-    "resolutions": {}
+    }
 }

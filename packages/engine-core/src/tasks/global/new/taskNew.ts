@@ -15,7 +15,7 @@ import {
 } from './projectGenerator';
 import { inquiryAppTitle } from './questions/appTitle';
 import { inquiryAppID } from './questions/appID';
-import { inquiryAppVersion } from './questions/appVersion';
+import { inquiryAppVersion } from './questions/projectVersion';
 import { inquiryInstallTemplate } from './questions/installTemplate';
 import { inquiryApplyTemplate } from './questions/applyTemplate';
 import { inquiryBookmarkTemplate } from './questions/bookmarkTemplate';

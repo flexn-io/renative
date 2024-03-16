@@ -30,6 +30,15 @@ export const inquiryApplyTemplate = async (data: NewProjectData) => {
         data.files.template.renativeConfig = renativeConfig;
     }
 
+    // const templateAppConfigDir = path.join(templateDir, 'appConfigs');
+    // if(fsExistsSync(templateAppConfigDir)) {
+    //     read
+    // }
+    // const renativeAppConfig = readObjectSync<ConfigFileProject>(path.join(templateDir, ConfigName.renative));
+    // if (renativeConfig) {
+    //     data.files.template.renativeConfig = renativeConfig;
+    // }
+
     const optExtend = 'Extend template (cleaner, overridable)';
     const optCopy = 'Copy from template (full control)';
     const options = [optExtend, optCopy];

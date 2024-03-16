@@ -7,7 +7,7 @@ export const inquiryAppID = async (data: NewProjectData) => {
     const { id, ci } = c.program;
     const validator = (appId: string) =>
         (typeof appId === 'string' && !!appId.match(/^[a-z][a-z0-9_]*(\.[a-z0-9_]+)+[0-9a-z_]$/)) ||
-        'Please enter a valid appID (com.test.app)';
+        'Please enter a valid app ID (com.test.app)';
 
     const result = await validateAndAssign(
         {
@@ -15,8 +15,8 @@ export const inquiryAppID = async (data: NewProjectData) => {
             validFn: validator,
             name: 'inputAppID',
             defaultVal: () => {
-                data.appID = `com.mycompany.${data.inputProjectName?.replace(/[^a-zA-Z0-9]/g, '').toLowerCase()}`;
-                return data.appID;
+                data.inputAppID = `com.mycompany.${data.inputProjectName?.replace(/[^a-zA-Z0-9]/g, '').toLowerCase()}`;
+                return data.inputAppID;
             },
             message: "What's your App ID?",
             warning: `Command contains invalid appId : ${id}`,
@@ -24,6 +24,5 @@ export const inquiryAppID = async (data: NewProjectData) => {
         ci
     );
 
-    data.inputAppID = result;
-    data.appID = data.inputAppID ? data.inputAppID.replace(/\s+/g, '-').toLowerCase() : data.appID;
+    data.inputAppID = result ? result.replace(/\s+/g, '-').toLowerCase() : data.inputAppID;
 };

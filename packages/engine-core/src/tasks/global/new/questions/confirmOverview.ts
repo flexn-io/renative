@@ -37,8 +37,8 @@ const _prepareProjectOverview = (data: NewProjectData) => {
     str += printIntoBox(`Project Name (folder): ${highlight(data.projectName)}`);
     str += printIntoBox(`Workspace: ${highlight(data.optionWorkspaces.selectedOption)}`);
     str += printIntoBox(`Project Title: ${highlight(data.appTitle)}`);
-    str += printIntoBox(`Project Version: ${highlight(data.version)}`);
-    str += printIntoBox(`App ID: ${highlight(data.appID)}`);
+    str += printIntoBox(`Project Version: ${highlight(data.inputVersion)}`);
+    str += printIntoBox(`App ID: ${highlight(data.inputAppID)}`);
     str += printIntoBox(`Project Template: ${highlight(tempString)}`);
     str += printIntoBox(`Git Enabled: ${highlight(data.gitEnabled)}`);
     str += printIntoBox('');
