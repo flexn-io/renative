@@ -5,12 +5,11 @@ import {
     configureEntryPoint,
     executeTask,
     shouldSkipTask,
-    jetifyIfRequired,
     RnvTask,
     RnvTaskName,
     RnvTaskOptionPresets,
 } from '@rnv/core';
-import { configureGradleProject } from '@rnv/sdk-android';
+import { configureGradleProject, jetifyIfRequired } from '@rnv/sdk-android';
 import { configureXcodeProject } from '@rnv/sdk-apple';
 import { configureFonts } from '@rnv/sdk-react-native';
 

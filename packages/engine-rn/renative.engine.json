@@ -14,45 +14,16 @@
     },
     "platforms": {
         "ios": {
-            "engine": "engine-rn",
-            "npm": {
-                "devDependencies": {}
-            }
+            "engine": "engine-rn"
         },
         "macos": {
-            "engine": "engine-rn",
-            "npm": {
-                "devDependencies": {}
-            }
+            "engine": "engine-rn"
         },
         "android": {
-            "engine": "engine-rn",
-            "npm": {
-                "devDependencies": {
-                    "jetifier": "2.0.0"
-                }
-            }
+            "engine": "engine-rn"
         },
         "androidwear": {
-            "npm": {
-                "devDependencies": {
-                    "jetifier": "2.0.0"
-                }
-            }
-        },
-        "androidtv": {
-            "npm": {
-                "devDependencies": {
-                    "jetifier": "2.0.0"
-                }
-            }
-        },
-        "firetv": {
-            "npm": {
-                "devDependencies": {
-                    "jetifier": "2.0.0"
-                }
-            }
+            "engine": "engine-rn"
         }
     }
 }

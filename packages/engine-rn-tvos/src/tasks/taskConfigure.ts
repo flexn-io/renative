@@ -1,6 +1,5 @@
 import {
     RnvTaskFn,
-    jetifyIfRequired,
     logErrorPlatform,
     logTask,
     RnvTaskOptionPresets,
@@ -10,7 +9,7 @@ import {
     RnvTask,
     RnvTaskName,
 } from '@rnv/core';
-import { configureGradleProject } from '@rnv/sdk-android';
+import { configureGradleProject, jetifyIfRequired } from '@rnv/sdk-android';
 import { configureXcodeProject } from '@rnv/sdk-apple';
 
 const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
