@@ -1,21 +1,52 @@
-import {
-    fsExistsSync,
-    getContext,
-    writeFileSync,
-    inquirerPrompt,
-    getWorkspaceOptions,
-    getTemplateOptions,
-    commandExistsSync,
-} from '@rnv/core';
+import { getContext, createRnvContext, logSuccess } from '@rnv/core';
 import taskNew from '../taskNew';
+import {
+    generateNewProject,
+    initNewProject,
+    saveProgressIntoProjectConfig,
+    telemetryNewProject,
+} from '../projectGenerator';
+import { NewProjectData } from '../types';
+import { inquiryProjectName } from '../questions/projectName';
+import { processChdirToProject } from '../utils';
+import { inquiryIsRenativeProject } from '../questions/isRenativeProject';
+import { inquiryHasNodeModules } from '../questions/hasNodeModules';
+import { inquiryInstallTemplate } from '../questions/installTemplate';
+import { inquiryApplyTemplate } from '../questions/applyTemplate';
+import { inquiryAppTitle } from '../questions/appTitle';
+import { inquiryAppID } from '../questions/appID';
+import { inquiryAppVersion } from '../questions/appVersion';
+import { inquiryWorkspace } from '../questions/workspace';
+import { inquirySupportedPlatforms } from '../questions/supportedPlatforms';
+import { inquiryBootstrapQuestions } from '../questions/bootstrapQuestions';
+import { inquiryGit } from '../questions/confirmGit';
+import { inquiryBookmarkTemplate } from '../questions/bookmarkTemplate';
+import { inquiryConfirm } from '../questions/confirmOverview';
 
 jest.mock('@rnv/core');
 jest.mock('lodash/set');
 jest.mock('path');
 jest.mock('semver');
+jest.mock('../utils');
+jest.mock('../questions/bootstrapQuestions');
+jest.mock('../questions/appTitle');
+jest.mock('../questions/installTemplate');
+jest.mock('../questions/applyTemplate');
+jest.mock('../questions/bookmarkTemplate');
+jest.mock('../questions/appID');
+jest.mock('../questions/appVersion');
+jest.mock('../questions/workspace');
+jest.mock('../questions/hasNodeModules');
+jest.mock('../questions/confirmOverview');
+jest.mock('../questions/isRenativeProject');
+jest.mock('../questions/projectName');
+jest.mock('../questions/supportedPlatforms');
+jest.mock('../questions/bookmarkTemplate');
+jest.mock('../questions/confirmGit');
+jest.mock('../projectGenerator');
 
 beforeEach(() => {
-    // NOTE: do not call createRnvContext() in core library itself
+    createRnvContext();
 });
 
 afterEach(() => {
@@ -23,99 +54,49 @@ afterEach(() => {
 });
 
 test('Execute task.rnv.new', async () => {
-    //GIVEN
+    // GIVEN
     const ctx = getContext();
-
-    // jest.mocked(checkAndCreateGitignore).mockReturnValue(Promise.resolve(true));
-    jest.mocked(commandExistsSync).mockReturnValue(true);
-    jest.mocked(fsExistsSync).mockReturnValue(true);
-
-    jest.mocked(inquirerPrompt).mockReturnValue(
-        Promise.resolve({
-            inputProjectName: 'test',
-            confirm: true,
-            inputAppTitle: 'testtitle',
-            inputAppID: 'com.test.app',
-            inputVersion: '1.0.0',
-            inputWorkspace: 'rnv',
-            // inputTemplate: '@rnv/template-starter',
-            // inputTemplateVersion: '1.0.0-canary.7',
-            inputSupportedPlatforms: ['android', 'ios', 'web'],
-            gitEnabled: true,
-            confirmInRnvProject: true,
-        })
-    );
-
-    jest.mocked(getWorkspaceOptions).mockReturnValue({
-        keysAsArray: ['company', 'rnv'],
-        valuesAsArray: [{ path: '/Users/someuser/.rnv' }, { path: '/Users/someuser/.company' }],
-        keysAsObject: { rnv: 'rnv', company: 'company' },
-        valuesAsObject: {
-            rnv: { path: '/Users/someuser/.rnv' },
-            company: { path: '/Users/someuser/.company' },
-        },
-        asString: ' [\x1B[90m1\x1B[39m]> \x1B[1mrnv\x1B[22m \n [\x1B[90m2\x1B[39m]> \x1B[1mcompany\x1B[22m \n',
-        optionsAsArray: [
-            ' [\x1B[90m1\x1B[39m]> \x1B[1mrnv\x1B[22m \n',
-            ' [\x1B[90m2\x1B[39m]> \x1B[1mcompany\x1B[22m \n',
-        ],
-    });
-
-    jest.mocked(getTemplateOptions).mockReturnValue({
-        keysAsArray: ['@flexn/create-template-starter', '@rnv/template-starter'],
-        valuesAsArray: [
-            { description: "Multiplatform 'hello world' template" },
-            {
-                description: 'Advanced multiplatform template using flexn Create SDK',
+    const payload: NewProjectData = {
+        defaultVersion: 'MOCK_VERSION',
+        defaultTemplate: 'MOCK_TEMPLATE',
+        optionTemplates: {},
+        optionWorkspaces: {},
+        optionPlatforms: {},
+        files: {
+            project: {
+                renativeConfig: {},
+                packageJson: {},
             },
-        ],
-        keysAsObject: {
-            '@rnv/template-starter': '@rnv/template-starter',
-            '@flexn/create-template-starter': '@flexn/create-template-starter',
-        },
-        valuesAsObject: {
-            '@rnv/template-starter': { description: "Multiplatform 'hello world' template" },
-            '@flexn/create-template-starter': {
-                description: 'Advanced multiplatform template using flexn Create SDK',
+            template: {
+                renativeTemplateConfig: {},
+                renativeConfig: {},
             },
         },
-        asString:
-            ' [\x1B[90m1\x1B[39m]> \x1B[1m@rnv/template-starter\x1B[22m \n' +
-            ' [\x1B[90m2\x1B[39m]> \x1B[1m@flexn/create-template-starter\x1B[22m \n',
-        optionsAsArray: [
-            ' [\x1B[90m1\x1B[39m]> \x1B[1m@rnv/template-starter\x1B[22m \n',
-            ' [\x1B[90m2\x1B[39m]> \x1B[1m@flexn/create-template-starter\x1B[22m \n',
-        ],
-    });
-
-    ctx.program.ci = false;
-    ctx.program.templateVersion = '1.0.0-canary.7';
-    ctx.program.projectTemplate = '@rnv/template-starter';
-    //WHEN
-    await expect(taskNew.fn?.(ctx)).resolves.toEqual(true);
-    //THEN
-    expect(writeFileSync).toHaveBeenCalledTimes(1);
-    expect(writeFileSync).toHaveBeenCalledWith(undefined, {
-        currentTemplate: '@rnv/template-starter',
-        common: {
-            id: 'com.test.app',
-            title: 'testtitle',
-        },
-        defaults: {
-            supportedPlatforms: ['android', 'ios', 'web'],
-        },
-        engines: {},
-        isMonorepo: false,
-        isNew: true,
-        platforms: {},
-        projectName: 'test',
-        projectVersion: '1.0.0',
-        templates: {
-            '@rnv/template-starter': {
-                version: '1.0.0-canary.7',
-            },
-        },
-        workspaceID: 'rnv',
-    });
-    // expect(checkAndCreateGitignore).toHaveBeenCalledTimes(1);
+    };
+    jest.mocked(initNewProject).mockResolvedValue(payload);
+    // WHEN
+    const result = await taskNew.fn?.(ctx);
+    // THEN
+    expect(result).toEqual(true);
+    expect(initNewProject).toHaveBeenCalled();
+    expect(inquiryProjectName).toHaveBeenCalledWith(payload);
+    expect(processChdirToProject).toHaveBeenCalled();
+    expect(inquiryIsRenativeProject).toHaveBeenCalledWith(payload);
+    expect(inquiryHasNodeModules).toHaveBeenCalledWith(payload);
+    expect(inquiryInstallTemplate).toHaveBeenCalledWith(payload);
+    expect(inquiryApplyTemplate).toHaveBeenCalledWith(payload);
+    expect(saveProgressIntoProjectConfig).toHaveBeenCalledWith(payload);
+    expect(inquiryAppTitle).toHaveBeenCalledWith(payload);
+    expect(inquiryAppID).toHaveBeenCalledWith(payload);
+    expect(inquiryAppVersion).toHaveBeenCalledWith(payload);
+    expect(saveProgressIntoProjectConfig).toHaveBeenCalledWith(payload);
+    expect(inquiryWorkspace).toHaveBeenCalledWith(payload);
+    expect(inquirySupportedPlatforms).toHaveBeenCalledWith(payload);
+    expect(inquiryBootstrapQuestions).toHaveBeenCalledWith(payload);
+    expect(inquiryGit).toHaveBeenCalledWith(payload);
+    expect(inquiryBookmarkTemplate).toHaveBeenCalledWith(payload);
+    expect(inquiryConfirm).toHaveBeenCalledWith(payload);
+    expect(generateNewProject).toHaveBeenCalledWith(payload);
+    expect(telemetryNewProject).toHaveBeenCalledWith(payload);
+    expect(logSuccess).toHaveBeenCalled();
 });

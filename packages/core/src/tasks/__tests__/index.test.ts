@@ -4,6 +4,7 @@ import { RnvEngine } from '../../engines/types';
 import { DEFAULT_TASK_DESCRIPTIONS } from '../constants';
 import { getContext } from '../../context/provider';
 import { generateContextDefaults } from '../../context/defaults';
+import { checkIfProjectAndNodeModulesExists } from '../../projects/dependencyManager';
 
 jest.mock('../../engines');
 jest.mock('chalk');
@@ -11,6 +12,7 @@ jest.mock('../../logger');
 jest.mock('../../api');
 jest.mock('../../context/provider');
 jest.mock('../constants', () => ({ DEFAULT_TASK_DESCRIPTIONS: {} }));
+jest.mock('../../projects/dependencyManager');
 
 beforeEach(() => {
     // NOTE: do not call createRnvContext() in core library itself
@@ -68,6 +70,7 @@ describe('Get suitable tasks', () => {
         // GIVEN
         jest.mocked(getContext).mockReturnValue(generateContextDefaults());
         jest.mocked(getRegisteredEngines).mockReturnValue([rnvEngineMock1]);
+        jest.mocked(checkIfProjectAndNodeModulesExists).mockResolvedValue();
         // WHEN
         const result = getAllSuitableTasks();
         // THEN
@@ -79,6 +82,7 @@ describe('Get suitable tasks', () => {
         // GIVEN
         jest.mocked(getContext).mockReturnValue(generateContextDefaults());
         jest.mocked(getRegisteredEngines).mockReturnValue([rnvEngineMock1, rnvEngineMock2]);
+        jest.mocked(checkIfProjectAndNodeModulesExists).mockResolvedValue();
         DEFAULT_TASK_DESCRIPTIONS['mock-task'] = 'mock task common';
         // WHEN
         const result = getAllSuitableTasks();
@@ -91,6 +95,7 @@ describe('Get suitable tasks', () => {
         // GIVEN
         jest.mocked(getContext).mockReturnValue(generateContextDefaults());
         jest.mocked(getRegisteredEngines).mockReturnValue([rnvEngineMock2, rnvEngineMock1]);
+        jest.mocked(checkIfProjectAndNodeModulesExists).mockResolvedValue();
         delete DEFAULT_TASK_DESCRIPTIONS['mock-task'];
         // WHEN
         const result = getAllSuitableTasks();

@@ -28,21 +28,29 @@ const populateLinkingInfo = (ctx: RnvContext) => {
 };
 
 export const createRnvContext = (ctx?: CreateContextOptions) => {
-    // console.log('CREATE_RNV_CONTEXT', !!ctx, !!global.RNV_CONTEXT, global.RNV_CONTEXT?.isDefault);
+    // console.trace('CREATE_RNV_CONTEXT', !!ctx, !!global.RNV_CONTEXT, global.RNV_CONTEXT?.isDefault);
 
     let haltExecution = false;
     // Handle new imports of @rnv/core
     if (!ctx) {
         if (!global.RNV_CONTEXT) {
-            // Initial empty context to be initialized
-            global.RNV_CONTEXT = generateContextDefaults();
-            return;
+            if (process.env.JEST_WORKER_ID === undefined) {
+                // Initial empty context to be initialized
+                global.RNV_CONTEXT = generateContextDefaults();
+                return;
+            } else {
+                // We are in jest test mode. (multiple imports will occur due to mocking of imports in tests)
+                // We do not initialize context but do not throw error
+                return;
+            }
         }
         // Full Context already initialized. Another @rnv/core instance has been just imported
         haltExecution = true;
     }
 
     if (haltExecution) {
+        const msg =
+            'This usually happens if you have multiple versions of @rnv/core dependencies located in your project or you are running project with global rnv (without npx).';
         const err = new Error(`
 
 FATAL: Multiple instances of @rnv/core detected: 
@@ -52,8 +60,7 @@ FATAL: Multiple instances of @rnv/core detected:
 2 (${new Date().toISOString()}) 
   ${path.join(__dirname, '../..')}
 
-This usually happens if you have multiple versions of @rnv/core dependencies located in your project or you are running project with global rnv (without npx).
-
+${msg}
 `);
 
         throw err;
@@ -67,7 +74,6 @@ This usually happens if you have multiple versions of @rnv/core dependencies loc
     c.subCommand = ctx?.subCmd || c.subCommand;
     c.isSystemWin = isSystemWin;
     c.paths.rnv.dir = ctx?.RNV_HOME_DIR || c.paths.rnv.dir;
-    c.paths.RNV_CORE_HOME_DIR = path.join(__dirname, '../..');
 
     populateContextPaths(c);
 

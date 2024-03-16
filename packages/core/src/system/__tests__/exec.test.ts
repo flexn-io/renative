@@ -1,12 +1,16 @@
+import { generateApiDefaults } from '../../api/defaults';
+import { getApi } from '../../api/provider';
 import { generateContextDefaults } from '../../context/defaults';
 import { getContext } from '../../context/provider';
 import { executeAsync, commandExistsSync, commandExists } from '../../system/exec';
 
 jest.mock('../../logger');
 jest.mock('../../context/provider');
+jest.mock('../../api/provider');
 
 beforeEach(() => {
     // NOTE: do not call createRnvContext() in core library itself
+    jest.mocked(getApi).mockReturnValue(generateApiDefaults());
 });
 
 afterEach(() => {
@@ -17,6 +21,7 @@ describe('Testing exec functions', () => {
     it('should execute command', async () => {
         // GIVEN
         jest.mocked(getContext).mockReturnValue(generateContextDefaults());
+        // jest.mocked(spinner)
         expect.assertions(1);
         // WHEN // THEN
         await expect(executeAsync('node -v').then((data) => typeof data)).resolves.toBe('string');
