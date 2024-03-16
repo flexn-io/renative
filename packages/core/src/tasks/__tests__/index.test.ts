@@ -1,17 +1,19 @@
 import { getAllSuitableTasks } from '..';
-import { createRnvContext } from '@rnv/core';
 import { getRegisteredEngines } from '../../engines';
 import { RnvEngine } from '../../engines/types';
 import { DEFAULT_TASK_DESCRIPTIONS } from '../constants';
+import { getContext } from '../../context/provider';
+import { generateContextDefaults } from '../../context/defaults';
 
 jest.mock('../../engines');
 jest.mock('chalk');
 jest.mock('../../logger');
 jest.mock('../../api');
+jest.mock('../../context/provider');
 jest.mock('../constants', () => ({ DEFAULT_TASK_DESCRIPTIONS: {} }));
 
 beforeEach(() => {
-    createRnvContext();
+    // NOTE: do not call createRnvContext() in core library itself
 });
 
 afterEach(() => {
@@ -64,7 +66,7 @@ const rnvEngineMock2: RnvEngine = {
 describe('Get suitable tasks', () => {
     it('should return all tasks for given 1 engine', () => {
         // GIVEN
-        // const c = getContext();
+        jest.mocked(getContext).mockReturnValue(generateContextDefaults());
         jest.mocked(getRegisteredEngines).mockReturnValue([rnvEngineMock1]);
         // WHEN
         const result = getAllSuitableTasks();
@@ -75,10 +77,9 @@ describe('Get suitable tasks', () => {
 
     it('should return common description for tasks from 2 different engines but same name', () => {
         // GIVEN
-        // const c = getContext();
+        jest.mocked(getContext).mockReturnValue(generateContextDefaults());
         jest.mocked(getRegisteredEngines).mockReturnValue([rnvEngineMock1, rnvEngineMock2]);
         DEFAULT_TASK_DESCRIPTIONS['mock-task'] = 'mock task common';
-
         // WHEN
         const result = getAllSuitableTasks();
         // THEN
@@ -88,7 +89,7 @@ describe('Get suitable tasks', () => {
 
     it('should return first task description for tasks from 2 different engines but same name if common desc not available', () => {
         // GIVEN
-        // const c = getContext();
+        jest.mocked(getContext).mockReturnValue(generateContextDefaults());
         jest.mocked(getRegisteredEngines).mockReturnValue([rnvEngineMock2, rnvEngineMock1]);
         delete DEFAULT_TASK_DESCRIPTIONS['mock-task'];
         // WHEN

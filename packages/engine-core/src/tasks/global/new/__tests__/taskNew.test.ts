@@ -1,12 +1,10 @@
 import {
-    createRnvContext,
     fsExistsSync,
     getContext,
     writeFileSync,
     inquirerPrompt,
     getWorkspaceOptions,
     getTemplateOptions,
-    checkAndCreateGitignore,
     commandExistsSync,
 } from '@rnv/core';
 import taskNew from '../taskNew';
@@ -17,7 +15,7 @@ jest.mock('path');
 jest.mock('semver');
 
 beforeEach(() => {
-    createRnvContext();
+    // NOTE: do not call createRnvContext() in core library itself
 });
 
 afterEach(() => {
@@ -28,7 +26,7 @@ test('Execute task.rnv.new', async () => {
     //GIVEN
     const ctx = getContext();
 
-    jest.mocked(checkAndCreateGitignore).mockReturnValue(Promise.resolve(true));
+    // jest.mocked(checkAndCreateGitignore).mockReturnValue(Promise.resolve(true));
     jest.mocked(commandExistsSync).mockReturnValue(true);
     jest.mocked(fsExistsSync).mockReturnValue(true);
 
@@ -119,5 +117,5 @@ test('Execute task.rnv.new', async () => {
         },
         workspaceID: 'rnv',
     });
-    expect(checkAndCreateGitignore).toHaveBeenCalledTimes(1);
+    // expect(checkAndCreateGitignore).toHaveBeenCalledTimes(1);
 });

@@ -11,12 +11,12 @@ jest.mock('../../system/fs');
 jest.mock('../../system/resolve');
 jest.mock('../../context/contextProps');
 
-beforeAll(() => {
-    // Before all placeholder
+beforeEach(() => {
+    // NOTE: do not call createRnvContext() in core library itself
 });
 
 afterEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
 });
 
 describe('createPlatformBuild', () => {

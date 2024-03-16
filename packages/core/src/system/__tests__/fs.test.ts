@@ -5,12 +5,12 @@ import { generateContextDefaults } from '../../context/defaults';
 jest.mock('../../logger');
 jest.mock('../../context/provider');
 
-beforeAll(() => {
-    // Before all placeholder
+beforeEach(() => {
+    // NOTE: do not call createRnvContext() in core library itself
 });
 
 afterEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
 });
 
 describe('sanitizeDynamicProps', () => {

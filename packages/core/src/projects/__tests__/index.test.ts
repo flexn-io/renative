@@ -13,8 +13,12 @@ jest.mock('../../context/provider');
 jest.mock('../../context/contextProps');
 jest.mock('../../platforms/index');
 
+beforeEach(() => {
+    // NOTE: do not call createRnvContext() in core library itself
+});
+
 afterEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
 });
 
 describe('copyAssetsFolder', () => {
