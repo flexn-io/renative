@@ -15,7 +15,7 @@ import { inquiryInstallTemplate } from '../questions/installTemplate';
 import { inquiryApplyTemplate } from '../questions/applyTemplate';
 import { inquiryAppTitle } from '../questions/appTitle';
 import { inquiryAppID } from '../questions/appID';
-import { inquiryAppVersion } from '../questions/appVersion';
+import { inquiryAppVersion } from '../questions/projectVersion';
 import { inquiryWorkspace } from '../questions/workspace';
 import { inquirySupportedPlatforms } from '../questions/supportedPlatforms';
 import { inquiryBootstrapQuestions } from '../questions/bootstrapQuestions';
@@ -34,7 +34,7 @@ jest.mock('../questions/installTemplate');
 jest.mock('../questions/applyTemplate');
 jest.mock('../questions/bookmarkTemplate');
 jest.mock('../questions/appID');
-jest.mock('../questions/appVersion');
+jest.mock('../questions/projectVersion');
 jest.mock('../questions/workspace');
 jest.mock('../questions/hasNodeModules');
 jest.mock('../questions/confirmOverview');
@@ -66,6 +66,7 @@ test('Execute task.rnv.new', async () => {
             project: {
                 renativeConfig: {},
                 packageJson: {},
+                renativeAppConfig: {},
             },
             template: {
                 renativeTemplateConfig: {},
