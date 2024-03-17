@@ -68,17 +68,17 @@ export const configureFonts = async () => {
         fsWriteFileSync(fontJsPath, fontsObj);
     }
 
-    const coreTemplateFiles = path.resolve(c.paths.rnv.dir, 'coreTemplateFiles');
+    const templateFiles = path.resolve(__dirname, '..', 'templateFiles');
     copyFileSync(
-        path.resolve(coreTemplateFiles, 'fontManager.js'),
+        path.resolve(templateFiles, 'fontManager.js'),
         path.resolve(c.paths.project.assets.dir, 'runtime', 'fontManager.js')
     );
     copyFileSync(
-        path.resolve(coreTemplateFiles, 'fontManager.js'),
+        path.resolve(templateFiles, 'fontManager.js'),
         path.resolve(c.paths.project.assets.dir, 'runtime', 'fontManager.server.web.js')
     );
     copyFileSync(
-        path.resolve(coreTemplateFiles, 'fontManager.web.js'),
+        path.resolve(templateFiles, 'fontManager.web.js'),
         path.resolve(c.paths.project.assets.dir, 'runtime', 'fontManager.web.js')
     );
 
