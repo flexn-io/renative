@@ -376,6 +376,7 @@ export const generateStringFromTaskOption = (opt: RnvTaskOption) => {
 };
 
 const _populateExtraParameters = (c: RnvContext, task: RnvTask) => {
+    c.program?.allowUnknownOption(false); // integration options are not known ahead of time
     if (task.options) {
         task.options.forEach((opt) => {
             c.program.option?.(generateStringFromTaskOption(opt), opt.description);
@@ -555,28 +556,20 @@ export const executeEngineTask = async (
 
     if (needsHelp && !parentTask && t) {
         logRaw(`
-=======================================================
-INTERACTIVE HELP FOR TASK: ${chalk().green(t.task)}
-
 Description: ${t.description}
-
-Options:
-
-${t.options
-    .map((v) => {
-        const option = v.shortcut ? `\`-${v.shortcut}\`, ` : '';
-        return `${option}\`--${v.key}\` - ${v.description}`;
-    })
-    .join('\n')}
-
   `);
+        c.program.outputHelp();
+
+        //   ${t.options
+        //     .map((v) => {
+        //         const option = v.shortcut ? `-${v.shortcut}, ` : '';
+        //         return `  ${option}--${v.key}        ${v.description}`;
+        //     })
+        //     .join('\n')}
         if (t.fnHelp) {
             await t.fnHelp(c, parentTask, originTask);
         }
-
-        await pressAnyKeyToContinue();
-        logRaw(`
-=======================================================`);
+        return;
     }
     if (t && !t.isGlobalScope && isFirstTask) {
         if (c.files.project.package) {

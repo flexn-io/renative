@@ -11,6 +11,10 @@ export const DEFAULT_TASK_DESCRIPTIONS: Record<string, string> = {
 };
 
 export const RnvTaskOptions: Record<string, RnvTaskOption> = {
+    help: {
+        shortcut: 'h',
+        description: 'Displays help info for particular command',
+    },
     info: {
         shortcut: 'i',
         isValueType: true,
@@ -119,10 +123,6 @@ export const RnvTaskOptions: Record<string, RnvTaskOption> = {
         isValueType: true,
         description: 'Blueprint for targets',
     },
-    help: {
-        shortcut: 'h',
-        description: 'Displays help info for particular command',
-    },
     host: {
         shortcut: 'H',
         isValueType: true,
@@ -159,7 +159,7 @@ export const RnvTaskOptions: Record<string, RnvTaskOption> = {
         shortcut: 'e',
         isValueType: true,
         isRequired: true,
-        description: 'engine to be used (next)',
+        description: 'engine to be used ie "engine-rn"',
     },
     debugIp: {
         isValueType: true,
@@ -304,15 +304,30 @@ export type ParamKeys = Partial<Record<ProgramOptionsKey, ParamType>>;
     RnvTaskOptions[k].key = k;
 });
 
-export const RnvTaskOptionPresets = {
-    withBase: (arr?: Array<RnvTaskOption>) =>
+export const RnvTaskCoreOptionPresets = {
+    withCore: (arr?: Array<RnvTaskOption>) =>
         [
             RnvTaskOptions.info,
             RnvTaskOptions.ci,
             RnvTaskOptions.mono,
             RnvTaskOptions.maxErrorLength,
             RnvTaskOptions.only,
+            // platform is necessary to be accepted as base for the `rnv` command to work with enginie plugins
+            RnvTaskOptions.platform,
+            RnvTaskOptions.help,
         ].concat(arr || []),
+};
+
+export const RnvTaskOptionPresets = {
+    withBase: (arr?: Array<RnvTaskOption>) => arr || [],
+    // withBase: (arr?: Array<RnvTaskOption>) =>
+    //     [
+    //         RnvTaskOptions.info,
+    //         RnvTaskOptions.ci,
+    //         RnvTaskOptions.mono,
+    //         RnvTaskOptions.maxErrorLength,
+    //         RnvTaskOptions.only,
+    //     ].concat(arr || []),
     withConfigure: (arr?: Array<RnvTaskOption>) =>
         [
             RnvTaskOptions.reset,
@@ -321,7 +336,7 @@ export const RnvTaskOptionPresets = {
             RnvTaskOptions.resetAssets,
             RnvTaskOptions.appConfigID,
             RnvTaskOptions.scheme,
-            RnvTaskOptions.platform,
+            // RnvTaskOptions.platform,
         ].concat(arr || []),
     withRun: (arr?: Array<RnvTaskOption>) =>
         [

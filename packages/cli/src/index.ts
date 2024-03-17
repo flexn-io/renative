@@ -1,7 +1,7 @@
 import program from 'commander';
 import fs from 'fs';
 import path from 'path';
-import { logComplete, logError, getContext, RnvTaskOptionPresets, generateStringFromTaskOption } from '@rnv/core';
+import { logComplete, logError, getContext, generateStringFromTaskOption, RnvTaskCoreOptionPresets } from '@rnv/core';
 import Spinner from './ora';
 import Prompt from './prompt';
 import Logger from './logger';
@@ -28,11 +28,12 @@ export const run = () => {
 
     program.version(packageJson.version, '-v, --version', 'output current version');
 
-    RnvTaskOptionPresets.withAll().forEach((param) => {
+    RnvTaskCoreOptionPresets.withCore().forEach((param) => {
         program.option(generateStringFromTaskOption(param), param.description);
     });
 
     program.allowUnknownOption(true); // integration options are not known ahead of time
+    program.helpOption(false);
 
     // Make both arguments optional un order to allow `$ rnv` top level command
     program.arguments('[cmd] [option]').action((cmd, option) => {
@@ -46,6 +47,15 @@ export const run = () => {
         terminateProcesses();
         process.exit(0);
     });
+
+    // This looks weird but commander default help is actual function.
+    // if you pass --help it will override it with undefined
+    // So we need to check if it's not a function to output help
+    if (!program.help) {
+        //program.outputHelp();
+        // Let's use alternative name for this flag
+        program.isHelpInvoked = true;
+    }
 
     // If the first argument is a flag, then the subCommand is missing
     // this occurs when rnv has to execute unknown commands (ie intergration commands)
