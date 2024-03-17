@@ -82,9 +82,6 @@ export const generateApiDefaults = (): RnvApi => ({
         inquirerPrompt: async () => {
             //NOOP
         },
-        pressAnyKeyToContinue: async () => {
-            //NOOP
-        },
         inquirerSeparator() {
             //NOOP
         },

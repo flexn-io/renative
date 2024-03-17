@@ -55,15 +55,6 @@ export const inquirerSeparator = (text?: string) => {
     return new inquirer.Separator(text);
 };
 
-export const pressAnyKeyToContinue = () => {
-    const params = {
-        type: 'input',
-        name: 'confirm',
-        message: 'Press any key to continue',
-    };
-    return inquirer.prompt(params as any);
-};
-
 export const generateOptions = (
     inputData: any,
     isMultiChoice = false,
@@ -148,6 +139,5 @@ const _generateOptionString = (i: number, _obj: any, mapping: any, defaultVal: s
 export default {
     inquirerPrompt,
     generateOptions,
-    pressAnyKeyToContinue,
     inquirerSeparator,
 };

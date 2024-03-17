@@ -36,7 +36,6 @@ export type RnvApiPrompt = {
         mapping?: any,
         renderMethod?: PromptRenderFn
     ) => PromptOptions;
-    pressAnyKeyToContinue: () => Promise<any>;
     inquirerSeparator: (text?: string) => any;
 };
 
