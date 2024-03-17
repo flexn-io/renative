@@ -1,4 +1,6 @@
-export const RNV_PACKAGES = [
+import type { RnvPackage } from './types';
+
+export const RNV_PACKAGES: RnvPackage[] = [
     {
         packageName: '@rnv/renative',
         folderName: 'renative',

@@ -11,23 +11,44 @@ import {
     RnvContext,
     RnvTask,
     RnvTaskName,
+    fsReaddirSync,
 } from '@rnv/core';
 import { RNV_PACKAGES } from './constants';
+import { mkdirSync } from 'fs';
 
-const _unlinkPackage = (c: RnvContext, key: string) => {
-    const rnvPath = path.join(c.paths.project.nodeModulesDir, key);
-    const rnvPathUnlinked = path.join(c.paths.project.nodeModulesDir, `${key}_unlinked`);
+const _unlinkPackage = (c: RnvContext, nmDir: string, key: string) => {
+    const rnvDepPath = path.join(nmDir, key);
+    const nmRnvDir = path.join(nmDir, '.rnv/unlinked_cache');
+    if (!fsExistsSync(nmRnvDir)) {
+        mkdirSync(nmRnvDir);
+    }
+    const rnvDepPathUnlinked = path.join(nmRnvDir, key);
 
-    if (!fsExistsSync(rnvPathUnlinked)) {
+    if (!fsExistsSync(rnvDepPathUnlinked)) {
         logInfo(`${key} is not linked. SKIPPING`);
-    } else if (fsExistsSync(rnvPath)) {
-        if (fsLstatSync(rnvPath).isSymbolicLink()) {
-            fsUnlinkSync(rnvPath);
-            fsRenameSync(rnvPathUnlinked, rnvPath);
+    } else if (fsExistsSync(rnvDepPath)) {
+        if (fsLstatSync(rnvDepPath).isSymbolicLink()) {
+            fsUnlinkSync(rnvDepPath);
+            fsRenameSync(rnvDepPathUnlinked, rnvDepPath);
             logInfo(`${key} => unlink => SUCCESS`);
         } else {
             logInfo(`${key} is not a symlink anymore. SKIPPING`);
         }
+    }
+};
+
+const _findAndUnlinkPackage = (c: RnvContext, key: string) => {
+    _unlinkPackage(c, c.paths.project.nodeModulesDir, key);
+    const monoPackages = path.join(c.paths.project.dir, 'packages');
+    //If monorepo, we need to link all packages
+    if (fsExistsSync(monoPackages)) {
+        fsReaddirSync(monoPackages).forEach((pkg) => {
+            const pkgPath = path.join(monoPackages, pkg);
+            if (fsExistsSync(pkg)) {
+                const nmDir = path.join(pkgPath, 'node_modules');
+                _unlinkPackage(c, nmDir, key);
+            }
+        });
     }
 };
 
@@ -36,7 +57,7 @@ const taskUnlink: RnvTaskFn = async (c) => {
 
     RNV_PACKAGES.forEach((pkg) => {
         if (!pkg.skipLinking) {
-            _unlinkPackage(c, pkg.packageName);
+            _findAndUnlinkPackage(c, pkg.packageName);
         }
     });
 
