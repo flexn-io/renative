@@ -1,13 +1,13 @@
 import {
     areNodeModulesInstalled,
     RnvTaskOptionPresets,
-    installPackageDependenciesAndPlugins,
     logTask,
     logInfo,
     RnvTaskFn,
     RnvTask,
     RnvTaskName,
 } from '@rnv/core';
+import { installPackageDependenciesAndPlugins } from '../../plugins';
 
 const taskInstall: RnvTaskFn = async (c, parentTask, _) => {
     logTask('taskInstall', `requiresInstall:${!!c._requiresNpmInstall}:${!c.runtime.skipPackageUpdate}`);

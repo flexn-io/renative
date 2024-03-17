@@ -1,6 +1,5 @@
 import {
     logTask,
-    configureFonts,
     copyRuntimeAssets,
     executeTask,
     RnvTaskOptionPresets,
@@ -9,6 +8,7 @@ import {
     RnvTask,
     RnvTaskName,
 } from '@rnv/core';
+import { configureFonts } from '@rnv/sdk-utils';
 
 const taskSwitch: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskSwitch');

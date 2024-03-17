@@ -5,14 +5,13 @@ import { executeAsync } from '../system/exec';
 import { installPackageDependencies } from './npm';
 import { chalk, logInfo, logDebug, logDefault } from '../logger';
 import { getEngineRunnerByPlatform } from '../engines';
-import { overrideTemplatePlugins } from '../plugins';
-import { configureFonts } from '.';
 import { RnvContext } from '../context/types';
 import { inquirerPrompt } from '../api';
 import { writeRenativeConfigFile } from '../configs/utils';
 import { fsExistsSync } from '../system/fs';
 import { NpmDepKey, NpmPackageFile } from '../configs/types';
 import { getContext } from '../context/provider';
+import { AsyncCallback } from './types';
 
 export const checkIfProjectAndNodeModulesExists = async () => {
     logDefault('checkIfProjectAndNodeModulesExists');
@@ -31,7 +30,8 @@ const injectProjectDependency = async (
     dependency: string,
     version: string,
     type: NpmDepKey,
-    skipInstall = false
+    skipInstall = false,
+    postInjectHandler: AsyncCallback | undefined
 ) => {
     logDefault('injectProjectDependency');
 
@@ -43,9 +43,9 @@ const injectProjectDependency = async (
         dep[dependency] = version;
         writeRenativeConfigFile(existingPath, currentPackage);
         if (!skipInstall) {
-            await installPackageDependencies();
-            await overrideTemplatePlugins();
-            await configureFonts();
+            if (postInjectHandler) {
+                await postInjectHandler();
+            }
         }
         return true;
     }
@@ -59,7 +59,8 @@ export const checkRequiredPackage = async (
     type: NpmDepKey,
     skipAsking = false,
     skipInstall = false,
-    skipVersionCheck = false
+    skipVersionCheck = false,
+    postInjectHandler: AsyncCallback | undefined
 ) => {
     logDebug('checkRequiredPackage');
     if (!pkg) return false;
@@ -85,7 +86,7 @@ export const checkRequiredPackage = async (
                     // eslint-disable-next-line no-empty
                 } catch (e) {}
             }
-            return injectProjectDependency(c, pkg, version || latestVersion, type, skipInstall);
+            return injectProjectDependency(c, pkg, version || latestVersion, type, skipInstall, postInjectHandler);
         }
     } else if (version === '') {
         // package exists, checking version only if version is not
@@ -119,7 +120,7 @@ export const checkRequiredPackage = async (
                 }
 
                 if (confirm) {
-                    return injectProjectDependency(c, pkg, latestVersion, type, skipInstall);
+                    return injectProjectDependency(c, pkg, latestVersion, type, skipInstall, postInjectHandler);
                 }
             }
         }
@@ -128,7 +129,10 @@ export const checkRequiredPackage = async (
     return false;
 };
 
-export const injectPlatformDependencies = async () => {
+export const injectPlatformDependencies = async (
+    handleExtraDepsCallback?: AsyncCallback,
+    postInjectHandler?: AsyncCallback
+) => {
     logDefault('injectPlatformDependencies');
     const c = getContext();
     const { platform } = c;
@@ -145,7 +149,7 @@ export const injectPlatformDependencies = async () => {
             if (deps) {
                 Object.keys(deps).forEach((dep) => {
                     // iterate over deps
-                    acc.push(checkRequiredPackage(c, dep, deps[dep], type, true, true));
+                    acc.push(checkRequiredPackage(c, dep, deps[dep], type, true, true, false, postInjectHandler));
                 });
             }
 
@@ -167,9 +171,9 @@ export const injectPlatformDependencies = async () => {
                 logInfo(
                     `Found extra npm dependencies required by ${chalk().bold(engine.config.id)} engine. ADDING...DONE`
                 );
-                await installPackageDependencies();
-                await overrideTemplatePlugins();
-                await configureFonts();
+                if (handleExtraDepsCallback) {
+                    await handleExtraDepsCallback();
+                }
             }
         }
     }

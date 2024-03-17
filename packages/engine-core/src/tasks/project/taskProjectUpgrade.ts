@@ -9,7 +9,6 @@ import {
     upgradeDependencies,
     executeTask,
     listAndSelectNpmVersion,
-    installPackageDependenciesAndPlugins,
     fsExistsSync,
     readObjectSync,
     RnvTaskFn,
@@ -18,6 +17,7 @@ import {
     NpmPackageFile,
     ConfigFileProject,
 } from '@rnv/core';
+import { installPackageDependenciesAndPlugins } from '../../plugins';
 
 const taskProjectUpgrade: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskProjectUpgrade');

@@ -18,10 +18,16 @@ export * from './configs/templates';
 export * from './context/contextProps';
 export * from './configs/utils';
 
-export * from './projects';
+export * from './projects/appConfig';
+export * from './projects/assets';
+export * from './projects/fonts';
+export * from './projects/bootstrap';
+export * from './projects/version';
 export * from './projects/npm';
 export * from './projects/package';
-export * from './projects/dependencyManager';
+export * from './projects/dependencies';
+export * from './projects/fonts';
+export * from './projects/utils';
 
 export * from './tasks';
 export * from './tasks/constants';

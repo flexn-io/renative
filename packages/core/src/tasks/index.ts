@@ -14,7 +14,7 @@ import type { RnvEngine } from '../engines/types';
 import { inquirerPrompt, inquirerSeparator } from '../api';
 import { getApi } from '../api/provider';
 import type { PlatformKey, RenativeConfigRnvTaskName } from '../schema/types';
-import { checkIfProjectAndNodeModulesExists } from '../projects/dependencyManager';
+import { checkIfProjectAndNodeModulesExists } from '../projects/dependencies';
 import { DEFAULT_TASK_DESCRIPTIONS } from './constants';
 import { getContext } from '../context/provider';
 

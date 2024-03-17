@@ -16,6 +16,7 @@ import {
     RnvTaskName,
     ConfigName,
 } from '@rnv/core';
+import { writeFileSync } from 'fs';
 
 const taskWorkspaceConfigure: RnvTaskFn = async (c) => {
     logTask('taskWorkspaceConfigure');
@@ -38,10 +39,7 @@ const taskWorkspaceConfigure: RnvTaskFn = async (c) => {
             copyFileSync(oldGlobalConfigPath, c.paths.workspace.config);
         } else {
             logInfo(`${c.paths.workspace.dir}/${ConfigName.renative} file missing! Creating one for you...`);
-            copyFileSync(
-                path.join(c.paths.rnv.dir, 'coreTemplateFiles', 'global-config-template.json'),
-                c.paths.workspace.config
-            );
+            writeFileSync(c.paths.workspace.config, '{}');
         }
     }
 
@@ -72,14 +70,10 @@ const taskWorkspaceConfigure: RnvTaskFn = async (c) => {
                     c.paths.workspace.config
                 )}. Let's add them!`
             );
-            const defaultConfig = JSON.parse(
-                fsReadFileSync(
-                    path.join(c.paths.rnv.dir, 'coreTemplateFiles', 'global-config-template.json')
-                ).toString()
-            );
+
             const newConfig = {
                 ...c.files.workspace.config,
-                defaultTargets: defaultConfig.defaultTargets,
+                defaultTargets: {},
             };
             fsWriteFileSync(c.paths.workspace.config, JSON.stringify(newConfig, null, 2));
         }

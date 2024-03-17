@@ -20,7 +20,7 @@ import { PromptOptions } from '../api/types';
 import { RnvPlatform } from '../types';
 import { listAppConfigsFoldersSync } from '../configs/appConfigs';
 import { writeRenativeConfigFile } from '../configs/utils';
-import { checkIfProjectAndNodeModulesExists } from '../projects/dependencyManager';
+import { checkIfProjectAndNodeModulesExists } from '../projects/dependencies';
 import { ConfigFileApp, ConfigFileProject, ConfigFileTemplate } from '../schema/configFiles/types';
 import { PlatformKey } from '../schema/types';
 import { getConfigProp } from '../context/contextProps';

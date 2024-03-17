@@ -15,9 +15,12 @@ import {
     RnvTaskFn,
     RnvTask,
     RnvTaskName,
+    installPackageDependencies,
+    overrideTemplatePlugins,
 } from '@rnv/core';
 import { checkAndConfigureSdks, checkSdk } from '../../common';
 import { isBuildSchemeSupported } from '../../buildSchemes';
+import { configureFonts } from '@rnv/sdk-utils';
 
 const taskPlatformConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskPlatformConfigure', '');
@@ -49,7 +52,18 @@ const taskPlatformConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     }
 
     await createPlatformBuild(c.platform);
-    await injectPlatformDependencies();
+    await injectPlatformDependencies(
+        async () => {
+            await installPackageDependencies();
+            await overrideTemplatePlugins();
+            await configureFonts();
+        },
+        async () => {
+            await installPackageDependencies();
+            await overrideTemplatePlugins();
+            await configureFonts();
+        }
+    );
     // await _runCopyPlatforms(c);
     return true;
 };

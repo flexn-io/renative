@@ -2,7 +2,6 @@ import merge from 'deepmerge';
 import path from 'path';
 import { getAppConfigBuildsFolder, getAppFolder } from '../context/contextProps';
 import { parseRenativeConfigs } from '../configs';
-import { configureFonts } from '../projects';
 import {
     copyFolderContentsRecursiveSync,
     fsExistsSync,
@@ -27,6 +26,7 @@ import { NpmPackageFile } from '../configs/types';
 import { getContext } from '../context/provider';
 import { getConfigProp } from '../context/contextProps';
 import { ConfigName } from '../enums/configName';
+import { AsyncCallback } from '../projects/types';
 
 const _getPluginScope = (plugin: RenativeConfigPlugin | string): RnvPluginScope => {
     if (typeof plugin === 'string') {
@@ -749,15 +749,6 @@ export const overrideFileContents = (dest: string, override: Record<string, stri
     }
 };
 
-export const installPackageDependenciesAndPlugins = async () => {
-    logDefault('installPackageDependenciesAndPlugins');
-
-    await installPackageDependencies();
-    await overrideTemplatePlugins();
-    await configureFonts();
-    await checkForPluginDependencies();
-};
-
 const _getPluginConfiguration = (c: RnvContext, pluginName: string) => {
     let renativePlugin: ConfigFilePlugin | undefined;
     let renativePluginPath;
@@ -773,7 +764,7 @@ const _getPluginConfiguration = (c: RnvContext, pluginName: string) => {
     return renativePlugin;
 };
 
-export const checkForPluginDependencies = async () => {
+export const checkForPluginDependencies = async (postInjectHandler?: AsyncCallback) => {
     const c = getContext();
 
     const toAdd: Record<string, string> = {};
@@ -831,7 +822,9 @@ export const checkForPluginDependencies = async () => {
             // Need to reload merged files
             await parseRenativeConfigs();
             await configurePlugins();
-            await installPackageDependenciesAndPlugins();
+            if (postInjectHandler) {
+                await postInjectHandler();
+            }
         }
     }
 };

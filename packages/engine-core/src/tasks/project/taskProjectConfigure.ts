@@ -19,7 +19,6 @@ import {
     copyRuntimeAssets,
     cleanPlaformAssets,
     versionCheck,
-    configureFonts,
     configureEngines,
     executeTask,
     initializeTask,
@@ -32,6 +31,8 @@ import {
     getContext,
 } from '@rnv/core';
 import { checkCrypto } from '../crypto/common';
+import { installPackageDependenciesAndPlugins } from '../../plugins';
+import { configureFonts } from '@rnv/sdk-utils';
 
 const checkIsRenativeProject = async () => {
     const c = getContext();
@@ -130,7 +131,9 @@ const taskProjectConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
         await generatePlatformAssetsRuntimeConfig();
         await overrideTemplatePlugins();
         // NOTE: this is needed to ensure missing rnv plugin sub-deps are caught
-        await checkForPluginDependencies();
+        await checkForPluginDependencies(async () => {
+            await installPackageDependenciesAndPlugins();
+        });
         await configureFonts();
     }
 
