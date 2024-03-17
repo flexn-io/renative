@@ -11,8 +11,8 @@ export type LinkablePackage = {
     nmPathExists: boolean;
     unlinkedPathExists: boolean;
 };
-export type RnvPackage = {
-    packageName: string;
-    folderName: string;
+export type SourcePackage = {
+    name: string;
+    path: string;
     skipLinking?: boolean;
 };

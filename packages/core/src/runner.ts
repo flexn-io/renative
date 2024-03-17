@@ -25,7 +25,7 @@ export const executeRnvCore = async () => {
     // ie rnv link
     const initTask = await findSuitableGlobalTask();
     if (initTask?.task && initTask.isGlobalScope) {
-        return initializeTask(initTask?.task);
+        return initializeTask(initTask);
     }
 
     await loadIntegrations();
@@ -48,5 +48,5 @@ export const executeRnvCore = async () => {
         await registerMissingPlatformEngines(taskInstance);
     }
 
-    if (taskInstance?.task) await initializeTask(taskInstance?.task);
+    if (taskInstance?.task) await initializeTask(taskInstance);
 };

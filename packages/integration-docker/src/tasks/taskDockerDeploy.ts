@@ -18,7 +18,7 @@ const taskDockerDeploy: RnvTaskFn = async (c, parentTask, originTask) => {
         await executeOrSkipTask(RnvTaskName.export, 'docker export', originTask);
     } else {
         const taskInstance = await findSuitableTask(RnvTaskName.export);
-        if (taskInstance) await initializeTask(taskInstance.task);
+        if (taskInstance) await initializeTask(taskInstance);
     }
 
     const docker = new Docker();

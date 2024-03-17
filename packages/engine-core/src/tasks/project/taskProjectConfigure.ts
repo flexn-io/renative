@@ -89,7 +89,7 @@ const taskProjectConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
             const taskInstance = await findSuitableTask();
             c.runtime.requiresBootstrap = false;
             if (taskInstance?.task) {
-                return initializeTask(taskInstance?.task);
+                return initializeTask(taskInstance);
             }
         }
         await applyTemplate();

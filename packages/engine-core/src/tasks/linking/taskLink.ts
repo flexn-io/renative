@@ -1,4 +1,3 @@
-import path from 'path';
 import {
     logInfo,
     logTask,
@@ -10,15 +9,12 @@ import {
     RnvTask,
     RnvTaskName,
     mkdirSync,
-    fsReaddirSync,
-    getContext,
     chalk,
-    fsLstatSync,
     fsUnlinkSync,
     removeDirSync,
 } from '@rnv/core';
-import { RNV_PACKAGES } from './constants';
 import { LinkablePackage } from './types';
+import { getSourceDir, traverseTargetProject } from './linker';
 
 const _linkPackage = (pkg: LinkablePackage) => {
     if (!fsExistsSync(pkg.cacheDir)) {
@@ -30,6 +26,8 @@ const _linkPackage = (pkg: LinkablePackage) => {
         fsUnlinkSync(pkg.nmPath);
     } else if (pkg.isLinked) {
         logInfo(`${pkg.name} is already linked. SKIPPING`);
+    } else if (pkg.skipLinking) {
+        logInfo(`${pkg.name} is set to skip linking. SKIPPING`);
     } else if (pkg.nmPathExists) {
         if (pkg.unlinkedPathExists) {
             logInfo(`${pkg.name} found in exisitng cache. Removing and relinking...`);
@@ -46,66 +44,12 @@ const _linkPackage = (pkg: LinkablePackage) => {
     }
 };
 
-const captureLinkablePackages = (baseDir: string, linkablePackages: LinkablePackage[]) => {
-    const ctx = getContext();
-    RNV_PACKAGES.forEach((pkg) => {
-        const rnvDepPath = path.join(baseDir, pkg.packageName);
-
-        // const stat = fsStatSync(rnvDepPath);
-        // console.log('DJDJDJDDJ', rnvDepPath, fsExistsSync(rnvDepPath));
-        let isSymLink = false;
-        const nmPathExists = fsExistsSync(rnvDepPath);
-        try {
-            isSymLink = fsLstatSync(rnvDepPath).isSymbolicLink();
-            if (!nmPathExists) {
-                // Broken link
-            }
-        } catch (e) {
-            //Catch error
-        }
-        const cacheDir = path.join(baseDir, '.rnv/unlinked_cache');
-        const unlinkedPath = path.join(cacheDir, pkg.packageName);
-        const unlinkedPathExists = fsExistsSync(unlinkedPath);
-
-        if (nmPathExists || isSymLink || unlinkedPathExists) {
-            const sourcePath = path.join(ctx.paths.rnv.dir, '../', pkg.folderName);
-            linkablePackages.push({
-                name: pkg.packageName,
-                nmPath: rnvDepPath,
-                sourcePath,
-                sourcePathRelative: path.relative(rnvDepPath.replace(`/${pkg.packageName}`, ''), sourcePath),
-                unlinkedPath,
-                cacheDir,
-                skipLinking: pkg.skipLinking || false,
-                isLinked: isSymLink,
-                isBrokenLink: isSymLink && !nmPathExists,
-                nmPathExists,
-                unlinkedPathExists,
-            });
-        }
-    });
-};
-
-const traverseProject = () => {
-    const c = getContext();
-    const linkablePackages: LinkablePackage[] = [];
-    captureLinkablePackages(c.paths.project.nodeModulesDir, linkablePackages);
-    const monoPackages = path.join(c.paths.project.dir, 'packages');
-    // If monorepo, we need to link all packages
-    if (fsExistsSync(monoPackages)) {
-        fsReaddirSync(monoPackages).forEach((pkgName) => {
-            const pkgPath = path.join(monoPackages, pkgName);
-            captureLinkablePackages(path.join(pkgPath, 'node_modules'), linkablePackages);
-        });
-    }
-    return linkablePackages;
-};
-
-const taskLink: RnvTaskFn = async (_c, _parentTask, _originalTask) => {
+const taskLink: RnvTaskFn = async () => {
     logTask('taskLink');
-    const linkablePackages = traverseProject();
 
-    let msg = 'Found following renative packages:\n\n';
+    const linkablePackages = traverseTargetProject(getSourceDir());
+
+    let msg = 'Found following source packages:\n\n';
 
     linkablePackages.forEach((pkg) => {
         msg += `${pkg.nmPath.replace(pkg.name, chalk().bold(pkg.name))} ${
@@ -126,7 +70,9 @@ const Task: RnvTask = {
     description: 'Links development version or renative with this project',
     fn: taskLink,
     task: RnvTaskName.link,
-    options: RnvTaskOptionPresets.withBase(),
+    options: RnvTaskOptionPresets.withBase([
+        { key: 'dir', description: 'Source folder to be linked into project', isValueType: true },
+    ]),
     platforms: [],
     isGlobalScope: true,
     ignoreEngines: true,

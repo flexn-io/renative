@@ -28,9 +28,11 @@ export const registerCustomTask = async (task: RnvTask) => {
     }
 };
 
-export const initializeTask = async (task: string) => {
+export const initializeTask = async (taskInstance: RnvTask) => {
+    const { task } = taskInstance;
     logDefault('initializeTask', task);
     const c = getContext();
+    _populateExtraParameters(c, taskInstance);
 
     logInfo(
         `Current engine: ${chalk().bold(c.runtime.engine?.config.id)} ${chalk().grey(
@@ -337,7 +339,7 @@ export const findSuitableTask = async (specificTask?: string): Promise<RnvTask |
         const customTask = CUSTOM_TASKS[task];
         if (customTask) {
             c.runtime.availablePlatforms = customTask.platforms;
-            _populateExtraParameters(c, customTask);
+            // _populateExtraParameters(c, customTask);
             return customTask;
         }
     } else {
@@ -346,7 +348,9 @@ export const findSuitableTask = async (specificTask?: string): Promise<RnvTask |
     }
     const plats = c.runtime.engine?.platforms || [];
     c.runtime.availablePlatforms = Object.keys(plats) as PlatformKey[];
-    return getEngineTask(task, c.runtime.engine?.tasks);
+    const engineTask = getEngineTask(task, c.runtime.engine?.tasks);
+
+    return engineTask;
 };
 
 export const generateStringFromTaskOption = (opt: RnvTaskOption) => {
