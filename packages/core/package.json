@@ -13,6 +13,7 @@
     "files": [
         "LICENSE",
         "jsonSchema",
+        "templateFiles",
         "lib"
     ],
     "main": "lib/index.js",

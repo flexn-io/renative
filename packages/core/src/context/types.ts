@@ -217,6 +217,7 @@ export type RnvContextPaths = {
         dir: string;
         package: string;
         core: {
+            dir: string;
             package: string;
         };
     };

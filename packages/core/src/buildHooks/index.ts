@@ -77,7 +77,7 @@ export const buildHooks = async () => {
                 buildHooksSource = path.join(templatePath, 'buildHooks/src');
                 shouldBuildHook = true;
             } else {
-                buildHooksSource = path.join(c.paths.rnv.dir, 'coreTemplateFiles/buildHooks/src');
+                buildHooksSource = path.join(c.paths.rnv.core.dir, 'templateFiles/buildHooksSrc');
             }
 
             copyFolderContentsRecursiveSync(buildHooksSource, c.paths.buildHooks.src.dir);

@@ -22,4 +22,5 @@ build
 
 allure-results
 pluginTemplates
+templateFiles
 *.d.ts

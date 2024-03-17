@@ -117,7 +117,7 @@ export const prePublish = async (c: RnvContext) => {
         },
     });
 
-    _updateJson(path.join(pkgDirPath, 'rnv/coreTemplateFiles/renative.templates.json'), {
+    _updateJson(path.join(pkgDirPath, 'core/renative.templates.json'), {
         engineTemplates: {
             '@rnv/engine-rn': v,
             '@rnv/engine-rn-tvos': v,

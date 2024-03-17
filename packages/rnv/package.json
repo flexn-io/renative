@@ -50,7 +50,6 @@
     "files": [
         "LICENSE",
         "bin",
-        "coreTemplateFiles",
         "lib",
         "pluginTemplates"
     ],

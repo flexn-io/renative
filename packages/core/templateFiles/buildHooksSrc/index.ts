@@ -1,8 +1,8 @@
-import { RnvContext, logHook } from '@rnv/core';
+import { RnvContext } from '@rnv/core';
 
 const hooks = {
     hello: async (c: RnvContext) => {
-        logHook('Hello build hook!');
+        console.log('Hello build hook!', c.rnvVersion);
     },
 };
 

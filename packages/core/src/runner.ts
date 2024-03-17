@@ -2,10 +2,10 @@ import { getContext } from './context/provider';
 import { loadEngines, registerMissingPlatformEngines } from './engines';
 import { loadIntegrations } from './integrations';
 import { checkAndMigrateProject } from './migrator';
-import { checkAndBootstrapIfRequired } from './projects';
 import { configureRuntimeDefaults } from './context/runtime';
 import { findSuitableGlobalTask, findSuitableTask, initializeTask } from './tasks';
 import { updateRenativeConfigs } from './plugins';
+import { checkAndBootstrapIfRequired } from './projects/bootstrap';
 
 export const executeRnvCore = async () => {
     const c = getContext();

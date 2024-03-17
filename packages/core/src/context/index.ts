@@ -88,12 +88,14 @@ export const populateContextPaths = (c: RnvContext) => {
     c.paths.rnv.pluginTemplates.overrideDir = path.join(c.paths.rnv.dir, 'pluginTemplates');
 
     c.paths.rnv.pluginTemplates.config = path.join(c.paths.rnv.pluginTemplates.overrideDir, ConfigName.renativePlugins);
-    c.paths.rnv.projectTemplates.dir = path.join(c.paths.rnv.dir, 'coreTemplateFiles');
-    c.paths.rnv.projectTemplates.config = path.join(c.paths.rnv.projectTemplates.dir, ConfigName.renativeTemplates);
+    c.paths.rnv.projectTemplates.dir = path.join(c.paths.rnv.dir, 'templateFiles');
+    c.paths.rnv.projectTemplates.config = path.join(c.paths.rnv.core.dir, ConfigName.renativeTemplates);
     c.paths.rnv.package = path.join(c.paths.rnv.dir, 'package.json');
-    c.paths.rnv.core.package = path.join(c.paths.RNV_CORE_HOME_DIR, 'package.json');
 
-    c.paths.rnv.projectTemplate.dir = path.join(c.paths.rnv.dir, 'coreTemplateFiles');
+    c.paths.rnv.core.dir = path.join(c.paths.RNV_CORE_HOME_DIR);
+    c.paths.rnv.core.package = path.join(c.paths.rnv.core.dir, 'package.json');
+
+    c.paths.rnv.projectTemplate.dir = path.join(c.paths.rnv.dir, 'templateFiles');
     c.files.rnv.package = JSON.parse(fsReadFileSync(c.paths.rnv.package).toString());
 
     c.files.rnv.core.package = JSON.parse(fsReadFileSync(c.paths.rnv.core.package).toString());

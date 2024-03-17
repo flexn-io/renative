@@ -17,7 +17,7 @@ test/examples/*.js
 **/pluginTemplates
 **/nodeModuleOverrides
 **/supportFiles
-**/coreTemplateFiles
+**/templateFiles
 packages/rnv/tests
 jest.config.*.js
 **/templates
