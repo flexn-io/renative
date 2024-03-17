@@ -98,6 +98,7 @@
         "@flexn/graybox": "1.0.0-feat.12",
         "@lightningjs/sdk": "^5.4.1",
         "@rnv/core": "1.0.0-rc.12",
+        "@rnv/cli": "1.0.0-rc.12",
         "@rnv/adapter": "1.0.0-rc.12",
         "@rnv/engine-lightning": "1.0.0-rc.12",
         "@rnv/engine-rn": "1.0.0-rc.12",
@@ -120,8 +121,7 @@
         "react-native": "0.73.6",
         "react-native-gesture-handler": "2.14.1",
         "react-native-tvos": "0.73.6-0",
-        "react-native-web": "0.19.9",
-        "rnv": "1.0.0-rc.12"
+        "react-native-web": "0.19.9"
     },
     "private": false,
     "publishConfig": {

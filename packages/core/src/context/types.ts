@@ -155,6 +155,9 @@ export type RnvContextFiles = {
         };
         configWorkspaces?: ConfigFileWorkspaces;
         package: NpmPackageFile;
+        core: {
+            package: NpmPackageFile;
+        };
     };
     workspace: RnvContextFileObj<ConfigFileWorkspace> & {
         project: RnvContextFileObj<ConfigFileProject>;
@@ -213,6 +216,9 @@ export type RnvContextPaths = {
         };
         dir: string;
         package: string;
+        core: {
+            package: string;
+        };
     };
     workspace: RnvContextPathObj & {
         project: RnvContextPathObj & {

@@ -120,6 +120,7 @@ export const generateContextDefaults = (): RnvContext => ({
                 dir: '',
             },
             projectTemplate: { dir: '' },
+            core: { package: '' },
         },
         workspace: {
             ...generateRnvConfigPathObj(),
@@ -222,6 +223,9 @@ export const generateContextDefaults = (): RnvContext => ({
             },
             projectTemplates: {},
             package: {},
+            core: {
+                package: {},
+            },
         },
         workspace: {
             ...generateRnvConfigFileObj(),

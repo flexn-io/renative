@@ -91,9 +91,12 @@ export const populateContextPaths = (c: RnvContext) => {
     c.paths.rnv.projectTemplates.dir = path.join(c.paths.rnv.dir, 'coreTemplateFiles');
     c.paths.rnv.projectTemplates.config = path.join(c.paths.rnv.projectTemplates.dir, ConfigName.renativeTemplates);
     c.paths.rnv.package = path.join(c.paths.rnv.dir, 'package.json');
+    c.paths.rnv.core.package = path.join(c.paths.RNV_CORE_HOME_DIR, 'package.json');
 
     c.paths.rnv.projectTemplate.dir = path.join(c.paths.rnv.dir, 'coreTemplateFiles');
     c.files.rnv.package = JSON.parse(fsReadFileSync(c.paths.rnv.package).toString());
+
+    c.files.rnv.core.package = JSON.parse(fsReadFileSync(c.paths.rnv.core.package).toString());
 
     c.platform = c.program.platform;
     c.paths.home.dir = USER_HOME_DIR;
