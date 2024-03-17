@@ -1,13 +1,31 @@
 import program from 'commander';
 import fs from 'fs';
 import path from 'path';
-import { logComplete, logError, getContext, generateStringFromTaskOption, RnvTaskCoreOptionPresets } from '@rnv/core';
+import {
+    logComplete,
+    logError,
+    getContext,
+    generateStringFromTaskOption,
+    RnvTaskCoreOptionPresets,
+    RnvContextProgram,
+    RnvApiSpinner,
+    RnvApiPrompt,
+    RnvApiLogger,
+    createRnvApi,
+    createRnvContext,
+    logInitialize,
+    loadWorkspacesConfigSync,
+    registerEngine,
+    executeRnvCore,
+    getConfigProp,
+    doResolve,
+} from '@rnv/core';
+import { Telemetry } from '@rnv/sdk-telemetry';
+import EngineCore from '@rnv/engine-core';
+
 import Spinner from './ora';
 import Prompt from './prompt';
 import Logger from './logger';
-
-//IMPORTANT: Using require instead of import here to avoid circular dependency issue rnv => @rnv/cli => rnv
-const { executeRnv } = require('rnv');
 
 const terminateProcesses = (): void => {
     const { runningProcesses } = getContext();
@@ -21,7 +39,7 @@ const terminateProcesses = (): void => {
     runningProcesses.length = 0;
 };
 
-export const run = () => {
+export const run = ({ RNV_HOME_DIR }: { RNV_HOME_DIR?: string }) => {
     const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json')).toString());
     let cmdValue = '';
     let cmdOption = '';
@@ -72,6 +90,7 @@ export const run = () => {
         spinner: Spinner,
         prompt: Prompt,
         logger: Logger,
+        RNV_HOME_DIR,
     })
         .then(() => {
             logComplete(!getContext().runtime.keepSessionActive);
@@ -80,4 +99,42 @@ export const run = () => {
             terminateProcesses();
             logError(e, true);
         });
+};
+
+export const executeRnv = async ({
+    cmd,
+    subCmd,
+    process,
+    program,
+    spinner,
+    prompt,
+    logger,
+    RNV_HOME_DIR,
+}: {
+    cmd: string;
+    subCmd: string;
+    process: NodeJS.Process;
+    program: RnvContextProgram;
+    spinner: RnvApiSpinner;
+    prompt: RnvApiPrompt;
+    logger: RnvApiLogger;
+    RNV_HOME_DIR?: string;
+}) => {
+    // set mono and ci if json is enabled
+    if (program.json) {
+        program.mono = true;
+        program.ci = true;
+    }
+
+    createRnvApi({ spinner, prompt, analytics: Telemetry, logger, getConfigProp, doResolve });
+    createRnvContext({ program, process, cmd, subCmd, RNV_HOME_DIR });
+
+    logInitialize();
+    loadWorkspacesConfigSync();
+
+    Telemetry.initialize();
+
+    await registerEngine(EngineCore);
+
+    await executeRnvCore();
 };

@@ -54,9 +54,8 @@
         "lib",
         "pluginTemplates"
     ],
-    "main": "lib/index.js",
     "bin": {
-        "rnv": "./bin/index.js"
+        "rnv": "./lib/bin.js"
     },
     "repository": {
         "type": "git",
@@ -72,17 +71,11 @@
     },
     "dependencies": {
         "@rnv/cli": "1.0.0-rc.12",
-        "@rnv/core": "1.0.0-rc.12",
-        "@rnv/engine-core": "1.0.0-rc.12",
-        "@sentry/integrations": "7.57.0",
-        "@sentry/node": "7.57.0",
-        "node-machine-id": "^1.1.12",
         "tslib": "2.5.2"
     },
     "private": false,
     "publishConfig": {
         "access": "public"
     },
-    "title": "ReNative CLI",
-    "gitHead": "48ef244c6ec2e206cbfd72fe8770d8dc03387591"
+    "title": "ReNative CLI"
 }

@@ -7,7 +7,7 @@ import path from 'path';
 import { RnvPlatform, getContext, logRaw } from '@rnv/core';
 //@ts-ignore
 import pkg from '../../package.json';
-import { REDASH_KEY, REDASH_URL, SENTRY_ENDPOINT } from '../constants';
+import { REDASH_KEY, REDASH_URL, SENTRY_ENDPOINT } from './constants';
 
 // deal with useless duplicate errors on sentry because of different error texts
 const sanitizeError = (err: string) => {
@@ -28,6 +28,7 @@ class Redash {
         const defaultProps = {
             fingerprint: machineIdSync(),
             os: os.platform(),
+            //TODO: this points to telemetry version. migrate to universal RNV version (@rnv/core)
             rnvVersion: pkg.version,
         };
         return axios
@@ -146,6 +147,6 @@ ${JSON.stringify(e, null, 2)}
     }
 }
 
-const Analytics = new AnalyticsCls();
+const Telemetry = new AnalyticsCls();
 
-export { Analytics };
+export { Telemetry };
