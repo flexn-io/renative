@@ -17,7 +17,6 @@ import {
     logDebug,
     logSuccess,
     logRaw,
-    USER_HOME_DIR,
     RnvContext,
     waitForExecCLI,
     inquirerPrompt,
@@ -390,7 +389,11 @@ const getAvdDetails = (c: RnvContext, deviceName: string) => {
     const { ANDROID_SDK_HOME, ANDROID_AVD_HOME } = process.env;
 
     // .avd dir might be in other place than homedir. (https://developer.android.com/studio/command-line/variables)
-    const avdConfigPaths = [`${ANDROID_AVD_HOME}`, `${ANDROID_SDK_HOME}/.android/avd`, `${USER_HOME_DIR}/.android/avd`];
+    const avdConfigPaths = [
+        `${ANDROID_AVD_HOME}`,
+        `${ANDROID_SDK_HOME}/.android/avd`,
+        `${c.paths.user.homeDir}/.android/avd`,
+    ];
 
     const results: { avdConfig?: Record<string, string> } = {};
 

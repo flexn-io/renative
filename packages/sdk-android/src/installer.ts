@@ -1,6 +1,5 @@
 import path from 'path';
 import {
-    USER_HOME_DIR,
     isSystemWin,
     getRealPath,
     writeFileSync,
@@ -24,26 +23,31 @@ import { CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDR
 
 type SDKKey = keyof Required<ConfigFileWorkspace>['sdks'];
 
-const SDK_LOCATIONS: Record<string, Array<string>> = {
-    android: [
-        path.join('/usr/local/android-sdk'),
-        path.join(USER_HOME_DIR, 'Library/Android/sdk'),
-        path.join(USER_HOME_DIR, 'AppData/Local/Android/android-sdk'),
-        path.join(USER_HOME_DIR, 'AppData/Local/Android/sdk'),
-        path.join('Program Files (x86)/Android/android-sdk'),
-    ],
-    'android-ndk': [
-        path.join('/usr/local/android-sdk/ndk'),
-        path.join(USER_HOME_DIR, 'Library/Android/sdk/ndk'),
-        path.join(USER_HOME_DIR, 'AppData/Local/Android/android-sdk/ndk'),
-        path.join(USER_HOME_DIR, 'AppData/Local/Android/sdk/ndk'),
-        path.join('Program Files (x86)/Android/android-sdk/ndk'),
-        path.join('/usr/local/android-sdk/ndk-bundle'),
-        path.join(USER_HOME_DIR, 'Library/Android/sdk/ndk-bundle'),
-        path.join(USER_HOME_DIR, 'AppData/Local/Android/android-sdk/ndk-bundle'),
-        path.join(USER_HOME_DIR, 'AppData/Local/Android/sdk/ndk-bundle'),
-        path.join('Program Files (x86)/Android/android-sdk/ndk-bundle'),
-    ],
+const getSdkLocations = () => {
+    const ctx = getContext();
+    const { homeDir } = ctx.paths.user;
+    const SDK_LOCATIONS: Record<string, Array<string>> = {
+        android: [
+            path.join('/usr/local/android-sdk'),
+            path.join(homeDir, 'Library/Android/sdk'),
+            path.join(homeDir, 'AppData/Local/Android/android-sdk'),
+            path.join(homeDir, 'AppData/Local/Android/sdk'),
+            path.join('Program Files (x86)/Android/android-sdk'),
+        ],
+        'android-ndk': [
+            path.join('/usr/local/android-sdk/ndk'),
+            path.join(homeDir, 'Library/Android/sdk/ndk'),
+            path.join(homeDir, 'AppData/Local/Android/android-sdk/ndk'),
+            path.join(homeDir, 'AppData/Local/Android/sdk/ndk'),
+            path.join('Program Files (x86)/Android/android-sdk/ndk'),
+            path.join('/usr/local/android-sdk/ndk-bundle'),
+            path.join(homeDir, 'Library/Android/sdk/ndk-bundle'),
+            path.join(homeDir, 'AppData/Local/Android/android-sdk/ndk-bundle'),
+            path.join(homeDir, 'AppData/Local/Android/sdk/ndk-bundle'),
+            path.join('Program Files (x86)/Android/android-sdk/ndk-bundle'),
+        ],
+    };
+    return SDK_LOCATIONS;
 };
 
 const _logSdkWarning = (c: RnvContext) => {
@@ -113,7 +117,7 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: SDKKe
         return true;
     }
 
-    let locations: Array<string | undefined> = SDK_LOCATIONS[sdkPlatform];
+    let locations: Array<string | undefined> = getSdkLocations()[sdkPlatform];
 
     // try common Android SDK env variables
     if (sdkKey === 'ANDROID_SDK') {
@@ -164,7 +168,7 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: SDKKe
         }
     }
 
-    logDefault(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOCATIONS[sdkPlatform].join(', ')}`);
+    logDefault(`_attemptAutoFix: no sdks found. searched at: ${getSdkLocations()[sdkPlatform].join(', ')}`);
 
     // const setupInstance = PlatformSetup(c);
     // await setupInstance.askToInstallSDK(sdkPlatform);

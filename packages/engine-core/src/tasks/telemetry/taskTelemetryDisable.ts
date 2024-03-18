@@ -12,7 +12,7 @@ import {
 const taskTelemetryDisable: RnvTaskFn = async (c) => {
     logTask('taskTelemetryDisable');
 
-    const { config } = c.files.defaultWorkspace;
+    const { config } = c.files.dotRnv;
     if (config) {
         config.disableTelemetry = true;
 

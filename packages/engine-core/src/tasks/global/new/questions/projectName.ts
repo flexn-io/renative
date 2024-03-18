@@ -21,7 +21,7 @@ export const inquiryProjectName = async (data: NewProjectData) => {
 
     data.projectName = data.inputProjectName?.replace?.(/(\s+)/g, '_');
     data.packageName = data.inputProjectName?.replace(/\s+/g, '-').toLowerCase();
-    c.paths.project.dir = path.join(c.paths.CURRENT_DIR, data.projectName || '');
+    c.paths.project.dir = path.join(c.paths.user.currentDir, data.projectName || '');
     c.paths.project.package = path.join(c.paths.project.dir, 'package.json');
     c.paths.project.config = path.join(c.paths.project.dir, ConfigName.renative);
 
