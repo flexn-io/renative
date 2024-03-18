@@ -76,6 +76,7 @@
         "report-ts-coverage": "typescript-coverage-report -p ./packages/core/tsconfig.json  -t 99",
         "sanity": "yarn compile && yarn lint && yarn test",
         "test": "jest",
+        "test-integration": "jest --config jest.integration.config.js",
         "watch": "npx lerna exec yarn watch --parallel",
         "watch-alt": "npx lerna run compile & npx lerna watch -- lerna run compile"
     },
@@ -98,6 +99,7 @@
         "@types/tar": "6.1.5",
         "@typescript-eslint/eslint-plugin": "^5.4.0",
         "@typescript-eslint/parser": "^5.4.0",
+        "execa": "8.0.1",
         "babel-jest": "29.6.3",
         "babel-plugin-module-resolver": "^5.0.0",
         "deepmerge": "3.2.0",
