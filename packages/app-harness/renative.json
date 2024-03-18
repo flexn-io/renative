@@ -202,6 +202,29 @@
         "react-native-google-cast": {
             "android": {
                 "implementation": "// TEST"
+            },
+            "ios": {
+                "templateXcode": {
+                    "AppDelegate_mm": {
+                        "appDelegateImports": ["GoogleCast/GoogleCast.h"],
+                        "appDelegateMethods": {
+                            "application": {
+                                "didFinishLaunchingWithOptions": [
+                                    "NSString *receiverAppID = kGCKDefaultMediaReceiverApplicationID; // or @\"ABCD1234\"",
+                                    "GCKDiscoveryCriteria *criteria = [[GCKDiscoveryCriteria alloc] initWithApplicationID:receiverAppID];",
+                                    "GCKCastOptions* options = [[GCKCastOptions alloc] initWithDiscoveryCriteria:criteria];",
+                                    "[GCKCastContext setSharedInstanceWithOptions:options];"
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            "androidwear": {
+                "disabled": true
+            },
+            "tvos": {
+                "disabled": true
             }
         }
     },
@@ -213,6 +236,9 @@
             },
             "NSContactsUsageDescription": {
                 "desc": "Contacts usage description"
+            },
+            "NSLocalNetworkUsageDescription": {
+                "desc": "${PRODUCT_NAME} uses the local network to discover Cast-enabled devices on your WiFi network."
             }
         }
     }
