@@ -67,6 +67,7 @@
         "@flexn/graybox": "1.0.0-feat.12",
         "@rnv/core": "1.0.0-rc.12",
         "@rnv/cli": "1.0.0-rc.12",
+        "@rnv/config-templates": "1.0.0-rc.12",
         "@rnv/engine-lightning": "1.0.0-rc.12",
         "@rnv/engine-rn": "1.0.0-rc.12",
         "@rnv/engine-rn-electron": "1.0.0-rc.12",

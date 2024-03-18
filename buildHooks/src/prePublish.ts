@@ -29,7 +29,7 @@ const VERSIONED_PACKAGES = [
     'sdk-webos',
     'sdk-utils',
     'renative',
-    'plugins',
+    'config-templates',
     'integration-docker',
     'adapter',
 ];

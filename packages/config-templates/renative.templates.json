@@ -1,5 +1,5 @@
 {
-    "$schema": "../../.rnv/schema/rnv.plugins.json",
+    "$schema": "../../.rnv/schema/rnv.templates.json",
     "projectTemplates": {
         "@rnv/template-starter": {
             "description": "Multiplatform 'hello world' template"
@@ -7,6 +7,16 @@
         "@flexn/create-template-starter": {
             "description": "Advanced multiplatform template using flexn Create SDK"
         }
+    },
+    "engineIdMap": {
+        "engine-lightning": "@rnv/engine-lightning",
+        "engine-rn": "@rnv/engine-rn",
+        "engine-rn-electron": "@rnv/engine-rn-electron",
+        "engine-rn-macos": "@rnv/engine-rn-macos",
+        "engine-rn-next": "@rnv/engine-rn-next",
+        "engine-rn-tvos": "@rnv/engine-rn-tvos",
+        "engine-rn-web": "@rnv/engine-rn-web",
+        "engine-rn-windows": "@rnv/engine-rn-windows"
     },
     "engineTemplates": {
         "@rnv/engine-rn": {

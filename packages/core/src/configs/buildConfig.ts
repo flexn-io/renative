@@ -53,8 +53,7 @@ export const generateBuildConfig = () => {
     const mergeOrder = [
         // TODO: do we need to merge .rnv/renative.json with .customWorkspace/reantive.json ?
         // c.paths.dotRnv.config,
-        c.paths.rnvPlugins.configProjectTemplates,
-        c.paths.rnvPlugins.configPluginTemplates,
+        c.paths.rnvConfigTemplates.config,
         c.paths.workspace.config,
         c.paths.workspace.configPrivate,
         c.paths.workspace.configLocal,
@@ -83,9 +82,9 @@ export const generateBuildConfig = () => {
     });
 
     const pluginTemplates: Record<string, any> = {};
-    if (c.files.scopedPluginTemplates.configs) {
-        Object.keys(c.files.scopedPluginTemplates.configs).forEach((v) => {
-            const plgs = c.files.scopedPluginTemplates.configs[v];
+    if (c.files.scopedPluginTemplates) {
+        Object.keys(c.files.scopedPluginTemplates).forEach((v) => {
+            const plgs = c.files.scopedPluginTemplates[v];
             pluginTemplates[v] = plgs;
         });
     }
@@ -95,7 +94,7 @@ export const generateBuildConfig = () => {
     const mergeFiles = [
         // TODO: do we need to merge .rnv/renative.json with .customWorkspace/reantive.json ?
         // c.files.dotRnv.config,
-        c.files.rnvPlugins.configProjectTemplates,
+        c.files.rnvConfigTemplates.config,
         { plugins: extraPlugins },
         // { pluginTemplates },
         c.files.workspace.config,

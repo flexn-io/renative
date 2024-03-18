@@ -214,8 +214,8 @@ export const parseRenativeConfigs = async () => {
     // _loadConfigFiles(c, c.files.defaultWorkspace, c.paths.defaultWorkspace);
 
     // LOAD PROJECT TEMPLATES
-    c.files.rnvPlugins.configProjectTemplates =
-        readObjectSync<ConfigFileTemplates>(c.paths.rnvPlugins.configProjectTemplates) || undefined;
+    c.files.rnvConfigTemplates.configProjectTemplates =
+        readObjectSync<ConfigFileTemplates>(c.paths.rnvConfigTemplates.configProjectTemplates) || undefined;
 
     // // LOAD PLUGIN TEMPLATES
     // await loadPluginTemplates(c);

@@ -30,7 +30,6 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@flexn/plugins": "1.0.9",
         "ajv": "7.0.0-beta.0",
         "deepmerge": "3.2.0",
         "esbuild": "^0.12.1",
@@ -46,6 +45,9 @@
         "svg2js": "0.0.4-alpha1",
         "tslib": "2.5.2",
         "zod": "3.22.4"
+    },
+    "peerDependencies": {
+        "@rnv/config-templates": "^1.0.0-rc.12"
     },
     "private": false,
     "publishConfig": {

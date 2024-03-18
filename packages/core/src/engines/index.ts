@@ -301,27 +301,17 @@ export const loadEnginePackageDeps = async (engineConfigs: Array<RnvEngineInstal
     return addedDeps.length;
 };
 
-const ENGINE_ID_MAP: Record<string, string> = {
-    'engine-lightning': '@rnv/engine-lightning',
-    'engine-rn': '@rnv/engine-rn',
-    'engine-rn-electron': '@rnv/engine-rn-electron',
-    'engine-rn-macos': '@rnv/engine-rn-macos',
-    'engine-rn-next': '@rnv/engine-rn-next',
-    'engine-rn-tvos': '@rnv/engine-rn-tvos',
-    'engine-rn-web': '@rnv/engine-rn-web',
-    'engine-rn-windows': '@rnv/engine-rn-windows',
-};
-
 const _getFilteredEngines = (c: RnvContext) => {
     const engines = c.buildConfig?.engines;
     if (!engines) {
         logError('Engine configs missing in your renative.json. FIXING...DONE');
         return {};
     }
-    const rnvPlatforms = c.files.rnvPlugins.configProjectTemplates?.platformTemplates;
+    const rnvPlatforms = c.files.rnvConfigTemplates.config?.platformTemplates;
     const supportedPlatforms = c.files.project.config?.defaults?.supportedPlatforms || [];
 
     const filteredEngines: Record<string, string> = {};
+    const ENGINE_ID_MAP = c.files.rnvConfigTemplates.config?.engineIdMap || {};
     supportedPlatforms.forEach((v) => {
         const platforms = c.files.project.config?.platforms || {};
         const engineKey = platforms[v]?.engine || rnvPlatforms?.[v]?.engine;

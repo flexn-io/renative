@@ -120,7 +120,7 @@ export const generateContextDefaults = (): RnvContext => ({
             templateFilesDir: '',
             package: '',
         },
-        rnvPlugins: {
+        rnvConfigTemplates: {
             configPluginTemplates: '',
             dir: '',
             package: '',
@@ -217,7 +217,7 @@ export const generateContextDefaults = (): RnvContext => ({
         rnvCore: {
             package: {},
         },
-        rnvPlugins: {
+        rnvConfigTemplates: {
             configPluginTemplates: {
                 pluginTemplates: {},
             },

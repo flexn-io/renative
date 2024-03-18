@@ -144,12 +144,15 @@ export const populateContextPaths = (c: RnvContext, RNV_HOME_DIR: string | undef
 
     // @rnv/plugins ------------------
     // TODO: not populated
-    c.paths.rnvPlugins.pluginTemplatesDir = '????';
-    c.paths.rnvPlugins.configPluginTemplates = path.join(
-        c.paths.rnvPlugins.pluginTemplatesDir,
+    c.paths.rnvConfigTemplates.pluginTemplatesDir = '????';
+    c.paths.rnvConfigTemplates.configPluginTemplates = path.join(
+        c.paths.rnvConfigTemplates.pluginTemplatesDir,
         ConfigName.renativePlugins
     );
-    c.paths.rnvPlugins.configProjectTemplates = path.join(c.paths.rnvPlugins.dir, ConfigName.renativeTemplates);
+    c.paths.rnvConfigTemplates.configProjectTemplates = path.join(
+        c.paths.rnvConfigTemplates.dir,
+        ConfigName.renativeTemplates
+    );
 
     // runtime
     c.platform = c.program.platform;

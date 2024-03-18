@@ -6,7 +6,6 @@ import {
     ConfigFileApp,
     ConfigFileLocal,
     ConfigFilePlugin,
-    ConfigFilePlugins,
     ConfigFilePrivate,
     ConfigFileProject,
     ConfigFileRuntime,
@@ -155,14 +154,11 @@ export type RnvContextFiles = {
     rnvCore: {
         package: NpmPackageFile;
     };
-    rnvPlugins: {
+    rnvConfigTemplates: {
         package?: NpmPackageFile;
-        configProjectTemplates?: ConfigFileTemplates;
-        configPluginTemplates?: ConfigFilePlugins;
+        config?: ConfigFileTemplates;
     };
-    scopedPluginTemplates: {
-        configs: Record<string, ConfigFilePlugins>;
-    };
+    scopedPluginTemplates: Record<string, ConfigFileTemplates['pluginTemplates']>;
     workspace: RnvContextFileObj<ConfigFileWorkspace> & {
         project: RnvContextFileObj<ConfigFileProject>;
         appConfig: RnvContextFileObj<ConfigFileApp>;
@@ -210,19 +206,14 @@ export type RnvContextPaths = {
         config: string;
         configWorkspaces: string;
     };
-    rnvPlugins: {
+    rnvConfigTemplates: {
         dir: string;
         package: string;
-        configProjectTemplates: string;
-        configPluginTemplates: string;
+        config: string;
         pluginTemplatesDir: string;
-        // pluginTemplatesDir: {
-        //     config?: string;
-        //     dirs: Record<string, string>;
-        // };
     };
-    scopedPluginTemplates: {
-        dirs: Record<string, string>;
+    scopedConfigTemplates: {
+        pluginTemplatesDirs: Record<string, string>;
         configs: Record<string, string>;
     };
     rnvCore: {

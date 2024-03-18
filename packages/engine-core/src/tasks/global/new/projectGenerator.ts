@@ -99,8 +99,7 @@ export const generateNewProject = async (data: NewProjectData) => {
         // Remove unused engines based on selected platforms
         supPlats.forEach((k) => {
             const selectedEngineId =
-                loadedConf?.platforms?.[k]?.engine ||
-                c.files.rnvPlugins.configProjectTemplates?.platformTemplates?.[k]?.engine;
+                loadedConf?.platforms?.[k]?.engine || c.files.rnvConfigTemplates.config?.platformTemplates?.[k]?.engine;
 
             if (selectedEngineId) {
                 const selectedEngine = findEngineKeyById(selectedEngineId);
@@ -148,7 +147,7 @@ export const telemetryNewProject = async (data: NewProjectData) => {
 
 const findEngineKeyById = (id: string) => {
     const c = getContext();
-    const engineTemplates = c.files.rnvPlugins.configProjectTemplates?.engineTemplates;
+    const engineTemplates = c.files.rnvConfigTemplates.config?.engineTemplates;
     if (engineTemplates) {
         const etk = Object.keys(engineTemplates);
         for (let i = 0; i < etk.length; i++) {

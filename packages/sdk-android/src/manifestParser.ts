@@ -181,7 +181,7 @@ const getConfigPropArray = <T extends ConfigPropKey>(c: RnvContext, platform: Rn
     const result: Array<ConfigProp[T]> = [];
     const configArr = [
         c.files.dotRnv.config,
-        c.files.rnvPlugins.configProjectTemplates,
+        c.files.rnvConfigTemplates.config,
         // { plugins: extraPlugins },
         // { pluginTemplates },
         c.files.workspace.config,

@@ -142,7 +142,6 @@
             "webpack",
             "mini-css-extract-plugin",
             "execa",
-            "**/@flexn/plugins",
             "**/@flexn/graybox",
             "**/appium-*",
             "**/@wdio/*",
