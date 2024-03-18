@@ -145,28 +145,31 @@ export type RnvContextRuntime = {
 export type RuntimePropKey = keyof RnvContextRuntime;
 
 export type RnvContextFiles = {
-    rnv: {
-        pluginTemplates: {
-            config?: ConfigFilePlugins;
-            configs: Record<string, ConfigFilePlugins>;
-        };
-        projectTemplates: {
-            config?: ConfigFileTemplates;
-        };
+    dotRnv: {
         configWorkspaces?: ConfigFileWorkspaces;
+    };
+    rnv: {
         package: NpmPackageFile;
-        core: {
-            package: NpmPackageFile;
-        };
+    };
+    rnvCore: {
+        package: NpmPackageFile;
+    };
+    rnvPlugins: {
+        package?: NpmPackageFile;
+        configProjectTemplates?: ConfigFileTemplates;
+        configPluginTemplates?: ConfigFilePlugins;
+    };
+    scopedPluginTemplates: {
+        configs: Record<string, ConfigFilePlugins>;
     };
     workspace: RnvContextFileObj<ConfigFileWorkspace> & {
         project: RnvContextFileObj<ConfigFileProject>;
         appConfig: RnvContextFileObj<ConfigFileApp>;
     };
-    defaultWorkspace: RnvContextFileObj<ConfigFileWorkspace> & {
-        project: RnvContextFileObj<ConfigFileProject>;
-        appConfig: RnvContextFileObj<ConfigFileApp>;
-    };
+    // defaultWorkspace: RnvContextFileObj<ConfigFileWorkspace> & {
+    //     project: RnvContextFileObj<ConfigFileProject>;
+    //     appConfig: RnvContextFileObj<ConfigFileApp>;
+    // };
     project: RnvContextFileObj<ConfigFileProject> & {
         builds: Record<string, ConfigFileBuildConfig>;
         assets: {
@@ -188,38 +191,47 @@ export type RnvContextFileObj<T> = {
 };
 
 export type RnvContextPaths = {
-    GLOBAL_RNV_CONFIG: string;
-    GLOBAL_RNV_DIR: string;
-    RNV_HOME_DIR: string;
+    // GLOBAL_RNV_CONFIG: string;
+    // GLOBAL_RNV_DIR: string;
+    // RNV_HOME_DIR: string;
     IS_LINKED: boolean;
     IS_NPX_MODE: boolean;
-    CURRENT_DIR: string;
-    RNV_CORE_HOME_DIR: string;
-    RNV_NODE_MODULES_DIR: string;
+    // CURRENT_DIR: string;
+    // RNV_CORE_HOME_DIR: string;
+    // RNV_NODE_MODULES_DIR: string;
     //=======
-    rnv: {
+    user: {
+        homeDir: string;
+        currentDir: string;
+    };
+    dotRnv: {
+        dir: string;
+        // config: string;
         configWorkspaces: string;
-        pluginTemplates: {
-            overrideDir?: string;
-            config?: string;
-            dirs: Record<string, string>;
-        };
-        projectTemplates: {
-            config: string;
-            dir: string;
-        };
-        engines: {
-            dir: string;
-        };
-        projectTemplate: {
-            dir: string;
-        };
+    };
+    rnvPlugins: {
         dir: string;
         package: string;
-        core: {
-            dir: string;
-            package: string;
-        };
+        configProjectTemplates: string;
+        configPluginTemplates: string;
+        pluginTemplatesDir: string;
+        // pluginTemplatesDir: {
+        //     config?: string;
+        //     dirs: Record<string, string>;
+        // };
+    };
+    scopedPluginTemplates: {
+        dirs: Record<string, string>;
+        configs: Record<string, string>;
+    };
+    rnvCore: {
+        dir: string;
+        package: string;
+        templateFilesDir: string;
+    };
+    rnv: {
+        dir: string;
+        package: string;
     };
     workspace: RnvContextPathObj & {
         project: RnvContextPathObj & {
@@ -231,24 +243,24 @@ export type RnvContextPaths = {
         };
         appConfig: RnvContextPathObj;
     };
-    defaultWorkspace: RnvContextPathObj & {
-        project: {
-            appConfigBase: {
-                dir: string;
-            };
-            builds: {
-                dir: string;
-            };
-            assets: {
-                dir: string;
-            };
-        };
-        appConfig: {
-            configs: Array<string>;
-            configsPrivate: Array<string>;
-            configsLocal: Array<string>;
-        };
-    };
+    // defaultWorkspace: RnvContextPathObj & {
+    //     project: {
+    //         appConfigBase: {
+    //             dir: string;
+    //         };
+    //         builds: {
+    //             dir: string;
+    //         };
+    //         assets: {
+    //             dir: string;
+    //         };
+    //     };
+    //     appConfig: {
+    //         configs: Array<string>;
+    //         configsPrivate: Array<string>;
+    //         configsLocal: Array<string>;
+    //     };
+    // };
     project: RnvContextPathObj & {
         appConfigBase: {
             dir: string;
@@ -290,9 +302,6 @@ export type RnvContextPaths = {
         };
         tsconfig: string;
     };
-    home: {
-        dir: string;
-    };
     template: {
         appConfigBase: {
             dir: string;
@@ -308,7 +317,7 @@ export type RnvContextPaths = {
         config: string;
         dir: string;
     };
-    appConfigBase: string;
+    appConfigBase: string; //REMOVE?
 };
 
 export type RnvContextPathObj = {

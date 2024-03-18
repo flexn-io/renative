@@ -1,10 +1,11 @@
 import { fsExistsSync, fsReadFileSync } from '../system/fs';
 import { CreateContextOptions, RnvContext, RnvContextPathObj } from './types';
-import { USER_HOME_DIR, generateContextDefaults } from './defaults';
+import { generateContextDefaults } from './defaults';
 import path from 'path';
 import { mkdirSync } from 'fs';
 import { isSystemWin } from '../system/is';
 import { ConfigName } from '../enums/configName';
+import { homedir } from 'os';
 
 export const generateContextPaths = (pathObj: RnvContextPathObj, dir: string, configName?: string) => {
     pathObj.dir = dir;
@@ -27,12 +28,12 @@ const populateLinkingInfo = (ctx: RnvContext) => {
     ctx.paths.IS_NPX_MODE = isNpxMode;
 };
 
-export const createRnvContext = (ctx?: CreateContextOptions) => {
+export const createRnvContext = (ctxOpts?: CreateContextOptions) => {
     // console.trace('CREATE_RNV_CONTEXT', !!ctx, !!global.RNV_CONTEXT, global.RNV_CONTEXT?.isDefault);
 
     let haltExecution = false;
     // Handle new imports of @rnv/core
-    if (!ctx) {
+    if (!ctxOpts) {
         if (!global.RNV_CONTEXT) {
             if (process.env.JEST_WORKER_ID === undefined) {
                 // Initial empty context to be initialized
@@ -56,7 +57,7 @@ export const createRnvContext = (ctx?: CreateContextOptions) => {
 FATAL: Multiple instances of @rnv/core detected: 
 
 1 (${global.RNV_CONTEXT.timeStart.toISOString()}) 
-  ${global.RNV_CONTEXT.paths.RNV_CORE_HOME_DIR}
+  ${global.RNV_CONTEXT.paths.rnvCore.dir}
 2 (${new Date().toISOString()}) 
   ${path.join(__dirname, '../..')}
 
@@ -68,53 +69,53 @@ ${msg}
 
     const c: RnvContext = generateContextDefaults();
 
-    c.program = ctx?.program || c.program;
-    c.process = ctx?.process || c.process;
-    c.command = ctx?.cmd || c.command;
-    c.subCommand = ctx?.subCmd || c.subCommand;
+    c.program = ctxOpts?.program || c.program;
+    c.process = ctxOpts?.process || c.process;
+    c.command = ctxOpts?.cmd || c.command;
+    c.subCommand = ctxOpts?.subCmd || c.subCommand;
     c.isSystemWin = isSystemWin;
-    c.paths.rnv.dir = ctx?.RNV_HOME_DIR || c.paths.rnv.dir;
-
-    populateContextPaths(c);
 
     global.RNV_CONTEXT = c;
+
+    populateContextPaths(c, ctxOpts?.RNV_HOME_DIR);
 };
 
-export const populateContextPaths = (c: RnvContext) => {
-    c.paths.CURRENT_DIR = path.resolve('.');
-    c.paths.RNV_NODE_MODULES_DIR = path.join(c.paths.rnv.dir, 'node_modules');
+export const populateContextPaths = (c: RnvContext, RNV_HOME_DIR: string | undefined) => {
+    // user ------------------
+    c.paths.user.homeDir = homedir();
+    c.paths.user.currentDir = path.resolve('.');
 
-    c.paths.rnv.engines.dir = path.join(c.paths.rnv.dir, 'engineTemplates');
-    c.paths.rnv.pluginTemplates.overrideDir = path.join(c.paths.rnv.dir, 'pluginTemplates');
-
-    c.paths.rnv.pluginTemplates.config = path.join(c.paths.rnv.pluginTemplates.overrideDir, ConfigName.renativePlugins);
-    c.paths.rnv.projectTemplates.dir = path.join(c.paths.rnv.dir, 'templateFiles');
-    c.paths.rnv.projectTemplates.config = path.join(c.paths.rnv.core.dir, ConfigName.renativeTemplates);
+    // @rnv/core ------------------
+    c.paths.rnvCore.dir = path.join(__dirname, '../..'); //path.join(c.paths.RNV_CORE_HOME_DIR);
+    c.paths.rnvCore.templateFilesDir = path.join(c.paths.rnvCore.dir, 'templateFiles');
     c.paths.rnv.package = path.join(c.paths.rnv.dir, 'package.json');
+    c.files.rnvCore.package = JSON.parse(fsReadFileSync(c.paths.rnvCore.package).toString());
 
-    c.paths.rnv.core.dir = path.join(c.paths.RNV_CORE_HOME_DIR);
-    c.paths.rnv.core.package = path.join(c.paths.rnv.core.dir, 'package.json');
+    // rnv ------------------
+    if (RNV_HOME_DIR) {
+        c.paths.rnv.dir = RNV_HOME_DIR;
+        // c.paths.rnv.nodeModulesDir = path.join(c.paths.rnv.dir, 'node_modules');
+        c.paths.rnv.package = path.join(c.paths.rnv.dir, 'package.json');
 
-    c.paths.rnv.projectTemplate.dir = path.join(c.paths.rnv.dir, 'templateFiles');
-    c.files.rnv.package = JSON.parse(fsReadFileSync(c.paths.rnv.package).toString());
-
-    c.files.rnv.core.package = JSON.parse(fsReadFileSync(c.paths.rnv.core.package).toString());
-
-    c.platform = c.program.platform;
-    c.paths.home.dir = USER_HOME_DIR;
-    c.paths.GLOBAL_RNV_DIR = path.join(c.paths.home.dir, '.rnv');
-    c.paths.GLOBAL_RNV_CONFIG = path.join(c.paths.GLOBAL_RNV_DIR, ConfigName.renative);
-    c.paths.rnv.configWorkspaces = path.join(c.paths.GLOBAL_RNV_DIR, ConfigName.renativeWorkspaces);
-
-    if (!fsExistsSync(c.paths.GLOBAL_RNV_DIR)) {
-        mkdirSync(c.paths.GLOBAL_RNV_DIR);
+        c.files.rnv.package = JSON.parse(fsReadFileSync(c.paths.rnv.package).toString());
     }
 
-    generateContextPaths(c.paths.project, c.paths.CURRENT_DIR, c.program.configName);
+    // dotRnv ------------------
+    c.paths.dotRnv.dir = path.join(c.paths.user.homeDir, '.rnv');
+    if (!fsExistsSync(c.paths.dotRnv.dir)) {
+        mkdirSync(c.paths.dotRnv.dir);
+    }
+    // c.paths.dotRnv.config = path.join(c.paths.dotRnv.dir, ConfigName.renative);
+    c.paths.dotRnv.configWorkspaces = path.join(c.paths.dotRnv.dir, ConfigName.renativeWorkspaces);
 
-    // TODO: generate solution root
+    // workspace ------------------
+    generateContextPaths(c.paths.workspace, c.paths.dotRnv.dir);
 
-    populateLinkingInfo(c);
+    // solution ------------------
+    // TODO: generate solution root paths
+
+    // project ------------------
+    generateContextPaths(c.paths.project, c.paths.user.currentDir, c.program.configName);
     c.paths.buildHooks.dir = path.join(c.paths.project.dir, 'buildHooks');
     c.paths.buildHooks.src.dir = path.join(c.paths.buildHooks.dir, 'src');
     c.paths.buildHooks.dist.dir = path.join(c.paths.buildHooks.dir, 'dist');
@@ -141,7 +142,18 @@ export const populateContextPaths = (c: RnvContext) => {
     c.paths.project.assets.config = path.join(c.paths.project.assets.dir, ConfigName.renativeRuntime);
     c.paths.project.builds.dir = path.join(c.paths.project.dir, 'platformBuilds');
 
-    generateContextPaths(c.paths.workspace, c.paths.GLOBAL_RNV_DIR);
+    // @rnv/plugins ------------------
+    // TODO: not populated
+    c.paths.rnvPlugins.pluginTemplatesDir = '????';
+    c.paths.rnvPlugins.configPluginTemplates = path.join(
+        c.paths.rnvPlugins.pluginTemplatesDir,
+        ConfigName.renativePlugins
+    );
+    c.paths.rnvPlugins.configProjectTemplates = path.join(c.paths.rnvPlugins.dir, ConfigName.renativeTemplates);
+
+    // runtime
+    c.platform = c.program.platform;
+    populateLinkingInfo(c);
 };
 
 createRnvContext();

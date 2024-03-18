@@ -551,12 +551,12 @@ export const getRealPath = (p: string | undefined, key = 'undefined', original?:
     }
     const output = p
         .replace(/\$RNV_HOME/g, c.paths.rnv.dir)
-        .replace(/~/g, c.paths.home.dir)
-        .replace(/\$USER_HOME/g, c.paths.home.dir)
+        .replace(/~/g, c.paths.user.homeDir)
+        .replace(/\$USER_HOME/g, c.paths.user.homeDir)
         .replace(/\$PROJECT_HOME/g, c.paths.project.dir)
         .replace(/\$WORKSPACE_HOME/g, c.paths.workspace.dir)
         .replace(/RNV_HOME/g, c.paths.rnv.dir)
-        .replace(/USER_HOME/g, c.paths.home.dir)
+        .replace(/USER_HOME/g, c.paths.user.homeDir)
         .replace(/PROJECT_HOME/g, c.paths.project.dir);
     return output;
 };
