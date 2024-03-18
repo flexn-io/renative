@@ -6,10 +6,12 @@ import { configureRuntimeDefaults } from './context/runtime';
 import { findSuitableGlobalTask, findSuitableTask, initializeTask } from './tasks';
 import { updateRenativeConfigs } from './plugins';
 import { checkAndBootstrapIfRequired } from './projects/bootstrap';
+import { loadDefaultConfigTemplates } from './configs';
 
 export const executeRnvCore = async () => {
     const c = getContext();
 
+    await loadDefaultConfigTemplates();
     await configureRuntimeDefaults();
     await checkAndMigrateProject();
     await updateRenativeConfigs();

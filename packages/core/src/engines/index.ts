@@ -312,6 +312,7 @@ const _getFilteredEngines = (c: RnvContext) => {
 
     const filteredEngines: Record<string, string> = {};
     const ENGINE_ID_MAP = c.files.rnvConfigTemplates.config?.engineIdMap || {};
+
     supportedPlatforms.forEach((v) => {
         const platforms = c.files.project.config?.platforms || {};
         const engineKey = platforms[v]?.engine || rnvPlatforms?.[v]?.engine;

@@ -478,49 +478,6 @@ export const loadPluginTemplates = async () => {
 
     const c = getContext();
 
-    //This comes from project dependency
-    let configTemplatesPath = doResolve('@rnv/config-templates');
-
-    if (!fsExistsSync(configTemplatesPath)) {
-        //This comes from rnv built-in dependency (installed via npm)
-        configTemplatesPath = path.resolve(__dirname, '../../node_modules/@flexn/plugins');
-        if (!fsExistsSync(configTemplatesPath)) {
-            //This comes from rnv built-in dependency (installed via yarn might install it one level up)
-            configTemplatesPath = path.resolve(__dirname, '../../../@flexn/plugins');
-            if (!fsExistsSync(configTemplatesPath)) {
-                // This comes from rnv built-in dependency (installed via yarn might install it 2 level up but scoped to @rnv)
-                configTemplatesPath = path.resolve(__dirname, '../../../../@flexn/plugins');
-                if (!fsExistsSync(configTemplatesPath)) {
-                    return Promise.reject(`RNV Cannot find package: ${chalk().bold(configTemplatesPath)}`);
-                }
-            }
-        }
-    }
-
-    if (!configTemplatesPath) return Promise.reject(`@rnv/config-templates missing`);
-
-    const rnvConfigTemplates = readObjectSync<ConfigFileTemplates>(
-        path.join(configTemplatesPath, 'renative.templates.json')
-    );
-
-    if (rnvConfigTemplates) {
-        c.files.rnvConfigTemplates.config = rnvConfigTemplates;
-        c.files.scopedPluginTemplates = {
-            rnv: rnvConfigTemplates.pluginTemplates,
-        };
-    }
-
-    //Override default rnv path with flexn one and add it rnv as overrider
-
-    c.paths.scopedConfigTemplates = {
-        configs: {
-            rnv: c.paths.rnvConfigTemplates.config,
-        },
-        pluginTemplatesDirs: {
-            rnv: c.paths.rnvConfigTemplates.pluginTemplatesDir,
-        },
-    };
-
     const customPluginTemplates = c.files.project.config?.paths?.pluginTemplates;
     if (customPluginTemplates) {
         const missingDeps = _parsePluginTemplateDependencies(c, customPluginTemplates);

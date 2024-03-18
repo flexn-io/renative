@@ -1,7 +1,7 @@
 import path from 'path';
 
 import { mergeObjects, fsExistsSync, fsReaddirSync, getRealPath, readObjectSync, loadFile } from '../system/fs';
-import { logWarning, logDebug, logDefault } from '../logger';
+import { logWarning, logDebug, logDefault, chalk } from '../logger';
 import { doResolve } from '../system/resolve';
 import { RnvContextFileObj, RnvContextPathObj, RnvContext, RnvContextFileKey } from '../context/types';
 import { generateRnvConfigPathObj } from '../context/defaults';
@@ -183,6 +183,51 @@ const _loadConfigFiles = (
     // return result;
 };
 
+export const loadDefaultConfigTemplates = async () => {
+    const ctx = getContext();
+    //This comes from project dependency
+    const pkgName = '@rnv/config-templates';
+    let configTemplatesPath = doResolve('@rnv/config-templates');
+
+    if (!fsExistsSync(configTemplatesPath)) {
+        //This comes from rnv built-in dependency (installed via npm)
+        configTemplatesPath = path.resolve(__dirname, '../../node_modules', pkgName);
+        if (!fsExistsSync(configTemplatesPath)) {
+            //This comes from rnv built-in dependency (installed via yarn might install it one level up)
+            configTemplatesPath = path.resolve(__dirname, '../../..', pkgName);
+            if (!fsExistsSync(configTemplatesPath)) {
+                // This comes from rnv built-in dependency (installed via yarn might install it 2 level up but scoped to @rnv)
+                configTemplatesPath = path.resolve(__dirname, '../../../../', pkgName);
+                if (!fsExistsSync(configTemplatesPath)) {
+                    return Promise.reject(`RNV Cannot find package: ${chalk().bold(configTemplatesPath)}`);
+                }
+            }
+        }
+    }
+
+    if (!configTemplatesPath) return Promise.reject(`@rnv/config-templates missing`);
+
+    const rnvConfigTemplates = readObjectSync<ConfigFileTemplates>(
+        path.join(configTemplatesPath, 'renative.templates.json')
+    );
+
+    if (rnvConfigTemplates) {
+        ctx.files.rnvConfigTemplates.config = rnvConfigTemplates;
+        ctx.files.scopedPluginTemplates = {
+            rnv: rnvConfigTemplates.pluginTemplates,
+        };
+    }
+
+    ctx.paths.scopedConfigTemplates = {
+        configs: {
+            rnv: ctx.paths.rnvConfigTemplates.config,
+        },
+        pluginTemplatesDirs: {
+            rnv: ctx.paths.rnvConfigTemplates.pluginTemplatesDir,
+        },
+    };
+};
+
 export const parseRenativeConfigs = async () => {
     logDefault('parseRenativeConfigs');
     const c = getContext();
@@ -214,8 +259,9 @@ export const parseRenativeConfigs = async () => {
     // _loadConfigFiles(c, c.files.defaultWorkspace, c.paths.defaultWorkspace);
 
     // LOAD CONFIG TEMPLATES
-    c.files.rnvConfigTemplates.config =
-        readObjectSync<ConfigFileTemplates>(c.paths.rnvConfigTemplates.config) || undefined;
+    //NOTE: loaded in loadDefaultConfigTemplates
+    // c.files.rnvConfigTemplates.config =
+    //     readObjectSync<ConfigFileTemplates>(c.paths.rnvConfigTemplates.config) || undefined;
 
     // // LOAD PLUGIN TEMPLATES
     // await loadPluginTemplates(c);

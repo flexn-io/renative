@@ -81,11 +81,11 @@ export const generateBuildConfig = () => {
         return exists;
     });
 
-    const pluginTemplates: Record<string, any> = {};
+    const scopedPluginTemplates: Record<string, any> = {};
     if (c.files.scopedPluginTemplates) {
         Object.keys(c.files.scopedPluginTemplates).forEach((v) => {
             const plgs = c.files.scopedPluginTemplates[v];
-            pluginTemplates[v] = plgs;
+            scopedPluginTemplates[v] = plgs;
         });
     }
 
@@ -141,7 +141,8 @@ export const generateBuildConfig = () => {
         arrayMerge: _arrayMergeOverride,
     });
     out = merge({}, out);
-    out.pluginTemplates = pluginTemplates;
+    // out.pluginTemplates = pluginTemplates;
+    out.scopedPluginTemplates = scopedPluginTemplates;
 
     c.buildConfig = sanitizeDynamicRefs<RnvContextBuildConfig>(c, out);
     const propConfig: FileUtilsPropConfig = {
