@@ -1,5 +1,6 @@
 import {
     NpmPackageFile,
+    RnvFileName,
     chalk,
     copyFileSync,
     copyFolderRecursiveSync,
@@ -103,7 +104,7 @@ export const inquiryInstallTemplate = async (data: NewProjectData) => {
         // await executeAsync(`${isYarnInstalled() ? 'yarn' : 'npm'} add file:${localTemplatePath} --dev`, {
         //     cwd: c.paths.project.dir,
         // });
-        const localTemplatePkgPath = path.join(localTemplatePath, 'package.json');
+        const localTemplatePkgPath = path.join(localTemplatePath, RnvFileName.package);
         if (!fsExistsSync(localTemplatePath)) {
             return Promise.reject(`Local template package ${localTemplatePkgPath} does not exist`);
         }

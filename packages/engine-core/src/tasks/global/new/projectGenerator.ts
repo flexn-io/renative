@@ -1,7 +1,7 @@
 import {
     // ConfigFileProject,
-    ConfigName,
     PlatformKey,
+    RnvFileName,
     // PlatformKey,
     applyTemplate,
     chalk,
@@ -28,8 +28,8 @@ export const saveProgressIntoProjectConfig = async (data: NewProjectData) => {
 export const initNewProject = async () => {
     const c = getContext();
 
-    c.paths.project.package = path.join(c.paths.project.dir, 'package.json');
-    c.paths.project.config = path.join(c.paths.project.dir, ConfigName.renative);
+    c.paths.project.package = path.join(c.paths.project.dir, RnvFileName.package);
+    c.paths.project.config = path.join(c.paths.project.dir, RnvFileName.renative);
 
     const data: NewProjectData = {
         defaultVersion: '0.1.0',

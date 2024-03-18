@@ -443,7 +443,7 @@ ${enginesToInstall.map((v) => `> ${v.key}@${v.version}`).join('\n')}
 };
 
 const _resolvePkgPath = (c: RnvContext, packageName: string) => {
-    if (c.paths.IS_LINKED && !c.program.unlinked) {
+    if (c.paths.IS_LINKED && !c.program.unlinked && c.paths.rnv.dir !== '') {
         // In the instances of running linked rnv instead of installed one load local packages
         try {
             let pkgPathLocal = require.resolve(packageName, { paths: [path.join(c.paths.rnv.dir, '..')] });

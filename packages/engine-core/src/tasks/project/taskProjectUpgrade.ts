@@ -16,6 +16,7 @@ import {
     RnvTaskName,
     NpmPackageFile,
     ConfigFileProject,
+    RnvFileName,
 } from '@rnv/core';
 import { installPackageDependenciesAndPlugins } from '../../plugins';
 
@@ -50,8 +51,8 @@ const taskProjectUpgrade: RnvTaskFn = async (c, _parentTask, originTask) => {
             dirs.forEach((dir) => {
                 const dirPath = path.join(packagesPath, dir);
                 if (fs.statSync(dirPath).isDirectory()) {
-                    const pkgPath = path.join(dirPath, 'package.json');
-                    const rnvPath = path.join(dirPath, 'renative.json');
+                    const pkgPath = path.join(dirPath, RnvFileName.package);
+                    const rnvPath = path.join(dirPath, RnvFileName.renative);
                     let pkgFile;
                     let rnvFile;
                     if (fsExistsSync(pkgPath)) {

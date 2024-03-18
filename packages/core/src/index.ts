@@ -60,7 +60,7 @@ export * from './buildHooks';
 export * from './migrator';
 
 export * from './enums/taskName';
-export * from './enums/configName';
+export * from './enums/rnvFileName';
 
 //TYPES
 export * from './engines/types';

@@ -25,7 +25,7 @@ import { ConfigFileOverrides, ConfigFilePlugin, ConfigFileTemplates } from '../s
 import { NpmPackageFile } from '../configs/types';
 import { getContext } from '../context/provider';
 import { getConfigProp } from '../context/contextProps';
-import { ConfigName } from '../enums/configName';
+import { RnvFileName } from '../enums/rnvFileName';
 import { AsyncCallback } from '../projects/types';
 
 const _getPluginScope = (plugin: RenativeConfigPlugin | string): RnvPluginScope => {
@@ -579,7 +579,7 @@ const _parsePluginTemplateDependencies = (
                         ptPath = `${doResolve(val.npm)}/${val.path}`;
                     }
 
-                    const ptConfig = path.join(ptPath, ConfigName.renativeTemplates);
+                    const ptConfig = path.join(ptPath, RnvFileName.renativeTemplates);
                     c.paths.scopedConfigTemplates.pluginTemplatesDirs[k] = ptPath;
                     if (fsExistsSync(ptConfig)) {
                         const ptConfigs = c.files.scopedPluginTemplates;
@@ -846,12 +846,7 @@ export const overrideTemplatePlugins = async () => {
                 plugin._scopes.forEach((pluginScope) => {
                     const pluginOverridePath = rnvPluginsDirs[pluginScope];
                     if (pluginOverridePath) {
-                        // const rnvOverridePath = path.join(c.paths.rnv.pluginTemplates.overrideDir!, key);
-                        // if (fsExistsSync(rnvOverridePath)) {
-                        //     _overridePlugin(c, c.paths.rnv.pluginTemplates.overrideDir!, key);
-                        // } else {
                         _overridePlugin(c, pluginOverridePath, key);
-                        // }
                     }
                 });
             }
@@ -884,11 +879,6 @@ export const copyTemplatePluginsSync = (c: RnvContext) => {
                 });
             });
         }
-        // FOLDER MERGES FROM PROJECT CONFIG PLUGIN
-        // if (c.paths.rnv.pluginTemplates.dir) {
-        //     const sourcePathRnvPlugin = getAppConfigBuildsFolder(c, platform, path.join(c.paths.rnv.pluginTemplates.dir, key));
-        //     copyFolderContentsRecursiveSync(sourcePathRnvPlugin, destPath, true, undefined, false, objectInject);
-        // }
 
         // FOLDER MERGES FROM PROJECT CONFIG PLUGIN
         const sourcePath3 = getAppConfigBuildsFolder(path.join(c.paths.project.appConfigBase.dir, `plugins/${key}`));
@@ -909,14 +899,11 @@ export const copyTemplatePluginsSync = (c: RnvContext) => {
         copyFolderContentsRecursiveSync(sourcePath2sec, destPath, true, undefined, false, objectInject);
 
         // FOLDER MERGES FROM SCOPED PLUGIN TEMPLATES
+        // NOTE: default 'rnv' scope (@rnv/config-templates) is included in pluginTemplatesDirs
         Object.keys(c.paths.scopedConfigTemplates.pluginTemplatesDirs).forEach((pathKey) => {
-            // TODO: required for external rnv scoped templates to take effect. need to test full implications
-            // if (pathKey !== 'rnv') {
             const pluginTemplatePath = c.paths.scopedConfigTemplates.pluginTemplatesDirs[pathKey];
-
             const sourcePath4sec = getAppConfigBuildsFolder(path.join(pluginTemplatePath, key));
             copyFolderContentsRecursiveSync(sourcePath4sec, destPath, true, undefined, false, objectInject);
-            // }
         });
     });
 };

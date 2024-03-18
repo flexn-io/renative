@@ -179,6 +179,7 @@ export const installPackageDependencies = async (failOnError = false) => {
             `${e}\n Seems like your node_modules is corrupted by other libs. ReNative will try to fix it for you`
         );
         try {
+            // TODO: evalauate if this is still needed
             await cleanNodeModules();
             await installPackageDependencies(true);
         } catch (npmErr) {
@@ -238,12 +239,4 @@ export const cleanNodeModules = () =>
         removeDirs(dirs)
             .then(() => resolve())
             .catch((e) => reject(e));
-        // removeDirs([
-        //     path.join(c.paths.project.nodeModulesDir, 'react-native-safe-area-view/.git'),
-        //     path.join(c.paths.project.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
-        //     path.join(c.paths.project.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git'),
-        //     path.join(c.paths.rnv.nodeModulesDir, 'react-native-safe-area-view/.git'),
-        //     path.join(c.paths.rnv.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
-        //     path.join(c.paths.rnv.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git')
-        // ]).then(() => resolve()).catch(e => reject(e));
     });

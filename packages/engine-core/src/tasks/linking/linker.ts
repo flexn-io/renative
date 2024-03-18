@@ -1,5 +1,6 @@
 import {
     NpmPackageFile,
+    RnvFileName,
     chalk,
     fsExistsSync,
     fsLstatSync,
@@ -71,12 +72,14 @@ export const traverseTargetProject = (sourceDir: string) => {
 
 export const getSourceDir = () => {
     const ctx = getContext();
+    const dirOption = ctx.program.dir;
 
-    if (ctx.program.dir) {
-        logInfo(`Using custom source directory: ${chalk().bold(ctx.program.dir)}`);
+    if (dirOption) {
+        logInfo(`Using custom source directory: ${chalk().bold(dirOption)}`);
     }
 
-    const sourceDir = ctx.program.dir || path.join(ctx.paths.rnv.dir, '../../');
+    // As default we'll use the development source directory which is a monorepo
+    const sourceDir = ctx.program.dir || path.join(ctx.paths.rnvCore.dir, '../../');
     if (!fsExistsSync(sourceDir)) {
         throw new Error(`Source directory ${sourceDir} does not exist!`);
     }
@@ -84,7 +87,7 @@ export const getSourceDir = () => {
 };
 
 const captureSourcePackage = (baseDir: string, sourcePackages: SourcePackage[]) => {
-    const pkgPath = path.join(baseDir, 'package.json');
+    const pkgPath = path.join(baseDir, RnvFileName.package);
     if (fsExistsSync(pkgPath)) {
         const pkgFile = readObjectSync<NpmPackageFile>(pkgPath);
         if (pkgFile?.name) {

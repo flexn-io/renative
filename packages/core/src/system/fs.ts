@@ -550,11 +550,13 @@ export const getRealPath = (p: string | undefined, key = 'undefined', original?:
         return path.join(c.paths.project.dir, p);
     }
     const output = p
+        // TODO: deprecate this path
         .replace(/\$RNV_HOME/g, c.paths.rnv.dir)
         .replace(/~/g, c.paths.user.homeDir)
         .replace(/\$USER_HOME/g, c.paths.user.homeDir)
         .replace(/\$PROJECT_HOME/g, c.paths.project.dir)
         .replace(/\$WORKSPACE_HOME/g, c.paths.workspace.dir)
+        // TODO: deprecate this path
         .replace(/RNV_HOME/g, c.paths.rnv.dir)
         .replace(/USER_HOME/g, c.paths.user.homeDir)
         .replace(/PROJECT_HOME/g, c.paths.project.dir);

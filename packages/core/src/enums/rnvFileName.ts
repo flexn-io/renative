@@ -1,4 +1,4 @@
-export const ConfigName = {
+export const RnvFileName = {
     renative: 'renative.json',
     renativeLocal: 'renative.local.json',
     renativePrivate: 'renative.private.json',
@@ -9,5 +9,6 @@ export const ConfigName = {
     renativeTemplates: 'renative.templates.json',
     renativePlatforms: 'renative.platforms.json',
     renativeEngine: 'renative.engine.json',
+    package: 'package.json',
     // renativeProject: 'renative.project.json',
 };

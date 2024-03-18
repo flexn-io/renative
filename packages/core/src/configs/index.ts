@@ -11,7 +11,7 @@ import { generateLocalConfig } from './configLocal';
 import { getWorkspaceDirPath } from './workspaces';
 import { generatePlatformTemplatePaths } from './configProject';
 import { ConfigFileTemplates } from '../schema/configFiles/types';
-import { ConfigName } from '../enums/configName';
+import { RnvFileName } from '../enums/rnvFileName';
 import { getContext } from '../context/provider';
 
 export const loadFileExtended = (fileObj: Record<string, any>, pathObj: RnvContextPathObj, key: RnvContextFileKey) => {
@@ -111,9 +111,9 @@ const _loadConfigFiles = (
 
         const pathObj1: RnvContextPathObj = {
             ...generateRnvConfigPathObj(),
-            config: path.join(path1, ConfigName.renative),
-            configLocal: path.join(path1, ConfigName.renativeLocal),
-            configPrivate: path.join(path1, ConfigName.renativePrivate),
+            config: path.join(path1, RnvFileName.renative),
+            configLocal: path.join(path1, RnvFileName.renativeLocal),
+            configPrivate: path.join(path1, RnvFileName.renativePrivate),
         };
         pathObj.dirs.push(path1);
         pathObj.fontsDirs.push(path.join(path1, 'fonts'));
@@ -135,9 +135,9 @@ const _loadConfigFiles = (
                 const path2 = path.join(pathObj.appConfigsDir, extendAppId);
                 const pathObj2: RnvContextPathObj = {
                     ...generateRnvConfigPathObj(),
-                    config: path.join(path2, ConfigName.renative),
-                    configLocal: path.join(path2, ConfigName.renativeLocal),
-                    configPrivate: path.join(path2, ConfigName.renativePrivate),
+                    config: path.join(path2, RnvFileName.renative),
+                    configLocal: path.join(path2, RnvFileName.renativeLocal),
+                    configPrivate: path.join(path2, RnvFileName.renativePrivate),
                 };
                 const fileObj2: RnvContextFileObj<unknown> = {
                     configs: [],
@@ -167,9 +167,9 @@ const _loadConfigFiles = (
         pathObj.dirs.push(path3);
         pathObj.fontsDirs.push(path.join(path3, 'fonts'));
         pathObj.pluginDirs.push(path.join(path3, 'plugins'));
-        pathObj.configs.push(path.join(path3, ConfigName.renative));
-        pathObj.configsLocal.push(path.join(path3, ConfigName.renativeLocal));
-        pathObj.configsPrivate.push(path.join(path3, ConfigName.renativePrivate));
+        pathObj.configs.push(path.join(path3, RnvFileName.renative));
+        pathObj.configsLocal.push(path.join(path3, RnvFileName.renativeLocal));
+        pathObj.configsPrivate.push(path.join(path3, RnvFileName.renativePrivate));
         // FILE3: appConfigs/<appId>
         loadFileExtended(fileObj, pathObj, 'config');
         loadFileExtended(fileObj, pathObj, 'configPrivate');

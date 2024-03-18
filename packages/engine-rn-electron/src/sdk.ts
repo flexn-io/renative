@@ -29,6 +29,7 @@ import {
     RnvTaskName,
     getContext,
     NpmPackageFile,
+    RnvFileName,
 } from '@rnv/core';
 import { FileElectronPackage } from './types';
 import {
@@ -84,7 +85,7 @@ const configureProject = (exitOnFail?: boolean) =>
         const platformBuildDir = getAppFolder()!;
         const bundleAssets = getConfigProp('bundleAssets') === true;
         const electronConfigPath = path.join(platformBuildDir, 'electronConfig.json');
-        const packagePath = path.join(platformBuildDir, 'package.json');
+        const packagePath = path.join(platformBuildDir, RnvFileName.package);
         // If path does not exist for png, try iconset
         const pngIconPath = path.join(c.paths.appConfig.dir, `assets/${platform}/resources/icon.png`);
         const appId = getAppId();
@@ -101,7 +102,7 @@ const configureProject = (exitOnFail?: boolean) =>
             reject(`${packagePath} does not exist!`);
             return;
         }
-        const pkgJson = path.join(engine.originalTemplatePlatformsDir!, platform, 'package.json');
+        const pkgJson = path.join(engine.originalTemplatePlatformsDir!, platform, RnvFileName.package);
         const packageJson = readObjectSync<FileElectronPackage>(pkgJson) || {};
 
         packageJson.name = `${c.runtime.appId}-${platform}`;
@@ -228,7 +229,7 @@ const configureProject = (exitOnFail?: boolean) =>
 
         // Fix `Cannot compute electron version from installed node modules - none of the possible electron modules are installed.`
         // See https://github.com/electron-userland/electron-builder/issues/3984#issuecomment-505307933
-        const enginePkgJson = path.join(engine.rootPath!, 'package.json');
+        const enginePkgJson = path.join(engine.rootPath!, RnvFileName.package);
         const enginePackageJson = readObjectSync<NpmPackageFile>(enginePkgJson);
 
         let electronConfig = merge(
@@ -266,8 +267,8 @@ const buildElectron = async () => {
     // workaround: electron-builder fails export in npx mode due to trying install node_modules. we trick it not to do that
     mkdirSync(path.join(platformBuildDir, 'build', 'node_modules'));
 
-    const packagePathSrc = path.join(platformBuildDir, 'package.json');
-    const packagePathDest = path.join(platformBuildDir, 'build', 'package.json');
+    const packagePathSrc = path.join(platformBuildDir, RnvFileName.package);
+    const packagePathDest = path.join(platformBuildDir, 'build', RnvFileName.package);
     copyFileSync(packagePathSrc, packagePathDest);
 
     const mainPathSrc = path.join(platformBuildDir, 'main.js');

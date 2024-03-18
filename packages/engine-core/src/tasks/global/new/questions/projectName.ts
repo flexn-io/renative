@@ -1,4 +1,4 @@
-import { ConfigName, cleanFolder, fsExistsSync, getContext, inquirerPrompt, logWarning, mkdirSync } from '@rnv/core';
+import { RnvFileName, cleanFolder, fsExistsSync, getContext, inquirerPrompt, logWarning, mkdirSync } from '@rnv/core';
 import type { NewProjectData } from '../types';
 import path from 'path';
 import { checkInputValue } from '../utils';
@@ -22,8 +22,8 @@ export const inquiryProjectName = async (data: NewProjectData) => {
     data.projectName = data.inputProjectName?.replace?.(/(\s+)/g, '_');
     data.packageName = data.inputProjectName?.replace(/\s+/g, '-').toLowerCase();
     c.paths.project.dir = path.join(c.paths.user.currentDir, data.projectName || '');
-    c.paths.project.package = path.join(c.paths.project.dir, 'package.json');
-    c.paths.project.config = path.join(c.paths.project.dir, ConfigName.renative);
+    c.paths.project.package = path.join(c.paths.project.dir, RnvFileName.package);
+    c.paths.project.config = path.join(c.paths.project.dir, RnvFileName.renative);
 
     data.files.project.renativeConfig.projectName = data.projectName;
     data.files.project.packageJson.name = data.packageName;

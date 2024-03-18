@@ -6,7 +6,7 @@ import { logDefault, logInfo } from '../logger';
 import { configureTemplateFiles, configureEntryPoint } from '../templates';
 import { parseRenativeConfigs } from '../configs';
 import { ConfigFileApp, ConfigFileEngine, ConfigFileProject, ConfigFileTemplate } from '../schema/configFiles/types';
-import { ConfigName } from '../enums/configName';
+import { RnvFileName } from '../enums/rnvFileName';
 import { getContext } from '../context/provider';
 
 export const checkAndBootstrapIfRequired = async () => {
@@ -24,7 +24,7 @@ export const checkAndBootstrapIfRequired = async () => {
         const templatePath = path.join(c.paths.project.dir, 'node_modules', templateDir);
 
         c.paths.template.dir = templatePath;
-        c.paths.template.configTemplate = path.join(templatePath, ConfigName.renativeTemplate);
+        c.paths.template.configTemplate = path.join(templatePath, RnvFileName.renativeTemplate);
 
         const templateObj = readObjectSync<ConfigFileTemplate>(c.paths.template.configTemplate);
         const appConfigPath = path.join(c.paths.project.appConfigsDir, c.program.appConfigID, 'renative.json');

@@ -1,7 +1,7 @@
 import {
     ConfigFileProject,
     ConfigFileTemplate,
-    ConfigName,
+    RnvFileName,
     getContext,
     inquirerPrompt,
     mergeObjects,
@@ -20,12 +20,12 @@ export const inquiryApplyTemplate = async (data: NewProjectData) => {
     const templateDir = path.join(c.paths.project.dir, 'node_modules', tplName);
 
     const renativeTemplateConfig =
-        readObjectSync<ConfigFileTemplate>(path.join(templateDir, ConfigName.renativeTemplate)) || {};
+        readObjectSync<ConfigFileTemplate>(path.join(templateDir, RnvFileName.renativeTemplate)) || {};
     if (renativeTemplateConfig) {
         data.files.template.renativeTemplateConfig = renativeTemplateConfig;
     }
 
-    const renativeConfig = readObjectSync<ConfigFileProject>(path.join(templateDir, ConfigName.renative));
+    const renativeConfig = readObjectSync<ConfigFileProject>(path.join(templateDir, RnvFileName.renative));
     if (renativeConfig) {
         data.files.template.renativeConfig = renativeConfig;
     }
@@ -34,7 +34,7 @@ export const inquiryApplyTemplate = async (data: NewProjectData) => {
     // if(fsExistsSync(templateAppConfigDir)) {
     //     read
     // }
-    // const renativeAppConfig = readObjectSync<ConfigFileProject>(path.join(templateDir, ConfigName.renative));
+    // const renativeAppConfig = readObjectSync<ConfigFileProject>(path.join(templateDir, RnvFileName.renative));
     // if (renativeConfig) {
     //     data.files.template.renativeConfig = renativeConfig;
     // }

@@ -4,14 +4,14 @@ import { generateContextDefaults } from './defaults';
 import path from 'path';
 import { mkdirSync } from 'fs';
 import { isSystemWin } from '../system/is';
-import { ConfigName } from '../enums/configName';
+import { RnvFileName } from '../enums/rnvFileName';
 import { homedir } from 'os';
 
 export const generateContextPaths = (pathObj: RnvContextPathObj, dir: string, configName?: string) => {
     pathObj.dir = dir;
-    pathObj.config = path.join(dir, configName || ConfigName.renative);
-    pathObj.configLocal = path.join(dir, ConfigName.renativeLocal);
-    pathObj.configPrivate = path.join(dir, ConfigName.renativePrivate);
+    pathObj.config = path.join(dir, configName || RnvFileName.renative);
+    pathObj.configLocal = path.join(dir, RnvFileName.renativeLocal);
+    pathObj.configPrivate = path.join(dir, RnvFileName.renativePrivate);
     pathObj.appConfigsDir = path.join(dir, '..');
 };
 
@@ -86,17 +86,17 @@ export const populateContextPaths = (c: RnvContext, RNV_HOME_DIR: string | undef
     c.paths.user.currentDir = path.resolve('.');
 
     // @rnv/core ------------------
-    c.paths.rnvCore.dir = path.join(__dirname, '../..'); //path.join(c.paths.RNV_CORE_HOME_DIR);
+    c.paths.rnvCore.dir = path.join(__dirname, '../..');
     c.paths.rnvCore.templateFilesDir = path.join(c.paths.rnvCore.dir, 'templateFiles');
-    c.paths.rnv.package = path.join(c.paths.rnv.dir, 'package.json');
+    c.paths.rnvCore.package = path.join(c.paths.rnvCore.dir, RnvFileName.package);
+    //TODO: move out. this is only for paths
     c.files.rnvCore.package = JSON.parse(fsReadFileSync(c.paths.rnvCore.package).toString());
 
     // rnv ------------------
     if (RNV_HOME_DIR) {
         c.paths.rnv.dir = RNV_HOME_DIR;
-        // c.paths.rnv.nodeModulesDir = path.join(c.paths.rnv.dir, 'node_modules');
-        c.paths.rnv.package = path.join(c.paths.rnv.dir, 'package.json');
-
+        c.paths.rnv.package = path.join(c.paths.rnv.dir, RnvFileName.package);
+        //TODO: move out. this is only for paths
         c.files.rnv.package = JSON.parse(fsReadFileSync(c.paths.rnv.package).toString());
     }
 
@@ -105,8 +105,8 @@ export const populateContextPaths = (c: RnvContext, RNV_HOME_DIR: string | undef
     if (!fsExistsSync(c.paths.dotRnv.dir)) {
         mkdirSync(c.paths.dotRnv.dir);
     }
-    // c.paths.dotRnv.config = path.join(c.paths.dotRnv.dir, ConfigName.renative);
-    c.paths.dotRnv.configWorkspaces = path.join(c.paths.dotRnv.dir, ConfigName.renativeWorkspaces);
+    c.paths.dotRnv.config = path.join(c.paths.dotRnv.dir, RnvFileName.renative);
+    c.paths.dotRnv.configWorkspaces = path.join(c.paths.dotRnv.dir, RnvFileName.renativeWorkspaces);
 
     // workspace ------------------
     generateContextPaths(c.paths.workspace, c.paths.dotRnv.dir);
@@ -127,7 +127,7 @@ export const populateContextPaths = (c: RnvContext, RNV_HOME_DIR: string | undef
     c.paths.project.nodeModulesDir = path.join(c.paths.project.dir, 'node_modules');
     c.paths.project.srcDir = path.join(c.paths.project.dir, 'src');
     c.paths.project.appConfigsDir = path.join(c.paths.project.dir, 'appConfigs');
-    c.paths.project.package = path.join(c.paths.project.dir, 'package.json');
+    c.paths.project.package = path.join(c.paths.project.dir, RnvFileName.package);
     c.paths.project.dotRnvDir = path.join(c.paths.project.dir, '.rnv');
     // c.paths.project.npmLinkPolyfill = path.join(
     //     c.paths.project.dir,
@@ -139,7 +139,7 @@ export const populateContextPaths = (c: RnvContext, RNV_HOME_DIR: string | undef
     c.paths.project.appConfigBase.fontsDirs = [c.paths.project.appConfigBase.fontsDir];
     c.paths.project.assets.dir = path.join(c.paths.project.dir, 'platformAssets');
     c.paths.project.assets.runtimeDir = path.join(c.paths.project.assets.dir, 'runtime');
-    c.paths.project.assets.config = path.join(c.paths.project.assets.dir, ConfigName.renativeRuntime);
+    c.paths.project.assets.config = path.join(c.paths.project.assets.dir, RnvFileName.renativeRuntime);
     c.paths.project.builds.dir = path.join(c.paths.project.dir, 'platformBuilds');
 
     // @rnv/config-templates ------------------
@@ -147,7 +147,7 @@ export const populateContextPaths = (c: RnvContext, RNV_HOME_DIR: string | undef
     // c.paths.rnvConfigTemplates.pluginTemplatesDir = '????';
     // c.paths.rnvConfigTemplates.config = path.join(
     //     c.paths.rnvConfigTemplates.pluginTemplatesDir,
-    //     ConfigName.renativeTemplates
+    //     RnvFileName.renativeTemplates
     // );
 
     // runtime

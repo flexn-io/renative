@@ -18,7 +18,7 @@ import {
     DEFAULTS,
     executeAsync,
     ExecOptionsPresets,
-    ConfigName,
+    RnvFileName,
     getContext,
 } from '@rnv/core';
 import { CLI_SDB_TIZEN, CLI_TIZEN, CLI_TIZEN_EMULATOR } from './constants';
@@ -350,7 +350,7 @@ export const runTizenSimOrDevice = async () => {
                     logDebug(err);
                     logError(
                         `Could not find the specified target and could not create the emulator automatically.
-Please create one and then edit the default target from ${c.paths.workspace.dir}/${ConfigName.renative}`
+Please create one and then edit the default target from ${c.paths.workspace.dir}/${RnvFileName.renative}`
                     );
                 }
             }

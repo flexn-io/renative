@@ -14,7 +14,7 @@ import {
     RnvTaskFn,
     RnvTask,
     RnvTaskName,
-    ConfigName,
+    RnvFileName,
 } from '@rnv/core';
 import { writeFileSync } from 'fs';
 
@@ -31,14 +31,14 @@ const taskWorkspaceConfigure: RnvTaskFn = async (c) => {
 
     // Check globalConfig
     if (fsExistsSync(c.paths.workspace.config)) {
-        logDebug(`${c.paths.workspace.dir}/${ConfigName.renative} file exists!`);
+        logDebug(`${c.paths.workspace.dir}/${RnvFileName.renative} file exists!`);
     } else {
         const oldGlobalConfigPath = path.join(c.paths.workspace.dir, 'config.json');
         if (fsExistsSync(oldGlobalConfigPath)) {
             logWarning('Found old version of your config. will copy it to new renative.json config');
             copyFileSync(oldGlobalConfigPath, c.paths.workspace.config);
         } else {
-            logInfo(`${c.paths.workspace.dir}/${ConfigName.renative} file missing! Creating one for you...`);
+            logInfo(`${c.paths.workspace.dir}/${RnvFileName.renative} file missing! Creating one for you...`);
             writeFileSync(c.paths.workspace.config, '{}');
         }
     }
