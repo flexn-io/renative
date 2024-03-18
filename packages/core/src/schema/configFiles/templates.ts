@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { PlatformsKeys } from '../shared';
+import { PlatformsKeys, ProjectTemplates } from '../shared';
 import { PluginSchema } from '../plugins';
 
 export const PluginTemplates = z
@@ -13,12 +13,7 @@ export const DisableRnvDefaultOverrides = z
     );
 
 export const RootTemplatesSchema = z.object({
-    projectTemplates: z.record(
-        z.string(),
-        z.object({
-            description: z.string(),
-        })
-    ),
+    projectTemplates: ProjectTemplates.optional(),
     engineIdMap: z.record(z.string(), z.string()).optional(),
     engineTemplates: z
         .record(

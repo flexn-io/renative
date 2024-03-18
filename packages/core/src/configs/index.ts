@@ -213,9 +213,9 @@ export const parseRenativeConfigs = async () => {
     // generateContextPaths(c.paths.defaultWorkspace, c.paths.GLOBAL_RNV_DIR);
     // _loadConfigFiles(c, c.files.defaultWorkspace, c.paths.defaultWorkspace);
 
-    // LOAD PROJECT TEMPLATES
-    c.files.rnvConfigTemplates.configProjectTemplates =
-        readObjectSync<ConfigFileTemplates>(c.paths.rnvConfigTemplates.configProjectTemplates) || undefined;
+    // LOAD CONFIG TEMPLATES
+    c.files.rnvConfigTemplates.config =
+        readObjectSync<ConfigFileTemplates>(c.paths.rnvConfigTemplates.config) || undefined;
 
     // // LOAD PLUGIN TEMPLATES
     // await loadPluginTemplates(c);

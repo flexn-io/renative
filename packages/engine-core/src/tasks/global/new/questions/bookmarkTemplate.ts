@@ -17,6 +17,13 @@ export const inquiryBookmarkTemplate = async (data: NewProjectData) => {
             } workspace template list?`,
         });
 
+        const { templateDescription } = await inquirerPrompt({
+            name: 'templateDescription',
+            type: 'input',
+            default: 'Custom template added by user',
+            message: 'Add short description',
+        });
+
         const configFile = c.files.workspace.config;
 
         if (configFile) {
@@ -24,7 +31,9 @@ export const inquiryBookmarkTemplate = async (data: NewProjectData) => {
                 if (!configFile.projectTemplates) {
                     configFile.projectTemplates = {};
                 }
-                configFile.projectTemplates[data.optionTemplates.selectedOption] = {};
+                configFile.projectTemplates[data.optionTemplates.selectedOption] = {
+                    description: templateDescription,
+                };
                 writeFileSync(c.paths.workspace.config, configFile);
                 await updateRenativeConfigs();
 

@@ -43,7 +43,7 @@ export const getTemplateOptions = (isGlobalScope?: boolean) => {
     const c = getContext();
     let defaultProjectTemplates;
     if (isGlobalScope) {
-        defaultProjectTemplates = c.files.rnvConfigTemplates.configProjectTemplates?.projectTemplates;
+        defaultProjectTemplates = c.files.rnvConfigTemplates.config?.projectTemplates;
     } else {
         defaultProjectTemplates = c.buildConfig.projectTemplates || {};
     }

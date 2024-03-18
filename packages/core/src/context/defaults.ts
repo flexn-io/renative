@@ -111,9 +111,9 @@ export const generateContextDefaults = (): RnvContext => ({
             dir: '',
             package: '',
         },
-        scopedPluginTemplates: {
+        scopedConfigTemplates: {
             configs: {},
-            dirs: {},
+            pluginTemplatesDirs: {},
         },
         rnvCore: {
             dir: '',
@@ -121,11 +121,10 @@ export const generateContextDefaults = (): RnvContext => ({
             package: '',
         },
         rnvConfigTemplates: {
-            configPluginTemplates: '',
+            config: '',
             dir: '',
             package: '',
             pluginTemplatesDir: '',
-            configProjectTemplates: '',
         },
         workspace: {
             ...generateRnvConfigPathObj(),
@@ -218,9 +217,8 @@ export const generateContextDefaults = (): RnvContext => ({
             package: {},
         },
         rnvConfigTemplates: {
-            configPluginTemplates: {
-                pluginTemplates: {},
-            },
+            config: {},
+            package: {},
         },
         scopedPluginTemplates: {
             configs: {},

@@ -85,3 +85,10 @@ export const TemplateConfig = z
 export const SupportedPlatforms = z
     .array(PlatformsKeys)
     .describe('Array list of all supported platforms in current project');
+
+export const ProjectTemplates = z.record(
+    z.string(),
+    z.object({
+        description: z.string(),
+    })
+);

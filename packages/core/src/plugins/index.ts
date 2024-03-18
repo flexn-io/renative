@@ -579,7 +579,7 @@ const _parsePluginTemplateDependencies = (
                         ptPath = `${doResolve(val.npm)}/${val.path}`;
                     }
 
-                    const ptConfig = path.join(ptPath, ConfigName.renativePlugins);
+                    const ptConfig = path.join(ptPath, ConfigName.renativeTemplates);
                     c.paths.scopedConfigTemplates.pluginTemplatesDirs[k] = ptPath;
                     if (fsExistsSync(ptConfig)) {
                         const ptConfigs = c.files.scopedPluginTemplates;
