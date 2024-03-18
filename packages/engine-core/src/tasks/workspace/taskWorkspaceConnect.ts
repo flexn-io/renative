@@ -18,7 +18,7 @@ const taskWorkspaceConnect: RnvTaskFn = async (c, _parentTask, originTask) => {
     }
     await executeTask(RnvTaskName.projectConfigure, RnvTaskName.workspaceConnect, originTask);
 
-    const cnf = c.files.rnv.configWorkspaces;
+    const cnf = c.files.dotRnv.configWorkspaces;
     if (!cnf) return;
 
     const opts = Object.keys(cnf.workspaces).map((v) => `${v} ${getWorkspaceConnectionString(cnf.workspaces[v])}`);

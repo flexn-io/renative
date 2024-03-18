@@ -9,7 +9,7 @@ export const versionCheck = async (c: RnvContext) => {
     if (c.runtime.versionCheckCompleted || c.files.project?.config?.skipAutoUpdate || c.program.skipDependencyCheck) {
         return true;
     }
-    c.runtime.rnvVersionRunner = c.files.rnv?.core?.package?.version || 'unknown';
+    c.runtime.rnvVersionRunner = c.files.rnvCore?.package?.version || 'unknown';
     c.runtime.rnvVersionProject =
         c.files.project?.package?.devDependencies?.['@rnv/core'] ||
         c.files.project?.package?.dependencies?.['@rnv/core'] ||

@@ -18,7 +18,7 @@ const taskWorkspaceList: RnvTaskFn = async (c, _parentTask, originTask) => {
     }
 
     const opts = generateOptions(
-        c.files.rnv.configWorkspaces?.workspaces,
+        c.files.dotRnv.configWorkspaces?.workspaces,
         true,
         null,
         (i, obj, mapping, defaultVal) => {

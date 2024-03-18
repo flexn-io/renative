@@ -28,7 +28,7 @@ const taskCryptoInstallProfiles: RnvTaskFn = async (c, _parentTask, originTask) 
         return true;
     }
 
-    const ppFolder = path.join(c.paths.home.dir, 'Library/MobileDevice/Provisioning Profiles');
+    const ppFolder = path.join(c.paths.user.homeDir, 'Library/MobileDevice/Provisioning Profiles');
 
     if (!fsExistsSync(ppFolder)) {
         logWarning(`folder ${ppFolder} does not exist!`);

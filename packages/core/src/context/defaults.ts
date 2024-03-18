@@ -143,6 +143,7 @@ export const generateContextDefaults = (): RnvContext => ({
         },
         dotRnv: {
             dir: '',
+            config: '',
             configWorkspaces: '',
         },
         project: {
@@ -211,6 +212,7 @@ export const generateContextDefaults = (): RnvContext => ({
             configWorkspaces: {
                 workspaces: {},
             },
+            config: {},
         },
         rnvCore: {
             package: {},

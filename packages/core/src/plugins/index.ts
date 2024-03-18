@@ -504,19 +504,19 @@ export const loadPluginTemplates = async () => {
     const flexnPluginTemplates = readObjectSync<ConfigFilePlugins>(
         path.join(flexnPluginTemplatesPath, 'renative.plugins.json')
     );
-    const rnvPluginTemplates = readObjectSync<ConfigFilePlugins>(c.paths.rnv.pluginTemplates.config);
+    const rnvPluginTemplates = readObjectSync<ConfigFilePlugins>(c.paths.rnvPlugins.configPluginTemplates);
 
     const cnf = merge(flexnPluginTemplates || {}, rnvPluginTemplates || {});
 
     if (cnf) {
-        c.files.rnv.pluginTemplates.config = cnf;
-        c.files.rnv.pluginTemplates.configs = {
+        c.files.rnvPlugins.configPluginTemplates = cnf;
+        c.files.scopedPluginTemplates.configs = {
             rnv: cnf,
         };
     }
 
     //Override default rnv path with flexn one and add it rnv as overrider
-    c.paths.rnv.pluginTemplates.dirs = {
+    c.paths.scopedPluginTemplates.dirs = {
         rnv: flexnPluginTemplatesPath,
     };
 
@@ -579,9 +579,9 @@ const _parsePluginTemplateDependencies = (
                     }
 
                     const ptConfig = path.join(ptPath, ConfigName.renativePlugins);
-                    c.paths.rnv.pluginTemplates.dirs[k] = ptPath;
+                    c.paths.scopedPluginTemplates.dirs[k] = ptPath;
                     if (fsExistsSync(ptConfig)) {
-                        const ptConfigs = c.files.rnv.pluginTemplates.configs;
+                        const ptConfigs = c.files.scopedPluginTemplates.configs;
                         const ptConfigFile = readObjectSync<ConfigFilePlugins>(ptConfig);
                         if (ptConfigFile) {
                             ptConfigs[k] = ptConfigFile;
@@ -589,7 +589,7 @@ const _parsePluginTemplateDependencies = (
 
                         // _parsePluginTemplateDependencies(
                         //     c,
-                        //     c.files.rnv.pluginTemplates.configs[k].pluginTemplateDependencies,
+                        //     c.files.scopedPluginTemplates.configs[k].pluginTemplateDependencies,
                         //     k
                         // );
                     } else {
@@ -836,7 +836,7 @@ export const overrideTemplatePlugins = async () => {
 
     const c = getContext();
 
-    const rnvPluginsDirs = c.paths.rnv.pluginTemplates.dirs;
+    const rnvPluginsDirs = c.paths.scopedPluginTemplates.dirs;
     const appPluginDirs = c.paths.appConfig.pluginDirs;
 
     parsePlugins((plugin, pluginPlat, key) => {
@@ -845,12 +845,12 @@ export const overrideTemplatePlugins = async () => {
                 plugin._scopes.forEach((pluginScope) => {
                     const pluginOverridePath = rnvPluginsDirs[pluginScope];
                     if (pluginOverridePath) {
-                        const rnvOverridePath = path.join(c.paths.rnv.pluginTemplates.overrideDir!, key);
-                        if (fsExistsSync(rnvOverridePath)) {
-                            _overridePlugin(c, c.paths.rnv.pluginTemplates.overrideDir!, key);
-                        } else {
-                            _overridePlugin(c, pluginOverridePath, key);
-                        }
+                        // const rnvOverridePath = path.join(c.paths.rnv.pluginTemplates.overrideDir!, key);
+                        // if (fsExistsSync(rnvOverridePath)) {
+                        //     _overridePlugin(c, c.paths.rnv.pluginTemplates.overrideDir!, key);
+                        // } else {
+                        _overridePlugin(c, pluginOverridePath, key);
+                        // }
                     }
                 });
             }
@@ -908,10 +908,10 @@ export const copyTemplatePluginsSync = (c: RnvContext) => {
         copyFolderContentsRecursiveSync(sourcePath2sec, destPath, true, undefined, false, objectInject);
 
         // FOLDER MERGES FROM SCOPED PLUGIN TEMPLATES
-        Object.keys(c.paths.rnv.pluginTemplates.dirs).forEach((pathKey) => {
+        Object.keys(c.paths.scopedPluginTemplates.dirs).forEach((pathKey) => {
             // TODO: required for external rnv scoped templates to take effect. need to test full implications
             // if (pathKey !== 'rnv') {
-            const pluginTemplatePath = c.paths.rnv.pluginTemplates.dirs[pathKey];
+            const pluginTemplatePath = c.paths.scopedPluginTemplates.dirs[pathKey];
 
             const sourcePath4sec = getAppConfigBuildsFolder(path.join(pluginTemplatePath, key));
             copyFolderContentsRecursiveSync(sourcePath4sec, destPath, true, undefined, false, objectInject);

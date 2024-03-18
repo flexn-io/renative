@@ -147,6 +147,7 @@ export type RuntimePropKey = keyof RnvContextRuntime;
 export type RnvContextFiles = {
     dotRnv: {
         configWorkspaces?: ConfigFileWorkspaces;
+        config: ConfigFileWorkspace;
     };
     rnv: {
         package: NpmPackageFile;
@@ -206,7 +207,7 @@ export type RnvContextPaths = {
     };
     dotRnv: {
         dir: string;
-        // config: string;
+        config: string;
         configWorkspaces: string;
     };
     rnvPlugins: {

@@ -100,7 +100,7 @@ export const generateNewProject = async (data: NewProjectData) => {
         supPlats.forEach((k) => {
             const selectedEngineId =
                 loadedConf?.platforms?.[k]?.engine ||
-                c.files.rnv.projectTemplates.config?.platformTemplates?.[k]?.engine;
+                c.files.rnvPlugins.configProjectTemplates?.platformTemplates?.[k]?.engine;
 
             if (selectedEngineId) {
                 const selectedEngine = findEngineKeyById(selectedEngineId);
@@ -148,7 +148,7 @@ export const telemetryNewProject = async (data: NewProjectData) => {
 
 const findEngineKeyById = (id: string) => {
     const c = getContext();
-    const engineTemplates = c.files.rnv.projectTemplates.config?.engineTemplates;
+    const engineTemplates = c.files.rnvPlugins.configProjectTemplates?.engineTemplates;
     if (engineTemplates) {
         const etk = Object.keys(engineTemplates);
         for (let i = 0; i < etk.length; i++) {

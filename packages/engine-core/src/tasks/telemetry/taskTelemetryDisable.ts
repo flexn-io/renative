@@ -16,7 +16,7 @@ const taskTelemetryDisable: RnvTaskFn = async (c) => {
     if (config) {
         config.disableTelemetry = true;
 
-        writeFileSync(c.paths.GLOBAL_RNV_CONFIG, config);
+        writeFileSync(c.paths.dotRnv.config, config);
 
         logToSummary(`   Succesfully ${chalk().red('disabled')} ReNative telemetry on your machine.
 

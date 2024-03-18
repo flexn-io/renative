@@ -3,7 +3,7 @@ import { chalk, logTask, logToSummary, RnvTaskOptionPresets, RnvTask, RnvTaskFn,
 const taskTelemetryStatus: RnvTaskFn = async (c) => {
     logTask('taskTelemetryStatus');
 
-    const disableTelemetry = c.files.defaultWorkspace.config?.disableTelemetry;
+    const disableTelemetry = c.files.dotRnv.config?.disableTelemetry;
 
     if (disableTelemetry) {
         logToSummary(

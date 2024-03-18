@@ -180,8 +180,8 @@ const _mergeFeatures = (
 const getConfigPropArray = <T extends ConfigPropKey>(c: RnvContext, platform: RnvPlatform, key: T) => {
     const result: Array<ConfigProp[T]> = [];
     const configArr = [
-        c.files.defaultWorkspace.config,
-        c.files.rnv.projectTemplates.config,
+        c.files.dotRnv.config,
+        c.files.rnvPlugins.configProjectTemplates,
         // { plugins: extraPlugins },
         // { pluginTemplates },
         c.files.workspace.config,

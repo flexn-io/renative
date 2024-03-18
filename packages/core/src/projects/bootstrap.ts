@@ -32,8 +32,8 @@ export const checkAndBootstrapIfRequired = async () => {
         const appConfigObj = readObjectSync<ConfigFileApp & ConfigFileProject>(appConfigPath);
         const supportedPlatforms = appConfigObj?.defaults?.supportedPlatforms || [];
         //=========
-        const engineTemplates = c.files.rnv.projectTemplates?.config?.engineTemplates;
-        const rnvPlatforms = c.files.rnv.projectTemplates?.config?.platformTemplates || {};
+        const engineTemplates = c.files.rnvPlugins.configProjectTemplates?.engineTemplates;
+        const rnvPlatforms = c.files.rnvPlugins.configProjectTemplates?.platformTemplates || {};
         const activeEngineKeys: Array<string> = [];
 
         if (engineTemplates) {

@@ -117,7 +117,7 @@ export const launchAndroidSimulator = async (
                     logWarning(
                         `Target with name ${chalk().red(
                             newTarget
-                        )} does not exist. You can update it here: ${chalk().cyan(c.paths.GLOBAL_RNV_CONFIG)}`
+                        )} does not exist. You can update it here: ${chalk().cyan(c.paths.dotRnv.config)}`
                     );
                     await launchAndroidSimulator(true, false);
                     return true;

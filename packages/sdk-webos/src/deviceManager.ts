@@ -59,7 +59,7 @@ export const launchWebOSimulator = async (target: string | boolean) => {
     } else if (typeof target === 'string' && !availableSimulatorVersions.includes(target)) {
         logWarning(
             `Target with name ${chalk().red(target)} does not exist. You can update it here: ${chalk().cyan(
-                c.paths.GLOBAL_RNV_CONFIG
+                c.paths.dotRnv.config
             )}`
         );
         await launchWebOSimulator(true);

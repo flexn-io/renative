@@ -37,8 +37,8 @@ export const getPluginList = (isUpdate = false) => {
 
     let i = 1;
 
-    Object.keys(c.files.rnv.pluginTemplates.configs).forEach((pk) => {
-        const plugins = c.files.rnv.pluginTemplates.configs[pk].pluginTemplates;
+    Object.keys(c.files.scopedPluginTemplates.configs).forEach((pk) => {
+        const plugins = c.files.scopedPluginTemplates.configs[pk].pluginTemplates;
         Object.keys(plugins).forEach((k) => {
             const plugin = plugins[k];
 
