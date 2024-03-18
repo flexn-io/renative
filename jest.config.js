@@ -1,7 +1,7 @@
 module.exports = {
     preset: 'react-native',
     testEnvironment: 'jsdom',
-    testMatch: ['**/src/**/__tests__/**/*.(js|ts)?(x)', '**/src/**/?(*.)+(spec|test).(js|ts)?(x)'],
+    testMatch: ['**/src/**/__tests__/**/[^.integration]+.(js|ts)?(x)', '**/src/**/?(*.)+(spec|test).(js|ts)?(x)'],
     transform: {
         '^.+\\.jsx?$': 'babel-jest',
     },
