@@ -13,7 +13,6 @@
         "LICENSE",
         "lib",
         "templateFiles",
-        "templates",
         "types.d.ts"
     ],
     "main": "lib/index.js",

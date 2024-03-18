@@ -28,10 +28,16 @@ project.xcworkspace
 # node.js
 #
 node_modules/
+dist
+lib
+
+# NPM
 npm-debug.log
+
+# Yarn
 yarn-error.log
 
-
+# Lerna
 lerna-debug.log
 
 index/
@@ -55,21 +61,40 @@ buck-out/
 /packages/**/dist
 /packages/**/lib
 
+# Expo
 .expo
 coverage
-
-# IMPORTANT. in rnv .next should NOT be at the root level but in platformBuilds. if you see it in root level you should delete it
-# .next
 
 # RN Windows Engine
 .binlog
 packages/**/*.binlog
 
-dist
-lib
 
-lerna-debug.log
-yarn-error.log
-.rnv
 coverage-ts
 .watchman-cookie-*
+
+# Next
+.next
+
+# ReNative
+.rnv
+/packages/**/platformBuilds
+/packages/**/platformAssets
+renative.private.json
+renative.local.json
+renative.local.json
+renative.build.json
+renative.runtime.json
+rnv-config.local.json
+metro.config.local.js
+/packages/**/.bundle
+/packages/**/vendor/
+/packages/**/reporting/
+
+
+
+
+
+
+
+
