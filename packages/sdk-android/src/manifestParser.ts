@@ -221,7 +221,7 @@ export const parseAndroidManifestSync = () => {
     if (!platform) return;
 
     try {
-        const baseManifestFilePath = path.join(__dirname, `../supportFiles/AndroidManifest_${platform}.json`);
+        const baseManifestFilePath = path.join(__dirname, `../templateFiles/AndroidManifest_${platform}.json`);
         const baseManifestFile = readObjectSync<AndroidManifest>(baseManifestFilePath);
 
         if (!baseManifestFile) {
