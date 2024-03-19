@@ -16,8 +16,8 @@ on:
     #         - '**/metadata.json'
     #         - '**/renative.json'
     #         - '**/package.json'
-    # pull_request:
-    #     types: [labeled]
+    pull_request:
+        types: [labeled]
 
 jobs:
     e2e-harness-tvos:
