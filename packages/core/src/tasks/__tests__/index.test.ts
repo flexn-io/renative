@@ -4,7 +4,7 @@ import { RnvEngine } from '../../engines/types';
 import { DEFAULT_TASK_DESCRIPTIONS } from '../constants';
 import { getContext } from '../../context/provider';
 import { generateContextDefaults } from '../../context/defaults';
-import { checkIfProjectAndNodeModulesExists } from '../../projects/dependencyManager';
+import { checkIfProjectAndNodeModulesExists } from '../../projects/dependencies';
 
 jest.mock('../../engines');
 jest.mock('chalk');
@@ -12,7 +12,7 @@ jest.mock('../../logger');
 jest.mock('../../api');
 jest.mock('../../context/provider');
 jest.mock('../constants', () => ({ DEFAULT_TASK_DESCRIPTIONS: {} }));
-jest.mock('../../projects/dependencyManager');
+jest.mock('../../projects/dependencies');
 
 beforeEach(() => {
     // NOTE: do not call createRnvContext() in core library itself

@@ -1,4 +1,4 @@
-import { copyAssetsFolder } from '..';
+import { copyAssetsFolder } from '../assets';
 import { logWarning } from '../../logger';
 import path from 'path';
 import { isPlatformActive } from '../../platforms';
