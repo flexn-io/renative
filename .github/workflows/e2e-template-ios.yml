@@ -32,6 +32,9 @@ jobs:
             - name: printenv
               run: |
                   printenv
+            - name: ruby -v
+              run: |
+                  ruby -v
             - name: Run
               run: |
                   cd packages/template-starter && yarn run:ios-test & sleep 1200
