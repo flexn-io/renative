@@ -48,7 +48,12 @@ import {
     parseAndroidConfigObject,
 } from './gradleParser';
 import { parseGradleWrapperSync } from './gradleWrapperParser';
-import { parseValuesStringsSync, injectPluginXmlValuesSync, parseValuesColorsSync } from './xmlValuesParser';
+import {
+    parseValuesStringsSync,
+    injectPluginXmlValuesSync,
+    parseValuesColorsSync,
+    parseValuesStylesSync,
+} from './xmlValuesParser';
 import { ejectGradleProject } from './ejector';
 import { AndroidDevice, Context, Payload } from './types';
 import {
@@ -440,6 +445,8 @@ export const configureProject = async () => {
         minSdkVersion: DEFAULTS.minSdkVersion,
         multiAPKs: '',
         splits: '',
+        resourceStylesValue: {},
+        resourceStylesValueV28: {},
         supportLibVersion: '',
         targetSdkVersion: DEFAULTS.targetSdkVersion,
     };
@@ -490,6 +497,7 @@ export const configureProject = async () => {
     parseMainApplicationSync();
     parseSplashActivitySync();
     parseValuesStringsSync();
+    parseValuesStylesSync();
     parseValuesColorsSync();
     parseAndroidManifestSync();
     parseGradlePropertiesSync();

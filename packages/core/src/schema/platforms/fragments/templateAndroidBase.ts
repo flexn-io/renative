@@ -78,6 +78,58 @@ export const TemplateAndroidBaseFragment = {
     build_gradle: z.optional(BuildGradle),
     app_build_gradle: z.optional(AppBuildGradle),
     AndroidManifest_xml: z.optional(AndroidManifest),
+    styles_xml: z.optional(
+        z.object({
+            values: z
+                .optional(
+                    z.object({
+                        app_children: z.optional(
+                            z.array(
+                                z.object({
+                                    tag: z.string(),
+                                    name: z.string(),
+                                    child_value: z.string(),
+                                })
+                            )
+                        ),
+                        splash_children: z.optional(
+                            z.array(
+                                z.object({
+                                    tag: z.string(),
+                                    name: z.string(),
+                                    child_value: z.string(),
+                                })
+                            )
+                        ),
+                    })
+                )
+                .describe('Allows you to add styles to values/styles.xml'),
+            values_v28: z
+                .optional(
+                    z.object({
+                        app_children: z.optional(
+                            z.array(
+                                z.object({
+                                    tag: z.string(),
+                                    name: z.string(),
+                                    child_value: z.string(),
+                                })
+                            )
+                        ),
+                        splash_children: z.optional(
+                            z.array(
+                                z.object({
+                                    tag: z.string(),
+                                    name: z.string(),
+                                    child_value: z.string(),
+                                })
+                            )
+                        ),
+                    })
+                )
+                .describe('Allows you to add styles to values-v28/styles.xml'),
+        })
+    ),
     strings_xml: z.optional(
         z.object({
             children: z.optional(
@@ -97,7 +149,7 @@ export const TemplateAndroidBaseFragment = {
                 .string({})
                 .optional()
                 .default('super.onCreate(savedInstanceState)')
-                .describe('Overrides super.onCreate method handler of MainActivity.java'),
+                .describe('Overrides super.onCreate method handler of MainActivity.kt'),
             imports: z.array(z.string()).optional(),
             methods: z.array(z.string()).optional(),
             createMethods: z.array(z.string()).optional(),

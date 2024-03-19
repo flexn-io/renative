@@ -26,7 +26,7 @@
                 "description": "Hello ReNative - Use for production deployments"
             }
         },
-        "backgroundColor": "#111111",
+        "backgroundColor": "#FFFFFF",
         "fontSources": [
             "{{resolvePackage(react-native-vector-icons)}}/Fonts"
         ],

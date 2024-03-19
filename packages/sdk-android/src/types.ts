@@ -44,6 +44,8 @@ export type Payload = {
         pluginApplicationCreateMethods: string;
         pluginSplashActivityImports: string;
         resourceStrings: Required<TemplateAndroid['strings_xml']>['children'];
+        resourceStylesValue: Partial<ResourceStyles>;
+        resourceStylesValueV28: Partial<ResourceStyles>;
         store?: {
             storeFile?: string;
             // keyAlias: string;
@@ -53,6 +55,7 @@ export type Payload = {
     };
 };
 
+export type ResourceStyles = { app_children: string; splash_children: string };
 export type Context = RnvContext<Payload>;
 
 export type AndroidDevice = {
