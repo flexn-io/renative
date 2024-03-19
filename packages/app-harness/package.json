@@ -58,7 +58,6 @@
         "react-native-tvos": "0.73.6-0",
         "react-native-web": "0.19.9",
         "react-native-safe-area-context": "4.9.0",
-        "@react-native-community/cli-platform-ios": "11.3.7",
         "react-native-fs": "2.20.0",
         "rn-fetch-blob": "0.12.0"
     },

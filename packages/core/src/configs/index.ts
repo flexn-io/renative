@@ -207,9 +207,10 @@ export const loadDefaultConfigTemplates = async () => {
 
     if (!configTemplatesPath) return Promise.reject(`@rnv/config-templates missing`);
 
-    const rnvConfigTemplates = readObjectSync<ConfigFileTemplates>(
-        path.join(configTemplatesPath, 'renative.templates.json')
-    );
+    ctx.paths.rnvConfigTemplates.pluginTemplatesDir = path.join(configTemplatesPath, 'pluginTemplates');
+    ctx.paths.rnvConfigTemplates.config = path.join(configTemplatesPath, 'renative.templates.json');
+
+    const rnvConfigTemplates = readObjectSync<ConfigFileTemplates>(ctx.paths.rnvConfigTemplates.config);
 
     if (rnvConfigTemplates) {
         ctx.files.rnvConfigTemplates.config = rnvConfigTemplates;
