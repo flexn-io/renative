@@ -8,6 +8,20 @@
     "integrations": {
         "@rnv/integration-starter": {}
     },
+    "platforms": {
+        "android": {
+            "templateAndroid": {
+                "styles_xml": {
+                    "values": {
+                        "app_children": [{ "tag": "item", "name": "android:windowIsTranslucent", "child_value": true }]
+                    },
+                    "values_v28": {
+                        "app_children": [{ "tag": "item", "name": "android:windowIsTranslucent", "child_value": true }]
+                    }
+                }
+            }
+        }
+    },
     "plugins": {
         "react-native-splash-screen": {
             "android": {
