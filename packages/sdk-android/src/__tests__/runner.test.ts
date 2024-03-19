@@ -28,7 +28,9 @@ describe('getAndroidDeviceToRunOn', () => {
         jest.mocked(getAndroidTargets).mockResolvedValue([mockFoundDevice]);
 
         //WHEN
-        await expect(getAndroidDeviceToRunOn()).resolves.toBe(undefined);
+        await expect(getAndroidDeviceToRunOn()).rejects.toBe(
+            'No active devices found, please connect one or remove the device argument'
+        );
 
         //THEN
     });
@@ -47,7 +49,9 @@ describe('getAndroidDeviceToRunOn', () => {
         jest.mocked(getAndroidTargets).mockResolvedValue([mockFoundDevice]);
 
         //WHEN
-        await expect(getAndroidDeviceToRunOn()).resolves.toBe(undefined);
+        await expect(getAndroidDeviceToRunOn()).rejects.toBe(
+            'No active devices found, please connect one or remove the device argument'
+        );
 
         //THEN
         expect(connectToWifiDevice).not.toHaveBeenCalled();

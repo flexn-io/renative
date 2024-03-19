@@ -1,4 +1,4 @@
-import { createRnvContext, getContext, logError, doResolve, executeTask } from '@rnv/core';
+import { createRnvContext, getContext, doResolve, executeTask } from '@rnv/core';
 import taskStart from '../taskStart';
 import { startReactNative } from '@rnv/sdk-react-native';
 
@@ -49,8 +49,6 @@ test('Execute task.rnv.start in hosted mode', async () => {
     const ctx = getContext();
     ctx.platform = 'tvos';
     ctx.program.hosted = true;
-    // WHEN
-    await taskStart.fn?.(ctx, 'parent', undefined);
-    // THEN
-    expect(logError).toHaveBeenCalledWith('This platform does not support hosted mode', true);
+    // WHEN // THEN
+    await expect(taskStart.fn?.(ctx, 'parent', undefined)).rejects.toBe('This platform does not support hosted mode');
 });
