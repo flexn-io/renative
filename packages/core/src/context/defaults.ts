@@ -81,6 +81,12 @@ export const generateContextDefaults = (): RnvContext => ({
         parse: () => {
             //NOOP
         },
+        outputHelp: () => {
+            //NOOP
+        },
+        allowUnknownOption() {
+            //NOOP
+        },
     },
     buildConfig: {},
     command: '',
@@ -215,9 +221,7 @@ export const generateContextDefaults = (): RnvContext => ({
             config: {},
             package: {},
         },
-        scopedPluginTemplates: {
-            configs: {},
-        },
+        scopedConfigTemplates: {},
         workspace: {
             ...generateRnvConfigFileObj(),
             project: {

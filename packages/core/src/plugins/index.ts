@@ -539,10 +539,10 @@ const _parsePluginTemplateDependencies = (
                     const ptConfig = path.join(ptPath, RnvFileName.renativeTemplates);
                     c.paths.scopedConfigTemplates.pluginTemplatesDirs[k] = ptPath;
                     if (fsExistsSync(ptConfig)) {
-                        const ptConfigs = c.files.scopedPluginTemplates;
+                        const ptConfigs = c.files.scopedConfigTemplates;
                         const ptConfigFile = readObjectSync<ConfigFileTemplates>(ptConfig);
-                        if (ptConfigFile?.pluginTemplates) {
-                            ptConfigs[k] = ptConfigFile?.pluginTemplates;
+                        if (ptConfigFile) {
+                            ptConfigs[k] = ptConfigFile;
                         }
 
                         // _parsePluginTemplateDependencies(

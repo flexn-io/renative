@@ -1,6 +1,6 @@
 import { RnvContext, RnvTaskOptionPresets, logSuccess, RnvTask, RnvTaskFn } from '@rnv/core';
 
-const task: RnvTaskFn = async (c: RnvContext) => {
+const task: RnvTaskFn = async (c: RnvContext<any, 'myOpt'>) => {
     logSuccess(`Hello from Integration Starter! 
 --my-opt: "${c.program.myOpt}"`);
 };

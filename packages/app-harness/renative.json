@@ -9,6 +9,9 @@
     "integrations": {
         "@rnv/integration-starter": {}
     },
+    "defaults": {
+        "portOffset": 10
+    },
     "plugins": {
         "react-native-safe-area-context": "4.9.0",
         "react-native-splash-screen": {

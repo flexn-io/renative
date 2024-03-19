@@ -213,8 +213,8 @@ export const loadDefaultConfigTemplates = async () => {
 
     if (rnvConfigTemplates) {
         ctx.files.rnvConfigTemplates.config = rnvConfigTemplates;
-        ctx.files.scopedPluginTemplates = {
-            rnv: rnvConfigTemplates.pluginTemplates,
+        ctx.files.scopedConfigTemplates = {
+            rnv: rnvConfigTemplates,
         };
     }
 

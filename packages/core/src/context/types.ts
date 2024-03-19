@@ -15,7 +15,7 @@ import {
 } from '../schema/configFiles/types';
 import { NpmPackageFile } from '../configs/types';
 import { ConfigFileBuildConfig } from '../schema/configFiles/buildConfig';
-import type { ParamKeys } from '../tasks/constants';
+import type { ParamKeys, ProgramOptionsKey } from '../tasks/constants';
 import { ExecaChildProcess } from 'execa';
 import { RnvPlugin } from '../plugins/types';
 
@@ -27,15 +27,18 @@ export type CreateContextOptions = {
     RNV_HOME_DIR?: string;
 };
 
-export type RnvContextProgram = ParamKeys & {
+export type RnvContextProgram<ExtraKeys extends string = never> = ParamKeys<ExtraKeys> & {
     args?: string[];
     rawArgs?: string[];
     option?: (cmd: string, desc: string) => void;
     parse?: (arg: string[]) => void;
+    allowUnknownOption: (p: boolean) => void;
+    outputHelp: () => void;
+    isHelpInvoked?: boolean;
 };
 
-export type RnvContext<Payload = any> = {
-    program: RnvContextProgram;
+export type RnvContext<Payload = any, ExtraOptionKeys extends string = ProgramOptionsKey> = {
+    program: RnvContextProgram<ExtraOptionKeys>;
     /**
      * Extra payload object used by 3rd party (ie @rnv/sdk-apple) to decorate context with extra typed information
      */
@@ -158,7 +161,7 @@ export type RnvContextFiles = {
         package?: NpmPackageFile;
         config?: ConfigFileTemplates;
     };
-    scopedPluginTemplates: Record<string, ConfigFileTemplates['pluginTemplates']>;
+    scopedConfigTemplates: Record<string, ConfigFileTemplates>;
     workspace: RnvContextFileObj<ConfigFileWorkspace> & {
         project: RnvContextFileObj<ConfigFileProject>;
         appConfig: RnvContextFileObj<ConfigFileApp>;

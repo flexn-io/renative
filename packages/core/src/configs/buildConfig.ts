@@ -82,9 +82,9 @@ export const generateBuildConfig = () => {
     });
 
     const scopedPluginTemplates: Record<string, any> = {};
-    if (c.files.scopedPluginTemplates) {
-        Object.keys(c.files.scopedPluginTemplates).forEach((v) => {
-            const plgs = c.files.scopedPluginTemplates[v];
+    if (c.files.scopedConfigTemplates) {
+        Object.keys(c.files.scopedConfigTemplates).forEach((v) => {
+            const plgs = c.files.scopedConfigTemplates[v].pluginTemplates;
             scopedPluginTemplates[v] = plgs;
         });
     }

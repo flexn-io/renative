@@ -10,7 +10,7 @@ export const DEFAULT_TASK_DESCRIPTIONS: Record<string, string> = {
     [RnvTaskName.export]: 'Export the app into deployable binary',
 };
 
-export const RnvTaskOptions: Record<string, RnvTaskOption> = {
+const _RnvTaskOptions = {
     help: {
         shortcut: 'h',
         description: 'Displays help info for particular command',
@@ -291,14 +291,18 @@ export const RnvTaskOptions: Record<string, RnvTaskOption> = {
     },
 };
 
-type ParamKeysType = typeof RnvTaskOptions;
+type ParamKeysType = typeof _RnvTaskOptions;
 
-type ProgramOptionsKey = keyof ParamKeysType;
+export type ProgramOptionsKey = keyof ParamKeysType;
+
+export const RnvTaskOptions = _RnvTaskOptions as Record<ProgramOptionsKey, RnvTaskOption>;
 
 //TODO: make this properly typed. Pass integration type to getContext?
 type ParamType = any; //boolean | string | undefined
 
-export type ParamKeys = Partial<Record<ProgramOptionsKey, ParamType>>;
+export type ParamKeys<ExtraKeys extends string = ProgramOptionsKey> = Partial<
+    Record<ProgramOptionsKey | ExtraKeys, ParamType>
+>;
 
 (Object.keys(RnvTaskOptions) as ProgramOptionsKey[]).forEach((k) => {
     RnvTaskOptions[k].key = k;
@@ -315,6 +319,7 @@ export const RnvTaskCoreOptionPresets = {
             // platform is necessary to be accepted as base for the `rnv` command to work with enginie plugins
             RnvTaskOptions.platform,
             RnvTaskOptions.help,
+            RnvTaskOptions.printExec,
         ].concat(arr || []),
 };
 

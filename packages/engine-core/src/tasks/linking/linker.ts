@@ -71,7 +71,7 @@ export const traverseTargetProject = (sourceDir: string) => {
 };
 
 export const getSourceDir = () => {
-    const ctx = getContext();
+    const ctx = getContext<any, 'dir'>();
     const dirOption = ctx.program.dir;
 
     if (dirOption) {
