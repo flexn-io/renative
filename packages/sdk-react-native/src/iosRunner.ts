@@ -200,6 +200,7 @@ export const runCocoaPods = async () => {
             ...EnvVars.RNV_REACT_NATIVE_PATH(),
             ...EnvVars.RCT_NEW_ARCH_ENABLED(),
             ...EnvVars.RNV_SKIP_LINKING(),
+            ...EnvVars.RNV_FLIPPER_ENABLED(),
         };
 
         if (c.program.updatePods) {
