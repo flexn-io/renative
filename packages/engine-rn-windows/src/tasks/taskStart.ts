@@ -6,7 +6,6 @@ import {
     executeTask,
     shouldSkipTask,
     doResolve,
-    logError,
     RnvTask,
     PlatformKey,
     RnvTaskName,
@@ -25,7 +24,7 @@ const taskStart: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskStart', `parent:${parentTask} port:${c.runtime.port} hosted:${!!hosted}`);
 
     if (hosted) {
-        return logError('This platform does not support hosted mode', true);
+        return Promise.reject('This platform does not support hosted mode');
     }
     // Disable reset for other commands (ie. cleaning platforms)
     c.runtime.disableReset = true;

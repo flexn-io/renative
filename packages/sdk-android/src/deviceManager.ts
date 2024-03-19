@@ -94,8 +94,7 @@ export const launchAndroidSimulator = async (
                 if (err.includes && err.includes('WHPX')) {
                     logWarning(err);
                     logError(
-                        'It seems you do not have the Windows Hypervisor Platform virtualization enabled. Enter windows features in the Windows search box and select Turn Windows features on or off in the search results. In the Windows Features dialog, enable both Hyper-V and Windows Hypervisor Platform.',
-                        true
+                        'It seems you do not have the Windows Hypervisor Platform virtualization enabled. Enter windows features in the Windows search box and select Turn Windows features on or off in the search results. In the Windows Features dialog, enable both Hyper-V and Windows Hypervisor Platform.'
                     );
                     return false;
                 }
@@ -448,7 +447,7 @@ export const connectToWifiDevice = async (target: string) => {
 
     const deviceResponse = await execCLI(CLI_ANDROID_ADB, connect_str);
     if (deviceResponse.includes('connected')) return true;
-    logError(`Failed to ${connect_str}`, false, true);
+    logError(`Failed to ${connect_str}`, { skipAnalytics: true });
     return false;
 };
 
@@ -647,7 +646,7 @@ const _createEmulator = (c: RnvContext, apiVersion: string, emuPlatform: string,
                 ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER
             )
         )
-        .catch((e) => logError(e, true));
+        .catch((e) => logError(e));
 };
 
 const waitForEmulatorToBeReady = (emulator: string) =>

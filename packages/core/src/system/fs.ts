@@ -777,8 +777,7 @@ export const loadFile = <T, K extends Extract<keyof T, string>>(
 
         return fileObj[key];
     } catch (e) {
-        logError(`loadFile: ${pathObj[key]} :: ${e}`, true); // crash if there's an error in the config file
-        return false;
+        throw new Error(`loadFile: ${pathObj[key]} :: ${e}`); // crash if there's an error in the config file
     }
 };
 

@@ -99,7 +99,7 @@ export const getAndroidDeviceToRunOn = async () => {
         if (activeDevices.length || inactiveDevices.length) {
             // No device active and device param is passed, exiting
             if (c.program.device && !activeDevices.length) {
-                return logError('No active devices found, please connect one or remove the device argument', true);
+                return Promise.reject('No active devices found, please connect one or remove the device argument');
             }
             if (!foundDevice && (_isString(target) || _isString(device))) {
                 logInfo(
@@ -142,7 +142,7 @@ export const getAndroidDeviceToRunOn = async () => {
             }
         } else {
             if (c.program.device) {
-                return logError('No active devices found, please connect one or remove the device argument', true);
+                return Promise.reject('No active devices found, please connect one or remove the device argument');
             }
             await askForNewEmulator();
             const device = await checkForActiveEmulator();

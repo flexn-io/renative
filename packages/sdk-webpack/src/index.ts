@@ -247,7 +247,7 @@ export const runWebpackServer = async (enableRemoteDebugger?: boolean) => {
         );
         await _runWebBrowser(devServerHost, port, false);
         if (!bundleAssets) {
-            logSummary('BUNDLER STARTED');
+            logSummary({ header: 'BUNDLER STARTED' });
         }
         await _runWebDevServer(c, enableRemoteDebugger);
     } else {
@@ -256,7 +256,7 @@ export const runWebpackServer = async (enableRemoteDebugger?: boolean) => {
         if (resetCompleted) {
             await _runWebBrowser(devServerHost, port, false);
             if (!bundleAssets) {
-                logSummary('BUNDLER STARTED');
+                logSummary({ header: 'BUNDLER STARTED' });
             }
             await _runWebDevServer(c, enableRemoteDebugger);
         } else {

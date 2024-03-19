@@ -40,7 +40,7 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
                 }
                 await runAndroid(runDevice!);
                 if (!bundleAssets) {
-                    logSummary('BUNDLER STARTED');
+                    logSummary({ header: 'BUNDLER STARTED' });
                 }
                 return waitForBundlerIfRequired();
             }
@@ -52,7 +52,7 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
                 await startBundlerIfRequired(RnvTaskName.run, originTask);
                 await runXcodeProject(runDeviceArgs);
                 if (!bundleAssets) {
-                    logSummary('BUNDLER STARTED');
+                    logSummary({ header: 'BUNDLER STARTED' });
                 }
                 return waitForBundlerIfRequired();
             }

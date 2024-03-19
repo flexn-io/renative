@@ -12,11 +12,7 @@ import { getContext } from '../context/provider';
 export const logErrorPlatform = () => {
     const c = getContext();
 
-    logError(
-        `Platform: ${chalk().bold(c.platform)} doesn't support command: ${chalk().bold(c.command)}`,
-        true // kill it if we're not supporting this
-    );
-    return false;
+    return Promise.reject(`Platform: ${chalk().bold(c.platform)} doesn't support command: ${chalk().bold(c.command)}`);
 };
 
 export const generatePlatformChoices = () => {

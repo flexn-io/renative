@@ -307,7 +307,7 @@ export const getInstalledTemplateOptions = (): PromptOptions | null => {
     if (c.buildConfig.templates) {
         return generateOptions(c.buildConfig.templates);
     }
-    logError("You don't have any local templates installed", false, true);
+    logError("You don't have any local templates installed", { skipAnalytics: true });
     return null;
 };
 

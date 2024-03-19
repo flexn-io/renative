@@ -7,6 +7,18 @@ import { findSuitableGlobalTask, findSuitableTask, initializeTask } from './task
 import { updateRenativeConfigs } from './plugins';
 import { checkAndBootstrapIfRequired } from './projects/bootstrap';
 import { loadDefaultConfigTemplates } from './configs';
+import { getApi } from './api/provider';
+
+export const exitRnvCore = async (code: number) => {
+    const ctx = getContext();
+    const api = getApi();
+
+    if (ctx.process) {
+        api.analytics.teardown().then(() => {
+            ctx.process.exit(code);
+        });
+    }
+};
 
 export const executeRnvCore = async () => {
     const c = getContext();

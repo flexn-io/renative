@@ -65,7 +65,7 @@ export const runWebNext = async () => {
         await _runWebBrowser(devServerHost, port, false);
 
         if (!bundleAssets) {
-            logSummary('BUNDLER STARTED');
+            logSummary({ header: 'BUNDLER STARTED' });
         }
         await runWebDevServer(c);
     } else {
@@ -74,7 +74,7 @@ export const runWebNext = async () => {
         if (resetCompleted) {
             await _runWebBrowser(devServerHost, port, false);
             if (!bundleAssets) {
-                logSummary('BUNDLER STARTED');
+                logSummary({ header: 'BUNDLER STARTED' });
             }
             await runWebDevServer(c);
         } else {

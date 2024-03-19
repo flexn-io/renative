@@ -2,7 +2,6 @@ import program from 'commander';
 import fs from 'fs';
 import path from 'path';
 import {
-    logComplete,
     logError,
     getContext,
     generateStringFromTaskOption,
@@ -19,13 +18,14 @@ import {
     executeRnvCore,
     getConfigProp,
     doResolve,
+    exitRnvCore,
 } from '@rnv/core';
 import { Telemetry } from '@rnv/sdk-telemetry';
 import EngineCore from '@rnv/engine-core';
 
 import Spinner from './ora';
 import Prompt from './prompt';
-import Logger from './logger';
+import Logger, { logSummary } from './logger';
 
 const terminateProcesses = (): void => {
     const { runningProcesses } = getContext();
@@ -93,11 +93,14 @@ export const run = ({ RNV_HOME_DIR }: { RNV_HOME_DIR?: string }) => {
         RNV_HOME_DIR,
     })
         .then(() => {
-            logComplete(!getContext().runtime.keepSessionActive);
+            logSummary();
+            exitRnvCore(0);
         })
         .catch((e: unknown) => {
             terminateProcesses();
-            logError(e, true);
+            logError(e);
+            logSummary();
+            exitRnvCore(1);
         });
 };
 

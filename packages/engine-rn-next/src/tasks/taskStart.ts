@@ -32,7 +32,7 @@ const taskStart: RnvTaskFn = async (c, parentTask, originTask) => {
     if (shouldSkipTask(RnvTaskName.start, originTask)) return true;
 
     if (hosted) {
-        return logError('This platform does not support hosted mode', true);
+        return Promise.reject('This platform does not support hosted mode');
     }
     switch (platform) {
         case 'web':

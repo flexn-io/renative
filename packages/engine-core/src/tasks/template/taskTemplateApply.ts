@@ -27,7 +27,7 @@ const taskTemplateApply: RnvTaskFn = async (c, _parentTask, originTask) => {
 
         return true;
     }
-    const opts = getInstalledTemplateOptions();
+    const opts = await getInstalledTemplateOptions();
 
     const { template } = await inquirerPrompt({
         type: 'list',

@@ -26,7 +26,6 @@ let chalkBlue: any = _chalk.rgb(colorBlue.r, colorBlue.g, colorBlue.b);
 
 // const RNV = 'ReNative';
 const PRIVATE_PARAMS = ['-k', '--key'];
-let _currentProcess: NodeJS.Process;
 let _isInfoEnabled = false;
 let _infoFilter: Array<string> = [];
 // let _c: RnvContext;
@@ -42,7 +41,6 @@ export const logInitialize = () => {
     // cnf();
     const ctx = getContext();
 
-    _currentProcess = ctx.process;
     _isInfoEnabled = !!ctx.program.info;
     _jsonOnly = !!ctx.program.json;
     _infoFilter = ctx.program.info?.split?.(',');
@@ -128,7 +126,7 @@ export function stripAnsi(string: string) {
 // };
 
 // const _configureLogger = (c: RnvContext, analytics: AnalyticsApi) => {
-//     // ctx.logMessages = [];
+//     // ctx.logging.logMessages = [];
 
 //     // _c = c;
 //     // if (!ctx.timeStart) ctx.timeStart = new Date();
@@ -153,7 +151,7 @@ _updateDefaultColors();
 
 export const logAndSave = (msg: string, skipLog?: boolean) => {
     const ctx = getContext();
-    if (ctx.logMessages && !ctx.logMessages.includes(msg)) ctx.logMessages.push(msg);
+    if (ctx.logging.logMessages && !ctx.logging.logMessages.includes(msg)) ctx.logging.logMessages.push(msg);
     if (!skipLog) console.log(`${msg}`);
 };
 
@@ -192,7 +190,7 @@ export const logToSummary = (v: string, sanitizePaths?: () => string) => {
     const ctx = getContext();
     if (ctx.program?.isHelpInvoked) return;
     const _v = sanitizePaths ? _sanitizePaths(v) : v;
-    ctx.logMessages.push(`\n${_v}`);
+    ctx.logging.logMessages.push(`\n${_v}`);
 };
 
 export const logRaw = (...args: Array<string>) => {
@@ -206,7 +204,7 @@ export const logRaw = (...args: Array<string>) => {
     console.log.apply(null, args);
 };
 
-export const logSummary = (header = '✔ SUMMARY') => {
+export const logSummary = (opts?: { header?: string; headerStyle?: 'success' | 'warning' | 'error' | 'none' }) => {
     const ctx = getContext();
     if (ctx.program?.isHelpInvoked) return;
 
@@ -220,9 +218,9 @@ export const logSummary = (header = '✔ SUMMARY') => {
     }
 
     let logContent = ''; //= printIntoBox(`All good as ${ICN_UNICORN} `);
-    if (ctx.logMessages && ctx.logMessages.length) {
+    if (ctx.logging.logMessages && ctx.logging.logMessages.length) {
         logContent = '';
-        ctx.logMessages.forEach((m) => {
+        ctx.logging.logMessages.forEach((m) => {
             logContent += `│ ${m}\n`;
         });
     }
@@ -235,9 +233,26 @@ export const logSummary = (header = '✔ SUMMARY') => {
     // if (ctx.process) {
     //     envString = `${ctx.process.platform} | ${ctx.process.arch} | node v${ctx.process.versions?.node}`;
     // }
+    const defaultHeaderStyle = ctx.logging.containsError
+        ? 'error'
+        : ctx.logging.containsWarning
+        ? 'warning'
+        : 'success';
+    const headerStyle = opts?.headerStyle || defaultHeaderStyle;
 
+    const headerPrefix =
+        headerStyle === 'success' ? '✔ ' : headerStyle === 'warning' ? '⚠ ' : headerStyle === 'error' ? '⨯ ' : '';
+    const headerTextPlain = `${headerPrefix}${opts?.header || 'SUMMARY'}`;
+    const headerChalk =
+        headerStyle === 'success'
+            ? currentChalk.green.bold
+            : headerStyle === 'warning'
+            ? currentChalk.yellow.bold
+            : headerStyle === 'error'
+            ? currentChalk.green.red
+            : (v: string) => v;
     let str = printBoxStart(
-        `${currentChalk.green.bold(header)} ${timeString} | rnv@${ctx.rnvVersion}`,
+        `${headerChalk(headerTextPlain)} ${timeString} | rnv@${ctx.rnvVersion}`,
         getCurrentCommand()
     );
 
@@ -496,6 +511,7 @@ export const logHook = (hook = '', msg = '') => {
 };
 
 export const logWarning = (msg: string | boolean | unknown) => {
+    const ctx = getContext();
     const msgSn = typeof msg === 'string' ? _sanitizePaths(msg) : String(msg);
     if (_jsonOnly) {
         return _printJson({
@@ -505,6 +521,7 @@ export const logWarning = (msg: string | boolean | unknown) => {
             message: stripAnsi(msgSn),
         });
     }
+    ctx.logging.containsWarning = true;
     logAndSave(currentChalk.yellow(`warn:${_getCurrentTask()} ${msgSn}`));
 };
 
@@ -546,12 +563,6 @@ export const logDebug = (...args: Array<string>) => {
 
 export const isInfoEnabled = () => _isInfoEnabled;
 
-export const logComplete = (isEnd = false) => {
-    if (_jsonOnly) return;
-    // console.log(currentChalk.green.bold(`✔ Done`));
-    if (isEnd) logEnd(0);
-};
-
 export const logSuccess = (msg: string) => {
     if (_jsonOnly) {
         return _printJson({
@@ -563,7 +574,7 @@ export const logSuccess = (msg: string) => {
     logAndSave(`${currentChalk.magenta(`info: ✔`)} ${_sanitizePaths(msg)}`);
 };
 
-export const logError = (e: Error | string | unknown, isEnd = false, skipAnalytics = false) => {
+export const logError = (e: Error | string | unknown, opts?: { skipAnalytics: boolean }) => {
     let err = '';
     if (typeof e === 'string') {
         err = e;
@@ -572,7 +583,7 @@ export const logError = (e: Error | string | unknown, isEnd = false, skipAnalyti
     }
     const ctx = getContext();
     const api = getApi();
-    if (!skipAnalytics) {
+    if (!opts?.skipAnalytics) {
         const extra = {
             command: getCurrentCommand(),
             version: ctx.rnvVersion,
@@ -585,6 +596,7 @@ export const logError = (e: Error | string | unknown, isEnd = false, skipAnalyti
         };
         api.analytics.captureException(err, { extra });
     }
+    ctx.logging.containsError = true;
 
     if (_jsonOnly) {
         _printJson({
@@ -594,25 +606,9 @@ export const logError = (e: Error | string | unknown, isEnd = false, skipAnalyti
             message: stripAnsi(_sanitizePaths(err)),
         });
     } else if (e && e instanceof Error) {
-        logAndSave(currentChalk.red(`error: ⨯ ${_getCurrentTask()} ${e.stack || e}\n`), isEnd);
+        logAndSave(currentChalk.red(`error: ⨯ ${_getCurrentTask()} ${e.stack || e}\n`));
     } else {
-        logAndSave(currentChalk.red(`error: ⨯ ${_getCurrentTask()} ${e}`), isEnd);
-    }
-
-    ctx.runtime.keepSessionActive = false;
-    if (isEnd) logEnd(1);
-};
-
-export const logEnd = (code: number) => {
-    const api = getApi();
-    if (!_jsonOnly) {
-        logSummary();
-    }
-
-    if (_currentProcess) {
-        api.analytics.teardown().then(() => {
-            _currentProcess.exit(code);
-        });
+        logAndSave(currentChalk.red(`error: ⨯ ${_getCurrentTask()} ${e}`));
     }
 };
 
@@ -682,7 +678,6 @@ export const printBoxEnd = () => _defaultColor('└─────────�
 
 const Logger: RnvApiLogger = {
     logHook,
-    logEnd,
     logInfo,
     logTask,
     logError,
@@ -692,7 +687,6 @@ const Logger: RnvApiLogger = {
     logWarning,
     logSuccess,
     logWelcome,
-    logComplete,
     logInitialize,
     logAndSave,
     getCurrentCommand,

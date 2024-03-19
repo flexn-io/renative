@@ -76,7 +76,11 @@ export type RnvContext<Payload = any, ExtraOptionKeys extends string = ProgramOp
     runtime: RnvContextRuntime;
     paths: RnvContextPaths;
     files: RnvContextFiles;
-    logMessages: Array<string>;
+    logging: {
+        logMessages: Array<string>;
+        containsError: boolean;
+        containsWarning: boolean;
+    };
     timeStart: Date;
     timeEnd: Date;
     isDefault: boolean;
@@ -101,7 +105,6 @@ export type RnvContextRuntime = {
     platform: RnvPlatform;
     isTargetTrue: boolean;
     bundleAssets: boolean;
-    keepSessionActive: boolean;
     hasAllEnginesRegistered: boolean;
     requiresBootstrap: boolean;
     forceBuildHookRebuild: boolean;

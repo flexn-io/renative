@@ -43,11 +43,10 @@ const taskStart: RnvTaskFn = async (c, parentTask, originTask) => {
         case 'webos':
         case 'tizenmobile':
         case 'tizenwatch':
-            // c.runtime.keepSessionActive = true;
             return runWebpackServer(isWeinreEnabled);
         default:
             if (hosted) {
-                return logError('This platform does not support hosted mode', true);
+                return Promise.reject('This platform does not support hosted mode');
             }
             return logErrorPlatform();
     }

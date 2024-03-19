@@ -51,7 +51,6 @@ const runtime: RnvContext['runtime'] = {
     versionCheckCompleted: false,
     requiresForcedTemplateApply: false,
     forceBuildHookRebuild: false,
-    keepSessionActive: false,
     requiresBootstrap: false,
     port: 3000,
     runtimeExtraProps: {},
@@ -60,7 +59,11 @@ const runtime: RnvContext['runtime'] = {
 export const generateContextDefaults = (): RnvContext => ({
     isDefault: true,
     isSystemWin: false,
-    logMessages: [],
+    logging: {
+        logMessages: [],
+        containsError: false,
+        containsWarning: false,
+    },
     timeEnd: new Date(),
     timeStart: new Date(),
     payload: {},

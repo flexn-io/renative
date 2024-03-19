@@ -114,6 +114,6 @@ Dev server running at: ${url}
             ...EnvVars.RNV_APP_ID(),
             ...CoreEnvVars.RNV_EXTENSIONS(),
         },
-    }).catch((e) => logError(e, true));
+    }).catch((e) => logError(e));
     return true;
 };

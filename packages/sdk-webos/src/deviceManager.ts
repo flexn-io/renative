@@ -20,7 +20,6 @@ import {
     ExecOptionsPresets,
     isSystemLinux,
     isSystemMac,
-    logError,
     logSuccess,
     getConfigProp,
     getAppFolder,
@@ -138,11 +137,10 @@ const launchAppOnSimulator = async (c: RnvContext, appPath: string) => {
     const webOS_cli_version_number = semver.coerce(webOS_cli_version);
 
     if (!webOS_cli_version_number) {
-        return logError(`Couldn't find webOS TV CLI. WebOS TV simulator requires webOS TV CLI 1.12 or higher.`, true);
+        return Promise.reject(`Couldn't find webOS TV CLI. WebOS TV simulator requires webOS TV CLI 1.12 or higher.`);
     } else if (semver.lt(webOS_cli_version_number, '1.12.0')) {
-        return logError(
-            `WebOS TV simulator requires webOS TV CLI 1.12 or higher. You are using webOS TV CLI ${webOS_cli_version_number}.`,
-            true
+        return Promise.reject(
+            `WebOS TV simulator requires webOS TV CLI 1.12 or higher. You are using webOS TV CLI ${webOS_cli_version_number}.`
         );
     }
 
