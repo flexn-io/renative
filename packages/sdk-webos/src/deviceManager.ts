@@ -66,14 +66,14 @@ export const launchWebOSimulator = async (target: string | boolean) => {
         webosSdkPath,
         `Simulator/${target}/${target}${c.isSystemWin ? '.exe' : c.isSystemLinux ? '.appimage' : '.app'}`
     );
-  
+
     if (c.isSystemWin || c.isSystemLinux) {
-        await executeAsync(c, ePath, ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY);
+        await executeAsync(ePath, ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY);
         logSuccess(`Succesfully launched ${target}`);
         return true;
     }
-  
-    await executeAsync(c, `${openCommand} ${ePath}`, ExecOptionsPresets.FIRE_AND_FORGET);
+
+    await executeAsync(`${openCommand} ${ePath}`, ExecOptionsPresets.FIRE_AND_FORGET);
     logSuccess(`Succesfully launched ${target}`);
     return true;
 };
