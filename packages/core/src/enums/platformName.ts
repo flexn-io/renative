@@ -1,4 +1,4 @@
-export const PlatformName = {
+export const RnvPlatformName = {
     android: 'android',
     androidtv: 'androidtv',
     androidwear: 'androidwear',

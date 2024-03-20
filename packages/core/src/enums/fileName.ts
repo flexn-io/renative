@@ -11,4 +11,4 @@ export const RnvFileName = {
     renativeEngine: 'renative.engine.json',
     package: 'package.json',
     // renativeProject: 'renative.project.json',
-};
+} as const;

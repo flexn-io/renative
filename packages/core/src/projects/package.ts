@@ -2,7 +2,7 @@ import path from 'path';
 import { fsExistsSync, fsWriteFileSync, loadFile, readObjectSync } from '../system/fs';
 import { logDefault, logWarning, logInfo } from '../logger';
 import { ConfigFileTemplate } from '../schema/configFiles/types';
-import { RnvFileName } from '../enums/rnvFileName';
+import { RnvFileName } from '../enums/fileName';
 import { getContext } from '../context/provider';
 
 const packageJsonIsValid = () => {

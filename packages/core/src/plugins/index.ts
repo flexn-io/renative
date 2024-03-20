@@ -25,7 +25,7 @@ import { ConfigFileOverrides, ConfigFilePlugin, ConfigFileTemplates } from '../s
 import { NpmPackageFile } from '../configs/types';
 import { getContext } from '../context/provider';
 import { getConfigProp } from '../context/contextProps';
-import { RnvFileName } from '../enums/rnvFileName';
+import { RnvFileName } from '../enums/fileName';
 import { AsyncCallback } from '../projects/types';
 
 const _getPluginScope = (plugin: RenativeConfigPlugin | string): RnvPluginScope => {

@@ -4,7 +4,7 @@ import { generateContextDefaults } from './defaults';
 import path from 'path';
 import { mkdirSync } from 'fs';
 import { isSystemWin } from '../system/is';
-import { RnvFileName } from '../enums/rnvFileName';
+import { RnvFileName } from '../enums/fileName';
 import { homedir } from 'os';
 
 export const generateContextPaths = (pathObj: RnvContextPathObj, dir: string, configName?: string) => {

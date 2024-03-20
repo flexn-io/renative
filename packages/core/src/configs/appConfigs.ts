@@ -3,7 +3,7 @@ import path from 'path';
 import { fsExistsSync, fsReaddirSync, fsLstatSync, readObjectSync } from '../system/fs';
 import { logDefault, logWarning } from '../logger';
 import { ConfigFileApp } from '../schema/configFiles/types';
-import { RnvFileName } from '../enums/rnvFileName';
+import { RnvFileName } from '../enums/fileName';
 import { getContext } from '../context/provider';
 
 const IGNORE_FOLDERS = ['.git'];

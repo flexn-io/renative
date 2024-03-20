@@ -6,7 +6,7 @@ import { logDefault, logInfo } from '../logger';
 import { configureTemplateFiles, configureEntryPoint } from '../templates';
 import { parseRenativeConfigs } from '../configs';
 import { ConfigFileApp, ConfigFileEngine, ConfigFileProject, ConfigFileTemplate } from '../schema/configFiles/types';
-import { RnvFileName } from '../enums/rnvFileName';
+import { RnvFileName } from '../enums/fileName';
 import { getContext } from '../context/provider';
 
 export const checkAndBootstrapIfRequired = async () => {

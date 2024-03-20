@@ -11,9 +11,9 @@ import { generateLocalConfig } from './configLocal';
 import { getWorkspaceDirPath } from './workspaces';
 import { generatePlatformTemplatePaths } from './configProject';
 import { ConfigFileTemplates } from '../schema/configFiles/types';
-import { RnvFileName } from '../enums/rnvFileName';
+import { RnvFileName } from '../enums/fileName';
 import { getContext } from '../context/provider';
-import { RnvFolderName } from '../enums/rnvFolderName';
+import { RnvFolderName } from '../enums/folderName';
 
 export const loadFileExtended = (fileObj: Record<string, any>, pathObj: RnvContextPathObj, key: RnvContextFileKey) => {
     const c = getContext();

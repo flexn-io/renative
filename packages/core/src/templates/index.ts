@@ -24,7 +24,7 @@ import { checkIfProjectAndNodeModulesExists } from '../projects/dependencies';
 import { ConfigFileApp, ConfigFileProject, ConfigFileTemplate } from '../schema/configFiles/types';
 import { PlatformKey } from '../schema/types';
 import { getConfigProp } from '../context/contextProps';
-import { RnvFileName } from '../enums/rnvFileName';
+import { RnvFileName } from '../enums/fileName';
 import { getContext } from '../context/provider';
 
 const _cleanProjectTemplateSync = (c: RnvContext) => {
