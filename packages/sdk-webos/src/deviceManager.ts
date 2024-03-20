@@ -1,6 +1,5 @@
 import path from 'path';
 import {
-    fsExistsSync,
     getRealPath,
     fsReadFileSync,
     getDirectories,
@@ -14,7 +13,6 @@ import {
     logInfo,
     logTask,
     logWarning,
-    isSystemWin,
     RnvContext,
     inquirerPrompt,
     ExecOptionsPresets,
@@ -66,14 +64,9 @@ export const launchWebOSimulator = async (c: RnvContext, target: string | boolea
 
     const ePath = path.join(
         webosSdkPath,
-        `Simulator/${target}/${target}${isSystemWin ? '.exe' : isSystemLinux ? '.appimage' : '.app'}`
+        `Simulator/${target}/${target}${c.isSystemWin ? '.exe' : isSystemLinux ? '.appimage' : '.app'}`
     );
-
-    if (!fsExistsSync(ePath)) {
-        return Promise.reject(`Can't find simulator at path: ${ePath}`);
-    }
-
-    if (isSystemWin || isSystemLinux) {
+    if (c.isSystemWin || isSystemLinux) {
         await executeAsync(c, ePath, ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY);
         logSuccess(`Succesfully launched ${target}`);
         return true;
