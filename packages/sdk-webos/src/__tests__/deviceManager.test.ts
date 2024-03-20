@@ -30,16 +30,17 @@ describe('launchWebOSimulator', () => {
         //GIVEN
         const ctx = getContext();
         const target = '';
+        ctx.isSystemWin = false;
+        jest.mocked(RnvCore).isSystemMac = true;
+        jest.mocked(RnvCore).isSystemLinux = false;
         jest.mocked(getRealPath).mockReturnValue('mock_webos_SDK_path');
         jest.mocked(getDirectories).mockReturnValue(['mock_sim_1', 'mock_sim_2']);
-
-        jest.mocked(launchWebOSimulator).mockResolvedValue(true);
+        jest.mocked(inquirerPrompt).mockResolvedValue({ selectedSimulator: 'mock_sim_1' });
 
         //WHEN
         const result = await launchWebOSimulator(ctx, target);
 
         //THEN
-
         expect(RnvCore.logWarning).toHaveBeenCalled();
         expect(result).toEqual(true);
     });

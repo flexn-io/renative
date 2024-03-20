@@ -71,7 +71,6 @@ export const launchWebOSimulator = async (c: RnvContext, target: string | boolea
         logSuccess(`Succesfully launched ${target}`);
         return true;
     }
-
     await executeAsync(c, `${openCommand} ${ePath}`, ExecOptionsPresets.FIRE_AND_FORGET);
     logSuccess(`Succesfully launched ${target}`);
     return true;
