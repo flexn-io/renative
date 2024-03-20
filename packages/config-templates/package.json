@@ -11,7 +11,8 @@
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
     "files": [
         "LICENSE",
-        "pluginTemplates"
+        "pluginTemplates",
+        "renative.templates.json"
     ],
     "repository": {
         "type": "git",

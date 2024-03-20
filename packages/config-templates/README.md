@@ -1,2 +1,2 @@
-# @rnv/plugins
+# @rnv/config-templates
 

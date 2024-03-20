@@ -1,4 +1,13 @@
-import { RnvFileName, cleanFolder, fsExistsSync, getContext, inquirerPrompt, logWarning, mkdirSync } from '@rnv/core';
+import {
+    RnvFileName,
+    cleanFolder,
+    fsExistsSync,
+    getContext,
+    inquirerPrompt,
+    logInfo,
+    logWarning,
+    mkdirSync,
+} from '@rnv/core';
 import type { NewProjectData } from '../types';
 import path from 'path';
 import { checkInputValue } from '../utils';
@@ -38,6 +47,8 @@ export const inquiryProjectName = async (data: NewProjectData) => {
 
         if (!confirm) {
             return Promise.reject('Cancelled by user');
+        } else {
+            logInfo('Cleaning up existing folder...');
         }
         await cleanFolder(c.paths.project.dir);
     }
