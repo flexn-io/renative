@@ -16,14 +16,13 @@ afterEach(() => {
 describe('launchWebOSimulator', () => {
     it('should fail if webos SDK path is not defined', async () => {
         //GIVEN
-        const ctx = getContext();
         const target = true;
         const errorMessage = `c.buildConfig.sdks.WEBOS_SDK undefined`;
 
         jest.mocked(getRealPath).mockReturnValue(undefined);
 
         //WHEN & THEN
-        await expect(launchWebOSimulator(ctx, target)).rejects.toBe(errorMessage);
+        await expect(launchWebOSimulator(target)).rejects.toBe(errorMessage);
     });
 
     it('should give log warning if target not found and resolve', async () => {
@@ -38,7 +37,7 @@ describe('launchWebOSimulator', () => {
         jest.mocked(inquirerPrompt).mockResolvedValue({ selectedSimulator: 'mock_sim_1' });
 
         //WHEN
-        const result = await launchWebOSimulator(ctx, target);
+        const result = await launchWebOSimulator(target);
 
         //THEN
         expect(RnvCore.logWarning).toHaveBeenCalled();
@@ -58,7 +57,7 @@ describe('launchWebOSimulator', () => {
         jest.mocked(inquirerPrompt).mockResolvedValue({ selectedSimulator: 'mock_sim_1' });
 
         //WHEN
-        const result = await launchWebOSimulator(ctx, target);
+        const result = await launchWebOSimulator(target);
 
         //THEN
         expect(result).toEqual(true);
@@ -77,7 +76,7 @@ describe('launchWebOSimulator', () => {
         jest.mocked(inquirerPrompt).mockResolvedValue({ selectedSimulator: 'mock_sim_1' });
 
         //WHEN
-        const result = await launchWebOSimulator(ctx, target);
+        const result = await launchWebOSimulator(target);
 
         //THEN
         expect(result).toEqual(true);
@@ -97,7 +96,7 @@ describe('launchWebOSimulator', () => {
         jest.mocked(inquirerPrompt).mockResolvedValue({ selectedSimulator: 'mock_sim_1' });
 
         //WHEN
-        const result = await launchWebOSimulator(ctx, target);
+        const result = await launchWebOSimulator(target);
 
         //THEN
         expect(result).toEqual(true);
