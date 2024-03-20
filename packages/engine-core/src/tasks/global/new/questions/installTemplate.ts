@@ -1,6 +1,7 @@
 import {
     NpmPackageFile,
     RnvFileName,
+    RnvFolderName,
     chalk,
     copyFileSync,
     copyFolderRecursiveSync,
@@ -95,7 +96,7 @@ export const inquiryInstallTemplate = async (data: NewProjectData) => {
         }
     }
 
-    const nmDir = path.join(c.paths.project.dir, '.rnv/npm_cache');
+    const nmDir = path.join(c.paths.project.dir, RnvFolderName.dotRnv, RnvFolderName.npmCache);
 
     if (localTemplatePath) {
         if (!fsExistsSync(localTemplatePath)) {
@@ -124,14 +125,14 @@ export const inquiryInstallTemplate = async (data: NewProjectData) => {
 
         // TODO: read .npmignore and .gitignore and apply those rules
         const ignorePaths = [
-            'node_modules',
+            RnvFolderName.nodeModules,
             'package-lock.json',
             'yarn.lock',
-            'platformBuilds',
+            RnvFolderName.platformBuilds,
             'builds',
-            'platformAssets',
-            'secrets',
-            '.rnv',
+            RnvFolderName.platformAssets,
+            RnvFolderName.secrets,
+            RnvFolderName.dotRnv,
         ];
         fsReaddirSync(localTemplatePath).forEach((file) => {
             if (!ignorePaths.includes(file) && localTemplatePath) {
@@ -146,15 +147,16 @@ export const inquiryInstallTemplate = async (data: NewProjectData) => {
         });
 
         // NOTE: this is a workaround for npm/yarn bug where manually added packages are overriden on next install
+        const filePath = `file:${RnvFolderName.dotRnv}/${RnvFolderName.npmCache}/${data.optionTemplates.selectedOption}`;
         data.files.project.packageJson = merge(data.files.project.packageJson, {
             devDependencies: {
-                [data.optionTemplates.selectedOption]: `file:.rnv/npm_cache/${data.optionTemplates.selectedOption}`,
+                [data.optionTemplates.selectedOption]: filePath,
             },
         });
         data.files.project.renativeConfig = merge(data.files.project.renativeConfig, {
             templates: {
                 [data.optionTemplates.selectedOption]: {
-                    version: `file:.rnv/npm_cache/${data.optionTemplates.selectedOption}`,
+                    version: filePath,
                 },
             },
         });

@@ -61,6 +61,8 @@ export * from './migrator';
 
 export * from './enums/taskName';
 export * from './enums/fileName';
+export * from './enums/folderName';
+export * from './enums/platformName';
 
 //TYPES
 export * from './engines/types';

@@ -386,15 +386,33 @@ const _populateExtraParameters = (c: RnvContext, task: RnvTask) => {
 };
 
 const _selectPlatform = async (c: RnvContext, suitableEngines: Array<RnvEngine>, task: string) => {
-    const supportedPlatforms: Partial<Record<PlatformKey, true>> = {};
+    let platforms: string[] = [];
+    const supportedEngPlatforms: string[] = [];
     suitableEngines.forEach((engine) => {
         getEngineTask(task, engine.tasks)?.platforms.forEach((plat) => {
-            supportedPlatforms[plat] = true;
+            supportedEngPlatforms.push(plat);
         });
     });
-    const platforms = Object.keys(supportedPlatforms);
 
-    if (platforms.length) {
+    const supProjPlatforms = c.buildConfig?.defaults?.supportedPlatforms;
+
+    if (supProjPlatforms) {
+        supProjPlatforms.forEach((plat) => {
+            if (supportedEngPlatforms.includes(plat)) {
+                platforms.push(plat);
+            }
+        });
+    } else {
+        platforms = supportedEngPlatforms;
+    }
+
+    if (platforms?.length === 1) {
+        logInfo(`Only one platform available for task: ${task}. Using ${chalk().bold(platforms[0])}`);
+        c.platform = platforms[0] as PlatformKey;
+        return;
+    }
+
+    if (platforms) {
         const { platform } = await inquirerPrompt({
             type: 'list',
             name: 'platform',
@@ -403,6 +421,9 @@ const _selectPlatform = async (c: RnvContext, suitableEngines: Array<RnvEngine>,
         });
         c.platform = platform;
     }
+    // else if (platforms.length === 1) {
+    //     c.platform = platforms[0] as PlatformKey;
+    // }
 };
 
 const _executePipe = async (c: RnvContext, task: string, phase: string) =>
