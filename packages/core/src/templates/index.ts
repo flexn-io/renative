@@ -26,6 +26,7 @@ import { PlatformKey } from '../schema/types';
 import { getConfigProp } from '../context/contextProps';
 import { RnvFileName } from '../enums/fileName';
 import { getContext } from '../context/provider';
+import { RnvFolderName } from '../enums/folderName';
 
 const _cleanProjectTemplateSync = (c: RnvContext) => {
     logDefault('_cleanProjectTemplateSync');
@@ -217,8 +218,11 @@ const getProjectTemplateMergedConfig = (templateConfig: ConfigFileTemplate | nul
 };
 
 const _copyIncludedPath = (c: RnvContext, name: string) => {
-    const sourcePath = path.join(c.paths.template.dir, name);
+    const sourcePathOriginal = path.join(c.paths.template.dir, name);
+    const sourceOverridePath = path.join(c.paths.template.dir, RnvFolderName.templateOverrides, name);
     const destPath = path.join(c.paths.project.dir, name);
+    // If override exists use it, otherwise use original and continue with rest of the logic
+    const sourcePath = fsExistsSync(sourceOverridePath) ? sourceOverridePath : sourcePathOriginal;
     if (!fsExistsSync(destPath) && fsExistsSync(sourcePath)) {
         try {
             if (fsLstatSync(sourcePath).isDirectory()) {
