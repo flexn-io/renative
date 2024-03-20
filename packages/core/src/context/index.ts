@@ -29,13 +29,19 @@ const populateLinkingInfo = (ctx: RnvContext) => {
 };
 
 export const createRnvContext = (ctxOpts?: CreateContextOptions) => {
-    // console.trace('CREATE_RNV_CONTEXT', !!ctx, !!global.RNV_CONTEXT, global.RNV_CONTEXT?.isDefault);
+    // console.trace('CREATE_RNV_CONTEXT', !!ctxOpts, !!global.RNV_CONTEXT, global.RNV_CONTEXT?.isDefault);
 
+    const isJestMode = process.env.JEST_WORKER_ID !== undefined;
     let haltExecution = false;
-    // Handle new imports of @rnv/core
-    if (!ctxOpts) {
+    if (!!ctxOpts && !!global.RNV_CONTEXT && global.RNV_CONTEXT?.isDefault) {
+        // Handle direct initialize of context
+        if (!isJestMode) {
+            haltExecution = true;
+        }
+    } else if (!ctxOpts) {
+        // Handle new imports of @rnv/core
         if (!global.RNV_CONTEXT) {
-            if (process.env.JEST_WORKER_ID === undefined) {
+            if (!isJestMode) {
                 // Initial empty context to be initialized
                 global.RNV_CONTEXT = generateContextDefaults();
                 return;
@@ -57,7 +63,7 @@ export const createRnvContext = (ctxOpts?: CreateContextOptions) => {
 FATAL: Multiple instances of @rnv/core detected: 
 
 1 (${global.RNV_CONTEXT.timeStart.toISOString()}) 
-  ${global.RNV_CONTEXT.paths.rnvCore.dir}
+  ${global.RNV_CONTEXT.paths?.rnvCore?.dir || 'UNKNOWN (can happen if running older versions of RNV)'}
 2 (${new Date().toISOString()}) 
   ${path.join(__dirname, '../..')}
 

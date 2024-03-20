@@ -151,7 +151,7 @@ _updateDefaultColors();
 
 export const logAndSave = (msg: string, skipLog?: boolean) => {
     const ctx = getContext();
-    if (ctx.logging.logMessages && !ctx.logging.logMessages.includes(msg)) ctx.logging.logMessages.push(msg);
+    if (ctx.logging?.logMessages && !ctx.logging?.logMessages.includes(msg)) ctx.logging?.logMessages.push(msg);
     if (!skipLog) console.log(`${msg}`);
 };
 
@@ -596,7 +596,9 @@ export const logError = (e: Error | string | unknown, opts?: { skipAnalytics: bo
         };
         api.analytics.captureException(err, { extra });
     }
-    ctx.logging.containsError = true;
+    if (ctx.logging) {
+        ctx.logging.containsError = true;
+    }
 
     if (_jsonOnly) {
         _printJson({
