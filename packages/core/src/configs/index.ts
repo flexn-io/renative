@@ -13,6 +13,7 @@ import { generatePlatformTemplatePaths } from './configProject';
 import { ConfigFileTemplates } from '../schema/configFiles/types';
 import { RnvFileName } from '../enums/rnvFileName';
 import { getContext } from '../context/provider';
+import { RnvFolderName } from '../enums/rnvFolderName';
 
 export const loadFileExtended = (fileObj: Record<string, any>, pathObj: RnvContextPathObj, key: RnvContextFileKey) => {
     const c = getContext();
@@ -183,25 +184,30 @@ const _loadConfigFiles = (
     // return result;
 };
 
+const generateLookupPaths = (pkgName: string) => {
+    const pathLookups: string[] = [
+        path.join(__dirname, '../..', RnvFolderName.nodeModules, pkgName),
+        path.resolve(__dirname, '../../..', RnvFolderName.nodeModules, pkgName),
+        path.resolve(__dirname, '../../../..', RnvFolderName.nodeModules, pkgName),
+    ];
+    return pathLookups;
+};
+
 export const loadDefaultConfigTemplates = async () => {
     const ctx = getContext();
     //This comes from project dependency
     const pkgName = '@rnv/config-templates';
+
     let configTemplatesPath = doResolve('@rnv/config-templates');
 
     if (!fsExistsSync(configTemplatesPath)) {
-        //This comes from rnv built-in dependency (installed via npm)
-        configTemplatesPath = path.resolve(__dirname, '../../node_modules', pkgName);
-        if (!fsExistsSync(configTemplatesPath)) {
-            //This comes from rnv built-in dependency (installed via yarn might install it one level up)
-            configTemplatesPath = path.resolve(__dirname, '../../..', pkgName);
-            if (!fsExistsSync(configTemplatesPath)) {
-                // This comes from rnv built-in dependency (installed via yarn might install it 2 level up but scoped to @rnv)
-                configTemplatesPath = path.resolve(__dirname, '../../../../', pkgName);
-                if (!fsExistsSync(configTemplatesPath)) {
-                    return Promise.reject(`RNV Cannot find package: ${chalk().bold(configTemplatesPath)}`);
-                }
-            }
+        const pathLookups = generateLookupPaths(pkgName);
+        configTemplatesPath = pathLookups.find((v) => fsExistsSync(v));
+
+        if (!configTemplatesPath) {
+            return Promise.reject(
+                `RNV Cannot find package: ${chalk().bold(pkgName)}. Looked in: ${chalk().gray(pathLookups.join(', '))}`
+            );
         }
     }
 
