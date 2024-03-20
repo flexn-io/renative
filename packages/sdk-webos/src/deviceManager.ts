@@ -16,8 +16,6 @@ import {
     RnvContext,
     inquirerPrompt,
     ExecOptionsPresets,
-    isSystemLinux,
-    isSystemMac,
     logError,
     logSuccess,
     getConfigProp,
@@ -64,9 +62,9 @@ export const launchWebOSimulator = async (c: RnvContext, target: string | boolea
 
     const ePath = path.join(
         webosSdkPath,
-        `Simulator/${target}/${target}${c.isSystemWin ? '.exe' : isSystemLinux ? '.appimage' : '.app'}`
+        `Simulator/${target}/${target}${c.isSystemWin ? '.exe' : c.isSystemLinux ? '.appimage' : '.app'}`
     );
-    if (c.isSystemWin || isSystemLinux) {
+    if (c.isSystemWin || c.isSystemLinux) {
         await executeAsync(c, ePath, ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY);
         logSuccess(`Succesfully launched ${target}`);
         return true;
@@ -160,7 +158,7 @@ const launchAppOnSimulator = async (c: RnvContext, appPath: string) => {
 
     const regex = /\d+(\.\d+)?/g;
     const version = selectedOption.match(regex)[0];
-    if (isSystemMac) {
+    if (c.isSystemMac) {
         logInfo(
             `If you encounter damaged simulator error, run this command line: xattr -c ${simulatorDirPath}/${selectedOption}/${selectedOption}.app`
         );

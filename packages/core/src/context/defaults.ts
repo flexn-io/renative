@@ -61,6 +61,8 @@ const runtime: RnvContext['runtime'] = {
 export const generateContextDefaults = (): RnvContext => ({
     isDefault: true,
     isSystemWin: false,
+    isSystemLinux: false,
+    isSystemMac: false,
     logMessages: [],
     timeEnd: new Date(),
     timeStart: new Date(),
