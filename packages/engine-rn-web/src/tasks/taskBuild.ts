@@ -21,29 +21,29 @@ const taskBuild: RnvTaskFn = async (c, parentTask, originTask) => {
     // Build aways bundles assets
     c.runtime.forceBundleAssets = true;
 
-    await executeOrSkipTask(c, RnvTaskName.configure, RnvTaskName.build, originTask);
+    await executeOrSkipTask(RnvTaskName.configure, RnvTaskName.build, originTask);
 
-    if (shouldSkipTask(c, RnvTaskName.build, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.build, originTask)) return true;
 
     switch (platform) {
         case 'web':
         case 'webtv':
         case 'chromecast':
-            await buildWeb(c);
+            await buildWeb();
             return;
         case 'kaios':
-            await buildKaiOSProject(c);
+            await buildKaiOSProject();
             return;
         case 'tizen':
         case 'tizenmobile':
         case 'tizenwatch':
-            await buildTizenProject(c);
+            await buildTizenProject();
             return;
         case 'webos':
-            await buildWebOSProject(c);
+            await buildWebOSProject();
             return;
         default:
-            logErrorPlatform(c);
+            logErrorPlatform();
     }
 };
 

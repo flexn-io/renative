@@ -44,24 +44,28 @@ const AppDelegateMethod = z.union([
 const AppDelegateMm = z.object({
     appDelegateMethods: z.optional(
         z.object({
-            application: z.object({
-                didFinishLaunchingWithOptions: z.array(AppDelegateMethod),
-                applicationDidBecomeActive: z.array(AppDelegateMethod),
-                open: z.array(AppDelegateMethod),
-                supportedInterfaceOrientationsFor: z.array(AppDelegateMethod),
-                didReceiveRemoteNotification: z.array(AppDelegateMethod),
-                didFailToRegisterForRemoteNotificationsWithError: z.array(AppDelegateMethod),
-                didReceive: z.array(AppDelegateMethod),
-                didRegister: z.array(AppDelegateMethod),
-                didRegisterForRemoteNotificationsWithDeviceToken: z.array(AppDelegateMethod),
-                continue: z.array(AppDelegateMethod),
-                didConnectCarInterfaceController: z.array(AppDelegateMethod),
-                didDisconnectCarInterfaceController: z.array(AppDelegateMethod),
-            }),
-            userNotificationCenter: z.object({
-                willPresent: z.array(AppDelegateMethod),
-                didReceiveNotificationResponse: z.array(AppDelegateMethod),
-            }),
+            application: z
+                .object({
+                    didFinishLaunchingWithOptions: z.array(AppDelegateMethod).optional(),
+                    applicationDidBecomeActive: z.array(AppDelegateMethod).optional(),
+                    open: z.array(AppDelegateMethod).optional(),
+                    supportedInterfaceOrientationsFor: z.array(AppDelegateMethod).optional(),
+                    didReceiveRemoteNotification: z.array(AppDelegateMethod).optional(),
+                    didFailToRegisterForRemoteNotificationsWithError: z.array(AppDelegateMethod).optional(),
+                    didReceive: z.array(AppDelegateMethod).optional(),
+                    didRegister: z.array(AppDelegateMethod).optional(),
+                    didRegisterForRemoteNotificationsWithDeviceToken: z.array(AppDelegateMethod).optional(),
+                    continue: z.array(AppDelegateMethod).optional(),
+                    didConnectCarInterfaceController: z.array(AppDelegateMethod).optional(),
+                    didDisconnectCarInterfaceController: z.array(AppDelegateMethod).optional(),
+                })
+                .optional(),
+            userNotificationCenter: z
+                .object({
+                    willPresent: z.array(AppDelegateMethod).optional(),
+                    didReceiveNotificationResponse: z.array(AppDelegateMethod).optional(),
+                })
+                .optional(),
         })
     ),
     appDelegateImports: z.optional(z.array(z.string())),

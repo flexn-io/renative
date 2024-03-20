@@ -418,71 +418,54 @@
         "templateConfig": {
           "type": "object",
           "properties": {
+            "disabled": {
+              "type": "boolean"
+            },
             "includedPaths": {
               "type": "array",
               "items": {
-                "type": "string"
-              },
-              "description": "Defines list of all file/dir paths you want to include in template"
-            },
-            "bootstrapQuestions": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "options": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "title": {
-                          "type": "string"
-                        },
-                        "value": {
-                          "type": "object",
-                          "properties": {},
-                          "additionalProperties": false
-                        }
-                      },
-                      "required": [
-                        "title",
-                        "value"
-                      ],
-                      "additionalProperties": false
-                    }
+                "anyOf": [
+                  {
+                    "type": "string"
                   },
-                  "configProp": {
+                  {
                     "type": "object",
                     "properties": {
-                      "prop": {
-                        "type": "string"
+                      "paths": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
                       },
-                      "key": {
-                        "type": "string"
+                      "engines": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
                       }
                     },
                     "required": [
-                      "prop",
-                      "key"
+                      "paths"
                     ],
                     "additionalProperties": false
-                  },
-                  "type": {
-                    "type": "string"
-                  },
-                  "title": {
-                    "type": "string"
                   }
-                },
-                "required": [
-                  "type",
-                  "title"
-                ],
-                "additionalProperties": false
+                ]
               },
-              "description": "Defines list of custom bootstrap questions"
+              "description": "Defines list of all file/dir paths you want to include in template"
             },
-            "packageTemplate": {
+            "renative_json": {
+              "type": "object",
+              "properties": {
+                "$schema": {
+                  "type": "string"
+                },
+                "extendsTemplate": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": true
+            },
+            "package_json": {
               "type": "object",
               "properties": {
                 "dependencies": {
@@ -492,13 +475,13 @@
                   }
                 },
                 "devDependencies": {
-                  "$ref": "#/definitions/rnv.project/properties/templateConfig/properties/packageTemplate/properties/dependencies"
+                  "$ref": "#/definitions/rnv.project/properties/templateConfig/properties/package_json/properties/dependencies"
                 },
                 "peerDependencies": {
-                  "$ref": "#/definitions/rnv.project/properties/templateConfig/properties/packageTemplate/properties/dependencies"
+                  "$ref": "#/definitions/rnv.project/properties/templateConfig/properties/package_json/properties/dependencies"
                 },
                 "optionalDependencies": {
-                  "$ref": "#/definitions/rnv.project/properties/templateConfig/properties/packageTemplate/properties/dependencies"
+                  "$ref": "#/definitions/rnv.project/properties/templateConfig/properties/package_json/properties/dependencies"
                 },
                 "name": {
                   "type": "string"
@@ -507,7 +490,7 @@
                   "type": "string"
                 }
               },
-              "additionalProperties": false
+              "additionalProperties": true
             }
           },
           "additionalProperties": false,
@@ -1163,7 +1146,7 @@
                       "properties": {},
                       "additionalProperties": false
                     },
-                    "MainActivity_java": {
+                    "MainActivity_kt": {
                       "type": "object",
                       "properties": {
                         "onCreate": {
@@ -1198,7 +1181,7 @@
                       },
                       "additionalProperties": false
                     },
-                    "MainApplication_java": {
+                    "MainApplication_kt": {
                       "type": "object",
                       "properties": {
                         "imports": {
@@ -1924,20 +1907,6 @@
                                   }
                                 }
                               },
-                              "required": [
-                                "didFinishLaunchingWithOptions",
-                                "applicationDidBecomeActive",
-                                "open",
-                                "supportedInterfaceOrientationsFor",
-                                "didReceiveRemoteNotification",
-                                "didFailToRegisterForRemoteNotificationsWithError",
-                                "didReceive",
-                                "didRegister",
-                                "didRegisterForRemoteNotificationsWithDeviceToken",
-                                "continue",
-                                "didConnectCarInterfaceController",
-                                "didDisconnectCarInterfaceController"
-                              ],
                               "additionalProperties": false
                             },
                             "userNotificationCenter": {
@@ -1956,17 +1925,9 @@
                                   }
                                 }
                               },
-                              "required": [
-                                "willPresent",
-                                "didReceiveNotificationResponse"
-                              ],
                               "additionalProperties": false
                             }
                           },
-                          "required": [
-                            "application",
-                            "userNotificationCenter"
-                          ],
                           "additionalProperties": false
                         },
                         "appDelegateImports": {
@@ -3890,11 +3851,11 @@
                                 },
                                 "additionalProperties": false
                               },
-                              "MainActivity_java": {
-                                "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/templateAndroid/properties/MainActivity_java"
+                              "MainActivity_kt": {
+                                "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/templateAndroid/properties/MainActivity_kt"
                               },
-                              "MainApplication_java": {
-                                "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/templateAndroid/properties/MainApplication_java"
+                              "MainApplication_kt": {
+                                "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/templateAndroid/properties/MainApplication_kt"
                               }
                             },
                             "additionalProperties": false

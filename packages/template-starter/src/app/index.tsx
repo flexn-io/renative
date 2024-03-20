@@ -23,7 +23,7 @@ const AppThemed = () => {
 
     return (
         <View style={theme.styles.wrapper}>
-            <ScrollView contentContainerStyle={theme.styles.container}>
+            <ScrollView style={theme.styles.scrollView} contentContainerStyle={theme.styles.container}>
                 <StatusBar
                     backgroundColor={theme.styles.container.backgroundColor}
                     barStyle={dark ? 'light-content' : 'dark-content'}

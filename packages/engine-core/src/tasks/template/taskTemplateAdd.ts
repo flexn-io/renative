@@ -12,9 +12,9 @@ import {
     RnvTaskName,
 } from '@rnv/core';
 
-const _writeObjectSync = (c: RnvContext, p: string, s: object) => {
+const _writeObjectSync = (p: string, s: object) => {
     writeFileSync(p, s);
-    generateBuildConfig(c);
+    generateBuildConfig();
 };
 
 export const _addTemplate = (c: RnvContext, template: string) => {
@@ -31,15 +31,15 @@ export const _addTemplate = (c: RnvContext, template: string) => {
         };
     }
 
-    _writeObjectSync(c, c.paths.project.config, cnf);
+    _writeObjectSync(c.paths.project.config, cnf);
 };
 
 const taskTemplateAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskTemplateAdd');
 
-    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.templateAdd, originTask);
+    await executeTask(RnvTaskName.projectConfigure, RnvTaskName.templateAdd, originTask);
 
-    const opts = getTemplateOptions(c);
+    const opts = getTemplateOptions();
 
     const { template } = await inquirerPrompt({
         type: 'list',

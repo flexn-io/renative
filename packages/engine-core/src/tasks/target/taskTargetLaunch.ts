@@ -16,12 +16,12 @@ import { launchTizenSimulator } from '@rnv/sdk-tizen';
 import { launchWebOSimulator } from '@rnv/sdk-webos';
 import { launchKaiOSSimulator } from '@rnv/sdk-kaios';
 
-const taskTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) => {
+const taskTargetLaunch: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskTargetLaunch');
 
-    await isPlatformSupported(c, true);
-    await checkAndConfigureSdks(c);
-    await executeTask(c, RnvTaskName.workspaceConfigure, RnvTaskName.targetLaunch, originTask);
+    await isPlatformSupported(true);
+    await checkAndConfigureSdks();
+    await executeTask(RnvTaskName.workspaceConfigure, RnvTaskName.targetLaunch, originTask);
 
     const { platform, program } = c;
     let target = program?.target;
@@ -33,7 +33,6 @@ const taskTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) => {
             options.push({ name: `${projectTarget} (project default)`, value: projectTarget });
         }
         const workspaceTarget = c.files.workspace.config?.defaultTargets?.[platform];
-
         if (workspaceTarget) {
             options.push({ name: `${workspaceTarget} (global default)`, value: workspaceTarget });
         }
@@ -52,23 +51,23 @@ const taskTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) => {
         }
     }
 
-    await checkSdk(c);
+    await checkSdk();
 
     switch (platform) {
         case 'android':
         case 'androidtv':
         case 'firetv':
         case 'androidwear':
-            return launchAndroidSimulator(c, target);
+            return launchAndroidSimulator(target);
         case 'ios':
         case 'tvos':
-            return launchAppleSimulator(c, target);
+            return launchAppleSimulator(target);
         case 'tizen':
-            return launchTizenSimulator(c, target);
+            return launchTizenSimulator(target);
         case 'webos':
-            return launchWebOSimulator(c, target);
+            return launchWebOSimulator(target);
         case 'kaios':
-            return launchKaiOSSimulator(c);
+            return launchKaiOSSimulator(target);
         default:
             return Promise.reject(
                 `"target launch" command does not support ${chalk().white.bold(

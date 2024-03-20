@@ -29,22 +29,22 @@ const taskEject: RnvTaskFn = async (c, _parentTask, originTask) => {
 
     c.runtime._skipNativeDepResolutions = true;
 
-    await executeOrSkipTask(c, RnvTaskName.package, RnvTaskName.eject, originTask);
+    await executeOrSkipTask(RnvTaskName.package, RnvTaskName.eject, originTask);
 
-    if (shouldSkipTask(c, RnvTaskName.eject, originTask)) return true;
+    if (shouldSkipTask(RnvTaskName.eject, originTask)) return true;
 
     switch (platform) {
         case 'ios':
         case 'macos':
-            await ejectXcodeProject(c);
+            await ejectXcodeProject();
             return true;
         case 'android':
         case 'androidtv':
         case 'androidwear':
-            await ejectGradleProject(c);
+            await ejectGradleProject();
             return true;
         default:
-            await logErrorPlatform(c);
+            await logErrorPlatform();
             return true;
     }
 };

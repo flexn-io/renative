@@ -23,11 +23,11 @@ const taskKill: RnvTaskFn = async (c, _parentTask, originTask) => {
     const results = [];
     let ports: Partial<Record<PlatformKey, number>> = {};
 
-    await configureRuntimeDefaults(c);
+    await configureRuntimeDefaults();
 
     if (c.paths.project.configExists) {
-        await executeTask(c, RnvTaskName.appConfigure, RnvTaskName.kill, originTask);
-        await configureRuntimeDefaults(c);
+        await executeTask(RnvTaskName.appConfigure, RnvTaskName.kill, originTask);
+        await configureRuntimeDefaults();
         platArray = Object.values(c.runtime.supportedPlatforms);
         ports = c.buildConfig?.defaults?.ports || {};
     }
@@ -36,7 +36,7 @@ const taskKill: RnvTaskFn = async (c, _parentTask, originTask) => {
         const port = ports?.[plat.platform];
         plat.port = port;
         if (port) {
-            results.push(checkPortInUse(c, plat.platform, port));
+            results.push(checkPortInUse(port));
         }
     }
     const usedPortsArr = await Promise.all(results);

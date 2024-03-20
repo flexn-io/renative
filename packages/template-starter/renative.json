@@ -1,4 +1,5 @@
 {
+    "$schema": ".rnv/schema/rnv.project.json",
     "engines": {
         "@rnv/engine-lightning": "source:rnv",
         "@rnv/engine-rn": "source:rnv",
@@ -7,7 +8,6 @@
         "@rnv/engine-rn-tvos": "source:rnv",
         "@rnv/engine-rn-web": "source:rnv"
     },
-    "$schema": ".rnv/schema/rnv.project.json",
     "isTemplate": true,
     "projectName": "@rnv/template-starter",
     "enableHookRebuild": false,
@@ -95,7 +95,7 @@
                     "org.gradle.parallel": true,
                     "org.gradle.configureondemand": true
                 },
-                "MainActivity_java": {
+                "MainActivity_kt": {
                     "onCreate": "super.onCreate(null)"
                 }
             }

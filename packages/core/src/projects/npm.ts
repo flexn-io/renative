@@ -5,6 +5,7 @@ import { logDefault, logWarning, logError, logInfo, logDebug, logSuccess } from 
 import { doResolve } from '../system/resolve';
 import { RnvContext } from '../context/types';
 import { inquirerPrompt } from '../api';
+import { getContext } from '../context/provider';
 
 export const checkNpxIsInstalled = async () => {
     logDefault('checkNpxIsInstalled');
@@ -29,11 +30,11 @@ export const areNodeModulesInstalled = () => !!doResolve('resolve', false);
 
 type NpmVersion = { name: string; value: string };
 
-export const listAndSelectNpmVersion = async (c: RnvContext, npmPackage: string) => {
-    const templateVersionsStr = await executeAsync(c, `npm view ${npmPackage} versions`);
+export const listAndSelectNpmVersion = async (npmPackage: string) => {
+    const templateVersionsStr = await executeAsync(`npm view ${npmPackage} versions`);
     const versionArr = templateVersionsStr.replace(/\r?\n|\r|\s|'|\[|\]/g, '').split(',');
 
-    const templateTagsStr = await executeAsync(c, `npm dist-tag ls ${npmPackage}`);
+    const templateTagsStr = await executeAsync(`npm dist-tag ls ${npmPackage}`);
     const tagArr: Array<{
         name: string;
         version: string;
@@ -105,7 +106,9 @@ const _getInstallScript = (c: RnvContext) => {
 
 export const isYarnInstalled = () => commandExistsSync('yarn') || doResolve('yarn', false);
 
-export const installPackageDependencies = async (c: RnvContext, failOnError = false) => {
+export const installPackageDependencies = async (failOnError = false) => {
+    const c = getContext();
+
     c.runtime.forceBuildHookRebuild = true;
     const customScript = _getInstallScript(c);
 
@@ -166,7 +169,7 @@ export const installPackageDependencies = async (c: RnvContext, failOnError = fa
 
     try {
         await executeAsync(command);
-        await invalidatePodsChecksum(c);
+        await invalidatePodsChecksum();
     } catch (e) {
         if (failOnError) {
             logError(e);
@@ -177,7 +180,7 @@ export const installPackageDependencies = async (c: RnvContext, failOnError = fa
         );
         try {
             await cleanNodeModules();
-            await installPackageDependencies(c, true);
+            await installPackageDependencies(true);
         } catch (npmErr) {
             logError(npmErr);
             throw npmErr;
@@ -209,7 +212,8 @@ export const installPackageDependencies = async (c: RnvContext, failOnError = fa
     }
 };
 
-export const jetifyIfRequired = async (c: RnvContext) => {
+export const jetifyIfRequired = async () => {
+    const c = getContext();
     logDefault('jetifyIfRequired');
     if (c.files.project.configLocal?._meta?.requiresJetify) {
         if (doResolve('jetifier')) {

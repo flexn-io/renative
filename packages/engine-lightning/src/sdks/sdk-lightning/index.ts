@@ -17,6 +17,7 @@ import {
     CoreEnvVars,
     getAppFolder,
     logDefault,
+    getContext,
 } from '@rnv/core';
 import semver from 'semver';
 
@@ -25,14 +26,15 @@ import { CLI_WEBOS_ARES_PACKAGE, runWebosSimOrDevice } from '@rnv/sdk-webos';
 import { getAppVersion, getAppTitle, getAppId, getAppDescription, addSystemInjects } from '@rnv/sdk-utils';
 import { EnvVars } from './env';
 
-export const runLightningProject = async (c: RnvContext) => {
+export const runLightningProject = async () => {
+    const c = getContext();
     logDefault('runLightningProject');
     const { platform } = c;
     const { hosted } = c.program;
-    const isHosted = hosted && !getConfigProp(c, platform, 'bundleAssets');
+    const isHosted = hosted && !getConfigProp('bundleAssets');
 
     if (isHosted) {
-        await executeAsync(c, 'lng dev', {
+        await executeAsync('lng dev', {
             stdio: 'inherit',
             silent: false,
             env: {
@@ -43,31 +45,32 @@ export const runLightningProject = async (c: RnvContext) => {
             },
         });
     } else {
-        await buildLightningProject(c);
+        await buildLightningProject();
         if (platform === 'tizen') {
-            await runTizenSimOrDevice(c);
+            await runTizenSimOrDevice();
         } else {
-            await runWebosSimOrDevice(c);
+            await runWebosSimOrDevice();
         }
     }
 
     return true;
 };
 
-export const buildLightningProject = async (c: RnvContext) => {
+export const buildLightningProject = async () => {
+    const c = getContext();
     logDefault('buildLightningProject');
 
     const { platform } = c;
     if (!platform) return;
 
-    const certProfile = getConfigProp(c, c.platform, 'certificateProfile') || DEFAULTS.certificateProfile;
+    const certProfile = getConfigProp('certificateProfile') || DEFAULTS.certificateProfile;
 
-    const target = getConfigProp(c, platform, 'target', 'es6');
-    const tBuild = getPlatformProjectDir(c);
+    const target = getConfigProp('target', 'es6');
+    const tBuild = getPlatformProjectDir();
 
     const tOut = path.join(tBuild || '', 'output');
 
-    await executeAsync(c, `lng dist --${target}`, {
+    await executeAsync(`lng dist --${target}`, {
         stdio: 'inherit',
         silent: false,
         env: {
@@ -78,11 +81,11 @@ export const buildLightningProject = async (c: RnvContext) => {
     });
 
     if (platform === 'tizen') {
-        await execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`);
+        await execCLI(CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`);
 
         logSuccess(`Your WGT package is located in ${chalk().cyan(tOut)} .`);
     } else {
-        await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tBuild} -n`);
+        await execCLI(CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tBuild} -n`);
 
         logSuccess(`Your IPK package is located in ${chalk().cyan(tOut)} .`);
     }
@@ -90,16 +93,16 @@ export const buildLightningProject = async (c: RnvContext) => {
     return true;
 };
 
-export const configureLightningProject = async (c: RnvContext) => {
+export const configureLightningProject = async () => {
     logTask('configureLightningProject');
-    const { platform } = c;
-    c.runtime.platformBuildsProjectPath = `${getAppFolder(c)}`;
-    if (!isPlatformActive(c, platform)) {
+    const c = getContext();
+    c.runtime.platformBuildsProjectPath = `${getAppFolder()}`;
+    if (!isPlatformActive()) {
         return;
     }
-    await copyAssetsFolder(c, platform);
+    await copyAssetsFolder();
     await _configureProject(c);
-    return copyBuildsFolder(c, platform);
+    return copyBuildsFolder();
 };
 
 const _configureProject = (c: RnvContext) =>
@@ -112,9 +115,9 @@ const _configureProject = (c: RnvContext) =>
             return;
         }
 
-        const pkg = getConfigProp(c, c.platform, 'package') || '';
-        const id = getConfigProp(c, c.platform, 'id') || '';
-        const appName = getConfigProp(c, c.platform, 'appName') || '';
+        const pkg = getConfigProp('package') || '';
+        const id = getConfigProp('id') || '';
+        const appName = getConfigProp('appName') || '';
 
         const injects: OverridesOptions =
             platform === 'tizen'
@@ -124,23 +127,23 @@ const _configureProject = (c: RnvContext) =>
                       { pattern: '{{APP_NAME}}', override: appName },
                       {
                           pattern: '{{APP_VERSION}}',
-                          override: semver.coerce(getAppVersion(c, platform))?.format(),
+                          override: semver.coerce(getAppVersion())?.format(),
                       },
                   ]
                 : [
-                      { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform)?.toLowerCase() },
-                      { pattern: '{{APP_TITLE}}', override: getAppTitle(c, platform) },
-                      { pattern: '{{APP_VERSION}}', override: semver.coerce(getAppVersion(c, platform))?.format() },
-                      { pattern: '{{APP_DESCRIPTION}}', override: getAppDescription(c, platform) },
-                      { pattern: '{{APP_BG_COLOR}}', override: getConfigProp(c, platform, 'backgroundColor', '#fff') },
-                      { pattern: '{{APP_ICON_COLOR}}', override: getConfigProp(c, platform, 'iconColor', '#000') },
-                      { pattern: '{{APP_VENDOR}}', override: getConfigProp(c, platform, 'author') || DEFAULTS.author },
+                      { pattern: '{{APPLICATION_ID}}', override: getAppId()?.toLowerCase() },
+                      { pattern: '{{APP_TITLE}}', override: getAppTitle() },
+                      { pattern: '{{APP_VERSION}}', override: semver.coerce(getAppVersion())?.format() },
+                      { pattern: '{{APP_DESCRIPTION}}', override: getAppDescription() },
+                      { pattern: '{{APP_BG_COLOR}}', override: getConfigProp('backgroundColor', '#fff') },
+                      { pattern: '{{APP_ICON_COLOR}}', override: getConfigProp('iconColor', '#000') },
+                      { pattern: '{{APP_VENDOR}}', override: getConfigProp('author') || DEFAULTS.author },
                   ];
 
-        addSystemInjects(c, injects);
+        addSystemInjects(injects);
 
         const configFile = platform === 'tizen' ? 'config.xml' : 'appinfo.json';
-        const file = path.join(getPlatformProjectDir(c)!, configFile);
+        const file = path.join(getPlatformProjectDir()!, configFile);
         writeCleanFile(file, file, injects, undefined, c);
 
         resolve();

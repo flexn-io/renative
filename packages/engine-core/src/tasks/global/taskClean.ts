@@ -195,13 +195,12 @@ const taskClean: RnvTaskFn = async (c) => {
             clearWindowsCacheFiles();
         } else {
             try {
-                await executeAsync(c, 'watchman watch-del-all');
+                await executeAsync('watchman watch-del-all');
             } catch (e) {
                 logDebug('watchman not installed. skipping');
             }
 
             await executeAsync(
-                c,
                 'npx rimraf -I $TMPDIR/metro-* && npx rimraf -I $TMPDIR/react-* && npx rimraf -I $TMPDIR/haste-*'
             );
         }

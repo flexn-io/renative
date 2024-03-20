@@ -12,9 +12,7 @@ export const EnvVars = {
         return _checkPagesDir();
     },
     NODE_ENV: () => {
-        const c = getContext();
-        const env = getConfigProp(c, c.platform, 'environment');
-
+        const env = getConfigProp('environment');
         return {
             NODE_ENV: env || 'development',
         };
@@ -23,34 +21,29 @@ export const EnvVars = {
 
 const getTranspileModules = () => {
     const c = getContext();
-    const transModules = getConfigProp(c, c.platform, 'nextTranspileModules') || [];
+    const transModules = getConfigProp('nextTranspileModules') || [];
 
-    parsePlugins(
-        c,
-        c.platform,
-        (plugin, pluginPlat, key) => {
-            const { webpackConfig } = plugin;
-            if (webpackConfig) {
-                transModules.push(key);
-                if (webpackConfig.nextTranspileModules?.length) {
-                    webpackConfig.nextTranspileModules.forEach((module) => {
-                        if (module.startsWith('.')) {
-                            transModules.push(path.join(c.paths.project.dir, module));
-                        } else {
-                            transModules.push(module);
-                        }
-                    });
-                }
+    parsePlugins((plugin, pluginPlat, key) => {
+        const { webpackConfig } = plugin;
+        if (webpackConfig) {
+            transModules.push(key);
+            if (webpackConfig.nextTranspileModules?.length) {
+                webpackConfig.nextTranspileModules.forEach((module) => {
+                    if (module.startsWith('.')) {
+                        transModules.push(path.join(c.paths.project.dir, module));
+                    } else {
+                        transModules.push(module);
+                    }
+                });
             }
-        },
-        true
-    );
+        }
+    }, true);
     return transModules;
 };
 
 const _checkPagesDir = () => {
     const c = getContext();
-    const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
+    const pagesDir = getConfigProp('pagesDir');
     const distDir = getExportDir(c);
     const isExport = c._currentTask === 'export';
 

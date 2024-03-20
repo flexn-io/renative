@@ -5,24 +5,24 @@ defaults:
         shell: zsh -l {0}
 on:
     workflow_dispatch:
-    # push:
-    #     branches:
-    #         - main
-    #         - 'release/**'
-    #     paths-ignore:
-    #         - 'docs/**'
-    #         - '**/README.md'
-    #         - '**/lerna.json'
-    #         - '**/metadata.json'
-    #         - '**/renative.json'
-    #         - '**/package.json'
-    # pull_request:
-    #     types: [labeled]
+    push:
+        branches:
+            - main
+            - 'release/**'
+        paths-ignore:
+            - 'docs/**'
+            - '**/README.md'
+            - '**/lerna.json'
+            - '**/metadata.json'
+            - '**/renative.json'
+            - '**/package.json'
+    pull_request:
+        types: [labeled]
 
 jobs:
     e2e-template-androidtv:
         if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.label.name == 'e2e-template-androidtv' || github.event.label.name == 'e2e' }}
-        runs-on: [self-hosted, macos, intel]
+        runs-on: [self-hosted, macos]
         steps:
             - uses: actions/checkout@v2
             - name: Setup

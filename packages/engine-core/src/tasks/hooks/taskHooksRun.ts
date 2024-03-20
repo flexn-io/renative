@@ -16,12 +16,12 @@ const taskHooksRun: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskHooksRun');
 
     if (fsExistsSync(c.paths.project.config)) {
-        await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.hooksRun, originTask);
+        await executeTask(RnvTaskName.projectConfigure, RnvTaskName.hooksRun, originTask);
     } else {
         logInfo('Your are running your buildHook outside of renative project');
     }
 
-    await buildHooks(c);
+    await buildHooks();
 
     if (!c.buildHooks) {
         return Promise.reject('Build hooks have not been compiled properly!');

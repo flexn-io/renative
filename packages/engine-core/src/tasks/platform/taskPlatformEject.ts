@@ -19,7 +19,7 @@ import {
 const taskPlatformEject: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskPlatformEject');
 
-    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.platformEject, originTask);
+    await executeTask(RnvTaskName.projectConfigure, RnvTaskName.platformEject, originTask);
 
     const configOriginal = c.files.project.config_original;
 
@@ -36,7 +36,7 @@ const taskPlatformEject: RnvTaskFn = async (c, _parentTask, originTask) => {
             name: 'ejectedPlatforms',
             message: 'Select platforms you would like to eject (use SPACE key)',
             type: 'checkbox',
-            choices: generatePlatformChoices(c).map((choice) => ({
+            choices: generatePlatformChoices().map((choice) => ({
                 ...choice,
                 disabled: !choice.isConnected,
             })),
@@ -50,7 +50,7 @@ const taskPlatformEject: RnvTaskFn = async (c, _parentTask, originTask) => {
             // const destDir = path.join(c.paths.project.dir, 'platformTemplates', platform);
 
             // engine.ejectPlatform(c, platform, destDir);
-            ejectPlatform(c, platform);
+            ejectPlatform(platform);
 
             configOriginal.paths = configOriginal.paths || {};
 

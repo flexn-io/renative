@@ -33,9 +33,8 @@ test('Execute task.rnv.clean', async () => {
     await expect(taskClean.fn?.(ctx)).resolves.toEqual(true);
     //THEN
     expect(removeDirs).toHaveBeenCalledTimes(3);
-    expect(executeAsync).toHaveBeenCalledWith(ctx, 'watchman watch-del-all');
+    expect(executeAsync).toHaveBeenCalledWith('watchman watch-del-all');
     expect(executeAsync).toHaveBeenCalledWith(
-        ctx,
         'npx rimraf -I $TMPDIR/metro-* && npx rimraf -I $TMPDIR/react-* && npx rimraf -I $TMPDIR/haste-*'
     );
 });

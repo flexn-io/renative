@@ -22,7 +22,7 @@ export const generateConfigPropInjects = () => {
     const ctx = getContext();
     const configPropsInjects: OverridesOptions = [];
     INJECTABLE_CONFIG_PROPS.forEach((v) => {
-        const configProp = getConfigProp(ctx, ctx.platform, v);
+        const configProp = getConfigProp(v);
         if (!ctx.injectableConfigProps) ctx.injectableConfigProps = {};
         ctx.injectableConfigProps[v] = configProp;
         configPropsInjects.push({

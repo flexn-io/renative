@@ -20,5 +20,5 @@ test('Execute task.rnv.kill', async () => {
     //WHEN
     await expect(taskKill.fn?.(ctx)).resolves.toEqual(true);
     //THEN
-    expect(executeTask).toHaveBeenCalledWith(ctx, 'app configure', 'kill', undefined);
+    expect(executeTask).toHaveBeenCalledWith('app configure', 'kill', undefined);
 });

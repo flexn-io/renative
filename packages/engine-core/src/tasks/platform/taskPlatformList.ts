@@ -10,12 +10,12 @@ import {
     RnvTaskName,
 } from '@rnv/core';
 
-const taskPlatformList: RnvTaskFn = async (c, _parentTask, originTask) => {
+const taskPlatformList: RnvTaskFn = async (_c, _parentTask, originTask) => {
     logTask('taskPlatformList');
 
-    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.platformList, originTask);
+    await executeTask(RnvTaskName.projectConfigure, RnvTaskName.platformList, originTask);
 
-    const opts = generatePlatformChoices(c).map((v, i) => ` [${chalk().bold(i + 1)}]> ${v.name}`);
+    const opts = generatePlatformChoices().map((v, i) => ` [${chalk().bold(i + 1)}]> ${v.name}`);
     logToSummary(`Platforms:\n\n${opts.join('\n')}`);
     return true;
 };
