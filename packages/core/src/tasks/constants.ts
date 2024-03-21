@@ -316,6 +316,7 @@ export const RnvTaskCoreOptionPresets = {
             RnvTaskOptions.mono,
             RnvTaskOptions.maxErrorLength,
             RnvTaskOptions.only,
+            RnvTaskOptions.yes,
             // platform is necessary to be accepted as base for the `rnv` command to work with enginie plugins
             RnvTaskOptions.platform,
             RnvTaskOptions.help,
