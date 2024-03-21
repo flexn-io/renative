@@ -436,11 +436,13 @@ export const parsePlugins = (
 
                         if (ignorePlatformObjectCheck || includeDisabledOrExcludedPlugins) {
                             if (isPluginDisabled) {
-                                logInfo(`Plugin ${key} is marked disabled. skipping.`);
+                                logDefault(`Plugin ${key} is marked disabled. skipping.`);
                             } else if (isPluginPlatDisabled) {
-                                logInfo(`Plugin ${key} is marked disabled for platform ${platform} skipping.`);
+                                logDefault(`Plugin ${key} is marked disabled for platform ${platform}. skipping.`);
                             } else if (!isPluginPlatSupported) {
-                                logInfo(`Plugin ${key} supportedPlatforms does not include ${platform} skipping.`);
+                                logDefault(
+                                    `Plugin ${key}'s supportedPlatforms does not include ${platform}. skipping.`
+                                );
                             }
                             handleActivePlugin(plugin, pluginPlat, key);
                         } else if (!isPluginPlatDisabled && !isPluginDisabled && isPluginPlatSupported) {

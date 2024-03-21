@@ -33,10 +33,15 @@ export const createRnvContext = (ctxOpts?: CreateContextOptions) => {
 
     const isJestMode = process.env.JEST_WORKER_ID !== undefined;
     let haltExecution = false;
-    if (!!ctxOpts && !!global.RNV_CONTEXT && global.RNV_CONTEXT?.isDefault) {
+    if (!!ctxOpts && !!global.RNV_CONTEXT) {
         // Handle direct initialize of context
-        if (!isJestMode) {
-            haltExecution = true;
+        if (!global.RNV_CONTEXT?.isDefault) {
+            if (!isJestMode) {
+                haltExecution = true;
+            }
+        } else {
+            // if isDefault=true, we can safely reinitialize
+            // as it means we are not fully initialized yet
         }
     } else if (!ctxOpts) {
         // Handle new imports of @rnv/core
@@ -84,6 +89,8 @@ ${msg}
     global.RNV_CONTEXT = c;
 
     populateContextPaths(c, ctxOpts?.RNV_HOME_DIR);
+
+    c.isDefault = false;
 };
 
 export const populateContextPaths = (c: RnvContext, RNV_HOME_DIR: string | undefined) => {

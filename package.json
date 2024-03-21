@@ -56,8 +56,8 @@
         "url": "git://github.com/flexn-io/renative.git"
     },
     "scripts": {
-        "bootstrap": "npx lerna bootstrap && yarn build && yarn link:rnv",
-        "bootstrap-clean": "rimraf -I ./node_modules; npx lerna clean --yes && yarn bootstrap",
+        "bootstrap": "npx lerna@6 bootstrap && yarn build && yarn link:rnv",
+        "bootstrap-clean": "rimraf -I ./node_modules; npx lerna@6 clean --yes && yarn bootstrap",
         "build": "lerna run build",
         "compile": "npx lerna run compile",
         "deploy:canary": "yarn pre-publish && npx lerna publish from-package --dist-tag canary && git push --tags origin HEAD",
