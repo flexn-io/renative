@@ -12,6 +12,7 @@ import {
     writeCleanFile,
     fsWriteFileSync,
     getContext,
+    chalk,
 } from '@rnv/core';
 import { getAppFolderName } from './common';
 import { Context, FilePlistJSON } from './types';
@@ -95,6 +96,14 @@ export const parseInfoPlist = () =>
         let plistObj =
             readObjectSync<FilePlistJSON>(path.join(__dirname, `../templateFiles/info.plist.${platform}.json`)) || {};
         plistObj.CFBundleDisplayName = getAppTitle();
+
+        if (!plistObj.CFBundleDisplayName) {
+            throw new Error(
+                `CFBundleDisplayName is required!. set it by adding ${chalk().bold(
+                    '"common": { "title": "<ADD_TITLE>" }'
+                )} prop in ${chalk().bold(c.paths.appConfig.config)}`
+            );
+        }
         plistObj.CFBundleShortVersionString = getAppVersion();
         plistObj.CFBundleVersion = getAppVersionCode();
         // FONTS

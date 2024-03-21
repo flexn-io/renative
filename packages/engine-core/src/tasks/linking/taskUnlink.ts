@@ -19,7 +19,7 @@ const _unlinkPackage = (pkg: LinkablePackage) => {
     } else if (pkg.isLinked && pkg.unlinkedPathExists) {
         fsUnlinkSync(pkg.nmPath);
         fsRenameSync(pkg.unlinkedPath, pkg.nmPath);
-        logInfo(`${pkg.name} => unlink => ${chalk().green('SUCCESS')} (${chalk().gray(pkg.nmPath)})`);
+        logInfo(`${chalk().green('✔')} ${pkg.name} (${chalk().gray(pkg.nmPath)})`);
     } else if (!pkg.isLinked) {
         logInfo(`${pkg.name} is not linked. SKIPPING`);
     } else if (pkg.skipLinking) {
@@ -41,6 +41,8 @@ const taskUnlink: RnvTaskFn = async () => {
     });
 
     logInfo(msg);
+
+    logInfo('Unlinking packages...');
 
     linkablePackages.forEach((pkg) => {
         _unlinkPackage(pkg);
