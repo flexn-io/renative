@@ -389,14 +389,26 @@ const _populateExtraParameters = (c: RnvContext, task: RnvTask) => {
 const _selectPlatform = async (c: RnvContext, suitableEngines: Array<RnvEngine>, task: string) => {
     let platforms: string[] = [];
     const supportedEngPlatforms: string[] = [];
+    let isPlatformIndependentTask = false;
     suitableEngines.forEach((engine) => {
         const enPlats = getEngineTask(task, engine.tasks)?.platforms;
+
         if (enPlats) {
             enPlats.forEach((plat) => {
                 supportedEngPlatforms.push(plat);
             });
+        } else if (enPlats === null) {
+            // enPlats=null means task can be executed without platform
+            isPlatformIndependentTask = true;
         }
     });
+
+    if (supportedEngPlatforms.length === 0 && isPlatformIndependentTask) {
+        // If there are no tasks declaring supported platforms
+        // BUT there are tasks that can be executed without platform
+        // then we can skip platform selection
+        return;
+    }
 
     const supProjPlatforms = c.buildConfig?.defaults?.supportedPlatforms;
 
