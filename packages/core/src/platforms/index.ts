@@ -1,5 +1,5 @@
 import path from 'path';
-import { chalk, logDefault, logError, logWarning, logDebug } from '../logger';
+import { chalk, logDefault, logError, logWarning, logDebug, logInfo } from '../logger';
 import { cleanFolder, copyFolderContentsRecursiveSync } from '../system/fs';
 import { getTimestampPathsConfig, getAppFolder } from '../context/contextProps';
 import { generateOptions, inquirerPrompt } from '../api';
@@ -88,10 +88,16 @@ export const createPlatformBuild = (platform: RnvPlatform) =>
         resolve();
     });
 
+const printCurrentPlatform = (platform: RnvPlatform) => {
+    const msg = `Current platform: ${chalk().white.bold(platform)}`;
+    logInfo(msg);
+};
+
 export const isPlatformSupported = async (isGlobalScope = false) => {
     const c = getContext();
 
     if (c.platform && c.program.platform !== true && isGlobalScope) {
+        printCurrentPlatform(c.platform);
         return c.platform;
     }
 
@@ -135,7 +141,7 @@ export const isPlatformSupported = async (isGlobalScope = false) => {
             throw new Error('User canceled');
         }
     }
-
+    printCurrentPlatform(c.platform);
     return c.platform;
 };
 
