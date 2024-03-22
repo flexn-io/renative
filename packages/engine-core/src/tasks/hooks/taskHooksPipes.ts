@@ -26,7 +26,7 @@ const Task: RnvTask = {
     fn: taskHooksPipes,
     task: RnvTaskName.hooksPipes,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: [],
+    platforms: null,
 };
 
 export default Task;

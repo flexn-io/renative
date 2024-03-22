@@ -5,7 +5,7 @@ export type RnvTask = {
     task: string;
     options: Array<RnvTaskOption>;
     isGlobalScope?: boolean;
-    platforms: Array<PlatformKey>;
+    platforms: Array<PlatformKey> | null;
     description: string;
     forceBuildHookRebuild?: boolean;
     fn?: RnvTaskFn;

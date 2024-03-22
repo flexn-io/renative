@@ -240,7 +240,7 @@ const Task: RnvTask = {
     fn: taskCryptoEncrypt,
     task: RnvTaskName.cryptoEncrypt,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: [],
+    platforms: null,
 };
 
 export default Task;

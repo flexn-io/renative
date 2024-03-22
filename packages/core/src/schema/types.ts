@@ -1,6 +1,5 @@
 import type { _PluginPlatformMergedSchemaType } from './plugins';
 import type { _AppDelegateMethodType } from './platforms/fragments/templateXcodeBase';
-import type { _PlatformsKeysType } from './shared';
 import type { _MergedPlatformObjectType } from './platforms';
 import type { _RootAppBaseSchemalType } from './configFiles/app';
 
@@ -8,6 +7,7 @@ import type { _RootProjectBaseSchemaType } from './configFiles/project';
 import type { _AndroidManifestType, _ManifestChildWithChildrenType } from './platforms/fragments/templateAndroidBase';
 import type { _MergedPlatformPrivateObjectType } from './configFiles/private';
 import type { ConfigFileBuildConfig } from './configFiles/buildConfig';
+import { type RnvPlatformNameKey } from '../enums/platformName';
 
 //===============================
 // NORMALIZED (MERGED+NORMALIZED)
@@ -32,7 +32,7 @@ export type RenativeConfigPluginPlatform = _PluginPlatformMergedSchemaType;
 
 export type RenativeWebpackConfig = RenativeConfigPlugin['webpackConfig'];
 
-export type PlatformKey = _PlatformsKeysType;
+export type PlatformKey = RnvPlatformNameKey;
 
 export type RenativeConfigRnvTaskName = keyof Required<Required<ConfigFileBuildConfig>['tasks']>;
 

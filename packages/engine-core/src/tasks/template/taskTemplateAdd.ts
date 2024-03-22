@@ -58,7 +58,7 @@ const Task: RnvTask = {
     fn: taskTemplateAdd,
     task: RnvTaskName.templateAdd,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: [],
+    platforms: null,
 };
 
 export default Task;

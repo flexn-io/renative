@@ -25,7 +25,7 @@ const Task: RnvTask = {
     fn: taskTemplateList,
     task: RnvTaskName.templateList,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: [],
+    platforms: null,
     isGlobalScope: true,
 };
 

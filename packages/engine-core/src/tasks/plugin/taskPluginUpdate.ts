@@ -53,7 +53,7 @@ const Task: RnvTask = {
     fn: taskPluginUpdate,
     task: RnvTaskName.pluginUpdate,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: [],
+    platforms: null,
 };
 
 export default Task;

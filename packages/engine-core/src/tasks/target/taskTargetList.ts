@@ -50,7 +50,7 @@ const Task: RnvTask = {
     fn: taskTargetList,
     task: RnvTaskName.targetList,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: [],
+    platforms: null,
     isGlobalScope: true,
 };
 

@@ -30,7 +30,7 @@ const Task: RnvTask = {
     fn: taskTelemetryStatus,
     task: RnvTaskName.telemetryStatus,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: [],
+    platforms: null,
     isGlobalScope: true,
 };
 

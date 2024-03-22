@@ -7,7 +7,7 @@ const Task: RnvTask = {
     fn: taskStatus,
     task: RnvTaskName.status,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: [],
+    platforms: null,
     isGlobalScope: true,
 };
 

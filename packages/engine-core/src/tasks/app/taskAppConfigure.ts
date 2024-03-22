@@ -210,7 +210,7 @@ const Task: RnvTask = {
     fn: taskAppConfigure,
     task: RnvTaskName.appConfigure,
     options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
-    platforms: [],
+    platforms: null,
 };
 
 export default Task;

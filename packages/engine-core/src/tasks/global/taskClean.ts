@@ -213,7 +213,7 @@ const Task: RnvTask = {
     fn: taskClean,
     task: RnvTaskName.clean,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: [],
+    platforms: null,
     isGlobalScope: true,
 };
 

@@ -75,7 +75,7 @@ const Task: RnvTask = {
     fn: taskPlatformEject,
     task: RnvTaskName.platformEject,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: [],
+    platforms: null,
 };
 
 export default Task;

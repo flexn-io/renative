@@ -32,7 +32,7 @@ const Task: RnvTask = {
     fn: taskTelemetryDisable,
     task: RnvTaskName.telemetryDisable,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: [],
+    platforms: null,
     isGlobalScope: true,
 };
 

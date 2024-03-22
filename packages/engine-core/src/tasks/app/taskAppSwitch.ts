@@ -29,7 +29,7 @@ const Task: RnvTask = {
     fn: taskSwitch,
     task: RnvTaskName.appSwitch,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: [],
+    platforms: null,
 };
 
 export default Task;

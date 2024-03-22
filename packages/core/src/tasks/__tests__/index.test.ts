@@ -41,7 +41,7 @@ const rnvEngineMock1: RnvEngine = {
             description: 'mock task 1',
             task: 'mock-task',
             options: [],
-            platforms: [],
+            platforms: null,
         },
     },
 };
@@ -54,13 +54,13 @@ const rnvEngineMock2: RnvEngine = {
             description: 'mock task 2',
             task: 'mock-task-2',
             options: [],
-            platforms: [],
+            platforms: null,
         },
         ['mock-task']: {
             description: 'mock task 1',
             task: 'mock-task',
             options: [],
-            platforms: [],
+            platforms: null,
         },
     },
 };

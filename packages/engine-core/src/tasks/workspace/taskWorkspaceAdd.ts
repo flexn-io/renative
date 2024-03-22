@@ -53,7 +53,7 @@ const Task: RnvTask = {
     fn: taskWorkspaceAdd,
     task: RnvTaskName.workspaceAdd,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: [],
+    platforms: null,
     isGlobalScope: true,
 };
 

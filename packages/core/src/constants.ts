@@ -1,6 +1,6 @@
 import { RnvPlatformName } from './enums/platformName';
 
-// DEPRECATED
+// IMPORTANT: this must match RnvPlatformName
 export const SUPPORTED_PLATFORMS = [
     RnvPlatformName.web,
     RnvPlatformName.ios,

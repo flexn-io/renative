@@ -14,7 +14,7 @@ const Task: RnvTask = {
     fn: taskWorkspaceUpdate,
     task: RnvTaskName.workspaceUpdate,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: [],
+    platforms: null,
     isGlobalScope: true,
     isPrivate: true,
 };

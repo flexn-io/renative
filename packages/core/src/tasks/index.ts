@@ -17,6 +17,7 @@ import type { PlatformKey, RenativeConfigRnvTaskName } from '../schema/types';
 import { checkIfProjectAndNodeModulesExists } from '../projects/dependencies';
 import { DEFAULT_TASK_DESCRIPTIONS } from './constants';
 import { getContext } from '../context/provider';
+import { SUPPORTED_PLATFORMS } from '../constants';
 
 let executedTasks: Record<string, number> = {};
 
@@ -338,7 +339,8 @@ export const findSuitableTask = async (specificTask?: string): Promise<RnvTask |
 
         const customTask = CUSTOM_TASKS[task];
         if (customTask) {
-            c.runtime.availablePlatforms = customTask.platforms;
+            c.runtime.availablePlatforms =
+                customTask.platforms == null ? [...SUPPORTED_PLATFORMS] : customTask.platforms;
             // _populateExtraParameters(c, customTask);
             return customTask;
         }
@@ -389,9 +391,12 @@ const _selectPlatform = async (c: RnvContext, suitableEngines: Array<RnvEngine>,
     let platforms: string[] = [];
     const supportedEngPlatforms: string[] = [];
     suitableEngines.forEach((engine) => {
-        getEngineTask(task, engine.tasks)?.platforms.forEach((plat) => {
-            supportedEngPlatforms.push(plat);
-        });
+        const enPlats = getEngineTask(task, engine.tasks)?.platforms;
+        if (enPlats) {
+            enPlats.forEach((plat) => {
+                supportedEngPlatforms.push(plat);
+            });
+        }
     });
 
     const supProjPlatforms = c.buildConfig?.defaults?.supportedPlatforms;

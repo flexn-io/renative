@@ -169,7 +169,7 @@ const Task: RnvTask = {
     fn: taskAppCreate,
     task: RnvTaskName.appCreate,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: [],
+    platforms: null,
 };
 
 export default Task;

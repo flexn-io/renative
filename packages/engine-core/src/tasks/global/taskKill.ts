@@ -70,7 +70,7 @@ const Task: RnvTask = {
     fn: taskKill,
     task: RnvTaskName.kill,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: [],
+    platforms: null,
     isGlobalScope: true,
 };
 

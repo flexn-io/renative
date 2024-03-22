@@ -41,7 +41,7 @@ const Task: RnvTask = {
     fn: taskCryptoInstallCerts,
     task: RnvTaskName.cryptoInstallCerts,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: [],
+    platforms: null,
     // skipPlatforms: true,
 };
 

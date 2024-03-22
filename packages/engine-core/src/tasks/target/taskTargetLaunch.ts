@@ -82,7 +82,7 @@ const Task: RnvTask = {
     fn: taskTargetLaunch,
     task: RnvTaskName.targetLaunch,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: [],
+    platforms: null,
     isGlobalScope: true,
 };
 

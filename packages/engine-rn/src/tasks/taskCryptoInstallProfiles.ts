@@ -54,7 +54,7 @@ const Task: RnvTask = {
     fn: taskCryptoInstallProfiles,
     task: RnvTaskName.cryptoInstallProfiles,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: [],
+    platforms: null,
     // skipPlatforms: true,
 };
 

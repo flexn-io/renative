@@ -56,7 +56,7 @@ const Task: RnvTask = {
     fn: taskUnlink,
     task: RnvTaskName.unlink,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: [],
+    platforms: null,
     isGlobalScope: true,
     ignoreEngines: true,
 };
