@@ -16,7 +16,7 @@
             },
             {
                 "paths": ["webpack.config.js"],
-                "engines": ["engine-web"]
+                "engines": ["engine-web", "engine-rn-electron"]
             }
         ],
         "renative_json": {
