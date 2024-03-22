@@ -51,8 +51,6 @@ export const inquiryInstallTemplate = async (data: NewProjectData) => {
         });
     }
 
-    const getTemplateKey = (val: string) => data.optionTemplates.valuesAsArray?.find((v) => v.title === val)?.key;
-
     // data.optionTemplates.keysAsArray.push(customTemplate);
     options.push(inquirerSeparator('Advanced:----------------'));
     options.push(customTemplate);
@@ -92,7 +90,7 @@ export const inquiryInstallTemplate = async (data: NewProjectData) => {
         } else if (inputTemplate.path) {
             localTemplatePath = inputTemplate.path;
         } else {
-            selectedInputTemplate = getTemplateKey(inputTemplate);
+            selectedInputTemplate = inputTemplate.key;
         }
     }
 
