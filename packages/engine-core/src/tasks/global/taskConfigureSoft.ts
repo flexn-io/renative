@@ -8,18 +8,18 @@ import {
     RnvTask,
     RnvTaskName,
 } from '@rnv/core';
-import { checkAndConfigureSdks, checkSdk } from '../../common';
 import { isBuildSchemeSupported } from '../../buildSchemes';
 
 const taskConfigureSoft: RnvTaskFn = async (_c, parentTask, originTask) => {
     logTask('taskConfigureSoft');
 
     await configureRuntimeDefaults();
-    await executeTask(RnvTaskName.appConfigure, parentTask, originTask);
+    await executeTask(RnvTaskName.appConfigure, RnvTaskName.configureSoft, originTask);
     await isPlatformSupported();
     await isBuildSchemeSupported();
-    await checkAndConfigureSdks();
-    await checkSdk();
+
+    await executeTask(RnvTaskName.sdkConfigure, RnvTaskName.configureSoft, originTask);
+
     await configureRuntimeDefaults();
     return true;
 };

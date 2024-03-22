@@ -589,11 +589,13 @@ export const executeEngineTask = async (
     const c = getContext();
     const needsHelp = Object.prototype.hasOwnProperty.call(c.program, 'help');
 
-    const t = getEngineTask(task, tasks, CUSTOM_TASKS);
+    const taskInstance = getEngineTask(task, tasks, CUSTOM_TASKS);
 
-    if (needsHelp && !parentTask && t) {
+    if (!taskInstance) return;
+
+    if (needsHelp && !parentTask && taskInstance) {
         logRaw(`
-Description: ${t.description}
+Description: ${taskInstance.description}
   `);
         c.program.outputHelp();
 
@@ -603,23 +605,23 @@ Description: ${t.description}
         //         return `  ${option}--${v.key}        ${v.description}`;
         //     })
         //     .join('\n')}
-        if (t.fnHelp) {
-            await t.fnHelp(c, parentTask, originTask);
+        if (taskInstance.fnHelp) {
+            await taskInstance.fnHelp(c, parentTask, originTask);
         }
         return;
     }
-    if (t && !t.isGlobalScope && isFirstTask) {
+    if (!taskInstance.isGlobalScope && isFirstTask) {
         if (c.files.project.package) {
             // This has to happen in order for hooks to be able to run
             await checkIfProjectAndNodeModulesExists();
         }
     }
     if (isFirstTask) {
-        c.runtime.forceBuildHookRebuild = !!t?.forceBuildHookRebuild;
+        c.runtime.forceBuildHookRebuild = !!taskInstance?.forceBuildHookRebuild;
     }
     const inOnlyMode = c.program.only;
-    const doPipe = t && !t.isGlobalScope && (!inOnlyMode || (inOnlyMode && isFirstTask));
+    const doPipe = !taskInstance.isGlobalScope && (!inOnlyMode || (inOnlyMode && isFirstTask));
     if (doPipe) await _executePipe(c, task, 'before');
-    if (t && t.fn) await t.fn(c, parentTask, originTask);
+    if (taskInstance.fn) await taskInstance.fn(c, parentTask, originTask);
     if (doPipe) await _executePipe(c, task, 'after');
 };

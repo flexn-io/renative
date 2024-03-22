@@ -18,7 +18,6 @@ import {
     installPackageDependencies,
     overrideTemplatePlugins,
 } from '@rnv/core';
-import { checkAndConfigureSdks, checkSdk } from '../../common';
 import { isBuildSchemeSupported } from '../../buildSchemes';
 import { configureFonts } from '@rnv/sdk-utils';
 
@@ -31,8 +30,9 @@ const taskPlatformConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
 
     await isPlatformSupported();
     await isBuildSchemeSupported();
-    await checkAndConfigureSdks();
-    await checkSdk();
+
+    await executeTask(RnvTaskName.sdkConfigure, RnvTaskName.platformConfigure, originTask);
+
     await configureRuntimeDefaults();
 
     if (c.program.only && !!parentTask) return true;

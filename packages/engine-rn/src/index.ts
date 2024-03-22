@@ -17,7 +17,7 @@ import taskLog from './tasks/taskLog';
 import taskEject from './tasks/taskEject';
 import { generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
 import { withRNVRNConfig } from '@rnv/sdk-react-native';
-
+import { taskTargetLaunch } from '@rnv/sdk-android';
 const Engine: RnvEngine = {
     tasks: generateEngineTasks([
         taskRun,
@@ -32,6 +32,7 @@ const Engine: RnvEngine = {
         taskCryptoUpdateProfiles,
         taskCryptoInstallProfiles,
         taskLog,
+        taskTargetLaunch,
     ]),
     config: CNF,
     runtimeExtraProps: {

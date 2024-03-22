@@ -130,7 +130,8 @@ export const launchAndroidSimulator = async (
     return Promise.reject('No simulator -t target name specified!');
 };
 
-export const listAndroidTargets = async (c: RnvContext) => {
+export const listAndroidTargets = async () => {
+    const c = getContext();
     logDefault('listAndroidTargets');
     const {
         program: { device },

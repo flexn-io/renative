@@ -205,7 +205,8 @@ const buildDeviceChoices = (devices: Array<WebosDevice>) =>
         value: device.name,
     }));
 
-export const listWebOSTargets = async (c: RnvContext) => {
+export const listWebOSTargets = async () => {
+    const c = getContext();
     const devicesResponse = await execCLI(CLI_WEBOS_ARES_DEVICE_INFO, '-D');
     const devices = await parseDevices(c, devicesResponse);
 

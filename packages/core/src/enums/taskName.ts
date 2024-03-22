@@ -34,6 +34,7 @@ export const RnvTaskName = {
     platformEject: 'platform eject',
     platformList: 'platform list',
     platformSetup: 'platform setup',
+    sdkConfigure: 'sdk configure',
     projectConfigure: 'project configure',
     projectUpgrade: 'project upgrade',
     pluginAdd: 'plugin add',
