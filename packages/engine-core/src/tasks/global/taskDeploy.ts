@@ -6,7 +6,7 @@ import {
     shouldSkipTask,
     RnvTask,
     RnvTaskName,
-    SUPPORTED_PLATFORMS,
+    RnvPlatforms,
 } from '@rnv/core';
 
 const taskDeploy: RnvTaskFn = async (_c, parentTask, originTask) => {
@@ -25,7 +25,7 @@ const Task: RnvTask = {
     fn: taskDeploy,
     task: RnvTaskName.deploy,
     options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
-    platforms: [...SUPPORTED_PLATFORMS],
+    platforms: [...RnvPlatforms],
 };
 
 export default Task;

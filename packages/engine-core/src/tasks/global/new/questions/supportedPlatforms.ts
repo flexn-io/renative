@@ -1,4 +1,4 @@
-import { PlatformKey, SUPPORTED_PLATFORMS, getContext, inquirerPrompt, logError } from '@rnv/core';
+import { PlatformKey, RnvPlatforms, getContext, inquirerPrompt, logError } from '@rnv/core';
 import type { NewProjectData } from '../types';
 import { checkInputValue } from '../utils';
 
@@ -43,7 +43,7 @@ export const inquirySupportedPlatforms = async (data: NewProjectData) => {
         data.files.template.renativeConfig?.defaults?.supportedPlatforms ||
         [];
 
-    supportedPlatforms.sort((a, b) => SUPPORTED_PLATFORMS.indexOf(a) - SUPPORTED_PLATFORMS.indexOf(b));
+    supportedPlatforms.sort((a, b) => RnvPlatforms.indexOf(a) - RnvPlatforms.indexOf(b));
 
     const selectedPlatforms =
         data.files.template.renativeTemplateConfig?.bootstrapConfig?.defaultSelectedPlatforms || supportedPlatforms;

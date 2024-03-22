@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { SUPPORTED_PLATFORMS } from '../../constants';
+import { RnvPlatforms } from '../../enums/platformName';
 
 export const Runtime = z
     .any()
@@ -7,7 +7,7 @@ export const Runtime = z
         'This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code'
     );
 
-export const PlatformsKeys = z.enum(SUPPORTED_PLATFORMS);
+export const PlatformsKeys = z.enum(RnvPlatforms);
 
 export type _PlatformsKeysType = z.infer<typeof PlatformsKeys>;
 

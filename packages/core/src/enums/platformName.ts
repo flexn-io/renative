@@ -57,5 +57,27 @@ export const RnvPlatformName = {
     // saphi: 'saphi',
 } as const;
 
+// IMPORTANT: this must match RnvPlatformName size and key order
+export const RnvPlatforms = [
+    RnvPlatformName.web,
+    RnvPlatformName.ios,
+    RnvPlatformName.android,
+    RnvPlatformName.androidtv,
+    RnvPlatformName.firetv,
+    RnvPlatformName.tvos,
+    RnvPlatformName.macos,
+    RnvPlatformName.linux,
+    RnvPlatformName.windows,
+    RnvPlatformName.tizen,
+    RnvPlatformName.webos,
+    RnvPlatformName.chromecast,
+    RnvPlatformName.kaios,
+    RnvPlatformName.webtv,
+    RnvPlatformName.androidwear,
+    RnvPlatformName.tizenwatch,
+    RnvPlatformName.tizenmobile,
+    RnvPlatformName.xbox,
+] as const;
+
 type RnvPlatformName = typeof RnvPlatformName;
 export type RnvPlatformNameKey = keyof RnvPlatformName;

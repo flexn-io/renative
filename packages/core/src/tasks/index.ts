@@ -17,7 +17,7 @@ import type { PlatformKey, RenativeConfigRnvTaskName } from '../schema/types';
 import { checkIfProjectAndNodeModulesExists } from '../projects/dependencies';
 import { DEFAULT_TASK_DESCRIPTIONS } from './constants';
 import { getContext } from '../context/provider';
-import { SUPPORTED_PLATFORMS } from '../constants';
+import { RnvPlatforms } from '../enums/platformName';
 
 let executedTasks: Record<string, number> = {};
 
@@ -339,8 +339,7 @@ export const findSuitableTask = async (specificTask?: string): Promise<RnvTask |
 
         const customTask = CUSTOM_TASKS[task];
         if (customTask) {
-            c.runtime.availablePlatforms =
-                customTask.platforms == null ? [...SUPPORTED_PLATFORMS] : customTask.platforms;
+            c.runtime.availablePlatforms = customTask.platforms == null ? [...RnvPlatforms] : customTask.platforms;
             // _populateExtraParameters(c, customTask);
             return customTask;
         }

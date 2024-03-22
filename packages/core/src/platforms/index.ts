@@ -2,12 +2,12 @@ import path from 'path';
 import { chalk, logDefault, logError, logWarning, logDebug } from '../logger';
 import { cleanFolder, copyFolderContentsRecursiveSync } from '../system/fs';
 import { getTimestampPathsConfig, getAppFolder } from '../context/contextProps';
-import { SUPPORTED_PLATFORMS } from '../constants';
 import { generateOptions, inquirerPrompt } from '../api';
 import type { RnvPlatform, RnvPlatformWithAll } from '../types';
 import { updateProjectPlatforms } from '../configs/configProject';
 import { doResolve } from '../system/resolve';
 import { getContext } from '../context/provider';
+import { RnvPlatforms } from '../enums/platformName';
 
 export const logErrorPlatform = () => {
     const c = getContext();
@@ -97,7 +97,7 @@ export const isPlatformSupported = async (isGlobalScope = false) => {
 
     let platformsAsObj;
     if (isGlobalScope) {
-        platformsAsObj = SUPPORTED_PLATFORMS;
+        platformsAsObj = RnvPlatforms;
     } else {
         platformsAsObj = c.buildConfig ? c.buildConfig.platforms : c.supportedPlatforms;
     }

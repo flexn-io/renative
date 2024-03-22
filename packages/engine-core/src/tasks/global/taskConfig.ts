@@ -1,12 +1,4 @@
-import {
-    logTask,
-    RnvTaskOptionPresets,
-    RnvTaskFn,
-    executeTask,
-    SUPPORTED_PLATFORMS,
-    RnvTask,
-    RnvTaskName,
-} from '@rnv/core';
+import { logTask, RnvTaskOptionPresets, RnvTaskFn, executeTask, RnvPlatforms, RnvTask, RnvTaskName } from '@rnv/core';
 
 const taskConfig: RnvTaskFn = async (c, _, originTask) => {
     logTask('taskConfig');
@@ -23,7 +15,7 @@ const Task: RnvTask = {
     fn: taskConfig,
     task: RnvTaskName.config,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: [...SUPPORTED_PLATFORMS],
+    platforms: [...RnvPlatforms],
 };
 
 export default Task;
