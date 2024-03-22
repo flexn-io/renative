@@ -6,7 +6,7 @@ const withRNVBabel = (cnf: BabelConfig): BabelConfig => {
 
     return {
         retainLines: true,
-        presets: [['module:metro-react-native-babel-preset', { useTransformReactJSXExperimental: true }]],
+        presets: [[require.resolve('metro-react-native-babel-preset'), { useTransformReactJSXExperimental: true }]],
         ...cnf,
         plugins: [withBabelPluginModuleResolver(), ...plugins],
     };

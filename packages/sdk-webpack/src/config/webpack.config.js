@@ -431,6 +431,7 @@ module.exports = function (webpackEnv) {
                                 babelrc: false,
                                 configFile: false,
                                 compact: false,
+                                // RNV-UPDATE ------------------------------------------
                                 // presets: [[require.resolve('babel-preset-react-app/dependencies'), { helpers: true }]],
                                 presets: [
                                     [
@@ -440,6 +441,7 @@ module.exports = function (webpackEnv) {
                                         },
                                     ],
                                 ],
+                                // RNV-UPDATE ------------------------------------------
                                 cacheDirectory: true,
                                 // See #6846 for context on why cacheCompression is disabled
                                 cacheCompression: false,

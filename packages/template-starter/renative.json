@@ -121,7 +121,7 @@
             "supportedPlatforms": ["web"]
         },
         "react-native-web": {
-            "supportedPlatforms": ["web", "tizen", "webos"]
+            "supportedPlatforms": ["web", "tizen", "webos", "macos"]
         },
         "react-native-tvos": {
             "supportedPlatforms": ["tvos", "firetv", "androidtv"]

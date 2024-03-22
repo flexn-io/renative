@@ -4,14 +4,24 @@
         "disabled": false,
         "includedPaths": [
             {
-                "paths": ["buildHooks", "src", "index.js", "tsconfig.json", "babel.config.js", "typings", ".gitignore"]
+                "paths": [
+                    "buildHooks",
+                    "src/app",
+                    "src/entry",
+                    "src/config.tsx",
+                    "index.js",
+                    "tsconfig.json",
+                    "babel.config.js",
+                    "typings",
+                    ".gitignore"
+                ]
             },
             {
                 "paths": ["Gemfile", "metro.config.js", ".bundle", "react-native.config.js"],
                 "engines": ["engine-rn", "engine-rn-tvos"]
             },
             {
-                "paths": ["next.config.js", "next-env.d.ts"],
+                "paths": ["next.config.js", "next-env.d.ts", "src/pages"],
                 "engines": ["engine-rn-next"]
             },
             {
