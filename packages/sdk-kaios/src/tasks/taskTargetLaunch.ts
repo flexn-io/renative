@@ -1,12 +1,4 @@
-import {
-    isPlatformSupported,
-    logTask,
-    RnvTaskOptionPresets,
-    executeTask,
-    RnvTaskFn,
-    RnvTask,
-    RnvTaskName,
-} from '@rnv/core';
+import { isPlatformSupported, logTask, executeTask, RnvTaskFn, RnvTask, RnvTaskName, RnvTaskOptions } from '@rnv/core';
 import { getTargetWithOptionalPrompt } from '@rnv/sdk-utils';
 import { launchKaiOSSimulator } from '../deviceManager';
 
@@ -25,8 +17,8 @@ const Task: RnvTask = {
     description: 'Launch specific target',
     fn: taskTargetLaunch,
     task: RnvTaskName.targetLaunch,
-    options: RnvTaskOptionPresets.withBase(),
-    platforms: null,
+    options: [RnvTaskOptions.target],
+    platforms: ['kaios'],
     isGlobalScope: true,
 };
 

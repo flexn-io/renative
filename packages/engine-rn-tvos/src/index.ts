@@ -1,4 +1,6 @@
 import { generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
+import { taskTargetLaunchAndroid, taskSdkConfigureAndroid, taskTargetListAndroid } from '@rnv/sdk-android';
+import { taskTargetLaunchApple, taskTargetListApple } from '@rnv/sdk-apple';
 import taskRun from './tasks/taskRun';
 import taskPackage from './tasks/taskPackage';
 import taskBuild from './tasks/taskBuild';
@@ -29,6 +31,11 @@ const Engine: RnvEngine = {
         taskCryptoUpdateProfiles,
         taskCryptoInstallProfiles,
         taskLog,
+        taskTargetLaunchAndroid,
+        taskTargetLaunchApple,
+        taskTargetListAndroid,
+        taskTargetListApple,
+        taskSdkConfigureAndroid,
     ]),
     config: CNF,
     runtimeExtraProps: {

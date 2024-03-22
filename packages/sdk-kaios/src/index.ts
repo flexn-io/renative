@@ -1,4 +1,4 @@
 export * from './deviceManager';
 export * from './runner';
 export * from './constants';
-export * from './tasks/taskTargetLaunch';
+export { default as taskTargetLaunchKaiOS } from './tasks/taskTargetLaunch';

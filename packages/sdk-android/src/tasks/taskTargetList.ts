@@ -1,12 +1,4 @@
-import {
-    isPlatformSupported,
-    logTask,
-    RnvTaskOptionPresets,
-    executeTask,
-    RnvTaskFn,
-    RnvTask,
-    RnvTaskName,
-} from '@rnv/core';
+import { isPlatformSupported, logTask, executeTask, RnvTaskFn, RnvTask, RnvTaskName, RnvTaskOptions } from '@rnv/core';
 import { listAndroidTargets } from '../deviceManager';
 import { checkAndConfigureAndroidSdks, checkAndroidSdk } from '../installer';
 
@@ -25,8 +17,8 @@ const Task: RnvTask = {
     description: 'List all available targets for specific platform',
     fn: taskTargetList,
     task: RnvTaskName.targetList,
-    options: RnvTaskOptionPresets.withBase(),
-    platforms: null,
+    options: [RnvTaskOptions.target],
+    platforms: ['android', 'androidtv', 'androidwear', 'firetv'],
     isGlobalScope: true,
 };
 

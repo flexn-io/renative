@@ -14,7 +14,7 @@ const Task: RnvTask = {
     fn,
     task: RnvTaskName.sdkConfigure,
     options: [],
-    platforms: null,
+    platforms: ['tizen', 'tizenwatch', 'tizenmobile'],
 };
 
 export default Task;

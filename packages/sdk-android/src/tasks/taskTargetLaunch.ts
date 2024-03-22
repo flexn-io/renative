@@ -1,17 +1,9 @@
-import {
-    isPlatformSupported,
-    logTask,
-    RnvTaskOptionPresets,
-    executeTask,
-    RnvTaskFn,
-    RnvTask,
-    RnvTaskName,
-} from '@rnv/core';
+import { isPlatformSupported, logTask, executeTask, RnvTaskFn, RnvTask, RnvTaskName, RnvTaskOptions } from '@rnv/core';
 import { getTargetWithOptionalPrompt } from '@rnv/sdk-utils';
 import { checkAndConfigureAndroidSdks, checkAndroidSdk } from '../installer';
 import { launchAndroidSimulator } from '../deviceManager';
 
-const taskTargetLaunch: RnvTaskFn = async (c, _parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskTargetLaunch');
 
     await isPlatformSupported(true);
@@ -26,10 +18,10 @@ const taskTargetLaunch: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Launch specific target',
-    fn: taskTargetLaunch,
+    fn,
     task: RnvTaskName.targetLaunch,
-    options: RnvTaskOptionPresets.withBase(),
-    platforms: null,
+    options: [RnvTaskOptions.target],
+    platforms: ['android', 'androidtv', 'androidwear', 'firetv'],
     isGlobalScope: true,
 };
 
