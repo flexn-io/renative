@@ -16,8 +16,8 @@ on:
     #         - '**/metadata.json'
     #         - '**/renative.json'
     #         - '**/package.json'
-    # pull_request:
-    #     types: [labeled]
+    pull_request:
+        types: [labeled]
 
 jobs:
     e2e-template-ios:
@@ -29,9 +29,12 @@ jobs:
               run: |
                   security unlock-keychain -p ${{ secrets.FLEXN_KEYCHAIN_PASSWORD }} Flexn.keychain
                   yarn config set network-timeout 300000
-            - name: Bootstrap
+            - name: printenv
               run: |
-                  yarn bootstrap-clean
+                  printenv
+            - name: ruby -v
+              run: |
+                  ruby -v
             - name: Run
               run: |
                   cd packages/template-starter && yarn run:ios-test & sleep 1200
