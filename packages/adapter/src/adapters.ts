@@ -73,8 +73,8 @@ export const withRNVNext = (cnf: unknown) => {
 export const withRNVWebpack = (cnf: unknown) => {
     if (process.env.RNV_ENGINE_PATH) {
         const engine = require(process.env.RNV_ENGINE_PATH);
-        if (engine.withRNVNext) {
-            return engine.withRNVNext(cnf);
+        if (engine.withRNVWebpack) {
+            return engine.withRNVWebpack(cnf);
         }
     }
 
