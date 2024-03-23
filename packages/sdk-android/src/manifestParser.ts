@@ -19,6 +19,7 @@ import {
     _getConfigProp,
     ConfigFileBuildConfig,
     getContext,
+    AndroidResourcesNode,
 } from '@rnv/core';
 import { Context } from './types';
 import { getBuildFilePath, getAppId, addSystemInjects } from '@rnv/sdk-utils';
@@ -26,7 +27,7 @@ import { getBuildFilePath, getAppId, addSystemInjects } from '@rnv/sdk-utils';
 const PROHIBITED_DUPLICATE_TAGS = ['intent-filter'];
 const SYSTEM_TAGS = ['tag', 'children'];
 
-const _findChildNode = (tag: string, name: string, node: AndroidManifestNode) => {
+const _findChildNode = (tag: string, name: string, node: AndroidManifestNode | AndroidResourcesNode) => {
     if (!node) {
         logWarning('_findChildNode: Node is undefined');
         return;
@@ -36,7 +37,11 @@ const _findChildNode = (tag: string, name: string, node: AndroidManifestNode) =>
         for (let i = 0; i < node.children.length; i++) {
             const ch = node.children?.[i];
             if (ch && ch.tag === tag) {
-                if (ch['android:name'] === name || PROHIBITED_DUPLICATE_TAGS.includes(tag)) {
+                if (
+                    ('android:name' in ch && ch['android:name'] === name) ||
+                    ('name' in ch && ch['name'] === name) ||
+                    PROHIBITED_DUPLICATE_TAGS.includes(tag)
+                ) {
                     return ch;
                 }
             }
@@ -46,11 +51,11 @@ const _findChildNode = (tag: string, name: string, node: AndroidManifestNode) =>
     return null;
 };
 
-const _convertToXML = (manifestObj: AndroidManifestNode) => _parseNode(manifestObj, 0);
+export const _convertToXML = (manifestObj: AndroidManifestNode | AndroidResourcesNode) => _parseNode(manifestObj, 0);
 
-type NodeKey = keyof AndroidManifestNode;
+type NodeKeyChildren = keyof AndroidManifestNode['children'] | keyof AndroidResourcesNode['children'];
 
-const _parseNode = (n: AndroidManifestNode, level: number) => {
+const _parseNode = <T extends AndroidManifestNode | AndroidResourcesNode>(n: T, level: number) => {
     let output = '';
     let space = '';
     for (let i = 0; i < level; i++) {
@@ -73,7 +78,7 @@ const _parseNode = (n: AndroidManifestNode, level: number) => {
         output += `${space}<${n.tag}${endLine}`;
         Object.keys(n).forEach((k) => {
             if (!SYSTEM_TAGS.includes(k)) {
-                output += `${isSingleLine ? '' : `${space}  `}${k}="${n[k as NodeKey]}"${endLine}`;
+                output += `${isSingleLine ? '' : `${space}  `}${k}="${n[k as keyof T]}"${endLine}`;
             }
         });
     }
@@ -98,9 +103,9 @@ const _parseNode = (n: AndroidManifestNode, level: number) => {
     return output;
 };
 
-const _mergeNodeParameters = (
-    node: AndroidManifestNode | undefined,
-    nodeParamsExt: AndroidManifestNode | undefined
+export const _mergeNodeParameters = <T extends AndroidManifestNode | AndroidResourcesNode>(
+    node: T | undefined,
+    nodeParamsExt: T | undefined
 ) => {
     if (!nodeParamsExt) {
         logWarning('_mergeNodeParameters: nodeParamsExt value is null');
@@ -112,17 +117,20 @@ const _mergeNodeParameters = (
     }
 
     Object.keys(nodeParamsExt).forEach((k) => {
-        const key = k as NodeKey;
-        const val = nodeParamsExt[key];
+        const key = k as keyof T;
+        const val = (nodeParamsExt as T)[key];
 
         if (val !== 'undefined' && !SYSTEM_TAGS.includes(k)) {
             //TODO: fix this
-            (node as Record<string, any>)[key] = val;
+            (node as T)[key] = val;
         }
     });
 };
 
-const _mergeNodeChildren = (node: AndroidManifestNode, nodeChildrenExt: Array<AndroidManifestNode> = []) => {
+export const _mergeNodeChildren = <T extends AndroidManifestNode | AndroidResourcesNode>(
+    node: T,
+    nodeChildrenExt: Array<T> = []
+) => {
     // console.log('_mergeNodeChildren', node, 'OVERRIDE', nodeChildrenExt);
     if (!node) {
         logWarning('_mergeNodeChildren: Node is undefined');
@@ -130,7 +138,7 @@ const _mergeNodeChildren = (node: AndroidManifestNode, nodeChildrenExt: Array<An
     }
     if (!node.children) node.children = [];
     nodeChildrenExt.forEach((v) => {
-        const nameExt = v['android:name'];
+        const nameExt = 'android:name' in v ? v['android:name'] : v.name;
         if (v.tag) {
             const childNode = _findChildNode(v.tag, nameExt, node);
             if (childNode) {
@@ -139,7 +147,7 @@ const _mergeNodeChildren = (node: AndroidManifestNode, nodeChildrenExt: Array<An
                 _mergeNodeChildren(childNode, v.children);
             } else {
                 logDebug(`_mergeNodeChildren: NO android:name found. adding to children ${nameExt} ${v.tag}`);
-                if (node.children) node.children.push(v);
+                if (node.children) node.children.push(v as NodeKeyChildren);
             }
         }
     });
@@ -177,7 +185,7 @@ const _mergeFeatures = (
     }
 };
 
-const getConfigPropArray = <T extends ConfigPropKey>(c: RnvContext, platform: RnvPlatform, key: T) => {
+export const getConfigPropArray = <T extends ConfigPropKey>(c: RnvContext, platform: RnvPlatform, key: T) => {
     const result: Array<ConfigProp[T]> = [];
     const configArr = [
         c.files.defaultWorkspace.config,

@@ -7,9 +7,16 @@ import {
     writeCleanFile,
     getContext,
     OverridesOptions,
+    logDefault,
+    readObjectSync,
+    AndroidResources,
+    logError,
+    parsePlugins,
+    getFlavouredProp,
 } from '@rnv/core';
 import { getBuildFilePath, getAppTitle, sanitizeColor, addSystemInjects } from '@rnv/sdk-utils';
-import { Payload, ResourceStyles } from './types';
+import { Payload, ResourceStyles, TemplateAndroid } from './types';
+import { _convertToXML, _mergeNodeChildren, _mergeNodeParameters, getConfigPropArray } from './manifestParser';
 
 export const parseValuesStringsSync = () => {
     const c = getContext<Payload>();
@@ -84,7 +91,61 @@ export const parseValuesStylesSync = () => {
     writeCleanFile(getBuildFilePath(stylePath1), path.join(appFolder, stylePath1), injects, undefined, c);
     writeCleanFile(getBuildFilePath(stylePath2), path.join(appFolder, stylePath2), injects, undefined, c);
 };
+export const parseValuesXml = (targetRes: 'styles_xml' | 'strings_xml' | 'colors_xml') => {
+    const c = getContext();
+    logDefault('parseValuesStylesSync');
+    const { platform } = c;
 
+    if (!platform) return;
+
+    try {
+        const baseResoutcesFilePath = path.join(__dirname, `../supportFiles/${targetRes}.json`);
+        const baseResourcesFile = readObjectSync<AndroidResources>(baseResoutcesFilePath);
+
+        if (!baseResourcesFile) {
+            return;
+        }
+        const objArr = getConfigPropArray(c, c.platform, 'templateAndroid');
+
+        // PARSE all standard renative.*.json files in correct mergeOrder
+        objArr.forEach((tpl) => {
+            const resourceObj = tpl?.[targetRes];
+            if (resourceObj) {
+                _mergeNodeParameters(baseResourcesFile, resourceObj);
+            }
+            if (resourceObj?.children) {
+                _mergeNodeChildren(baseResourcesFile, resourceObj.children);
+            }
+        });
+
+        // appConfigs/base/plugins.json PLUGIN CONFIG OVERRIDES
+        parsePlugins((_plugin, pluginPlat) => {
+            const resourcesPlugin = getFlavouredProp(pluginPlat, 'templateAndroid')?.[targetRes];
+            if (resourcesPlugin) {
+                _mergeNodeChildren(baseResourcesFile, resourcesPlugin.children);
+                if (resourcesPlugin.children) {
+                    _mergeNodeChildren(baseResourcesFile, resourcesPlugin.children);
+                }
+            }
+        });
+
+        const resourceXml = _convertToXML(baseResourcesFile);
+        const resourceFile = `app/src/main/res/values/${targetRes.replace('_', '.')}`;
+        const getPattern = (): string => {
+            return `{{PLUGIN_${targetRes.toUpperCase()}_FILE}}`;
+        };
+        const injects = [{ pattern: getPattern(), override: resourceXml || '' }];
+
+        addSystemInjects(injects);
+
+        const appFolder = getAppFolder();
+        writeCleanFile(getBuildFilePath(resourceFile), path.join(appFolder, resourceFile), injects, undefined, c);
+
+        return;
+    } catch (e) {
+        logError(e);
+    }
+};
 export const parseValuesColorsSync = () => {
     const c = getContext();
     const appFolder = getAppFolder();

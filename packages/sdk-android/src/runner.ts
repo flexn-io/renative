@@ -52,7 +52,7 @@ import {
     parseValuesStringsSync,
     injectPluginXmlValuesSync,
     parseValuesColorsSync,
-    parseValuesStylesSync,
+    parseValuesXml,
 } from './xmlValuesParser';
 import { ejectGradleProject } from './ejector';
 import { AndroidDevice, Context, Payload } from './types';
@@ -497,7 +497,8 @@ export const configureProject = async () => {
     parseMainApplicationSync();
     parseSplashActivitySync();
     parseValuesStringsSync();
-    parseValuesStylesSync();
+    parseValuesXml('styles_xml');
+    // parseValuesStylesSync();
     parseValuesColorsSync();
     parseAndroidManifestSync();
     parseGradlePropertiesSync();

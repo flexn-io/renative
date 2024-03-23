@@ -46,6 +46,12 @@ const ManifestChildBase = z.object({
     // 'tools:targetApi': 28,
 });
 
+const ResourcesChildBase = z.object({
+    tag: z.string(),
+    name: z.string(),
+    parent: z.optional(z.string()),
+});
+
 // type ManifestFeature = {
 //     tag: string;
 //     'android:name': string;
@@ -61,12 +67,27 @@ const ManifestChildWithChildren: z.ZodType<_ManifestChildType> = ManifestChildBa
     children: z.lazy(() => ManifestChildWithChildren.array()),
 });
 
+export type _ResourcesChildType = z.infer<typeof ResourcesChildBase> & {
+    children?: _ResourcesChildType[];
+};
+
+const ResourcesChildWithChildren: z.ZodType<_ResourcesChildType> = ResourcesChildBase.extend({
+    children: z.lazy(() => ResourcesChildWithChildren.array()),
+});
 const AndroidManifest = ManifestChildBase.extend({
     package: z.string().optional(),
     children: z.array(ManifestChildWithChildren),
 }).describe(`Allows you to directly manipulate \`AndroidManifest.xml\` via json override mechanism
 Injects / Overrides values in AndroidManifest.xml file of generated android based project
 > IMPORTANT: always ensure that your object contains \`tag\` and \`android:name\` to target correct tag to merge into
+ `);
+
+const Resources = ResourcesChildBase.extend({
+    // package: z.string().optional(),
+    children: z.array(ResourcesChildWithChildren),
+}).describe(`Allows you to directly manipulate \`res/values files\` via json override mechanism
+Injects / Overrides values in res/values files of generated android based project
+> IMPORTANT: always ensure that your object contains \`tag\` and \`name\` to target correct tag to merge into
  `);
 
 // const Gradle = z.object({
@@ -78,71 +99,10 @@ export const TemplateAndroidBaseFragment = {
     build_gradle: z.optional(BuildGradle),
     app_build_gradle: z.optional(AppBuildGradle),
     AndroidManifest_xml: z.optional(AndroidManifest),
-    styles_xml: z.optional(
-        z.object({
-            values: z
-                .optional(
-                    z.object({
-                        app_children: z.optional(
-                            z.array(
-                                z.object({
-                                    tag: z.string(),
-                                    name: z.string(),
-                                    child_value: z.string(),
-                                })
-                            )
-                        ),
-                        splash_children: z.optional(
-                            z.array(
-                                z.object({
-                                    tag: z.string(),
-                                    name: z.string(),
-                                    child_value: z.string(),
-                                })
-                            )
-                        ),
-                    })
-                )
-                .describe('Allows you to add styles to values/styles.xml'),
-            values_v28: z
-                .optional(
-                    z.object({
-                        app_children: z.optional(
-                            z.array(
-                                z.object({
-                                    tag: z.string(),
-                                    name: z.string(),
-                                    child_value: z.string(),
-                                })
-                            )
-                        ),
-                        splash_children: z.optional(
-                            z.array(
-                                z.object({
-                                    tag: z.string(),
-                                    name: z.string(),
-                                    child_value: z.string(),
-                                })
-                            )
-                        ),
-                    })
-                )
-                .describe('Allows you to add styles to values-v28/styles.xml'),
-        })
-    ),
-    strings_xml: z.optional(
-        z.object({
-            children: z.optional(
-                z.array(
-                    z.object({
-                        tag: z.string(),
-                        name: z.string(),
-                        child_value: z.string(),
-                    })
-                )
-            ),
-        })
-    ),
+    styles_xml: z.optional(Resources),
+    strings_xml: z.optional(Resources),
+    colors_xml: z.optional(Resources),
+
     MainActivity_kt: z.optional(
         z.object({
             onCreate: z
@@ -179,3 +139,6 @@ export const TemplateAndroidBaseFragment = {
 export type _ManifestChildWithChildrenType = z.infer<typeof ManifestChildWithChildren>;
 
 export type _AndroidManifestType = z.infer<typeof AndroidManifest>;
+
+export type _ResourcesChildWithChildrenType = z.infer<typeof ResourcesChildWithChildren>;
+export type _AndroidResourcesType = z.infer<typeof Resources>;

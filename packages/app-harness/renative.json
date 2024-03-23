@@ -12,12 +12,20 @@
         "android": {
             "templateAndroid": {
                 "styles_xml": {
-                    "values": {
-                        "app_children": [{ "tag": "item", "name": "android:windowIsTranslucent", "child_value": true }]
-                    },
-                    "values_v28": {
-                        "app_children": [{ "tag": "item", "name": "android:windowIsTranslucent", "child_value": true }]
-                    }
+                    "tag": "resources",
+                    "children": [
+                        {
+                            "tag": "style",
+                            "name": "AppTheme",
+                            "children": [
+                                {
+                                    "tag": "item",
+                                    "name": "android:windowIsTranslucent",
+                                    "value": "true"
+                                }
+                            ]
+                        }
+                    ]
                 }
             }
         }
