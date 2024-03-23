@@ -11,6 +11,7 @@ export const DEFAULT_TASK_DESCRIPTIONS: Record<string, string> = {
 };
 
 const _RnvTaskOptions = {
+    // CORE --------------------------------
     help: {
         shortcut: 'h',
         description: 'Displays help info for particular command',
@@ -23,25 +24,111 @@ const _RnvTaskOptions = {
     printExec: {
         description: 'Print exec commands in full',
     },
-    updatePods: {
-        shortcut: 'u',
-        description: 'Force update dependencies (iOS only)',
-    },
     platform: {
         shortcut: 'p',
         isValueType: true,
         description: 'select specific Platform',
     },
+    skipTasks: {
+        isValueType: true,
+        isRequired: true,
+        description: 'List tasks which you want to skip during rnv execution',
+        examples: ['--skipTasks "configure,export"', '--skipTasks deploy'],
+    },
+    only: {
+        shortcut: 'o',
+        description: 'run Only top command (Skip dependencies)',
+    },
+    ci: {
+        description: 'CI/CD flag so it wont ask questions',
+    },
+    mono: {
+        description: 'Monochrome console output without chalk',
+    },
+    maxErrorLength: {
+        isValueType: true,
+        isRequired: true,
+        description: 'Specify how many characters each error should display. Default 200',
+    },
+    json: {
+        description: 'Outputs the result as json',
+    },
+    yes: {
+        description: 'Default all prompts to yes',
+    },
+    telemetryDebug: {
+        description: 'If you have telemetry enabled, will print out exactly what is being collected into the console',
+    },
+    // OTHERS 1st --------------------------------
     appConfigID: {
         shortcut: 'c',
         isValueType: true,
         description: 'select specific app Config id',
+    },
+    skipRnvCheck: {
+        description: 'Skips auto update of rnv dependencies if mismatch found',
+    },
+    updatePods: {
+        shortcut: 'u',
+        description: 'Force update dependencies (iOS only)',
+    },
+    scheme: {
+        shortcut: 's',
+        isValueType: true,
+        description: 'select build Scheme',
+    },
+    engine: {
+        shortcut: 'e',
+        isValueType: true,
+        isRequired: true,
+        description: 'engine to be used ie "engine-rn"',
+    },
+    exeMethod: {
+        shortcut: 'x',
+        isValueType: true,
+        description: 'eXecutable method in buildHooks',
+    },
+    reset: {
+        shortcut: 'r',
+        description: 'also perform reset of platform build',
+    },
+    resetHard: {
+        shortcut: 'R',
+        description: 'also perform reset of platform platform and platform assets',
+    },
+    resetAssets: {
+        shortcut: 'a',
+        description: 'also perform reset of platform assets',
     },
     target: {
         shortcut: 't',
         isValueType: true,
         description: 'select specific Target device/simulator',
     },
+    host: {
+        shortcut: 'H',
+        isValueType: true,
+        isRequired: true,
+        description: 'custom Host ip',
+    },
+    port: {
+        shortcut: 'P',
+        isValueType: true,
+        isRequired: true,
+        description: 'custom Port',
+    },
+    device: {
+        shortcut: 'd',
+        isValueType: true,
+        description: 'select connected Device',
+    },
+    hosted: {
+        description: 'Run in a hosted environment (skip budleAssets)',
+    },
+    hooks: {
+        description: 'Force rebuild hooks',
+    },
+    // OTHERS 2nd --------------------------------
     projectName: {
         isValueType: true,
         description: 'select the name of the new project',
@@ -76,16 +163,6 @@ const _RnvTaskOptions = {
         isRequired: true,
         description: 'select specific template',
     },
-    device: {
-        shortcut: 'd',
-        isValueType: true,
-        description: 'select connected Device',
-    },
-    scheme: {
-        shortcut: 's',
-        isValueType: true,
-        description: 'select build Scheme',
-    },
     filter: {
         shortcut: 'f',
         isValueType: true,
@@ -96,22 +173,7 @@ const _RnvTaskOptions = {
         shortcut: 'l',
         description: 'return List of items related to command',
     },
-    only: {
-        shortcut: 'o',
-        description: 'run Only top command (Skip dependencies)',
-    },
-    reset: {
-        shortcut: 'r',
-        description: 'also perform reset of platform build',
-    },
-    resetHard: {
-        shortcut: 'R',
-        description: 'also perform reset of platform platform and platform assets',
-    },
-    resetAssets: {
-        shortcut: 'a',
-        description: 'also perform reset of platform assets',
-    },
+
     key: {
         shortcut: 'k',
         isValueType: true,
@@ -122,23 +184,6 @@ const _RnvTaskOptions = {
         shortcut: 'b',
         isValueType: true,
         description: 'Blueprint for targets',
-    },
-    host: {
-        shortcut: 'H',
-        isValueType: true,
-        isRequired: true,
-        description: 'custom Host ip',
-    },
-    exeMethod: {
-        shortcut: 'x',
-        isValueType: true,
-        description: 'eXecutable method in buildHooks',
-    },
-    port: {
-        shortcut: 'P',
-        isValueType: true,
-        isRequired: true,
-        description: 'custom Port',
     },
     debug: {
         shortcut: 'D',
@@ -155,22 +200,10 @@ const _RnvTaskOptions = {
         shortcut: 'G',
         description: 'Flag for setting a config value for all RNV projects',
     },
-    engine: {
-        shortcut: 'e',
-        isValueType: true,
-        isRequired: true,
-        description: 'engine to be used ie "engine-rn"',
-    },
     debugIp: {
         isValueType: true,
         isRequired: true,
         description: '(optional) overwrite the ip to which the remote debugger will connect',
-    },
-    ci: {
-        description: 'CI/CD flag so it wont ask questions',
-    },
-    mono: {
-        description: 'Monochrome console output without chalk',
     },
     skipNotifications: {
         description: 'Skip sending any integrated notifications',
@@ -195,17 +228,7 @@ const _RnvTaskOptions = {
         isRequired: true,
         description: 'Name of provisionProfile',
     },
-    hosted: {
-        description: 'Run in a hosted environment (skip budleAssets)',
-    },
-    hooks: {
-        description: 'Force rebuild hooks',
-    },
-    maxErrorLength: {
-        isValueType: true,
-        isRequired: true,
-        description: 'Specify how many characters each error should display. Default 200',
-    },
+
     skipTargetCheck: {
         description: 'Skip Android target check, just display the raw adb devices to choose from',
     },
@@ -230,9 +253,7 @@ const _RnvTaskOptions = {
     skipDependencyCheck: {
         description: 'Skips auto update of npm dependencies if mismatch found',
     },
-    skipRnvCheck: {
-        description: 'Skips auto update of rnv dependencies if mismatch found',
-    },
+
     configName: {
         isValueType: true,
         isRequired: true,
@@ -251,9 +272,7 @@ const _RnvTaskOptions = {
     unlinked: {
         description: 'Force engines to be loaded from node_modules rather than locally',
     },
-    yes: {
-        description: 'Default all prompts to yes',
-    },
+
     gitEnabled: {
         description: 'Enable git in your newly created project',
         isValueType: true,
@@ -261,21 +280,13 @@ const _RnvTaskOptions = {
     npxMode: {
         description: 'Ensures you can use local npx rnv version after the command is done',
     },
-    json: {
-        description: 'Outputs the result as json',
-    },
+
     packageManager: {
         isValueType: true,
         isRequired: true,
         options: ['yarn', 'npm'],
         description: 'Set specific package manager to use',
         examples: ['--packageManager yarn', '--packageManager npm'],
-    },
-    skipTasks: {
-        isValueType: true,
-        isRequired: true,
-        description: 'List tasks which you want to skip during rnv execution',
-        examples: ['--skipTasks "configure,export"', '--skipTasks deploy'],
     },
     answer: {
         isValueType: true,
@@ -285,9 +296,6 @@ const _RnvTaskOptions = {
     },
     resetAdb: {
         description: 'Forces to reset android adb',
-    },
-    telemetryDebug: {
-        description: 'If you have telemetry enabled, will print out exactly what is being collected into the console',
     },
 };
 
