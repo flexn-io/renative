@@ -29,7 +29,6 @@ const Task: RnvTask = {
     fn: taskConfigureSoft,
     task: RnvTaskName.configureSoft,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: null,
     isPrivate: true,
 };
 

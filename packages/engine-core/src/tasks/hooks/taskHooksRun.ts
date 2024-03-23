@@ -61,7 +61,6 @@ const Task: RnvTask = {
     fn: taskHooksRun,
     task: RnvTaskName.hooksRun,
     options: RnvTaskOptionPresets.withBase([RnvTaskOptions.exeMethod]),
-    platforms: null,
     forceBuildHookRebuild: true,
     isGlobalScope: true,
 };

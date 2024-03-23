@@ -145,7 +145,6 @@ const Task: RnvTask = {
     fn: taskProjectConfigure,
     task: RnvTaskName.projectConfigure,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: null,
 };
 
 export default Task;

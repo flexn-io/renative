@@ -47,7 +47,6 @@ const Task: RnvTask = {
     fn: taskHelp,
     task: RnvTaskName.help,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: null,
     isGlobalScope: true,
     isPriorityOrder: true,
 };

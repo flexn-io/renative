@@ -80,7 +80,6 @@ const Task: RnvTask = {
     fn: taskProjectUpgrade,
     task: RnvTaskName.projectUpgrade,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: null,
     isGlobalScope: true,
 };
 

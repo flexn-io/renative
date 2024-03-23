@@ -211,7 +211,6 @@ const Task: RnvTask = {
     fn: taskCryptoDecrypt,
     task: RnvTaskName.cryptoDecrypt,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: null,
 };
 
 export default Task;

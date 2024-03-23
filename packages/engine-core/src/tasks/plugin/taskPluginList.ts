@@ -19,7 +19,6 @@ const Task: RnvTask = {
     fn: taskPluginList,
     task: RnvTaskName.pluginList,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: null,
 };
 
 export default Task;

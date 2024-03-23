@@ -35,7 +35,6 @@ const Task: RnvTask = {
     fn: taskHooksList,
     task: RnvTaskName.hooksList,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: null,
     forceBuildHookRebuild: true,
 };
 

@@ -73,7 +73,6 @@ const Task: RnvTask = {
     fn: taskPlatformConfigure,
     task: RnvTaskName.platformConfigure,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: null,
 };
 
 export default Task;

@@ -92,7 +92,6 @@ const Task: RnvTask = {
     fn: taskPlatformConnect,
     task: RnvTaskName.platformConnect,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: null,
 };
 
 export default Task;

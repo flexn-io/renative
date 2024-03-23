@@ -92,7 +92,6 @@ const Task: RnvTask = {
     fn: taskDoctor,
     task: RnvTaskName.doctor,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: null,
     isGlobalScope: true,
 };
 

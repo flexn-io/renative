@@ -14,7 +14,6 @@ const Task: RnvTask = {
     fn,
     task: RnvTaskName.sdkConfigure,
     options: [],
-    platforms: null,
 };
 
 export default Task;

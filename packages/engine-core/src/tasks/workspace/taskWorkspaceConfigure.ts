@@ -87,7 +87,6 @@ const Task: RnvTask = {
     fn: taskWorkspaceConfigure,
     task: RnvTaskName.workspaceConfigure,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: null,
     isGlobalScope: true,
 };
 

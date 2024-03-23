@@ -10,7 +10,6 @@ const Task: RnvTask = {
     fn: task,
     task: 'starter hello',
     options: RnvTaskOptionPresets.withBase([{ key: 'my-opt', description: 'Hello', isValueType: true }]),
-    platforms: null,
 };
 
 export default Task;

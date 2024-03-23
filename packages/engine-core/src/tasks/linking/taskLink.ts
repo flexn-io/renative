@@ -97,7 +97,6 @@ const Task: RnvTask = {
     options: RnvTaskOptionPresets.withBase([
         { key: 'dir', description: 'Source folder to be linked into project', isValueType: true },
     ]),
-    platforms: null,
     isGlobalScope: true,
     ignoreEngines: true,
 };
