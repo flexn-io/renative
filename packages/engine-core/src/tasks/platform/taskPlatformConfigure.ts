@@ -31,7 +31,7 @@ const taskPlatformConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     await isPlatformSupported();
     await isBuildSchemeSupported();
 
-    await executeTask(RnvTaskName.sdkConfigure, RnvTaskName.platformConfigure, originTask);
+    await executeTask(RnvTaskName.sdkConfigure, RnvTaskName.platformConfigure, originTask, true);
 
     await configureRuntimeDefaults();
 

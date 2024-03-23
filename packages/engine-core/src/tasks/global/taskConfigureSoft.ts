@@ -18,7 +18,7 @@ const taskConfigureSoft: RnvTaskFn = async (_c, parentTask, originTask) => {
     await isPlatformSupported();
     await isBuildSchemeSupported();
 
-    await executeTask(RnvTaskName.sdkConfigure, RnvTaskName.configureSoft, originTask);
+    await executeTask(RnvTaskName.sdkConfigure, RnvTaskName.configureSoft, originTask, true);
 
     await configureRuntimeDefaults();
     return true;

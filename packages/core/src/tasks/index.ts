@@ -48,7 +48,7 @@ export const initializeTask = async (taskInstance: RnvTask) => {
         platform: c.platform,
     });
 
-    await executeTask(task, undefined, task, true);
+    await executeTask(task, undefined, task);
     return true;
 };
 
@@ -397,7 +397,7 @@ const _selectPlatform = async (c: RnvContext, suitableEngines: Array<RnvEngine>,
             enPlats.forEach((plat) => {
                 supportedEngPlatforms.push(plat);
             });
-        } else if (enPlats === null) {
+        } else {
             // enPlats=null means task can be executed without platform
             isPlatformIndependentTask = true;
         }
@@ -447,7 +447,7 @@ const _executePipe = async (c: RnvContext, task: string, phase: string) =>
 
 const TASK_LIMIT = 20;
 
-export const executeTask = async (task: string, parentTask?: string, originTask?: string, isFirstTask?: boolean) => {
+export const executeTask = async (task: string, parentTask?: string, originTask?: string, isOptional?: boolean) => {
     const c = getContext();
     // const pt = parentTask ? `=> [${parentTask}] ` : '';
     c._currentTask = task;
@@ -463,7 +463,7 @@ but issue migh not be necessarily with this task
 
 To avoid that test your task code against parentTask and avoid executing same task X from within task X`);
     }
-    await executeEngineTask(task, parentTask, originTask, getEngineRunner(task, CUSTOM_TASKS)?.tasks, isFirstTask);
+    await executeEngineTask(task, parentTask, originTask, getEngineRunner(task, CUSTOM_TASKS, !isOptional)?.tasks);
     // await getEngineRunner(task, CUSTOM_TASKS).executeTask(task, parentTask, originTask, isFirstTask);
     executedTasks[task]++;
 
