@@ -1,16 +1,13 @@
 import { generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
-import { taskTargetLaunchAndroid, taskSdkConfigureAndroid, taskTargetListAndroid } from '@rnv/sdk-android';
-import { taskTargetLaunchApple, taskTargetListApple } from '@rnv/sdk-apple';
+import { Tasks as TasksAndroid } from '@rnv/sdk-android';
+import { Tasks as TasksApple } from '@rnv/sdk-apple';
 import taskRun from './tasks/taskRun';
 import taskPackage from './tasks/taskPackage';
 import taskBuild from './tasks/taskBuild';
 import taskConfigure from './tasks/taskConfigure';
 import taskStart from './tasks/taskStart';
 import taskExport from './tasks/taskExport';
-import taskCryptoInstallCerts from './tasks/taskCryptoInstallCerts';
-import taskCryptoUpdateProfile from './tasks/taskCryptoUpdateProfile';
-import taskCryptoUpdateProfiles from './tasks/taskCryptoUpdateProfiles';
-import taskCryptoInstallProfiles from './tasks/taskCryptoInstallProfiles';
+
 import taskLog from './tasks/taskLog';
 //@ts-ignore
 import CNF from '../renative.engine.json';
@@ -26,16 +23,9 @@ const Engine: RnvEngine = {
         taskConfigure,
         taskStart,
         taskExport,
-        taskCryptoInstallCerts,
-        taskCryptoUpdateProfile,
-        taskCryptoUpdateProfiles,
-        taskCryptoInstallProfiles,
         taskLog,
-        taskTargetLaunchAndroid,
-        taskTargetLaunchApple,
-        taskTargetListAndroid,
-        taskTargetListApple,
-        taskSdkConfigureAndroid,
+        ...TasksAndroid,
+        ...TasksApple,
     ]),
     config: CNF,
     runtimeExtraProps: {

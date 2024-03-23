@@ -3,6 +3,8 @@ export * from './deviceManager';
 export * from './constants';
 export * from './installer';
 export * from './jetifier';
-export { default as taskTargetLaunchAndroid } from './tasks/taskTargetLaunch';
-export { default as taskTargetListAndroid } from './tasks/taskTargetList';
-export { default as taskSdkConfigureAndroid } from './tasks/taskSdkConfigure';
+import taskTargetLaunch from './tasks/taskTargetLaunch';
+import taskTargetList from './tasks/taskTargetList';
+import taskSdkConfigure from './tasks/taskSdkConfigure';
+
+export const Tasks = [taskTargetLaunch, taskTargetList, taskSdkConfigure];

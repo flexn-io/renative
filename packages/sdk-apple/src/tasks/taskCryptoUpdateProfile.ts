@@ -1,7 +1,7 @@
-import { logTask, RnvTaskFn, executeTask, shouldSkipTask, RnvTask, RnvTaskName, RnvTaskOptionPresets } from '@rnv/core';
-import { updateProfile } from '@rnv/sdk-apple';
+import { RnvTaskFn, executeTask, shouldSkipTask, logTask, RnvTaskOptionPresets, RnvTask, RnvTaskName } from '@rnv/core';
+import { updateProfile } from '../fastlane';
 
-const taskCryptoUpdateProfile: RnvTaskFn = async (c, _parentTask, originTask) => {
+const fn: RnvTaskFn = async (_c, _parentTask, originTask) => {
     logTask('taskCryptoUpdateProfile');
 
     await executeTask(RnvTaskName.projectConfigure, RnvTaskName.cryptoUpdateProfile, originTask);
@@ -13,11 +13,10 @@ const taskCryptoUpdateProfile: RnvTaskFn = async (c, _parentTask, originTask) =>
 
 const Task: RnvTask = {
     description: 'Update provisioning profile (mac only)',
-    fn: taskCryptoUpdateProfile,
+    fn,
     task: RnvTaskName.cryptoUpdateProfile,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: ['ios'],
-    // skipPlatforms: true,
+    platforms: ['ios', 'macos', 'tvos'],
 };
 
 export default Task;

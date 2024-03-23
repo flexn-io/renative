@@ -1,6 +1,9 @@
+import { generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
+import { withRNVRNConfig } from '@rnv/sdk-react-native';
+import { Tasks as TasksAndroid } from '@rnv/sdk-android';
+import { Tasks as TasksApple } from '@rnv/sdk-apple';
 import { withRNVMetro } from './adapters/metroAdapter';
 import { withRNVBabel } from './adapters/babelAdapter';
-
 //@ts-ignore
 import CNF from '../renative.engine.json';
 import taskRun from './tasks/taskRun';
@@ -9,16 +12,8 @@ import taskBuild from './tasks/taskBuild';
 import taskConfigure from './tasks/taskConfigure';
 import taskStart from './tasks/taskStart';
 import taskExport from './tasks/taskExport';
-import taskCryptoInstallCerts from './tasks/taskCryptoInstallCerts';
-import taskCryptoUpdateProfile from './tasks/taskCryptoUpdateProfile';
-import taskCryptoUpdateProfiles from './tasks/taskCryptoUpdateProfiles';
-import taskCryptoInstallProfiles from './tasks/taskCryptoInstallProfiles';
 import taskLog from './tasks/taskLog';
 import taskEject from './tasks/taskEject';
-import { generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
-import { withRNVRNConfig } from '@rnv/sdk-react-native';
-import { taskTargetLaunchAndroid, taskSdkConfigureAndroid, taskTargetListAndroid } from '@rnv/sdk-android';
-import { taskTargetLaunchApple, taskTargetListApple } from '@rnv/sdk-apple';
 
 const Engine: RnvEngine = {
     tasks: generateEngineTasks([
@@ -29,16 +24,9 @@ const Engine: RnvEngine = {
         taskStart,
         taskExport,
         taskEject,
-        taskCryptoInstallCerts,
-        taskCryptoUpdateProfile,
-        taskCryptoUpdateProfiles,
-        taskCryptoInstallProfiles,
         taskLog,
-        taskTargetLaunchAndroid,
-        taskTargetLaunchApple,
-        taskTargetListAndroid,
-        taskTargetListApple,
-        taskSdkConfigureAndroid,
+        ...TasksAndroid,
+        ...TasksApple,
     ]),
     config: CNF,
     runtimeExtraProps: {

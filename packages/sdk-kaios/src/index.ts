@@ -1,4 +1,7 @@
 export * from './deviceManager';
 export * from './runner';
 export * from './constants';
-export { default as taskTargetLaunchKaiOS } from './tasks/taskTargetLaunch';
+
+import taskTargetLaunch from './tasks/taskTargetLaunch';
+
+export const Tasks = [taskTargetLaunch];

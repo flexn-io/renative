@@ -2,6 +2,9 @@ export * from './deviceManager';
 export * from './installer';
 export * from './runner';
 export * from './constants';
-export { default as taskTargetLaunchTizen } from './tasks/taskTargetLaunch';
-export { default as taskTargetListTizen } from './tasks/taskTargetList';
-export { default as taskSdkConfigureTizen } from './tasks/taskSdkConfigure';
+
+import taskTargetLaunch from './tasks/taskTargetLaunch';
+import taskTargetList from './tasks/taskTargetList';
+import taskSdkConfigure from './tasks/taskSdkConfigure';
+
+export const Tasks = [taskTargetLaunch, taskTargetList, taskSdkConfigure];

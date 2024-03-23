@@ -1,18 +1,17 @@
 import {
-    logTask,
     RnvTaskFn,
+    listAppConfigsFoldersSync,
+    chalk,
+    logTask,
+    RnvTaskOptionPresets,
     executeTask,
     shouldSkipTask,
-    chalk,
-    RnvContext,
-    listAppConfigsFoldersSync,
     RnvTask,
     RnvTaskName,
-    RnvTaskOptionPresets,
 } from '@rnv/core';
-import { updateProfile } from '@rnv/sdk-apple';
+import { updateProfile } from '../fastlane';
 
-const _updateProfile = (c: RnvContext, v: string) =>
+const _updateProfile = (v: string) =>
     new Promise<void>((resolve, reject) => {
         logTask(`_updateProfile:${v}`, chalk().grey);
         updateProfile()
@@ -20,37 +19,31 @@ const _updateProfile = (c: RnvContext, v: string) =>
             .catch((e) => reject(e));
     });
 
-const _updateProfiles = (c: RnvContext) => {
+const _updateProfiles = () => {
     logTask('_updateProfiles', chalk().grey);
     const acList = listAppConfigsFoldersSync(true);
 
-    return acList.reduce((previousPromise, v) => previousPromise.then(() => _updateProfile(c, v)), Promise.resolve());
+    return acList.reduce((previousPromise, v) => previousPromise.then(() => _updateProfile(v)), Promise.resolve());
 };
 
-const taskCryptoUpdateProfiles: RnvTaskFn = async (c, _parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskCryptoUpdateProfiles');
 
     await executeTask(RnvTaskName.projectConfigure, RnvTaskName.cryptoUpdateProfiles, originTask);
 
     if (shouldSkipTask(RnvTaskName.cryptoUpdateProfiles, originTask)) return true;
 
-    switch (c.platform) {
-        case 'ios':
-            await _updateProfiles(c);
-            break;
-        default:
-            return true;
-    }
-    return Promise.reject(`updateProfiles: Platform ${c.platform} not supported`);
+    _updateProfiles();
+
+    return true;
 };
 
 const Task: RnvTask = {
     description: 'Will attempt to update all provisioning profiles (mac only)',
-    fn: taskCryptoUpdateProfiles,
+    fn,
     task: RnvTaskName.cryptoUpdateProfiles,
     options: RnvTaskOptionPresets.withBase(),
-    platforms: ['ios'],
-    // skipPlatforms: true,
+    platforms: ['ios', 'macos', 'tvos'],
 };
 
 export default Task;
