@@ -1,7 +1,6 @@
 import { createRnvContext, executeTask, getContext } from '@rnv/core';
 import taskPlatformConfigure from '../taskPlatformConfigure';
 
-jest.mock('../../../common');
 jest.mock('../../../buildSchemes');
 jest.mock('@rnv/core');
 
