@@ -27,23 +27,23 @@ const taskNew = async () => {
     const payload = await initNewProject();
     // Interactive Questions Required
     await inquiryProjectName(payload);
+    await inquiryWorkspace(payload);
     await processChdirToProject();
     await inquiryIsRenativeProject(payload);
     await inquiryHasNodeModules(payload);
     await inquiryInstallTemplate(payload);
     await inquiryApplyTemplate(payload);
     await saveProgressIntoProjectConfig(payload);
+    await inquiryBookmarkTemplate(payload);
     // Interactive Questions Optional
     await inquiryAppTitle(payload);
     await inquiryAppID(payload);
     await inquiryAppVersion(payload);
     await saveProgressIntoProjectConfig(payload);
 
-    await inquiryWorkspace(payload);
     await inquirySupportedPlatforms(payload);
     await inquiryBootstrapQuestions(payload);
     await inquiryGit(payload);
-    await inquiryBookmarkTemplate(payload);
     await inquiryConfirm(payload);
     // Generate Project
     await generateNewProject(payload);

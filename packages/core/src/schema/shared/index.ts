@@ -89,6 +89,8 @@ export const SupportedPlatforms = z
 export const ProjectTemplates = z.record(
     z.string(),
     z.object({
-        description: z.string(),
+        packageName: z.string().optional(),
+        description: z.string().optional(),
+        localPath: z.string().optional(),
     })
 );

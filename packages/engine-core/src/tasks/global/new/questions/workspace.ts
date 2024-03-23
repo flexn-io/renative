@@ -9,13 +9,13 @@ export const inquiryWorkspace = async (data: NewProjectData) => {
     if (checkInputValue(workspace)) {
         inputWorkspace = workspace;
     } else if (ci) {
-        inputWorkspace = data.defaultWorkspace;
+        inputWorkspace = data.defaults.workspaceID;
     } else {
         const answer = await inquirerPrompt({
             name: 'inputWorkspace',
             type: 'list',
             message: 'What workspace to use?',
-            default: data.defaultWorkspace,
+            default: data.defaults.workspaceID,
             choices: data.optionWorkspaces.keysAsArray,
         });
 

@@ -1,13 +1,5 @@
-import {
-    logToSummary,
-    logTask,
-    getTemplateOptions,
-    executeTask,
-    RnvTaskOptionPresets,
-    RnvTaskFn,
-    RnvTask,
-    RnvTaskName,
-} from '@rnv/core';
+import { logToSummary, logTask, executeTask, RnvTaskOptionPresets, RnvTaskFn, RnvTask, RnvTaskName } from '@rnv/core';
+import { getTemplateOptions } from '../../templates';
 
 const taskTemplateList: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskTemplateList');

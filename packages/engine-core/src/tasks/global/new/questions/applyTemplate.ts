@@ -13,7 +13,7 @@ import path from 'path';
 export const inquiryApplyTemplate = async (data: NewProjectData) => {
     const c = getContext();
 
-    const tplName = data.optionTemplates.selectedOption;
+    const tplName = data.inputs.tepmplate.name;
     if (!tplName) {
         return Promise.reject('Template not selected');
     }
@@ -46,7 +46,6 @@ export const inquiryApplyTemplate = async (data: NewProjectData) => {
         name: 'configOption',
         type: 'list',
         message: 'How to create config renative.json?',
-        default: data.defaultTemplate,
         choices: options,
     });
 

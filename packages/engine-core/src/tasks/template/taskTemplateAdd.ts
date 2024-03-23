@@ -4,13 +4,13 @@ import {
     generateBuildConfig,
     executeTask,
     RnvTaskOptionPresets,
-    getTemplateOptions,
     RnvContext,
     RnvTaskFn,
     inquirerPrompt,
     RnvTask,
     RnvTaskName,
 } from '@rnv/core';
+import { getTemplateOptions } from '../../templates';
 
 const _writeObjectSync = (p: string, s: object) => {
     writeFileSync(p, s);

@@ -1,4 +1,5 @@
 import {
+    ConfigFileBuildConfig,
     NpmPackageFile,
     RnvFileName,
     RnvFolderName,
@@ -10,7 +11,6 @@ import {
     fsLstatSync,
     fsReaddirSync,
     getContext,
-    getTemplateOptions,
     inquirerPrompt,
     inquirerSeparator,
     isYarnInstalled,
@@ -25,31 +25,31 @@ import { checkInputValue } from '../utils';
 import { saveProgressIntoProjectConfig } from '../projectGenerator';
 import { merge } from 'lodash';
 
+type TemplateOption = {
+    name: string;
+    value: {
+        key: 'existing' | 'custom' | 'local' | 'none';
+    } & Required<ConfigFileBuildConfig>['projectTemplates'][string];
+};
+
 export const inquiryInstallTemplate = async (data: NewProjectData) => {
-    const customTemplate = { name: 'Custom Template (npm)...', value: { key: 'custom' } };
-    const localTemplate = { name: 'Local Template...', value: { key: 'local' } };
-    const noTemplate = { name: 'No Template (blank project)', value: { key: 'none' } };
+    const customTemplate: TemplateOption = { name: 'Custom Template (npm)...', value: { key: 'custom' } };
+    const localTemplate: TemplateOption = { name: 'Local Template...', value: { key: 'local' } };
+    const noTemplate: TemplateOption = { name: 'No Template (blank project)', value: { key: 'none' } };
 
     const c = getContext();
     const { templateVersion, projectTemplate } = c.program;
 
-    data.optionTemplates = getTemplateOptions();
+    const projectTemplates = c.buildConfig.projectTemplates || {}; // c.files.rnvConfigTemplates.config?.projectTemplates || {};
 
-    const options = [];
-    const values = data.optionTemplates.valuesAsObject;
-    if (values) {
-        Object.keys(values).forEach((k) => {
-            const val = values[k];
-            if (val.description || val.path) {
-                val.title = `${k} ${chalk().grey(`- ${val.path || val.description}`)}`;
-            } else {
-                val.title = k;
-            }
-
-            val.key = k;
-            options.push({ name: val.title, value: val });
+    const options: TemplateOption[] = [];
+    Object.keys(projectTemplates).forEach((k) => {
+        const value = projectTemplates[k];
+        options.push({
+            name: `${k} ${chalk().grey(`- ${value.localPath || value.description}`)}`,
+            value: { ...value, key: 'existing' },
         });
-    }
+    });
 
     // data.optionTemplates.keysAsArray.push(customTemplate);
     options.push(inquirerSeparator('Advanced:----------------'));
@@ -61,36 +61,39 @@ export const inquiryInstallTemplate = async (data: NewProjectData) => {
     if (checkInputValue(projectTemplate)) {
         selectedInputTemplate = projectTemplate;
     } else {
-        const { inputTemplate } = await inquirerPrompt({
+        const iRes = await inquirerPrompt({
             name: 'inputTemplate',
             type: 'list',
             message: 'What template to use?',
-            default: data.defaultTemplate,
+            default: data.defaults.templateName,
             loop: false,
             choices: options,
         });
+        const result: TemplateOption['value'] = iRes.inputTemplate;
 
-        if (inputTemplate.key === customTemplate.value.key) {
+        if (result.key === 'custom') {
             const { inputTemplateCustom } = await inquirerPrompt({
                 name: 'inputTemplateCustom',
                 type: 'input',
                 message: 'NPM package name:',
             });
             selectedInputTemplate = inputTemplateCustom;
-        } else if (inputTemplate.key === localTemplate.value.key) {
+        } else if (result.key === 'local') {
             const { inputTemplateLocal } = await inquirerPrompt({
                 name: 'inputTemplateLocal',
                 type: 'input',
                 message: 'Path (absolute):',
             });
             localTemplatePath = inputTemplateLocal;
-        } else if (inputTemplate.key === noTemplate.value.key) {
+        } else if (result.key === 'none') {
             // TODO: add support for no templates
             return Promise.reject('No templates NOT SUPPORTED YET');
-        } else if (inputTemplate.path) {
-            localTemplatePath = inputTemplate.path;
-        } else {
-            selectedInputTemplate = inputTemplate.key;
+        } else if (result.key === 'existing') {
+            if (result.localPath) {
+                localTemplatePath = result.localPath;
+            } else {
+                selectedInputTemplate = result.packageName;
+            }
         }
     }
 
@@ -113,11 +116,13 @@ export const inquiryInstallTemplate = async (data: NewProjectData) => {
         if (!pkg?.name) {
             return Promise.reject(`Invalid package ${localTemplatePkgPath} missing name field`);
         }
-        data.optionTemplates.selectedOption = pkg.name;
-        data.optionTemplates.selectedVersion = pkg.version;
+
+        data.inputs.tepmplate.name = pkg.name;
+        data.inputs.tepmplate.version = pkg.version;
+        data.inputs.tepmplate.path = localTemplatePath;
         const nmTemplatePath = path.join(nmDir, pkg?.name);
 
-        logInfo(`Found local template: ${data.optionTemplates.selectedOption}@${pkg.version}`);
+        logInfo(`Found local template: ${pkg.name}@${pkg.version}`);
 
         mkdirSync(nmTemplatePath);
 
@@ -145,15 +150,15 @@ export const inquiryInstallTemplate = async (data: NewProjectData) => {
         });
 
         // NOTE: this is a workaround for npm/yarn bug where manually added packages are overriden on next install
-        const filePath = `file:${RnvFolderName.dotRnv}/${RnvFolderName.npmCache}/${data.optionTemplates.selectedOption}`;
+        const filePath = `file:${RnvFolderName.dotRnv}/${RnvFolderName.npmCache}/${data.inputs.tepmplate.name}`;
         data.files.project.packageJson = merge(data.files.project.packageJson, {
             devDependencies: {
-                [data.optionTemplates.selectedOption]: filePath,
+                [data.inputs.tepmplate.name]: filePath,
             },
         });
         data.files.project.renativeConfig = merge(data.files.project.renativeConfig, {
             templates: {
-                [data.optionTemplates.selectedOption]: {
+                [data.inputs.tepmplate.name]: {
                     version: filePath,
                 },
             },
@@ -165,16 +170,16 @@ export const inquiryInstallTemplate = async (data: NewProjectData) => {
             cwd: c.paths.project.dir,
         });
     } else {
-        data.optionTemplates.selectedOption = selectedInputTemplate;
+        data.inputs.tepmplate.name = selectedInputTemplate;
 
         let inputTemplateVersion;
         if (checkInputValue(templateVersion)) {
             inputTemplateVersion = templateVersion;
         } else {
-            inputTemplateVersion = await listAndSelectNpmVersion(data.optionTemplates.selectedOption || '');
+            inputTemplateVersion = await listAndSelectNpmVersion(data.inputs.tepmplate.name || '');
         }
 
-        data.optionTemplates.selectedVersion = inputTemplateVersion;
+        data.inputs.tepmplate.version = inputTemplateVersion;
 
         await executeAsync(
             `${isYarnInstalled() ? 'yarn' : 'npm'} add ${selectedInputTemplate}@${inputTemplateVersion} --dev`,

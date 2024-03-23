@@ -1,17 +1,13 @@
 import {
-    // ConfigFileProject,
     PlatformKey,
     RnvFileName,
-    // PlatformKey,
     applyTemplate,
-    chalk,
     configureTemplateFiles,
     generateLocalJsonSchemas,
     getApi,
     getContext,
     getWorkspaceOptions,
     logDebug,
-    logTask,
     updateRenativeConfigs,
     writeFileSync,
 } from '@rnv/core';
@@ -32,15 +28,21 @@ export const initNewProject = async () => {
     c.paths.project.config = path.join(c.paths.project.dir, RnvFileName.renative);
 
     const data: NewProjectData = {
-        defaultVersion: '0.1.0',
-        defaultTemplate: '@rnv/template-starter',
-        defaultProjectName: 'helloRenative',
-        defaultAppTitle: 'Hello Renative',
-        defaultWorkspace: 'rnv',
         teamID: '',
         optionPlatforms: {},
-        optionTemplates: {},
         optionWorkspaces: getWorkspaceOptions(),
+        defaults: {
+            appVersion: '0.1.0',
+            templateName: '@rnv/template-starter',
+            projectName: 'helloRenative',
+            appTitle: 'Hello Renative',
+            workspaceID: 'rnv',
+        },
+        inputs: {
+            tepmplate: {
+                name: '',
+            },
+        },
         files: {
             project: {
                 renativeConfig: {},
@@ -59,18 +61,18 @@ export const initNewProject = async () => {
 };
 
 export const generateNewProject = async (data: NewProjectData) => {
-    logTask(
-        `generateNewProject:${data.optionTemplates.selectedOption}:${data.optionTemplates.selectedVersion}`,
-        chalk().grey
-    );
+    // logTask(
+    //     `generateNewProject:${data.optionTemplates.selectedOption}:${data.optionTemplates.selectedVersion}`,
+    //     chalk().grey
+    // );
 
-    if (!data.optionTemplates.selectedVersion) {
+    if (!data.inputs.tepmplate.version) {
         return Promise.reject('No template version selected');
     }
     if (!data.files.template.renativeTemplateConfig) {
         return Promise.reject('No renativeTemplateConfig found');
     }
-    if (!data.optionTemplates.selectedOption) {
+    if (!data.inputs.tepmplate.name) {
         return Promise.reject('Current template not selected!');
     }
 

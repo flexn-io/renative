@@ -28,7 +28,7 @@ export const inquiryConfirm = async (data: NewProjectData) => {
 };
 
 const _prepareProjectOverview = (data: NewProjectData) => {
-    const tempString = `${data.optionTemplates.selectedOption}@${data.optionTemplates.selectedVersion}`;
+    const tempString = `${data.inputs.tepmplate.name}@${data.inputs.tepmplate.version}`;
 
     const highlight = chalk().green;
 

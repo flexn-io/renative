@@ -12,7 +12,7 @@ export const inquiryAppTitle = async (data: NewProjectData) => {
             value: title,
             validFn: validator,
             name: 'inputAppTitle',
-            defaultVal: data.defaultAppTitle,
+            defaultVal: data.defaults.appTitle,
             message: "What's your project Title?",
             warning: 'Title was not provided',
         },
@@ -20,5 +20,5 @@ export const inquiryAppTitle = async (data: NewProjectData) => {
     );
 
     data.inputAppTitle = result;
-    data.appTitle = data.inputAppTitle || data.defaultAppTitle;
+    data.appTitle = data.inputAppTitle || data.defaults.appTitle;
 };

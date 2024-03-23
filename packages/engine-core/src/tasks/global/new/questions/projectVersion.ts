@@ -16,13 +16,13 @@ export const inquiryAppVersion = async (data: NewProjectData) => {
             value: appVersion,
             validFn: validator,
             name: 'inputVersion',
-            defaultVal: data.defaultVersion,
+            defaultVal: data.defaults.appVersion,
             message: "What's your project version?",
             warning: `Command contains invalid appVersion. Please enter a valid semver version (1.0.0, 42.6.7.9.3-alpha, etc.`,
         },
         ci
     );
 
-    data.inputVersion = result || data.defaultVersion;
+    data.inputVersion = result || data.defaults.appVersion;
     data.files.project.packageJson = merge(data.files.project.packageJson, { version: data.inputVersion });
 };
