@@ -3,8 +3,6 @@ import taskRun from '../taskRun';
 import { getIosDeviceToRunOn, runXcodeProject } from '@rnv/sdk-apple';
 
 jest.mock('@rnv/core');
-jest.mock('@rnv/sdk-apple');
-jest.mock('@rnv/sdk-android');
 jest.mock('@rnv/sdk-react-native');
 
 beforeEach(() => {
@@ -18,8 +16,8 @@ afterEach(() => {
 test('Execute task.rnv.run', async () => {
     // GIVEN
     const ctx = getContext();
-    ctx.platform = 'tvos';
-    jest.mocked(getIosDeviceToRunOn).mockResolvedValue('MOCK_DEVICE_ARGS');
+    ctx.platform = 'ios';
+    jest.mocked(getIosDeviceToRunOn).mockResolvedValueOnce('MOCK_DEVICE_ARGS');
     // WHEN
     await taskRun.fn?.(ctx, undefined, undefined);
     // THEN
