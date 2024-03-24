@@ -1,16 +1,6 @@
-import {
-    generateOptions,
-    chalk,
-    logTask,
-    logToSummary,
-    executeTask,
-    RnvTaskOptionPresets,
-    RnvTaskFn,
-    RnvTask,
-    RnvTaskName,
-} from '@rnv/core';
+import { generateOptions, chalk, logTask, logToSummary, executeTask, RnvTaskFn, RnvTask, RnvTaskName } from '@rnv/core';
 
-const taskWorkspaceList: RnvTaskFn = async (c, _parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskWorkspaceList');
 
     if (c.paths.project.configExists) {
@@ -32,9 +22,8 @@ const taskWorkspaceList: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Show list of all available workspaces',
-    fn: taskWorkspaceList,
+    fn,
     task: RnvTaskName.workspaceList,
-    options: RnvTaskOptionPresets.withBase(),
     isGlobalScope: true,
 };
 

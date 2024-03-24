@@ -17,7 +17,6 @@ import {
     fsReaddir,
     inquirerPrompt,
     executeTask,
-    RnvTaskOptionPresets,
     RnvContext,
     RnvTaskFn,
     copyFileSync,
@@ -175,7 +174,7 @@ Make sure you take into account special characters that might need to be escaped
     }
 };
 
-const taskCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskCryptoEncrypt');
 
     await executeTask(RnvTaskName.projectConfigure, RnvTaskName.cryptoEncrypt, originTask);
@@ -237,9 +236,8 @@ const taskCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Encrypts secure files from `~/<wokspace>/<project>/..` to project',
-    fn: taskCryptoEncrypt,
+    fn,
     task: RnvTaskName.cryptoEncrypt,
-    options: RnvTaskOptionPresets.withBase(),
 };
 
 export default Task;

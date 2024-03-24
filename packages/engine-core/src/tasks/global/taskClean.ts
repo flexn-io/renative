@@ -9,7 +9,6 @@ import {
     logToSummary,
     logDebug,
     executeAsync,
-    RnvTaskOptionPresets,
     isSystemWin,
     RnvTaskFn,
     inquirerPrompt,
@@ -43,7 +42,7 @@ function clearWindowsCacheFiles() {
     return true;
 }
 
-const taskClean: RnvTaskFn = async (c) => {
+const fn: RnvTaskFn = async (c) => {
     logTask('taskClean');
     const skipQuestion = c.program.ci;
     const pathsToRemove = [];
@@ -210,9 +209,8 @@ const taskClean: RnvTaskFn = async (c) => {
 
 const Task: RnvTask = {
     description: 'Automatically removes all node_modules and lock in your project and its dependencies',
-    fn: taskClean,
+    fn,
     task: RnvTaskName.clean,
-    options: RnvTaskOptionPresets.withBase(),
     isGlobalScope: true,
 };
 

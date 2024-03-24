@@ -1,15 +1,7 @@
-import {
-    areNodeModulesInstalled,
-    RnvTaskOptionPresets,
-    logTask,
-    logInfo,
-    RnvTaskFn,
-    RnvTask,
-    RnvTaskName,
-} from '@rnv/core';
+import { areNodeModulesInstalled, logTask, logInfo, RnvTaskFn, RnvTask, RnvTaskName } from '@rnv/core';
 import { installPackageDependenciesAndPlugins } from '../../plugins';
 
-const taskInstall: RnvTaskFn = async (c, parentTask, _) => {
+const fn: RnvTaskFn = async (c, parentTask, _) => {
     logTask('taskInstall', `requiresInstall:${!!c._requiresNpmInstall}:${!c.runtime.skipPackageUpdate}`);
 
     if (c.program.only && !!parentTask) return true;
@@ -32,9 +24,8 @@ const taskInstall: RnvTaskFn = async (c, parentTask, _) => {
 
 const Task: RnvTask = {
     description: 'Install package node_modules via yarn or npm',
-    fn: taskInstall,
+    fn,
     task: RnvTaskName.install,
-    options: RnvTaskOptionPresets.withBase(),
 };
 
 export default Task;

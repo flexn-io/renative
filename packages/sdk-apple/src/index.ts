@@ -8,6 +8,9 @@ import taskCryptoInstallCerts from './tasks/taskCryptoInstallCerts';
 import taskCryptoUpdateProfile from './tasks/taskCryptoUpdateProfile';
 import taskCryptoUpdateProfiles from './tasks/taskCryptoUpdateProfiles';
 import taskCryptoInstallProfiles from './tasks/taskCryptoInstallProfiles';
+import taskLog from './tasks/taskLog';
+import taskExport from './tasks/taskExport';
+import taskPackage from './tasks/taskPackage';
 
 export const Tasks = [
     taskTargetLaunch,
@@ -16,4 +19,7 @@ export const Tasks = [
     taskCryptoUpdateProfile,
     taskCryptoUpdateProfiles,
     taskCryptoInstallProfiles,
+    taskLog,
+    taskExport,
+    taskPackage,
 ];

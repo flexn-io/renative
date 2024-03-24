@@ -1,6 +1,5 @@
 import {
     RnvTaskFn,
-    logErrorPlatform,
     logTask,
     RnvTaskOptionPresets,
     executeOrSkipTask,
@@ -8,30 +7,24 @@ import {
     RnvTask,
     RnvTaskName,
 } from '@rnv/core';
-import { exportXcodeProject } from '@rnv/sdk-apple';
+import { exportXcodeProject } from '../runner';
 
-const taskExport: RnvTaskFn = async (c, parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskExport', `parent:${parentTask}`);
-    const { platform } = c;
 
     await executeOrSkipTask(RnvTaskName.build, RnvTaskName.export, originTask);
 
     if (shouldSkipTask(RnvTaskName.export, originTask)) return true;
 
-    switch (platform) {
-        case 'macos':
-            return exportXcodeProject();
-        default:
-            return logErrorPlatform();
-    }
+    return exportXcodeProject();
 };
 
 const Task: RnvTask = {
     description: 'Export the app into deployable binary',
-    fn: taskExport,
+    fn,
     task: RnvTaskName.export,
-    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
-    platforms: ['macos'],
+    options: RnvTaskOptionPresets.withConfigure(),
+    platforms: ['ios', 'tvos', 'macos'],
 };
 
 export default Task;

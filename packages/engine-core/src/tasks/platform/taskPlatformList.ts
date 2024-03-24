@@ -4,13 +4,12 @@ import {
     logTask,
     generatePlatformChoices,
     executeTask,
-    RnvTaskOptionPresets,
     RnvTaskFn,
     RnvTask,
     RnvTaskName,
 } from '@rnv/core';
 
-const taskPlatformList: RnvTaskFn = async (_c, _parentTask, originTask) => {
+const fn: RnvTaskFn = async (_c, _parentTask, originTask) => {
     logTask('taskPlatformList');
 
     await executeTask(RnvTaskName.projectConfigure, RnvTaskName.platformList, originTask);
@@ -22,9 +21,8 @@ const taskPlatformList: RnvTaskFn = async (_c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'List all available platforms',
-    fn: taskPlatformList,
+    fn,
     task: RnvTaskName.platformList,
-    options: RnvTaskOptionPresets.withBase(),
 };
 
 export default Task;

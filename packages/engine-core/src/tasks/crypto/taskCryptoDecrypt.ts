@@ -14,7 +14,6 @@ import {
     fsReadFileSync,
     inquirerPrompt,
     executeTask,
-    RnvTaskOptionPresets,
     RnvContext,
     RnvTaskFn,
     RnvTask,
@@ -48,7 +47,7 @@ const _unzipAndCopy = async (
     logSuccess(`Files succesfully extracted into ${destFolder}`);
 };
 
-const taskCryptoDecrypt: RnvTaskFn = async (c, parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskCryptoDecrypt');
 
     if (!parentTask) {
@@ -208,9 +207,8 @@ and we will try to help!
 
 const Task: RnvTask = {
     description: 'Decrypt encrypted project files into local `~/<wokspace>/<project>/..`',
-    fn: taskCryptoDecrypt,
+    fn,
     task: RnvTaskName.cryptoDecrypt,
-    options: RnvTaskOptionPresets.withBase(),
 };
 
 export default Task;

@@ -1,7 +1,6 @@
 import path from 'path';
 import fs from 'fs';
 import {
-    RnvTaskOptionPresets,
     logTask,
     logInfo,
     logToSummary,
@@ -20,7 +19,7 @@ import {
 } from '@rnv/core';
 import { installPackageDependenciesAndPlugins } from '../../plugins';
 
-const taskProjectUpgrade: RnvTaskFn = async (c, _parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskProjectUpgrade');
     const upgradedPaths = [];
     if (fsExistsSync(c.paths.project.config)) {
@@ -77,9 +76,8 @@ const taskProjectUpgrade: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Upgrade or downgrade RNV dependencies in your ReNative project',
-    fn: taskProjectUpgrade,
+    fn,
     task: RnvTaskName.projectUpgrade,
-    options: RnvTaskOptionPresets.withBase(),
     isGlobalScope: true,
 };
 

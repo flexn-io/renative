@@ -4,7 +4,6 @@ import {
     buildHooks,
     executeTask,
     fsExistsSync,
-    RnvTaskOptionPresets,
     RnvTaskFn,
     inquirerPrompt,
     RnvTask,
@@ -12,7 +11,7 @@ import {
     RnvTaskOptions,
 } from '@rnv/core';
 
-const taskHooksRun: RnvTaskFn = async (c, _parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskHooksRun');
 
     if (fsExistsSync(c.paths.project.config)) {
@@ -58,9 +57,9 @@ const taskHooksRun: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Run specific build hook',
-    fn: taskHooksRun,
+    fn,
     task: RnvTaskName.hooksRun,
-    options: RnvTaskOptionPresets.withBase([RnvTaskOptions.exeMethod]),
+    options: [RnvTaskOptions.exeMethod],
     forceBuildHookRebuild: true,
     isGlobalScope: true,
 };

@@ -1,6 +1,5 @@
 import {
     writeRenativeConfigFile,
-    RnvTaskOptionPresets,
     chalk,
     logSuccess,
     logTask,
@@ -16,8 +15,7 @@ import {
 } from '@rnv/core';
 import { getPluginList } from '../../plugins';
 
-/* eslint-disable no-await-in-loop */
-const taskPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskPluginAdd');
 
     await executeTask(RnvTaskName.projectConfigure, RnvTaskName.pluginAdd, originTask);
@@ -102,9 +100,8 @@ const taskPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Add selected plugin to the project',
-    fn: taskPluginAdd,
+    fn,
     task: RnvTaskName.pluginAdd,
-    options: RnvTaskOptionPresets.withBase(),
 };
 
 export default Task;

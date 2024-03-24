@@ -3,7 +3,7 @@ import type { PlatformKey } from '../schema/types';
 
 export type RnvTask = {
     task: string;
-    options: Array<RnvTaskOption>;
+    options?: Array<RnvTaskOption>;
     isGlobalScope?: boolean;
     platforms?: Array<PlatformKey>;
     description: string;

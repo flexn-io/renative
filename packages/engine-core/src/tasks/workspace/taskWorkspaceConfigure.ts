@@ -1,6 +1,5 @@
 import path from 'path';
 import {
-    RnvTaskOptionPresets,
     copyFileSync,
     mkdirSync,
     fsWriteFileSync,
@@ -18,7 +17,7 @@ import {
 } from '@rnv/core';
 import { writeFileSync } from 'fs';
 
-const taskWorkspaceConfigure: RnvTaskFn = async (c) => {
+const fn: RnvTaskFn = async (c) => {
     logTask('taskWorkspaceConfigure');
 
     // Check globalConfig Dir
@@ -84,9 +83,8 @@ const taskWorkspaceConfigure: RnvTaskFn = async (c) => {
 
 const Task: RnvTask = {
     description: 'Preconfigures your current workspace defined via "workspaceID" prop in renative config file',
-    fn: taskWorkspaceConfigure,
+    fn,
     task: RnvTaskName.workspaceConfigure,
-    options: RnvTaskOptionPresets.withBase(),
     isGlobalScope: true,
 };
 

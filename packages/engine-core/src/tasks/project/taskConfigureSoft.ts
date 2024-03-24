@@ -1,6 +1,5 @@
 import {
     RnvTaskFn,
-    RnvTaskOptionPresets,
     executeTask,
     configureRuntimeDefaults,
     isPlatformSupported,
@@ -10,7 +9,7 @@ import {
 } from '@rnv/core';
 import { isBuildSchemeSupported } from '../../buildSchemes';
 
-const taskConfigureSoft: RnvTaskFn = async (_c, parentTask, originTask) => {
+const fn: RnvTaskFn = async (_c, parentTask, originTask) => {
     logTask('taskConfigureSoft');
 
     await configureRuntimeDefaults();
@@ -26,9 +25,8 @@ const taskConfigureSoft: RnvTaskFn = async (_c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Configure system and project without recreating files (used for --only)',
-    fn: taskConfigureSoft,
+    fn,
     task: RnvTaskName.configureSoft,
-    options: RnvTaskOptionPresets.withBase(),
     isPrivate: true,
 };
 

@@ -1,7 +1,6 @@
 import {
     logInfo,
     logTask,
-    RnvTaskOptionPresets,
     fsExistsSync,
     fsRenameSync,
     fsSymlinkSync,
@@ -47,7 +46,7 @@ const _linkPackage = (pkg: LinkablePackage) => {
 
 const runtimeLibs = ['@rnv/renative'];
 
-const taskLink: RnvTaskFn = async () => {
+const fn: RnvTaskFn = async () => {
     logTask('taskLink');
 
     const linkablePackages = traverseTargetProject(getSourceDir());
@@ -92,11 +91,9 @@ const taskLink: RnvTaskFn = async () => {
 
 const Task: RnvTask = {
     description: 'Links development version or renative with this project',
-    fn: taskLink,
+    fn,
     task: RnvTaskName.link,
-    options: RnvTaskOptionPresets.withBase([
-        { key: 'dir', description: 'Source folder to be linked into project', isValueType: true },
-    ]),
+    options: [{ key: 'dir', description: 'Source folder to be linked into project', isValueType: true }],
     isGlobalScope: true,
     ignoreEngines: true,
 };

@@ -9,7 +9,6 @@ import {
     removeDirs,
     generatePlatformChoices,
     executeTask,
-    RnvTaskOptionPresets,
     RnvTaskFn,
     inquirerPrompt,
     PlatformKey,
@@ -17,7 +16,7 @@ import {
     RnvTaskName,
 } from '@rnv/core';
 
-const taskPlatformConnect: RnvTaskFn = async (c, _parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskPlatformConnect');
 
     await executeTask(RnvTaskName.projectConfigure, RnvTaskName.platformConnect, originTask);
@@ -89,9 +88,8 @@ const taskPlatformConnect: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Connect platform template back to rnv',
-    fn: taskPlatformConnect,
+    fn,
     task: RnvTaskName.platformConnect,
-    options: RnvTaskOptionPresets.withBase(),
 };
 
 export default Task;

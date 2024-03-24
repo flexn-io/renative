@@ -3,14 +3,13 @@ import {
     applyTemplate,
     getInstalledTemplateOptions,
     executeTask,
-    RnvTaskOptionPresets,
     RnvTaskFn,
     inquirerPrompt,
     RnvTask,
     RnvTaskName,
 } from '@rnv/core';
 
-const taskTemplateApply: RnvTaskFn = async (c, _parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskTemplateApply', `template: ${c.program.template}`);
 
     await executeTask(RnvTaskName.projectConfigure, RnvTaskName.templateApply, originTask);
@@ -45,9 +44,8 @@ const taskTemplateApply: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Reset project to specific template',
-    fn: taskTemplateApply,
+    fn,
     task: RnvTaskName.templateApply,
-    options: RnvTaskOptionPresets.withBase(),
 };
 
 export default Task;

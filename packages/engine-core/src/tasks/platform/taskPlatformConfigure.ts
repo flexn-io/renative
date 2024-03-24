@@ -11,7 +11,6 @@ import {
     configureRuntimeDefaults,
     executeTask,
     shouldSkipTask,
-    RnvTaskOptionPresets,
     RnvTaskFn,
     RnvTask,
     RnvTaskName,
@@ -21,7 +20,7 @@ import {
 import { isBuildSchemeSupported } from '../../buildSchemes';
 import { configureFonts } from '@rnv/sdk-utils';
 
-const taskPlatformConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskPlatformConfigure', '');
 
     await executeTask(RnvTaskName.projectConfigure, RnvTaskName.platformConfigure, originTask);
@@ -70,9 +69,8 @@ const taskPlatformConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Low-level task used by engines to prepare platformBuilds folder',
-    fn: taskPlatformConfigure,
+    fn,
     task: RnvTaskName.platformConfigure,
-    options: RnvTaskOptionPresets.withBase(),
 };
 
 export default Task;

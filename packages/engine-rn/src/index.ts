@@ -1,7 +1,7 @@
 import { generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
 import { withRNVRNConfig } from '@rnv/sdk-react-native';
-import { Tasks as TasksAndroid } from '@rnv/sdk-android';
-import { Tasks as TasksApple } from '@rnv/sdk-apple';
+import { Tasks as TasksSdkAndroid } from '@rnv/sdk-android';
+import { Tasks as TasksSdkApple } from '@rnv/sdk-apple';
 import { withRNVMetro } from './adapters/metroAdapter';
 import { withRNVBabel } from './adapters/babelAdapter';
 //@ts-ignore
@@ -11,8 +11,6 @@ import taskPackage from './tasks/taskPackage';
 import taskBuild from './tasks/taskBuild';
 import taskConfigure from './tasks/taskConfigure';
 import taskStart from './tasks/taskStart';
-import taskExport from './tasks/taskExport';
-import taskLog from './tasks/taskLog';
 import taskEject from './tasks/taskEject';
 
 const Engine: RnvEngine = {
@@ -22,11 +20,9 @@ const Engine: RnvEngine = {
         taskBuild,
         taskConfigure,
         taskStart,
-        taskExport,
         taskEject,
-        taskLog,
-        ...TasksAndroid,
-        ...TasksApple,
+        ...TasksSdkAndroid,
+        ...TasksSdkApple,
     ]),
     config: CNF,
     runtimeExtraProps: {

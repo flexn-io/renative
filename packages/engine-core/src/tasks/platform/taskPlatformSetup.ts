@@ -1,5 +1,4 @@
 import {
-    RnvTaskOptionPresets,
     updateProjectPlatforms,
     logTask,
     executeTask,
@@ -9,7 +8,7 @@ import {
     RnvTaskName,
 } from '@rnv/core';
 
-const taskPlatformSetup: RnvTaskFn = async (c, _parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskPlatformSetup');
 
     await executeTask(RnvTaskName.projectConfigure, RnvTaskName.platformSetup, originTask);
@@ -31,9 +30,8 @@ const taskPlatformSetup: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Allows you to change supportedPlatforms for your project',
-    fn: taskPlatformSetup,
+    fn,
     task: RnvTaskName.platformSetup,
-    options: RnvTaskOptionPresets.withBase(),
 };
 
 export default Task;

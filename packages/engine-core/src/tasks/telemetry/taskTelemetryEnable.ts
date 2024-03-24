@@ -1,15 +1,6 @@
-import {
-    chalk,
-    logTask,
-    logToSummary,
-    RnvTaskOptionPresets,
-    RnvTask,
-    RnvTaskFn,
-    RnvTaskName,
-    writeFileSync,
-} from '@rnv/core';
+import { chalk, logTask, logToSummary, RnvTask, RnvTaskFn, RnvTaskName, writeFileSync } from '@rnv/core';
 
-const taskTelemetryEnable: RnvTaskFn = async (c) => {
+const fn: RnvTaskFn = async (c) => {
     logTask('taskTelemetryEnable');
 
     const { config } = c.files.dotRnv;
@@ -29,9 +20,8 @@ const taskTelemetryEnable: RnvTaskFn = async (c) => {
 
 const Task: RnvTask = {
     description: 'Enables rnv telemetry on your machine',
-    fn: taskTelemetryEnable,
+    fn,
     task: RnvTaskName.telemetryEnable,
-    options: RnvTaskOptionPresets.withBase(),
     isGlobalScope: true,
 };
 

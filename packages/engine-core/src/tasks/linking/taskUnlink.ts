@@ -1,14 +1,4 @@
-import {
-    logInfo,
-    logTask,
-    RnvTaskOptionPresets,
-    fsRenameSync,
-    fsUnlinkSync,
-    RnvTaskFn,
-    RnvTask,
-    RnvTaskName,
-    chalk,
-} from '@rnv/core';
+import { logInfo, logTask, fsRenameSync, fsUnlinkSync, RnvTaskFn, RnvTask, RnvTaskName, chalk } from '@rnv/core';
 import { getSourceDir, traverseTargetProject } from './linker';
 import { LinkablePackage } from './types';
 
@@ -27,7 +17,7 @@ const _unlinkPackage = (pkg: LinkablePackage) => {
     }
 };
 
-const taskUnlink: RnvTaskFn = async () => {
+const fn: RnvTaskFn = async () => {
     logTask('taskUnlink');
 
     const linkablePackages = traverseTargetProject(getSourceDir());
@@ -53,9 +43,8 @@ const taskUnlink: RnvTaskFn = async () => {
 
 const Task: RnvTask = {
     description: 'Replaces rnv version in project with original node_modules version',
-    fn: taskUnlink,
+    fn,
     task: RnvTaskName.unlink,
-    options: RnvTaskOptionPresets.withBase(),
     isGlobalScope: true,
     ignoreEngines: true,
 };

@@ -13,13 +13,12 @@ import {
     inquirerPrompt,
     logInfo,
     logTask,
-    RnvTaskOptionPresets,
     RnvTask,
     ConfigFileApp,
     RnvTaskName,
 } from '@rnv/core';
 
-const taskAppCreate: RnvTaskFn = async (c) => {
+const fn: RnvTaskFn = async (c) => {
     logTask('taskAppCreate');
 
     await configureRuntimeDefaults();
@@ -166,9 +165,8 @@ const taskAppCreate: RnvTaskFn = async (c) => {
 
 const Task: RnvTask = {
     description: 'Create new app config',
-    fn: taskAppCreate,
+    fn,
     task: RnvTaskName.appCreate,
-    options: RnvTaskOptionPresets.withBase(),
 };
 
 export default Task;

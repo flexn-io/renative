@@ -3,7 +3,6 @@ import {
     logTask,
     generateBuildConfig,
     executeTask,
-    RnvTaskOptionPresets,
     RnvContext,
     RnvTaskFn,
     inquirerPrompt,
@@ -34,7 +33,7 @@ export const _addTemplate = (c: RnvContext, template: string) => {
     _writeObjectSync(c.paths.project.config, cnf);
 };
 
-const taskTemplateAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskTemplateAdd');
 
     await executeTask(RnvTaskName.projectConfigure, RnvTaskName.templateAdd, originTask);
@@ -55,9 +54,8 @@ const taskTemplateAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Install additional template to the project',
-    fn: taskTemplateAdd,
+    fn,
     task: RnvTaskName.templateAdd,
-    options: RnvTaskOptionPresets.withBase(),
 };
 
 export default Task;

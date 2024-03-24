@@ -1,6 +1,6 @@
-import { chalk, logTask, logToSummary, RnvTaskOptionPresets, RnvTask, RnvTaskFn, RnvTaskName } from '@rnv/core';
+import { chalk, logTask, logToSummary, RnvTask, RnvTaskFn, RnvTaskName } from '@rnv/core';
 
-const taskTelemetryStatus: RnvTaskFn = async (c) => {
+const fn: RnvTaskFn = async (c) => {
     logTask('taskTelemetryStatus');
 
     const disableTelemetry = c.files.dotRnv.config?.disableTelemetry;
@@ -27,9 +27,8 @@ const taskTelemetryStatus: RnvTaskFn = async (c) => {
 
 const Task: RnvTask = {
     description: 'Show current rnv telemetry status on your machine',
-    fn: taskTelemetryStatus,
+    fn,
     task: RnvTaskName.telemetryStatus,
-    options: RnvTaskOptionPresets.withBase(),
     isGlobalScope: true,
 };
 

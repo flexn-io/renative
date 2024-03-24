@@ -5,7 +5,6 @@ import {
     logError,
     logInfo,
     writeFileSync,
-    RnvTaskOptionPresets,
     generatePlatformChoices,
     ejectPlatform,
     executeTask,
@@ -16,7 +15,7 @@ import {
     RnvTaskName,
 } from '@rnv/core';
 
-const taskPlatformEject: RnvTaskFn = async (c, _parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskPlatformEject');
 
     await executeTask(RnvTaskName.projectConfigure, RnvTaskName.platformEject, originTask);
@@ -72,9 +71,8 @@ TIP: You can select options with ${chalk().bold('SPACE')} key before pressing EN
 
 const Task: RnvTask = {
     description: 'Copy all platform files directly to project',
-    fn: taskPlatformEject,
+    fn,
     task: RnvTaskName.platformEject,
-    options: RnvTaskOptionPresets.withBase(),
 };
 
 export default Task;

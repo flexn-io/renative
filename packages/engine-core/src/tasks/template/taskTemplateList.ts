@@ -1,7 +1,7 @@
-import { logToSummary, logTask, executeTask, RnvTaskOptionPresets, RnvTaskFn, RnvTask, RnvTaskName } from '@rnv/core';
+import { logToSummary, logTask, executeTask, RnvTaskFn, RnvTask, RnvTaskName } from '@rnv/core';
 import { getTemplateOptions } from '../../templates';
 
-const taskTemplateList: RnvTaskFn = async (c, _parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskTemplateList');
 
     if (c.paths.project.configExists) {
@@ -14,9 +14,8 @@ const taskTemplateList: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Show list of available templates',
-    fn: taskTemplateList,
+    fn,
     task: RnvTaskName.templateList,
-    options: RnvTaskOptionPresets.withBase(),
     isGlobalScope: true,
 };
 

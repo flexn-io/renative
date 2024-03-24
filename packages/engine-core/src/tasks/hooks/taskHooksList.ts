@@ -4,13 +4,12 @@ import {
     generateOptions,
     buildHooks,
     executeTask,
-    RnvTaskOptionPresets,
     RnvTaskFn,
     RnvTask,
     RnvTaskName,
 } from '@rnv/core';
 
-const taskHooksList: RnvTaskFn = async (c, _parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskHooksList');
 
     await executeTask(RnvTaskName.projectConfigure, RnvTaskName.hooksList, originTask);
@@ -32,9 +31,8 @@ const taskHooksList: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Get list of all available hooks',
-    fn: taskHooksList,
+    fn,
     task: RnvTaskName.hooksList,
-    options: RnvTaskOptionPresets.withBase(),
     forceBuildHookRebuild: true,
 };
 

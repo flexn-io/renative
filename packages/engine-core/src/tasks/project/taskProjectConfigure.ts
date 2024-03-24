@@ -15,7 +15,6 @@ import {
     fsExistsSync,
     fsMkdirSync,
     checkAndMigrateProject,
-    RnvTaskOptionPresets,
     copyRuntimeAssets,
     cleanPlaformAssets,
     versionCheck,
@@ -54,7 +53,7 @@ const configurePlatformBuilds = async () => {
     }
 };
 
-const taskProjectConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskProjectConfigure');
 
     await configurePlatformBuilds();
@@ -142,9 +141,8 @@ const taskProjectConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Configure current project',
-    fn: taskProjectConfigure,
+    fn,
     task: RnvTaskName.projectConfigure,
-    options: RnvTaskOptionPresets.withBase(),
 };
 
 export default Task;

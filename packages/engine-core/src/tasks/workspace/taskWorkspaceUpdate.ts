@@ -1,6 +1,6 @@
-import { logTask, executeTask, RnvTaskOptionPresets, RnvTaskFn, RnvTask, RnvTaskName } from '@rnv/core';
+import { logTask, executeTask, RnvTaskFn, RnvTask, RnvTaskName } from '@rnv/core';
 
-const taskWorkspaceUpdate: RnvTaskFn = async (_c, _parentTask, originTask) => {
+const fn: RnvTaskFn = async (_c, _parentTask, originTask) => {
     // TODO: taskWorkspaceUpdate
     logTask('taskWorkspaceUpdate');
 
@@ -11,9 +11,8 @@ const taskWorkspaceUpdate: RnvTaskFn = async (_c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'TODO: unused task',
-    fn: taskWorkspaceUpdate,
+    fn,
     task: RnvTaskName.workspaceUpdate,
-    options: RnvTaskOptionPresets.withBase(),
     isGlobalScope: true,
     isPrivate: true,
 };

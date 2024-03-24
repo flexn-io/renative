@@ -5,13 +5,12 @@ import {
     createWorkspace,
     fsExistsSync,
     executeTask,
-    RnvTaskOptionPresets,
     RnvTaskFn,
     RnvTask,
     RnvTaskName,
 } from '@rnv/core';
 
-const taskWorkspaceAdd: RnvTaskFn = async (_c, _parentTask, originTask) => {
+const fn: RnvTaskFn = async (_c, _parentTask, originTask) => {
     logTask('taskWorkspaceAdd');
 
     await executeTask(RnvTaskName.projectConfigure, RnvTaskName.workspaceAdd, originTask);
@@ -50,9 +49,8 @@ const taskWorkspaceAdd: RnvTaskFn = async (_c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Add new workspace',
-    fn: taskWorkspaceAdd,
+    fn,
     task: RnvTaskName.workspaceAdd,
-    options: RnvTaskOptionPresets.withBase(),
     isGlobalScope: true,
 };
 

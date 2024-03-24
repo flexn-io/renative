@@ -146,7 +146,7 @@ const _setAppId = (c: RnvContext, appId: string) => {
     c.runtime.appDir = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}`);
 };
 
-const taskAppConfigure = async (c: RnvContext) => {
+const fn = async (c: RnvContext) => {
     logTask('taskAppConfigure');
 
     c.paths.project.appConfigsDirNames = listAppConfigsFoldersSync(true);
@@ -207,9 +207,9 @@ const taskAppConfigure = async (c: RnvContext) => {
 
 const Task: RnvTask = {
     description: 'Configure project with specific appConfig',
-    fn: taskAppConfigure,
+    fn,
     task: RnvTaskName.appConfigure,
-    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
+    options: RnvTaskOptionPresets.withConfigure(),
 };
 
 export default Task;

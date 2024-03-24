@@ -4,13 +4,12 @@ import {
     logRaw,
     getWorkspaceConnectionString,
     executeTask,
-    RnvTaskOptionPresets,
     RnvTaskFn,
     RnvTask,
     RnvTaskName,
 } from '@rnv/core';
 
-const taskWorkspaceConnect: RnvTaskFn = async (c, _parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskWorkspaceConnect');
 
     if (!c.paths.project.configExists) {
@@ -35,9 +34,8 @@ const taskWorkspaceConnect: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Connect project with selected workspace',
-    fn: taskWorkspaceConnect,
+    fn,
     task: RnvTaskName.workspaceConnect,
-    options: RnvTaskOptionPresets.withBase(),
     isGlobalScope: true,
 };
 

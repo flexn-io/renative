@@ -1,5 +1,4 @@
 import {
-    RnvTaskOptionPresets,
     logTask,
     RnvTask,
     RnvTaskName,
@@ -33,7 +32,7 @@ import {
     processChdirToProject,
 } from './questionHelpers';
 
-const taskNew = async () => {
+const fn = async () => {
     logTask('taskNew');
     // Initialize Project
     const payload = await initNewProject();
@@ -79,9 +78,8 @@ const taskNew = async () => {
 
 const Task: RnvTask = {
     description: 'Create new ReNative project',
-    fn: taskNew,
+    fn,
     task: RnvTaskName.new,
-    options: RnvTaskOptionPresets.withBase(),
     isGlobalScope: true,
     isPriorityOrder: true,
 };

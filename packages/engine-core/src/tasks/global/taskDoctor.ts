@@ -3,7 +3,6 @@ import {
     chalk,
     logTask,
     logToSummary,
-    RnvTaskOptionPresets,
     executeTask,
     configureRuntimeDefaults,
     readObjectSync,
@@ -22,7 +21,7 @@ const configTargets = [
     'appConfig.configs',
 ];
 
-const taskDoctor: RnvTaskFn = async (c, parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskDoctor');
 
     await configureRuntimeDefaults();
@@ -89,9 +88,8 @@ const taskDoctor: RnvTaskFn = async (c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Checks validity and config health of your project',
-    fn: taskDoctor,
+    fn,
     task: RnvTaskName.doctor,
-    options: RnvTaskOptionPresets.withBase(),
     isGlobalScope: true,
 };
 

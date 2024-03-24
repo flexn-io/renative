@@ -10,7 +10,7 @@ import {
     generateStringFromTaskOption,
 } from '@rnv/core';
 
-const taskHelp: RnvTaskFn = async () => {
+const fn: RnvTaskFn = async () => {
     logTask('taskHelp');
 
     // PARAMS
@@ -44,9 +44,8 @@ ${optsString}
 
 const Task: RnvTask = {
     description: 'Display generic help',
-    fn: taskHelp,
+    fn,
     task: RnvTaskName.help,
-    options: RnvTaskOptionPresets.withBase(),
     isGlobalScope: true,
     isPriorityOrder: true,
 };
