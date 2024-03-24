@@ -7,12 +7,6 @@ import inquiryConfirm from './questions/confirmOverview';
 import inquiryProjectName from './questions/projectName';
 import inquiryWorkspace from './questions/workspace';
 import inquirySupportedPlatforms from './questions/supportedPlatforms';
-import {
-    generateNewProject,
-    initNewProject,
-    saveProgressIntoProjectConfig,
-    telemetryNewProject,
-} from './projectGenerator';
 import inquiryAppTitle from './questions/appTitle';
 import inquiryAppID from './questions/appID';
 import inquiryAppVersion from './questions/projectVersion';
@@ -20,6 +14,12 @@ import inquiryInstallTemplate from './questions/installTemplate';
 import inquiryApplyTemplate from './questions/applyTemplate';
 import inquiryBookmarkTemplate from './questions/bookmarkTemplate';
 import { processChdirToProject } from './utils';
+import {
+    generateNewProject,
+    initNewProject,
+    saveProgressIntoProjectConfig,
+    telemetryNewProject,
+} from './projectGenerator';
 
 const taskNew = async () => {
     logTask('taskNew');

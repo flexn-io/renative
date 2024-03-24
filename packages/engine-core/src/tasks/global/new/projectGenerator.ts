@@ -1,4 +1,5 @@
 import {
+    ConfigFileApp,
     PlatformKey,
     RnvFileName,
     applyTemplate,
@@ -7,8 +8,11 @@ import {
     generateLocalJsonSchemas,
     getApi,
     getContext,
+    listAppConfigsFoldersSync,
     logDebug,
+    logInfo,
     logToSummary,
+    readObjectSync,
     updateRenativeConfigs,
     writeFileSync,
 } from '@rnv/core';
@@ -54,10 +58,6 @@ export const initNewProject = async () => {
 };
 
 export const generateNewProject = async (data: NewProjectData) => {
-    // logTask(
-    //     `generateNewProject:${data.optionTemplates.selectedOption}:${data.optionTemplates.selectedVersion}`,
-    //     chalk().grey
-    // );
     const { inputs, files } = data;
 
     if (!inputs.tepmplate?.version) {
@@ -123,6 +123,27 @@ export const generateNewProject = async (data: NewProjectData) => {
     await applyTemplate();
     await configureTemplateFiles();
     await generateLocalJsonSchemas();
+
+    // Update appConfigs with new appTitle and appID
+    const appConfigs = listAppConfigsFoldersSync(true);
+    if (appConfigs && appConfigs.length > 0) {
+        appConfigs.forEach((appConfigID) => {
+            const appCnfPath = path.join(c.paths.project.appConfigsDir, appConfigID, RnvFileName.renative);
+            const appConfig = readObjectSync<ConfigFileApp>(appCnfPath);
+            if (appConfig) {
+                appConfig.common = appConfig.common || {};
+                appConfig.common.title = inputs.appTitle;
+                appConfig.common.id = inputs.appID;
+                appConfig.common.description = `My awesome ${inputs.appTitle} app!`;
+                logInfo(
+                    `Updating appConfig ${chalk().bold(appConfigID)} with title: ${chalk().bold(
+                        inputs.appTitle
+                    )} and id: ${chalk().bold(inputs.appID)}`
+                );
+                writeFileSync(appCnfPath, appConfig);
+            }
+        });
+    }
 
     logToSummary(generateProjectOverview(data));
 };

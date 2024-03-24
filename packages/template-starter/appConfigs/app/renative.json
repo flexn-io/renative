@@ -3,12 +3,8 @@
     "extendsTemplate": "@rnv/template-starter/appConfigs/base/renative.json",
     "id": "app",
     "common": {
-        "id": "com.app",
-        "description": "ReNative App",
-        "buildSchemes": {},
         "runtime": {
             "welcomeMessage": "Hello ReNative!"
         }
-    },
-    "platforms": {}
+    }
 }
