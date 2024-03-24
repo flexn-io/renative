@@ -1,6 +1,6 @@
 import React from 'react';
 import ScreenCast from '../screens/Cast';
 
-const Page = () => <ScreenCast />;
+const App = () => <ScreenCast />;
 
-export default Page;
+export default App;

@@ -200,6 +200,9 @@
             }
         },
         "react-native-google-cast": {
+            "props": {
+                "applicationID": "CC1AD845"
+            },
             "android": {
                 "implementation": "// TEST"
             },
