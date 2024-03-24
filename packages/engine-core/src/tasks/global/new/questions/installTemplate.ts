@@ -1,5 +1,4 @@
 import {
-    ConfigFileBuildConfig,
     NpmPackageFile,
     RnvFileName,
     RnvFolderName,
@@ -19,23 +18,18 @@ import {
     mkdirSync,
     readObjectSync,
 } from '@rnv/core';
-import type { NewProjectData } from '../types';
+import type { NewProjectData, TemplateOption } from '../types';
 import path from 'path';
 import { checkInputValue } from '../utils';
 import { saveProgressIntoProjectConfig } from '../projectGenerator';
 import { merge } from 'lodash';
 
-type TemplateOption = {
-    name: string;
-    value: {
-        key: 'existing' | 'custom' | 'local' | 'none';
-    } & Required<ConfigFileBuildConfig>['projectTemplates'][string];
-};
+const Question = async (data: NewProjectData) => {
+    const { inputs, defaults, files } = data;
 
-export const inquiryInstallTemplate = async (data: NewProjectData) => {
-    const customTemplate: TemplateOption = { name: 'Custom Template (npm)...', value: { key: 'custom' } };
-    const localTemplate: TemplateOption = { name: 'Local Template...', value: { key: 'local' } };
-    const noTemplate: TemplateOption = { name: 'No Template (blank project)', value: { key: 'none' } };
+    const customTemplate: TemplateOption = { name: 'Custom Template (npm)...', value: { type: 'custom' } };
+    const localTemplate: TemplateOption = { name: 'Local Template...', value: { type: 'local' } };
+    const noTemplate: TemplateOption = { name: 'No Template (blank project)', value: { type: 'none' } };
 
     const c = getContext();
     const { templateVersion, projectTemplate } = c.program;
@@ -47,7 +41,7 @@ export const inquiryInstallTemplate = async (data: NewProjectData) => {
         const value = projectTemplates[k];
         options.push({
             name: `${k} ${chalk().grey(`- ${value.localPath || value.description}`)}`,
-            value: { ...value, key: 'existing' },
+            value: { ...value, type: 'existing' },
         });
     });
 
@@ -56,43 +50,47 @@ export const inquiryInstallTemplate = async (data: NewProjectData) => {
     options.push(customTemplate);
     options.push(localTemplate);
     options.push(noTemplate);
-    let selectedInputTemplate;
+    // let selectedInputTemplate;
     let localTemplatePath: string | undefined;
+
+    inputs.tepmplate = {};
+
     if (checkInputValue(projectTemplate)) {
-        selectedInputTemplate = projectTemplate;
+        inputs.tepmplate.packageName = projectTemplate;
     } else {
         const iRes = await inquirerPrompt({
             name: 'inputTemplate',
             type: 'list',
             message: 'What template to use?',
-            default: data.defaults.templateName,
+            default: defaults.templateName,
             loop: false,
             choices: options,
         });
         const result: TemplateOption['value'] = iRes.inputTemplate;
+        inputs.tepmplate.type = result.type;
 
-        if (result.key === 'custom') {
+        if (result.type === 'custom') {
             const { inputTemplateCustom } = await inquirerPrompt({
                 name: 'inputTemplateCustom',
                 type: 'input',
                 message: 'NPM package name:',
             });
-            selectedInputTemplate = inputTemplateCustom;
-        } else if (result.key === 'local') {
+            inputs.tepmplate.packageName = inputTemplateCustom;
+        } else if (result.type === 'local') {
             const { inputTemplateLocal } = await inquirerPrompt({
                 name: 'inputTemplateLocal',
                 type: 'input',
                 message: 'Path (absolute):',
             });
             localTemplatePath = inputTemplateLocal;
-        } else if (result.key === 'none') {
+        } else if (result.type === 'none') {
             // TODO: add support for no templates
             return Promise.reject('No templates NOT SUPPORTED YET');
-        } else if (result.key === 'existing') {
+        } else if (result.type === 'existing') {
             if (result.localPath) {
                 localTemplatePath = result.localPath;
             } else {
-                selectedInputTemplate = result.packageName;
+                inputs.tepmplate.packageName = result.packageName;
             }
         }
     }
@@ -117,9 +115,12 @@ export const inquiryInstallTemplate = async (data: NewProjectData) => {
             return Promise.reject(`Invalid package ${localTemplatePkgPath} missing name field`);
         }
 
-        data.inputs.tepmplate.name = pkg.name;
-        data.inputs.tepmplate.version = pkg.version;
-        data.inputs.tepmplate.path = localTemplatePath;
+        inputs.tepmplate.packageName = pkg.name;
+        inputs.tepmplate.version = pkg.version;
+        inputs.tepmplate.localPath = localTemplatePath;
+
+        if (!inputs.tepmplate) return;
+
         const nmTemplatePath = path.join(nmDir, pkg?.name);
 
         logInfo(`Found local template: ${pkg.name}@${pkg.version}`);
@@ -149,16 +150,20 @@ export const inquiryInstallTemplate = async (data: NewProjectData) => {
             }
         });
 
+        if (!inputs.tepmplate.packageName) {
+            return;
+        }
+
         // NOTE: this is a workaround for npm/yarn bug where manually added packages are overriden on next install
-        const filePath = `file:${RnvFolderName.dotRnv}/${RnvFolderName.npmCache}/${data.inputs.tepmplate.name}`;
-        data.files.project.packageJson = merge(data.files.project.packageJson, {
+        const filePath = `file:${RnvFolderName.dotRnv}/${RnvFolderName.npmCache}/${inputs.tepmplate.packageName}`;
+        files.project.packageJson = merge(files.project.packageJson, {
             devDependencies: {
-                [data.inputs.tepmplate.name]: filePath,
+                [inputs.tepmplate?.packageName]: filePath,
             },
         });
-        data.files.project.renativeConfig = merge(data.files.project.renativeConfig, {
+        files.project.renativeConfig = merge(files.project.renativeConfig, {
             templates: {
-                [data.inputs.tepmplate.name]: {
+                [inputs.tepmplate.packageName]: {
                     version: filePath,
                 },
             },
@@ -170,19 +175,16 @@ export const inquiryInstallTemplate = async (data: NewProjectData) => {
             cwd: c.paths.project.dir,
         });
     } else {
-        data.inputs.tepmplate.name = selectedInputTemplate;
-
-        let inputTemplateVersion;
         if (checkInputValue(templateVersion)) {
-            inputTemplateVersion = templateVersion;
+            inputs.tepmplate.version = templateVersion;
         } else {
-            inputTemplateVersion = await listAndSelectNpmVersion(data.inputs.tepmplate.name || '');
+            inputs.tepmplate.version = await listAndSelectNpmVersion(inputs.tepmplate.packageName || '');
         }
 
-        data.inputs.tepmplate.version = inputTemplateVersion;
-
         await executeAsync(
-            `${isYarnInstalled() ? 'yarn' : 'npm'} add ${selectedInputTemplate}@${inputTemplateVersion} --dev`,
+            `${isYarnInstalled() ? 'yarn' : 'npm'} add ${inputs.tepmplate.packageName}@${
+                inputs.tepmplate.version
+            } --dev`,
             {
                 cwd: c.paths.project.dir,
             }
@@ -190,15 +192,12 @@ export const inquiryInstallTemplate = async (data: NewProjectData) => {
         // Check if node_modules folder exists
         if (!fsExistsSync(nmDir)) {
             return Promise.reject(
-                `${
-                    isYarnInstalled() ? 'yarn' : 'npm'
-                } add ${selectedInputTemplate}@${inputTemplateVersion} : FAILED. this could happen if you have package.json accidentally created somewhere in parent directory`
+                `${isYarnInstalled() ? 'yarn' : 'npm'} add ${inputs.tepmplate.packageName}@${
+                    inputs.tepmplate.version
+                } : FAILED. this could happen if you have package.json accidentally created somewhere in parent directory`
             );
         }
     }
-
-    // Add rnv to package.json
-    // await executeAsync(`${isYarnInstalled() ? 'yarn' : 'npm'} add rnv@${c.rnvVersion}`, {
-    //     cwd: c.paths.project.dir,
-    // });
 };
+
+export default Question;

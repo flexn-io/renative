@@ -13,9 +13,9 @@ type QuestionResults = Record<
     }
 >;
 
-export const inquiryBootstrapQuestions = async (data: NewProjectData) => {
+const Question = async (data: NewProjectData) => {
     const c = getContext();
-    data.renativeTemplateConfigExt = {};
+    data.inputs.bootstrapQuestions = {};
     const bootstrapQuestions = data.files.template.renativeTemplateConfig?.bootstrapConfig?.bootstrapQuestions || [];
     const results: QuestionResults = {};
     const providedAnswers: Record<string, any> = {};
@@ -45,7 +45,7 @@ export const inquiryBootstrapQuestions = async (data: NewProjectData) => {
         logDebug('setting', targetKey, objValue);
 
         if (targetKey) {
-            lSet(data.renativeTemplateConfigExt, targetKey, objValue);
+            lSet(data.inputs.bootstrapQuestions, targetKey, objValue);
         }
     });
 };
@@ -112,3 +112,5 @@ const interactiveQuestion = async (
         }
     }
 };
+
+export default Question;

@@ -327,6 +327,8 @@ export const applyTemplate = async (selectedTemplate?: string) => {
 
     if (!c.files.project.config) {
         logError('Project config not loaded. cannot apply template');
+        console.trace('DJDJDJD');
+
         return false;
     }
 

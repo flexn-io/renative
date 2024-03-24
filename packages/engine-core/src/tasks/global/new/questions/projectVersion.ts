@@ -4,7 +4,7 @@ import { validateAndAssign } from '../utils';
 import semver from 'semver';
 import { merge } from 'lodash';
 
-export const inquiryAppVersion = async (data: NewProjectData) => {
+const Question = async (data: NewProjectData) => {
     const c = getContext();
     const { appVersion, ci } = c.program;
 
@@ -23,6 +23,8 @@ export const inquiryAppVersion = async (data: NewProjectData) => {
         ci
     );
 
-    data.inputVersion = result || data.defaults.appVersion;
-    data.files.project.packageJson = merge(data.files.project.packageJson, { version: data.inputVersion });
+    data.inputs.appVersion = result || data.defaults.appVersion;
+    data.files.project.packageJson = merge(data.files.project.packageJson, { version: data.inputs.appVersion });
 };
+
+export default Question;

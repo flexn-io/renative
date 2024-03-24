@@ -2,18 +2,18 @@ import {
     PlatformKey,
     RnvFileName,
     applyTemplate,
+    chalk,
     configureTemplateFiles,
     generateLocalJsonSchemas,
     getApi,
     getContext,
-    getWorkspaceOptions,
     logDebug,
+    logToSummary,
     updateRenativeConfigs,
     writeFileSync,
 } from '@rnv/core';
 import path from 'path';
 import { NewProjectData } from './types';
-import { configureGit } from './questions/confirmGit';
 
 export const saveProgressIntoProjectConfig = async (data: NewProjectData) => {
     const c = getContext();
@@ -28,9 +28,6 @@ export const initNewProject = async () => {
     c.paths.project.config = path.join(c.paths.project.dir, RnvFileName.renative);
 
     const data: NewProjectData = {
-        teamID: '',
-        optionPlatforms: {},
-        optionWorkspaces: getWorkspaceOptions(),
         defaults: {
             appVersion: '0.1.0',
             templateName: '@rnv/template-starter',
@@ -38,11 +35,7 @@ export const initNewProject = async () => {
             appTitle: 'Hello Renative',
             workspaceID: 'rnv',
         },
-        inputs: {
-            tepmplate: {
-                name: '',
-            },
-        },
+        inputs: {},
         files: {
             project: {
                 renativeConfig: {},
@@ -65,14 +58,15 @@ export const generateNewProject = async (data: NewProjectData) => {
     //     `generateNewProject:${data.optionTemplates.selectedOption}:${data.optionTemplates.selectedVersion}`,
     //     chalk().grey
     // );
+    const { inputs, files } = data;
 
-    if (!data.inputs.tepmplate.version) {
+    if (!inputs.tepmplate?.version) {
         return Promise.reject('No template version selected');
     }
-    if (!data.files.template.renativeTemplateConfig) {
+    if (!files.template.renativeTemplateConfig) {
         return Promise.reject('No renativeTemplateConfig found');
     }
-    if (!data.inputs.tepmplate.name) {
+    if (!inputs.tepmplate.packageName) {
         return Promise.reject('Current template not selected!');
     }
 
@@ -84,10 +78,10 @@ export const generateNewProject = async (data: NewProjectData) => {
     //         title: data.inputAppTitle || 'My App',
     //     },
 
-    const supPlats = data.optionPlatforms.selectedOptions || [];
+    const supPlats = inputs.supportedPlatforms || [];
 
     // This is project config override only
-    const cnf = data.files.project.renativeConfig;
+    const cnf = files.project.renativeConfig;
     cnf.defaults = cnf.defaults || {};
     cnf.defaults.supportedPlatforms = supPlats;
     cnf.engines = cnf.engines || {};
@@ -130,21 +124,49 @@ export const generateNewProject = async (data: NewProjectData) => {
     await configureTemplateFiles();
     await generateLocalJsonSchemas();
 
-    if (data.gitEnabled) {
-        await configureGit();
-    }
+    logToSummary(generateProjectOverview(data));
 };
 
 export const telemetryNewProject = async (data: NewProjectData) => {
+    // Do not log telementry when developing rnv
+    if (getContext().paths.IS_LINKED) return;
     try {
-        await getApi().analytics.captureEvent({
+        const { inputs } = data;
+        getApi().analytics.captureEvent({
             type: 'newProject',
-            template: data.selectedInputTemplate,
-            platforms: data.inputSupportedPlatforms,
+            template: inputs.tepmplate?.packageName,
+            platforms: inputs.supportedPlatforms,
         });
     } catch (e) {
         logDebug(e);
     }
+};
+
+export const generateProjectOverview = (data: NewProjectData) => {
+    const { inputs } = data;
+
+    // const addon = inputs.tepmplate?.localPath ? ` ${chalk().gray(inputs.tepmplate?.localPath)}` : '';
+    const tempString = inputs.tepmplate?.localPath || `${inputs.tepmplate?.packageName}@${inputs.tepmplate?.version}`;
+
+    const highlight = chalk().bold;
+
+    const str = `  Generated Project Summary:
+  -------------------------
+  Project Name (folder): ${highlight(inputs.projectName)}
+  Workspace: ${highlight(inputs.workspaceID)}
+  App Title: ${highlight(inputs.appTitle)}
+  App Version: ${highlight(inputs.appVersion)}
+  App ID: ${highlight(inputs.appID)}
+  Project Template: ${highlight(tempString)}
+  Git Enabled: ${highlight(inputs.confirmEnableGit)}
+  Enabled Platforms: ${highlight((inputs.supportedPlatforms || []).join(', '))}
+  -------------------------
+  ${chalk().green('✔ Your project is ready!')} Run it with:
+${chalk().bold(`
+  cd ${inputs.projectName}
+  npx rnv run`)}`;
+
+    return str;
 };
 
 const findEngineKeyById = (id: string) => {

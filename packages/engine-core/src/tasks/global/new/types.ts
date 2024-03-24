@@ -1,39 +1,13 @@
-import { ConfigFileApp, ConfigFileProject, ConfigFileTemplate, NpmPackageFile, PlatformKey } from '@rnv/core';
+import type {
+    ConfigFileApp,
+    ConfigFileBuildConfig,
+    ConfigFileProject,
+    ConfigFileTemplate,
+    NpmPackageFile,
+    PlatformKey,
+} from '@rnv/core';
 
 export type NewProjectData = {
-    appTitle?: string;
-    inputAppTitle?: string;
-    packageName?: string;
-    inputProjectName?: string;
-    teamID?: string;
-    inputAppID?: string;
-    inputVersion?: string;
-    inputTemplate?: string;
-    projectName?: string;
-    optionWorkspaces: {
-        selectedOption?: string;
-        valuesAsObject?: Record<
-            string,
-            {
-                title: string;
-                key: string;
-            }
-        >;
-        valuesAsArray?: Array<string>;
-        keysAsArray?: Array<string>;
-    };
-    gitEnabled?: boolean;
-    optionPlatforms: {
-        selectedOptions?: Array<PlatformKey>;
-    };
-    confirmString?: string;
-    inputSupportedPlatforms?: Array<string>;
-    inputWorkspace?: string;
-    selectedInputTemplate?: string;
-    renativeTemplateConfigExt?: any;
-    confirmDeleteNodeModules?: boolean;
-    confirmInRnvProject?: boolean;
-    // -------------------------------
     defaults: {
         appVersion: string;
         templateName: string;
@@ -42,12 +16,18 @@ export type NewProjectData = {
         workspaceID: string;
     };
     inputs: {
-        tepmplate: {
-            name: string;
-            version?: string;
-            description?: string;
-            path?: string;
-        };
+        bootstrapQuestions?: any;
+        confirmDeleteNodeModules?: boolean;
+        confirmInRnvProject?: boolean;
+        confirmEnableGit?: boolean;
+        appID?: string;
+        appVersion?: string;
+        projectName?: string;
+        appTitle?: string;
+        workspaceID?: string;
+        packageName?: string;
+        tepmplate?: TemplateOptionValue;
+        supportedPlatforms?: Array<PlatformKey>;
     };
     files: {
         template: {
@@ -60,4 +40,14 @@ export type NewProjectData = {
             renativeAppConfig: ConfigFileApp;
         };
     };
+};
+
+type TemplateOptionValue = {
+    type?: 'existing' | 'custom' | 'local' | 'none';
+    version?: string;
+} & Required<ConfigFileBuildConfig>['projectTemplates'][string];
+
+export type TemplateOption = {
+    name: string;
+    value: TemplateOptionValue;
 };

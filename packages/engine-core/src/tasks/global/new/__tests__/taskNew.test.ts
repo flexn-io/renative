@@ -1,4 +1,4 @@
-import { getContext, createRnvContext, logSuccess } from '@rnv/core';
+import { getContext, createRnvContext } from '@rnv/core';
 import taskNew from '../taskNew';
 import {
     generateNewProject,
@@ -7,21 +7,22 @@ import {
     telemetryNewProject,
 } from '../projectGenerator';
 import { NewProjectData } from '../types';
-import { inquiryProjectName } from '../questions/projectName';
 import { processChdirToProject } from '../utils';
-import { inquiryIsRenativeProject } from '../questions/isRenativeProject';
-import { inquiryHasNodeModules } from '../questions/hasNodeModules';
-import { inquiryInstallTemplate } from '../questions/installTemplate';
-import { inquiryApplyTemplate } from '../questions/applyTemplate';
-import { inquiryAppTitle } from '../questions/appTitle';
-import { inquiryAppID } from '../questions/appID';
-import { inquiryAppVersion } from '../questions/projectVersion';
-import { inquiryWorkspace } from '../questions/workspace';
-import { inquirySupportedPlatforms } from '../questions/supportedPlatforms';
-import { inquiryBootstrapQuestions } from '../questions/bootstrapQuestions';
-import { inquiryGit } from '../questions/confirmGit';
-import { inquiryBookmarkTemplate } from '../questions/bookmarkTemplate';
-import { inquiryConfirm } from '../questions/confirmOverview';
+
+import inquiryBootstrapQuestions from '../questions/bootstrapQuestions';
+import inquiryGit from '../questions/confirmGit';
+import inquiryIsRenativeProject from '../questions/isRenativeProject';
+import inquiryHasNodeModules from '../questions/hasNodeModules';
+import inquiryConfirm from '../questions/confirmOverview';
+import inquiryProjectName from '../questions/projectName';
+import inquiryWorkspace from '../questions/workspace';
+import inquirySupportedPlatforms from '../questions/supportedPlatforms';
+import inquiryAppTitle from '../questions/appTitle';
+import inquiryAppID from '../questions/appID';
+import inquiryAppVersion from '../questions/projectVersion';
+import inquiryInstallTemplate from '../questions/installTemplate';
+import inquiryApplyTemplate from '../questions/applyTemplate';
+import inquiryBookmarkTemplate from '../questions/bookmarkTemplate';
 
 jest.mock('@rnv/core');
 jest.mock('lodash/set');
@@ -41,7 +42,6 @@ jest.mock('../questions/confirmOverview');
 jest.mock('../questions/isRenativeProject');
 jest.mock('../questions/projectName');
 jest.mock('../questions/supportedPlatforms');
-jest.mock('../questions/bookmarkTemplate');
 jest.mock('../questions/confirmGit');
 jest.mock('../projectGenerator');
 
@@ -57,11 +57,14 @@ test('Execute task.rnv.new', async () => {
     // GIVEN
     const ctx = getContext();
     const payload: NewProjectData = {
-        defaultVersion: 'MOCK_VERSION',
-        defaultTemplate: 'MOCK_TEMPLATE',
-        optionTemplates: {},
-        optionWorkspaces: {},
-        optionPlatforms: {},
+        defaults: {
+            appVersion: 'MOCK_VERSION',
+            templateName: 'MOCK_TEMPLATE',
+            projectName: 'MOCK_PROJECT_NAME',
+            appTitle: 'MOCK_APP_TITLE',
+            workspaceID: 'MOCK_WORKSPACE',
+        },
+        inputs: {},
         files: {
             project: {
                 renativeConfig: {},
@@ -95,9 +98,8 @@ test('Execute task.rnv.new', async () => {
     expect(inquirySupportedPlatforms).toHaveBeenCalledWith(payload);
     expect(inquiryBootstrapQuestions).toHaveBeenCalledWith(payload);
     expect(inquiryGit).toHaveBeenCalledWith(payload);
-    expect(inquiryBookmarkTemplate).toHaveBeenCalledWith(payload);
     expect(inquiryConfirm).toHaveBeenCalledWith(payload);
+    expect(inquiryBookmarkTemplate).toHaveBeenCalledWith(payload);
     expect(generateNewProject).toHaveBeenCalledWith(payload);
     expect(telemetryNewProject).toHaveBeenCalledWith(payload);
-    expect(logSuccess).toHaveBeenCalled();
 });

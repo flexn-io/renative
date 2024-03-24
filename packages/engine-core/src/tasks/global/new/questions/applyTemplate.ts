@@ -10,10 +10,10 @@ import {
 import type { NewProjectData } from '../types';
 import path from 'path';
 
-export const inquiryApplyTemplate = async (data: NewProjectData) => {
+const Question = async (data: NewProjectData): Promise<void> => {
     const c = getContext();
 
-    const tplName = data.inputs.tepmplate.name;
+    const tplName = data.inputs.tepmplate?.packageName;
     if (!tplName) {
         return Promise.reject('Template not selected');
     }
@@ -78,3 +78,5 @@ export const inquiryApplyTemplate = async (data: NewProjectData) => {
     //     }
     // }
 };
+
+export default Question;

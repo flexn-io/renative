@@ -186,10 +186,10 @@ export const getCurrentCommand = (excludeDollar = false) => {
     return `${dollar}${npx}rnv ${output}`;
 };
 
-export const logToSummary = (v: string, sanitizePaths?: () => string) => {
+export const logToSummary = (v: string) => {
     const ctx = getContext();
     if (ctx.program?.isHelpInvoked) return;
-    const _v = sanitizePaths ? _sanitizePaths(v) : v;
+    const _v = _sanitizePaths(v);
     ctx.logging.logMessages.push(`\n${_v}`);
 };
 

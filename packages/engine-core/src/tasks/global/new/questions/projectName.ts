@@ -12,11 +12,12 @@ import type { NewProjectData } from '../types';
 import path from 'path';
 import { checkInputValue } from '../utils';
 
-export const inquiryProjectName = async (data: NewProjectData) => {
+const Question = async (data: NewProjectData): Promise<void> => {
     const c = getContext();
     const { projectName } = c.program;
+    let plainProjectName: string | undefined;
     if (checkInputValue(projectName)) {
-        data.inputProjectName = projectName;
+        plainProjectName = projectName;
     } else {
         const inputProjectNameObj = await inquirerPrompt({
             name: 'inputProjectName',
@@ -25,17 +26,17 @@ export const inquiryProjectName = async (data: NewProjectData) => {
             validate: (value) => checkInputValue(value),
             message: "What's your project Name? (folder will be created)",
         });
-        data.inputProjectName = inputProjectNameObj?.inputProjectName;
+        plainProjectName = inputProjectNameObj?.inputProjectName;
     }
 
-    data.projectName = data.inputProjectName?.replace?.(/(\s+)/g, '_');
-    data.packageName = data.inputProjectName?.replace(/\s+/g, '-').toLowerCase();
-    c.paths.project.dir = path.join(c.paths.user.currentDir, data.projectName || '');
+    data.inputs.projectName = plainProjectName?.replace?.(/(\s+)/g, '_');
+    data.inputs.packageName = plainProjectName?.replace(/\s+/g, '-').toLowerCase();
+    c.paths.project.dir = path.join(c.paths.user.currentDir, data.inputs.projectName || '');
     c.paths.project.package = path.join(c.paths.project.dir, RnvFileName.package);
     c.paths.project.config = path.join(c.paths.project.dir, RnvFileName.renative);
 
-    data.files.project.renativeConfig.projectName = data.projectName;
-    data.files.project.packageJson.name = data.packageName;
+    data.files.project.renativeConfig.projectName = data.inputs.projectName;
+    data.files.project.packageJson.name = data.inputs.packageName;
 
     if (fsExistsSync(c.paths.project.dir)) {
         logWarning(`Folder ${c.paths.project.dir} already exists. RNV will override it.`);
@@ -55,3 +56,5 @@ export const inquiryProjectName = async (data: NewProjectData) => {
 
     mkdirSync(c.paths.project.dir);
 };
+
+export default Question;

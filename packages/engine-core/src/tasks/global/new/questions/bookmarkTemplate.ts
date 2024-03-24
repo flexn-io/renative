@@ -1,33 +1,37 @@
-import { chalk, getContext, inquirerPrompt, logInfo, updateRenativeConfigs, writeFileSync } from '@rnv/core';
+import { chalk, getContext, inquirerPrompt, logInfo, writeFileSync } from '@rnv/core';
 import type { NewProjectData } from '../types';
 
-export const inquiryBookmarkTemplate = async (data: NewProjectData) => {
+const Question = async (data: NewProjectData) => {
     const c = getContext();
 
-    if (!data.inputs.tepmplate.name) {
+    const { inputs } = data;
+
+    if (!inputs.tepmplate?.packageName) {
         return Promise.reject('Template not selected');
     }
 
     const configFile = c.files.workspace.config || {};
+    // const defProjTemplates = c.files.rnvConfigTemplates.config?.projectTemplates || {};
+    // const wsProjTemplates = configFile.projectTemplates || {};
+    const projTemplates = c.buildConfig.projectTemplates || {};
+    const allKeys = Object.keys(projTemplates);
 
-    const defProjTemplates = c.files.rnvConfigTemplates.config?.projectTemplates || {};
-    const wsProjTemplates = configFile.projectTemplates || {};
-
-    const allKeys = Object.keys(defProjTemplates).concat(Object.keys(wsProjTemplates));
-
-    if (!Object.keys(defProjTemplates).includes(data.inputs.tepmplate.name) || !!data.inputs.tepmplate.path) {
+    if (
+        (!allKeys.includes(inputs.tepmplate.packageName) || !!inputs.tepmplate.localPath) &&
+        inputs.tepmplate.type !== 'existing'
+    ) {
         const { confirmAddTemplate } = await inquirerPrompt({
             name: 'confirmAddTemplate',
             type: 'confirm',
-            message: `Would you like to add ${chalk().bold(data.inputs.tepmplate.name)} to your ${
-                data.optionWorkspaces.selectedOption
+            message: `Would you like to add ${chalk().bold(inputs.tepmplate.packageName)} to your ${
+                inputs.workspaceID
             } workspace template list?`,
         });
 
         const { templateName } = await inquirerPrompt({
             name: 'templateName',
             type: 'input',
-            default: `${data.inputs.tepmplate.name} (local)`,
+            default: `${inputs.tepmplate.packageName} (local)`,
             validate: (v) => !allKeys.includes(v) || 'Name already exists',
             message: 'Add short description',
         });
@@ -38,15 +42,16 @@ export const inquiryBookmarkTemplate = async (data: NewProjectData) => {
                     configFile.projectTemplates = {};
                 }
                 configFile.projectTemplates[templateName] = {
-                    packageName: data.inputs.tepmplate.name,
-                    localPath: data.inputs.tepmplate.path,
-                    description: data.inputs.tepmplate.description,
+                    packageName: inputs.tepmplate.packageName,
+                    localPath: inputs.tepmplate.localPath,
+                    description: inputs.tepmplate.description,
                 };
                 writeFileSync(c.paths.workspace.config, configFile);
-                await updateRenativeConfigs();
 
                 logInfo(`Updating ${c.paths.workspace.config}...DONE`);
             }
         }
     }
 };
+
+export default Question;

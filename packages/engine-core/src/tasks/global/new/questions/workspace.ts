@@ -1,29 +1,28 @@
-import { getContext, inquirerPrompt, updateRenativeConfigs } from '@rnv/core';
+import { getContext, getWorkspaceOptions, inquirerPrompt } from '@rnv/core';
 import type { NewProjectData } from '../types';
 import { checkInputValue } from '../utils';
 
-export const inquiryWorkspace = async (data: NewProjectData) => {
+const Question = async (data: NewProjectData) => {
     const c = getContext();
     const { ci, workspace } = c.program;
-    let inputWorkspace;
     if (checkInputValue(workspace)) {
-        inputWorkspace = workspace;
+        data.inputs.workspaceID = workspace;
     } else if (ci) {
-        inputWorkspace = data.defaults.workspaceID;
+        data.inputs.workspaceID = data.defaults.workspaceID;
     } else {
         const answer = await inquirerPrompt({
             name: 'inputWorkspace',
             type: 'list',
             message: 'What workspace to use?',
             default: data.defaults.workspaceID,
-            choices: data.optionWorkspaces.keysAsArray,
+            choices: getWorkspaceOptions().keysAsArray,
         });
 
-        inputWorkspace = answer?.inputWorkspace;
+        data.inputs.workspaceID = answer?.inputWorkspace;
     }
-    data.optionWorkspaces.selectedOption = inputWorkspace;
-    c.runtime.selectedWorkspace = inputWorkspace;
 
-    data.files.project.renativeConfig.workspaceID = inputWorkspace;
-    await updateRenativeConfigs();
+    c.runtime.selectedWorkspace = data.inputs.workspaceID;
+    data.files.project.renativeConfig.workspaceID = data.inputs.workspaceID;
 };
+
+export default Question;

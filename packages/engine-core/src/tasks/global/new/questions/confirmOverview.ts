@@ -1,18 +1,10 @@
-import {
-    chalk,
-    // getContext,
-    // inquirerPrompt,
-    printArrIntoBox,
-    printBoxEnd,
-    printBoxStart,
-    printIntoBox,
-} from '@rnv/core';
 import type { NewProjectData } from '../types';
+import { generateProjectOverview } from '../projectGenerator';
 
-export const inquiryConfirm = async (data: NewProjectData) => {
+const Question = async (data: NewProjectData) => {
     // const c = getContext();
     // const { ci } = c.program;
-    _prepareProjectOverview(data);
+    generateProjectOverview(data);
     // if (!ci) {
     //     const { confirm } = await inquirerPrompt({
     //         type: 'confirm',
@@ -27,25 +19,4 @@ export const inquiryConfirm = async (data: NewProjectData) => {
     // }
 };
 
-const _prepareProjectOverview = (data: NewProjectData) => {
-    const tempString = `${data.inputs.tepmplate.name}@${data.inputs.tepmplate.version}`;
-
-    const highlight = chalk().green;
-
-    let str = printBoxStart('🚀 ReNative Project Generator');
-    str += printIntoBox('');
-    str += printIntoBox(`Project Name (folder): ${highlight(data.projectName)}`);
-    str += printIntoBox(`Workspace: ${highlight(data.optionWorkspaces.selectedOption)}`);
-    str += printIntoBox(`Project Title: ${highlight(data.appTitle)}`);
-    str += printIntoBox(`Project Version: ${highlight(data.inputVersion)}`);
-    str += printIntoBox(`App ID: ${highlight(data.inputAppID)}`);
-    str += printIntoBox(`Project Template: ${highlight(tempString)}`);
-    str += printIntoBox(`Git Enabled: ${highlight(data.gitEnabled)}`);
-    str += printIntoBox('');
-    str += printIntoBox('Project Platforms:');
-    str += printArrIntoBox(data.optionPlatforms.selectedOptions || []);
-    str += printBoxEnd();
-    str += '\n';
-
-    data.confirmString = str;
-};
+export default Question;

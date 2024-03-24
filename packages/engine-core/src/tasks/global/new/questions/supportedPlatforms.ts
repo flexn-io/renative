@@ -1,10 +1,11 @@
-import { PlatformKey, RnvPlatforms, getContext, inquirerPrompt, logError } from '@rnv/core';
+import { RnvPlatforms, getContext, inquirerPrompt, logError } from '@rnv/core';
 import type { NewProjectData } from '../types';
 import { checkInputValue } from '../utils';
 
-export const inquirySupportedPlatforms = async (data: NewProjectData) => {
+const Question = async (data: NewProjectData) => {
     const c = getContext();
     const { platform } = c.program;
+    const { inputs, files } = data;
 
     // TODO: grouped platforms
     // const orderedPlatforms = [
@@ -39,23 +40,23 @@ export const inquirySupportedPlatforms = async (data: NewProjectData) => {
     // ]
 
     const supportedPlatforms =
-        data.files.template.renativeTemplateConfig?.defaults?.supportedPlatforms ||
-        data.files.template.renativeConfig?.defaults?.supportedPlatforms ||
+        files.template.renativeTemplateConfig?.defaults?.supportedPlatforms ||
+        files.template.renativeConfig?.defaults?.supportedPlatforms ||
         [];
 
     supportedPlatforms.sort((a, b) => RnvPlatforms.indexOf(a) - RnvPlatforms.indexOf(b));
 
     const selectedPlatforms =
-        data.files.template.renativeTemplateConfig?.bootstrapConfig?.defaultSelectedPlatforms || supportedPlatforms;
+        files.template.renativeTemplateConfig?.bootstrapConfig?.defaultSelectedPlatforms || supportedPlatforms;
 
     if (supportedPlatforms.length === 0) {
         logError(
-            `Template ${data.selectedInputTemplate} does not seem to export any default platforms to support. contact the author.`
+            `Template ${inputs.tepmplate?.packageName} does not seem to export any default platforms to support. contact the author.`
         );
     }
 
     if (checkInputValue(platform)) {
-        data.inputSupportedPlatforms = platform.split(',');
+        inputs.supportedPlatforms = platform.split(',');
     } else {
         const answer = await inquirerPrompt({
             name: 'inputSupportedPlatforms',
@@ -66,7 +67,8 @@ export const inquirySupportedPlatforms = async (data: NewProjectData) => {
             default: selectedPlatforms,
             choices: supportedPlatforms,
         });
-        data.inputSupportedPlatforms = answer?.inputSupportedPlatforms;
+        inputs.supportedPlatforms = answer?.inputSupportedPlatforms || [];
     }
-    data.optionPlatforms.selectedOptions = (data.inputSupportedPlatforms || []) as Array<PlatformKey>;
 };
+
+export default Question;

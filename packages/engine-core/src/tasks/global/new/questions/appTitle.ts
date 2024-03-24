@@ -2,7 +2,7 @@ import { getContext } from '@rnv/core';
 import type { NewProjectData } from '../types';
 import { checkInputValue, validateAndAssign } from '../utils';
 
-export const inquiryAppTitle = async (data: NewProjectData) => {
+const Question = async (data: NewProjectData) => {
     const c = getContext();
     const { title, ci } = c.program;
     const validator = (val: string) => checkInputValue(val) || 'Please enter a title';
@@ -19,6 +19,7 @@ export const inquiryAppTitle = async (data: NewProjectData) => {
         ci
     );
 
-    data.inputAppTitle = result;
-    data.appTitle = data.inputAppTitle || data.defaults.appTitle;
+    data.inputs.appTitle = result || data.defaults.appTitle;
 };
+
+export default Question;
