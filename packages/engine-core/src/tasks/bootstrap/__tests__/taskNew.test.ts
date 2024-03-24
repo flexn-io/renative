@@ -35,7 +35,6 @@ jest.mock('../questions/appID');
 jest.mock('../questions/projectVersion');
 jest.mock('../questions/workspace');
 jest.mock('../questions/hasNodeModules');
-jest.mock('../questions/confirmOverview');
 jest.mock('../questions/isRenativeProject');
 jest.mock('../questions/projectName');
 jest.mock('../questions/supportedPlatforms');

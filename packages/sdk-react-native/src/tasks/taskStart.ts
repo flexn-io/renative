@@ -9,6 +9,7 @@ import {
     doResolve,
 } from '@rnv/core';
 import { startReactNative } from '../metroRunner';
+import { SdkPlatforms } from '../constants';
 
 const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     const { hosted } = c.program;
@@ -43,7 +44,7 @@ const Task: RnvTask = {
     fn,
     task: RnvTaskName.start,
     options: RnvTaskOptionPresets.withConfigure(),
-    platforms: ['ios', 'android', 'androidtv', 'androidwear', 'firetv', 'macos'],
+    platforms: SdkPlatforms,
 };
 
 export default Task;

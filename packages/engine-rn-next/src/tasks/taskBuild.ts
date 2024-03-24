@@ -1,6 +1,5 @@
 import {
     RnvTaskFn,
-    logErrorPlatform,
     logTask,
     RnvTaskOptionPresets,
     executeOrSkipTask,
@@ -8,36 +7,27 @@ import {
     RnvTask,
     RnvTaskName,
 } from '@rnv/core';
-import { buildWebNext } from '../sdk';
+import { buildWebNext } from '../sdk/runner';
+import { SdkPlatforms } from '../sdk/constants';
 
-const taskBuild: RnvTaskFn = async (c, parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskBuild', `parent:${parentTask}`);
-    const { platform } = c;
-
     await executeOrSkipTask(RnvTaskName.configure, RnvTaskName.build, originTask);
-
     if (shouldSkipTask(RnvTaskName.build, originTask)) return true;
 
-    switch (platform) {
-        case 'web':
-        case 'chromecast':
-            if (parentTask === RnvTaskName.export) {
-                // build task is not necessary when exporting. They do the same thing, only difference is a next.config.js config flag
-                return true;
-            }
-            await buildWebNext();
-            return;
-        default:
-            logErrorPlatform();
+    if (parentTask === RnvTaskName.export) {
+        // build task is not necessary when exporting. They do the same thing, only difference is a next.config.js config flag
+        return true;
     }
+    await buildWebNext();
 };
 
 const Task: RnvTask = {
     description: 'Build project binary',
-    fn: taskBuild,
+    fn,
     task: RnvTaskName.build,
-    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
-    platforms: ['web', 'chromecast'],
+    options: RnvTaskOptionPresets.withConfigure(),
+    platforms: SdkPlatforms,
 };
 
 export default Task;

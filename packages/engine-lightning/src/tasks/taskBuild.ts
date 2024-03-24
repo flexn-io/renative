@@ -8,9 +8,10 @@ import {
     RnvTaskName,
     RnvTaskOptionPresets,
 } from '@rnv/core';
-import { buildLightningProject } from '../sdks/sdk-lightning';
+import { buildLightningProject } from '../sdk/runner';
+import { SdkPlatforms } from '../sdk/constants';
 
-const taskBuild: RnvTaskFn = async (c, parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskBuild', `parent:${parentTask}`);
     const { platform } = c;
     c.runtime.forceBundleAssets = true;
@@ -31,10 +32,10 @@ const taskBuild: RnvTaskFn = async (c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Build project binary',
-    fn: taskBuild,
+    fn,
     task: RnvTaskName.build,
-    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
-    platforms: ['tizen', 'webos'],
+    options: RnvTaskOptionPresets.withConfigure(),
+    platforms: SdkPlatforms,
 };
 
 export default Task;

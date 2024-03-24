@@ -11,8 +11,9 @@ import {
     RnvTaskName,
 } from '@rnv/core';
 import { openBrowser, waitForHost } from '@rnv/sdk-utils';
+import { SdkPlatforms } from '../sdk/constants';
 
-const taskStart: RnvTaskFn = async (c, parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { port } = c.runtime;
     const { hosted } = c.program;
@@ -43,10 +44,10 @@ const taskStart: RnvTaskFn = async (c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Starts bundler / server',
-    fn: taskStart,
+    fn,
     task: RnvTaskName.start,
-    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
-    platforms: ['macos', 'windows', 'linux'],
+    options: RnvTaskOptionPresets.withConfigure(),
+    platforms: SdkPlatforms,
 };
 
 export default Task;

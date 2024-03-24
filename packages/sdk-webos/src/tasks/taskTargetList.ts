@@ -1,6 +1,7 @@
 import { isPlatformSupported, logTask, executeTask, RnvTaskFn, RnvTask, RnvTaskName, RnvTaskOptions } from '@rnv/core';
 import { checkAndConfigureWebosSdks, checkWebosSdk } from '../installer';
 import { listWebOSTargets } from '../deviceManager';
+import { SdkPlatforms } from '../constants';
 
 const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskTargetList');
@@ -18,7 +19,7 @@ const Task: RnvTask = {
     fn,
     task: RnvTaskName.targetList,
     options: [RnvTaskOptions.target],
-    platforms: ['webos'],
+    platforms: SdkPlatforms,
     isGlobalScope: true,
 };
 

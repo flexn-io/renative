@@ -1,5 +1,6 @@
 import { logTask, RnvTaskFn, RnvTask, RnvTaskName } from '@rnv/core';
 import { checkAndConfigureWebosSdks, checkWebosSdk } from '../installer';
+import { SdkPlatforms } from '../constants';
 
 const fn: RnvTaskFn = async () => {
     logTask('taskSdkConfigure');
@@ -13,8 +14,7 @@ const Task: RnvTask = {
     isPrivate: true,
     fn,
     task: RnvTaskName.sdkConfigure,
-    options: [],
-    platforms: ['webos'],
+    platforms: SdkPlatforms,
 };
 
 export default Task;

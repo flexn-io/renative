@@ -1,6 +1,5 @@
 import {
     RnvTaskFn,
-    logErrorPlatform,
     logTask,
     RnvTaskOptionPresets,
     shouldSkipTask,
@@ -8,31 +7,23 @@ import {
     RnvTask,
     RnvTaskName,
 } from '@rnv/core';
-import { exportWebNext } from '../sdk';
+import { exportWebNext } from '../sdk/runner';
+import { SdkPlatforms } from '../sdk/constants';
 
-const taskExport: RnvTaskFn = async (c, parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskExport', `parent:${parentTask}`);
-    const { platform } = c;
-
     await executeOrSkipTask(RnvTaskName.build, RnvTaskName.export, originTask);
-
     if (shouldSkipTask(RnvTaskName.export, originTask)) return true;
 
-    switch (platform) {
-        case 'web':
-        case 'chromecast':
-            return exportWebNext();
-        default:
-            logErrorPlatform();
-    }
+    return exportWebNext();
 };
 
 const Task: RnvTask = {
     description: 'Export the app into deployable binary',
-    fn: taskExport,
+    fn,
     task: RnvTaskName.export,
-    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
-    platforms: ['web', 'chromecast'],
+    options: RnvTaskOptionPresets.withConfigure(),
+    platforms: SdkPlatforms,
 };
 
 export default Task;

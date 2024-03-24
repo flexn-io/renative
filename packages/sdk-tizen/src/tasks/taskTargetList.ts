@@ -1,8 +1,9 @@
 import { isPlatformSupported, logTask, executeTask, RnvTaskFn, RnvTask, RnvTaskName, RnvTaskOptions } from '@rnv/core';
 import { checkAndConfigureTizenSdks, checkTizenSdk } from '../installer';
 import { listTizenTargets } from '../deviceManager';
+import { SdkPlatforms } from '../constants';
 
-const taskTargetList: RnvTaskFn = async (c, _parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskTargetList');
 
     await isPlatformSupported(true);
@@ -15,10 +16,10 @@ const taskTargetList: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'List all available targets for specific platform',
-    fn: taskTargetList,
+    fn,
     task: RnvTaskName.targetList,
     options: [RnvTaskOptions.target],
-    platforms: ['tizen', 'tizenwatch', 'tizenmobile'],
+    platforms: SdkPlatforms,
     isGlobalScope: true,
 };
 

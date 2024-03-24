@@ -1,6 +1,6 @@
 import { chalk, fsExistsSync, getConfigProp, getContext, logWarning, parsePlugins } from '@rnv/core';
 import path from 'path';
-import { getExportDir } from './sdk';
+import { getExportDir } from './runner';
 
 export const EnvVars = {
     RNV_NEXT_TRANSPILE_MODULES: () => {

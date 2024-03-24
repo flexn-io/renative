@@ -4,6 +4,7 @@ import { getIosDeviceToRunOn, runXcodeProject } from '@rnv/sdk-apple';
 
 jest.mock('@rnv/core');
 jest.mock('@rnv/sdk-react-native');
+jest.mock('../../runner');
 
 beforeEach(() => {
     createRnvContext();

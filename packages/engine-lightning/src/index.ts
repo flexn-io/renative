@@ -1,11 +1,11 @@
 import { RnvEngine, generateEngineTasks, generateEngineExtensions } from '@rnv/core';
 import { Tasks as TasksSdkWebOS } from '@rnv/sdk-webos';
 import { Tasks as TasksSdkTizen } from '@rnv/sdk-tizen';
-//@ts-ignore
-import CNF from '../renative.engine.json';
 import taskBuild from './tasks/taskBuild';
 import taskConfigure from './tasks/taskConfigure';
 import taskRun from './tasks/taskRun';
+//@ts-ignore
+import CNF from '../renative.engine.json';
 
 const Engine: RnvEngine = {
     tasks: generateEngineTasks([taskRun, taskBuild, taskConfigure, ...TasksSdkWebOS, ...TasksSdkTizen]),

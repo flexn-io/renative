@@ -1,5 +1,4 @@
 import {
-    logErrorPlatform,
     copySharedPlatforms,
     logTask,
     RnvTaskOptionPresets,
@@ -10,11 +9,10 @@ import {
     RnvTask,
     RnvTaskName,
 } from '@rnv/core';
-import { SDKWindows } from '../sdks';
+import { configureWindowsProject } from '../sdk';
+import { SdkPlatforms } from '../sdk/constants';
 
-const { configureWindowsProject } = SDKWindows;
-
-const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskConfigure');
 
     await executeTask(RnvTaskName.platformConfigure, RnvTaskName.configure, originTask);
@@ -27,21 +25,15 @@ const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
         return true;
     }
 
-    switch (c.platform) {
-        case 'xbox':
-        case 'windows':
-            return configureWindowsProject(c);
-        default:
-            return logErrorPlatform();
-    }
+    return configureWindowsProject(c);
 };
 
 const Task: RnvTask = {
     description: 'Configure current project',
-    fn: taskConfigure,
+    fn,
     task: RnvTaskName.configure,
-    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
-    platforms: ['windows', 'xbox'],
+    options: RnvTaskOptionPresets.withConfigure(),
+    platforms: SdkPlatforms,
 };
 
 export default Task;

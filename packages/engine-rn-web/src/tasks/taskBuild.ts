@@ -12,8 +12,9 @@ import { buildWeb } from '@rnv/sdk-webpack';
 import { buildTizenProject } from '@rnv/sdk-tizen';
 import { buildWebOSProject } from '@rnv/sdk-webos';
 import { buildKaiOSProject } from '@rnv/sdk-kaios';
+import { EnginePlatforms } from '../constants';
 
-const taskBuild: RnvTaskFn = async (c, parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskBuild', `parent:${parentTask}`);
 
     const { platform } = c;
@@ -49,10 +50,10 @@ const taskBuild: RnvTaskFn = async (c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Build project binary',
-    fn: taskBuild,
+    fn,
     task: RnvTaskName.build,
-    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
-    platforms: ['web', 'webtv', 'tizen', 'webos', 'tizenmobile', 'tizenwatch', 'kaios', 'chromecast'],
+    options: RnvTaskOptionPresets.withConfigure(),
+    platforms: EnginePlatforms,
 };
 
 export default Task;

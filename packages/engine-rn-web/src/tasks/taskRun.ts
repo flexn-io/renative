@@ -23,6 +23,7 @@ import { runTizen } from '@rnv/sdk-tizen';
 import { runWebOS } from '@rnv/sdk-webos';
 import { runKaiOSProject } from '@rnv/sdk-kaios';
 import { getIP } from '@rnv/sdk-utils';
+import { EnginePlatforms } from '../constants';
 
 const existBuildsOverrideForTargetPathSync = (c: RnvContext, destPath: string) => {
     const appFolder = getAppFolder();
@@ -73,7 +74,7 @@ const _configureHostedIfRequired = async (c: RnvContext) => {
     }
 };
 
-const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { port } = c.runtime;
     const { target } = c.runtime;
@@ -121,11 +122,11 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Run your app in browser',
-    fn: taskRun,
+    fn,
     task: RnvTaskName.run,
     isPriorityOrder: true,
-    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun())),
-    platforms: ['web', 'webtv', 'tizen', 'webos', 'tizenmobile', 'tizenwatch', 'kaios', 'chromecast'],
+    options: RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun()),
+    platforms: EnginePlatforms,
 };
 
 export default Task;

@@ -2,8 +2,9 @@ import { isPlatformSupported, logTask, executeTask, RnvTaskFn, RnvTask, RnvTaskN
 import { getTargetWithOptionalPrompt } from '@rnv/sdk-utils';
 import { checkAndConfigureTizenSdks, checkTizenSdk } from '../installer';
 import { launchTizenSimulator } from '../deviceManager';
+import { SdkPlatforms } from '../constants';
 
-const taskTargetLaunch: RnvTaskFn = async (c, _parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskTargetLaunch');
 
     await isPlatformSupported(true);
@@ -18,10 +19,10 @@ const taskTargetLaunch: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Launch specific target',
-    fn: taskTargetLaunch,
+    fn,
     task: RnvTaskName.targetLaunch,
     options: [RnvTaskOptions.target],
-    platforms: ['tizen', 'tizenwatch', 'tizenmobile'],
+    platforms: SdkPlatforms,
     isGlobalScope: true,
 };
 

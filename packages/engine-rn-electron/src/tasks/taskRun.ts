@@ -7,7 +7,8 @@ import {
     RnvTaskName,
     RnvTaskOptionPresets,
 } from '@rnv/core';
-import { runElectron } from '../sdk';
+import { runElectron } from '../sdk/runner';
+import { SdkPlatforms } from '../sdk/constants';
 
 const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     const { port } = c.runtime;
@@ -28,7 +29,7 @@ const Task: RnvTask = {
     task: RnvTaskName.run,
     isPriorityOrder: true,
     options: RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun()),
-    platforms: ['macos', 'windows', 'linux'],
+    platforms: SdkPlatforms,
 };
 
 export default Task;

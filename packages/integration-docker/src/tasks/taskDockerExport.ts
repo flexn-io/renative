@@ -1,7 +1,6 @@
 import {
     RnvTaskFn,
     logTask,
-    RnvTaskOptionPresets,
     executeOrSkipTask,
     initializeTask,
     findSuitableTask,
@@ -10,7 +9,7 @@ import {
 } from '@rnv/core';
 import Docker from '../docker';
 
-const taskDockerExport: RnvTaskFn = async (c, parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskDockerExport', `parent:${parentTask}`);
 
     if (c.program.only) {
@@ -28,9 +27,8 @@ const taskDockerExport: RnvTaskFn = async (c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Exports your project to docker image',
-    fn: taskDockerExport,
+    fn,
     task: 'docker export',
-    options: RnvTaskOptionPresets.withBase(),
     platforms: ['web'],
 };
 

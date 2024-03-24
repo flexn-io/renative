@@ -1,36 +1,17 @@
-import {
-    RnvTaskFn,
-    logErrorPlatform,
-    logTask,
-    RnvTaskOptionPresets,
-    executeAsync,
-    shouldSkipTask,
-    RnvTask,
-    RnvTaskName,
-} from '@rnv/core';
+import { RnvTaskFn, logTask, executeAsync, shouldSkipTask, RnvTask, RnvTaskName } from '@rnv/core';
 
-const taskDebug: RnvTaskFn = async (c, parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskDebug', `parent:${parentTask}`);
 
     if (shouldSkipTask(RnvTaskName.debug, originTask)) return true;
 
-    const { platform } = c;
-
-    switch (platform) {
-        case 'web':
-        case 'webtv':
-        case 'tizen':
-            return executeAsync('npx weinre --boundHost -all-');
-        default:
-            logErrorPlatform();
-    }
+    return executeAsync('npx weinre --boundHost -all-');
 };
 
 const Task: RnvTask = {
     description: 'Debug your app on target device or emulator',
-    fn: taskDebug,
+    fn,
     task: RnvTaskName.debug,
-    options: RnvTaskOptionPresets.withBase(),
     platforms: ['web', 'webtv', 'tizen'],
 };
 

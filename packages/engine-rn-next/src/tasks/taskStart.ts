@@ -1,6 +1,5 @@
 import {
     RnvTaskFn,
-    logErrorPlatform,
     logTask,
     logError,
     RnvTaskOptionPresets,
@@ -9,11 +8,11 @@ import {
     RnvTask,
     RnvTaskName,
 } from '@rnv/core';
-import { runWebNext } from '../sdk';
+import { runWebNext } from '../sdk/runner';
 import { openBrowser, waitForHost } from '@rnv/sdk-utils';
+import { SdkPlatforms } from '../sdk/constants';
 
-const taskStart: RnvTaskFn = async (c, parentTask, originTask) => {
-    const { platform } = c;
+const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     const { port } = c.runtime;
     const { hosted } = c.program;
 
@@ -34,22 +33,16 @@ const taskStart: RnvTaskFn = async (c, parentTask, originTask) => {
     if (hosted) {
         return Promise.reject('This platform does not support hosted mode');
     }
-    switch (platform) {
-        case 'web':
-        case 'chromecast':
-            c.runtime.shouldOpenBrowser = false;
-            return runWebNext();
-        default:
-            return logErrorPlatform();
-    }
+
+    return runWebNext();
 };
 
 const Task: RnvTask = {
     description: 'Starts bundler / server',
-    fn: taskStart,
+    fn,
     task: RnvTaskName.start,
-    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
-    platforms: ['web', 'chromecast'],
+    options: RnvTaskOptionPresets.withConfigure(),
+    platforms: SdkPlatforms,
 };
 
 export default Task;

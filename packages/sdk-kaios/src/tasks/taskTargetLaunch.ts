@@ -1,8 +1,9 @@
 import { isPlatformSupported, logTask, executeTask, RnvTaskFn, RnvTask, RnvTaskName, RnvTaskOptions } from '@rnv/core';
 import { getTargetWithOptionalPrompt } from '@rnv/sdk-utils';
 import { launchKaiOSSimulator } from '../deviceManager';
+import { SdkPlatforms } from '../constants';
 
-const taskTargetLaunch: RnvTaskFn = async (c, _parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskTargetLaunch');
 
     await isPlatformSupported(true);
@@ -15,10 +16,10 @@ const taskTargetLaunch: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Launch specific target',
-    fn: taskTargetLaunch,
+    fn,
     task: RnvTaskName.targetLaunch,
     options: [RnvTaskOptions.target],
-    platforms: ['kaios'],
+    platforms: SdkPlatforms,
     isGlobalScope: true,
 };
 

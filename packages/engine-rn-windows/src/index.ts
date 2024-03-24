@@ -1,18 +1,17 @@
 import { RnvEngine, generateEngineTasks, generateEngineExtensions } from '@rnv/core';
 import { withRNVMetro } from './adapters/metroAdapter';
 import { withRNVBabel } from './adapters/babelAdapter';
-//@ts-ignore
-import CNF from '../renative.engine.json';
 import taskBuild from './tasks/taskBuild';
 import taskConfigure from './tasks/taskConfigure';
 import taskExport from './tasks/taskExport';
 import taskPackage from './tasks/taskPackage';
 import taskRun from './tasks/taskRun';
-import taskStart from './tasks/taskStart';
-import { withRNVRNConfig } from '@rnv/sdk-react-native';
+import { Tasks as TasksSdkReactNative, withRNVRNConfig } from '@rnv/sdk-react-native';
+//@ts-ignore
+import CNF from '../renative.engine.json';
 
 const Engine: RnvEngine = {
-    tasks: generateEngineTasks([taskRun, taskPackage, taskBuild, taskConfigure, taskStart, taskExport]),
+    tasks: generateEngineTasks([taskRun, taskPackage, taskBuild, taskConfigure, taskExport, ...TasksSdkReactNative]),
     config: CNF,
     projectDirName: '',
     runtimeExtraProps: {},

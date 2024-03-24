@@ -1,38 +1,29 @@
 import {
     RnvTaskFn,
     executeOrSkipTask,
-    logErrorPlatform,
     RnvTaskOptionPresets,
     logTask,
     shouldSkipTask,
     RnvTask,
     RnvTaskName,
 } from '@rnv/core';
-import { ruWindowsProject } from '../sdks/sdk-windows';
+import { ruWindowsProject } from '../sdk';
+import { SdkPlatforms } from '../sdk/constants';
 
-const taskBuild: RnvTaskFn = async (c, _parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskBuild');
-    const { platform } = c;
 
     await executeOrSkipTask(RnvTaskName.package, RnvTaskName.build, originTask);
-
     if (shouldSkipTask(RnvTaskName.build, originTask)) return true;
-
-    switch (platform) {
-        case 'xbox':
-        case 'windows':
-            return ruWindowsProject(c, { release: true, launch: false, deploy: false, logging: false });
-        default:
-            return logErrorPlatform();
-    }
+    return ruWindowsProject(c, { release: true, launch: false, deploy: false, logging: false });
 };
 
 const Task: RnvTask = {
     description: 'Build project binary',
-    fn: taskBuild,
+    fn,
     task: RnvTaskName.build,
-    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
-    platforms: ['windows', 'xbox'],
+    options: RnvTaskOptionPresets.withConfigure(),
+    platforms: SdkPlatforms,
 };
 
 export default Task;

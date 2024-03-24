@@ -1,5 +1,4 @@
 import {
-    logErrorPlatform,
     logTask,
     RnvTaskOptionPresets,
     RnvTaskFn,
@@ -9,14 +8,11 @@ import {
     RnvTask,
     RnvTaskName,
 } from '@rnv/core';
-import { SDKWindows } from '../sdks';
+import { SdkPlatforms } from '../sdk/constants';
+import { packageBundleForWindows } from '../sdk';
 
-const { packageBundleForWindows } = SDKWindows;
-
-const taskPackage: RnvTaskFn = async (c, parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskPackage', `parent:${parentTask}`);
-    const { platform } = c;
-
     await executeOrSkipTask(RnvTaskName.configure, RnvTaskName.package, originTask);
 
     const bundleAssets = getConfigProp('bundleAssets');
@@ -26,23 +22,15 @@ const taskPackage: RnvTaskFn = async (c, parentTask, originTask) => {
     }
 
     if (shouldSkipTask(RnvTaskName.package, originTask)) return true;
-
-    switch (platform) {
-        case 'xbox':
-        case 'windows':
-            return packageBundleForWindows(c);
-        default:
-            logErrorPlatform();
-            return false;
-    }
+    return packageBundleForWindows(c);
 };
 
 const Task: RnvTask = {
     description: 'Package source files into bundle',
-    fn: taskPackage,
+    fn,
     task: RnvTaskName.package,
-    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
-    platforms: ['windows', 'xbox'],
+    options: RnvTaskOptionPresets.withConfigure(),
+    platforms: SdkPlatforms,
 };
 
 export default Task;

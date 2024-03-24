@@ -1,5 +1,4 @@
 import {
-    logErrorPlatform,
     logTask,
     RnvTaskOptionPresets,
     RnvTaskFn,
@@ -8,36 +7,27 @@ import {
     RnvTask,
     RnvTaskName,
 } from '@rnv/core';
-import { SDKWindows } from '../sdks';
+import { clearWindowsTemporaryFiles, packageWindowsApp } from '../sdk';
+import { SdkPlatforms } from '../sdk/constants';
 
 // TODO Implement export windows app (currently it only seems to be available through VS Studio itself...)
-const { packageWindowsApp, clearWindowsTemporaryFiles } = SDKWindows;
 
-const taskExport: RnvTaskFn = async (c, parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskExport', `parent:${parentTask}`);
-
-    const { platform } = c;
 
     await executeOrSkipTask(RnvTaskName.build, RnvTaskName.export, originTask);
 
     if (shouldSkipTask(RnvTaskName.export, originTask)) return true;
-
-    switch (platform) {
-        case 'xbox':
-        case 'windows':
-            await clearWindowsTemporaryFiles(c);
-            return packageWindowsApp(c);
-        default:
-            logErrorPlatform();
-    }
+    await clearWindowsTemporaryFiles(c);
+    return packageWindowsApp(c);
 };
 
 const Task: RnvTask = {
     description: 'Export the app into deployable binary',
-    fn: taskExport,
+    fn,
     task: RnvTaskName.export,
-    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
-    platforms: ['windows', 'xbox'],
+    options: RnvTaskOptionPresets.withConfigure(),
+    platforms: SdkPlatforms,
 };
 
 export default Task;

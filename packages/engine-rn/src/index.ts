@@ -1,8 +1,7 @@
 import { generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
-import { withRNVRNConfig } from '@rnv/sdk-react-native';
 import { Tasks as TasksSdkAndroid } from '@rnv/sdk-android';
 import { Tasks as TasksSdkApple } from '@rnv/sdk-apple';
-import { Tasks as TasksSdkReactNative } from '@rnv/sdk-react-native';
+import { Tasks as TasksSdkReactNative, withRNVRNConfig } from '@rnv/sdk-react-native';
 import { withRNVMetro } from './adapters/metroAdapter';
 import { withRNVBabel } from './adapters/babelAdapter';
 //@ts-ignore

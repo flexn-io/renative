@@ -7,7 +7,8 @@ import {
     RnvTaskName,
     RnvTaskOptionPresets,
 } from '@rnv/core';
-import { buildElectron } from '../sdk';
+import { buildElectron } from '../sdk/runner';
+import { SdkPlatforms } from '../sdk/constants';
 
 const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskBuild', `parent:${parentTask}`);
@@ -22,7 +23,7 @@ const Task: RnvTask = {
     fn,
     task: RnvTaskName.build,
     options: RnvTaskOptionPresets.withConfigure(),
-    platforms: ['macos', 'windows', 'linux'],
+    platforms: SdkPlatforms,
 };
 
 export default Task;

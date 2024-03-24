@@ -339,15 +339,6 @@ export const RnvTaskCoreOptionPresets = {
 };
 
 export const RnvTaskOptionPresets = {
-    withBase: (arr?: Array<RnvTaskOption>) => arr || [],
-    // withBase: (arr?: Array<RnvTaskOption>) =>
-    //     [
-    //         RnvTaskOptions.info,
-    //         RnvTaskOptions.ci,
-    //         RnvTaskOptions.mono,
-    //         RnvTaskOptions.maxErrorLength,
-    //         RnvTaskOptions.only,
-    //     ].concat(arr || []),
     withConfigure: (arr?: Array<RnvTaskOption>) =>
         [
             RnvTaskOptions.reset,

@@ -1,5 +1,4 @@
 import {
-    logErrorPlatform,
     logTask,
     RnvTaskOptionPresets,
     RnvTaskFn,
@@ -8,13 +7,11 @@ import {
     RnvTask,
     RnvTaskName,
 } from '@rnv/core';
-import { SDKWindows } from '../sdks';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '@rnv/sdk-react-native';
+import { clearWindowsTemporaryFiles, ruWindowsProject } from '../sdk';
+import { SdkPlatforms } from '../sdk/constants';
 
-const { ruWindowsProject, clearWindowsTemporaryFiles } = SDKWindows;
-
-const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
-    const { platform } = c;
+const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     const { port } = c.runtime;
     const { target } = c.runtime;
     const { hosted } = c.program;
@@ -24,25 +21,19 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
 
     if (shouldSkipTask(RnvTaskName.run, originTask)) return true;
 
-    switch (platform) {
-        case 'xbox':
-        case 'windows':
-            await clearWindowsTemporaryFiles(c);
-            await startBundlerIfRequired(RnvTaskName.run, originTask);
-            await ruWindowsProject(c);
-            return waitForBundlerIfRequired();
-        default:
-            return logErrorPlatform();
-    }
+    await clearWindowsTemporaryFiles(c);
+    await startBundlerIfRequired(RnvTaskName.run, originTask);
+    await ruWindowsProject(c);
+    return waitForBundlerIfRequired();
 };
 
 const Task: RnvTask = {
     description: 'Run your app in a window on desktop',
-    fn: taskRun,
+    fn,
     task: RnvTaskName.run,
     isPriorityOrder: true,
-    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun())),
-    platforms: ['windows', 'xbox'],
+    options: RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun()),
+    platforms: SdkPlatforms,
 };
 
 export default Task;

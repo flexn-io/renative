@@ -14,8 +14,9 @@ import { configureWebProject, configureChromecastProject } from '@rnv/sdk-webpac
 import { configureKaiOSProject } from '@rnv/sdk-kaios';
 import { configureWebOSProject } from '@rnv/sdk-webos';
 import { configureTizenProject } from '@rnv/sdk-tizen';
+import { EnginePlatforms } from '../constants';
 
-const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskConfigure');
 
     await executeTask(RnvTaskName.platformConfigure, RnvTaskName.configure, originTask);
@@ -49,10 +50,10 @@ const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Configure current project',
-    fn: taskConfigure,
+    fn,
     task: RnvTaskName.configure,
-    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
-    platforms: ['web', 'webtv', 'tizen', 'webos', 'tizenmobile', 'tizenwatch', 'kaios', 'chromecast'],
+    options: RnvTaskOptionPresets.withConfigure(),
+    platforms: EnginePlatforms,
 };
 
 export default Task;
