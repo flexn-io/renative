@@ -5,6 +5,7 @@ import {
     getApi,
     getContext,
     inquirerPrompt,
+    isYarnInstalled,
     logDebug,
     populateContextPaths,
     updateRenativeConfigs,
@@ -76,8 +77,8 @@ export const initNewProject = async () => {
         defaults: {
             appVersion: '0.1.0',
             templateName: '@rnv/template-starter',
-            projectName: 'helloRenative',
-            appTitle: 'Hello Renative',
+            projectName: 'My Renative Project',
+            appTitle: 'My Renative App',
             workspaceID: 'rnv',
         },
         inputs: {},
@@ -86,6 +87,7 @@ export const initNewProject = async () => {
                 renativeConfig: {},
                 packageJson: {},
             },
+            configTemplates: {},
             template: {
                 renativeTemplateConfig: {},
                 renativeConfig: {},
@@ -124,7 +126,7 @@ export const configureConfigOverrides = async (data: NewProjectData) => {
     const loadedConf = c.files.project.config;
 
     // Configure only required engines based on supportedPlatforms
-    const engines = data.files.project.renativeConfig?.engines;
+    const engines = files.project.renativeConfig?.engines;
     if (engines) {
         // Remove unused engines based on selected platforms
         supPlats.forEach((k) => {
@@ -139,6 +141,14 @@ export const configureConfigOverrides = async (data: NewProjectData) => {
             }
         });
     }
+    Object.keys(renativeConfig.engines).forEach((engKey) => {
+        const engVersion = files.configTemplates.config?.engineTemplates?.[engKey]?.version;
+        if (engVersion) {
+            if (files.project.packageJson.devDependencies) {
+                files.project.packageJson.devDependencies[engKey] = engVersion;
+            }
+        }
+    });
 };
 
 export const telemetryNewProject = async (data: NewProjectData) => {
@@ -164,6 +174,8 @@ export const generateProjectOverview = (data: NewProjectData) => {
 
     const highlight = chalk().bold;
 
+    const installAddon = !inputs.confirmProjectInstall ? `\n  ${isYarnInstalled() ? 'yarn' : 'npm install'}` : '';
+
     const str = `  Generated Project Summary:
   -------------------------
   Project Name: ${highlight(inputs.projectName)}
@@ -178,7 +190,7 @@ export const generateProjectOverview = (data: NewProjectData) => {
   -------------------------
   ${chalk().green('✔ Your project is ready!')} Run it with:
 ${chalk().bold(`
-  cd ${inputs.projectFolderName}
+  cd ${inputs.projectFolderName}${installAddon}
   npx rnv run`)}`;
 
     return str;

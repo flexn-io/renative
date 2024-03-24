@@ -1,8 +1,10 @@
 import { createRnvContext, doResolve, executeTask, getContext } from '@rnv/core';
 import taskStart from '../taskStart';
-import { startReactNative } from '@rnv/sdk-react-native';
+import { startReactNative } from '../../metroRunner';
 
 jest.mock('@rnv/core');
+jest.mock('@rnv/sdk-utils');
+jest.mock('../../metroRunner');
 
 beforeEach(() => {
     createRnvContext();
@@ -32,7 +34,7 @@ describe('taskStart', () => {
         // THEN
         expect(startReactNative).toHaveBeenCalledWith({ waitForBundler: false });
     });
-    it('Execute task.rnv.start with no parent', async () => {
+    it('Execute task.rnv.start with no parent and custom customCliPath', async () => {
         // GIVEN
         const ctx = getContext();
         ctx.platform = 'tvos';
@@ -48,7 +50,7 @@ describe('taskStart', () => {
         });
     });
 
-    it('Execute task.rnv.start', async () => {
+    it('Execute task.rnv.start with customCliPath', async () => {
         // GIVEN
         const ctx = getContext();
         ctx.platform = 'tvos';

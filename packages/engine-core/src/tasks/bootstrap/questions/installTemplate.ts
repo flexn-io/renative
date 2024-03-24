@@ -1,4 +1,6 @@
 import {
+    ConfigFileProject,
+    ConfigFileTemplate,
     NpmPackageFile,
     RnvFileName,
     RnvFolderName,
@@ -153,7 +155,6 @@ const Question = async (data: NewProjectData) => {
         if (!inputs.tepmplate.packageName) {
             return;
         }
-
         // NOTE: this is a workaround for npm/yarn bug where manually added packages are overriden on next install
         const filePath = `file:${RnvFolderName.dotRnv}/${RnvFolderName.npmCache}/${inputs.tepmplate.packageName}`;
         files.project.packageJson = merge(files.project.packageJson, {
@@ -168,9 +169,7 @@ const Question = async (data: NewProjectData) => {
                 },
             },
         });
-
         await saveProgressIntoProjectConfig(data);
-
         await executeAsync(`${isYarnInstalled() ? 'yarn' : 'npm install'}`, {
             cwd: c.paths.project.dir,
         });
@@ -197,6 +196,23 @@ const Question = async (data: NewProjectData) => {
                 } : FAILED. this could happen if you have package.json accidentally created somewhere in parent directory`
             );
         }
+    }
+
+    if (!inputs.tepmplate.packageName) {
+        return;
+    }
+
+    const templateDir = path.join(c.paths.project.dir, 'node_modules', inputs.tepmplate.packageName);
+
+    const renativeTemplateConfig =
+        readObjectSync<ConfigFileTemplate>(path.join(templateDir, RnvFileName.renativeTemplate)) || {};
+    if (renativeTemplateConfig) {
+        files.template.renativeTemplateConfig = renativeTemplateConfig;
+    }
+
+    const renativeConfig = readObjectSync<ConfigFileProject>(path.join(templateDir, RnvFileName.renative));
+    if (renativeConfig) {
+        files.template.renativeConfig = renativeConfig;
     }
 };
 

@@ -1,14 +1,5 @@
-import {
-    ConfigFileProject,
-    ConfigFileTemplate,
-    RnvFileName,
-    getContext,
-    inquirerPrompt,
-    mergeObjects,
-    readObjectSync,
-} from '@rnv/core';
+import { getContext, inquirerPrompt, mergeObjects } from '@rnv/core';
 import type { NewProjectData } from '../types';
-import path from 'path';
 
 const Question = async (data: NewProjectData): Promise<void> => {
     const c = getContext();
@@ -17,18 +8,6 @@ const Question = async (data: NewProjectData): Promise<void> => {
     const tplName = inputs.tepmplate?.packageName;
     if (!tplName) {
         return Promise.reject('Template not selected');
-    }
-    const templateDir = path.join(c.paths.project.dir, 'node_modules', tplName);
-
-    const renativeTemplateConfig =
-        readObjectSync<ConfigFileTemplate>(path.join(templateDir, RnvFileName.renativeTemplate)) || {};
-    if (renativeTemplateConfig) {
-        files.template.renativeTemplateConfig = renativeTemplateConfig;
-    }
-
-    const renativeConfig = readObjectSync<ConfigFileProject>(path.join(templateDir, RnvFileName.renative));
-    if (renativeConfig) {
-        files.template.renativeConfig = renativeConfig;
     }
 
     const optExtend = 'Extend template (cleaner, overridable)';

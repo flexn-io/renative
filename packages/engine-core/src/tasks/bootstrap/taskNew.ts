@@ -23,6 +23,8 @@ import inquiryInstallTemplate from './questions/installTemplate';
 import inquiryApplyTemplate from './questions/applyTemplate';
 import inquiryBookmarkTemplate from './questions/bookmarkTemplate';
 import inquiryAppConfigs from './questions/appConfigs';
+import inquiryConfigTemplates from './questions/configTemplates';
+import inquiryProjectInstall from './questions/installProject';
 import {
     configureConfigOverrides,
     generateProjectOverview,
@@ -47,6 +49,7 @@ const fn = async () => {
     await processChdirToProject();
     // Install template only (this avoids whole npm project install)
     await inquiryInstallTemplate(payload);
+    await inquiryConfigTemplates(payload);
     await inquiryApplyTemplate(payload);
     await saveProgressIntoProjectConfig(payload);
     // Gather project/app info
@@ -70,6 +73,7 @@ const fn = async () => {
     await inquiryAppConfigs(payload);
     // Telementry
     await telemetryNewProject(payload);
+    await inquiryProjectInstall(payload);
 
     logToSummary(generateProjectOverview(payload));
 

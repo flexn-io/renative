@@ -2,6 +2,7 @@ import type {
     ConfigFileBuildConfig,
     ConfigFileProject,
     ConfigFileTemplate,
+    ConfigFileTemplates,
     NpmPackageFile,
     PlatformKey,
 } from '@rnv/core';
@@ -19,6 +20,7 @@ export type NewProjectData = {
         confirmDeleteNodeModules?: boolean;
         confirmInRnvProject?: boolean;
         confirmEnableGit?: boolean;
+        confirmProjectInstall?: boolean;
         appID?: string;
         appVersion?: string;
         projectName?: string;
@@ -33,6 +35,9 @@ export type NewProjectData = {
         template: {
             renativeTemplateConfig: ConfigFileTemplate;
             renativeConfig: ConfigFileProject;
+        };
+        configTemplates: {
+            config?: ConfigFileTemplates;
         };
         project: {
             renativeConfig: ConfigFileProject;

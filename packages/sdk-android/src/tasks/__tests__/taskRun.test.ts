@@ -1,6 +1,6 @@
 import { createRnvContext, getContext } from '@rnv/core';
 import taskRun from '../taskRun';
-import { getIosDeviceToRunOn, runXcodeProject } from '@rnv/sdk-apple';
+import { getAndroidDeviceToRunOn, runAndroid } from '../../runner';
 
 jest.mock('@rnv/core');
 jest.mock('@rnv/sdk-react-native');
@@ -18,9 +18,14 @@ test('Execute task.rnv.run', async () => {
     // GIVEN
     const ctx = getContext();
     ctx.platform = 'ios';
-    jest.mocked(getIosDeviceToRunOn).mockResolvedValueOnce('MOCK_DEVICE_ARGS');
+    const mockedDevice = {
+        name: 'MOCK_DEVICE_NAME',
+        udid: 'MOCK_DEVICE_UDID',
+        isActive: true,
+    };
+    jest.mocked(getAndroidDeviceToRunOn).mockResolvedValueOnce(mockedDevice);
     // WHEN
     await taskRun.fn?.(ctx, undefined, undefined);
     // THEN
-    expect(runXcodeProject).toHaveBeenCalledWith('MOCK_DEVICE_ARGS');
+    expect(runAndroid).toHaveBeenCalledWith(mockedDevice);
 });
