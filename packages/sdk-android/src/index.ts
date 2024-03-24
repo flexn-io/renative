@@ -8,5 +8,6 @@ import taskTargetList from './tasks/taskTargetList';
 import taskSdkConfigure from './tasks/taskSdkConfigure';
 import taskLog from './tasks/taskLog';
 import taskPackage from './tasks/taskPackage';
+import taskConfigure from './tasks/taskConfigure';
 
-export const Tasks = [taskTargetLaunch, taskTargetList, taskSdkConfigure, taskLog, taskPackage];
+export const Tasks = [taskTargetLaunch, taskTargetList, taskSdkConfigure, taskLog, taskPackage, taskConfigure];

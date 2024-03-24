@@ -1,6 +1,5 @@
 import {
     RnvTaskFn,
-    logErrorPlatform,
     logTask,
     executeOrSkipTask,
     shouldSkipTask,
@@ -10,29 +9,21 @@ import {
 } from '@rnv/core';
 import { exportElectron } from '../sdk';
 
-const taskExport: RnvTaskFn = async (c, parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskExport', `parent:${parentTask}`);
-    const { platform } = c;
 
     await executeOrSkipTask(RnvTaskName.build, RnvTaskName.export, originTask);
 
     if (shouldSkipTask(RnvTaskName.export, originTask)) return true;
 
-    switch (platform) {
-        case 'macos':
-        case 'windows':
-        case 'linux':
-            return exportElectron();
-        default:
-            logErrorPlatform();
-    }
+    return exportElectron();
 };
 
 const Task: RnvTask = {
     description: 'Export the app into deployable binary',
-    fn: taskExport,
+    fn,
     task: RnvTaskName.export,
-    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
+    options: RnvTaskOptionPresets.withConfigure(),
     platforms: ['macos', 'windows', 'linux'],
 };
 

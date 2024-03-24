@@ -1,7 +1,6 @@
 import {
     RnvTaskFn,
     logTask,
-    logErrorPlatform,
     executeOrSkipTask,
     shouldSkipTask,
     RnvTask,
@@ -10,30 +9,19 @@ import {
 } from '@rnv/core';
 import { buildElectron } from '../sdk';
 
-const taskBuild: RnvTaskFn = async (c, parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskBuild', `parent:${parentTask}`);
-    const { platform } = c;
-
     await executeOrSkipTask(RnvTaskName.configure, RnvTaskName.build, originTask);
-
     if (shouldSkipTask(RnvTaskName.build, originTask)) return true;
 
-    switch (platform) {
-        case 'macos':
-        case 'windows':
-        case 'linux':
-            await buildElectron();
-            return;
-        default:
-            logErrorPlatform();
-    }
+    return buildElectron();
 };
 
 const Task: RnvTask = {
     description: 'Build project binary',
-    fn: taskBuild,
+    fn,
     task: RnvTaskName.build,
-    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
+    options: RnvTaskOptionPresets.withConfigure(),
     platforms: ['macos', 'windows', 'linux'],
 };
 

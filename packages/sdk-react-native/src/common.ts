@@ -111,7 +111,7 @@ const poll = (fn: () => Promise<boolean>, timeout = 30000, interval = 1000) => {
     return new Promise<void>(checkCondition);
 };
 
-export const configureFonts = async () => {
+export const configureFontSources = async () => {
     const c = getContext();
     const fontFolders = new Set<string>();
     parseFonts((font, dir) => {

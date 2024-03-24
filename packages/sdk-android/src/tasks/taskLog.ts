@@ -1,6 +1,4 @@
 import { logTask, RnvTaskFn, executeTask, RnvTask, RnvTaskName } from '@rnv/core';
-
-import {} from '@rnv/sdk-android';
 import { runAndroidLog } from '../runner';
 import { checkAndConfigureAndroidSdks } from '../installer';
 

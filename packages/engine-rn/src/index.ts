@@ -7,23 +7,12 @@ import { withRNVBabel } from './adapters/babelAdapter';
 //@ts-ignore
 import CNF from '../renative.engine.json';
 import taskRun from './tasks/taskRun';
-import taskPackage from './tasks/taskPackage';
 import taskBuild from './tasks/taskBuild';
-import taskConfigure from './tasks/taskConfigure';
 import taskStart from './tasks/taskStart';
 import taskEject from './tasks/taskEject';
 
 const Engine: RnvEngine = {
-    tasks: generateEngineTasks([
-        taskRun,
-        taskPackage,
-        taskBuild,
-        taskConfigure,
-        taskStart,
-        taskEject,
-        ...TasksSdkAndroid,
-        ...TasksSdkApple,
-    ]),
+    tasks: generateEngineTasks([taskRun, taskBuild, taskStart, taskEject, ...TasksSdkAndroid, ...TasksSdkApple]),
     config: CNF,
     runtimeExtraProps: {
         reactNativePackageName: 'react-native',

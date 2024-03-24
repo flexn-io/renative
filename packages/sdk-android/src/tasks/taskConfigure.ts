@@ -1,17 +1,18 @@
 import {
-    RnvTaskFn,
-    logErrorPlatform,
     logTask,
-    RnvTaskOptionPresets,
+    RnvTaskFn,
+    configureEntryPoint,
     executeTask,
     shouldSkipTask,
-    configureEntryPoint,
     RnvTask,
     RnvTaskName,
+    RnvTaskOptionPresets,
 } from '@rnv/core';
-import { configureXcodeProject } from '@rnv/sdk-apple';
+import { configureGradleProject } from '../runner';
+import { jetifyIfRequired } from '../jetifier';
+import { configureFontSources } from '@rnv/sdk-react-native';
 
-const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
+const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskConfigure');
 
     await executeTask(RnvTaskName.platformConfigure, RnvTaskName.configure, originTask);
@@ -23,22 +24,19 @@ const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
         return true;
     }
 
-    switch (c.platform) {
-        case 'macos':
-            await configureXcodeProject();
-            return true;
-        default:
-            await logErrorPlatform();
-            return true;
-    }
+    await configureGradleProject();
+    await jetifyIfRequired();
+
+    await configureFontSources();
+    return true;
 };
 
 const Task: RnvTask = {
     description: 'Configure current project',
-    fn: taskConfigure,
+    fn,
     task: RnvTaskName.configure,
-    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
-    platforms: ['macos'],
+    options: RnvTaskOptionPresets.withConfigure(),
+    platforms: ['android', 'androidtv', 'androidwear', 'firetv'],
 };
 
 export default Task;

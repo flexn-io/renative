@@ -1,6 +1,5 @@
 import {
     RnvTaskFn,
-    logErrorPlatform,
     logTask,
     executeOrSkipTask,
     shouldSkipTask,
@@ -10,8 +9,7 @@ import {
 } from '@rnv/core';
 import { runElectron } from '../sdk';
 
-const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
-    const { platform } = c;
+const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     const { port } = c.runtime;
     const { target } = c.runtime;
     const { hosted } = c.program;
@@ -21,22 +19,15 @@ const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
 
     if (shouldSkipTask(RnvTaskName.run, originTask)) return true;
 
-    switch (platform) {
-        case 'macos':
-        case 'windows':
-        case 'linux':
-            return runElectron();
-        default:
-            return logErrorPlatform();
-    }
+    return runElectron();
 };
 
 const Task: RnvTask = {
     description: 'Run your electron app on your machine',
-    fn: taskRun,
+    fn,
     task: RnvTaskName.run,
     isPriorityOrder: true,
-    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun())),
+    options: RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun()),
     platforms: ['macos', 'windows', 'linux'],
 };
 

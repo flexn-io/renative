@@ -1,32 +1,32 @@
 import {
-    RnvTaskFn,
-    copySharedPlatforms,
     logTask,
+    RnvTaskFn,
+    configureEntryPoint,
     executeTask,
     shouldSkipTask,
-    configureEntryPoint,
     RnvTask,
     RnvTaskName,
     RnvTaskOptionPresets,
 } from '@rnv/core';
-import { configureElectronProject } from '../sdk';
+import { configureFontSources } from '@rnv/sdk-react-native';
+import { configureXcodeProject } from '../runner';
 
 const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskConfigure');
 
     await executeTask(RnvTaskName.platformConfigure, RnvTaskName.configure, originTask);
-
     if (shouldSkipTask(RnvTaskName.configure, originTask)) return true;
 
     await configureEntryPoint(c.platform);
-
-    await copySharedPlatforms();
 
     if (c.program.only && !!parentTask) {
         return true;
     }
 
-    return configureElectronProject();
+    await configureXcodeProject();
+    await configureFontSources();
+
+    return true;
 };
 
 const Task: RnvTask = {
@@ -34,7 +34,7 @@ const Task: RnvTask = {
     fn,
     task: RnvTaskName.configure,
     options: RnvTaskOptionPresets.withConfigure(),
-    platforms: ['macos', 'windows', 'linux'],
+    platforms: ['ios', 'tvos', 'macos'],
 };
 
 export default Task;
