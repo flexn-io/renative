@@ -37,12 +37,17 @@ const Question = async (data: NewProjectData) => {
     const projectTemplates = c.buildConfig.projectTemplates || {}; // c.files.rnvConfigTemplates.config?.projectTemplates || {};
 
     const options: TemplateOption[] = [];
+    let defaultOverride;
     Object.keys(projectTemplates).forEach((k) => {
         const value = projectTemplates[k];
-        options.push({
+        const option: TemplateOption = {
             name: `${k} ${chalk().grey(`- ${value.localPath || value.description}`)}`,
             value: { ...value, type: 'existing' },
-        });
+        };
+        options.push(option);
+        if (value.localPath) {
+            defaultOverride = option.value;
+        }
     });
 
     // data.optionTemplates.keysAsArray.push(customTemplate);
@@ -62,7 +67,7 @@ const Question = async (data: NewProjectData) => {
             name: 'inputTemplate',
             type: 'list',
             message: 'What template to use?',
-            default: defaults.templateName,
+            default: defaultOverride || defaults.templateName,
             loop: false,
             choices: options,
         });

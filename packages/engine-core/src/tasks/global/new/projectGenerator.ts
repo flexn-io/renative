@@ -1,18 +1,10 @@
 import {
-    ConfigFileApp,
     PlatformKey,
     RnvFileName,
-    applyTemplate,
     chalk,
-    configureTemplateFiles,
-    generateLocalJsonSchemas,
     getApi,
     getContext,
-    listAppConfigsFoldersSync,
     logDebug,
-    logInfo,
-    logToSummary,
-    readObjectSync,
     updateRenativeConfigs,
     writeFileSync,
 } from '@rnv/core';
@@ -44,7 +36,6 @@ export const initNewProject = async () => {
             project: {
                 renativeConfig: {},
                 packageJson: {},
-                renativeAppConfig: {},
             },
             template: {
                 renativeTemplateConfig: {},
@@ -57,40 +48,34 @@ export const initNewProject = async () => {
     return data;
 };
 
-export const generateNewProject = async (data: NewProjectData) => {
+export const configureConfigOverrides = async (data: NewProjectData) => {
     const { inputs, files } = data;
-
-    if (!inputs.tepmplate?.version) {
-        return Promise.reject('No template version selected');
-    }
-    if (!files.template.renativeTemplateConfig) {
-        return Promise.reject('No renativeTemplateConfig found');
-    }
-    if (!inputs.tepmplate.packageName) {
-        return Promise.reject('Current template not selected!');
-    }
+    const { renativeConfig } = files.project;
 
     const c = getContext();
 
-    //TODO: TEMPORARY WORKAROUND this neds to use bootstrap_metadata to work properly
-    //     common: {
-    //         id: data.inputAppID || 'com.mycompany.myapp',
-    //         title: data.inputAppTitle || 'My App',
-    //     },
-
     const supPlats = inputs.supportedPlatforms || [];
 
+    // In case of copied config instead of extended we want to cleanup unused platforms
+    if (renativeConfig.platforms) {
+        Object.keys(renativeConfig.platforms).forEach((k) => {
+            const key = k as PlatformKey;
+            if (!supPlats.includes(key) && renativeConfig.platforms) {
+                delete renativeConfig.platforms[key];
+            }
+        });
+    }
+
     // This is project config override only
-    const cnf = files.project.renativeConfig;
-    cnf.defaults = cnf.defaults || {};
-    cnf.defaults.supportedPlatforms = supPlats;
-    cnf.engines = cnf.engines || {};
+    renativeConfig.defaults = renativeConfig.defaults || {};
+    renativeConfig.defaults.supportedPlatforms = supPlats;
+    renativeConfig.engines = renativeConfig.engines || {};
 
     // This is merged config result
     const loadedConf = c.files.project.config;
 
     // Configure only required engines based on supportedPlatforms
-    const engines = loadedConf?.engines;
+    const engines = data.files.project.renativeConfig?.engines;
     if (engines) {
         // Remove unused engines based on selected platforms
         supPlats.forEach((k) => {
@@ -99,53 +84,12 @@ export const generateNewProject = async (data: NewProjectData) => {
 
             if (selectedEngineId) {
                 const selectedEngine = findEngineKeyById(selectedEngineId);
-                if (selectedEngine?.key && cnf.engines) {
-                    cnf.engines[selectedEngine.key] = engines[selectedEngine.key];
+                if (selectedEngine?.key && renativeConfig.engines) {
+                    renativeConfig.engines[selectedEngine.key] = engines[selectedEngine.key];
                 }
             }
         });
     }
-
-    // In case of copied config instead of extended we want to cleanup unused platforms
-    if (cnf.platforms) {
-        Object.keys(cnf.platforms).forEach((k) => {
-            const key = k as PlatformKey;
-            if (!supPlats.includes(key) && cnf.platforms) {
-                delete cnf.platforms[key];
-            }
-        });
-    }
-
-    // Save all progress into ./renative.json
-    await saveProgressIntoProjectConfig(data);
-
-    // Now we can apply template
-    await applyTemplate();
-    await configureTemplateFiles();
-    await generateLocalJsonSchemas();
-
-    // Update appConfigs with new appTitle and appID
-    const appConfigs = listAppConfigsFoldersSync(true);
-    if (appConfigs && appConfigs.length > 0) {
-        appConfigs.forEach((appConfigID) => {
-            const appCnfPath = path.join(c.paths.project.appConfigsDir, appConfigID, RnvFileName.renative);
-            const appConfig = readObjectSync<ConfigFileApp>(appCnfPath);
-            if (appConfig) {
-                appConfig.common = appConfig.common || {};
-                appConfig.common.title = inputs.appTitle;
-                appConfig.common.id = inputs.appID;
-                appConfig.common.description = `My awesome ${inputs.appTitle} app!`;
-                logInfo(
-                    `Updating appConfig ${chalk().bold(appConfigID)} with title: ${chalk().bold(
-                        inputs.appTitle
-                    )} and id: ${chalk().bold(inputs.appID)}`
-                );
-                writeFileSync(appCnfPath, appConfig);
-            }
-        });
-    }
-
-    logToSummary(generateProjectOverview(data));
 };
 
 export const telemetryNewProject = async (data: NewProjectData) => {

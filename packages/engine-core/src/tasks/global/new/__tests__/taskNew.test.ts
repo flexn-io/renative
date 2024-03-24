@@ -1,19 +1,13 @@
 import { getContext, createRnvContext } from '@rnv/core';
 import taskNew from '../taskNew';
-import {
-    generateNewProject,
-    initNewProject,
-    saveProgressIntoProjectConfig,
-    telemetryNewProject,
-} from '../projectGenerator';
+import { initNewProject, saveProgressIntoProjectConfig, telemetryNewProject } from '../projectGenerator';
 import { NewProjectData } from '../types';
 import { processChdirToProject } from '../utils';
-
+import inquiryAppConfigs from '../questions/appConfigs';
 import inquiryBootstrapQuestions from '../questions/bootstrapQuestions';
 import inquiryGit from '../questions/confirmGit';
 import inquiryIsRenativeProject from '../questions/isRenativeProject';
 import inquiryHasNodeModules from '../questions/hasNodeModules';
-import inquiryConfirm from '../questions/confirmOverview';
 import inquiryProjectName from '../questions/projectName';
 import inquiryWorkspace from '../questions/workspace';
 import inquirySupportedPlatforms from '../questions/supportedPlatforms';
@@ -69,7 +63,6 @@ test('Execute task.rnv.new', async () => {
             project: {
                 renativeConfig: {},
                 packageJson: {},
-                renativeAppConfig: {},
             },
             template: {
                 renativeTemplateConfig: {},
@@ -98,8 +91,7 @@ test('Execute task.rnv.new', async () => {
     expect(inquirySupportedPlatforms).toHaveBeenCalledWith(payload);
     expect(inquiryBootstrapQuestions).toHaveBeenCalledWith(payload);
     expect(inquiryGit).toHaveBeenCalledWith(payload);
-    expect(inquiryConfirm).toHaveBeenCalledWith(payload);
     expect(inquiryBookmarkTemplate).toHaveBeenCalledWith(payload);
-    expect(generateNewProject).toHaveBeenCalledWith(payload);
+    expect(inquiryAppConfigs).toHaveBeenCalledWith(payload);
     expect(telemetryNewProject).toHaveBeenCalledWith(payload);
 });

@@ -1,5 +1,4 @@
 import type {
-    ConfigFileApp,
     ConfigFileBuildConfig,
     ConfigFileProject,
     ConfigFileTemplate,
@@ -37,7 +36,7 @@ export type NewProjectData = {
         project: {
             renativeConfig: ConfigFileProject;
             packageJson: NpmPackageFile;
-            renativeAppConfig: ConfigFileApp;
+            // renativeAppConfig: ConfigFileApp;
         };
     };
 };

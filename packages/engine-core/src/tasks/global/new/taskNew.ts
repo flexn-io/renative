@@ -1,9 +1,18 @@
-import { RnvTaskOptionPresets, logTask, RnvTask, RnvTaskName, updateRenativeConfigs } from '@rnv/core';
+import {
+    RnvTaskOptionPresets,
+    logTask,
+    RnvTask,
+    RnvTaskName,
+    updateRenativeConfigs,
+    logToSummary,
+    applyTemplate,
+    configureTemplateFiles,
+    generateLocalJsonSchemas,
+} from '@rnv/core';
 import inquiryBootstrapQuestions from './questions/bootstrapQuestions';
 import inquiryGit from './questions/confirmGit';
 import inquiryIsRenativeProject from './questions/isRenativeProject';
 import inquiryHasNodeModules from './questions/hasNodeModules';
-import inquiryConfirm from './questions/confirmOverview';
 import inquiryProjectName from './questions/projectName';
 import inquiryWorkspace from './questions/workspace';
 import inquirySupportedPlatforms from './questions/supportedPlatforms';
@@ -13,9 +22,12 @@ import inquiryAppVersion from './questions/projectVersion';
 import inquiryInstallTemplate from './questions/installTemplate';
 import inquiryApplyTemplate from './questions/applyTemplate';
 import inquiryBookmarkTemplate from './questions/bookmarkTemplate';
+import inquiryAppConfigs from './questions/appConfigs';
+
 import { processChdirToProject } from './utils';
 import {
-    generateNewProject,
+    configureConfigOverrides,
+    generateProjectOverview,
     initNewProject,
     saveProgressIntoProjectConfig,
     telemetryNewProject,
@@ -25,20 +37,19 @@ const taskNew = async () => {
     logTask('taskNew');
     // Initialize Project
     const payload = await initNewProject();
-
-    // Interactive Questions Required
+    // Initial questions
     await inquiryProjectName(payload);
     await inquiryIsRenativeProject(payload);
     await inquiryHasNodeModules(payload);
     await inquiryWorkspace(payload);
-
     await saveProgressIntoProjectConfig(payload);
+    // Switch execution context to new directory
     await processChdirToProject();
-
+    // Install template only (this avoids whole npm project install)
     await inquiryInstallTemplate(payload);
     await inquiryApplyTemplate(payload);
     await saveProgressIntoProjectConfig(payload);
-
+    // Gather project/app info
     await inquiryBookmarkTemplate(payload);
     await inquiryAppTitle(payload);
     await inquiryAppID(payload);
@@ -48,12 +59,19 @@ const taskNew = async () => {
     await inquirySupportedPlatforms(payload);
     await inquiryBootstrapQuestions(payload);
     await inquiryGit(payload);
-    await inquiryConfirm(payload);
-    // Generate Project
+    // Configure final config overrides
     await updateRenativeConfigs();
-    await generateNewProject(payload);
+    await configureConfigOverrides(payload);
+    await saveProgressIntoProjectConfig(payload);
+    // Now we can apply template (required for appConfigs to be generated properly)
+    await applyTemplate();
+    await configureTemplateFiles();
+    await generateLocalJsonSchemas();
+    await inquiryAppConfigs(payload);
     // Telementry
     await telemetryNewProject(payload);
+
+    logToSummary(generateProjectOverview(payload));
 
     return true;
 };
