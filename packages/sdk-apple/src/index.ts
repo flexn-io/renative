@@ -13,6 +13,7 @@ import taskExport from './tasks/taskExport';
 import taskPackage from './tasks/taskPackage';
 import taskConfigure from './tasks/taskConfigure';
 import taskRun from './tasks/taskRun';
+import taskBuild from './tasks/taskBuild';
 
 export const Tasks = [
     taskTargetLaunch,
@@ -26,4 +27,5 @@ export const Tasks = [
     taskPackage,
     taskConfigure,
     taskRun,
+    taskBuild,
 ];
