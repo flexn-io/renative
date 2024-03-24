@@ -1,6 +1,7 @@
 import { isPlatformSupported, logTask, executeTask, RnvTaskFn, RnvTask, RnvTaskName, RnvTaskOptions } from '@rnv/core';
 import { getTargetWithOptionalPrompt } from '@rnv/sdk-utils';
 import { launchAppleSimulator } from '../deviceManager';
+import { SdkPlatforms } from '../common';
 
 const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskTargetLaunch');
@@ -18,7 +19,7 @@ const Task: RnvTask = {
     fn,
     task: RnvTaskName.targetLaunch,
     options: [RnvTaskOptions.target],
-    platforms: ['ios', 'macos', 'tvos'],
+    platforms: SdkPlatforms,
     isGlobalScope: true,
 };
 

@@ -6,10 +6,10 @@ import {
     executeAsync,
     executeTask,
     shouldSkipTask,
-    RnvTaskOptionPresets,
     RnvTask,
     RnvTaskName,
 } from '@rnv/core';
+import { SdkPlatforms } from '../common';
 
 const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskCryptoInstallCerts');
@@ -35,8 +35,7 @@ const Task: RnvTask = {
     description: 'Installs certificates into keychain (mac only)',
     fn,
     task: RnvTaskName.cryptoInstallCerts,
-    options: RnvTaskOptionPresets.withBase(),
-    platforms: ['ios', 'macos', 'tvos'],
+    platforms: SdkPlatforms,
 };
 
 export default Task;

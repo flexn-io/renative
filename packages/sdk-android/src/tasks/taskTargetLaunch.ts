@@ -2,6 +2,7 @@ import { isPlatformSupported, logTask, executeTask, RnvTaskFn, RnvTask, RnvTaskN
 import { getTargetWithOptionalPrompt } from '@rnv/sdk-utils';
 import { checkAndConfigureAndroidSdks, checkAndroidSdk } from '../installer';
 import { launchAndroidSimulator } from '../deviceManager';
+import { SdkPlatforms } from '../constants';
 
 const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskTargetLaunch');
@@ -21,7 +22,7 @@ const Task: RnvTask = {
     fn,
     task: RnvTaskName.targetLaunch,
     options: [RnvTaskOptions.target],
-    platforms: ['android', 'androidtv', 'androidwear', 'firetv'],
+    platforms: SdkPlatforms,
     isGlobalScope: true,
 };
 

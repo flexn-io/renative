@@ -1,15 +1,7 @@
-import {
-    logTask,
-    RnvTaskFn,
-    configureEntryPoint,
-    executeTask,
-    shouldSkipTask,
-    RnvTask,
-    RnvTaskName,
-    RnvTaskOptionPresets,
-} from '@rnv/core';
+import { logTask, RnvTaskFn, configureEntryPoint, executeTask, shouldSkipTask, RnvTask, RnvTaskName } from '@rnv/core';
 import { configureFontSources } from '@rnv/sdk-react-native';
 import { configureXcodeProject } from '../runner';
+import { SdkPlatforms } from '../common';
 
 const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskConfigure');
@@ -33,8 +25,7 @@ const Task: RnvTask = {
     description: 'Configure current project',
     fn,
     task: RnvTaskName.configure,
-    options: RnvTaskOptionPresets.withConfigure(),
-    platforms: ['ios', 'tvos', 'macos'],
+    platforms: SdkPlatforms,
 };
 
 export default Task;

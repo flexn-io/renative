@@ -2,7 +2,6 @@ import { generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/c
 import { withRNVMetro } from './adapters/metroAdapter';
 import { withRNVBabel } from './adapters/babelAdapter';
 import { Tasks as TasksSdkApple } from '@rnv/sdk-apple';
-import taskRun from './tasks/taskRun';
 import taskBuild from './tasks/taskBuild';
 import taskStart from './tasks/taskStart';
 import { withRNVRNConfig } from '@rnv/sdk-react-native';
@@ -10,7 +9,7 @@ import { withRNVRNConfig } from '@rnv/sdk-react-native';
 import CNF from '../renative.engine.json';
 
 const Engine: RnvEngine = {
-    tasks: generateEngineTasks([taskRun, taskBuild, taskStart, ...TasksSdkApple]),
+    tasks: generateEngineTasks([taskBuild, taskStart, ...TasksSdkApple]),
     config: CNF,
     runtimeExtraProps: {
         reactNativePackageName: 'react-native',

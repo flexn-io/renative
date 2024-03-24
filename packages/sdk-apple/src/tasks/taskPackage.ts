@@ -9,6 +9,7 @@ import {
     RnvTaskOptionPresets,
 } from '@rnv/core';
 import { packageBundleForXcode } from '../runner';
+import { SdkPlatforms } from '../common';
 
 const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskPackage', `parent:${parentTask}`);
@@ -31,7 +32,7 @@ const Task: RnvTask = {
     fn,
     task: RnvTaskName.package,
     options: RnvTaskOptionPresets.withConfigure(),
-    platforms: ['ios', 'tvos', 'macos'],
+    platforms: SdkPlatforms,
 };
 
 export default Task;

@@ -8,6 +8,7 @@ import {
     RnvTaskName,
 } from '@rnv/core';
 import { exportXcodeProject } from '../runner';
+import { SdkPlatforms } from '../common';
 
 const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskExport', `parent:${parentTask}`);
@@ -24,7 +25,7 @@ const Task: RnvTask = {
     fn,
     task: RnvTaskName.export,
     options: RnvTaskOptionPresets.withConfigure(),
-    platforms: ['ios', 'tvos', 'macos'],
+    platforms: SdkPlatforms,
 };
 
 export default Task;

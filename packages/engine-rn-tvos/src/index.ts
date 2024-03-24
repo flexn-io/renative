@@ -1,7 +1,6 @@
 import { generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
 import { Tasks as TasksSdkAndroid } from '@rnv/sdk-android';
 import { Tasks as TasksSdkApple } from '@rnv/sdk-apple';
-import taskRun from './tasks/taskRun';
 import taskBuild from './tasks/taskBuild';
 import taskStart from './tasks/taskStart';
 import { withRNVBabel } from './adapters/babelAdapter';
@@ -11,7 +10,7 @@ import { withRNVRNConfig } from '@rnv/sdk-react-native';
 import CNF from '../renative.engine.json';
 
 const Engine: RnvEngine = {
-    tasks: generateEngineTasks([taskRun, taskBuild, taskStart, ...TasksSdkAndroid, ...TasksSdkApple]),
+    tasks: generateEngineTasks([taskBuild, taskStart, ...TasksSdkAndroid, ...TasksSdkApple]),
     config: CNF,
     runtimeExtraProps: {
         reactNativePackageName: 'react-native-tvos',

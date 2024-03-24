@@ -9,6 +9,7 @@ import {
     RnvTaskOptionPresets,
 } from '@rnv/core';
 import { packageAndroid } from '../runner';
+import { SdkPlatforms } from '../constants';
 
 const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskPackage', `parent:${parentTask}`);
@@ -40,7 +41,7 @@ const Task: RnvTask = {
     fn,
     task: RnvTaskName.package,
     options: RnvTaskOptionPresets.withConfigure(),
-    platforms: ['android', 'androidtv', 'androidwear', 'firetv'],
+    platforms: SdkPlatforms,
 };
 
 export default Task;

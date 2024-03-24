@@ -1,5 +1,6 @@
 import { isPlatformSupported, logTask, executeTask, RnvTaskFn, RnvTask, RnvTaskName, RnvTaskOptions } from '@rnv/core';
 import { listAppleDevices } from '../deviceManager';
+import { SdkPlatforms } from '../common';
 
 const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskTargetList');
@@ -14,7 +15,7 @@ const Task: RnvTask = {
     fn,
     task: RnvTaskName.targetList,
     options: [RnvTaskOptions.target],
-    platforms: ['ios', 'macos', 'tvos'],
+    platforms: SdkPlatforms,
     isGlobalScope: true, //TODO: evaluate this after moving to SDK
 };
 

@@ -11,6 +11,7 @@ import {
 import { configureGradleProject } from '../runner';
 import { jetifyIfRequired } from '../jetifier';
 import { configureFontSources } from '@rnv/sdk-react-native';
+import { SdkPlatforms } from '../constants';
 
 const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskConfigure');
@@ -36,7 +37,7 @@ const Task: RnvTask = {
     fn,
     task: RnvTaskName.configure,
     options: RnvTaskOptionPresets.withConfigure(),
-    platforms: ['android', 'androidtv', 'androidwear', 'firetv'],
+    platforms: SdkPlatforms,
 };
 
 export default Task;

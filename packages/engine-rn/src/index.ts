@@ -6,13 +6,11 @@ import { withRNVMetro } from './adapters/metroAdapter';
 import { withRNVBabel } from './adapters/babelAdapter';
 //@ts-ignore
 import CNF from '../renative.engine.json';
-import taskRun from './tasks/taskRun';
 import taskBuild from './tasks/taskBuild';
 import taskStart from './tasks/taskStart';
-import taskEject from './tasks/taskEject';
 
 const Engine: RnvEngine = {
-    tasks: generateEngineTasks([taskRun, taskBuild, taskStart, taskEject, ...TasksSdkAndroid, ...TasksSdkApple]),
+    tasks: generateEngineTasks([taskBuild, taskStart, ...TasksSdkAndroid, ...TasksSdkApple]),
     config: CNF,
     runtimeExtraProps: {
         reactNativePackageName: 'react-native',

@@ -11,10 +11,10 @@ import {
     fsExistsSync,
     executeTask,
     shouldSkipTask,
-    RnvTaskOptionPresets,
     RnvTask,
     RnvTaskName,
 } from '@rnv/core';
+import { SdkPlatforms } from '../common';
 
 const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskCryptoInstallProfiles');
@@ -49,9 +49,7 @@ const Task: RnvTask = {
     description: 'Installs provisioning certificates found in your workspace (mac only)',
     fn,
     task: RnvTaskName.cryptoInstallProfiles,
-    options: RnvTaskOptionPresets.withBase(),
-    platforms: ['ios', 'macos', 'tvos'],
-    // skipPlatforms: true,
+    platforms: SdkPlatforms,
 };
 
 export default Task;

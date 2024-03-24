@@ -1,5 +1,6 @@
 import { logTask, RnvTaskFn, executeTask, RnvTask, RnvTaskName } from '@rnv/core';
 import { runAppleLog } from '../runner';
+import { SdkPlatforms } from '../common';
 
 const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskLog', `parent:${parentTask}`);
@@ -13,7 +14,7 @@ const Task: RnvTask = {
     description: 'Attach logger to device or emulator and print out logs',
     fn,
     task: RnvTaskName.log,
-    platforms: ['ios', 'macos', 'tvos'],
+    platforms: SdkPlatforms,
     isGlobalScope: true,
 };
 

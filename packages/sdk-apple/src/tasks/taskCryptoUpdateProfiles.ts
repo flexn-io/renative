@@ -3,13 +3,13 @@ import {
     listAppConfigsFoldersSync,
     chalk,
     logTask,
-    RnvTaskOptionPresets,
     executeTask,
     shouldSkipTask,
     RnvTask,
     RnvTaskName,
 } from '@rnv/core';
 import { updateProfile } from '../fastlane';
+import { SdkPlatforms } from '../common';
 
 const _updateProfile = (v: string) =>
     new Promise<void>((resolve, reject) => {
@@ -42,8 +42,7 @@ const Task: RnvTask = {
     description: 'Will attempt to update all provisioning profiles (mac only)',
     fn,
     task: RnvTaskName.cryptoUpdateProfiles,
-    options: RnvTaskOptionPresets.withBase(),
-    platforms: ['ios', 'macos', 'tvos'],
+    platforms: SdkPlatforms,
 };
 
 export default Task;
