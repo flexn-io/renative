@@ -46,8 +46,11 @@ const Question = async (data: NewProjectData) => {
 
     supportedPlatforms.sort((a, b) => RnvPlatforms.indexOf(a) - RnvPlatforms.indexOf(b));
 
+    const optsPlatforms = c.program.platform && [c.program.platform];
     const selectedPlatforms =
-        files.template.renativeTemplateConfig?.bootstrapConfig?.defaultSelectedPlatforms || supportedPlatforms;
+        optsPlatforms ||
+        files.template.renativeTemplateConfig?.bootstrapConfig?.defaultSelectedPlatforms ||
+        supportedPlatforms;
 
     if (supportedPlatforms.length === 0) {
         logError(
