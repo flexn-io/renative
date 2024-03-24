@@ -48,8 +48,9 @@ const ManifestChildBase = z.object({
 
 const ResourcesChildBase = z.object({
     tag: z.string(),
-    name: z.string(),
+    name: z.optional(z.string()),
     parent: z.optional(z.string()),
+    value: z.optional(z.string()),
 });
 
 // type ManifestFeature = {

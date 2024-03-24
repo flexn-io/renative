@@ -26,16 +26,6 @@
                             ]
                         }
                     ]
-                },
-                "colors_xml": {
-                    "tag": "resources",
-                    "children": [
-                        {
-                            "tag": "color",
-                            "name": "bg_line",
-                            "value": "#E7E7E7"
-                        }
-                    ]
                 }
             }
         }
@@ -47,6 +37,16 @@
                     "MainActivity_kt": {
                         "createMethods": ["SplashScreen.show(this)"],
                         "imports": ["org.devio.rn.splashscreen.SplashScreen"]
+                    },
+                    "colors_xml": {
+                        "tag": "resources",
+                        "children": [
+                            {
+                                "tag": "color",
+                                "name": "bg_line",
+                                "value": "#E7E7E7"
+                            }
+                        ]
                     }
                 },
                 "package": "org.devio.rn.splashscreen.SplashScreenReactPackage"
