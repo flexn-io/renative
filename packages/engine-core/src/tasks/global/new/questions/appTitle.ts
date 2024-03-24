@@ -1,10 +1,11 @@
 import { getContext } from '@rnv/core';
 import type { NewProjectData } from '../types';
-import { checkInputValue, validateAndAssign } from '../utils';
+import { checkInputValue, validateAndAssign } from '../questionHelpers';
 
 const Question = async (data: NewProjectData) => {
     const c = getContext();
     const { title, ci } = c.program;
+    const { inputs, defaults } = data;
     const validator = (val: string) => checkInputValue(val) || 'Please enter a title';
 
     const result = await validateAndAssign(
@@ -12,14 +13,14 @@ const Question = async (data: NewProjectData) => {
             value: title,
             validFn: validator,
             name: 'inputAppTitle',
-            defaultVal: data.defaults.appTitle,
+            defaultVal: defaults.appTitle,
             message: "What's your project Title?",
             warning: 'Title was not provided',
         },
         ci
     );
 
-    data.inputs.appTitle = result || data.defaults.appTitle;
+    inputs.appTitle = result || defaults.appTitle;
 };
 
 export default Question;

@@ -12,8 +12,9 @@ import path from 'path';
 
 const Question = async (data: NewProjectData): Promise<void> => {
     const c = getContext();
+    const { inputs, files } = data;
 
-    const tplName = data.inputs.tepmplate?.packageName;
+    const tplName = inputs.tepmplate?.packageName;
     if (!tplName) {
         return Promise.reject('Template not selected');
     }
@@ -22,22 +23,13 @@ const Question = async (data: NewProjectData): Promise<void> => {
     const renativeTemplateConfig =
         readObjectSync<ConfigFileTemplate>(path.join(templateDir, RnvFileName.renativeTemplate)) || {};
     if (renativeTemplateConfig) {
-        data.files.template.renativeTemplateConfig = renativeTemplateConfig;
+        files.template.renativeTemplateConfig = renativeTemplateConfig;
     }
 
     const renativeConfig = readObjectSync<ConfigFileProject>(path.join(templateDir, RnvFileName.renative));
     if (renativeConfig) {
-        data.files.template.renativeConfig = renativeConfig;
+        files.template.renativeConfig = renativeConfig;
     }
-
-    // const templateAppConfigDir = path.join(templateDir, 'appConfigs');
-    // if(fsExistsSync(templateAppConfigDir)) {
-    //     read
-    // }
-    // const renativeAppConfig = readObjectSync<ConfigFileProject>(path.join(templateDir, RnvFileName.renative));
-    // if (renativeConfig) {
-    //     data.files.template.renativeConfig = renativeConfig;
-    // }
 
     const optExtend = 'Extend template (cleaner, overridable)';
     const optCopy = 'Copy from template (full control)';
@@ -46,6 +38,7 @@ const Question = async (data: NewProjectData): Promise<void> => {
         name: 'configOption',
         type: 'list',
         message: 'How to create config renative.json?',
+        default: optExtend,
         choices: options,
     });
 
@@ -54,29 +47,19 @@ const Question = async (data: NewProjectData): Promise<void> => {
     }
 
     if (configOption === optExtend) {
-        const rnvConfig = data.files.template.renativeTemplateConfig.templateConfig?.renative_json || {
+        const rnvConfig = files.template.renativeTemplateConfig.templateConfig?.renative_json || {
             extendsTemplate: `${tplName}/renative.json`,
         };
-        data.files.project.renativeConfig = { ...rnvConfig, ...data.files.project.renativeConfig };
+        files.project.renativeConfig = { ...rnvConfig, ...files.project.renativeConfig };
     } else if (configOption === optCopy) {
-        data.files.project.renativeConfig = {
-            ...data.files.template.renativeConfig,
-            ...data.files.project.renativeConfig,
+        files.project.renativeConfig = {
+            ...files.template.renativeConfig,
+            ...files.project.renativeConfig,
         };
     }
 
-    const packageJson = data.files.template.renativeTemplateConfig.templateConfig?.package_json || {};
-    data.files.project.packageJson = mergeObjects(c, data.files.project.packageJson, packageJson);
-
-    // const rnvNewPatchDependencies = renativeTemplateConfig.bootstrapConfig?.rnvNewPatchDependencies;
-
-    // if (rnvNewPatchDependencies) {
-    //     const patchDeps = Object.entries(rnvNewPatchDependencies);
-    //     for (const [dependency, version] of patchDeps) {
-    //         const command = `${isYarnInstalled() ? 'yarn' : 'npm'} add ${dependency}@${version}`;
-    //         await executeAsync(command, { cwd: c.paths.project.dir });
-    //     }
-    // }
+    const packageJson = files.template.renativeTemplateConfig.templateConfig?.package_json || {};
+    files.project.packageJson = mergeObjects(c, files.project.packageJson, packageJson);
 };
 
 export default Question;

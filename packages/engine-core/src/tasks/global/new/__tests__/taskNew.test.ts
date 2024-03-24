@@ -1,8 +1,12 @@
 import { getContext, createRnvContext } from '@rnv/core';
 import taskNew from '../taskNew';
-import { initNewProject, saveProgressIntoProjectConfig, telemetryNewProject } from '../projectGenerator';
+import {
+    initNewProject,
+    saveProgressIntoProjectConfig,
+    telemetryNewProject,
+    processChdirToProject,
+} from '../questionHelpers';
 import { NewProjectData } from '../types';
-import { processChdirToProject } from '../utils';
 import inquiryAppConfigs from '../questions/appConfigs';
 import inquiryBootstrapQuestions from '../questions/bootstrapQuestions';
 import inquiryGit from '../questions/confirmGit';
@@ -22,7 +26,6 @@ jest.mock('@rnv/core');
 jest.mock('lodash/set');
 jest.mock('path');
 jest.mock('semver');
-jest.mock('../utils');
 jest.mock('../questions/bootstrapQuestions');
 jest.mock('../questions/appTitle');
 jest.mock('../questions/installTemplate');
@@ -37,7 +40,7 @@ jest.mock('../questions/isRenativeProject');
 jest.mock('../questions/projectName');
 jest.mock('../questions/supportedPlatforms');
 jest.mock('../questions/confirmGit');
-jest.mock('../projectGenerator');
+jest.mock('../questionHelpers');
 
 beforeEach(() => {
     createRnvContext();

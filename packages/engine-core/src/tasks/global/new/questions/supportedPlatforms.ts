@@ -1,6 +1,6 @@
 import { RnvPlatforms, getContext, inquirerPrompt, logError } from '@rnv/core';
 import type { NewProjectData } from '../types';
-import { checkInputValue } from '../utils';
+import { checkInputValue } from '../questionHelpers';
 
 const Question = async (data: NewProjectData) => {
     const c = getContext();

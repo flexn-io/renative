@@ -9,6 +9,7 @@ import {
     configureTemplateFiles,
     generateLocalJsonSchemas,
 } from '@rnv/core';
+import inquiryProjectFolder from './questions/projectFolder';
 import inquiryBootstrapQuestions from './questions/bootstrapQuestions';
 import inquiryGit from './questions/confirmGit';
 import inquiryIsRenativeProject from './questions/isRenativeProject';
@@ -23,15 +24,14 @@ import inquiryInstallTemplate from './questions/installTemplate';
 import inquiryApplyTemplate from './questions/applyTemplate';
 import inquiryBookmarkTemplate from './questions/bookmarkTemplate';
 import inquiryAppConfigs from './questions/appConfigs';
-
-import { processChdirToProject } from './utils';
 import {
     configureConfigOverrides,
     generateProjectOverview,
     initNewProject,
     saveProgressIntoProjectConfig,
     telemetryNewProject,
-} from './projectGenerator';
+    processChdirToProject,
+} from './questionHelpers';
 
 const taskNew = async () => {
     logTask('taskNew');
@@ -39,6 +39,7 @@ const taskNew = async () => {
     const payload = await initNewProject();
     // Initial questions
     await inquiryProjectName(payload);
+    await inquiryProjectFolder(payload);
     await inquiryIsRenativeProject(payload);
     await inquiryHasNodeModules(payload);
     await inquiryWorkspace(payload);

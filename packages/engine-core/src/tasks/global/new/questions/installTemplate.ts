@@ -20,8 +20,8 @@ import {
 } from '@rnv/core';
 import type { NewProjectData, TemplateOption } from '../types';
 import path from 'path';
-import { checkInputValue } from '../utils';
-import { saveProgressIntoProjectConfig } from '../projectGenerator';
+import { checkInputValue } from '../questionHelpers';
+import { saveProgressIntoProjectConfig } from '../questionHelpers';
 import { merge } from 'lodash';
 
 const Question = async (data: NewProjectData) => {
@@ -50,12 +50,10 @@ const Question = async (data: NewProjectData) => {
         }
     });
 
-    // data.optionTemplates.keysAsArray.push(customTemplate);
     options.push(inquirerSeparator('Advanced:----------------'));
     options.push(customTemplate);
     options.push(localTemplate);
     options.push(noTemplate);
-    // let selectedInputTemplate;
     let localTemplatePath: string | undefined;
 
     inputs.tepmplate = {};
@@ -106,9 +104,6 @@ const Question = async (data: NewProjectData) => {
         if (!fsExistsSync(localTemplatePath)) {
             return Promise.reject(`Local template path ${localTemplatePath} does not exist`);
         }
-        // await executeAsync(`${isYarnInstalled() ? 'yarn' : 'npm'} add file:${localTemplatePath} --dev`, {
-        //     cwd: c.paths.project.dir,
-        // });
         const localTemplatePkgPath = path.join(localTemplatePath, RnvFileName.package);
         if (!fsExistsSync(localTemplatePath)) {
             return Promise.reject(`Local template package ${localTemplatePkgPath} does not exist`);

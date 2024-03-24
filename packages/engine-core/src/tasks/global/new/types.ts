@@ -22,6 +22,7 @@ export type NewProjectData = {
         appID?: string;
         appVersion?: string;
         projectName?: string;
+        projectFolderName?: string;
         appTitle?: string;
         workspaceID?: string;
         packageName?: string;

@@ -1,6 +1,6 @@
 import { getContext } from '@rnv/core';
 import type { NewProjectData } from '../types';
-import { validateAndAssign } from '../utils';
+import { validateAndAssign } from '../questionHelpers';
 
 const Question = async (data: NewProjectData): Promise<void> => {
     const c = getContext();
