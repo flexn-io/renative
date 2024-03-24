@@ -102,3 +102,4 @@ export type TemplateAndroid = Required<Required<RenativeConfigPluginPlatform>['t
 // export type AndroidManifestJSON = AndroidManifestJSONNode & {
 //     package?: string;
 // };
+export type TargetResourceFile = 'styles_xml' | 'strings_xml' | 'colors_xml';

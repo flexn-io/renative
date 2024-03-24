@@ -49,9 +49,7 @@ import {
 } from './gradleParser';
 import { parseGradleWrapperSync } from './gradleWrapperParser';
 import {
-    parseValuesStringsSync,
-    injectPluginXmlValuesSync,
-    parseValuesColorsSync,
+    // injectPluginXmlValuesSync,
     parseValuesXml,
 } from './xmlValuesParser';
 import { ejectGradleProject } from './ejector';
@@ -456,7 +454,7 @@ export const configureProject = async () => {
         injectPluginGradleSync(plugin, pluginPlat, key);
         injectPluginKotlinSync(pluginPlat, key, pluginPlat.package);
         injectPluginManifestSync();
-        injectPluginXmlValuesSync(pluginPlat);
+        // injectPluginXmlValuesSync(pluginPlat);
     });
 
     c.payload.pluginConfigAndroid.pluginPackages = c.payload.pluginConfigAndroid.pluginPackages.substring(
@@ -496,10 +494,12 @@ export const configureProject = async () => {
     parseMainActivitySync();
     parseMainApplicationSync();
     parseSplashActivitySync();
-    parseValuesStringsSync();
+    // parseValuesStringsSync();
+    parseValuesXml('strings_xml', true);
     parseValuesXml('styles_xml');
+    parseValuesXml('colors_xml', true);
     // parseValuesStylesSync();
-    parseValuesColorsSync();
+    // parseValuesColorsSync();
     parseAndroidManifestSync();
     parseGradlePropertiesSync();
     // parseFlipperSync(c, 'debug');

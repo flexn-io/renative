@@ -26,6 +26,16 @@
                             ]
                         }
                     ]
+                },
+                "colors_xml": {
+                    "tag": "resources",
+                    "children": [
+                        {
+                            "tag": "color",
+                            "name": "bg_line",
+                            "value": "#E7E7E7"
+                        }
+                    ]
                 }
             }
         }

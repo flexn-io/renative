@@ -1,0 +1,10 @@
+{
+    "tag": "resources",
+    "children": [
+        {
+            "tag": "string",
+            "name": "app_name",
+            "value": "{{APP_TITLE}}"
+        }
+    ]
+}

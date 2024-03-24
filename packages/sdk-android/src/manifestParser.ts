@@ -67,20 +67,26 @@ const _parseNode = <T extends AndroidManifestNode | AndroidResourcesNode>(n: T, 
         if (!SYSTEM_TAGS.includes(v)) nodeKeysCount++;
     });
     const isSingleLine = nodeKeysCount < 2;
-
+    let closedTag = false;
     if (!n.tag) {
         logWarning('Each node must have tag key!');
         return;
     }
 
     if (n) {
-        const endLine = isSingleLine ? ' ' : '\n';
-        output += `${space}<${n.tag}${endLine}`;
-        Object.keys(n).forEach((k) => {
-            if (!SYSTEM_TAGS.includes(k)) {
-                output += `${isSingleLine ? '' : `${space}  `}${k}="${n[k as keyof T]}"${endLine}`;
-            }
-        });
+        if ('value' in n) {
+            closedTag = true;
+            output += `${space}  <${n.tag} name="${(n as AndroidResourcesNode).name}">${n.value}`;
+        } else {
+            closedTag = false;
+            const endLine = isSingleLine ? ' ' : '\n';
+            output += `${space}<${n.tag}${endLine}`;
+            Object.keys(n).forEach((k) => {
+                if (!SYSTEM_TAGS.includes(k)) {
+                    output += `${isSingleLine ? '' : `${space}  `}${k}="${n[k as keyof T]}"${endLine}`;
+                }
+            });
+        }
     }
     // else {
     //     output += `${space}<${n.tag}`;
@@ -98,7 +104,11 @@ const _parseNode = <T extends AndroidManifestNode | AndroidResourcesNode>(n: T, 
         });
         output += `${space}</${n.tag}>\n`;
     } else {
-        output += `${isSingleLine ? '' : space}/>\n`;
+        if (isSingleLine) {
+            output += '/>\n';
+        } else {
+            output += !closedTag ? `${space}/>\n` : `</${n.tag}>\n`;
+        }
     }
     return output;
 };
