@@ -24,7 +24,7 @@ const Question = async (data: NewProjectData): Promise<void> => {
                 appConfig.common = appConfig.common || {};
                 appConfig.common.title = inputs.appTitle;
                 appConfig.common.id = inputs.appID;
-                appConfig.common.description = `My awesome ${inputs.appTitle} app!`;
+                appConfig.common.description = `This is ${inputs.appTitle} app!`;
                 logInfo(
                     `Updating appConfig ${chalk().bold(appConfigID)} with title: ${chalk().bold(
                         inputs.appTitle

@@ -84,6 +84,7 @@ const Task: RnvTask = {
     description: 'Create new ReNative project',
     fn,
     task: RnvTaskName.new,
+    // options: [{ key: 'template', description: 'Template to use' }],
     isGlobalScope: true,
     isPriorityOrder: true,
 };
