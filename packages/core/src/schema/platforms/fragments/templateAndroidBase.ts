@@ -142,4 +142,5 @@ export type _ManifestChildWithChildrenType = z.infer<typeof ManifestChildWithChi
 export type _AndroidManifestType = z.infer<typeof AndroidManifest>;
 
 export type _ResourcesChildWithChildrenType = z.infer<typeof ResourcesChildWithChildren>;
+
 export type _AndroidResourcesType = z.infer<typeof Resources>;

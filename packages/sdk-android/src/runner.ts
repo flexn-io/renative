@@ -48,10 +48,7 @@ import {
     parseAndroidConfigObject,
 } from './gradleParser';
 import { parseGradleWrapperSync } from './gradleWrapperParser';
-import {
-    // injectPluginXmlValuesSync,
-    parseValuesXml,
-} from './xmlValuesParser';
+import { parseValuesXml } from './xmlValuesParser';
 import { ejectGradleProject } from './ejector';
 import { AndroidDevice, Context, Payload } from './types';
 import {
@@ -63,7 +60,7 @@ import {
     connectToWifiDevice,
     composeDevicesArray,
 } from './deviceManager';
-import { CLI_ANDROID_ADB } from './constants';
+import { ANDROID_COLORS, ANDROID_STRINGS, ANDROID_STYLES, CLI_ANDROID_ADB } from './constants';
 import { runReactNativeAndroid, packageReactNativeAndroid } from '@rnv/sdk-react-native';
 import { getEntryFile } from '@rnv/sdk-utils';
 
@@ -494,12 +491,9 @@ export const configureProject = async () => {
     parseMainActivitySync();
     parseMainApplicationSync();
     parseSplashActivitySync();
-    // parseValuesStringsSync();
-    parseValuesXml('strings_xml', true);
-    parseValuesXml('styles_xml');
-    parseValuesXml('colors_xml', true);
-    // parseValuesStylesSync();
-    // parseValuesColorsSync();
+    parseValuesXml(ANDROID_STRINGS, true);
+    parseValuesXml(ANDROID_STYLES);
+    parseValuesXml(ANDROID_COLORS, true);
     parseAndroidManifestSync();
     parseGradlePropertiesSync();
     // parseFlipperSync(c, 'debug');

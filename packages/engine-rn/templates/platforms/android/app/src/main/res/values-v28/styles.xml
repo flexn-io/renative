@@ -4,10 +4,8 @@
         <item name="android:editTextBackground">@drawable/rn_edit_text_material</item>
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
         <item name="android:windowBackground">@color/bg</item>
-        {{VALUES_V28_STYLES_APP}}
     </style>
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@color/bg</item>
-        {{VALUES_V28_STYLES_SPLASH}}
     </style>
 </resources>

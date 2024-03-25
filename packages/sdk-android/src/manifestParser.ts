@@ -150,7 +150,7 @@ export const _mergeNodeChildren = <T extends AndroidManifestNode | AndroidResour
     nodeChildrenExt.forEach((v) => {
         const nameExt = 'android:name' in v ? v['android:name'] : v.name;
         if (v.tag) {
-            const childNode = _findChildNode(v.tag, nameExt, node);
+            const childNode = _findChildNode(v.tag, nameExt!, node);
             if (childNode) {
                 logDebug(`_mergeNodeChildren: FOUND EXISTING NODE TO MERGE ${nameExt} ${v.tag}`);
                 _mergeNodeParameters(childNode, v);
