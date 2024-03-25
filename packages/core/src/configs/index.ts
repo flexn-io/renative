@@ -3,7 +3,7 @@ import path from 'path';
 import { mergeObjects, fsExistsSync, fsReaddirSync, getRealPath, readObjectSync, loadFile } from '../system/fs';
 import { logWarning, logDebug, logDefault, chalk } from '../logger';
 import { doResolve } from '../system/resolve';
-import { RnvContextFileObj, RnvContextPathObj, RnvContext, RnvContextFileKey } from '../context/types';
+import { RnvContextFileObj, RnvContextPathObj, RnvContextFileKey } from '../context/types';
 import { generateRnvConfigPathObj } from '../context/defaults';
 import { generateContextPaths } from '../context';
 import { generateBuildConfig } from './buildConfig';
@@ -61,7 +61,6 @@ export const loadFileExtended = (fileObj: Record<string, any>, pathObj: RnvConte
 };
 
 const _loadConfigFiles = (
-    c: RnvContext,
     fileObj: RnvContextFileObj<object>,
     pathObj: RnvContextPathObj,
     parseAppConfigs?: boolean
@@ -243,7 +242,7 @@ export const parseRenativeConfigs = async () => {
     loadFile(c.files.project, c.paths.project, 'package');
 
     // LOAD ./RENATIVE.*.JSON
-    _loadConfigFiles(c, c.files.project, c.paths.project);
+    _loadConfigFiles(c.files.project, c.paths.project);
 
     if (c.runtime.appId) {
         c.paths.project.builds.config = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}.json`);
@@ -258,7 +257,7 @@ export const parseRenativeConfigs = async () => {
     const wsDir = getRealPath(await getWorkspaceDirPath(c));
     if (wsDir) {
         generateContextPaths(c.paths.workspace, wsDir);
-        _loadConfigFiles(c, c.files.workspace, c.paths.workspace);
+        _loadConfigFiles(c.files.workspace, c.paths.workspace);
     }
 
     // LOAD DEFAULT WORKSPACE //not needed anymore. loaded at the initial stage
@@ -286,7 +285,7 @@ export const parseRenativeConfigs = async () => {
         c.paths.workspace.project,
         path.join(c.paths.workspace.dir, c.files.project.config.projectName)
     );
-    _loadConfigFiles(c, c.files.workspace.project, c.paths.workspace.project);
+    _loadConfigFiles(c.files.workspace.project, c.paths.workspace.project);
 
     c.paths.workspace.project.appConfigBase.dir = path.join(c.paths.workspace.project.dir, 'appConfigs', 'base');
 
@@ -300,7 +299,7 @@ export const parseRenativeConfigs = async () => {
             // );
             if (c.runtime.appConfigDir) {
                 generateContextPaths(c.paths.appConfig, c.runtime.appConfigDir);
-                _loadConfigFiles(c, c.files.appConfig, c.paths.appConfig, true);
+                _loadConfigFiles(c.files.appConfig, c.paths.appConfig, true);
             }
         }
 
@@ -313,7 +312,7 @@ export const parseRenativeConfigs = async () => {
             path.join(c.paths.workspace.project.appConfigsDir, c.runtime.appId)
         );
 
-        _loadConfigFiles(c, c.files.workspace.appConfig, c.paths.workspace.appConfig, true);
+        _loadConfigFiles(c.files.workspace.appConfig, c.paths.workspace.appConfig, true);
 
         loadFile(c.files.project.assets, c.paths.project.assets, 'config');
 
@@ -323,7 +322,7 @@ export const parseRenativeConfigs = async () => {
             const wsPathReal = getRealPath(wsPath);
             if (wsPathReal) {
                 generateContextPaths(c.paths.workspace, wsPathReal);
-                _loadConfigFiles(c, c.files.workspace, c.paths.workspace);
+                _loadConfigFiles(c.files.workspace, c.paths.workspace);
             }
         }
 

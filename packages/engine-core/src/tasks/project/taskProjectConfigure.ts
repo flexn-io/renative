@@ -28,6 +28,9 @@ import {
     generateLocalJsonSchemas,
     RnvTaskName,
     getContext,
+    // parseRenativeConfigs,
+    // parseAppConfigs,
+    // loadFileExtended,
 } from '@rnv/core';
 import { checkCrypto } from '../crypto/common';
 import { installPackageDependenciesAndPlugins } from '../../plugins';
@@ -93,6 +96,8 @@ const fn: RnvTaskFn = async (c, parentTask, originTask) => {
             }
         }
         await applyTemplate();
+        // We need to ensure appConfigs are populated from template before proceeding further
+        await configureTemplateFiles();
         await configureRuntimeDefaults();
         await executeTask(RnvTaskName.install, RnvTaskName.projectConfigure, originTask);
         await executeTask(RnvTaskName.appConfigure, RnvTaskName.projectConfigure, originTask);
@@ -122,7 +127,8 @@ const fn: RnvTaskFn = async (c, parentTask, originTask) => {
         }
 
         await copyRuntimeAssets();
-        await configureTemplateFiles();
+        // Moved this up stream to ensure all configs are ready before copyRuntimeAssets
+        // await configureTemplateFiles();
 
         if (!c.buildConfig.platforms) {
             await updateRenativeConfigs();

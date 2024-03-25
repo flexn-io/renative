@@ -13,7 +13,10 @@
                     "tsconfig.json",
                     "babel.config.js",
                     "typings",
-                    ".gitignore"
+                    ".gitignore",
+                    "appConfigs/app",
+                    "appConfigs/base/assets",
+                    "appConfigs/base/fonts"
                 ]
             },
             {
