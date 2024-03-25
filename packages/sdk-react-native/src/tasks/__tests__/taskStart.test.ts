@@ -38,6 +38,10 @@ describe('taskStart', () => {
         // GIVEN
         const ctx = getContext();
         ctx.platform = 'tvos';
+        ctx.runtime.runtimeExtraProps = {
+            reactNativePackageName: 'MOCKED_NAME',
+            reactNativeMetroConfigName: 'MOCKED_CONFIG',
+        };
         jest.mocked(doResolve).mockReturnValueOnce('MOCKED_PATH');
         // WHEN
         await taskStart.fn?.(ctx, undefined, undefined);
@@ -46,7 +50,7 @@ describe('taskStart', () => {
         expect(startReactNative).toHaveBeenCalledWith({
             waitForBundler: true,
             customCliPath: 'MOCKED_PATH/local-cli/cli.js',
-            metroConfigName: 'metro.config.js',
+            metroConfigName: 'MOCKED_CONFIG',
         });
     });
 
@@ -54,6 +58,10 @@ describe('taskStart', () => {
         // GIVEN
         const ctx = getContext();
         ctx.platform = 'tvos';
+        ctx.runtime.runtimeExtraProps = {
+            reactNativePackageName: 'MOCKED_NAME',
+            reactNativeMetroConfigName: 'MOCKED_CONFIG',
+        };
         jest.mocked(doResolve).mockReturnValueOnce('MOCKED_PATH');
         // WHEN
         await taskStart.fn?.(ctx, 'parent', undefined);
@@ -61,7 +69,7 @@ describe('taskStart', () => {
         expect(startReactNative).toHaveBeenCalledWith({
             waitForBundler: false,
             customCliPath: 'MOCKED_PATH/local-cli/cli.js',
-            metroConfigName: 'metro.config.js',
+            metroConfigName: 'MOCKED_CONFIG',
         });
     });
 

@@ -33,7 +33,7 @@ const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     if (reactNativePackageName) {
         customCliPath = `${doResolve(reactNativePackageName)}/local-cli/cli.js`;
     }
-    if (metroConfigName) {
+    if (reactNativeMetroConfigName) {
         metroConfigName = reactNativeMetroConfigName;
     }
     return startReactNative({ waitForBundler: !parentTask, customCliPath, metroConfigName });

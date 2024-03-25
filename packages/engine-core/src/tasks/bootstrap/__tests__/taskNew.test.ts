@@ -7,20 +7,23 @@ import {
     processChdirToProject,
 } from '../questionHelpers';
 import { NewProjectData } from '../types';
-import inquiryAppConfigs from '../questions/appConfigs';
-import inquiryBootstrapQuestions from '../questions/bootstrapQuestions';
-import inquiryGit from '../questions/confirmGit';
-import inquiryIsRenativeProject from '../questions/isRenativeProject';
-import inquiryHasNodeModules from '../questions/hasNodeModules';
-import inquiryProjectName from '../questions/projectName';
-import inquiryWorkspace from '../questions/workspace';
-import inquirySupportedPlatforms from '../questions/supportedPlatforms';
-import inquiryAppTitle from '../questions/appTitle';
-import inquiryAppID from '../questions/appID';
-import inquiryAppVersion from '../questions/projectVersion';
-import inquiryInstallTemplate from '../questions/installTemplate';
-import inquiryApplyTemplate from '../questions/applyTemplate';
-import inquiryBookmarkTemplate from '../questions/bookmarkTemplate';
+import appConfigs from '../questions/appConfigs';
+import bootstrapQuestions from '../questions/bootstrapQuestions';
+import confirmGit from '../questions/confirmGit';
+import isRenativeProject from '../questions/isRenativeProject';
+import hasNodeModules from '../questions/hasNodeModules';
+import projectName from '../questions/projectName';
+import workspace from '../questions/workspace';
+import supportedPlatforms from '../questions/supportedPlatforms';
+import appTitle from '../questions/appTitle';
+import appID from '../questions/appID';
+import appVersion from '../questions/appVersion';
+import installTemplate from '../questions/installTemplate';
+import applyTemplate from '../questions/applyTemplate';
+import bookmarkTemplate from '../questions/bookmarkTemplate';
+import configTemplates from '../questions/configTemplates';
+import projectFolder from '../questions/projectFolder';
+import installProject from '../questions/installProject';
 
 jest.mock('@rnv/core');
 jest.mock('lodash/set');
@@ -32,14 +35,18 @@ jest.mock('../questions/installTemplate');
 jest.mock('../questions/applyTemplate');
 jest.mock('../questions/bookmarkTemplate');
 jest.mock('../questions/appID');
-jest.mock('../questions/projectVersion');
+jest.mock('../questions/appVersion');
 jest.mock('../questions/workspace');
 jest.mock('../questions/hasNodeModules');
 jest.mock('../questions/isRenativeProject');
 jest.mock('../questions/projectName');
 jest.mock('../questions/supportedPlatforms');
 jest.mock('../questions/confirmGit');
+jest.mock('../questions/configTemplates');
+jest.mock('../questions/projectFolder');
+jest.mock('../questions/installProject');
 jest.mock('../questionHelpers');
+jest.mock('../questions/appConfigs');
 
 beforeEach(() => {
     createRnvContext();
@@ -66,6 +73,7 @@ test('Execute task.rnv.new', async () => {
                 renativeConfig: {},
                 packageJson: {},
             },
+            configTemplates: {},
             template: {
                 renativeTemplateConfig: {},
                 renativeConfig: {},
@@ -78,22 +86,24 @@ test('Execute task.rnv.new', async () => {
     // THEN
     expect(result).toEqual(true);
     expect(initNewProject).toHaveBeenCalled();
-    expect(inquiryProjectName).toHaveBeenCalledWith(payload);
+    expect(projectName).toHaveBeenCalledWith(payload);
     expect(processChdirToProject).toHaveBeenCalled();
-    expect(inquiryIsRenativeProject).toHaveBeenCalledWith(payload);
-    expect(inquiryHasNodeModules).toHaveBeenCalledWith(payload);
-    expect(inquiryInstallTemplate).toHaveBeenCalledWith(payload);
-    expect(inquiryApplyTemplate).toHaveBeenCalledWith(payload);
+    expect(isRenativeProject).toHaveBeenCalledWith(payload);
+    expect(hasNodeModules).toHaveBeenCalledWith(payload);
+    expect(installTemplate).toHaveBeenCalledWith(payload);
+    expect(applyTemplate).toHaveBeenCalledWith(payload);
     expect(saveProgressIntoProjectConfig).toHaveBeenCalledWith(payload);
-    expect(inquiryAppTitle).toHaveBeenCalledWith(payload);
-    expect(inquiryAppID).toHaveBeenCalledWith(payload);
-    expect(inquiryAppVersion).toHaveBeenCalledWith(payload);
-    expect(saveProgressIntoProjectConfig).toHaveBeenCalledWith(payload);
-    expect(inquiryWorkspace).toHaveBeenCalledWith(payload);
-    expect(inquirySupportedPlatforms).toHaveBeenCalledWith(payload);
-    expect(inquiryBootstrapQuestions).toHaveBeenCalledWith(payload);
-    expect(inquiryGit).toHaveBeenCalledWith(payload);
-    expect(inquiryBookmarkTemplate).toHaveBeenCalledWith(payload);
-    expect(inquiryAppConfigs).toHaveBeenCalledWith(payload);
+    expect(appTitle).toHaveBeenCalledWith(payload);
+    expect(appID).toHaveBeenCalledWith(payload);
+    expect(appVersion).toHaveBeenCalledWith(payload);
+    expect(workspace).toHaveBeenCalledWith(payload);
+    expect(supportedPlatforms).toHaveBeenCalledWith(payload);
+    expect(bootstrapQuestions).toHaveBeenCalledWith(payload);
+    expect(confirmGit).toHaveBeenCalledWith(payload);
+    expect(bookmarkTemplate).toHaveBeenCalledWith(payload);
+    expect(appConfigs).toHaveBeenCalledWith(payload);
     expect(telemetryNewProject).toHaveBeenCalledWith(payload);
+    expect(configTemplates).toHaveBeenCalled();
+    expect(projectFolder).toHaveBeenCalled();
+    expect(installProject).toHaveBeenCalled();
 });

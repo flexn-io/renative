@@ -22,6 +22,7 @@ const _RnvTaskOptions = {
         description: 'Show full debug Info',
     },
     printExec: {
+        key: 'print-exec',
         description: 'Print exec commands in full',
     },
     platform: {
@@ -30,6 +31,7 @@ const _RnvTaskOptions = {
         description: 'select specific Platform',
     },
     skipTasks: {
+        key: 'skip-tasks',
         isValueType: true,
         isRequired: true,
         description: 'List tasks which you want to skip during rnv execution',
@@ -46,6 +48,7 @@ const _RnvTaskOptions = {
         description: 'Monochrome console output without chalk',
     },
     maxErrorLength: {
+        key: 'max-error-length',
         isValueType: true,
         isRequired: true,
         description: 'Specify how many characters each error should display. Default 200',
@@ -69,15 +72,11 @@ const _RnvTaskOptions = {
         examples: ['--packageManager yarn', '--packageManager npm'],
     },
     npxMode: {
+        key: 'npx-mode',
         description: 'Ensures you can use local npx rnv version after the command is done',
     },
     unlinked: {
         description: 'Force engines to be loaded from node_modules rather than locally',
-    },
-    sourceAppConfigID: {
-        isValueType: true,
-        isRequired: true,
-        description: 'name of source appConfig folder to copy from',
     },
     configName: {
         isValueType: true,
@@ -154,6 +153,11 @@ const _RnvTaskOptions = {
         description: 'Run in a hosted environment (skip budleAssets)',
     },
     // ENGINE-CORE --------------------------------
+    sourceAppConfigID: {
+        isValueType: true,
+        isRequired: true,
+        description: 'name of source appConfig folder to copy from',
+    },
     gitEnabled: {
         description: 'Enable git in your newly created project',
         isValueType: true,
