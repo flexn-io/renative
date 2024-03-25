@@ -241,10 +241,10 @@ const RootProjectBaseFragment = {
         .describe(
             "Enables the equivalent to passing --skipDependencyCheck parameter on every rnv run so you don't have to use it"
         ),
-    isNew: z
-        .boolean()
-        .optional()
-        .describe('Marker indicating that this project has just been bootstrapped. this prop is managed by rnv'),
+    // isNew: z
+    //     .boolean()
+    //     .optional()
+    //     .describe('Marker indicating that this project has just been bootstrapped. this prop is managed by rnv'),
 };
 
 const RootProjectBaseSchema = z.object(RootProjectBaseFragment);

@@ -178,14 +178,14 @@ export const generateProjectOverview = (data: NewProjectData) => {
 
     const str = `  Generated Project Summary:
   -------------------------
-  Project Name: ${highlight(inputs.projectName)}
+  Project Name (--projectName): ${highlight(inputs.projectName)}
   Package name: ${highlight(inputs.packageName)}
-  Workspace: ${highlight(inputs.workspaceID)}
-  App Title: ${highlight(inputs.appTitle)}
-  App Version: ${highlight(inputs.appVersion)}
-  App ID: ${highlight(inputs.appID)}
-  Project Template: ${highlight(tempString)}
-  Git Enabled: ${highlight(inputs.confirmEnableGit)}
+  Project Version (--appVersion): ${highlight(inputs.appVersion)}
+  Workspace (--workspace): ${highlight(inputs.workspaceID)}
+  App Title (--title): ${highlight(inputs.appTitle)}
+  App ID (--id): ${highlight(inputs.appID)}
+  Project Template (--template): ${highlight(tempString)}
+  Git Enabled (--gitEnabled): ${highlight(inputs.confirmEnableGit)}
   Enabled Platforms: ${highlight((inputs.supportedPlatforms || []).join(', '))}
   -------------------------
   ${chalk().green('✔ Your project is ready!')} Run it with:

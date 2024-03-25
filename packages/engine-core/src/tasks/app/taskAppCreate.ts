@@ -16,14 +16,17 @@ import {
     RnvTask,
     ConfigFileApp,
     RnvTaskName,
+    getContext,
 } from '@rnv/core';
 
-const fn: RnvTaskFn = async (c) => {
+const fn: RnvTaskFn = async () => {
     logTask('taskAppCreate');
 
     await configureRuntimeDefaults();
 
     let sourcePath: string | undefined;
+
+    const c = getContext<any, 'sourceAppConfigID'>();
 
     if (c.program.opts().sourceAppConfigID) {
         const sourceAppConfigDirPath = path.join(c.paths.project.appConfigsDir, c.program.opts().sourceAppConfigID);
@@ -166,6 +169,14 @@ const fn: RnvTaskFn = async (c) => {
 const Task: RnvTask = {
     description: 'Create new app config',
     fn,
+    options: [
+        {
+            key: 'sourceAppConfigID',
+            isValueType: true,
+            isRequired: true,
+            description: 'name of source appConfig folder to copy from',
+        },
+    ],
     task: RnvTaskName.appCreate,
 };
 

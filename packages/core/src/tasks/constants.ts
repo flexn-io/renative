@@ -153,11 +153,7 @@ const _RnvTaskOptions = {
         description: 'Run in a hosted environment (skip budleAssets)',
     },
     // ENGINE-CORE --------------------------------
-    sourceAppConfigID: {
-        isValueType: true,
-        isRequired: true,
-        description: 'name of source appConfig folder to copy from',
-    },
+
     gitEnabled: {
         description: 'Enable git in your newly created project',
         isValueType: true,
@@ -309,9 +305,7 @@ const _RnvTaskOptions = {
     // },
 };
 
-type ParamKeysType = typeof _RnvTaskOptions;
-
-export type ProgramOptionsKey = keyof ParamKeysType;
+export type ProgramOptionsKey = keyof typeof _RnvTaskOptions;
 
 export const RnvTaskOptions = _RnvTaskOptions as Record<ProgramOptionsKey, RnvTaskOption>;
 

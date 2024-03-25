@@ -7,6 +7,7 @@ import {
     applyTemplate,
     configureTemplateFiles,
     generateLocalJsonSchemas,
+    RnvTaskOptions,
 } from '@rnv/core';
 import inquiryProjectFolder from './questions/projectFolder';
 import inquiryBootstrapQuestions from './questions/bootstrapQuestions';
@@ -84,7 +85,18 @@ const Task: RnvTask = {
     description: 'Create new ReNative project',
     fn,
     task: RnvTaskName.new,
-    options: [{ key: 'template', description: 'Template to use' }],
+    options: [
+        RnvTaskOptions.gitEnabled,
+        RnvTaskOptions.answer,
+        RnvTaskOptions.workspace,
+        RnvTaskOptions.template,
+        RnvTaskOptions.projectName,
+        RnvTaskOptions.projectTemplate,
+        RnvTaskOptions.templateVersion,
+        RnvTaskOptions.title,
+        RnvTaskOptions.appVersion,
+        RnvTaskOptions.id,
+    ],
     isGlobalScope: true,
     isPriorityOrder: true,
 };
