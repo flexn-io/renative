@@ -6,7 +6,11 @@ import { upgradeProjectDependencies } from '../configs/configProject';
 export const versionCheck = async (c: RnvContext) => {
     logDefault('versionCheck');
 
-    if (c.runtime.versionCheckCompleted || c.files.project?.config?.skipAutoUpdate || c.program.skipDependencyCheck) {
+    if (
+        c.runtime.versionCheckCompleted ||
+        c.files.project?.config?.skipAutoUpdate ||
+        c.program.opts().skipDependencyCheck
+    ) {
         return true;
     }
     c.runtime.rnvVersionRunner = c.files.rnvCore?.package?.version || 'unknown';
@@ -19,7 +23,7 @@ export const versionCheck = async (c: RnvContext) => {
         chalk().grey
     );
     if (c.runtime.rnvVersionRunner && c.runtime.rnvVersionProject) {
-        if (c.runtime.rnvVersionRunner !== c.runtime.rnvVersionProject && !c.program.skipRnvCheck) {
+        if (c.runtime.rnvVersionRunner !== c.runtime.rnvVersionProject && !c.program.opts().skipRnvCheck) {
             const recCmd = chalk().bold(`$ npx ${getCurrentCommand(true)}`);
             const actionNoUpdate = 'Continue and skip updating package.json';
             const actionWithUpdate = 'Continue and update package.json';

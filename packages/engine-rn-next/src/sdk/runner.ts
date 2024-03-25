@@ -137,7 +137,7 @@ Dev server running at: ${url}
 `);
 
     const bundleAssets = getConfigProp('bundleAssets', false);
-    const opts = !c.program?.json
+    const opts = !c.program?.opts()?.json
         ? ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER
         : ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY;
     return executeAsync(`npx next ${bundleAssets ? 'start' : 'dev'} --port ${c.runtime.port}`, {

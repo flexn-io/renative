@@ -5,7 +5,7 @@ import { SdkPlatforms } from '../sdk/constants';
 const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     const { port } = c.runtime;
     const { target } = c.runtime;
-    const { hosted } = c.program;
+    const { hosted } = c.program.opts();
     logTask('taskRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
     await executeOrSkipTask(RnvTaskName.configure, RnvTaskName.run, originTask);

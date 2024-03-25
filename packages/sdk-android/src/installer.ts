@@ -112,7 +112,7 @@ const _findFolderWithFile = (dir: string, fileToFind: string) => {
 const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: SDKKey, traverseUntilFoundFile?: string) => {
     logDefault('_attemptAutoFix');
 
-    if (c.program.hosted) {
+    if (c.program.opts().hosted) {
         logInfo('HOSTED Mode. Skipping SDK checks');
         return true;
     }
@@ -144,7 +144,7 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: SDKKe
     if (result) {
         logSuccess(`Found existing ${chalk().bold(sdkKey)} location at ${chalk().bold(result)}`);
         let confirmSdk = true;
-        if (!c.program.ci) {
+        if (!c.program.opts().ci) {
             const { confirm } = await inquirerPrompt({
                 type: 'confirm',
                 name: 'confirm',

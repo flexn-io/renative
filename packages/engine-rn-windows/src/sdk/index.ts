@@ -296,7 +296,7 @@ function clearWindowsTemporaryFiles(c: RnvContext) {
 
 const packageBundleForWindows = (c: RnvContext, isDev = false) => {
     logDefault('packageBundleForWindows');
-    // const { maxErrorLength } = c.program;
+    // const { maxErrorLength } = c.program.opts();
     const entryFile = getConfigProp('entryFile');
 
     if (!c.runtime.appId) return;
@@ -315,7 +315,7 @@ const packageBundleForWindows = (c: RnvContext, isDev = false) => {
         `${getAppFolder().replace(/\//g, '\\')}\\${c.runtime.appId}\\Bundle\\index.windows.bundle`,
     ];
 
-    if (c.program.info) {
+    if (c.program.opts().info) {
         args.push('--verbose');
     }
 

@@ -72,14 +72,14 @@ export const traverseTargetProject = (sourceDir: string) => {
 
 export const getSourceDir = () => {
     const ctx = getContext<any, 'dir'>();
-    const dirOption = ctx.program.dir;
+    const dirOption = ctx.program.opts().dir;
 
     if (dirOption) {
         logInfo(`Using custom source directory: ${chalk().bold(dirOption)}`);
     }
 
     // As default we'll use the development source directory which is a monorepo
-    const sourceDir = ctx.program.dir || path.join(ctx.paths.rnvCore.dir, '../../');
+    const sourceDir = ctx.program.opts().dir || path.join(ctx.paths.rnvCore.dir, '../../');
     if (!fsExistsSync(sourceDir)) {
         throw new Error(`Source directory ${sourceDir} does not exist!`);
     }

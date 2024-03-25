@@ -169,7 +169,7 @@ export const configurePlugins = async () => {
 
     const c = getContext();
 
-    if (c.program.skipDependencyCheck) return true;
+    if (c.program.opts().skipDependencyCheck) return true;
 
     if (!c.files.project.package.dependencies) {
         c.files.project.package.dependencies = {};
@@ -290,7 +290,7 @@ export const configurePlugins = async () => {
     if (isTemplate) return true;
 
     // c.runtime.skipPackageUpdate only reflects rnv version mismatch. should not prevent updating other deps
-    if (hasPackageChanged /*! c.runtime.skipPackageUpdate */ && !c.program.skipDependencyCheck) {
+    if (hasPackageChanged /*! c.runtime.skipPackageUpdate */ && !c.program.opts().skipDependencyCheck) {
         _updatePackage(c, { dependencies: newDeps, devDependencies: newDevDeps });
     }
 
@@ -759,7 +759,7 @@ export const checkForPluginDependencies = async (postInjectHandler?: AsyncCallba
     if (Object.keys(toAdd).length) {
         // ask the user
         let install = false;
-        if (!c.program.ci) {
+        if (!c.program.opts().ci) {
             const answer = await inquirerPrompt({
                 type: 'confirm',
                 message: `Install ${Object.keys(toAdd).join(', ')}?`,

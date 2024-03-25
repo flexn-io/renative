@@ -324,7 +324,7 @@ export const findSuitableTask = async (specificTask?: string): Promise<RnvTask |
             return findSuitableTask();
         }
         //TODO: special type case for c.platform
-        if (!c.platform || c.program.platform === true) {
+        if (!c.platform || c.program.opts().platform === true) {
             await _selectPlatform(c, suitableEngines, task);
         }
         c.runtime.engine = getEngineRunner(task, CUSTOM_TASKS, false);
@@ -478,7 +478,7 @@ To avoid that test your task code against parentTask and avoid executing same ta
  */
 export const executeOrSkipTask = async (task: string, parentTask: string, originTask?: string) => {
     const c = getContext();
-    if (!c.program.only) {
+    if (!c.program.opts().only) {
         return executeTask(task, parentTask, originTask);
     }
     return executeTask('configureSoft', parentTask, originTask);
@@ -496,7 +496,7 @@ export const executeDependantTask = async ({
     alternativeTask?: string;
 }) => {
     const ctx = getContext();
-    if (!ctx.program.only) {
+    if (!ctx.program.opts().only) {
         return executeTask(task, parentTask, originTask);
     }
     if (alternativeTask) {
@@ -521,8 +521,8 @@ export const shouldSkipTask = (taskKey: string, originRnvTaskName?: string) => {
     c.runtime.platform = c.platform;
     if (!tasks) return;
 
-    if (c.program.skipTasks?.split) {
-        const skipTaskArr = c.program.skipTasks.split(',');
+    if (c.program.opts().skipTasks?.split) {
+        const skipTaskArr = c.program.opts().skipTasks.split(',');
         if (skipTaskArr.includes(task)) return true;
     }
 
@@ -620,7 +620,7 @@ Description: ${taskInstance.description}
     if (isFirstTask) {
         c.runtime.forceBuildHookRebuild = !!taskInstance?.forceBuildHookRebuild;
     }
-    const inOnlyMode = c.program.only;
+    const inOnlyMode = c.program.opts().only;
     const doPipe = !taskInstance.isGlobalScope && (!inOnlyMode || (inOnlyMode && isFirstTask));
     if (doPipe) await _executePipe(c, task, 'before');
     if (taskInstance.fn) await taskInstance.fn(c, parentTask, originTask);

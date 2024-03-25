@@ -32,9 +32,9 @@ export const updateProfile = async (): Promise<boolean> => {
 
     // TODO: run trough all schemes
     // const schemes = c.buildConfig.platforms?.[c.platform]?.buildSchemes
-    // const currScheme = c.program.scheme
+    // const currScheme = c.program.opts().scheme
     // for(k in schemes) {
-    //   c.program.scheme = k
+    //   c.program.opts().scheme = k
     // }
 
     // if (appConfigId) await setAppConfig(c, appConfigId);
@@ -42,7 +42,7 @@ export const updateProfile = async (): Promise<boolean> => {
     if (c.platform !== 'ios') {
         return Promise.reject(`updateProfile:platform ${c.platform} not supported`);
     }
-    const { scheme } = c.program;
+    const { scheme } = c.program.opts();
 
     const { platform } = c;
 

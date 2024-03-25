@@ -55,11 +55,11 @@ export const startReactNative = async (opts: {
         startCmd += ` --config=${metroConfigName}`;
     }
 
-    if (c.program.resetHard || c.program.reset) {
+    if (c.program.opts().resetHard || c.program.opts().reset) {
         startCmd += ' --reset-cache';
     }
 
-    if (c.program.resetHard || c.program.reset) {
+    if (c.program.opts().resetHard || c.program.opts().reset) {
         logInfo(`You passed ${chalk().bold('-r')} argument. --reset-cache will be applied to react-native`);
     }
     // logSummary('BUNDLER STARTED');

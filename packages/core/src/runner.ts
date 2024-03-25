@@ -30,7 +30,7 @@ export const executeRnvCore = async () => {
     await checkAndBootstrapIfRequired();
 
     // TODO: rename to something more meaningful or DEPRECATE entirely
-    if (c.program.npxMode) {
+    if (c.program.opts().npxMode) {
         return;
     }
 

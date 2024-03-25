@@ -104,7 +104,7 @@ export class AnalyticsCls {
                 scope.setTags({ ...tags, os: os.platform() });
                 scope.setExtras({ ...extra, fingerprint: machineIdSync() });
                 const c = getContext();
-                if (c.program.telemetryDebug) {
+                if (c.program.opts().telemetryDebug) {
                     logRaw(`TELEMETRY EXCEPTION PAYLOAD:
     ${e}
                     `);
@@ -122,7 +122,7 @@ export class AnalyticsCls {
     async captureEvent(e: { type: string; platform?: RnvPlatform; template?: string; platforms?: Array<string> }) {
         const c = getContext();
         if (this.isAnalyticsEnabled && this.knowItAll) {
-            if (c.program.telemetryDebug) {
+            if (c.program.opts().telemetryDebug) {
                 logRaw(`TELEMETRY EVENT PAYLOAD:
 ${JSON.stringify(e, null, 2)}
                 `);

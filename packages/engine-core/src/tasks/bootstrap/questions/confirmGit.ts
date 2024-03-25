@@ -13,7 +13,7 @@ import path from 'path';
 
 const Question = async (data: NewProjectData) => {
     const c = getContext();
-    const { gitEnabled, ci } = c.program;
+    const { gitEnabled, ci } = c.program.opts();
     const { inputs } = data;
     inputs.confirmEnableGit = !!gitEnabled;
 

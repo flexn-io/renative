@@ -186,7 +186,7 @@ const installAndLaunchApp = async (target: string, appPath: string, tId: string)
         // the device from time to time. Running it again works.
         await execCLI(CLI_WEBOS_ARES_INSTALL, `--device ${target} ${appPath}`);
     }
-    // const { hosted } = c.program;
+    // const { hosted } = c.program.opts();
     // const { platform } = c;
     // const isHosted = hosted || !getConfigProp('bundleAssets');
     const toReturn = true;
@@ -228,7 +228,7 @@ export const listWebOSTargets = async () => {
 
 export const runWebosSimOrDevice = async () => {
     const c = getContext();
-    const { device } = c.program;
+    const { device } = c.program.opts();
 
     const platDir = getAppFolder();
     if (!platDir) {
@@ -301,7 +301,7 @@ export const runWebosSimOrDevice = async () => {
             const tv = actualDevices[0];
             return installAndLaunchApp(tv.name, appPath, tId);
         }
-    } else if (!c.program.target) {
+    } else if (!c.program.opts().target) {
         // No target specified
         if (activeDevices.length === 1) {
             // One device present
@@ -324,6 +324,6 @@ export const runWebosSimOrDevice = async () => {
         }
     } else {
         // Target specified, using that
-        return installAndLaunchApp(c.program.target, appPath, tId);
+        return installAndLaunchApp(c.program.opts().target, appPath, tId);
     }
 };

@@ -34,7 +34,7 @@ const Question = async (data: NewProjectData) => {
     const noTemplate: TemplateOption = { name: 'No Template (blank project)', value: { type: 'none' } };
 
     const c = getContext();
-    const { templateVersion, projectTemplate } = c.program;
+    const { templateVersion, projectTemplate } = c.program.opts();
 
     const projectTemplates = c.buildConfig.projectTemplates || {}; // c.files.rnvConfigTemplates.config?.projectTemplates || {};
 

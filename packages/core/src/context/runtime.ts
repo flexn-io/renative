@@ -31,17 +31,17 @@ export const configureRuntimeDefaults = async () => {
 
     const defaultHost = isSystemWin ? '127.0.0.1' : '0.0.0.0';
 
-    const portString = c.program.port || port || c.runtime.currentPlatform?.defaultPort; //  PLATFORMS[c.platform]?.defaultPort;
+    const portString = c.program.opts().port || port || c.runtime.currentPlatform?.defaultPort; //  PLATFORMS[c.platform]?.defaultPort;
 
     const portOffset = c.buildConfig?.defaults?.portOffset || 0;
 
     c.runtime.port = Number(portString) + portOffset;
 
-    if (c.program.target !== true) {
-        c.runtime.target = c.program.target || defaultTarget;
-    } else c.runtime.isTargetTrue = c.program.target;
-    c.runtime.scheme = c.program.scheme || 'debug';
-    c.runtime.localhost = c.program.hostIp || defaultHost;
+    if (c.program.opts().target !== true) {
+        c.runtime.target = c.program.opts().target || defaultTarget;
+    } else c.runtime.isTargetTrue = c.program.opts().target;
+    c.runtime.scheme = c.program.opts().scheme || 'debug';
+    c.runtime.localhost = c.program.opts().hostIp || defaultHost;
     c.runtime.timestamp = c.runtime.timestamp || Date.now();
     c.configPropsInjects = c.configPropsInjects || [];
     c.systemPropsInjects = c.systemPropsInjects || [];
@@ -50,7 +50,7 @@ export const configureRuntimeDefaults = async () => {
     generateRuntimePropInjects();
     if (c.buildConfig) {
         c.runtime.bundleAssets = getConfigProp('bundleAssets') || false;
-        const { hosted } = c.program;
+        const { hosted } = c.program.opts();
         c.runtime.hosted = hosted && c.runtime.currentPlatform?.isWebHosted;
 
         if (c.buildConfig.defaults?.supportedPlatforms) {

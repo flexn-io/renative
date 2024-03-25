@@ -4,7 +4,7 @@ import { validateAndAssign } from '../questionHelpers';
 
 const Question = async (data: NewProjectData): Promise<void> => {
     const c = getContext();
-    const { id, ci } = c.program;
+    const { id, ci } = c.program.opts();
     const { inputs } = data;
     const validator = (appId: string) =>
         (typeof appId === 'string' && !!appId.match(/^[a-z][a-z0-9_]*(\.[a-z0-9_]+)+[0-9a-z_]$/)) ||

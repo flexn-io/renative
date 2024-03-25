@@ -128,7 +128,7 @@ export const populateContextPaths = (c: RnvContext, RNV_HOME_DIR: string | undef
     // TODO: generate solution root paths
 
     // project ------------------
-    generateContextPaths(c.paths.project, c.paths.user.currentDir, c.program.configName);
+    generateContextPaths(c.paths.project, c.paths.user.currentDir, c.program.opts().configName);
     c.paths.buildHooks.dir = path.join(c.paths.project.dir, 'buildHooks');
     c.paths.buildHooks.src.dir = path.join(c.paths.buildHooks.dir, 'src');
     c.paths.buildHooks.dist.dir = path.join(c.paths.buildHooks.dir, 'dist');
@@ -164,7 +164,7 @@ export const populateContextPaths = (c: RnvContext, RNV_HOME_DIR: string | undef
     // );
 
     // runtime
-    c.platform = c.program.platform;
+    c.platform = c.program.opts().platform;
     populateLinkingInfo(c);
 };
 

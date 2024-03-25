@@ -87,8 +87,8 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
         localDir: path.resolve('./node_modules/.bin'),
         preferLocal: true,
         all: true,
-        maxErrorLength: c.program?.maxErrorLength,
-        mono: c.program?.mono || c.program?.json,
+        maxErrorLength: c.program?.opts().maxErrorLength,
+        mono: c.program?.opts().mono || c.program?.opts().json,
     };
 
     const blue2 = chalk().rgb(50, 50, 255).bold;
@@ -96,7 +96,7 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
     const mergedOpts = { ...defaultOpts, ...opts };
 
     const printableEnv =
-        opts.env && (c.program.info || c.program.printExec)
+        opts.env && (c.program.opts().info || c.program.opts().printExec)
             ? Object.keys(opts.env)
                   .map((k) => `${k}=${opts?.env?.[k]}`)
                   .join(' ')
@@ -121,7 +121,7 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
         logMessage = replaceOverridesInString(commandAsString, privateParams, privateMask);
     }
 
-    if (c.program.printExec) {
+    if (c.program.opts().printExec) {
         let logMsg = printableEnv ? `${chalk().grey(printableEnv)} ${logMessage}` : logMessage;
         if (opts.cwd) {
             logMsg = `cd ${opts.cwd} ${chalk().cyan('&&')} ${logMsg}`;
@@ -177,7 +177,7 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
         }
     };
 
-    if (c.program?.info && child?.stdout?.pipe) {
+    if (c.program?.opts().info && child?.stdout?.pipe) {
         child.stdout.pipe(process.stdout);
     } else if (spinner && child?.stdout?.on) {
         child.stdout.on('data', printLastLine);
@@ -584,7 +584,7 @@ export const waitForExecCLI = async (
     let attempts = 0;
     const maxAttempts = 30;
     const CHECK_INTEVAL = 2000;
-    const { maxErrorLength } = c.program;
+    const { maxErrorLength } = c.program.opts();
     const spinner = getApi().spinner('Waiting for emulator to boot...').start('');
 
     return new Promise((resolve, reject) => {

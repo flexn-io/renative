@@ -4,9 +4,9 @@ import { installPackageDependenciesAndPlugins } from '../../plugins';
 const fn: RnvTaskFn = async (c, parentTask, _) => {
     logTask('taskInstall', `requiresInstall:${!!c._requiresNpmInstall}:${!c.runtime.skipPackageUpdate}`);
 
-    if (c.program.only && !!parentTask) return true;
+    if (c.program.opts().only && !!parentTask) return true;
 
-    if (c.program.skipDependencyCheck) return true;
+    if (c.program.opts().skipDependencyCheck) return true;
 
     // Check node_modules
     // c.runtime.skipPackageUpdate only reflects rnv version mismatch. should not prevent updating other deps

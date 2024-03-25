@@ -81,6 +81,9 @@ export const generateContextDefaults = (): RnvContext => ({
         option: () => {
             //NOOP
         },
+        opts: () => {
+            return {};
+        },
         parse: () => {
             //NOOP
         },

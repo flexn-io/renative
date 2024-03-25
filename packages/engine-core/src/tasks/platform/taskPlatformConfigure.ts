@@ -34,16 +34,16 @@ const fn: RnvTaskFn = async (c, parentTask, originTask) => {
 
     await configureRuntimeDefaults();
 
-    if (c.program.only && !!parentTask) return true;
+    if (c.program.opts().only && !!parentTask) return true;
 
     await executeTask(RnvTaskName.install, RnvTaskName.platformConfigure, originTask);
 
     const hasBuild = fsExistsSync(c.paths.project.builds.dir);
     logTask('', `taskPlatformConfigure hasBuildFolderPresent:${hasBuild}`);
 
-    if ((c.program.reset || c.program.resetHard) && !c.runtime.disableReset) {
+    if ((c.program.opts().reset || c.program.opts().resetHard) && !c.runtime.disableReset) {
         logInfo(
-            `You passed ${chalk().bold(c.program.reset ? '-r' : '-R')} argument. "${chalk().bold(
+            `You passed ${chalk().bold(c.program.opts().reset ? '-r' : '-R')} argument. "${chalk().bold(
                 getAppFolder()
             )}" CLEANING...DONE`
         );

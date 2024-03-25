@@ -55,7 +55,7 @@ const _configureHostedIfRequired = async (c: RnvContext) => {
 
     if (!bundleAssets && !existBuildsOverrideForTargetPathSync(c, path.join(getPlatformProjectDir()!, 'index.html'))) {
         logDebug('Running hosted build');
-        const ipAddress = c.program.hostIp || getIP();
+        const ipAddress = c.program.opts().hostIp || getIP();
 
         if (c.runtime.currentEngine?.rootPath) {
             writeCleanFile(
@@ -78,7 +78,7 @@ const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { port } = c.runtime;
     const { target } = c.runtime;
-    const { hosted } = c.program;
+    const { hosted } = c.program.opts();
     logTask('taskRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
     await executeOrSkipTask(RnvTaskName.configure, RnvTaskName.run, originTask);
@@ -99,19 +99,19 @@ const fn: RnvTaskFn = async (c, parentTask, originTask) => {
         case 'tizen':
         case 'tizenmobile':
         case 'tizenwatch':
-            if (!c.program.only) {
+            if (!c.program.opts().only) {
                 await _configureHostedIfRequired(c);
             }
             return runTizen(c, target);
         case 'webos':
-            if (!c.program.only) {
+            if (!c.program.opts().only) {
                 await _configureHostedIfRequired(c);
             }
             return runWebOS(c);
         case 'kaios':
             return runKaiOSProject();
         case 'chromecast':
-            if (!c.program.only) {
+            if (!c.program.opts().only) {
                 await _configureHostedIfRequired(c);
             }
             return runChromecast(c);

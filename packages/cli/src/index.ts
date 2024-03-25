@@ -123,9 +123,9 @@ export const executeRnv = async ({
     RNV_HOME_DIR?: string;
 }) => {
     // set mono and ci if json is enabled
-    if (program.json) {
-        program.mono = true;
-        program.ci = true;
+    if (program.opts().json) {
+        program.opts().mono = true;
+        program.opts().ci = true;
     }
 
     createRnvApi({ spinner, prompt, analytics: Telemetry, logger, getConfigProp, doResolve });

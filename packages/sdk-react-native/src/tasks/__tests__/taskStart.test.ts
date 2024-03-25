@@ -77,7 +77,7 @@ describe('taskStart', () => {
         // GIVEN
         const ctx = getContext();
         ctx.platform = 'tvos';
-        ctx.program.hosted = true;
+        ctx.program.opts().hosted = true;
         // WHEN // THEN
         await expect(taskStart.fn?.(ctx, 'parent', undefined)).rejects.toBe(
             'This platform does not support hosted mode'

@@ -28,7 +28,7 @@ export const packageReactNativeIOS = (isDev = false) => {
     const entryFile = getConfigProp('entryFile');
 
     if (!c.platform) return;
-    // const { maxErrorLength } = c.program;
+    // const { maxErrorLength } = c.program.opts();
     const args = [
         'bundle',
         '--platform',
@@ -49,7 +49,7 @@ export const packageReactNativeIOS = (isDev = false) => {
         args.push(`${getAppFolder()}/main.jsbundle.map`);
     }
 
-    if (c.program.info) {
+    if (c.program.opts().info) {
         args.push('--verbose');
     }
 
@@ -127,7 +127,7 @@ const checkIfPodsIsRequired = (c: RnvContext): { result: boolean; reason: string
     if (c.runtime._skipNativeDepResolutions) {
         return { result: false, reason: `Command ${getCurrentCommand(true)} explicitly skips pod checks`, code: 1 };
     }
-    if (c.program.updatePods) {
+    if (c.program.opts().updatePods) {
         return { result: true, reason: 'You passed --updatePods option', code: 2 };
     }
     const appFolder = getAppFolder();
@@ -171,7 +171,7 @@ const updatePodsChecksum = () => {
 
 export const runCocoaPods = async () => {
     const c = getContext();
-    logDefault('runCocoaPods', `forceUpdate:${!!c.program.updatePods}`);
+    logDefault('runCocoaPods', `forceUpdate:${!!c.program.opts().updatePods}`);
 
     const checkResult = await checkIfPodsIsRequired(c);
 
@@ -203,7 +203,7 @@ export const runCocoaPods = async () => {
             ...EnvVars.RNV_FLIPPER_ENABLED(),
         };
 
-        if (c.program.updatePods) {
+        if (c.program.opts().updatePods) {
             await executeAsync('bundle exec pod update', {
                 cwd: appFolder,
                 env,

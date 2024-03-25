@@ -10,7 +10,7 @@ import {
 } from '@rnv/core';
 
 const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskTemplateApply', `template: ${c.program.template}`);
+    logTask('taskTemplateApply', `template: ${c.program.opts().template}`);
 
     await executeTask(RnvTaskName.projectConfigure, RnvTaskName.templateApply, originTask);
 
@@ -18,9 +18,9 @@ const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
         return Promise.reject('Template projects cannot use template apply command');
     }
 
-    if (c.program.template) {
-        await applyTemplate(c.program.template);
-        if (c.program.appConfigID) {
+    if (c.program.opts().template) {
+        await applyTemplate(c.program.opts().template);
+        if (c.program.opts().appConfigID) {
             await executeTask(RnvTaskName.appConfigure, RnvTaskName.templateApply, originTask);
         }
 
@@ -36,7 +36,7 @@ const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
     });
 
     await applyTemplate(template);
-    if (c.program.appConfigID) {
+    if (c.program.opts().appConfigID) {
         await executeTask(RnvTaskName.appConfigure, RnvTaskName.templateApply, originTask);
     }
     return true;

@@ -28,7 +28,7 @@ test('Execute task.rnv.clean', async () => {
     );
     jest.mocked(fsExistsSync).mockReturnValue(true);
     jest.mocked(fsReaddirSync).mockReturnValue([]);
-    ctx.program.ci = false;
+    ctx.program.opts().ci = false;
     //WHEN
     await expect(taskClean.fn?.(ctx)).resolves.toEqual(true);
     //THEN

@@ -103,7 +103,7 @@ const generateContextDefaults = (ctx?: Context) => {
         buildConfig: {},
         command: '',
         subCommand: '',
-        platform: ctx?.program.platform ?? '',
+        platform: ctx?.program.opts().platform ?? '',
         process: {},
         //==========
         _renativePluginCache: {},

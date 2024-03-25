@@ -171,7 +171,7 @@ export const addDevelopTizenCertificate = (c: RnvContext, secureProfileConfig: T
     });
 
 const _getDeviceID = async (c: RnvContext, target: string) => {
-    const { device } = c.program;
+    const { device } = c.program.opts();
 
     if (device) {
         let connectResponse: string;
@@ -215,7 +215,7 @@ const _getDeviceID = async (c: RnvContext, target: string) => {
 };
 
 const _getRunningDevices = async (c: RnvContext) => {
-    const { platform } = c.program;
+    const { platform } = c.program.opts();
     const devicesList = await execCLI(CLI_SDB_TIZEN, 'devices');
     const lines = devicesList
         .trim()

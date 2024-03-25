@@ -9,7 +9,7 @@ import { getContext } from '../context/provider';
 
 export const executePipe = async (key: string) => {
     const c = getContext();
-    logDebug('executePipe', c?.program?.json ? key : `('${key}')`);
+    logDebug('executePipe', c?.program?.opts()?.json ? key : `('${key}')`);
 
     await buildHooks();
 
@@ -31,10 +31,10 @@ export const buildHooks = async () => {
     const enableHookRebuild = getConfigProp('enableHookRebuild');
 
     let shouldBuildHook =
-        c.program.reset ||
-        c.program.resetHard ||
-        c.program.resetAssets ||
-        c.program.hooks ||
+        c.program.opts().reset ||
+        c.program.opts().resetHard ||
+        c.program.opts().resetAssets ||
+        c.program.opts().hooks ||
         !fsExistsSync(c.paths.buildHooks.dist.dir) ||
         enableHookRebuild === true ||
         c.runtime.forceBuildHookRebuild;
@@ -42,7 +42,7 @@ export const buildHooks = async () => {
     if (
         (!fsExistsSync(c.paths.buildHooks.src.index) &&
             !fsExistsSync(c.paths.buildHooks.src.indexTs) &&
-            c.program.ci) ||
+            c.program.opts().ci) ||
         c.runtime.skipBuildHooks
     ) {
         logInfo('No build hooks found and in --ci mode. SKIPPING');
@@ -52,13 +52,13 @@ export const buildHooks = async () => {
     const hasNoIndex = !fsExistsSync(c.paths.buildHooks.src.index) && !fsExistsSync(c.paths.buildHooks.src.indexTs);
 
     if (hasNoIndex) {
-        if (c.program.ci) {
+        if (c.program.opts().ci) {
             c.runtime.skipBuildHooks = true;
             return;
         }
 
         let confirmed;
-        if (c.program.yes) {
+        if (c.program.opts().yes) {
             confirmed = true;
         } else {
             const { confirm } = await inquirerPrompt({
@@ -98,7 +98,7 @@ export const buildHooks = async () => {
                 entryPoints: [indexPath],
                 bundle: true,
                 platform: 'node',
-                logLimit: c.program.json ? 0 : 10,
+                logLimit: c.program.opts().json ? 0 : 10,
                 external: [
                     '@rnv/core', // exclude rnv core from build
                     ...Object.keys(c.files.project.package.dependencies || {}),

@@ -193,7 +193,7 @@ export const generateBuildConfig = () => {
 };
 
 const _checkBuildSchemeIfEngine = (c: RnvContext) => {
-    const { scheme } = c.program;
+    const { scheme } = c.program.opts();
     if (!c.platform || !scheme) return;
 
     const platform = c.buildConfig?.platforms?.[c.platform];

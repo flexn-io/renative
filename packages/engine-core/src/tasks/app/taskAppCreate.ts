@@ -25,13 +25,13 @@ const fn: RnvTaskFn = async (c) => {
 
     let sourcePath: string | undefined;
 
-    if (c.program.sourceAppConfigID) {
-        const sourceAppConfigDirPath = path.join(c.paths.project.appConfigsDir, c.program.sourceAppConfigID);
+    if (c.program.opts().sourceAppConfigID) {
+        const sourceAppConfigDirPath = path.join(c.paths.project.appConfigsDir, c.program.opts().sourceAppConfigID);
 
         if (fsExistsSync(sourceAppConfigDirPath)) {
             sourcePath = sourceAppConfigDirPath;
         }
-    } else if (c.program.ci) {
+    } else if (c.program.opts().ci) {
         if (c.buildConfig.currentTemplate) {
             const tacPath = doResolve(c.buildConfig.currentTemplate);
             if (tacPath && fsExistsSync(tacPath)) {
@@ -103,8 +103,8 @@ const fn: RnvTaskFn = async (c) => {
 
     let destPath;
     let appConfigId;
-    if (c.program.appConfigID) {
-        appConfigId = c.program.appConfigID.toLowerCase();
+    if (c.program.opts().appConfigID) {
+        appConfigId = c.program.opts().appConfigID.toLowerCase();
         destPath = path.join(c.paths.project.appConfigsDir, appConfigId);
     } else {
         const { confName } = await inquirerPrompt({
@@ -127,9 +127,9 @@ const fn: RnvTaskFn = async (c) => {
     confObj.common = confObj.common || {};
 
     let appConfigTitle;
-    if (c.program.title) {
-        appConfigTitle = c.program.title;
-    } else if (c.program.ci) {
+    if (c.program.opts().title) {
+        appConfigTitle = c.program.opts().title;
+    } else if (c.program.opts().ci) {
         // Ignore
     } else {
         const { confTitle } = await inquirerPrompt({
@@ -143,9 +143,9 @@ const fn: RnvTaskFn = async (c) => {
     confObj.common.title = appConfigTitle || confObj.common.title;
 
     let bundleId;
-    if (c.program.id) {
-        bundleId = c.program.id;
-    } else if (c.program.ci) {
+    if (c.program.opts().id) {
+        bundleId = c.program.opts().id;
+    } else if (c.program.opts().ci) {
         // Ignore
     } else {
         const { confId } = await inquirerPrompt({

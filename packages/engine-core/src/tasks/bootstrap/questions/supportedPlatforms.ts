@@ -4,7 +4,7 @@ import { checkInputValue } from '../questionHelpers';
 
 const Question = async (data: NewProjectData) => {
     const c = getContext();
-    const { platform } = c.program;
+    const { platform } = c.program.opts();
     const { inputs, files } = data;
 
     // TODO: grouped platforms
@@ -46,7 +46,7 @@ const Question = async (data: NewProjectData) => {
 
     supportedPlatforms.sort((a, b) => RnvPlatforms.indexOf(a) - RnvPlatforms.indexOf(b));
 
-    const optsPlatforms = c.program.platform && [c.program.platform];
+    const optsPlatforms = c.program.opts().platform && [c.program.opts().platform];
     const selectedPlatforms =
         optsPlatforms ||
         files.template.renativeTemplateConfig?.bootstrapConfig?.defaultSelectedPlatforms ||

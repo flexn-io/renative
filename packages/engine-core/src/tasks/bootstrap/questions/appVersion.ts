@@ -6,7 +6,7 @@ import { merge } from 'lodash';
 
 const Question = async (data: NewProjectData) => {
     const c = getContext();
-    const { appVersion, ci } = c.program;
+    const { appVersion, ci } = c.program.opts();
 
     const validator = (version: string) =>
         !!semver.valid(semver.coerce(version)) || 'Please enter a valid semver version (1.0.0, 42.6.7.9.3-alpha, etc.)';

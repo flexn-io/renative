@@ -41,7 +41,7 @@ const _askUserAboutConfigs = async (c: RnvContext, dir: string, id: string, base
     logWarning(
         `AppConfig error - It seems you have a mismatch between appConfig folder name (${dir}) and the id defined in renative.json (${id}). They must match.`
     );
-    if (c.program.ci === true) {
+    if (c.program.opts().ci === true) {
         throw new Error('You cannot continue if you set --ci flag. please fix above error first');
     }
     const { choice } = await inquirerPrompt({
@@ -170,7 +170,7 @@ const fn = async (c: RnvContext) => {
         c.runtime.appId = undefined;
     }
 
-    if (c.program.appConfigID === true || (!c.program.appConfigID && !c.runtime.appId)) {
+    if (c.program.opts().appConfigID === true || (!c.program.opts().appConfigID && !c.runtime.appId)) {
         const hasAppConfig = await _findAndSwitchAppConfigDir(c);
         if (!hasAppConfig) {
             // await executeTask(c, RnvTaskName.appCreate, RnvTaskName.appConfigure);
@@ -178,10 +178,10 @@ const fn = async (c: RnvContext) => {
             logWarning('No app configs found for this project');
             return true;
         }
-    } else if (c.program.appConfigID) {
-        const aid = await matchAppConfigID(c, c.program.appConfigID);
+    } else if (c.program.opts().appConfigID) {
+        const aid = await matchAppConfigID(c, c.program.opts().appConfigID);
         if (!aid) {
-            logWarning(`Cannot find app config ${chalk().bold(c.program.appConfigID)}`);
+            logWarning(`Cannot find app config ${chalk().bold(c.program.opts().appConfigID)}`);
             const hasAppConfig = await _findAndSwitchAppConfigDir(c);
             if (!hasAppConfig) {
                 // await executeTask(c, RnvTaskName.appCreate, RnvTaskName.appConfigure);

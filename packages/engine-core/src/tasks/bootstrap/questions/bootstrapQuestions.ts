@@ -21,8 +21,8 @@ const Question = async (data: NewProjectData) => {
     const results: QuestionResults = {};
     const providedAnswers: Record<string, any> = {};
 
-    if (c.program.answer) {
-        c.program.answer.forEach((a: string) => {
+    if (c.program.opts().answer) {
+        c.program.opts().answer.forEach((a: string) => {
             const key = a.split('=')[0];
             let value;
 

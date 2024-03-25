@@ -17,7 +17,7 @@ import { EnginePlatforms } from '../constants';
 const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { port } = c.runtime;
-    const { hosted } = c.program;
+    const { hosted } = c.program.opts();
 
     if (!platform) return;
 

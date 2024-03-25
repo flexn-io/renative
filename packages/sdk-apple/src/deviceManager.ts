@@ -26,9 +26,7 @@ export const getAppleDevices = async (c: RnvContext, ignoreDevices?: boolean, ig
 
     logDefault('getAppleDevices', `ignoreDevices:${ignoreDevices} ignoreSimulators:${ignoreSimulators}`);
 
-    const {
-        program: { skipTargetCheck },
-    } = c;
+    const { skipTargetCheck } = c.program.opts();
 
     const connectedDevicesIds = await utilities.getConnectedDevices();
     const connectedDevicesArray = await Promise.all(

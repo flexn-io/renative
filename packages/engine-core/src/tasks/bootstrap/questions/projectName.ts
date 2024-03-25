@@ -4,7 +4,7 @@ import { checkInputValue } from '../questionHelpers';
 
 const Question = async (data: NewProjectData): Promise<void> => {
     const c = getContext();
-    const { projectName } = c.program;
+    const { projectName } = c.program.opts();
     const { inputs } = data;
     if (checkInputValue(projectName)) {
         inputs.projectName = projectName;

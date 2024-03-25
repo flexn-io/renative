@@ -4,7 +4,7 @@ import { checkInputValue, validateAndAssign } from '../questionHelpers';
 
 const Question = async (data: NewProjectData) => {
     const c = getContext();
-    const { title, ci } = c.program;
+    const { title, ci } = c.program.opts();
     const { inputs, defaults } = data;
     const validator = (val: string) => checkInputValue(val) || 'Please enter a title';
 

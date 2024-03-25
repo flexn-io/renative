@@ -23,7 +23,7 @@ const fn: RnvTaskFn = async (c, parentTask, originTask) => {
 
     await copySharedPlatforms();
 
-    if (c.program.only && !!parentTask) {
+    if (c.program.opts().only && !!parentTask) {
         return true;
     }
 

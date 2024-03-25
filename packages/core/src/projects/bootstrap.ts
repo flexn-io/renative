@@ -13,7 +13,7 @@ export const checkAndBootstrapIfRequired = async () => {
     logDefault('checkAndBootstrapIfRequired');
     const c = getContext();
 
-    const template: string = c.program?.template;
+    const template: string = c.program?.opts().template;
     if (!c.paths.project.configExists && template) {
         await executeAsync(`${isYarnInstalled() ? 'yarn' : 'npm'} add ${template}`, {
             cwd: c.paths.project.dir,
@@ -27,7 +27,7 @@ export const checkAndBootstrapIfRequired = async () => {
         c.paths.template.configTemplate = path.join(templatePath, RnvFileName.renativeTemplate);
 
         const templateObj = readObjectSync<ConfigFileTemplate>(c.paths.template.configTemplate);
-        const appConfigPath = path.join(c.paths.project.appConfigsDir, c.program.appConfigID, 'renative.json');
+        const appConfigPath = path.join(c.paths.project.appConfigsDir, c.program.opts().appConfigID, 'renative.json');
         //TODO: Investigate whether we really need to support this: supportedPlatforms inside appconfig
         const appConfigObj = readObjectSync<ConfigFileApp & ConfigFileProject>(appConfigPath);
         const supportedPlatforms = appConfigObj?.defaults?.supportedPlatforms || [];
@@ -151,7 +151,7 @@ export const checkAndBootstrapIfRequired = async () => {
 
         await installPackageDependencies();
 
-        if (c.program.npxMode) {
+        if (c.program.opts().npxMode) {
             return;
         }
 

@@ -69,9 +69,9 @@ const fn: RnvTaskFn = async (c, parentTask, originTask) => {
 
         let shouldCleanFolder = false;
         const wsPath = path.join(c.paths.workspace.dir, projectName);
-        const isCryptoReset = c.command === 'crypto' && c.program.reset === true;
+        const isCryptoReset = c.command === 'crypto' && c.program.opts().reset === true;
 
-        if (c.program.ci !== true && !isCryptoReset && fsExistsSync(destFolder)) {
+        if (c.program.opts().ci !== true && !isCryptoReset && fsExistsSync(destFolder)) {
             const options = ['Yes - override (recommended)', 'Yes - merge', 'Skip'];
             const { option } = await inquirerPrompt({
                 name: 'option',
@@ -101,7 +101,7 @@ const fn: RnvTaskFn = async (c, parentTask, originTask) => {
             }
         }
 
-        const key = c.program.key || c.process.env[envVar];
+        const key = c.program.opts().key || c.process.env[envVar];
         if (!key) {
             return Promise.reject(`encrypt: You must pass ${chalk().bold('--key')} or have env var defined:
 

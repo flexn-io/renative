@@ -138,7 +138,7 @@ RNV will create it for you, make sure you add whatever you want encrypted in it 
         // if (confirm) return true;
     }
 
-    let key = c.program.key || c.process.env[envVar];
+    let key = c.program.opts().key || c.process.env[envVar];
     let keyGenerated = false;
     if (!key) {
         const { confirm } = await inquirerPrompt({
@@ -193,7 +193,7 @@ const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
 
     if (!envVar) return;
 
-    const key = c.program.key || c.process.env[envVar];
+    const key = c.program.opts().key || c.process.env[envVar];
 
     if (destRaw) {
         const dest = `${getRealPath(destRaw, 'crypto.path')}`;

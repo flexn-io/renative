@@ -96,7 +96,7 @@ const printCurrentPlatform = (platform: RnvPlatform) => {
 export const isPlatformSupported = async (isGlobalScope = false) => {
     const c = getContext();
 
-    if (c.platform && c.program.platform !== true && isGlobalScope) {
+    if (c.platform && c.program.opts().platform !== true && isGlobalScope) {
         printCurrentPlatform(c.platform);
         return c.platform;
     }
@@ -111,7 +111,7 @@ export const isPlatformSupported = async (isGlobalScope = false) => {
     if (!platformsAsObj) platformsAsObj = c.runtime.availablePlatforms;
     const opts = generateOptions(platformsAsObj);
 
-    if (!c.platform || c.program.platform === true || !c.runtime.availablePlatforms?.includes?.(c.platform)) {
+    if (!c.platform || c.program.opts().platform === true || !c.runtime.availablePlatforms?.includes?.(c.platform)) {
         const { platform } = await inquirerPrompt({
             name: 'platform',
             type: 'list',

@@ -14,7 +14,7 @@ import { SdkPlatforms } from '../sdk/constants';
 
 const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     const { port } = c.runtime;
-    const { hosted } = c.program;
+    const { hosted } = c.program.opts();
 
     logTask('taskStart', `parent:${parentTask} port:${c.runtime.port} hosted:${!!hosted}`);
 

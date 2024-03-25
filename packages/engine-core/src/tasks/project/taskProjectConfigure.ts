@@ -64,7 +64,7 @@ const fn: RnvTaskFn = async (c, parentTask, originTask) => {
 
     await executeTask(RnvTaskName.workspaceConfigure, RnvTaskName.projectConfigure, originTask);
 
-    if (c.program.only && !!parentTask) {
+    if (c.program.opts().only && !!parentTask) {
         await configureRuntimeDefaults();
         await executeTask(RnvTaskName.appConfigure, RnvTaskName.projectConfigure, originTask);
         await generatePlatformAssetsRuntimeConfig();
@@ -104,14 +104,14 @@ const fn: RnvTaskFn = async (c, parentTask, originTask) => {
 
         await configureRuntimeDefaults();
         if (!c.runtime.disableReset) {
-            if (c.program.resetHard) {
+            if (c.program.opts().resetHard) {
                 logInfo(
                     `You passed ${chalk().bold('-R, --resetHard')} argument. "${chalk().bold(
                         './platformAssets'
                     )}" will be cleaned up first`
                 );
                 await cleanPlaformAssets();
-            } else if (c.program.resetAssets) {
+            } else if (c.program.opts().resetAssets) {
                 logInfo(
                     `You passed ${chalk().bold('-a, --resetAssets')} argument. "${chalk().bold(
                         './platformAssets'

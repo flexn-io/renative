@@ -63,7 +63,7 @@ const _attemptAutoFix = async (c: RnvContext) => {
 
     if (!c.files.workspace.config) return;
 
-    if (c.program.hosted) {
+    if (c.program.opts().hosted) {
         logInfo('HOSTED Mode. Skipping SDK checks');
         return true;
     }
@@ -73,7 +73,7 @@ const _attemptAutoFix = async (c: RnvContext) => {
     if (result) {
         logSuccess(`Found existing ${c.platform} SDK location at ${chalk().bold(result)}`);
         let confirmSdk = true;
-        if (!c.program.ci) {
+        if (!c.program.opts().ci) {
             const { confirm } = await inquirerPrompt({
                 type: 'confirm',
                 name: 'confirm',

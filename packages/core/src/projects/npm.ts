@@ -142,15 +142,17 @@ export const installPackageDependencies = async (failOnError = false) => {
                 "You have a yarn.lock file but you don't have yarn installed. Install it or delete yarn.lock"
             );
         command = yarnLockExists ? 'yarn' : 'npm install';
-    } else if (c.program.packageManager) {
+    } else if (c.program.opts().packageManager) {
         // no lock file check cli option
-        if (['yarn', 'npm'].includes(c.program.packageManager)) {
-            command = c.program.packageManager === 'yarn' ? 'yarn' : 'npm install';
+        if (['yarn', 'npm'].includes(c.program.opts().packageManager)) {
+            command = c.program.opts().packageManager === 'yarn' ? 'yarn' : 'npm install';
             if (command === 'yarn' && !isYarnInstalled())
                 throw new Error("You specified yarn as packageManager but it's not installed");
         } else {
             throw new Error(
-                `Unsupported package manager ${c.program.packageManager}. Only yarn and npm are supported at the moment.`
+                `Unsupported package manager ${
+                    c.program.opts().packageManager
+                }. Only yarn and npm are supported at the moment.`
             );
         }
     } else {

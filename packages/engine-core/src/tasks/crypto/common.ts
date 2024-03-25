@@ -40,7 +40,7 @@ export const checkCrypto = async (parentTask?: string, originTask?: string) => {
     const c = getContext();
     logTask('checkCrypto');
 
-    if (c.program.ci || c.files.project.config?.crypto?.isOptional) return;
+    if (c.program.opts().ci || c.files.project.config?.crypto?.isOptional) return;
 
     const sourceRaw = c.files.project.config?.crypto?.path;
     if (!c.files.project.package.name) {

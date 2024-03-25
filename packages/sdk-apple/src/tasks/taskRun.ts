@@ -16,7 +16,7 @@ import { SdkPlatforms } from '../common';
 
 const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     const { port } = c.runtime;
-    const { hosted } = c.program;
+    const { hosted } = c.program.opts();
     logTask('taskRun', `parent:${parentTask} port:${port} hosted:${hosted}`);
 
     await executeOrSkipTask(RnvTaskName.configure, RnvTaskName.run, originTask);
@@ -26,7 +26,7 @@ const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     const bundleAssets = getConfigProp('bundleAssets', false);
 
     const runDeviceArgs = await getIosDeviceToRunOn(c);
-    if (!c.program.only) {
+    if (!c.program.opts().only) {
         await startBundlerIfRequired(RnvTaskName.run, originTask);
         await runXcodeProject(runDeviceArgs);
         if (!bundleAssets) {

@@ -27,9 +27,10 @@ export type CreateContextOptions = {
     RNV_HOME_DIR?: string;
 };
 
-export type RnvContextProgram<ExtraKeys extends string = never> = ParamKeys<ExtraKeys> & {
+export type RnvContextProgram<ExtraKeys extends string = never> = {
     args?: string[];
     rawArgs?: string[];
+    opts: () => ParamKeys<ExtraKeys>;
     option?: (cmd: string, desc: string) => void;
     parse?: (arg: string[]) => void;
     allowUnknownOption: (p: boolean) => void;

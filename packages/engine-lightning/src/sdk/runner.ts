@@ -30,7 +30,7 @@ export const runLightningProject = async () => {
     const c = getContext();
     logDefault('runLightningProject');
     const { platform } = c;
-    const { hosted } = c.program;
+    const { hosted } = c.program.opts();
     const isHosted = hosted && !getConfigProp('bundleAssets');
 
     if (isHosted) {

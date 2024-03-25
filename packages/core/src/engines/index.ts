@@ -90,7 +90,12 @@ export const configureEngines = async (c: RnvContext) => {
     const devDependencies = c.files.project.package.devDependencies || {};
     c.files.project.package.devDependencies = devDependencies;
     let needsPackageUpdate = false;
-    if (engines && !c.runtime.skipPackageUpdate && !c.program.skipDependencyCheck && !c.program.skipRnvCheck) {
+    if (
+        engines &&
+        !c.runtime.skipPackageUpdate &&
+        !c.program.opts().skipDependencyCheck &&
+        !c.program.opts().skipRnvCheck
+    ) {
         Object.keys(engines).forEach((k) => {
             const engVer = c.buildConfig.engineTemplates?.[k]?.version;
             if (engVer) {
@@ -125,7 +130,7 @@ export const registerMissingPlatformEngines = async (taskInstance?: RnvTask) => 
     if (
         !taskInstance ||
         (!taskInstance.isGlobalScope && taskInstance?.platforms?.length === 0) ||
-        c.program.platform === 'all'
+        c.program.opts().platform === 'all'
     ) {
         const registerEngineList: Array<Promise<void>> = [];
         c.buildConfig.defaults?.supportedPlatforms?.forEach((platform) => {
@@ -221,7 +226,7 @@ export const loadEnginePackageDeps = async (engineConfigs: Array<RnvEngineInstal
     logDefault('loadEnginePackageDeps');
     const c = getContext();
 
-    if (c.program.skipDependencyCheck || c.buildConfig?.isTemplate) return 0;
+    if (c.program.opts().skipDependencyCheck || c.buildConfig?.isTemplate) return 0;
     // Check engine dependencies
     const addedDeps = [];
     engineConfigs.forEach((ecf) => {
@@ -444,7 +449,7 @@ ${enginesToInstall.map((v) => `> ${v.key}@${v.version}`).join('\n')}
 };
 
 const _resolvePkgPath = (c: RnvContext, packageName: string) => {
-    if (c.paths.IS_LINKED && !c.program.unlinked && c.paths.rnv.dir !== '') {
+    if (c.paths.IS_LINKED && !c.program.opts().unlinked && c.paths.rnv.dir !== '') {
         // In the instances of running linked rnv instead of installed one load local packages
         try {
             let pkgPathLocal = require.resolve(packageName, { paths: [path.join(c.paths.rnv.dir, '..')] });

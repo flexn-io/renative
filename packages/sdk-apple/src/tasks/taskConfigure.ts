@@ -11,7 +11,7 @@ const fn: RnvTaskFn = async (c, parentTask, originTask) => {
 
     await configureEntryPoint(c.platform);
 
-    if (c.program.only && !!parentTask) {
+    if (c.program.opts().only && !!parentTask) {
         return true;
     }
 

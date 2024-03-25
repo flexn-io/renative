@@ -65,9 +65,7 @@ export const launchAndroidSimulator = async (
     let newTarget: { name: string } | string;
 
     if (target === true) {
-        const {
-            program: { device },
-        } = c;
+        const { device } = c.program.opts();
         const list = await getAndroidTargets(false, device, device);
 
         const devicesString = composeDevicesArray(list);
@@ -133,9 +131,7 @@ export const launchAndroidSimulator = async (
 export const listAndroidTargets = async () => {
     const c = getContext();
     logDefault('listAndroidTargets');
-    const {
-        program: { device },
-    } = c;
+    const { device } = c.program.opts();
 
     await resetAdb();
     const list = await getAndroidTargets(false, device, device);
@@ -187,7 +183,7 @@ const _getDeviceAsObject = (device: AndroidDevice): DeviceInfo => {
 
 export const resetAdb = async (forceRun?: boolean, ranBefore?: boolean) => {
     const c = getContext();
-    if (!c.program.resetAdb && !forceRun) return;
+    if (!c.program.opts().resetAdb && !forceRun) return;
     try {
         if (!ranBefore) await execCLI(CLI_ANDROID_ADB, 'kill-server');
     } catch (e) {
@@ -460,7 +456,7 @@ const _parseDevicesResult = async (
 ) => {
     logDebug(`_parseDevicesResult:${devicesString}:${avdsString}:${deviceOnly}`);
     const devices: Array<AndroidDevice> = [];
-    const { skipTargetCheck } = c.program;
+    const { skipTargetCheck } = c.program.opts();
 
     if (devicesString) {
         const lines = devicesString.trim().split(/\r?\n/);

@@ -4,7 +4,7 @@ import { checkInputValue } from '../questionHelpers';
 
 const Question = async (data: NewProjectData) => {
     const c = getContext();
-    const { ci, workspace } = c.program;
+    const { ci, workspace } = c.program.opts();
     if (checkInputValue(workspace)) {
         data.inputs.workspaceID = workspace;
     } else if (ci) {

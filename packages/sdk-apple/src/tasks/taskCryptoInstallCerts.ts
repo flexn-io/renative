@@ -18,7 +18,7 @@ const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
 
     if (shouldSkipTask(RnvTaskName.cryptoInstallCerts, originTask)) return true;
 
-    const kChain = c.program.keychain || 'ios-build.keychain';
+    const kChain = c.program.opts().keychain || 'ios-build.keychain';
 
     const list = getFileListSync(c.paths.workspace.project.dir);
     const cerArr = list.filter((v) => v.endsWith('.cer'));

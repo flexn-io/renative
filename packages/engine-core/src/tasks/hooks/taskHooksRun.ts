@@ -26,7 +26,7 @@ const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
         return Promise.reject('Build hooks have not been compiled properly!');
     }
 
-    let hookName = c.program?.exeMethod;
+    let hookName = c.program?.opts()?.exeMethod;
     let showHookList = false;
 
     if (!hookName || hookName === true) {

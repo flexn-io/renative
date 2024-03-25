@@ -50,9 +50,9 @@ export const getWorkspaceDirPath = async (c: RnvContext) => {
                 logInfo(
                     `Found workspace id ${ws} and compatible directory ${wsDir}. Your ${c.paths.dotRnv.configWorkspaces} has been updated.`
                 );
-            } else if (!c.runtime.isWSConfirmed || c.program.ci === true) {
+            } else if (!c.runtime.isWSConfirmed || c.program.opts().ci === true) {
                 let confirm = true;
-                if (c.program.ci !== true) {
+                if (c.program.opts().ci !== true) {
                     const { conf } = await inquirerPrompt({
                         name: 'conf',
                         type: 'confirm',

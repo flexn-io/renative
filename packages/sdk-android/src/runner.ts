@@ -78,7 +78,7 @@ export const getAndroidDeviceToRunOn = async () => {
 
     if (!c.platform) return;
 
-    const { target, device } = c.program;
+    const { target, device } = c.program.opts();
 
     await resetAdb();
     const targetToConnectWiFi = _isString(target) ? target : device;
@@ -98,7 +98,7 @@ export const getAndroidDeviceToRunOn = async () => {
     const askWhereToRun = async () => {
         if (activeDevices.length || inactiveDevices.length) {
             // No device active and device param is passed, exiting
-            if (c.program.device && !activeDevices.length) {
+            if (c.program.opts().device && !activeDevices.length) {
                 return Promise.reject('No active devices found, please connect one or remove the device argument');
             }
             if (!foundDevice && (_isString(target) || _isString(device))) {
@@ -141,7 +141,7 @@ export const getAndroidDeviceToRunOn = async () => {
                 return device;
             }
         } else {
-            if (c.program.device) {
+            if (c.program.opts().device) {
                 return Promise.reject('No active devices found, please connect one or remove the device argument');
             }
             await askForNewEmulator();
@@ -205,7 +205,7 @@ const _checkSigningCerts = async (c: Context) => {
         } app in release mode but you have't configured your ${chalk().bold(
             c.paths.workspace.appConfig.configPrivate
         )} for ${chalk().bold(c.platform)} platform yet.`;
-        if (c.program.ci === true) {
+        if (c.program.opts().ci === true) {
             return Promise.reject(msg);
         }
         logWarning(msg);
@@ -504,7 +504,7 @@ export const configureProject = async () => {
 export const runAndroidLog = async () => {
     const c = getContext();
     logDefault('runAndroidLog');
-    const filter = c.program.filter || '';
+    const filter = c.program.opts().filter || '';
     const child = execaCommand(`${c.cli[CLI_ANDROID_ADB]} logcat`);
     // use event hooks to provide a callback to execute when data are available:
     child.stdout?.on('data', (data: Buffer) => {

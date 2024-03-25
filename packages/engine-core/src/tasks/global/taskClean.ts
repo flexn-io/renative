@@ -44,7 +44,7 @@ function clearWindowsCacheFiles() {
 
 const fn: RnvTaskFn = async (c) => {
     logTask('taskClean');
-    const skipQuestion = c.program.ci;
+    const skipQuestion = c.program.opts().ci;
     const pathsToRemove = [];
     const localFiles = [];
     const immediateNodeModuleDir = path.join(c.paths.project.dir, 'node_modules');

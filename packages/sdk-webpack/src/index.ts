@@ -69,7 +69,7 @@ const _runWebBrowser = (devServerHost: string, port: number, alreadyStarted: boo
     });
 
 const _runRemoteDebuggerChii = async (c: RnvContext, obj: { remoteDebuggerActive: boolean }) => {
-    const { debugIp } = c.program;
+    const { debugIp } = c.program.opts();
     try {
         await commandExists('chii');
 
@@ -106,7 +106,7 @@ Debugger running at: ${debugUrl}`);
 };
 
 const _runRemoteDebuggerWeinre = async (c: RnvContext, obj: { remoteDebuggerActive: boolean }) => {
-    const { debugIp } = c.program;
+    const { debugIp } = c.program.opts();
     try {
         await commandExists('weinre');
 
@@ -142,7 +142,7 @@ Debugger running at: ${debugUrl}`);
 
 export const _runWebDevServer = async (c: RnvContext, enableRemoteDebugger?: boolean) => {
     logDefault('_runWebDevServer');
-    const { debug } = c.program;
+    const { debug } = c.program.opts();
 
     const env: Env = {
         ...CoreEnvVars.BASE(),
@@ -187,7 +187,7 @@ export const _runWebDevServer = async (c: RnvContext, enableRemoteDebugger?: boo
 
 export const buildCoreWebpackProject = async () => {
     const c = getContext();
-    const { debug, debugIp } = c.program;
+    const { debug, debugIp } = c.program.opts();
     logDefault('buildCoreWebpackProject');
     const env: Record<string, any> = {
         ...CoreEnvVars.BASE(),

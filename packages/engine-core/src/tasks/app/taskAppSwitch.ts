@@ -12,7 +12,7 @@ import { configureFonts } from '@rnv/sdk-utils';
 const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskSwitch');
 
-    c.program.appConfigID = true;
+    c.program.opts().appConfigID = true;
 
     await executeTask(RnvTaskName.projectConfigure, RnvTaskName.appSwitch, originTask);
 

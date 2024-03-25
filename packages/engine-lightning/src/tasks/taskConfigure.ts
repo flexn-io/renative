@@ -7,7 +7,7 @@ const fn: RnvTaskFn = async (c, parentTask, originTask) => {
 
     await executeTask(RnvTaskName.platformConfigure, RnvTaskName.configure, originTask);
 
-    if (c.program.only && !!parentTask) {
+    if (c.program.opts().only && !!parentTask) {
         return true;
     }
     return configureLightningProject();

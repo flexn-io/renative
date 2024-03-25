@@ -12,7 +12,7 @@ import Docker from '../docker';
 const fn: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskDockerDeploy', `parent:${parentTask}`);
 
-    if (c.program.only) {
+    if (c.program.opts().only) {
         // If run as standalone command skip all the export
         await executeOrSkipTask(RnvTaskName.export, 'docker export', originTask);
     } else {

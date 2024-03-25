@@ -41,12 +41,12 @@ export const logInitialize = () => {
     // cnf();
     const ctx = getContext();
 
-    _isInfoEnabled = !!ctx.program.info;
-    _jsonOnly = !!ctx.program.json;
-    _infoFilter = ctx.program.info?.split?.(',');
+    _isInfoEnabled = !!ctx.program.opts().info;
+    _jsonOnly = !!ctx.program.opts().json;
+    _infoFilter = ctx.program.opts().info?.split?.(',');
     // _analytics = analytics;
 
-    if (ctx.program.mono) {
+    if (ctx.program.opts().mono) {
         currentChalk = _chalkMono;
         chalkBlue = _chalkMono;
     }
@@ -131,10 +131,10 @@ export function stripAnsi(string: string) {
 //     // _c = c;
 //     // if (!ctx.timeStart) ctx.timeStart = new Date();
 //     _currentProcess = c.process;
-//     _isInfoEnabled = !!c.program.info;
-//     _jsonOnly = !!c.program.json;
-//     _infoFilter = c.program.info?.split?.(',');
-//     // _isMono = c.program.mono;
+//     _isInfoEnabled = !!c.program.opts().info;
+//     _jsonOnly = !!c.program.opts().json;
+//     _infoFilter = c.program.opts().info?.split?.(',');
+//     // _isMono = c.program.opts().mono;
 //     _analytics = analytics;
 //     // if (_isMono) {
 //     //     currentChalk = _chalkMono;
@@ -294,11 +294,11 @@ export const logSummary = (opts?: { header?: string; headerStyle?: 'success' | '
     if (ctx.runtime?.target) {
         str += printIntoBox(`Target (-t): ${_highlightColor(ctx.runtime?.target)}`);
     }
-    if (ctx.program?.reset) {
-        str += printIntoBox(`Reset Project (-r): ${_highlightColor(!!ctx.program?.reset)}`);
+    if (ctx.program?.opts()?.reset) {
+        str += printIntoBox(`Reset Project (-r): ${_highlightColor(!!ctx.program?.opts()?.reset)}`);
     }
-    if (ctx.program?.resetHard) {
-        str += printIntoBox(`Reset Project and Assets (-R): ${_highlightColor(!!ctx.program?.resetHard)}`);
+    if (ctx.program?.opts()?.resetHard) {
+        str += printIntoBox(`Reset Project and Assets (-R): ${_highlightColor(!!ctx.program?.opts()?.resetHard)}`);
     }
     if (ctx.runtime?.supportedPlatforms?.length) {
         const plats = ctx.runtime.supportedPlatforms.map(

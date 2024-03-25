@@ -9,7 +9,7 @@ export const confirmActiveBundler = async () => {
     const c = getContext();
     if (c.runtime.skipActiveServerCheck) return true;
 
-    if (c.program.ci) {
+    if (c.program.opts().ci) {
         //TODO: handle return codes properly
         await killPort(c.runtime.port);
         return true;
