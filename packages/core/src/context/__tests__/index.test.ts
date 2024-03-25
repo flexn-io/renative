@@ -9,7 +9,9 @@ describe('Context tests', () => {
     it('test getContext returns object with keys', async () => {
         // GIVEN
         createRnvContext({
-            program: {} as any, //Not important for this test
+            program: {
+                opts: () => ({}),
+            } as any, //Not important for this test
             process: process,
             cmd: 'command',
             subCmd: 'subcommand',

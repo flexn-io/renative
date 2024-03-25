@@ -61,6 +61,7 @@ const generateRnvConfigFileObj = () => {
 };
 
 const generateContextDefaults = (ctx?: Context) => {
+    const _opts = {};
     const runtime: any = {
         currentEngine: { rootPath: '' },
         enginesByPlatform: {},
@@ -99,7 +100,9 @@ const generateContextDefaults = (ctx?: Context) => {
         runtimePropsInjects: [],
         supportedPlatforms: [],
         systemPropsInjects: [],
-        program: {},
+        program: {
+            opts: () => _opts,
+        },
         buildConfig: {},
         command: '',
         subCommand: '',
