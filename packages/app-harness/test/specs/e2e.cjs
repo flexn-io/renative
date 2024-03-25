@@ -5,7 +5,7 @@ describe('Test App Harness', () => {
         FlexnRunner.launchApp();
     });
 
-    it('--> check if element has correct text in Home Page', async () => {
-        await FlexnRunner.expectToHaveTextById('app-harness-home-screen-intro-text', 'ReNative Harness');
+    it('--> check if ReNative logo is displayed in Home Page', async () => {
+        await FlexnRunner.expectToBeDisplayedById('app-harness-home-screen-renative-image');
     });
 });

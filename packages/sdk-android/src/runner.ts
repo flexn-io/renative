@@ -48,7 +48,7 @@ import {
     parseAndroidConfigObject,
 } from './gradleParser';
 import { parseGradleWrapperSync } from './gradleWrapperParser';
-import { parseValuesStringsSync, injectPluginXmlValuesSync, parseValuesColorsSync } from './xmlValuesParser';
+import { parseValuesXml } from './xmlValuesParser';
 import { ejectGradleProject } from './ejector';
 import { AndroidDevice, Context, Payload } from './types';
 import {
@@ -60,7 +60,7 @@ import {
     connectToWifiDevice,
     composeDevicesArray,
 } from './deviceManager';
-import { CLI_ANDROID_ADB } from './constants';
+import { ANDROID_COLORS, ANDROID_STRINGS, ANDROID_STYLES, CLI_ANDROID_ADB } from './constants';
 import { runReactNativeAndroid, packageReactNativeAndroid } from '@rnv/sdk-react-native';
 import { getEntryFile } from '@rnv/sdk-utils';
 
@@ -425,7 +425,6 @@ export const configureProject = async () => {
         appBuildGradleSigningConfigs: '',
         packagingOptions: '',
         appBuildGradleImplementations: '',
-        resourceStrings: [],
         appBuildGradleAfterEvaluate: '',
         kotlinVersion: '',
         googleServicesVersion: '',
@@ -449,7 +448,7 @@ export const configureProject = async () => {
         injectPluginGradleSync(plugin, pluginPlat, key);
         injectPluginKotlinSync(pluginPlat, key, pluginPlat.package);
         injectPluginManifestSync();
-        injectPluginXmlValuesSync(pluginPlat);
+        // injectPluginXmlValuesSync(pluginPlat);
     });
 
     c.payload.pluginConfigAndroid.pluginPackages = c.payload.pluginConfigAndroid.pluginPackages.substring(
@@ -489,8 +488,9 @@ export const configureProject = async () => {
     parseMainActivitySync();
     parseMainApplicationSync();
     parseSplashActivitySync();
-    parseValuesStringsSync();
-    parseValuesColorsSync();
+    parseValuesXml(ANDROID_STRINGS, true);
+    parseValuesXml(ANDROID_STYLES);
+    parseValuesXml(ANDROID_COLORS, true);
     parseAndroidManifestSync();
     parseGradlePropertiesSync();
     // parseFlipperSync(c, 'debug');

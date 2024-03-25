@@ -1,0 +1,34 @@
+{
+    "tag": "resources",
+    "children": [
+        {
+            "tag": "style",
+            "name": "AppTheme",
+            "parent": "Theme.AppCompat.DayNight.NoActionBar",
+            "children": [
+                {
+                    "tag": "item",
+                    "name": "android:editTextBackground",
+                    "value": "@drawable/rn_edit_text_material"
+                },
+                {
+                    "tag": "item",
+                    "name": "android:windowBackground",
+                    "value": "@color/bg"
+                }
+            ]
+        },
+        {
+            "tag": "style",
+            "name": "SplashTheme",
+            "parent": "Theme.AppCompat.NoActionBar",
+            "children": [
+                {
+                    "tag": "item",
+                    "name": "android:windowBackground",
+                    "value": "@color/bg"
+                }
+            ]
+        }
+    ]
+}

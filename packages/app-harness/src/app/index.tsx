@@ -52,7 +52,7 @@ const AppContent = () => {
                 <Image
                     style={styles.logo}
                     source={ICON_LOGO}
-                    {...testProps('template-starter-home-screen-renative-image')}
+                    {...testProps('app-harness-home-screen-renative-image')}
                 />
                 <Text style={styles.introText} {...testProps('app-harness-home-screen-intro-text')}>
                     ReNative Harness

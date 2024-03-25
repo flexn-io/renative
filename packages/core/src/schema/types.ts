@@ -5,7 +5,12 @@ import type { _MergedPlatformObjectType } from './platforms';
 import type { _RootAppBaseSchemalType } from './configFiles/app';
 
 import type { _RootProjectBaseSchemaType } from './configFiles/project';
-import type { _AndroidManifestType, _ManifestChildWithChildrenType } from './platforms/fragments/templateAndroidBase';
+import type {
+    _AndroidManifestType,
+    _AndroidResourcesType,
+    _ManifestChildWithChildrenType,
+    _ResourcesChildWithChildrenType,
+} from './platforms/fragments/templateAndroidBase';
 import type { _MergedPlatformPrivateObjectType } from './configFiles/private';
 import type { ConfigFileBuildConfig } from './configFiles/buildConfig';
 
@@ -41,6 +46,10 @@ export type RenativeConfigAppDelegateMethod = _AppDelegateMethodType;
 export type AndroidManifestNode = _ManifestChildWithChildrenType;
 
 export type AndroidManifest = _AndroidManifestType;
+
+export type AndroidResources = _AndroidResourcesType;
+
+export type AndroidResourcesNode = _ResourcesChildWithChildrenType;
 
 // export type ManifestNode = _ManifestChildType;
 

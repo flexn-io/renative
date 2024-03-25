@@ -8,6 +8,28 @@
     "integrations": {
         "@rnv/integration-starter": {}
     },
+    "platforms": {
+        "android": {
+            "templateAndroid": {
+                "styles_xml": {
+                    "tag": "resources",
+                    "children": [
+                        {
+                            "tag": "style",
+                            "name": "AppTheme",
+                            "children": [
+                                {
+                                    "tag": "item",
+                                    "name": "android:windowIsTranslucent",
+                                    "value": "true"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    },
     "plugins": {
         "react-native-splash-screen": {
             "android": {
@@ -15,6 +37,16 @@
                     "MainActivity_kt": {
                         "createMethods": ["SplashScreen.show(this)"],
                         "imports": ["org.devio.rn.splashscreen.SplashScreen"]
+                    },
+                    "colors_xml": {
+                        "tag": "resources",
+                        "children": [
+                            {
+                                "tag": "color",
+                                "name": "bg_line",
+                                "value": "#E7E7E7"
+                            }
+                        ]
                     }
                 },
                 "package": "org.devio.rn.splashscreen.SplashScreenReactPackage"
@@ -225,7 +257,6 @@
             }
         }
     },
-
     "permissions": {
         "ios": {
             "NSCalendarsUsageDescription": {

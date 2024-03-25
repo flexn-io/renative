@@ -1,0 +1,10 @@
+{
+    "tag": "resources",
+    "children": [
+        {
+            "tag": "color",
+            "name": "bg",
+            "value": "{{PLUGIN_COLORS_BG}}"
+        }
+    ]
+}
