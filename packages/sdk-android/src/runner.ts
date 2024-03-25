@@ -425,7 +425,6 @@ export const configureProject = async () => {
         appBuildGradleSigningConfigs: '',
         packagingOptions: '',
         appBuildGradleImplementations: '',
-        resourceStrings: [],
         appBuildGradleAfterEvaluate: '',
         kotlinVersion: '',
         googleServicesVersion: '',
@@ -440,8 +439,6 @@ export const configureProject = async () => {
         minSdkVersion: DEFAULTS.minSdkVersion,
         multiAPKs: '',
         splits: '',
-        resourceStylesValue: {},
-        resourceStylesValueV28: {},
         supportLibVersion: '',
         targetSdkVersion: DEFAULTS.targetSdkVersion,
     };
