@@ -90,6 +90,9 @@ export const generateContextDefaults = (): RnvContext => ({
         allowUnknownOption() {
             //NOOP
         },
+        showHelpAfterError() {
+            //NOOP
+        },
     },
     buildConfig: {},
     command: '',

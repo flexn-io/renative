@@ -33,6 +33,7 @@ export type RnvContextProgram<ExtraKeys extends string = never> = ParamKeys<Extr
     option?: (cmd: string, desc: string) => void;
     parse?: (arg: string[]) => void;
     allowUnknownOption: (p: boolean) => void;
+    showHelpAfterError: () => void;
     outputHelp: () => void;
     isHelpInvoked?: boolean;
 };

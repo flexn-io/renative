@@ -33,7 +33,7 @@
     },
     "dependencies": {
         "chalk": "4.1.0",
-        "commander": "^6.2.0",
+        "commander": "12.0.0",
         "inquirer": "8.2.0",
         "@rnv/sdk-telemetry": "1.0.0-rc.12",
         "@rnv/engine-core": "1.0.0-rc.12"

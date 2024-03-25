@@ -382,8 +382,9 @@ const _populateExtraParameters = (c: RnvContext, task: RnvTask) => {
         task.options.forEach((opt) => {
             c.program.option?.(generateStringFromTaskOption(opt), opt.description);
         });
-        c.program.parse?.(process.argv);
     }
+    c.program.showHelpAfterError();
+    c.program.parse?.(process.argv);
 };
 
 const _selectPlatform = async (c: RnvContext, suitableEngines: Array<RnvEngine>, task: string) => {
