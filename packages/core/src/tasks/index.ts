@@ -588,7 +588,7 @@ export const executeEngineTask = async (
     isFirstTask?: boolean
 ) => {
     const c = getContext();
-    const needsHelp = Object.prototype.hasOwnProperty.call(c.program, 'help');
+    const needsHelp = c.program.opts().help;
 
     const taskInstance = getEngineTask(task, tasks, CUSTOM_TASKS);
 

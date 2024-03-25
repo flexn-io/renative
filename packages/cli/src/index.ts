@@ -69,10 +69,12 @@ export const run = ({ RNV_HOME_DIR }: { RNV_HOME_DIR?: string }) => {
     // This looks weird but commander default help is actual function.
     // if you pass --help it will override it with undefined
     // So we need to check if it's not a function to output help
-    // if (!program.help) {
-    //     //program.outputHelp();
-    //     // Let's use alternative name for this flag
-    //     program.isHelpInvoked = true;
+    // if (program.opts().help) {
+    // console.log('HKJHKDJHKJDHKD');
+
+    //program.outputHelp();
+    // Let's use alternative name for this flag
+    // program.opts().help = true;
     // }
 
     // If the first argument is a flag, then the subCommand is missing

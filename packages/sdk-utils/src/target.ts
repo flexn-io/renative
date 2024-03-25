@@ -3,7 +3,7 @@ import { getContext, inquirerPrompt } from '@rnv/core';
 export const getTargetWithOptionalPrompt = async () => {
     const ctx = getContext();
     const { platform, program } = ctx;
-    let target = program?.target;
+    let target = program?.opts().target;
     const options = [];
 
     if (platform && !target) {

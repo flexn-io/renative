@@ -57,7 +57,7 @@ export const logInitialize = () => {
 
 export const logWelcome = () => {
     const ctx = getContext();
-    if (ctx.program?.isHelpInvoked) return;
+    if (ctx.program?.opts().help) return;
     const shortLen = 64;
     // prettier-ignore
     let str = _defaultColor(`
@@ -188,7 +188,7 @@ export const getCurrentCommand = (excludeDollar = false) => {
 
 export const logToSummary = (v: string) => {
     const ctx = getContext();
-    if (ctx.program?.isHelpInvoked) return;
+    if (ctx.program?.opts().help) return;
     const _v = _sanitizePaths(v);
     ctx.logging.logMessages.push(`\n${_v}`);
 };
@@ -206,7 +206,7 @@ export const logRaw = (...args: Array<string>) => {
 
 export const logSummary = (opts?: { header?: string; headerStyle?: 'success' | 'warning' | 'error' | 'none' }) => {
     const ctx = getContext();
-    if (ctx.program?.isHelpInvoked) return;
+    if (ctx.program?.opts().help) return;
 
     if (_jsonOnly) return;
 
@@ -389,7 +389,7 @@ const TASK_COUNTER: Record<string, number> = {};
 
 export const logTask = (task: string, customChalk?: string | RnvApiChalkFn) => {
     const ctx = getContext();
-    if (ctx.program?.isHelpInvoked) return;
+    if (ctx.program?.opts().help) return;
     if (!TASK_COUNTER[task]) TASK_COUNTER[task] = 0;
     TASK_COUNTER[task] += 1;
     const taskCount = currentChalk.grey(`[${TASK_COUNTER[task]}]`);
@@ -421,7 +421,7 @@ export const logTask = (task: string, customChalk?: string | RnvApiChalkFn) => {
 
 export const logDefault = (task: string, customChalk?: string | RnvApiChalkFn) => {
     const ctx = getContext();
-    if (ctx.program?.isHelpInvoked) return;
+    if (ctx.program?.opts().help) return;
     const taskCount = getLogCounter(task);
 
     if (_jsonOnly) {
@@ -459,7 +459,7 @@ const getLogCounter = (task: string, skipAddition = false) => {
 
 export const logInitTask = (task: string) => {
     const ctx = getContext();
-    if (ctx.program?.isHelpInvoked) return;
+    if (ctx.program?.opts().help) return;
     const taskCount = getLogCounter(task);
 
     if (_jsonOnly) {
@@ -485,7 +485,7 @@ type PrintJsonPayload = {
 
 export const logExitTask = (task: string) => {
     const ctx = getContext();
-    if (ctx.program?.isHelpInvoked) return;
+    if (ctx.program?.opts().help) return;
     if (_jsonOnly) {
         return _printJson({
             type: 'taskExit',
@@ -501,7 +501,7 @@ export const logExitTask = (task: string) => {
 
 export const logHook = (hook = '', msg = '') => {
     const ctx = getContext();
-    if (ctx.program?.isHelpInvoked) return;
+    if (ctx.program?.opts().help) return;
     if (_jsonOnly) {
         const payload: PrintJsonPayload = { type: 'hook', hook, message: stripAnsi(_sanitizePaths(msg)) };
         if (_getCurrentTask()) payload.task = stripAnsi(_getCurrentTask());
@@ -527,7 +527,7 @@ export const logWarning = (msg: string | boolean | unknown) => {
 
 export const logInfo = (msg: string) => {
     const ctx = getContext();
-    if (ctx.program?.isHelpInvoked) return;
+    if (ctx.program?.opts().help) return;
     if (_jsonOnly) {
         return _printJson({
             type: 'log',
