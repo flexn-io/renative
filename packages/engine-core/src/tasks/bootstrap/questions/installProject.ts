@@ -8,7 +8,7 @@ const Question = async (data: NewProjectData) => {
     const { confirmInstallProject } = await inquirerPrompt({
         name: 'confirmInstallProject',
         type: 'confirm',
-        message: 'Project is ready. Do you want to all project dependencies now?',
+        message: 'Project is ready. Do you want to install all dependencies now?',
     });
     inputs.confirmProjectInstall = confirmInstallProject;
 
