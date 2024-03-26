@@ -7,10 +7,10 @@ export function CastComponent() {
     if (client) {
         client.loadMedia({
             mediaInfo: {
-                contentUrl: 'http://localhost:8095',
+                contentUrl:
+                    'https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/mp4/BigBuckBunny.mp4',
             },
         });
     }
-
     return <CastButton style={{ width: 24, height: 24, tintColor: 'black' }} />;
 }

@@ -32,22 +32,6 @@
                 }
             },
             "android": {
-                "implementations": [
-                    "'com.google.android.gms:play-services-cast-framework:21.4.0'"
-                ],
-                "MainApplication": {
-                    "packages": [
-                        "com.reactnative.googlecast.GoogleCastPackage"
-                    ]
-                },
-                "mainActivity": {
-                    "imports": [
-                        "com.google.android.gms.cast.framework.CastContext"
-                    ],
-                    "createMethods": [
-                        "CastContext.getSharedInstance(this)"
-                    ]
-                },
                 "AndroidManifest": {
                     "children": [
                         {
