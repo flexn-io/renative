@@ -31,6 +31,13 @@ export const EnvVars = {
         }
         return {};
     },
+    RNV_FLIPPER_ENABLED: () => {
+        const enableFlipper = getConfigProp('flipperEnabled', true);
+        if (!enableFlipper) {
+            return { NO_FLIPPER: '1' };
+        }
+        return {};
+    },
     RNV_SKIP_LINKING: () => {
         const skipPlugins: string[] = [];
         parsePlugins(
