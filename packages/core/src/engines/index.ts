@@ -5,7 +5,7 @@ import { logDebug, logDefault, chalk, logInfo, logWarning, logError } from '../l
 import { doResolve } from '../system/resolve';
 import { configurePlugins } from '../plugins';
 import { RnvContext } from '../context/types';
-import { RnvTask, RnvTaskMap } from '../tasks/types';
+import { RnvTask } from '../tasks/types';
 import { RenativeConfigVersion, RnvPlatform } from '../types';
 import { RnvEngine, RnvEngineInstallConfig, RnvEngineTemplate } from './types';
 import { inquirerPrompt } from '../api';
@@ -16,7 +16,7 @@ import { getEngineTemplateByPlatform } from '../configs/engines';
 import { ConfigFileEngine } from '../schema/configFiles/types';
 import { getConfigProp } from '../context/contextProps';
 
-const ENGINE_CORE = 'engine-core';
+// const ENGINE_CORE = 'engine-core';
 
 export const registerEngine = async (engine: RnvEngine, platform?: RnvPlatform, engConfig?: RnvEngineTemplate) => {
     const c = getContext();
@@ -73,19 +73,6 @@ export const generateEngineExtensions = (exts: Array<string>, config: ConfigFile
     });
     extArr = extArr.concat(registerEngineExtension(null, null, ['mjs', 'json', 'cjs', 'wasm']));
     return extArr;
-};
-
-export const generateEngineTasks = (taskArr: Array<RnvTask>, config: ConfigFileEngine) => {
-    const tasks: RnvTaskMap = {};
-
-    taskArr.forEach((taskInstance) => {
-        const plts = taskInstance.platforms || [];
-        const key = `${config.id}:${plts.join('-')}:${taskInstance.task}`;
-        taskInstance.ownerID = config.id;
-        taskInstance.key = key;
-        tasks[key] = taskInstance;
-    });
-    return tasks;
 };
 
 export const configureEngines = async (c: RnvContext) => {
@@ -519,83 +506,87 @@ export const getEngineRunnerByPlatform = (platform: RnvPlatform, ignoreMissingEr
     return selectedEngine;
 };
 
-const findByTaskName = (taskName: string, tasks: RnvTaskMap) => {
-    const task = Object.values(tasks).find((v) => v.task === taskName);
-    return task;
-};
+// const findTasksByTaskName = (taskName: string, tasks: RnvTaskMap) => {
+//     const result: RnvTask[] = [];
+//     const task = Object.values(tasks).forEach((v) => {
+//         const plat = getContext().platform;
+//         if (v.platforms && plat) {
+//             if (!v.platforms.includes(plat)) {
+//                 // If we found a task with platform restriction and it does not match current platform we skip it
+//                 return;
+//             }
+//         }
+//         if (v.task === taskName) {
+//             result.push(v);
+//         }
+//     });
+//     return result;
+// };
 
-export const getEngineTask = (taskName: string, tasks?: RnvTaskMap, customTasks?: RnvTaskMap): RnvTask | undefined => {
-    // TODO: tasks need to be merged into one single map
-    if (customTasks) {
-        const customTask = findByTaskName(taskName, customTasks);
-        if (customTask) return customTask;
-    }
-    if (!tasks) {
-        return undefined;
-    }
+// export const getEngineTask = (taskName: string, tasks?: RnvTaskMap, customTasks?: RnvTaskMap): RnvTask | undefined => {
+//     const result: RnvTask[] = [];
 
-    // let tsk;
-    // const taskCleaned = task.split(' ')[0];
-    // if (tasks) {
-    //     tsk = tasks[task];
-    //     if (!tsk) {
-    //         tsk = tasks[taskCleaned];
-    //     }
-    // }
-    const taskInstance = findByTaskName(taskName, tasks);
-    return taskInstance;
-};
+//     if (customTasks) {
+//         result.push(...findTasksByTaskName(taskName, customTasks));
+//     }
+//     if (!tasks) {
+//         return undefined;
+//     }
 
-export const hasEngineTask = (task: string, tasks: RnvTaskMap, isProjectScope?: boolean) =>
-    isProjectScope ? !!getEngineTask(task, tasks) : getEngineTask(task, tasks)?.isGlobalScope;
+//     const taskInstance = findByTaskName(taskName, tasks);
+//     return taskInstance;
+// };
 
-export const getEngineSubTasks = (task: string, engine: RnvEngine, exactMatch?: boolean) => {
-    const ctx = getContext();
-    const { tasks } = engine;
-    const result = Object.values(tasks).filter((v) => {
-        if (ctx.platform) {
-            if (v.platforms) {
-                if (!v.platforms.includes(ctx.platform)) {
-                    return false;
-                }
-            }
-        }
-        return exactMatch ? v.task.split(' ')[0] === task : v.task.split(' ')[0].startsWith(task);
-    });
+// export const hasEngineTask = (task: string, tasks: RnvTaskMap, isProjectScope?: boolean) =>
+//     isProjectScope ? !!getEngineTask(task, tasks) : getEngineTask(task, tasks)?.isGlobalScope;
 
-    return result;
-};
+// export const getEngineSubTasks = (task: string, engine: RnvEngine, exactMatch?: boolean) => {
+//     const ctx = getContext();
+//     const { tasks } = engine;
+//     const result = Object.values(tasks).filter((v) => {
+//         if (ctx.platform) {
+//             if (v.platforms) {
+//                 if (!v.platforms.includes(ctx.platform)) {
+//                     return false;
+//                 }
+//             }
+//         }
+//         return exactMatch ? v.task.split(' ')[0] === task : v.task.split(' ')[0].startsWith(task);
+//     });
 
-export const getEngineRunner = (task: string, customTasks?: RnvTaskMap, failOnMissingEngine = true) => {
-    const c = getContext();
+//     return result;
+// };
 
-    if (customTasks?.[task]) {
-        return c.runtime.enginesById[ENGINE_CORE];
-    }
+// export const getEngineRunner = (task: string, customTasks?: RnvTaskMap, failOnMissingEngine = true) => {
+//     const c = getContext();
 
-    const { configExists } = c.paths.project;
+//     if (customTasks?.[task]) {
+//         return c.runtime.enginesById[ENGINE_CORE];
+//     }
 
-    let engine = typeof c.platform === 'string' && c.runtime.enginesByPlatform[c.platform];
-    if (!engine) {
-        engine = c.runtime.enginesById['engine-core'];
-    }
-    if (!engine) {
-        if (hasEngineTask(task, c.runtime.enginesById[ENGINE_CORE].tasks, configExists)) {
-            return c.runtime.enginesById[ENGINE_CORE];
-        }
-        if (failOnMissingEngine) {
-            throw new Error(`Cound not find active engine for platform ${c.platform}. Available engines:
-        ${c.runtime.enginesByIndex.map((v) => v.config.id).join(', ')}`);
-        }
-        return undefined;
-    }
+//     const { configExists } = c.paths.project;
 
-    if (hasEngineTask(task, engine.tasks, configExists)) return engine;
-    if (hasEngineTask(task, c.runtime.enginesById[ENGINE_CORE].tasks, configExists)) {
-        return c.runtime.enginesById[ENGINE_CORE];
-    }
-    if (failOnMissingEngine) throw new Error(`Cound not find suitable executor for task ${chalk().bold(task)}`);
-    return undefined;
-};
+//     let engine = typeof c.platform === 'string' && c.runtime.enginesByPlatform[c.platform];
+//     if (!engine) {
+//         engine = c.runtime.enginesById['engine-core'];
+//     }
+//     if (!engine) {
+//         if (hasEngineTask(task, c.runtime.enginesById[ENGINE_CORE].tasks, configExists)) {
+//             return c.runtime.enginesById[ENGINE_CORE];
+//         }
+//         if (failOnMissingEngine) {
+//             throw new Error(`Cound not find active engine for platform ${c.platform}. Available engines:
+//         ${c.runtime.enginesByIndex.map((v) => v.config.id).join(', ')}`);
+//         }
+//         return undefined;
+//     }
+
+//     if (hasEngineTask(task, engine.tasks, configExists)) return engine;
+//     if (hasEngineTask(task, c.runtime.enginesById[ENGINE_CORE].tasks, configExists)) {
+//         return c.runtime.enginesById[ENGINE_CORE];
+//     }
+//     if (failOnMissingEngine) throw new Error(`Cound not find suitable executor for task ${chalk().bold(task)}`);
+//     return undefined;
+// };
 
 export const getRegisteredEngines = () => getContext().runtime.enginesByIndex;

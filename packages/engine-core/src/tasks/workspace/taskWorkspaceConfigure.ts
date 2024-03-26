@@ -83,7 +83,7 @@ const fn: RnvTaskFn = async (c) => {
 
 const Task: RnvTask = {
     description: 'Preconfigures your current workspace defined via "workspaceID" prop in renative config file',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.workspaceConfigure,
     isGlobalScope: true,
 };

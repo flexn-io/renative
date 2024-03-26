@@ -54,7 +54,7 @@ const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Install additional template to the project',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.templateAdd,
 };
 

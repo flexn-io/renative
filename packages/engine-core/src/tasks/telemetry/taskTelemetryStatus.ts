@@ -27,7 +27,7 @@ const fn: RnvTaskFn = async (c) => {
 
 const Task: RnvTask = {
     description: 'Show current rnv telemetry status on your machine',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.telemetryStatus,
     isGlobalScope: true,
 };

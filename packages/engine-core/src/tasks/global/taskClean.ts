@@ -209,7 +209,7 @@ const fn: RnvTaskFn = async (c) => {
 
 const Task: RnvTask = {
     description: 'Automatically removes all node_modules and lock in your project and its dependencies',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.clean,
     isGlobalScope: true,
 };

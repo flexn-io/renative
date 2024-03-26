@@ -88,7 +88,7 @@ const fn: RnvTaskFn = async (c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Checks validity and config health of your project',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.doctor,
     isGlobalScope: true,
 };

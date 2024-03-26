@@ -44,7 +44,7 @@ const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Reset project to specific template',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.templateApply,
 };
 

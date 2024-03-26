@@ -1,33 +1,15 @@
-import {
-    RnvTaskFn,
-    logTask,
-    executeOrSkipTask,
-    initializeTask,
-    findSuitableTask,
-    RnvTask,
-    RnvTaskName,
-} from '@rnv/core';
+import { RnvTask, RnvTaskName } from '@rnv/core';
 import Docker from '../docker';
-
-const fn: RnvTaskFn = async (c, parentTask, originTask) => {
-    logTask('taskDockerExport', `parent:${parentTask}`);
-
-    if (c.program.opts().only) {
-        // If run as standalone command skip all the export
-        await executeOrSkipTask(RnvTaskName.export, 'docker export', originTask);
-    } else {
-        const taskInstance = await findSuitableTask(RnvTaskName.export);
-        if (taskInstance) await initializeTask(taskInstance);
-    }
-
-    const docker = new Docker();
-    await docker.doExport();
-    return true;
-};
 
 const Task: RnvTask = {
     description: 'Exports your project to docker image',
-    fn,
+    // TODO: we need to do this differently
+    // Project neds to define pipeline of tasks instead of integration
+    dependsOn: [RnvTaskName.export],
+    fn: async () => {
+        const docker = new Docker();
+        await docker.doExport();
+    },
     task: 'docker export',
     platforms: ['web'],
 };

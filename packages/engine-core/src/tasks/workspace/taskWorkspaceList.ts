@@ -22,7 +22,7 @@ const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Show list of all available workspaces',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.workspaceList,
     isGlobalScope: true,
 };

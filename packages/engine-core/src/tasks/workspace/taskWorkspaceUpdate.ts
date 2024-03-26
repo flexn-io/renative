@@ -11,7 +11,7 @@ const fn: RnvTaskFn = async (_c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'TODO: unused task',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.workspaceUpdate,
     isGlobalScope: true,
     isPrivate: true,

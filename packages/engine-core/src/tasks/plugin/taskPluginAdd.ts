@@ -100,7 +100,7 @@ const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Add selected plugin to the project',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.pluginAdd,
 };
 

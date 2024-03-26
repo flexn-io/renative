@@ -88,7 +88,7 @@ const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Connect platform template back to rnv',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.platformConnect,
 };
 

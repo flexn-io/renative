@@ -236,7 +236,7 @@ const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Encrypts secure files from `~/<wokspace>/<project>/..` to project',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.cryptoEncrypt,
 };
 

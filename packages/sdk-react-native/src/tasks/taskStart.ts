@@ -1,47 +1,30 @@
-import {
-    logTask,
-    RnvTaskFn,
-    executeTask,
-    shouldSkipTask,
-    RnvTask,
-    RnvTaskName,
-    RnvTaskOptionPresets,
-    doResolve,
-} from '@rnv/core';
+import { RnvTask, RnvTaskName, RnvTaskOptionPresets, doResolve } from '@rnv/core';
 import { startReactNative } from '../metroRunner';
 import { SdkPlatforms } from '../constants';
 
-const fn: RnvTaskFn = async (c, parentTask, originTask) => {
-    const { hosted } = c.program.opts();
-
-    logTask('taskStart', `parent:${parentTask} port:${c.runtime.port} hosted:${!!hosted}`);
-
-    if (hosted) {
-        return Promise.reject('This platform does not support hosted mode');
-    }
-    // Disable reset for other commands (ie. cleaning platforms)
-    c.runtime.disableReset = true;
-    if (!parentTask) {
-        await executeTask(RnvTaskName.configureSoft, RnvTaskName.start, originTask);
-    }
-
-    if (shouldSkipTask(RnvTaskName.start, originTask)) return true;
-
-    let customCliPath: string | undefined;
-    let metroConfigName: string | undefined;
-    const { reactNativePackageName, reactNativeMetroConfigName } = c.runtime?.runtimeExtraProps || {};
-    if (reactNativePackageName) {
-        customCliPath = `${doResolve(reactNativePackageName)}/local-cli/cli.js`;
-    }
-    if (reactNativeMetroConfigName) {
-        metroConfigName = reactNativeMetroConfigName;
-    }
-    return startReactNative({ waitForBundler: !parentTask, customCliPath, metroConfigName });
-};
-
 const Task: RnvTask = {
     description: 'Starts react-native bundler',
-    fn,
+    dependsOn: [RnvTaskName.configureSoft],
+    //TODO: implement dependsOnTrigger
+    // dependsOnTrigger: ({ parentTaskName }) => !parentTaskName,
+    fn: async ({ ctx, parentTaskName }) => {
+        const { hosted } = ctx.program.opts();
+        if (hosted) {
+            return Promise.reject('This platform does not support hosted mode');
+        }
+        // Disable reset for other commands (ie. cleaning platforms)
+        ctx.runtime.disableReset = true;
+        let customCliPath: string | undefined;
+        let metroConfigName: string | undefined;
+        const { reactNativePackageName, reactNativeMetroConfigName } = ctx.runtime?.runtimeExtraProps || {};
+        if (reactNativePackageName) {
+            customCliPath = `${doResolve(reactNativePackageName)}/local-cli/cli.js`;
+        }
+        if (reactNativeMetroConfigName) {
+            metroConfigName = reactNativeMetroConfigName;
+        }
+        return startReactNative({ waitForBundler: !parentTaskName, customCliPath, metroConfigName });
+    },
     task: RnvTaskName.start,
     options: RnvTaskOptionPresets.withConfigure(),
     platforms: SdkPlatforms,

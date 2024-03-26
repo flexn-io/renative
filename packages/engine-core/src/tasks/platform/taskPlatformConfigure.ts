@@ -69,7 +69,7 @@ const fn: RnvTaskFn = async (c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Low-level task used by engines to prepare platformBuilds folder',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.platformConfigure,
 };
 

@@ -31,7 +31,7 @@ const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Get list of all available hooks',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.hooksList,
     forceBuildHookRebuild: true,
 };

@@ -49,7 +49,7 @@ const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Update specific plugin to latest supported version (rnv)',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.pluginUpdate,
 };
 

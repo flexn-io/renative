@@ -13,6 +13,7 @@ import {
     logError,
     logDefault,
     logWarning,
+    getContext,
 } from '@rnv/core';
 // import cli from '@react-native-windows/cli';
 // import runWindowsCMD from '@react-native-windows/cli/lib-commonjs/runWindows/runWindows';
@@ -191,8 +192,10 @@ type InjectOptions = {
 };
 
 // TODO Document/comment each of the functions
-export const ruWindowsProject = async (c: RnvContext, injectedOptions?: InjectOptions) => {
+export const ruWindowsProject = async (injectedOptions?: InjectOptions) => {
     logDefault('runWindowsProject');
+
+    const c = getContext();
 
     const options = getOptions(c, injectedOptions);
     const args: string[] = [];
@@ -243,7 +246,7 @@ export const ruWindowsProject = async (c: RnvContext, injectedOptions?: InjectOp
     // For release bundle needs to be created
     if (options.bundleAssets || options.release) {
         logDebug('Assets will be bundled');
-        await packageBundleForWindows(c, options.bundleIsDev);
+        await packageBundleForWindows(options.bundleIsDev);
     }
 
     await runWindows(args, config, options);
@@ -251,7 +254,8 @@ export const ruWindowsProject = async (c: RnvContext, injectedOptions?: InjectOp
     return true;
 };
 
-const copyWindowsTemplateProject = async (c: RnvContext, injectedOptions = {}) => {
+const copyWindowsTemplateProject = async (injectedOptions = {}) => {
+    const c = getContext();
     const options = getOptions(c, injectedOptions);
 
     const opts = {
@@ -267,7 +271,8 @@ const copyWindowsTemplateProject = async (c: RnvContext, injectedOptions = {}) =
     return true;
 };
 
-function clearWindowsTemporaryFiles(c: RnvContext) {
+function clearWindowsTemporaryFiles() {
+    const c = getContext();
     logDefault('clearWindowsTemporaryFiles');
     const logging = getConfigProp<ConfigKey>('logging', defaultOptions.logging);
     const opts = {
@@ -294,7 +299,8 @@ function clearWindowsTemporaryFiles(c: RnvContext) {
     return new Promise((resolve) => setTimeout(() => resolve(true), 4000));
 }
 
-const packageBundleForWindows = (c: RnvContext, isDev = false) => {
+const packageBundleForWindows = (isDev = false) => {
+    const c = getContext();
     logDefault('packageBundleForWindows');
     // const { maxErrorLength } = c.program.opts();
     const entryFile = getConfigProp('entryFile');
@@ -439,7 +445,8 @@ const installWindowsApp = async (c: RnvContext, script: string, windowsStoreAppU
     );
 };
 
-const packageWindowsApp = async (c: RnvContext, injectedOptions?: InjectOptions) => {
+const packageWindowsApp = async (injectedOptions?: InjectOptions) => {
+    const c = getContext();
     if (!c.runtime.appId) return;
     try {
         const appFolder = getAppFolder();

@@ -57,7 +57,7 @@ const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Run specific build hook',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.hooksRun,
     options: [RnvTaskOptions.exeMethod],
     forceBuildHookRebuild: true,

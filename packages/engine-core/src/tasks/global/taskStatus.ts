@@ -4,7 +4,7 @@ const fn = async () => Promise.resolve();
 
 const Task: RnvTask = {
     description: 'Show current info about the project',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.status,
     isGlobalScope: true,
 };

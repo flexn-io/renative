@@ -66,7 +66,7 @@ ${usedPorts.map((v) => chalk().bold(`> ${v.port} (${v.platform})`)).join('\n')}`
 
 const Task: RnvTask = {
     description: 'Kills all the processes related to this project',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.kill,
     isGlobalScope: true,
 };

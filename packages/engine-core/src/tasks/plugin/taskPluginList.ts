@@ -13,7 +13,7 @@ const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Show list of all available plugins',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.pluginList,
 };
 

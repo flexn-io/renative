@@ -1,24 +1,14 @@
-import { logTask, executeTask, RnvTaskFn, RnvTask, RnvTaskName, RnvTaskOptionPresets } from '@rnv/core';
+import { RnvTaskName, RnvTaskOptionPresets, createTask } from '@rnv/core';
 import { configureLightningProject } from '../sdk/runner';
 import { SdkPlatforms } from '../sdk/constants';
 
-const fn: RnvTaskFn = async (c, parentTask, originTask) => {
-    logTask('taskConfigure');
-
-    await executeTask(RnvTaskName.platformConfigure, RnvTaskName.configure, originTask);
-
-    if (c.program.opts().only && !!parentTask) {
-        return true;
-    }
-    return configureLightningProject();
-};
-
-const Task: RnvTask = {
+export default createTask({
+    dependsOn: [RnvTaskName.platformConfigure],
     description: 'Configure current project',
-    fn,
+    fn: async () => {
+        return configureLightningProject();
+    },
     task: RnvTaskName.configure,
     options: RnvTaskOptionPresets.withConfigure(),
     platforms: SdkPlatforms,
-};
-
-export default Task;
+});

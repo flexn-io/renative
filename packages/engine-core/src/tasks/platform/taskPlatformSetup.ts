@@ -30,7 +30,7 @@ const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Allows you to change supportedPlatforms for your project',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.platformSetup,
 };
 

@@ -24,7 +24,7 @@ const fn: RnvTaskFn = async (c, parentTask, _) => {
 
 const Task: RnvTask = {
     description: 'Install package node_modules via yarn or npm',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.install,
 };
 

@@ -83,7 +83,7 @@ const fn = async () => {
 
 const Task: RnvTask = {
     description: 'Create new ReNative project',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.new,
     options: [
         RnvTaskOptions.gitEnabled,

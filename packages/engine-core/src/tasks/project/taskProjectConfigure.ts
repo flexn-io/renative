@@ -147,7 +147,7 @@ const fn: RnvTaskFn = async (c, parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Configure current project',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.projectConfigure,
 };
 

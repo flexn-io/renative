@@ -49,7 +49,8 @@ const fn: RnvTaskFn = async (_c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Add new workspace',
-    fn,
+    dependsOn: [RnvTaskName.projectConfigure],
+    fn: async () => {},
     task: RnvTaskName.workspaceAdd,
     isGlobalScope: true,
 };

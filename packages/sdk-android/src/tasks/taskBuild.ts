@@ -1,30 +1,14 @@
-import {
-    logTask,
-    RnvTaskFn,
-    executeOrSkipTask,
-    shouldSkipTask,
-    RnvTask,
-    RnvTaskName,
-    RnvTaskOptionPresets,
-} from '@rnv/core';
+import { RnvTaskName, RnvTaskOptionPresets, createTask } from '@rnv/core';
 import { buildReactNativeAndroid } from '@rnv/sdk-react-native';
 import { SdkPlatforms } from '../constants';
 
-const fn: RnvTaskFn = async (c, parentTask, originTask) => {
-    logTask('taskBuild');
-    await executeOrSkipTask(RnvTaskName.package, RnvTaskName.build, originTask);
-
-    if (shouldSkipTask(RnvTaskName.build, originTask)) return true;
-
-    return buildReactNativeAndroid();
-};
-
-const Task: RnvTask = {
+export default createTask({
     description: 'Build project binary',
-    fn,
+    fn: async () => {
+        return buildReactNativeAndroid();
+    },
     task: RnvTaskName.build,
+    dependsOn: [RnvTaskName.package],
     options: RnvTaskOptionPresets.withConfigure(),
     platforms: SdkPlatforms,
-};
-
-export default Task;
+});

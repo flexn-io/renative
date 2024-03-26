@@ -1,53 +1,40 @@
 import path from 'path';
 import {
-    RnvTaskFn,
     logWarning,
     logError,
-    logTask,
     logDebug,
     getFileListSync,
     copyFileSync,
     mkdirSync,
     fsExistsSync,
-    executeTask,
-    shouldSkipTask,
     RnvTask,
     RnvTaskName,
 } from '@rnv/core';
 import { SdkPlatforms } from '../common';
 
-const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskCryptoInstallProfiles');
-
-    await executeTask(RnvTaskName.projectConfigure, RnvTaskName.cryptoInstallProfiles, originTask);
-
-    if (shouldSkipTask(RnvTaskName.cryptoInstallProfiles, originTask)) return true;
-
-    const ppFolder = path.join(c.paths.user.homeDir, 'Library/MobileDevice/Provisioning Profiles');
-
-    if (!fsExistsSync(ppFolder)) {
-        logWarning(`folder ${ppFolder} does not exist!`);
-        mkdirSync(ppFolder);
-    }
-
-    const list = getFileListSync(c.paths.workspace.project.dir);
-    const mobileprovisionArr = list.filter((v) => v.endsWith('.mobileprovision'));
-
-    try {
-        mobileprovisionArr.forEach((v) => {
-            logDebug(`taskCryptoInstallProfiles: Installing: ${v}`);
-            copyFileSync(v, ppFolder);
-        });
-    } catch (e) {
-        logError(e);
-    }
-
-    return true;
-};
-
 const Task: RnvTask = {
     description: 'Installs provisioning certificates found in your workspace (mac only)',
-    fn,
+    dependsOn: [RnvTaskName.projectConfigure],
+    fn: async ({ ctx }) => {
+        const ppFolder = path.join(ctx.paths.user.homeDir, 'Library/MobileDevice/Provisioning Profiles');
+
+        if (!fsExistsSync(ppFolder)) {
+            logWarning(`folder ${ppFolder} does not exist!`);
+            mkdirSync(ppFolder);
+        }
+
+        const list = getFileListSync(ctx.paths.workspace.project.dir);
+        const mobileprovisionArr = list.filter((v) => v.endsWith('.mobileprovision'));
+
+        try {
+            mobileprovisionArr.forEach((v) => {
+                logDebug(`taskCryptoInstallProfiles: Installing: ${v}`);
+                copyFileSync(v, ppFolder);
+            });
+        } catch (e) {
+            logError(e);
+        }
+    },
     task: RnvTaskName.cryptoInstallProfiles,
     platforms: SdkPlatforms,
 };

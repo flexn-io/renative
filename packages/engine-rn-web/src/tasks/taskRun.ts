@@ -1,6 +1,5 @@
 import {
     RnvContext,
-    RnvTaskFn,
     RnvTaskOptionPresets,
     logErrorPlatform,
     logTask,
@@ -9,8 +8,6 @@ import {
     getPlatformProjectDir,
     writeCleanFile,
     executeTask,
-    executeOrSkipTask,
-    shouldSkipTask,
     RnvTask,
     getAppFolder,
     fsExistsSync,
@@ -74,55 +71,45 @@ const _configureHostedIfRequired = async (c: RnvContext) => {
     }
 };
 
-const fn: RnvTaskFn = async (c, parentTask, originTask) => {
-    const { platform } = c;
-    const { port } = c.runtime;
-    const { target } = c.runtime;
-    const { hosted } = c.program.opts();
-    logTask('taskRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
-
-    await executeOrSkipTask(RnvTaskName.configure, RnvTaskName.run, originTask);
-
-    if (hosted) {
-        c.runtime.shouldOpenBrowser = true;
-        // return _taskStart(c);
-        return executeTask(RnvTaskName.start, RnvTaskName.run, originTask);
-    }
-
-    if (shouldSkipTask(RnvTaskName.run, originTask)) return true;
-
-    switch (platform) {
-        case 'web':
-        case 'webtv':
-            c.runtime.shouldOpenBrowser = true;
-            return runWebpackServer();
-        case 'tizen':
-        case 'tizenmobile':
-        case 'tizenwatch':
-            if (!c.program.opts().only) {
-                await _configureHostedIfRequired(c);
-            }
-            return runTizen(c, target);
-        case 'webos':
-            if (!c.program.opts().only) {
-                await _configureHostedIfRequired(c);
-            }
-            return runWebOS(c);
-        case 'kaios':
-            return runKaiOSProject();
-        case 'chromecast':
-            if (!c.program.opts().only) {
-                await _configureHostedIfRequired(c);
-            }
-            return runChromecast(c);
-        default:
-            return logErrorPlatform();
-    }
-};
-
 const Task: RnvTask = {
     description: 'Run your app in browser',
-    fn,
+    dependsOn: [RnvTaskName.configure],
+    fn: async ({ ctx, taskName, originTaskName }) => {
+        const { hosted } = ctx.program.opts();
+        if (hosted) {
+            ctx.runtime.shouldOpenBrowser = true;
+            // return _taskStart(c);
+            return executeTask({ taskName: RnvTaskName.start, parentTaskName: taskName, originTaskName });
+        }
+
+        switch (ctx.platform) {
+            case 'web':
+            case 'webtv':
+                ctx.runtime.shouldOpenBrowser = true;
+                return runWebpackServer();
+            case 'tizen':
+            case 'tizenmobile':
+            case 'tizenwatch':
+                if (!ctx.program.opts().only) {
+                    await _configureHostedIfRequired(ctx);
+                }
+                return runTizen(ctx, ctx.runtime.target);
+            case 'webos':
+                if (!ctx.program.opts().only) {
+                    await _configureHostedIfRequired(ctx);
+                }
+                return runWebOS(ctx);
+            case 'kaios':
+                return runKaiOSProject();
+            case 'chromecast':
+                if (!ctx.program.opts().only) {
+                    await _configureHostedIfRequired(ctx);
+                }
+                return runChromecast(ctx);
+            default:
+                return logErrorPlatform();
+        }
+    },
     task: RnvTaskName.run,
     isPriorityOrder: true,
     options: RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun()),

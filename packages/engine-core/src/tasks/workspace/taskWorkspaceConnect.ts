@@ -34,7 +34,7 @@ const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Connect project with selected workspace',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.workspaceConnect,
     isGlobalScope: true,
 };

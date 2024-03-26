@@ -207,7 +207,7 @@ const fn = async (c: RnvContext) => {
 
 const Task: RnvTask = {
     description: 'Configure project with specific appConfig',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.appConfigure,
     options: RnvTaskOptionPresets.withConfigure(),
 };

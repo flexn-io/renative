@@ -3,11 +3,12 @@ import { loadEngines, registerMissingPlatformEngines } from './engines';
 import { loadIntegrations } from './integrations';
 import { checkAndMigrateProject } from './migrator';
 import { configureRuntimeDefaults } from './context/runtime';
-import { findSuitableGlobalTask, findSuitableTask, initializeTask } from './tasks';
+import { findSuitableTask, initializeTask } from './tasks';
 import { updateRenativeConfigs } from './plugins';
 import { checkAndBootstrapIfRequired } from './projects/bootstrap';
 import { loadDefaultConfigTemplates } from './configs';
 import { getApi } from './api/provider';
+import { RnvTask } from './tasks/types';
 
 export const exitRnvCore = async (code: number) => {
     const ctx = getContext();
@@ -34,11 +35,13 @@ export const executeRnvCore = async () => {
         return;
     }
 
+    let initTask: RnvTask | undefined;
+
     // Special Case for engine-core tasks
     // they don't require other engines to be loaded if isGlobalScope = true
     // ie rnv link
-    const initTask = await findSuitableGlobalTask();
-    if (initTask?.task && initTask.isGlobalScope) {
+    initTask = await findSuitableTask();
+    if (initTask?.isGlobalScope) {
         return initializeTask(initTask);
     }
 
@@ -48,19 +51,21 @@ export const executeRnvCore = async () => {
     if (!result) {
         await updateRenativeConfigs();
     }
-
     // for root rnv we simply load all engines upfront
     const { configExists } = c.paths.project;
     if (!c.command && configExists) {
         await registerMissingPlatformEngines();
     }
 
-    // Some tasks might require all engines to be present (ie rnv platform list)
-    const taskInstance = await findSuitableTask();
+    initTask = await findSuitableTask();
+    return initializeTask(initTask);
 
-    if (c.command && !taskInstance?.ignoreEngines) {
-        await registerMissingPlatformEngines(taskInstance);
-    }
+    // if (c.command && !taskInstance?.ignoreEngines) {
+    //     await registerMissingPlatformEngines(taskInstance);
+    // }
 
-    if (taskInstance?.task) await initializeTask(taskInstance);
+    // if (taskInstance?.task) {
+    //     return initializeTask(taskInstance);
+    // }
+    // return Promise.reject(`No suitable task found for command: ${c.command}`);
 };

@@ -76,7 +76,7 @@ const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Upgrade or downgrade RNV dependencies in your ReNative project',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.projectUpgrade,
     isGlobalScope: true,
 };

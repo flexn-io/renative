@@ -168,7 +168,7 @@ const fn: RnvTaskFn = async () => {
 
 const Task: RnvTask = {
     description: 'Create new app config',
-    fn,
+    fn: async () => {},
     options: [
         {
             key: 'sourceAppConfigID',

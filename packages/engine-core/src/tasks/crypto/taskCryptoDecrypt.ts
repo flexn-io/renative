@@ -207,7 +207,7 @@ and we will try to help!
 
 const Task: RnvTask = {
     description: 'Decrypt encrypted project files into local `~/<wokspace>/<project>/..`',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.cryptoDecrypt,
 };
 

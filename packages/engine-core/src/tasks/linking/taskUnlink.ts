@@ -43,7 +43,7 @@ const fn: RnvTaskFn = async () => {
 
 const Task: RnvTask = {
     description: 'Replaces rnv version in project with original node_modules version',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.unlink,
     isGlobalScope: true,
     ignoreEngines: true,

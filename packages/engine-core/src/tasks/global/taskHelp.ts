@@ -44,7 +44,7 @@ ${optsString}
 
 const Task: RnvTask = {
     description: 'Display generic help',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.help,
     isGlobalScope: true,
     isPriorityOrder: true,

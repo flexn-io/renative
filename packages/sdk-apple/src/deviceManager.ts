@@ -258,8 +258,9 @@ const _launchSimulator = async (selectedDevice: AppleDevice) => {
     return true;
 };
 
-export const listAppleDevices = async (c: RnvContext) => {
+export const listAppleDevices = async () => {
     logDefault('listAppleDevices');
+    const c = getContext();
     const { platform } = c;
     const devicesArr = await getAppleDevices(c);
     let devicesString = '';

@@ -1,13 +1,11 @@
-import { RnvContext, logSuccess, RnvTask, RnvTaskFn } from '@rnv/core';
-
-const fn: RnvTaskFn = async (c: RnvContext<any, 'myOpt'>) => {
-    logSuccess(`Hello from Integration Starter! 
---my-opt: "${c.program.opts().myOpt}"`);
-};
+import { logSuccess, RnvTask } from '@rnv/core';
 
 const Task: RnvTask = {
     description: 'Prints hello message',
-    fn,
+    fn: async ({ ctx }) => {
+        logSuccess(`Hello from Integration Starter! 
+--my-opt: "${ctx.program.opts().myOpt}"`);
+    },
     task: 'starter hello',
     options: [{ key: 'my-opt', description: 'Hello', isValueType: true }],
 };

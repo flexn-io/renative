@@ -259,7 +259,7 @@ export const configureTemplateFiles = async () => {
     }
 };
 
-export const configureEntryPoint = async (platform: RnvPlatform) => {
+export const configureEntryPoint = async () => {
     logDefault('configureEntryPoint');
     const c = getContext();
 

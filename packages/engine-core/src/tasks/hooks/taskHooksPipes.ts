@@ -13,7 +13,7 @@ const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Get the list of all available pipes',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.hooksPipes,
 };
 

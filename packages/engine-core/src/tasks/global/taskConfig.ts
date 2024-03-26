@@ -10,7 +10,7 @@ const fn: RnvTaskFn = async (c, _, originTask) => {
 
 const Task: RnvTask = {
     description: 'Display RNV config',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.config,
 };
 

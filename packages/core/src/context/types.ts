@@ -18,6 +18,7 @@ import { ConfigFileBuildConfig } from '../schema/configFiles/buildConfig';
 import type { ParamKeys, ProgramOptionsKey } from '../tasks/constants';
 import { ExecaChildProcess } from 'execa';
 import { RnvPlugin } from '../plugins/types';
+import { RnvIntegration } from '../integrations/types';
 
 export type CreateContextOptions = {
     program: RnvContextProgram;
@@ -97,6 +98,7 @@ export type RnvContextBuildConfig = Partial<ConfigFileBuildConfig> & {
 };
 
 export type RnvContextRuntime = {
+    integrationsByIndex: Array<RnvIntegration>;
     enginesByPlatform: Record<string, RnvEngine>;
     enginesByIndex: Array<RnvEngine>;
     enginesById: Record<string, RnvEngine>;
@@ -129,7 +131,6 @@ export type RnvContextRuntime = {
     _platformBuildsSuffix?: string;
     platformBuildsProjectPath?: string;
     targetUDID?: string;
-    forceBundleAssets?: boolean;
     webpackTarget?: string;
     shouldOpenBrowser?: boolean;
     appId?: string;

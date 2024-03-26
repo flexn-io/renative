@@ -71,7 +71,7 @@ TIP: You can select options with ${chalk().bold('SPACE')} key before pressing EN
 
 const Task: RnvTask = {
     description: 'Copy all platform files directly to project',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.platformEject,
 };
 

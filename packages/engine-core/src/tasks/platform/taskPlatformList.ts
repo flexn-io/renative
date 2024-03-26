@@ -21,7 +21,7 @@ const fn: RnvTaskFn = async (_c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'List all available platforms',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.platformList,
 };
 

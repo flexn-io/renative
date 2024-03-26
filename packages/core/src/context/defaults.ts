@@ -29,6 +29,7 @@ export const generateRnvConfigFileObj = () => {
 };
 
 const runtime: RnvContext['runtime'] = {
+    integrationsByIndex: [],
     plugins: {},
     pluginVersions: {},
     enginesByPlatform: {},

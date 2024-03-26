@@ -25,7 +25,7 @@ const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
 
 const Task: RnvTask = {
     description: 'Switch between different app configs in current project',
-    fn,
+    fn: async () => {},
     task: RnvTaskName.appSwitch,
 };
 
