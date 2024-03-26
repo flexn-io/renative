@@ -75,10 +75,15 @@ export const generateEngineExtensions = (exts: Array<string>, config: ConfigFile
     return extArr;
 };
 
-export const generateEngineTasks = (taskArr: Array<RnvTask>) => {
+export const generateEngineTasks = (taskArr: Array<RnvTask>, config: ConfigFileEngine) => {
     const tasks: RnvTaskMap = {};
+
     taskArr.forEach((taskInstance) => {
-        tasks[taskInstance.task] = taskInstance;
+        const plts = taskInstance.platforms || [];
+        const key = `${config.id}:${plts.join('-')}:${taskInstance.task}`;
+        taskInstance.ownerID = config.id;
+        taskInstance.key = key;
+        tasks[key] = taskInstance;
     });
     return tasks;
 };
@@ -514,28 +519,52 @@ export const getEngineRunnerByPlatform = (platform: RnvPlatform, ignoreMissingEr
     return selectedEngine;
 };
 
-export const getEngineTask = (task: string, tasks?: RnvTaskMap, customTasks?: RnvTaskMap): RnvTask | undefined => {
-    const customTask = customTasks?.[task];
-    if (customTask) return customTask;
-    let tsk;
-    const taskCleaned = task.split(' ')[0];
-    if (tasks) {
-        tsk = tasks[task];
-        if (!tsk) {
-            tsk = tasks[taskCleaned];
-        }
+const findByTaskName = (taskName: string, tasks: RnvTaskMap) => {
+    const task = Object.values(tasks).find((v) => v.task === taskName);
+    return task;
+};
+
+export const getEngineTask = (taskName: string, tasks?: RnvTaskMap, customTasks?: RnvTaskMap): RnvTask | undefined => {
+    // TODO: tasks need to be merged into one single map
+    if (customTasks) {
+        const customTask = findByTaskName(taskName, customTasks);
+        if (customTask) return customTask;
+    }
+    if (!tasks) {
+        return undefined;
     }
 
-    return tsk;
+    // let tsk;
+    // const taskCleaned = task.split(' ')[0];
+    // if (tasks) {
+    //     tsk = tasks[task];
+    //     if (!tsk) {
+    //         tsk = tasks[taskCleaned];
+    //     }
+    // }
+    const taskInstance = findByTaskName(taskName, tasks);
+    return taskInstance;
 };
 
 export const hasEngineTask = (task: string, tasks: RnvTaskMap, isProjectScope?: boolean) =>
     isProjectScope ? !!getEngineTask(task, tasks) : getEngineTask(task, tasks)?.isGlobalScope;
 
-export const getEngineSubTasks = (task: string, tasks: RnvTaskMap, exactMatch?: boolean) =>
-    Object.values(tasks).filter((v) =>
-        exactMatch ? v.task.split(' ')[0] === task : v.task.split(' ')[0].startsWith(task)
-    );
+export const getEngineSubTasks = (task: string, engine: RnvEngine, exactMatch?: boolean) => {
+    const ctx = getContext();
+    const { tasks } = engine;
+    const result = Object.values(tasks).filter((v) => {
+        if (ctx.platform) {
+            if (v.platforms) {
+                if (!v.platforms.includes(ctx.platform)) {
+                    return false;
+                }
+            }
+        }
+        return exactMatch ? v.task.split(' ')[0] === task : v.task.split(' ')[0].startsWith(task);
+    });
+
+    return result;
+};
 
 export const getEngineRunner = (task: string, customTasks?: RnvTaskMap, failOnMissingEngine = true) => {
     const c = getContext();
@@ -560,6 +589,7 @@ export const getEngineRunner = (task: string, customTasks?: RnvTaskMap, failOnMi
         }
         return undefined;
     }
+
     if (hasEngineTask(task, engine.tasks, configExists)) return engine;
     if (hasEngineTask(task, c.runtime.enginesById[ENGINE_CORE].tasks, configExists)) {
         return c.runtime.enginesById[ENGINE_CORE];

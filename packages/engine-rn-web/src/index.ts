@@ -11,15 +11,10 @@ import taskStart from './tasks/taskStart';
 import taskDebug from './tasks/taskDebug';
 
 const Engine: RnvEngine = {
-    tasks: generateEngineTasks([
-        taskRun,
-        taskBuild,
-        taskConfigure,
-        taskStart,
-        taskDebug,
-        ...TasksSdkWebOS,
-        ...TasksSdkTizen,
-    ]),
+    tasks: generateEngineTasks(
+        [taskRun, taskBuild, taskConfigure, taskStart, taskDebug, ...TasksSdkWebOS, ...TasksSdkTizen],
+        CNF
+    ),
     config: CNF,
     projectDirName: '',
     serverDirName: '',

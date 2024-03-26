@@ -11,7 +11,10 @@ import { Tasks as TasksSdkReactNative, withRNVRNConfig } from '@rnv/sdk-react-na
 import CNF from '../renative.engine.json';
 
 const Engine: RnvEngine = {
-    tasks: generateEngineTasks([taskRun, taskPackage, taskBuild, taskConfigure, taskExport, ...TasksSdkReactNative]),
+    tasks: generateEngineTasks(
+        [taskRun, taskPackage, taskBuild, taskConfigure, taskExport, ...TasksSdkReactNative],
+        CNF
+    ),
     config: CNF,
     projectDirName: '',
     runtimeExtraProps: {},

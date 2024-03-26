@@ -112,19 +112,11 @@ export const checkTizenSdk = async () => {
     logDefault('checkTizenSdk');
     if (!_isSdkInstalled(c)) {
         logWarning(
-            `${c.platform} requires SDK to be installed. Your SDK path in ${chalk().bold(
+            `${c.platform} platform requires Tizen SDK to be installed. Your SDK path in ${chalk().bold(
                 c.paths.workspace.config
             )} does not exist: ${chalk().bold(_getCurrentSdkPath(c))}`
         );
-
-        switch (c.platform) {
-            case 'tizen':
-            case 'tizenmobile':
-            case 'tizenwatch':
-                return _attemptAutoFix(c);
-            default:
-                return true;
-        }
+        return _attemptAutoFix(c);
     }
     return true;
 };

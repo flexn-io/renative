@@ -8,7 +8,7 @@ import { withRNVRNConfig } from '@rnv/sdk-react-native';
 import CNF from '../renative.engine.json';
 
 const Engine: RnvEngine = {
-    tasks: generateEngineTasks([...TasksSdkApple, ...TasksSdkReactNative]),
+    tasks: generateEngineTasks([...TasksSdkApple, ...TasksSdkReactNative], CNF),
     config: CNF,
     runtimeExtraProps: {
         reactNativePackageName: 'react-native',

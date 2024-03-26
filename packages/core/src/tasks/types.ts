@@ -13,6 +13,8 @@ export type RnvTask = {
     isPrivate?: boolean;
     isPriorityOrder?: boolean;
     ignoreEngines?: boolean;
+    ownerID?: string;
+    key?: string;
 };
 
 export type TaskPromptOption = {

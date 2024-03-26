@@ -179,23 +179,16 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: SDKKe
 export const checkAndroidSdk = async () => {
     const c = getContext();
     logDefault('checkAndroidSdk');
+
     if (!_isSdkInstalled(c)) {
         logWarning(
-            `${c.platform} requires SDK to be installed. Your SDK path in ${chalk().bold(
+            `${c.platform} platform requires Android SDK to be installed. Your SDK path in ${chalk().bold(
                 c.paths.workspace.config
             )} does not exist: ${chalk().bold(_getCurrentSdkPath(c))}`
         );
 
-        switch (c.platform) {
-            case 'android':
-            case 'androidtv':
-            case 'firetv':
-            case 'androidwear':
-                await _attemptAutoFix(c, 'android', 'ANDROID_SDK');
-                return _attemptAutoFix(c, 'android-ndk', 'ANDROID_NDK', 'source.properties');
-            default:
-                return true;
-        }
+        await _attemptAutoFix(c, 'android', 'ANDROID_SDK');
+        return _attemptAutoFix(c, 'android-ndk', 'ANDROID_NDK', 'source.properties');
     } else {
         await checkAndConfigureAndroidSdks();
     }

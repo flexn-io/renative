@@ -8,7 +8,7 @@ import taskRun from './tasks/taskRun';
 import CNF from '../renative.engine.json';
 
 const Engine: RnvEngine = {
-    tasks: generateEngineTasks([taskRun, taskBuild, taskConfigure, ...TasksSdkWebOS, ...TasksSdkTizen]),
+    tasks: generateEngineTasks([taskRun, taskBuild, taskConfigure, ...TasksSdkWebOS, ...TasksSdkTizen], CNF),
     config: CNF,
     projectDirName: 'project',
     serverDirName: 'server',

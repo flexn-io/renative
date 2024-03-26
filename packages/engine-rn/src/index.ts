@@ -8,7 +8,7 @@ import { withRNVBabel } from './adapters/babelAdapter';
 import CNF from '../renative.engine.json';
 
 const Engine: RnvEngine = {
-    tasks: generateEngineTasks([...TasksSdkAndroid, ...TasksSdkApple, ...TasksSdkReactNative]),
+    tasks: generateEngineTasks([...TasksSdkAndroid, ...TasksSdkApple, ...TasksSdkReactNative], CNF),
     config: CNF,
     runtimeExtraProps: {
         reactNativePackageName: 'react-native',

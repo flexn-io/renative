@@ -10,7 +10,7 @@ import taskExport from './tasks/taskExport';
 import CNF from '../renative.engine.json';
 
 const Engine: RnvEngine = {
-    tasks: generateEngineTasks([taskRun, taskBuild, taskConfigure, taskStart, taskExport]),
+    tasks: generateEngineTasks([taskRun, taskBuild, taskConfigure, taskStart, taskExport], CNF),
     config: CNF,
     projectDirName: '',
     runtimeExtraProps: {},

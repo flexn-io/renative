@@ -110,6 +110,7 @@ export const getAllSuitableTasks = (): Record<string, TaskPromptOption> => {
                 suitableTasks[taskObj.value] = taskObj;
             } else {
                 // In case of multiple competing tasks (same task name but coming from different engines)
+
                 taskObj = suitableTasks[taskObj.value];
                 // We try to revert to generic description instead.
                 taskObj.description = DEFAULT_TASK_DESCRIPTIONS[taskObj.value] || taskObj.description;
@@ -148,6 +149,7 @@ export const findSuitableTask = async (specificTask?: string): Promise<RnvTask |
     const c = getContext();
 
     const REGISTERED_ENGINES = getRegisteredEngines();
+
     let task = '';
     if (!specificTask) {
         if (!c.command) {
@@ -215,9 +217,7 @@ export const findSuitableTask = async (specificTask?: string): Promise<RnvTask |
             return hasEngineTask(task, engine.tasks, c.paths.project.configExists);
         });
 
-        const autocompleteEngines = REGISTERED_ENGINES.filter(
-            (engine) => getEngineSubTasks(task, engine.tasks, true).length
-        );
+        const autocompleteEngines = REGISTERED_ENGINES.filter((engine) => getEngineSubTasks(task, engine, true).length);
 
         const isAutoComplete = !suitableEngines.length && !!c.command && !autocompleteEngines.length;
         if (!suitableEngines.length) {
@@ -227,7 +227,7 @@ export const findSuitableTask = async (specificTask?: string): Promise<RnvTask |
                 taskKey: string;
             }> = [];
             REGISTERED_ENGINES.forEach((engine) => {
-                const st = getEngineSubTasks(task, engine.tasks);
+                const st = getEngineSubTasks(task, engine);
 
                 st.forEach((taskInstance) => {
                     const isNotViable = !c.paths.project.configExists && !taskInstance.isGlobalScope;

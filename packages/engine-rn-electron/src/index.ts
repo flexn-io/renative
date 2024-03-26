@@ -9,7 +9,7 @@ import taskStart from './tasks/taskStart';
 import { withRNVBabel } from './adapter';
 
 const Engine: RnvEngine = {
-    tasks: generateEngineTasks([taskRun, taskBuild, taskConfigure, taskStart, taskExport]),
+    tasks: generateEngineTasks([taskRun, taskBuild, taskConfigure, taskStart, taskExport], CNF),
     config: CNF,
     projectDirName: '',
     serverDirName: '',
