@@ -62,7 +62,9 @@ Make sure all your rnv dependencies are of same version and you are executing wi
     c.process = ctx?.process || c.process;
     c.command = ctx?.cmd || c.command;
     c.subCommand = ctx?.subCmd || c.subCommand;
-    c.isSystemWin = isSystemWin;
+    c.isSystemWin = process.platform === 'win32';
+    c.isSystemLinux = process.platform === 'linux';
+    c.isSystemMac = process.platform === 'darwin';
 
     c.paths.rnv.dir = ctx?.RNV_HOME_DIR || c.paths.rnv.dir;
 

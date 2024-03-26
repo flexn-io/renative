@@ -59,6 +59,8 @@ export type RnvContext<Payload = any> = {
     runningProcesses: ExecaChildProcess[];
     rnvVersion: string;
     isSystemWin: boolean;
+    isSystemLinux: boolean;
+    isSystemMac: boolean;
     _currentTask?: string;
     systemPropsInjects: OverridesOptions;
     _requiresNpmInstall?: boolean;

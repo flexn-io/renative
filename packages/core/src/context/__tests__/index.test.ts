@@ -31,6 +31,8 @@ describe('Context tests', () => {
             'injectableConfigProps',
             'isBuildHooksReady',
             'isDefault',
+            'isSystemLinux',
+            'isSystemMac',
             'isSystemWin',
             'logMessages',
             'paths',
