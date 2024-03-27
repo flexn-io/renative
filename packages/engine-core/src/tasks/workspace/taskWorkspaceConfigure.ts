@@ -6,84 +6,79 @@ import {
     fsExistsSync,
     fsReadFileSync,
     chalk,
-    logTask,
     logWarning,
     logDebug,
     logInfo,
-    RnvTaskFn,
     RnvTask,
     RnvTaskName,
     RnvFileName,
 } from '@rnv/core';
 import { writeFileSync } from 'fs';
 
-const fn: RnvTaskFn = async (c) => {
-    logTask('taskWorkspaceConfigure');
-
-    // Check globalConfig Dir
-    if (fsExistsSync(c.paths.workspace.dir)) {
-        logDebug(`${c.paths.workspace.dir} folder exists!`);
-    } else {
-        logInfo(`${c.paths.workspace.dir} folder missing! Creating one for you...`);
-        mkdirSync(c.paths.workspace.dir);
-    }
-
-    // Check globalConfig
-    if (fsExistsSync(c.paths.workspace.config)) {
-        logDebug(`${c.paths.workspace.dir}/${RnvFileName.renative} file exists!`);
-    } else {
-        const oldGlobalConfigPath = path.join(c.paths.workspace.dir, 'config.json');
-        if (fsExistsSync(oldGlobalConfigPath)) {
-            logWarning('Found old version of your config. will copy it to new renative.json config');
-            copyFileSync(oldGlobalConfigPath, c.paths.workspace.config);
+const Task: RnvTask = {
+    description: 'Preconfigures your current workspace defined via "workspaceID" prop in renative config file',
+    fn: async ({ ctx }) => {
+        const { paths, files } = ctx;
+        // Check globalConfig Dir
+        if (fsExistsSync(paths.workspace.dir)) {
+            logDebug(`${paths.workspace.dir} folder exists!`);
         } else {
-            logInfo(`${c.paths.workspace.dir}/${RnvFileName.renative} file missing! Creating one for you...`);
-            writeFileSync(c.paths.workspace.config, '{}');
+            logInfo(`${paths.workspace.dir} folder missing! Creating one for you...`);
+            mkdirSync(paths.workspace.dir);
         }
-    }
 
-    if (fsExistsSync(c.paths.workspace.config)) {
-        c.files.workspace.config = JSON.parse(fsReadFileSync(c.paths.workspace.config).toString());
-
-        if (c.files.workspace.config?.appConfigsPath) {
-            if (!fsExistsSync(c.files.workspace.config.appConfigsPath)) {
-                logWarning(
-                    `Your custom global appConfig is pointing to ${chalk().bold(
-                        c.files.workspace.config.appConfigsPath
-                    )} which doesn't exist! Make sure you create one in that location`
-                );
+        // Check globalConfig
+        if (fsExistsSync(paths.workspace.config)) {
+            logDebug(`${paths.workspace.dir}/${RnvFileName.renative} file exists!`);
+        } else {
+            const oldGlobalConfigPath = path.join(paths.workspace.dir, 'config.json');
+            if (fsExistsSync(oldGlobalConfigPath)) {
+                logWarning('Found old version of your config. will copy it to new renative.json config');
+                copyFileSync(oldGlobalConfigPath, paths.workspace.config);
             } else {
-                logInfo(
-                    `Found custom appConfing location pointing to ${chalk().bold(
-                        c.files.workspace.config.appConfigsPath
-                    )}. ReNativewill now swith to that location!`
-                );
-                c.paths.project.appConfigsDir = c.files.workspace.config.appConfigsPath;
+                logInfo(`${paths.workspace.dir}/${RnvFileName.renative} file missing! Creating one for you...`);
+                writeFileSync(paths.workspace.config, '{}');
             }
         }
 
-        // Check config sanity
-        if (c.files.workspace.config?.defaultTargets === undefined) {
-            logWarning(
-                `You're missing defaultTargets in your config ${chalk().bold(
-                    c.paths.workspace.config
-                )}. Let's add them!`
-            );
+        if (fsExistsSync(paths.workspace.config)) {
+            files.workspace.config = JSON.parse(fsReadFileSync(paths.workspace.config).toString());
 
-            const newConfig = {
-                ...c.files.workspace.config,
-                defaultTargets: {},
-            };
-            fsWriteFileSync(c.paths.workspace.config, JSON.stringify(newConfig, null, 2));
+            if (files.workspace.config?.appConfigsPath) {
+                if (!fsExistsSync(files.workspace.config.appConfigsPath)) {
+                    logWarning(
+                        `Your custom global appConfig is pointing to ${chalk().bold(
+                            files.workspace.config.appConfigsPath
+                        )} which doesn't exist! Make sure you create one in that location`
+                    );
+                } else {
+                    logInfo(
+                        `Found custom appConfing location pointing to ${chalk().bold(
+                            files.workspace.config.appConfigsPath
+                        )}. ReNativewill now swith to that location!`
+                    );
+                    paths.project.appConfigsDir = files.workspace.config.appConfigsPath;
+                }
+            }
+
+            // Check config sanity
+            if (files.workspace.config?.defaultTargets === undefined) {
+                logWarning(
+                    `You're missing defaultTargets in your config ${chalk().bold(
+                        paths.workspace.config
+                    )}. Let's add them!`
+                );
+
+                const newConfig = {
+                    ...files.workspace.config,
+                    defaultTargets: {},
+                };
+                fsWriteFileSync(paths.workspace.config, JSON.stringify(newConfig, null, 2));
+            }
         }
-    }
 
-    return true;
-};
-
-const Task: RnvTask = {
-    description: 'Preconfigures your current workspace defined via "workspaceID" prop in renative config file',
-    fn: async () => {},
+        return true;
+    },
     task: RnvTaskName.workspaceConfigure,
     isGlobalScope: true,
 };

@@ -1,4 +1,4 @@
-import { RnvEngine, generateEngineTasks } from '@rnv/core';
+import { RnvEngine, generateRnvTaskMap } from '@rnv/core';
 
 import taskCryptoDecrypt from './tasks/crypto/taskCryptoDecrypt';
 import taskCryptoEncrypt from './tasks/crypto/taskCryptoEncrypt';
@@ -16,7 +16,6 @@ import taskPluginUpdate from './tasks/plugin/taskPluginUpdate';
 import taskWorkspaceList from './tasks/workspace/taskWorkspaceList';
 import taskWorkspaceAdd from './tasks/workspace/taskWorkspaceAdd';
 import taskWorkspaceConnect from './tasks/workspace/taskWorkspaceConnect';
-import taskWorkspaceUpdate from './tasks/workspace/taskWorkspaceUpdate';
 import taskHooksList from './tasks/hooks/taskHooksList';
 import taskHooksRun from './tasks/hooks/taskHooksRun';
 import taskHooksPipes from './tasks/hooks/taskHooksPipes';
@@ -40,7 +39,8 @@ import taskTelemetryStatus from './tasks/telemetry/taskTelemetryStatus';
 import taskTelemetryEnable from './tasks/telemetry/taskTelemetryEnable';
 import taskTelemetryDisable from './tasks/telemetry/taskTelemetryDisable';
 import taskSwitch from './tasks/app/taskAppSwitch';
-
+//@ts-ignore
+import PKG from '../package.json';
 const CNF = {
     // title: 'Engine Core',
     id: 'engine-core',
@@ -53,7 +53,7 @@ const CNF = {
 const Engine: RnvEngine = {
     runtimeExtraProps: {},
     serverDirName: '',
-    tasks: generateEngineTasks(
+    tasks: generateRnvTaskMap(
         [
             taskCryptoDecrypt,
             taskCryptoEncrypt,
@@ -71,7 +71,6 @@ const Engine: RnvEngine = {
             taskWorkspaceList,
             taskWorkspaceAdd,
             taskWorkspaceConnect,
-            taskWorkspaceUpdate,
             taskHooksList,
             taskHooksRun,
             taskHooksPipes,
@@ -96,7 +95,7 @@ const Engine: RnvEngine = {
             taskTelemetryDisable,
             taskSwitch,
         ],
-        CNF
+        PKG
     ),
     config: CNF,
     // package: '',

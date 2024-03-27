@@ -36,7 +36,7 @@ export const getEnvVar = () => {
     return envVar;
 };
 
-export const checkCrypto = async (parentTask?: string, originTask?: string) => {
+export const checkCrypto = async (parentTaskName?: string, originTaskName?: string) => {
     const c = getContext();
     logTask('checkCrypto');
 
@@ -71,7 +71,7 @@ export const checkCrypto = async (parentTask?: string, originTask?: string) => {
 project timestamp: ${chalk().grey(`${tsProject} - ${new Date(tsProject)}`)}
 workspace timestamp: ${chalk().grey(`${tsWorkspace} - ${new Date(tsWorkspace)}`)}
 you should run decrypt`);
-                await executeTask(RnvTaskName.cryptoDecrypt, parentTask, originTask);
+                await executeTask({ taskName: RnvTaskName.cryptoDecrypt, parentTaskName, originTaskName });
                 return;
             }
 

@@ -1,19 +1,14 @@
-import { logTask, logRaw, generateOptions, buildHooks, executeTask, RnvTaskFn, RnvTask, RnvTaskName } from '@rnv/core';
-
-const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskHooksPipes');
-
-    await executeTask(RnvTaskName.projectConfigure, RnvTaskName.hooksPipes, originTask);
-
-    await buildHooks();
-
-    const pipeOpts = generateOptions(c.buildPipes);
-    logRaw(`Pipes:\n${pipeOpts.asString}`);
-};
+import { logRaw, generateOptions, buildHooks, RnvTask, RnvTaskName } from '@rnv/core';
 
 const Task: RnvTask = {
     description: 'Get the list of all available pipes',
-    fn: async () => {},
+    dependsOn: [RnvTaskName.projectConfigure],
+    fn: async ({ ctx }) => {
+        await buildHooks();
+
+        const pipeOpts = generateOptions(ctx.buildPipes);
+        logRaw(`Pipes:\n${pipeOpts.asString}`);
+    },
     task: RnvTaskName.hooksPipes,
 };
 

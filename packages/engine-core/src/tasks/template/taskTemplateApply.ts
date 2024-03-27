@@ -1,50 +1,44 @@
 import {
-    logTask,
     applyTemplate,
     getInstalledTemplateOptions,
     executeTask,
-    RnvTaskFn,
     inquirerPrompt,
     RnvTask,
     RnvTaskName,
 } from '@rnv/core';
 
-const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskTemplateApply', `template: ${c.program.opts().template}`);
-
-    await executeTask(RnvTaskName.projectConfigure, RnvTaskName.templateApply, originTask);
-
-    if (c.buildConfig?.isTemplate) {
-        return Promise.reject('Template projects cannot use template apply command');
-    }
-
-    if (c.program.opts().template) {
-        await applyTemplate(c.program.opts().template);
-        if (c.program.opts().appConfigID) {
-            await executeTask(RnvTaskName.appConfigure, RnvTaskName.templateApply, originTask);
-        }
-
-        return true;
-    }
-    const opts = await getInstalledTemplateOptions();
-
-    const { template } = await inquirerPrompt({
-        type: 'list',
-        message: 'Pick which template to install',
-        name: 'template',
-        choices: opts?.keysAsArray,
-    });
-
-    await applyTemplate(template);
-    if (c.program.opts().appConfigID) {
-        await executeTask(RnvTaskName.appConfigure, RnvTaskName.templateApply, originTask);
-    }
-    return true;
-};
-
 const Task: RnvTask = {
     description: 'Reset project to specific template',
-    fn: async () => {},
+    dependsOn: [RnvTaskName.projectConfigure],
+    fn: async ({ ctx, taskName, originTaskName }) => {
+        const { buildConfig, program } = ctx;
+        if (buildConfig?.isTemplate) {
+            return Promise.reject('Template projects cannot use template apply command');
+        }
+
+        if (program.opts().template) {
+            await applyTemplate(program.opts().template);
+            if (program.opts().appConfigID) {
+                await executeTask({ taskName: RnvTaskName.appConfigure, parentTaskName: taskName, originTaskName });
+            }
+
+            return true;
+        }
+        const opts = await getInstalledTemplateOptions();
+
+        const { template } = await inquirerPrompt({
+            type: 'list',
+            message: 'Pick which template to install',
+            name: 'template',
+            choices: opts?.keysAsArray,
+        });
+
+        await applyTemplate(template);
+        if (program.opts().appConfigID) {
+            await executeTask({ taskName: RnvTaskName.appConfigure, parentTaskName: taskName, originTaskName });
+        }
+        return true;
+    },
     task: RnvTaskName.templateApply,
 };
 

@@ -1,5 +1,4 @@
 import {
-    logTask,
     RnvTask,
     RnvTaskName,
     updateRenativeConfigs,
@@ -35,55 +34,52 @@ import {
     processChdirToProject,
 } from './questionHelpers';
 
-const fn = async () => {
-    logTask('taskNew');
-    // Initialize Project
-    const payload = await initNewProject();
-    // Initial questions
-    await inquiryProjectName(payload);
-    await inquiryProjectFolder(payload);
-    await inquiryIsRenativeProject(payload);
-    await inquiryHasNodeModules(payload);
-    await inquiryWorkspace(payload);
-    await saveProgressIntoProjectConfig(payload);
-    // Switch execution context to new directory
-    await processChdirToProject();
-    // Install template only (this avoids whole npm project install)
-    await inquiryInstallTemplate(payload);
-    await inquiryConfigTemplates(payload);
-    await inquiryApplyTemplate(payload);
-    await saveProgressIntoProjectConfig(payload);
-    // Gather project/app info
-    await inquiryBookmarkTemplate(payload);
-    await inquiryAppTitle(payload);
-    await inquiryAppID(payload);
-    await inquiryAppVersion(payload);
-    await saveProgressIntoProjectConfig(payload);
-
-    await inquirySupportedPlatforms(payload);
-    await inquiryBootstrapQuestions(payload);
-    await inquiryGit(payload);
-    // Configure final config overrides
-    await updateRenativeConfigs();
-    await configureConfigOverrides(payload);
-    await saveProgressIntoProjectConfig(payload);
-    // Now we can apply template (required for appConfigs to be generated properly)
-    await applyTemplate();
-    await configureTemplateFiles();
-    await generateLocalJsonSchemas();
-    await inquiryAppConfigs(payload);
-    // Telementry
-    await telemetryNewProject(payload);
-    await inquiryProjectInstall(payload);
-
-    logToSummary(generateProjectOverview(payload));
-
-    return true;
-};
-
 const Task: RnvTask = {
     description: 'Create new ReNative project',
-    fn: async () => {},
+    fn: async () => {
+        // Initialize Project
+        const payload = await initNewProject();
+        // Initial questions
+        await inquiryProjectName(payload);
+        await inquiryProjectFolder(payload);
+        await inquiryIsRenativeProject(payload);
+        await inquiryHasNodeModules(payload);
+        await inquiryWorkspace(payload);
+        await saveProgressIntoProjectConfig(payload);
+        // Switch execution context to new directory
+        await processChdirToProject();
+        // Install template only (this avoids whole npm project install)
+        await inquiryInstallTemplate(payload);
+        await inquiryConfigTemplates(payload);
+        await inquiryApplyTemplate(payload);
+        await saveProgressIntoProjectConfig(payload);
+        // Gather project/app info
+        await inquiryBookmarkTemplate(payload);
+        await inquiryAppTitle(payload);
+        await inquiryAppID(payload);
+        await inquiryAppVersion(payload);
+        await saveProgressIntoProjectConfig(payload);
+
+        await inquirySupportedPlatforms(payload);
+        await inquiryBootstrapQuestions(payload);
+        await inquiryGit(payload);
+        // Configure final config overrides
+        await updateRenativeConfigs();
+        await configureConfigOverrides(payload);
+        await saveProgressIntoProjectConfig(payload);
+        // Now we can apply template (required for appConfigs to be generated properly)
+        await applyTemplate();
+        await configureTemplateFiles();
+        await generateLocalJsonSchemas();
+        await inquiryAppConfigs(payload);
+        // Telementry
+        await telemetryNewProject(payload);
+        await inquiryProjectInstall(payload);
+
+        logToSummary(generateProjectOverview(payload));
+
+        return true;
+    },
     task: RnvTaskName.new,
     options: [
         RnvTaskOptions.gitEnabled,

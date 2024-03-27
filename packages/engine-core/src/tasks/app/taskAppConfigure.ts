@@ -36,12 +36,12 @@ const _loadAppConfigIDfromDir = (dirName: string, appConfigsDir: string) => {
     return { dir: dirName, id: null };
 };
 
-const _askUserAboutConfigs = async (c: RnvContext, dir: string, id: string, basePath: string) => {
+const _askUserAboutConfigs = async (ctx: RnvContext, dir: string, id: string, basePath: string) => {
     logTask('_askUserAboutConfigs');
     logWarning(
         `AppConfig error - It seems you have a mismatch between appConfig folder name (${dir}) and the id defined in renative.json (${id}). They must match.`
     );
-    if (c.program.opts().ci === true) {
+    if (ctx.program.opts().ci === true) {
         throw new Error('You cannot continue if you set --ci flag. please fix above error first');
     }
     const { choice } = await inquirerPrompt({
@@ -89,19 +89,19 @@ const _askUserAboutConfigs = async (c: RnvContext, dir: string, id: string, base
 };
 
 /* eslint-disable no-await-in-loop */
-const matchAppConfigID = async (c: RnvContext, appConfigID: string) => {
+const matchAppConfigID = async (ctx: RnvContext, appConfigID: string) => {
     logTask('matchAppConfigID', `appId:${appConfigID}`);
 
     if (!appConfigID) return false;
 
-    const { appConfigsDirs, appConfigsDirNames } = c.paths.project;
+    const { appConfigsDirs, appConfigsDirNames } = ctx.paths.project;
 
     const acIndex = appConfigsDirNames.indexOf(appConfigID);
     if (acIndex !== -1) {
         let conf = _loadAppConfigIDfromDir(appConfigID, appConfigsDirs[acIndex]);
         const { dir, id } = conf;
         if (id !== dir) {
-            conf = await _askUserAboutConfigs(c, conf.dir, conf.id, path.join(appConfigsDirs[acIndex], '..'));
+            conf = await _askUserAboutConfigs(ctx, conf.dir, conf.id, path.join(appConfigsDirs[acIndex], '..'));
         }
 
         return conf.id;
@@ -109,14 +109,14 @@ const matchAppConfigID = async (c: RnvContext, appConfigID: string) => {
     return false;
 };
 
-const _findAndSwitchAppConfigDir = async (c: RnvContext) => {
+const _findAndSwitchAppConfigDir = async (ctx: RnvContext) => {
     logTask('_findAndSwitchAppConfigDir');
-    const { appConfigsDirNames } = c.paths.project;
+    const { appConfigsDirNames } = ctx.paths.project;
     if (appConfigsDirNames.length) {
         if (appConfigsDirNames.length === 1) {
             // we have only one, skip the question
             logInfo(`Found only one app config available. Will use ${chalk().bold(appConfigsDirNames[0])}`);
-            _setAppId(c, appConfigsDirNames[0]);
+            _setAppId(ctx, appConfigsDirNames[0]);
             return true;
         }
 
@@ -130,7 +130,7 @@ const _findAndSwitchAppConfigDir = async (c: RnvContext) => {
         });
 
         if (conf) {
-            _setAppId(c, conf);
+            _setAppId(ctx, conf);
             return true;
         }
     }
@@ -138,76 +138,72 @@ const _findAndSwitchAppConfigDir = async (c: RnvContext) => {
     return false;
 };
 
-const _setAppId = (c: RnvContext, appId: string) => {
-    const currentAppConfigId = c.files.project?.configLocal?._meta?.currentAppConfigId;
+const _setAppId = (ctx: RnvContext, appId: string) => {
+    const currentAppConfigId = ctx.files.project?.configLocal?._meta?.currentAppConfigId;
 
-    logTask('_setAppId', `appId:${appId} runtime.appId:${c.runtime.appId} _meta.appId:${currentAppConfigId}`);
-    c.runtime.appId = appId || c.runtime.appId || currentAppConfigId;
-    c.runtime.appDir = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}`);
+    logTask('_setAppId', `appId:${appId} runtime.appId:${ctx.runtime.appId} _meta.appId:${currentAppConfigId}`);
+    ctx.runtime.appId = appId || ctx.runtime.appId || currentAppConfigId;
+    ctx.runtime.appDir = path.join(ctx.paths.project.builds.dir, `${ctx.runtime.appId}_${ctx.platform}`);
 };
 
-const fn = async (c: RnvContext) => {
-    logTask('taskAppConfigure');
-
-    c.paths.project.appConfigsDirNames = listAppConfigsFoldersSync(true);
-    c.paths.project.appConfigsDirNames.forEach((dirName) => {
-        c.paths.project.appConfigsDirs.push(path.join(c.paths.project.appConfigsDir, dirName));
-    });
-
-    const appConfigsDirsExt = c.buildConfig?.paths?.appConfigsDirs;
-    if (appConfigsDirsExt) {
-        appConfigsDirsExt.forEach((apePath) => {
-            const appConfigsExt = listAppConfigsFoldersSync(true, apePath);
-            appConfigsExt.forEach((appExtName) => {
-                c.paths.project.appConfigsDirNames.push(appExtName);
-                c.paths.project.appConfigsDirs.push(path.join(apePath, appExtName));
-            });
+const Task: RnvTask = {
+    description: 'Configure project with specific appConfig',
+    fn: async ({ ctx }) => {
+        ctx.paths.project.appConfigsDirNames = listAppConfigsFoldersSync(true);
+        ctx.paths.project.appConfigsDirNames.forEach((dirName) => {
+            ctx.paths.project.appConfigsDirs.push(path.join(ctx.paths.project.appConfigsDir, dirName));
         });
-    }
 
-    // Reset appId if appConfig no longer exists but renative.local.json still has reference to it
-    if (c.runtime.appId && !c.paths.project.appConfigsDirNames.includes(c.runtime.appId)) {
-        c.runtime.appId = undefined;
-    }
-
-    if (c.program.opts().appConfigID === true || (!c.program.opts().appConfigID && !c.runtime.appId)) {
-        const hasAppConfig = await _findAndSwitchAppConfigDir(c);
-        if (!hasAppConfig) {
-            // await executeTask(c, RnvTaskName.appCreate, RnvTaskName.appConfigure);
-            // return Promise.reject('No app configs found for this project');
-            logWarning('No app configs found for this project');
-            return true;
+        const appConfigsDirsExt = ctx.buildConfig?.paths?.appConfigsDirs;
+        if (appConfigsDirsExt) {
+            appConfigsDirsExt.forEach((apePath) => {
+                const appConfigsExt = listAppConfigsFoldersSync(true, apePath);
+                appConfigsExt.forEach((appExtName) => {
+                    ctx.paths.project.appConfigsDirNames.push(appExtName);
+                    ctx.paths.project.appConfigsDirs.push(path.join(apePath, appExtName));
+                });
+            });
         }
-    } else if (c.program.opts().appConfigID) {
-        const aid = await matchAppConfigID(c, c.program.opts().appConfigID);
-        if (!aid) {
-            logWarning(`Cannot find app config ${chalk().bold(c.program.opts().appConfigID)}`);
-            const hasAppConfig = await _findAndSwitchAppConfigDir(c);
+
+        // Reset appId if appConfig no longer exists but renative.local.json still has reference to it
+        if (ctx.runtime.appId && !ctx.paths.project.appConfigsDirNames.includes(ctx.runtime.appId)) {
+            ctx.runtime.appId = undefined;
+        }
+
+        if (ctx.program.opts().appConfigID === true || (!ctx.program.opts().appConfigID && !ctx.runtime.appId)) {
+            const hasAppConfig = await _findAndSwitchAppConfigDir(ctx);
             if (!hasAppConfig) {
                 // await executeTask(c, RnvTaskName.appCreate, RnvTaskName.appConfigure);
                 // return Promise.reject('No app configs found for this project');
                 logWarning('No app configs found for this project');
                 return true;
             }
+        } else if (ctx.program.opts().appConfigID) {
+            const aid = await matchAppConfigID(ctx, ctx.program.opts().appConfigID);
+            if (!aid) {
+                logWarning(`Cannot find app config ${chalk().bold(ctx.program.opts().appConfigID)}`);
+                const hasAppConfig = await _findAndSwitchAppConfigDir(ctx);
+                if (!hasAppConfig) {
+                    // await executeTask(c, RnvTaskName.appCreate, RnvTaskName.appConfigure);
+                    // return Promise.reject('No app configs found for this project');
+                    logWarning('No app configs found for this project');
+                    return true;
+                }
+            }
+            _setAppId(ctx, aid);
         }
-        _setAppId(c, aid);
-    }
 
-    // Generate true path to appConfig (ensure external appConfigsDirs are included)
-    if (c.runtime.appId) {
-        c.runtime.appConfigDir =
-            c.paths.project.appConfigsDirs[c.paths.project.appConfigsDirNames.indexOf(c.runtime.appId)];
-    }
+        // Generate true path to appConfig (ensure external appConfigsDirs are included)
+        if (ctx.runtime.appId) {
+            ctx.runtime.appConfigDir =
+                ctx.paths.project.appConfigsDirs[ctx.paths.project.appConfigsDirNames.indexOf(ctx.runtime.appId)];
+        }
 
-    await updateRenativeConfigs();
-    logAppInfo(c);
+        await updateRenativeConfigs();
+        logAppInfo(ctx);
 
-    return true;
-};
-
-const Task: RnvTask = {
-    description: 'Configure project with specific appConfig',
-    fn: async () => {},
+        return true;
+    },
     task: RnvTaskName.appConfigure,
     options: RnvTaskOptionPresets.withConfigure(),
 };

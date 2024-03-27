@@ -1,4 +1,4 @@
-import { logInfo, logTask, fsRenameSync, fsUnlinkSync, RnvTaskFn, RnvTask, RnvTaskName, chalk } from '@rnv/core';
+import { logInfo, fsRenameSync, fsUnlinkSync, RnvTask, RnvTaskName, chalk } from '@rnv/core';
 import { getSourceDir, traverseTargetProject } from './linker';
 import { LinkablePackage } from './types';
 
@@ -17,33 +17,29 @@ const _unlinkPackage = (pkg: LinkablePackage) => {
     }
 };
 
-const fn: RnvTaskFn = async () => {
-    logTask('taskUnlink');
-
-    const linkablePackages = traverseTargetProject(getSourceDir());
-
-    let msg = 'Found following source packages:\n\n';
-
-    linkablePackages.forEach((pkg) => {
-        msg += `${pkg.nmPath.replace(pkg.name, chalk().bold(pkg.name))} ${
-            pkg.isBrokenLink ? chalk().red('(broken)') : pkg.isLinked ? chalk().green('(linked)') : '(unlinked)'
-        }\n`;
-    });
-
-    logInfo(msg);
-
-    logInfo('Unlinking packages...');
-
-    linkablePackages.forEach((pkg) => {
-        _unlinkPackage(pkg);
-    });
-
-    return true;
-};
-
 const Task: RnvTask = {
     description: 'Replaces rnv version in project with original node_modules version',
-    fn: async () => {},
+    fn: async () => {
+        const linkablePackages = traverseTargetProject(getSourceDir());
+
+        let msg = 'Found following source packages:\n\n';
+
+        linkablePackages.forEach((pkg) => {
+            msg += `${pkg.nmPath.replace(pkg.name, chalk().bold(pkg.name))} ${
+                pkg.isBrokenLink ? chalk().red('(broken)') : pkg.isLinked ? chalk().green('(linked)') : '(unlinked)'
+            }\n`;
+        });
+
+        logInfo(msg);
+
+        logInfo('Unlinking packages...');
+
+        linkablePackages.forEach((pkg) => {
+            _unlinkPackage(pkg);
+        });
+
+        return true;
+    },
     task: RnvTaskName.unlink,
     isGlobalScope: true,
     ignoreEngines: true,

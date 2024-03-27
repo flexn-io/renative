@@ -1,10 +1,10 @@
 import { RnvTask, RnvTaskName } from '@rnv/core';
 
-const fn = async () => Promise.resolve();
-
 const Task: RnvTask = {
     description: 'Show current info about the project',
-    fn: async () => {},
+    fn: async () => {
+        return true;
+    },
     task: RnvTaskName.status,
     isGlobalScope: true,
 };

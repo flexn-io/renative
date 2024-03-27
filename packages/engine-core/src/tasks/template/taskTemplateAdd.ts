@@ -2,9 +2,7 @@ import {
     writeFileSync,
     logTask,
     generateBuildConfig,
-    executeTask,
     RnvContext,
-    RnvTaskFn,
     inquirerPrompt,
     RnvTask,
     RnvTaskName,
@@ -33,28 +31,23 @@ export const _addTemplate = (c: RnvContext, template: string) => {
     _writeObjectSync(c.paths.project.config, cnf);
 };
 
-const fn: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskTemplateAdd');
-
-    await executeTask(RnvTaskName.projectConfigure, RnvTaskName.templateAdd, originTask);
-
-    const opts = getTemplateOptions();
-
-    const { template } = await inquirerPrompt({
-        type: 'list',
-        message: 'Pick which template to install',
-        name: 'template',
-        choices: opts.keysAsArray,
-    });
-
-    _addTemplate(c, template);
-
-    return true;
-};
-
 const Task: RnvTask = {
     description: 'Install additional template to the project',
-    fn: async () => {},
+    dependsOn: [RnvTaskName.projectConfigure],
+    fn: async ({ ctx }) => {
+        const opts = getTemplateOptions();
+
+        const { template } = await inquirerPrompt({
+            type: 'list',
+            message: 'Pick which template to install',
+            name: 'template',
+            choices: opts.keysAsArray,
+        });
+
+        _addTemplate(ctx, template);
+
+        return true;
+    },
     task: RnvTaskName.templateAdd,
 };
 
