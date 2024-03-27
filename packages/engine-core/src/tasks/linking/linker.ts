@@ -19,9 +19,6 @@ const captureLinkablePackages = (
 ) => {
     sourcePackages.forEach((pkg) => {
         const rnvDepPath = path.join(baseDir, pkg.name);
-
-        // const stat = fsStatSync(rnvDepPath);
-        // console.log('DJDJDJDDJ', rnvDepPath, fsExistsSync(rnvDepPath));
         let isSymLink = false;
         const nmPathExists = fsExistsSync(rnvDepPath);
         try {

@@ -1,5 +1,29 @@
+import { inquirerPrompt } from '../api';
 import { getContext } from '../context/provider';
+import { getEngineRunnerByPlatform } from '../engines';
 import { RnvTask, RnvTaskMap, RnvTaskOption } from './types';
+
+export const selectPlatformIfRequired = async () => {
+    const c = getContext();
+    if (!c.platform) {
+        const taskName = getTaskNameFromCommand();
+        const platforms = c.runtime.availablePlatforms;
+        if (platforms) {
+            if (platforms.length === 1) {
+                c.platform = platforms[0];
+            } else {
+                const { platform } = await inquirerPrompt({
+                    type: 'list',
+                    name: 'platform',
+                    message: `Pick a platform for ${taskName}`,
+                    choices: platforms,
+                });
+                c.platform = platform;
+            }
+            c.runtime.engine = getEngineRunnerByPlatform(c.platform);
+        }
+    }
+};
 
 export const getTaskNameFromCommand = (): string | undefined => {
     const c = getContext();
@@ -15,13 +39,21 @@ export const getTaskNameFromCommand = (): string | undefined => {
 export const generateRnvTaskMap = (taskArr: Array<RnvTask>, config: { name: string }) => {
     const tasks: RnvTaskMap = {};
 
-    taskArr.forEach((taskInstance) => {
+    taskArr.forEach((taskBlueprint) => {
+        const taskInstance = { ...taskBlueprint };
         const plts = taskInstance.platforms || [];
         const key = `${config.name}:${plts.join('-')}:${taskInstance.task}`;
         taskInstance.ownerID = config.name;
         taskInstance.key = key;
         tasks[key] = taskInstance;
     });
+    // if (extedTaskMaps) {
+    //     extedTaskMaps.forEach((taskMap) => {
+    //         Object.keys(taskMap).forEach((key) => {
+    //             tasks[key] = taskMap[key];
+    //         });
+    //     });
+    // }
     return tasks;
 };
 

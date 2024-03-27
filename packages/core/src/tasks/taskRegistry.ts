@@ -13,6 +13,7 @@ const registerRnvTask = async (taskInstance: RnvTask) => {
     if (taskInstance.key in REGISTERED_TASKS) {
         throw new Error(`Task key must be unique. Task with key ${taskInstance.key} already exists`);
     }
+
     REGISTERED_TASKS[taskInstance.key] = taskInstance;
 };
 

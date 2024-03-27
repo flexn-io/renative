@@ -1,16 +1,16 @@
 import { getContext } from './context/provider';
-import { loadEngines } from './engines';
+import { loadEngines, registerMissingPlatformEngines } from './engines';
 import { loadIntegrations } from './integrations';
 import { checkAndMigrateProject } from './migrator';
 import { configureRuntimeDefaults } from './context/runtime';
-import { findSuitableTask, initializeTask } from './tasks';
+import { findSuitableTask } from './tasks/taskFinder';
 import { updateRenativeConfigs } from './plugins';
 import { checkAndBootstrapIfRequired } from './projects/bootstrap';
 import { loadDefaultConfigTemplates } from './configs';
 import { getApi } from './api/provider';
 import { RnvTask } from './tasks/types';
-import { inquirerPrompt } from './api';
-import { getTaskNameFromCommand } from './tasks/taskHelpers';
+import { runInteractiveWizard, runInteractiveWizardForSubTasks } from './tasks/wizard';
+import { initializeTask } from './tasks/taskExecutors';
 
 export const exitRnvCore = async (code: number) => {
     const ctx = getContext();
@@ -21,6 +21,15 @@ export const exitRnvCore = async (code: number) => {
             ctx.process.exit(code);
         });
     }
+};
+
+const loadAllEngineTasks = async () => {
+    const result = await loadEngines();
+    // If false make sure we reload configs as it means it's freshly installed
+    if (!result) {
+        await updateRenativeConfigs();
+    }
+    await registerMissingPlatformEngines();
 };
 
 export const executeRnvCore = async () => {
@@ -37,13 +46,21 @@ export const executeRnvCore = async () => {
         return;
     }
 
+    // for "rnv" we simply load all engines upfront
+    const { configExists } = c.paths.project;
+    if (!c.command && configExists) {
+        await loadAllEngineTasks();
+        await loadIntegrations();
+        return runInteractiveWizard();
+    }
+
     let initTask: RnvTask | undefined;
 
     // Special Case for engine-core tasks
     // they don't require other engines to be loaded if isGlobalScope = true
     // ie rnv link
     initTask = await findSuitableTask();
-    if (initTask?.isGlobalScope) {
+    if (initTask) {
         return initializeTask(initTask);
     }
 
@@ -54,47 +71,13 @@ export const executeRnvCore = async () => {
         return initializeTask(initTask);
     }
 
-    // Engines are bound to platform
-    // If we don't know the platform yet we need to load all engines
-    c.runtime.availablePlatforms = c.buildConfig.defaults?.supportedPlatforms || [];
-    if (!c.platform) {
-        const taskName = getTaskNameFromCommand();
-        const platforms = c.runtime.availablePlatforms;
-        if (platforms) {
-            if (platforms.length === 1) {
-                c.platform = platforms[0];
-            } else {
-                const { platform } = await inquirerPrompt({
-                    type: 'list',
-                    name: 'platform',
-                    message: `Pick a platform for ${taskName}`,
-                    choices: platforms,
-                });
-                c.platform = platform;
-            }
-        }
-    }
-
-    const result = await loadEngines();
-    // If false make sure we reload configs as it means it's freshly installed
-    if (!result) {
-        await updateRenativeConfigs();
-    }
-
-    // for root rnv we simply load all engines upfront
-    // const { configExists } = c.paths.project;
-    // if (!c.command && configExists) {
-    // }
-
+    // Still no task found. time to load all engines to see if anything matches
+    await loadAllEngineTasks();
     initTask = await findSuitableTask();
-    return initializeTask(initTask);
+    if (initTask) {
+        return initializeTask(initTask);
+    }
 
-    // if (c.command && !taskInstance?.ignoreEngines) {
-    //     await registerMissingPlatformEngines(taskInstance);
-    // }
-
-    // if (taskInstance?.task) {
-    //     return initializeTask(taskInstance);
-    // }
-    // return Promise.reject(`No suitable task found for command: ${c.command}`);
+    // Still no task found. time to check sub tasks options via wizard
+    return runInteractiveWizardForSubTasks();
 };

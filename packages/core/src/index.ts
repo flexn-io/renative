@@ -29,7 +29,8 @@ export * from './projects/dependencies';
 export * from './projects/fonts';
 export * from './projects/utils';
 
-export * from './tasks';
+export * from './tasks/taskFinder';
+export * from './tasks/taskExecutors';
 export * from './tasks/taskHelpers';
 export * from './tasks/taskRegistry';
 export * from './tasks/constants';

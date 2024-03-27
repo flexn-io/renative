@@ -70,7 +70,6 @@ export const run = ({ RNV_HOME_DIR }: { RNV_HOME_DIR?: string }) => {
     // if you pass --help it will override it with undefined
     // So we need to check if it's not a function to output help
     // if (program.opts().help) {
-    // console.log('HKJHKDJHKJDHKD');
 
     //program.outputHelp();
     // Let's use alternative name for this flag

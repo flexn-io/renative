@@ -21,7 +21,10 @@ export type RnvTask = {
 
 export type TaskPromptOption = {
     name: string;
-    value: string;
+    value: {
+        taskName: string;
+        subTsks?: TaskPromptOption[];
+    };
     command: string;
     asArray?: string[];
     subCommand?: string;
