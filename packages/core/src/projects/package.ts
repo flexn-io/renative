@@ -1,9 +1,20 @@
 import path from 'path';
+import merge from 'deepmerge';
 import { fsExistsSync, fsWriteFileSync, loadFile, readObjectSync } from '../system/fs';
 import { logDefault, logWarning, logInfo } from '../logger';
 import { ConfigFileTemplate } from '../schema/configFiles/types';
 import { RnvFileName } from '../enums/fileName';
 import { getContext } from '../context/provider';
+import { NpmPackageFile } from '../configs/types';
+import { writeRenativeConfigFile } from '../configs/utils';
+
+export const updatePackage = (override: Partial<NpmPackageFile>) => {
+    const c = getContext();
+    const newPackage: NpmPackageFile = merge(c.files.project.package, override);
+    writeRenativeConfigFile(c.paths.project.package, newPackage);
+    c.files.project.package = newPackage;
+    c._requiresNpmInstall = true;
+};
 
 const packageJsonIsValid = () => {
     const c = getContext();

@@ -1,6 +1,6 @@
 import path from 'path';
 import { executeAsync, commandExistsSync } from '../system/exec';
-import { fsExistsSync, invalidatePodsChecksum, removeDirs, writeFileSync } from '../system/fs';
+import { fsExistsSync, removeDirs, writeFileSync } from '../system/fs';
 import { logDefault, logWarning, logError, logInfo, logDebug, logSuccess } from '../logger';
 import { doResolve } from '../system/resolve';
 import { RnvContext } from '../context/types';
@@ -171,7 +171,9 @@ export const installPackageDependencies = async (failOnError = false) => {
 
     try {
         await executeAsync(command);
-        await invalidatePodsChecksum();
+        // This it too much of brute force.
+        // We should find a way to detect if node_modules was actually updated with relevant pod deps
+        // await invalidatePodsChecksum();
     } catch (e) {
         if (failOnError) {
             logError(e);

@@ -57,6 +57,7 @@ export * from './templates';
 export * from './integrations';
 export * from './runner';
 export * from './engines';
+export * from './engines/dependencyResolver';
 export * from './platforms';
 export * from './plugins';
 export * from './buildHooks';

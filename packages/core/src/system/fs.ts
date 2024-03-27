@@ -221,14 +221,14 @@ export const copyFileWithInjectSync = (
     }
 };
 
-export const invalidatePodsChecksum = () => {
-    const c = getContext();
-    const appFolder = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}`);
-    const podChecksumPath = path.join(appFolder, 'Podfile.checksum');
-    if (fs.existsSync(podChecksumPath)) {
-        fs.unlinkSync(podChecksumPath);
-    }
-};
+// export const invalidatePodsChecksum = () => {
+//     const c = getContext();
+//     const appFolder = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}`);
+//     const podChecksumPath = path.join(appFolder, 'Podfile.checksum');
+//     if (fs.existsSync(podChecksumPath)) {
+//         fs.unlinkSync(podChecksumPath);
+//     }
+// };
 
 export const copyFolderRecursiveSync = (
     source: string,

@@ -7,16 +7,16 @@ import {
     isPlatformSupported,
     cleanPlatformBuild,
     createPlatformBuild,
-    injectPlatformDependencies,
     configureRuntimeDefaults,
     executeTask,
     createTask,
     RnvTaskName,
-    installPackageDependencies,
-    overrideTemplatePlugins,
+    // installPackageDependencies,
+    // overrideTemplatePlugins,
+    resolveEngineDependencies,
 } from '@rnv/core';
 import { isBuildSchemeSupported } from '../../buildSchemes';
-import { configureFonts } from '@rnv/sdk-utils';
+// import { configureFonts } from '@rnv/sdk-utils';
 
 export default createTask({
     description: 'Low-level task used by engines to prepare platformBuilds folder',
@@ -50,18 +50,26 @@ export default createTask({
         }
 
         await createPlatformBuild(ctx.platform);
-        await injectPlatformDependencies(
-            async () => {
-                await installPackageDependencies();
-                await overrideTemplatePlugins();
-                await configureFonts();
-            },
-            async () => {
-                await installPackageDependencies();
-                await overrideTemplatePlugins();
-                await configureFonts();
-            }
-        );
+        await resolveEngineDependencies();
+        // TODO: check if this is needed or can be handled down the line
+        // if not monorepo && mutations were found
+        // await installPackageDependencies();
+        // await overrideTemplatePlugins();
+        // await configureFonts();
+
+        // OLD STUFFF
+        // await injectPlatformDependencies(
+        //     async () => {
+        //         await installPackageDependencies();
+        //         await overrideTemplatePlugins();
+        //         await configureFonts();
+        //     },
+        //     async () => {
+        //         await installPackageDependencies();
+        //         await overrideTemplatePlugins();
+        //         await configureFonts();
+        //     }
+        // );
         // await _runCopyPlatforms(c);
         return true;
     },

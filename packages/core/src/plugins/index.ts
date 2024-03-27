@@ -1,4 +1,3 @@
-import merge from 'deepmerge';
 import path from 'path';
 import { getAppConfigBuildsFolder, getAppFolder } from '../context/contextProps';
 import { parseRenativeConfigs } from '../configs';
@@ -22,11 +21,12 @@ import { writeRenativeConfigFile } from '../configs/utils';
 import { installPackageDependencies } from '../projects/npm';
 import { OverridesOptions, ResolveOptions } from '../system/types';
 import { ConfigFileOverrides, ConfigFilePlugin, ConfigFileTemplates } from '../schema/configFiles/types';
-import { NpmPackageFile } from '../configs/types';
 import { getContext } from '../context/provider';
 import { getConfigProp } from '../context/contextProps';
 import { RnvFileName } from '../enums/fileName';
-import { AsyncCallback } from '../projects/types';
+import { AsyncCallback, DependencyMutation } from '../projects/types';
+import { createDependencyMutation } from '../projects/dependencies';
+import { updatePackage } from '../projects/package';
 
 const _getPluginScope = (plugin: RenativeConfigPlugin | string): RnvPluginScope => {
     if (typeof plugin === 'string') {
@@ -175,17 +175,20 @@ export const configurePlugins = async () => {
         c.files.project.package.dependencies = {};
     }
 
-    let hasPackageChanged = false;
+    // let hasPackageChanged = false;
 
     if (!c.buildConfig?.plugins) {
         return;
     }
 
-    const isTemplate = c.buildConfig?.isTemplate;
-    const newDeps: Record<string, string> = {};
-    const newDevDeps: Record<string, string> = {};
+    // const isTemplate = c.buildConfig?.isTemplate;
+    // const newDeps: Record<string, string> = {};
+    // const newDevDeps: Record<string, string> = {};
     const { dependencies, devDependencies } = c.files.project.package;
-    const ovMsg = isTemplate ? 'This is template. NO ACTION' : 'package.json will be overriden';
+    // const ovMsg = isTemplate ? 'This is template. NO ACTION' : 'package.json will be overriden';
+
+    const mutations: Array<DependencyMutation> = [];
+
     Object.keys(c.buildConfig.plugins).forEach((k) => {
         const plugin = getMergedPlugin(c, k);
 
@@ -214,15 +217,30 @@ export const configurePlugins = async () => {
                         logInfo(`Plugin ${k} not ready yet (waiting for scope ${plugin.scope}). SKIPPING...`);
                     }
                 } else if (dependencies[k] !== plugin.version) {
-                    logWarning(
-                        `Version mismatch of dependency ${chalk().bold(k)} between:
-    ${chalk().bold(c.paths.project.package)}: v(${chalk().red(dependencies[k])}) and
-    ${chalk().bold(c.paths.project.builds.config)}: v(${chalk().green(plugin.version)}).
-    ${ovMsg}`
+                    //                 logWarning(
+                    //                     `Version mismatch of dependency ${chalk().bold(k)} between:
+                    // ${chalk().bold(c.paths.project.package)}: v(${chalk().red(dependencies[k])}) and
+                    // ${chalk().bold(c.paths.project.builds.config)}: v(${chalk().green(plugin.version)}).
+                    // ${ovMsg}`
+                    //                 );
+                    mutations.push(
+                        createDependencyMutation({
+                            name: k,
+                            original: {
+                                version: dependencies[k],
+                            },
+                            updated: {
+                                version: plugin.version,
+                            },
+                            type: 'dependencies',
+                            msg: 'Version mismatch',
+                            source: 'plugin (renative.json)',
+                            targetPath: c.paths.project.package,
+                        })
                     );
 
-                    hasPackageChanged = true;
-                    _applyPackageDependency(newDeps, k, plugin.version);
+                    // hasPackageChanged = true;
+                    // _applyPackageDependency(newDeps, k, plugin.version);
                 }
             } else if (devDependencies && devDependencies[k]) {
                 if (!plugin.version) {
@@ -230,78 +248,132 @@ export const configurePlugins = async () => {
                         logInfo(`Plugin ${k} not ready yet (waiting for scope ${plugin.scope}). SKIPPING...`);
                     }
                 } else if (devDependencies[k] !== plugin.version) {
-                    logWarning(
-                        `Version mismatch of devDependency ${chalk().bold(k)} between package.json: v(${chalk().red(
-                            devDependencies[k]
-                        )}) and plugins.json: v(${chalk().red(plugin.version)}). ${ovMsg}`
+                    // logWarning(
+                    //     `Version mismatch of devDependency ${chalk().bold(k)} between package.json: v(${chalk().red(
+                    //         devDependencies[k]
+                    //     )}) and plugins.json: v(${chalk().red(plugin.version)}). ${ovMsg}`
+                    // );
+                    mutations.push(
+                        createDependencyMutation({
+                            name: k,
+                            original: {
+                                version: devDependencies[k],
+                            },
+                            updated: {
+                                version: plugin.version,
+                            },
+                            type: 'devDependencies',
+                            msg: 'Version mismatch',
+                            source: 'plugin (renative.json)',
+                            targetPath: c.paths.project.package,
+                        })
                     );
-                    hasPackageChanged = true;
-                    _applyPackageDependency(newDevDeps, k, plugin.version);
+                    // hasPackageChanged = true;
+                    // _applyPackageDependency(newDevDeps, k, plugin.version);
                 }
             } else {
                 // Dependency does not exists
                 if (plugin.version) {
-                    logInfo(
-                        `Missing dependency ${chalk().bold(k)} v(${chalk().red(
-                            plugin.version
-                        )}) in package.json. ${ovMsg}`
+                    // logInfo(
+                    //     `Missing dependency ${chalk().bold(k)} v(${chalk().red(
+                    //         plugin.version
+                    //     )}) in package.json. ${ovMsg}`
+                    // );
+                    mutations.push(
+                        createDependencyMutation({
+                            name: k,
+                            updated: {
+                                version: plugin.version,
+                            },
+                            // TODO: should be controlled by plugin if this devDependency
+                            type: 'dependencies',
+                            msg: 'Missing dependency',
+                            source: 'plugin (renative.json)',
+                            targetPath: c.paths.project.package,
+                        })
                     );
 
-                    hasPackageChanged = true;
-                    if (plugin.version) {
-                        _applyPackageDependency(newDeps, k, plugin.version);
-                    }
+                    // hasPackageChanged = true;
+                    // if (plugin.version) {
+                    //     _applyPackageDependency(newDeps, k, plugin.version);
+                    // }
                 }
             }
         }
 
         if (plugin && plugin.npm) {
             Object.keys(plugin.npm).forEach((npmKey) => {
+                // const npmKey = _npmKey as NpmDepKey;
                 const npmDep = plugin.npm?.[npmKey];
                 // IMPORTANT: Do not override top level override with plugin.npm ones
                 const topLevelPlugin = getMergedPlugin(c, npmKey);
                 if (topLevelPlugin && topLevelPlugin?.version !== npmDep) {
-                    logInfo(`RNV Detected plugin dependency conflict. ${chalk().cyan('RESOLVING...')}
+                    logWarning(`RNV Detected plugin dependency conflict.
 - ${npmKey}@${chalk().green(topLevelPlugin?.version)} ${chalk().cyan('<=')}
 - ${k} .npm sub dependencies:
    |- ${npmKey}@${chalk().red(npmDep)}`);
                 } else if (!dependencies[npmKey]) {
-                    logInfo(`Plugin ${chalk().bold(k)} requires npm dependency ${chalk().bold(npmKey)}. ${ovMsg}`);
+                    // logInfo(`Plugin ${chalk().bold(k)} requires npm dependency ${chalk().bold(npmKey)}. ${ovMsg}`);
                     if (npmDep) {
-                        _applyPackageDependency(newDeps, npmKey, npmDep);
-                        hasPackageChanged = true;
+                        createDependencyMutation({
+                            name: npmKey,
+                            updated: {
+                                version: npmDep,
+                            },
+                            // TODO: should be controlled by plugin if this devDependency
+                            type: 'dependencies',
+                            msg: 'Missing dependency',
+                            source: 'plugin.npm (renative.json)',
+                            targetPath: c.paths.project.package,
+                        });
+                        // _applyPackageDependency(newDeps, npmKey, npmDep);
+                        // hasPackageChanged = true;
                     }
                 } else if (dependencies[npmKey] !== npmDep) {
-                    logWarning(
-                        `Plugin ${chalk().bold(k)} npm dependency ${chalk().bold(npmKey)} mismatch (${chalk().red(
-                            dependencies[npmKey]
-                        )}) => (${chalk().green(npmDep)}) .${ovMsg}`
-                    );
+                    // logWarning(
+                    //     `Plugin ${chalk().bold(k)} npm dependency ${chalk().bold(npmKey)} mismatch (${chalk().red(
+                    //         dependencies[npmKey]
+                    //     )}) => (${chalk().green(npmDep)}) .${ovMsg}`
+                    // );
                     if (npmDep) {
-                        _applyPackageDependency(newDeps, npmKey, npmDep);
-                        hasPackageChanged = true;
+                        createDependencyMutation({
+                            name: npmKey,
+                            original: {
+                                version: dependencies[npmKey],
+                            },
+                            updated: {
+                                version: npmDep,
+                            },
+                            // TODO: should be controlled by plugin if this devDependency
+                            type: 'dependencies',
+                            msg: 'Version mismatch',
+                            source: 'plugin.npm (renative.json)',
+                            targetPath: c.paths.project.package,
+                        });
+                        // _applyPackageDependency(newDeps, npmKey, npmDep);
+                        // hasPackageChanged = true;
                     }
                 }
             });
         }
     });
 
-    // When in template we want warnings but NOT file overrides
-    if (isTemplate) return true;
-
-    // c.runtime.skipPackageUpdate only reflects rnv version mismatch. should not prevent updating other deps
-    if (hasPackageChanged /*! c.runtime.skipPackageUpdate */ && !c.program.opts().skipDependencyCheck) {
-        _updatePackage(c, { dependencies: newDeps, devDependencies: newDevDeps });
+    if (mutations.length) {
+        c._requiresNpmInstall = true;
     }
 
-    return true;
-};
+    // When in template we want warnings but NOT file overrides
+    // if (isTemplate) return true;
 
-const _updatePackage = (c: RnvContext, override: Partial<NpmPackageFile>) => {
-    const newPackage: NpmPackageFile = merge(c.files.project.package, override);
-    writeRenativeConfigFile(c.paths.project.package, newPackage);
-    c.files.project.package = newPackage;
-    c._requiresNpmInstall = true;
+    // console.log('SJSSJSLKJSSL', mutations);
+
+    // c.runtime.skipPackageUpdate only reflects rnv version mismatch. should not prevent updating other deps
+    //
+    // if (hasPackageChanged /*! c.runtime.skipPackageUpdate */ && !c.program.opts().skipDependencyCheck) {
+    //     _updatePackage(c, { dependencies: newDeps, devDependencies: newDevDeps });
+    // }
+
+    return true;
 };
 
 export const resolvePluginDependants = async () => {
@@ -499,7 +571,7 @@ export const loadPluginTemplates = async () => {
             // CHECK IF paths.pluginTemplates SCOPES are INSTALLED
             // This must be installed to avoid scoped plugins errors
             if (hasPackageChanged) {
-                _updatePackage(c, { dependencies });
+                updatePackage({ dependencies });
                 logInfo('Found missing dependency scopes. INSTALLING...');
                 await installPackageDependencies();
                 await loadPluginTemplates();
