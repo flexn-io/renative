@@ -9,11 +9,13 @@ import taskBuild from './tasks/taskBuild';
 import taskConfigure from './tasks/taskConfigure';
 import taskStart from './tasks/taskStart';
 import taskDebug from './tasks/taskDebug';
+//@ts-ignore
+import PKG from '../package.json';
 
 const Engine: RnvEngine = {
     tasks: generateRnvTaskMap(
         [taskRun, taskBuild, taskConfigure, taskStart, taskDebug, ...TasksSdkWebOS, ...TasksSdkTizen],
-        CNF
+        PKG
     ),
     config: CNF,
     projectDirName: '',

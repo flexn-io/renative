@@ -48,6 +48,7 @@ const CNF = {
     npm: {},
     engineExtension: 'core',
     overview: '',
+    packageName: '@rnv/engine-core',
 };
 
 const Engine: RnvEngine = {

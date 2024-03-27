@@ -6,9 +6,11 @@ import taskConfigure from './tasks/taskConfigure';
 import taskRun from './tasks/taskRun';
 //@ts-ignore
 import CNF from '../renative.engine.json';
+//@ts-ignore
+import PKG from '../package.json';
 
 const Engine: RnvEngine = {
-    tasks: generateRnvTaskMap([taskRun, taskBuild, taskConfigure, ...TasksSdkWebOS, ...TasksSdkTizen], CNF),
+    tasks: generateRnvTaskMap([taskRun, taskBuild, taskConfigure, ...TasksSdkWebOS, ...TasksSdkTizen], PKG),
     config: CNF,
     projectDirName: 'project',
     serverDirName: 'server',

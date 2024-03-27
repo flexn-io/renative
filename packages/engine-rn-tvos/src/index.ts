@@ -7,9 +7,11 @@ import { withRNVMetro } from './adapters/metroAdapter';
 import { withRNVRNConfig } from '@rnv/sdk-react-native';
 //@ts-ignore
 import CNF from '../renative.engine.json';
+//@ts-ignore
+import PKG from '../package.json';
 
 const Engine: RnvEngine = {
-    tasks: generateRnvTaskMap([...TasksSdkAndroid, ...TasksSdkApple, ...TasksSdkReactNative], CNF),
+    tasks: generateRnvTaskMap([...TasksSdkAndroid, ...TasksSdkApple, ...TasksSdkReactNative], PKG),
     config: CNF,
     runtimeExtraProps: {
         reactNativePackageName: 'react-native-tvos',

@@ -8,8 +8,11 @@ import taskRun from './tasks/taskRun';
 import taskStart from './tasks/taskStart';
 import { withRNVBabel } from './adapter';
 
+//@ts-ignore
+import PKG from '../package.json';
+
 const Engine: RnvEngine = {
-    tasks: generateRnvTaskMap([taskRun, taskBuild, taskConfigure, taskStart, taskExport], CNF),
+    tasks: generateRnvTaskMap([taskRun, taskBuild, taskConfigure, taskStart, taskExport], PKG),
     config: CNF,
     projectDirName: '',
     serverDirName: '',

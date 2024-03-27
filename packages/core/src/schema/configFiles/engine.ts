@@ -34,6 +34,7 @@ const Extends = z.string().describe('ID of engine to extend. Not being used yet'
 export const RootEngineSchema = z.object({
     custom: z.optional(Ext),
     id: Id,
+    packageName: z.string(),
     engineExtension: EngineExtension,
     extends: z.optional(Extends),
     overview: Overview,

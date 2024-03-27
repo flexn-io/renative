@@ -15,12 +15,14 @@ import { checkAndCreateProjectPackage } from '../projects/package';
 import { getEngineTemplateByPlatform } from '../configs/engines';
 import { ConfigFileEngine } from '../schema/configFiles/types';
 import { getConfigProp } from '../context/contextProps';
+import { registerRnvTasks } from '../tasks/taskRegistry';
 
 // const ENGINE_CORE = 'engine-core';
 
 export const registerEngine = async (engine: RnvEngine, platform?: RnvPlatform, engConfig?: RnvEngineTemplate) => {
     const c = getContext();
     logDefault(`registerEngine:${engine.config.id}`);
+    console.log('DJDDJDJK', engine.config.id);
 
     c.runtime.enginesById[engine.config.id] = engine;
 
@@ -34,6 +36,7 @@ export const registerEngine = async (engine: RnvEngine, platform?: RnvPlatform, 
         );
     }
     _registerEnginePlatform(c, platform, engine);
+    registerRnvTasks(engine.tasks);
 };
 
 const _registerEnginePlatform = (c: RnvContext, platform?: RnvPlatform, engine?: RnvEngine) => {
@@ -356,6 +359,8 @@ export const loadEngines = async (failOnMissingDeps?: boolean): Promise<boolean>
     logDefault('loadEngines');
     const c = getContext();
 
+    console.log('APAPAPAPAAPAP', c.paths.project.config);
+
     if (!fsExistsSync(c.paths.project.config)) return true;
 
     const filteredEngines: Record<string, string> = _getFilteredEngines(c);
@@ -363,6 +368,7 @@ export const loadEngines = async (failOnMissingDeps?: boolean): Promise<boolean>
     const readyEngines: Array<string> = [];
     const engineConfigs: Array<RnvEngineInstallConfig> = [];
     // if (filteredEngines) {
+
     Object.keys(filteredEngines).forEach((k) => {
         const engineRootPath = doResolve(k);
         const configPath = engineRootPath ? path.join(engineRootPath, 'renative.engine.json') : null;
@@ -471,6 +477,7 @@ const _resolvePkgPath = (c: RnvContext, packageName: string) => {
 
 const _registerPlatformEngine = async (c: RnvContext, platform: RnvPlatform | boolean): Promise<void> => {
     // Only register active platform engine to be faster
+    console.log('SJJSSJSJSJ', platform);
 
     if (platform === true || !platform) return;
     const selectedEngineTemplate = getEngineTemplateByPlatform(platform);
@@ -504,6 +511,12 @@ export const getEngineRunnerByPlatform = (platform: RnvPlatform, ignoreMissingEr
         // logRaw(new Error());
     }
     return selectedEngine;
+};
+
+export const getEngineRunnerByOwnerID = (task: RnvTask) => {
+    const ctx = getContext();
+    const engine = ctx.runtime.enginesByIndex.find((v) => v.config.packageName === task.ownerID);
+    return engine;
 };
 
 // const findTasksByTaskName = (taskName: string, tasks: RnvTaskMap) => {

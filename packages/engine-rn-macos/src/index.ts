@@ -6,9 +6,11 @@ import { Tasks as TasksSdkReactNative } from '@rnv/sdk-react-native';
 import { withRNVRNConfig } from '@rnv/sdk-react-native';
 //@ts-ignore
 import CNF from '../renative.engine.json';
+//@ts-ignore
+import PKG from '../package.json';
 
 const Engine: RnvEngine = {
-    tasks: generateRnvTaskMap([...TasksSdkApple, ...TasksSdkReactNative], CNF),
+    tasks: generateRnvTaskMap([...TasksSdkApple, ...TasksSdkReactNative], PKG),
     config: CNF,
     runtimeExtraProps: {
         reactNativePackageName: 'react-native',

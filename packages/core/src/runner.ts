@@ -1,5 +1,5 @@
 import { getContext } from './context/provider';
-import { loadEngines, registerMissingPlatformEngines } from './engines';
+import { loadEngines } from './engines';
 import { loadIntegrations } from './integrations';
 import { checkAndMigrateProject } from './migrator';
 import { configureRuntimeDefaults } from './context/runtime';
@@ -9,6 +9,8 @@ import { checkAndBootstrapIfRequired } from './projects/bootstrap';
 import { loadDefaultConfigTemplates } from './configs';
 import { getApi } from './api/provider';
 import { RnvTask } from './tasks/types';
+import { inquirerPrompt } from './api';
+import { getTaskNameFromCommand } from './tasks/taskHelpers';
 
 export const exitRnvCore = async (code: number) => {
     const ctx = getContext();
@@ -45,19 +47,48 @@ export const executeRnvCore = async () => {
         return initializeTask(initTask);
     }
 
+    // Next we load all integrations and see if there is a task that matches
     await loadIntegrations();
+    initTask = await findSuitableTask();
+    if (initTask) {
+        return initializeTask(initTask);
+    }
+
+    // Engines are bound to platform
+    // If we don't know the platform yet we need to load all engines
+    c.runtime.availablePlatforms = c.buildConfig.defaults?.supportedPlatforms || [];
+    if (!c.platform) {
+        const taskName = getTaskNameFromCommand();
+        const platforms = c.runtime.availablePlatforms;
+        if (platforms) {
+            if (platforms.length === 1) {
+                c.platform = platforms[0];
+            } else {
+                const { platform } = await inquirerPrompt({
+                    type: 'list',
+                    name: 'platform',
+                    message: `Pick a platform for ${taskName}`,
+                    choices: platforms,
+                });
+                c.platform = platform;
+            }
+        }
+    }
+    console.log('KKFSSLSSLSLSL', c.platform);
+
     const result = await loadEngines();
     // If false make sure we reload configs as it means it's freshly installed
     if (!result) {
         await updateRenativeConfigs();
     }
+
     // for root rnv we simply load all engines upfront
-    const { configExists } = c.paths.project;
-    if (!c.command && configExists) {
-        await registerMissingPlatformEngines();
-    }
+    // const { configExists } = c.paths.project;
+    // if (!c.command && configExists) {
+    // }
 
     initTask = await findSuitableTask();
+    console.log('DKDKDKDKDK', initTask);
     return initializeTask(initTask);
 
     // if (c.command && !taskInstance?.ignoreEngines) {

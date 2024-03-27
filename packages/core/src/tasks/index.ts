@@ -8,6 +8,7 @@ import { getContext } from '../context/provider';
 import { RnvTaskName } from '../enums/taskName';
 import { getRegisteredTasks } from './taskRegistry';
 import { generateStringFromTaskOption, getTaskNameFromCommand, shouldSkipTask } from './taskHelpers';
+import { getEngineRunnerByOwnerID } from '../engines';
 
 let executedTasks: Record<string, number> = {};
 const TASK_LIMIT = 20;
@@ -37,6 +38,7 @@ export const executeTask = async (opts: {
         const taskInstance = await extractSingleExecutableTask(availableTasks);
         return _executeTaskInstance({ taskInstance, parentTaskName, originTaskName, isOptional, isFirstTask });
     }
+
     const availableTasks = _findTasksByTaskName(taskName);
     const taskInstance = await extractSingleExecutableTask(availableTasks);
     return _executeTaskInstance({ taskInstance, parentTaskName, originTaskName, isOptional, isFirstTask });
@@ -52,9 +54,8 @@ export const findSuitableTask = async (): Promise<RnvTask | undefined> => {
         throw new Error('TODO interactive selection offer all tasks');
     }
     const suitableTasks = _findTasksByTaskName(taskName);
-    console.log('SUITABLE_TASKS', suitableTasks);
 
-    const taskInstance = extractSingleExecutableTask(suitableTasks);
+    const taskInstance = await extractSingleExecutableTask(suitableTasks);
     return taskInstance;
 };
 
@@ -67,11 +68,12 @@ export const initializeTask = async (taskInstance: RnvTask | undefined) => {
     const c = getContext();
     _populateExtraParameters(c, taskInstance);
 
-    logInfo(
-        `Current engine: ${chalk().bold(c.runtime.engine?.config.id)} ${chalk().grey(
-            `(${c.runtime.engine?.rootPath})`
-        )}`
-    );
+    c.runtime.engine = getEngineRunnerByOwnerID(taskInstance);
+
+    logInfo(`Current engine: ${chalk().bold(taskInstance.ownerID)} ${chalk().grey(`(${c.runtime.engine?.rootPath})`)}`);
+    // logInfo(
+    //     `Current engine: ${chalk().bold(c.runtime.engine?.config)} ${chalk().grey(`(${c.runtime.engine?.rootPath})`)}`
+    // );
     c.runtime.task = task;
     executedTasks = {};
 
@@ -97,14 +99,17 @@ const _populateExtraParameters = (c: RnvContext, task: RnvTask) => {
 
 const _findTasksByTaskName = (taskName: string) => {
     const result: RnvTask[] = [];
-    Object.values(getRegisteredTasks()).forEach((v) => {
-        const plat = getContext().platform;
+    const ctx = getContext();
+    const tasks = getRegisteredTasks();
+    Object.values(tasks).forEach((v) => {
+        const plat = ctx.platform;
         if (v.platforms && plat) {
             if (!v.platforms.includes(plat)) {
                 // If we found a task with platform restriction and it does not match current platform we skip it
                 return;
             }
         }
+
         if (v.task === taskName) {
             result.push(v);
         }
@@ -113,7 +118,7 @@ const _findTasksByTaskName = (taskName: string) => {
 };
 
 const _executeTaskInstance = async (opts: {
-    taskInstance: RnvTask;
+    taskInstance?: RnvTask;
     parentTaskName?: string;
     originTaskName?: string;
     isFirstTask?: boolean;
@@ -122,7 +127,7 @@ const _executeTaskInstance = async (opts: {
     const { taskInstance, parentTaskName, originTaskName, isFirstTask, isOptional } = opts;
     const c = getContext();
     if (!taskInstance) {
-        if (!isOptional) {
+        if (isOptional) {
             return;
         }
         throw new Error(`Task Instance is undefined`);
@@ -204,7 +209,8 @@ const extractSingleExecutableTask = async (suitableTasks: RnvTask[]) => {
         throw new Error('TODO interactive selection multiple tasks');
     }
     // Found no tasks
-    throw new Error('TODO found no tasks');
+    // throw new Error('TODO found no tasks');
+    return undefined;
 };
 
 ////////=======================////////

@@ -1,6 +1,7 @@
 {
     "$schema": "../../.rnv/schema/rnv.engine.json",
     "id": "engine-rn",
+    "packageName": "@rnv/engine-rn",
     "engineExtension": "rn",
     "overview": "Default react-native based engine. Runs standard react native apps with native support",
     "plugins": {

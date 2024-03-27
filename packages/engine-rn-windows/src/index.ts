@@ -9,11 +9,13 @@ import taskRun from './tasks/taskRun';
 import { Tasks as TasksSdkReactNative, withRNVRNConfig } from '@rnv/sdk-react-native';
 //@ts-ignore
 import CNF from '../renative.engine.json';
+//@ts-ignore
+import PKG from '../package.json';
 
 const Engine: RnvEngine = {
     tasks: generateRnvTaskMap(
         [taskRun, taskPackage, taskBuild, taskConfigure, taskExport, ...TasksSdkReactNative],
-        CNF
+        PKG
     ),
     config: CNF,
     projectDirName: '',
