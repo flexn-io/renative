@@ -345,6 +345,7 @@ export const RnvTaskOptionPresets = {
             RnvTaskOptions.resetAssets,
             RnvTaskOptions.appConfigID,
             RnvTaskOptions.scheme,
+            RnvTaskOptions.packageManager,
             // RnvTaskOptions.platform,
         ].concat(arr || []),
     withRun: (arr?: Array<RnvTaskOption>) =>

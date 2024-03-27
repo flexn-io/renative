@@ -1,4 +1,4 @@
-import { RnvTask, RnvTaskName, RnvTaskOptions } from '@rnv/core';
+import { createTask, RnvTaskName, RnvTaskOptions } from '@rnv/core';
 import { checkAndConfigureTizenSdks, checkTizenSdk } from '../installer';
 import { listTizenTargets } from '../deviceManager';
 import { SdkPlatforms } from '../constants';
@@ -15,6 +15,4 @@ export default createTask({
     options: [RnvTaskOptions.target],
     platforms: SdkPlatforms,
     isGlobalScope: true,
-};
-
-
+});

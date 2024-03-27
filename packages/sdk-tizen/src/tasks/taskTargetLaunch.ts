@@ -1,4 +1,4 @@
-import { RnvTask, RnvTaskName, RnvTaskOptions } from '@rnv/core';
+import { createTask, RnvTaskName, RnvTaskOptions } from '@rnv/core';
 import { getTargetWithOptionalPrompt } from '@rnv/sdk-utils';
 import { checkAndConfigureTizenSdks, checkTizenSdk } from '../installer';
 import { launchTizenSimulator } from '../deviceManager';
@@ -17,6 +17,4 @@ export default createTask({
     options: [RnvTaskOptions.target],
     platforms: SdkPlatforms,
     isGlobalScope: true,
-};
-
-
+});
