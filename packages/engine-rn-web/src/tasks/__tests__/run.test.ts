@@ -27,7 +27,13 @@ test('Execute task.rnv.run -p web', async () => {
 
     jest.mocked(getAppFolder).mockReturnValueOnce('MOCKED_PATH');
     //WHEN
-    await taskRun.fn?.(ctx);
+    await taskRun.fn?.({
+        ctx,
+        taskName: 'MOCK_taskName',
+        originTaskName: 'MOCK_originTaskName',
+        parentTaskName: 'MOCK_parentTaskName',
+        shouldSkip: false,
+    });
     //THEN
     expect(runWebpackServer).toHaveBeenCalled();
 });
@@ -38,7 +44,13 @@ test('Execute task.rnv.run -p tizen', async () => {
     ctx.platform = 'tizen';
     jest.mocked(getPlatformProjectDir).mockReturnValue('');
     //WHEN
-    await taskRun.fn?.(ctx);
+    await taskRun.fn?.({
+        ctx,
+        taskName: 'MOCK_taskName',
+        originTaskName: 'MOCK_originTaskName',
+        parentTaskName: 'MOCK_parentTaskName',
+        shouldSkip: false,
+    });
     //THEN
     expect(runTizen).toHaveBeenCalled();
 });

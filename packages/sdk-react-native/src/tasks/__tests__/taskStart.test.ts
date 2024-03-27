@@ -21,7 +21,13 @@ describe('taskStart', () => {
         ctx.platform = 'ios';
         jest.mocked(executeTask).mockResolvedValueOnce(undefined);
         // WHEN
-        await taskStart.fn?.(ctx, undefined, undefined);
+        await taskStart.fn?.({
+            ctx,
+            taskName: 'MOCK_taskName',
+            originTaskName: 'MOCK_originTaskName',
+            parentTaskName: undefined,
+            shouldSkip: false,
+        });
         // THEN
         expect(startReactNative).toHaveBeenCalledWith({ waitForBundler: true });
     });
@@ -30,7 +36,13 @@ describe('taskStart', () => {
         const ctx = getContext();
         ctx.platform = 'ios';
         // WHEN
-        await taskStart.fn?.(ctx, 'parent', undefined);
+        await taskStart.fn?.({
+            ctx,
+            taskName: 'MOCK_taskName',
+            originTaskName: 'MOCK_originTaskName',
+            parentTaskName: 'MOCK_parentTaskName',
+            shouldSkip: false,
+        });
         // THEN
         expect(startReactNative).toHaveBeenCalledWith({ waitForBundler: false });
     });
@@ -44,7 +56,13 @@ describe('taskStart', () => {
         };
         jest.mocked(doResolve).mockReturnValueOnce('MOCKED_PATH');
         // WHEN
-        await taskStart.fn?.(ctx, undefined, undefined);
+        await taskStart.fn?.({
+            ctx,
+            taskName: 'MOCK_taskName',
+            originTaskName: 'MOCK_originTaskName',
+            parentTaskName: 'MOCK_parentTaskName',
+            shouldSkip: false,
+        });
         // THEN
         expect(executeTask).toHaveBeenCalledTimes(1);
         expect(startReactNative).toHaveBeenCalledWith({
@@ -64,7 +82,13 @@ describe('taskStart', () => {
         };
         jest.mocked(doResolve).mockReturnValueOnce('MOCKED_PATH');
         // WHEN
-        await taskStart.fn?.(ctx, 'parent', undefined);
+        await taskStart.fn?.({
+            ctx,
+            taskName: 'MOCK_taskName',
+            originTaskName: 'MOCK_originTaskName',
+            parentTaskName: 'MOCK_parentTaskName',
+            shouldSkip: false,
+        });
         // THEN
         expect(startReactNative).toHaveBeenCalledWith({
             waitForBundler: false,
@@ -79,8 +103,14 @@ describe('taskStart', () => {
         ctx.platform = 'tvos';
         ctx.program.opts().hosted = true;
         // WHEN // THEN
-        await expect(taskStart.fn?.(ctx, 'parent', undefined)).rejects.toBe(
-            'This platform does not support hosted mode'
-        );
+        await expect(
+            taskStart.fn?.({
+                ctx,
+                taskName: 'MOCK_taskName',
+                originTaskName: 'MOCK_originTaskName',
+                parentTaskName: 'MOCK_parentTaskName',
+                shouldSkip: false,
+            })
+        ).rejects.toBe('This platform does not support hosted mode');
     });
 });

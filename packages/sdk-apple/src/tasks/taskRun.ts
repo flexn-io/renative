@@ -1,4 +1,4 @@
-import { getConfigProp, logSummary, RnvTask, RnvTaskName, RnvTaskOptionPresets } from '@rnv/core';
+import { getConfigProp, logSummary, createTask, RnvTaskName, RnvTaskOptionPresets } from '@rnv/core';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '@rnv/sdk-react-native';
 import { getIosDeviceToRunOn, runXcodeProject } from '../runner';
 import { SdkPlatforms } from '../common';
@@ -24,6 +24,4 @@ export default createTask({
     isPriorityOrder: true,
     options: RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun()),
     platforms: SdkPlatforms,
-};
-
-
+});

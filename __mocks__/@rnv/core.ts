@@ -254,6 +254,7 @@ const generateContextDefaults = (ctx?: Context) => {
         },
     };
 };
+rnvcore.createTask = (task) => task;
 rnvcore.chalk = () => _chalkMono;
 rnvcore.createRnvContext = (ctx?: Context) => {
     rnvcore.__MOCK_RNV_CONTEXT = generateContextDefaults(ctx);

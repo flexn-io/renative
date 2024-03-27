@@ -82,7 +82,13 @@ test('Execute task.rnv.new', async () => {
     };
     jest.mocked(initNewProject).mockResolvedValue(payload);
     // WHEN
-    const result = await taskNew.fn?.(ctx);
+    const result = await taskNew.fn?.({
+        ctx,
+        taskName: 'MOCK_taskName',
+        originTaskName: 'MOCK_originTaskName',
+        parentTaskName: 'MOCK_parentTaskName',
+        shouldSkip: false,
+    });
     // THEN
     expect(result).toEqual(true);
     expect(initNewProject).toHaveBeenCalled();

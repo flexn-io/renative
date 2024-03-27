@@ -16,7 +16,25 @@ test('Execute task.rnv.platform.configure', async () => {
     //GIVEN
     const ctx = getContext();
     //WHEN
-    await expect(taskPlatformConfigure.fn?.(ctx)).resolves.toEqual(true);
+    await expect(
+        taskPlatformConfigure.fn?.({
+            ctx,
+            taskName: 'MOCK_taskName',
+            originTaskName: 'MOCK_originTaskName',
+            parentTaskName: 'MOCK_parentTaskName',
+            shouldSkip: false,
+        })
+    ).resolves.toEqual(true);
     //THEN
-    expect(executeTask).toHaveBeenCalledWith('project configure', 'platform configure', undefined);
+    expect(executeTask).toHaveBeenCalledWith({
+        isOptional: true,
+        originTaskName: 'MOCK_originTaskName',
+        parentTaskName: 'MOCK_taskName',
+        taskName: 'sdk configure',
+    });
+    expect(executeTask).toHaveBeenCalledWith({
+        originTaskName: 'MOCK_originTaskName',
+        parentTaskName: 'MOCK_taskName',
+        taskName: 'install',
+    });
 });

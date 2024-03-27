@@ -25,7 +25,13 @@ test('Execute task.rnv.run', async () => {
     };
     jest.mocked(getAndroidDeviceToRunOn).mockResolvedValueOnce(mockedDevice);
     // WHEN
-    await taskRun.fn?.(ctx, undefined, undefined);
+    await taskRun.fn?.({
+        ctx,
+        taskName: 'MOCK_taskName',
+        originTaskName: 'MOCK_originTaskName',
+        parentTaskName: 'MOCK_parentTaskName',
+        shouldSkip: false,
+    });
     // THEN
     expect(runAndroid).toHaveBeenCalledWith(mockedDevice);
 });

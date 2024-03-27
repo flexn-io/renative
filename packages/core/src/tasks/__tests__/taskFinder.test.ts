@@ -1,12 +1,15 @@
-import { getAllSuitableTasks } from '..';
+import { findSuitableTask } from '../taskFinder';
 import { getRegisteredEngines } from '../../engines';
 import { RnvEngine } from '../../engines/types';
 import { DEFAULT_TASK_DESCRIPTIONS } from '../constants';
 import { getContext } from '../../context/provider';
 import { generateContextDefaults } from '../../context/defaults';
 import { checkIfProjectAndNodeModulesExists } from '../../projects/dependencies';
+// import { getTaskNameFromCommand, selectPlatformIfRequired } from '../taskHelpers';
 
 jest.mock('../../engines');
+jest.mock('../taskHelpers');
+jest.mock('../taskRegistry');
 jest.mock('chalk');
 jest.mock('../../logger');
 jest.mock('../../api');
@@ -28,6 +31,7 @@ const ENGINE_MOCK_PROPS = {
         id: '',
         engineExtension: '',
         overview: '',
+        packageName: '',
     },
     projectDirName: '',
     runtimeExtraProps: {},
@@ -69,7 +73,7 @@ describe('Get suitable tasks', () => {
         jest.mocked(getRegisteredEngines).mockReturnValue([rnvEngineMock1]);
         jest.mocked(checkIfProjectAndNodeModulesExists).mockResolvedValue();
         // WHEN
-        const result = getAllSuitableTasks();
+        const result = findSuitableTask();
         // THEN
         expect(Object.keys(result)).toEqual(['mock-task']);
         expect(result['mock-task'].description).toEqual('mock task 1');
@@ -82,7 +86,7 @@ describe('Get suitable tasks', () => {
         jest.mocked(checkIfProjectAndNodeModulesExists).mockResolvedValue();
         DEFAULT_TASK_DESCRIPTIONS['mock-task'] = 'mock task common';
         // WHEN
-        const result = getAllSuitableTasks();
+        const result = findSuitableTask();
         // THEN
         expect(Object.keys(result)).toEqual(['mock-task', 'mock-task-2']);
         expect(result['mock-task'].description).toEqual('mock task common');
@@ -95,7 +99,7 @@ describe('Get suitable tasks', () => {
         jest.mocked(checkIfProjectAndNodeModulesExists).mockResolvedValue();
         delete DEFAULT_TASK_DESCRIPTIONS['mock-task'];
         // WHEN
-        const result = getAllSuitableTasks();
+        const result = findSuitableTask();
         // THEN
         expect(Object.keys(result)).toEqual(['mock-task-2', 'mock-task']);
         expect(result['mock-task'].description).toEqual('mock task 1');

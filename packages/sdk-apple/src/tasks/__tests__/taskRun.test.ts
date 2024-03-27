@@ -20,7 +20,13 @@ test('Execute task.rnv.run', async () => {
     ctx.platform = 'ios';
     jest.mocked(getIosDeviceToRunOn).mockResolvedValueOnce('MOCK_DEVICE_ARGS');
     // WHEN
-    await taskRun.fn?.(ctx, undefined, undefined);
+    await taskRun.fn?.({
+        ctx,
+        taskName: 'MOCK_taskName',
+        originTaskName: 'MOCK_originTaskName',
+        parentTaskName: 'MOCK_parentTaskName',
+        shouldSkip: false,
+    });
     // THEN
     expect(runXcodeProject).toHaveBeenCalledWith('MOCK_DEVICE_ARGS');
 });
