@@ -158,7 +158,7 @@ export const checkAndBootstrapIfRequired = async () => {
         await parseRenativeConfigs();
 
         await configureTemplateFiles();
-        await configureEntryPoint(c.platform);
+        await configureEntryPoint();
         // await applyTemplate(c);
 
         // copyFolderContentsRecursiveSync(templatePath, c.paths.project.dir);

@@ -1,4 +1,4 @@
-import { RnvEngine, generateEngineTasks, generateEngineExtensions } from '@rnv/core';
+import { RnvEngine, generateRnvTaskMap, generateEngineExtensions } from '@rnv/core';
 import { withRNVMetro } from './adapters/metroAdapter';
 import { withRNVBabel } from './adapters/babelAdapter';
 import taskBuild from './tasks/taskBuild';
@@ -11,7 +11,7 @@ import { Tasks as TasksSdkReactNative, withRNVRNConfig } from '@rnv/sdk-react-na
 import CNF from '../renative.engine.json';
 
 const Engine: RnvEngine = {
-    tasks: generateEngineTasks(
+    tasks: generateRnvTaskMap(
         [taskRun, taskPackage, taskBuild, taskConfigure, taskExport, ...TasksSdkReactNative],
         CNF
     ),

@@ -16,7 +16,7 @@ import { confirmActiveBundler } from '@rnv/sdk-utils';
 
 let keepRNVRunning = false;
 
-export const startBundlerIfRequired = async (parentTask: string, originTask?: string) => {
+export const startBundlerIfRequired = async (parentTaskName: string, originTaskName?: string) => {
     logDefault('startBundlerIfRequired');
     const bundleAssets = getConfigProp('bundleAssets');
     if (bundleAssets === true) return;
@@ -24,14 +24,14 @@ export const startBundlerIfRequired = async (parentTask: string, originTask?: st
     const isRunning = await isBundlerActive();
     if (!isRunning) {
         // _taskStart(c, parentTask, originTask);
-        await executeTask(RnvTaskName.start, parentTask, originTask);
+        await executeTask({ taskName: RnvTaskName.start, parentTaskName, originTaskName });
 
         keepRNVRunning = true;
         await waitForBundler();
     } else {
         const resetCompleted = await confirmActiveBundler();
         if (resetCompleted) {
-            await executeTask(RnvTaskName.start, parentTask, originTask);
+            await executeTask({ taskName: RnvTaskName.start, parentTaskName, originTaskName });
 
             keepRNVRunning = true;
             await waitForBundler();

@@ -1,4 +1,4 @@
-import { generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
+import { generateEngineExtensions, generateRnvTaskMap, RnvEngine } from '@rnv/core';
 import { Tasks as TasksSdkWebOS } from '@rnv/sdk-webos';
 import { Tasks as TasksSdkTizen } from '@rnv/sdk-tizen';
 import { withRNVBabel, withRNVWebpack } from './adapter';
@@ -11,7 +11,7 @@ import taskStart from './tasks/taskStart';
 import taskDebug from './tasks/taskDebug';
 
 const Engine: RnvEngine = {
-    tasks: generateEngineTasks(
+    tasks: generateRnvTaskMap(
         [taskRun, taskBuild, taskConfigure, taskStart, taskDebug, ...TasksSdkWebOS, ...TasksSdkTizen],
         CNF
     ),

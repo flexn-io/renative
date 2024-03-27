@@ -1,4 +1,4 @@
-import { generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
+import { generateEngineExtensions, generateRnvTaskMap, RnvEngine } from '@rnv/core';
 import { withRNVNext } from './adapters/nextAdapter';
 import { withRNVBabel } from './adapters/babelAdapter';
 import taskRun from './tasks/taskRun';
@@ -10,7 +10,7 @@ import taskExport from './tasks/taskExport';
 import CNF from '../renative.engine.json';
 
 const Engine: RnvEngine = {
-    tasks: generateEngineTasks([taskRun, taskBuild, taskConfigure, taskStart, taskExport], CNF),
+    tasks: generateRnvTaskMap([taskRun, taskBuild, taskConfigure, taskStart, taskExport], CNF),
     config: CNF,
     projectDirName: '',
     runtimeExtraProps: {},
