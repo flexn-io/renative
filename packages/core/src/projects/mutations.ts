@@ -1,10 +1,14 @@
-import { logInfo, logWarning } from '../logger';
+import { chalk, logRaw, logWarning } from '../logger';
 import { getContext } from '../context/provider';
 import { DependencyMutation } from './types';
+import { inquirerPrompt } from '../api';
+import { NpmPackageFile } from '../configs/types';
+import { updatePackage } from './package';
 
 export const createDependencyMutation = (opts: DependencyMutation) => {
     const ctx = getContext();
     ctx.mutations.pendingMutations.push(opts);
+    ctx._requiresNpmInstall = true;
     return opts;
 };
 
@@ -12,14 +16,53 @@ export const handleMutations = async () => {
     const ctx = getContext();
     const mutations = ctx.mutations.pendingMutations;
     if (!mutations.length) return true;
-    logWarning('Dependency conflicts detected. Please resolve them before continuing');
+    logWarning('Updates to package.json are required:');
+    let msg = '';
     mutations.forEach((m) => {
-        logInfo(`- ${m.name} ${m.msg} (${m.original?.version || 'N/A'}) => (${m.updated.version})`);
+        msg += `- ${chalk().bold(m.name)} (${chalk().red(m.original?.version || 'N/A')}) => (${chalk().green(
+            m.updated.version
+        )}) ${chalk().gray(`${m.msg} | ${m.source}`)}\n`;
     });
+    logRaw(msg);
     const isTemplate = ctx.buildConfig?.isTemplate;
-    console.log('DJDJDJJDJDJD', mutations);
 
     if (isTemplate) return true;
     //Check with user
-    return false;
+    const choices = [
+        'Update package and install (recommended)',
+        'Update package and skip install',
+        'Continue without update or install',
+    ];
+    const { confirm } = await inquirerPrompt({
+        name: 'confirm',
+        type: 'list',
+        default: choices[0],
+        choices,
+        message: 'What to do?',
+    });
+
+    ctx.mutations.pendingMutations = [];
+
+    if (confirm === choices[2]) {
+        // We skip the update and tell up stream to skip install
+        return false;
+    }
+
+    const updateObj: Partial<NpmPackageFile> = {};
+    mutations.forEach((m) => {
+        updateObj[m.type] = updateObj[m.type] || {};
+        const dep = updateObj[m.type];
+        if (dep) {
+            dep[m.name] = m.updated.version;
+        }
+    });
+
+    updatePackage(updateObj);
+
+    if (confirm === choices[1]) {
+        // We update package butt tell up stream to skip install
+        return false;
+    }
+
+    return true;
 };

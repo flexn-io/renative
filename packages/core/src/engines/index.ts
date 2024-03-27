@@ -16,6 +16,7 @@ import { getEngineTemplateByPlatform } from '../configs/engines';
 import { ConfigFileEngine } from '../schema/configFiles/types';
 import { getConfigProp } from '../context/contextProps';
 import { registerRnvTasks } from '../tasks/taskRegistry';
+import { createDependencyMutation } from '../projects/mutations';
 
 export const registerEngine = async (engine: RnvEngine, platform?: RnvPlatform, engConfig?: RnvEngineTemplate) => {
     const c = getContext();
@@ -220,7 +221,8 @@ export const loadEnginePackageDeps = async (engineConfigs: Array<RnvEngineInstal
 
     if (c.program.opts().skipDependencyCheck || c.buildConfig?.isTemplate) return 0;
     // Check engine dependencies
-    const addedDeps = [];
+    // const addedDeps = [];
+
     engineConfigs.forEach((ecf) => {
         const engineConfig = readObjectSync<ConfigFileEngine>(ecf.configPath);
         c.buildConfig.defaults?.supportedPlatforms?.forEach((platform) => {
@@ -236,13 +238,23 @@ export const loadEnginePackageDeps = async (engineConfigs: Array<RnvEngineInstal
                                     `Engine ${ecf.key} requires npm devDependency ${k} for platform ${platform}. project marked as monorepo. SKIPPING`
                                 );
                             } else {
-                                logInfo(
-                                    `Engine ${ecf.key} requires npm devDependency ${k} for platform ${platform}. ADDING...DONE`
-                                );
-                                if (npm.devDependencies?.[k]) {
-                                    deps[k] = npm.devDependencies[k];
-                                    addedDeps.push(k);
-                                }
+                                // logInfo(
+                                //     `Engine ${ecf.key} requires npm devDependency ${k} for platform ${platform}. ADDING...DONE`
+                                // );
+                                createDependencyMutation({
+                                    name: k,
+                                    updated: {
+                                        version: npm.devDependencies?.[k] || 'N/A',
+                                    },
+                                    type: 'devDependencies',
+                                    msg: `Missing dependency for platform ${platform}`,
+                                    source: `engine.npm (${ecf.key})`,
+                                    targetPath: c.paths.project.package,
+                                });
+                                // if (npm.devDependencies?.[k]) {
+                                //     deps[k] = npm.devDependencies[k];
+                                //     addedDeps.push(k);
+                                // }
                             }
                         }
                     });
@@ -259,13 +271,23 @@ export const loadEnginePackageDeps = async (engineConfigs: Array<RnvEngineInstal
                                     );
                                 }
                             } else {
-                                logInfo(
-                                    `Engine ${ecf.key} requires npm dependency ${k} for platform ${platform}. ADDING...DONE`
-                                );
-                                if (npm.dependencies?.[k]) {
-                                    deps[k] = npm.dependencies[k];
-                                    addedDeps.push(k);
-                                }
+                                // logInfo(
+                                //     `Engine ${ecf.key} requires npm dependency ${k} for platform ${platform}. ADDING...DONE`
+                                // );
+                                createDependencyMutation({
+                                    name: k,
+                                    updated: {
+                                        version: npm.dependencies?.[k] || 'N/A',
+                                    },
+                                    type: 'dependencies',
+                                    msg: `Missing dependency for platform ${platform}`,
+                                    source: `engine.npm (${ecf.key})`,
+                                    targetPath: c.paths.project.package,
+                                });
+                                // if (npm.dependencies?.[k]) {
+                                //     deps[k] = npm.dependencies[k];
+                                //     addedDeps.push(k);
+                                // }
                             }
                         }
                     });
@@ -278,24 +300,36 @@ export const loadEnginePackageDeps = async (engineConfigs: Array<RnvEngineInstal
                             logInfo(
                                 `Engine ${ecf.key} requires npm optionalDependency ${k} for platform ${platform}. ADDING...DONE`
                             );
-                            if (npm.optionalDependencies?.[k]) {
-                                deps[k] = npm.optionalDependencies[k];
-                                addedDeps.push(k);
-                            }
+                            createDependencyMutation({
+                                name: k,
+                                updated: {
+                                    version: npm.optionalDependencies?.[k] || 'N/A',
+                                },
+                                type: 'optionalDependencies',
+                                msg: `Missing optionalDependency for platform ${platform}`,
+                                source: `engine.npm (${ecf.key})`,
+                                targetPath: c.paths.project.package,
+                            });
+                            // if (npm.optionalDependencies?.[k]) {
+                            //     deps[k] = npm.optionalDependencies[k];
+                            //     addedDeps.push(k);
+                            // }
                         }
                     });
                     c.files.project.package.optionalDependencies = deps;
                 }
 
-                if (addedDeps.length > 0) {
-                    writeFileSync(c.paths.project.package, c.files.project.package);
-                }
+                // if (addedDeps.length > 0) {
+                //     writeFileSync(c.paths.project.package, c.files.project.package);
+                // }
                 //
             }
         });
     });
+    return true;
+    console.log('KURVA');
 
-    return addedDeps.length;
+    // return addedDeps.length;
 };
 
 const _getFilteredEngines = (c: RnvContext) => {
@@ -411,9 +445,11 @@ ${enginesToInstall.map((v) => `> ${v.key}@${v.version}`).join('\n')}
         return loadEngines(true);
     }
     const plugDepsCount = await loadEnginePluginDeps(engineConfigs);
-    const pkgDepsCount = await loadEnginePackageDeps(engineConfigs);
+    // const pkgDepsCount = await loadEnginePackageDeps(engineConfigs);
+    await loadEnginePackageDeps(engineConfigs);
 
-    if (plugDepsCount + pkgDepsCount > 0) {
+    if (plugDepsCount > 0) {
+        // if (plugDepsCount + pkgDepsCount > 0) {
         c.runtime._skipPluginScopeWarnings = true;
         await configurePlugins(); // TODO: This is too early as scoped plugin have not been installed
         c.runtime._skipPluginScopeWarnings = false;

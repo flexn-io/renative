@@ -24,7 +24,7 @@ import { ConfigFileOverrides, ConfigFilePlugin, ConfigFileTemplates } from '../s
 import { getContext } from '../context/provider';
 import { getConfigProp } from '../context/contextProps';
 import { RnvFileName } from '../enums/fileName';
-import { AsyncCallback, DependencyMutation } from '../projects/types';
+import { AsyncCallback } from '../projects/types';
 import { createDependencyMutation } from '../projects/mutations';
 import { updatePackage } from '../projects/package';
 
@@ -187,8 +187,6 @@ export const configurePlugins = async () => {
     const { dependencies, devDependencies } = c.files.project.package;
     // const ovMsg = isTemplate ? 'This is template. NO ACTION' : 'package.json will be overriden';
 
-    const mutations: Array<DependencyMutation> = [];
-
     Object.keys(c.buildConfig.plugins).forEach((k) => {
         const plugin = getMergedPlugin(c, k);
 
@@ -223,21 +221,20 @@ export const configurePlugins = async () => {
                     // ${chalk().bold(c.paths.project.builds.config)}: v(${chalk().green(plugin.version)}).
                     // ${ovMsg}`
                     //                 );
-                    mutations.push(
-                        createDependencyMutation({
-                            name: k,
-                            original: {
-                                version: dependencies[k],
-                            },
-                            updated: {
-                                version: plugin.version,
-                            },
-                            type: 'dependencies',
-                            msg: 'Version mismatch',
-                            source: 'plugin (renative.json)',
-                            targetPath: c.paths.project.package,
-                        })
-                    );
+
+                    createDependencyMutation({
+                        name: k,
+                        original: {
+                            version: dependencies[k],
+                        },
+                        updated: {
+                            version: plugin.version,
+                        },
+                        type: 'dependencies',
+                        msg: 'Version mismatch',
+                        source: 'plugin (renative.json)',
+                        targetPath: c.paths.project.package,
+                    });
 
                     // hasPackageChanged = true;
                     // _applyPackageDependency(newDeps, k, plugin.version);
@@ -253,21 +250,21 @@ export const configurePlugins = async () => {
                     //         devDependencies[k]
                     //     )}) and plugins.json: v(${chalk().red(plugin.version)}). ${ovMsg}`
                     // );
-                    mutations.push(
-                        createDependencyMutation({
-                            name: k,
-                            original: {
-                                version: devDependencies[k],
-                            },
-                            updated: {
-                                version: plugin.version,
-                            },
-                            type: 'devDependencies',
-                            msg: 'Version mismatch',
-                            source: 'plugin (renative.json)',
-                            targetPath: c.paths.project.package,
-                        })
-                    );
+
+                    createDependencyMutation({
+                        name: k,
+                        original: {
+                            version: devDependencies[k],
+                        },
+                        updated: {
+                            version: plugin.version,
+                        },
+                        type: 'devDependencies',
+                        msg: 'Version mismatch',
+                        source: 'plugin (renative.json)',
+                        targetPath: c.paths.project.package,
+                    });
+
                     // hasPackageChanged = true;
                     // _applyPackageDependency(newDevDeps, k, plugin.version);
                 }
@@ -279,19 +276,18 @@ export const configurePlugins = async () => {
                     //         plugin.version
                     //     )}) in package.json. ${ovMsg}`
                     // );
-                    mutations.push(
-                        createDependencyMutation({
-                            name: k,
-                            updated: {
-                                version: plugin.version,
-                            },
-                            // TODO: should be controlled by plugin if this devDependency
-                            type: 'dependencies',
-                            msg: 'Missing dependency',
-                            source: 'plugin (renative.json)',
-                            targetPath: c.paths.project.package,
-                        })
-                    );
+
+                    createDependencyMutation({
+                        name: k,
+                        updated: {
+                            version: plugin.version,
+                        },
+                        // TODO: should be controlled by plugin if this devDependency
+                        type: 'dependencies',
+                        msg: 'Missing dependency',
+                        source: 'plugin (renative.json)',
+                        targetPath: c.paths.project.package,
+                    });
 
                     // hasPackageChanged = true;
                     // if (plugin.version) {
@@ -357,10 +353,6 @@ export const configurePlugins = async () => {
             });
         }
     });
-
-    if (mutations.length) {
-        c._requiresNpmInstall = true;
-    }
 
     // When in template we want warnings but NOT file overrides
     // if (isTemplate) return true;

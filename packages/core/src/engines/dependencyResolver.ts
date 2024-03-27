@@ -3,7 +3,6 @@ import { getContext } from '../context/provider';
 import { logDefault } from '../logger';
 import { getEngineRunnerByPlatform } from '.';
 import { NpmDepKey, NpmPackageFile } from '../configs/types';
-import { DependencyMutation } from '../projects/types';
 import { createDependencyMutation } from '../projects/mutations';
 
 export const resolveEngineDependencies = async () => {
@@ -17,8 +16,6 @@ export const resolveEngineDependencies = async () => {
     const npmDeps = merge<Pick<NpmPackageFile, NpmDepKey>>(npmDepsBase, npmDepsExt);
 
     if (npmDeps) {
-        const mutations: Array<DependencyMutation> = [];
-
         Object.keys(npmDeps).forEach((t) => {
             const depType = t as NpmDepKey;
             const deps = npmDeps[depType];
@@ -26,44 +23,34 @@ export const resolveEngineDependencies = async () => {
                 Object.keys(deps).forEach((k) => {
                     const ver = c.files.project.package?.[depType]?.[k];
                     if (!ver) {
-                        mutations.push(
-                            createDependencyMutation({
-                                name: k,
-                                updated: {
-                                    version: deps[k],
-                                },
-                                type: depType,
-                                msg: 'Missing dependency',
-                                source: 'engine.npm (renative.engine.json)',
-                                targetPath: c.paths.project.package,
-                            })
-                        );
+                        createDependencyMutation({
+                            name: k,
+                            updated: {
+                                version: deps[k],
+                            },
+                            type: depType,
+                            msg: 'Missing dependency',
+                            source: 'engine.npm (renative.engine.json)',
+                            targetPath: c.paths.project.package,
+                        });
                     } else if (ver !== deps[k]) {
-                        mutations.push(
-                            createDependencyMutation({
-                                name: k,
-                                original: {
-                                    version: ver,
-                                },
-                                updated: {
-                                    version: deps[k],
-                                },
-                                type: depType,
-                                msg: 'Outdated dependency',
-                                source: 'engine.npm (renative.engine.json)',
-                                targetPath: c.paths.project.package,
-                            })
-                        );
+                        createDependencyMutation({
+                            name: k,
+                            original: {
+                                version: ver,
+                            },
+                            updated: {
+                                version: deps[k],
+                            },
+                            type: depType,
+                            msg: 'Outdated dependency',
+                            source: 'engine.npm (renative.engine.json)',
+                            targetPath: c.paths.project.package,
+                        });
                     }
                 });
             }
         });
-
-        console.log('DDKDLKDLD', npmDeps, mutations);
-
-        if (mutations.length) {
-            c._requiresNpmInstall = true;
-        }
     }
 
     // add other deps that are not npm

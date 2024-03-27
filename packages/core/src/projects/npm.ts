@@ -6,6 +6,7 @@ import { doResolve } from '../system/resolve';
 import { RnvContext } from '../context/types';
 import { inquirerPrompt } from '../api';
 import { getContext } from '../context/provider';
+import { handleMutations } from './mutations';
 
 export const checkIfProjectAndNodeModulesExists = async () => {
     logDefault('checkIfProjectAndNodeModulesExists');
@@ -120,6 +121,9 @@ export const isYarnInstalled = () => commandExistsSync('yarn') || doResolve('yar
 
 export const installPackageDependencies = async (failOnError = false) => {
     const c = getContext();
+    const result = await handleMutations();
+
+    if (!result) return;
 
     c.runtime.forceBuildHookRebuild = true;
     const customScript = _getInstallScript(c);
