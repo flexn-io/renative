@@ -7,6 +7,8 @@ export const selectPlatformIfRequired = async () => {
     const c = getContext();
     if (!c.platform) {
         const taskName = getTaskNameFromCommand();
+        // TODO: move this to more generic place
+        c.runtime.availablePlatforms = c.buildConfig.defaults?.supportedPlatforms || [];
         const platforms = c.runtime.availablePlatforms;
         if (platforms) {
             if (platforms.length === 1) {
@@ -15,7 +17,7 @@ export const selectPlatformIfRequired = async () => {
                 const { platform } = await inquirerPrompt({
                     type: 'list',
                     name: 'platform',
-                    message: `Pick a platform for ${taskName}`,
+                    message: `Pick a platform for task: "rnv ${taskName}"`,
                     choices: platforms,
                 });
                 c.platform = platform;

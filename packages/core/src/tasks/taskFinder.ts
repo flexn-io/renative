@@ -10,8 +10,9 @@ export const findSuitableTask = async (): Promise<RnvTask | undefined> => {
 
     const taskName = getTaskNameFromCommand();
     if (!taskName) {
-        // Trigger auto selection
-        throw new Error('TODO interactive selection offer all tasks');
+        // Trigger auto selection outside of this function
+        // throw new Error('TODO interactive selection offer all tasks');
+        return undefined;
     }
     const suitableTasks = findTasksByTaskName(taskName);
 
