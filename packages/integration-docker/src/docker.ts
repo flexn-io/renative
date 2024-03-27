@@ -83,11 +83,8 @@ class Docker {
 
     async saveImage() {
         const { c } = this;
-        const {
-            runtime,
-            files,
-            program: { scheme = 'debug' },
-        } = c;
+        const { runtime, files, program } = c;
+        const scheme = program?.opts()?.scheme || 'debug';
 
         const imageName = runtime.appId?.toLowerCase();
         const appVersion = files.project.package.version;

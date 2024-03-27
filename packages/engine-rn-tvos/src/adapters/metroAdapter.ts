@@ -69,6 +69,17 @@ export const withRNVMetro = (config: InputConfig) => {
             assetRegistryPath: path.resolve(`${doResolve('react-native-tvos')}/Libraries/Image/AssetRegistry.js`),
         },
         resolver: {
+            resolveRequest: (context, moduleName, platform) => {
+                if (moduleName.startsWith('react-native/')) {
+                    return context.resolveRequest(
+                        context,
+                        moduleName.replace('react-native/', 'react-native-tvos/'),
+                        platform
+                    );
+                }
+                // Optionally, chain to the standard Metro resolver.
+                return context.resolveRequest(context, moduleName, platform);
+            },
             blacklistRE: blacklist([
                 /platformBuilds\/.*/,
                 /buildHooks\/.*/,

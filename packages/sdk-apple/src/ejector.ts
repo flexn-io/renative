@@ -12,6 +12,7 @@ import {
     parseFonts,
     parsePlugins,
     getContext,
+    RnvFileName,
 } from '@rnv/core';
 import { getAppFolderName } from './common';
 
@@ -98,7 +99,7 @@ export const ejectXcodeProject = async () => {
                 c,
                 extensionsFilter
             );
-            copyFileSync(path.join(podPath, 'package.json'), path.join(destPath, 'package.json'));
+            copyFileSync(path.join(podPath, RnvFileName.package), path.join(destPath, RnvFileName.package));
         }
     });
 

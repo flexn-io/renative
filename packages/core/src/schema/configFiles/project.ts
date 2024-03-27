@@ -1,6 +1,6 @@
 import { AnyZodObject, z } from 'zod';
 import { CommonSchema } from '../common';
-import { Ext, ExtendTemplate, PlatformsKeys, Runtime, TemplateConfig } from '../shared';
+import { Ext, ExtendTemplate, PlatformsKeys, Runtime, SupportedPlatforms, TemplateConfig } from '../shared';
 import { PlatformsSchema } from '../platforms';
 import { PluginsSchema } from '../plugins';
 
@@ -17,8 +17,6 @@ const Ports = z
     .describe(
         'Allows you to assign custom port per each supported platform specific to this project. this is useful if you foten switch between multiple projects and do not want to experience constant port conflicts'
     );
-
-const SupportedPlatforms = z.array(PlatformsKeys).describe('Array list of all supported platforms in current project');
 
 const PortOffset = z.number().describe('Offset each port default value by increment');
 
@@ -214,16 +212,16 @@ const UseTemplate = z.object({
 //LEVEl 0 (ROOT)
 
 const RootProjectBaseFragment = {
-    workspaceID: WorkspaceID,
-    projectVersion: z.string(),
-    projectName: ProjectName,
+    workspaceID: WorkspaceID.optional(),
+    projectVersion: z.string().optional(),
+    projectName: ProjectName.optional(),
     isMonorepo: z.optional(IsMonoRepo),
     useTemplate: z.optional(UseTemplate),
     isTemplate: z.boolean().optional(),
     defaults: z.optional(DefaultsSchema),
     pipes: z.optional(Pipes),
-    templates: Templates,
-    currentTemplate: CurrentTemplate,
+    templates: Templates.optional(),
+    currentTemplate: CurrentTemplate.optional(),
     crypto: z.optional(Crypto),
     paths: z.optional(Paths),
     permissions: z.optional(Permissions),
@@ -243,10 +241,10 @@ const RootProjectBaseFragment = {
         .describe(
             "Enables the equivalent to passing --skipDependencyCheck parameter on every rnv run so you don't have to use it"
         ),
-    isNew: z
-        .boolean()
-        .optional()
-        .describe('Marker indicating that this project has just been bootstrapped. this prop is managed by rnv'),
+    // isNew: z
+    //     .boolean()
+    //     .optional()
+    //     .describe('Marker indicating that this project has just been bootstrapped. this prop is managed by rnv'),
 };
 
 const RootProjectBaseSchema = z.object(RootProjectBaseFragment);

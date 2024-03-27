@@ -18,7 +18,7 @@ import {
     DEFAULTS,
     executeAsync,
     ExecOptionsPresets,
-    ConfigName,
+    RnvFileName,
     getContext,
 } from '@rnv/core';
 import { CLI_SDB_TIZEN, CLI_TIZEN, CLI_TIZEN_EMULATOR } from './constants';
@@ -171,7 +171,7 @@ export const addDevelopTizenCertificate = (c: RnvContext, secureProfileConfig: T
     });
 
 const _getDeviceID = async (c: RnvContext, target: string) => {
-    const { device } = c.program;
+    const { device } = c.program.opts();
 
     if (device) {
         let connectResponse: string;
@@ -215,7 +215,7 @@ const _getDeviceID = async (c: RnvContext, target: string) => {
 };
 
 const _getRunningDevices = async (c: RnvContext) => {
-    const { platform } = c.program;
+    const { platform } = c.program.opts();
     const devicesList = await execCLI(CLI_SDB_TIZEN, 'devices');
     const lines = devicesList
         .trim()
@@ -350,7 +350,7 @@ export const runTizenSimOrDevice = async () => {
                     logDebug(err);
                     logError(
                         `Could not find the specified target and could not create the emulator automatically.
-Please create one and then edit the default target from ${c.paths.workspace.dir}/${ConfigName.renative}`
+Please create one and then edit the default target from ${c.paths.workspace.dir}/${RnvFileName.renative}`
                     );
                 }
             }

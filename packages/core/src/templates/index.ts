@@ -8,24 +8,25 @@ import {
     readObjectSync,
     fsExistsSync,
     fsLstatSync,
-    fsUnlinkSync,
-    removeDirSync,
+    // fsUnlinkSync,
+    // removeDirSync,
 } from '../system/fs';
 import { chalk, logError, logInfo, logWarning, logDefault, logDebug } from '../logger';
-import { loadFileExtended } from '../configs';
+// import { loadFileExtended } from '../configs';
 import { doResolve } from '../system/resolve';
 import { RnvContext } from '../context/types';
 import { generateOptions, inquirerPrompt } from '../api';
 import { PromptOptions } from '../api/types';
 import { RnvPlatform } from '../types';
-import { listAppConfigsFoldersSync } from '../configs/appConfigs';
+// import { listAppConfigsFoldersSync } from '../configs/appConfigs';
 import { writeRenativeConfigFile } from '../configs/utils';
-import { checkIfProjectAndNodeModulesExists } from '../projects/dependencyManager';
-import { ConfigFileApp, ConfigFileProject, ConfigFileTemplate } from '../schema/configFiles/types';
-import { PlatformKey } from '../schema/types';
+import { checkIfProjectAndNodeModulesExists } from '../projects/dependencies';
+import { ConfigFileProject, ConfigFileTemplate } from '../schema/configFiles/types';
+// import { PlatformKey } from '../schema/types';
 import { getConfigProp } from '../context/contextProps';
-import { ConfigName } from '../enums/configName';
+import { RnvFileName } from '../enums/fileName';
 import { getContext } from '../context/provider';
+import { RnvFolderName } from '../enums/folderName';
 
 const _cleanProjectTemplateSync = (c: RnvContext) => {
     logDefault('_cleanProjectTemplateSync');
@@ -52,9 +53,9 @@ const _applyTemplate = async (c: RnvContext) => {
     }
 
     if (c.paths.template.dir) {
-        c.paths.template.configTemplate = path.join(c.paths.template.dir, ConfigName.renativeTemplate);
+        c.paths.template.configTemplate = path.join(c.paths.template.dir, RnvFileName.renativeTemplate);
 
-        c.paths.template.config = path.join(c.paths.template.dir, ConfigName.renative);
+        c.paths.template.config = path.join(c.paths.template.dir, RnvFileName.renative);
     }
 
     if (!fsExistsSync(c.paths.template.configTemplate)) {
@@ -88,118 +89,108 @@ const _applyTemplate = async (c: RnvContext) => {
     return true;
 };
 
-const _configureSrc = (c: RnvContext) =>
-    new Promise<void>((resolve) => {
-        // Check src
-        logDebug('configureProject:check src');
-        if (!fsExistsSync(c.paths.project.srcDir)) {
-            logInfo(`Your src folder ${chalk().bold(c.paths.project.srcDir)} is missing! CREATING...DONE`);
-            copyFolderContentsRecursiveSync(path.join(c.paths.template.dir, 'src'), c.paths.project.srcDir);
-        }
-        resolve();
-    });
+// DEPRECATED - left here only for temporary reference
+// const _configureAppConfigs = async (c: RnvContext) => {
+//     // Check appConfigs
+//     logDebug('configureProject:check appConfigs');
+//     //
+//     if (!fsExistsSync(c.paths.project.appConfigsDir)) {
+//         logInfo(
+//             `Your appConfig folder ${chalk().bold(
+//                 c.paths.project.appConfigsDir
+//             )} is missing! ReNative will create one from template.`
+//         );
 
-const _configureAppConfigs = async (c: RnvContext) => {
-    // Check appConfigs
-    logDebug('configureProject:check appConfigs');
-    //
-    if (!fsExistsSync(c.paths.project.appConfigsDir)) {
-        logInfo(
-            `Your appConfig folder ${chalk().bold(
-                c.paths.project.appConfigsDir
-            )} is missing! ReNative will create one from template.`
-        );
+//         // TODO: GET CORRECT PROJECT TEMPLATE
+//         copyFolderContentsRecursiveSync(c.paths.template.appConfigsDir, c.paths.project.appConfigsDir);
 
-        // TODO: GET CORRECT PROJECT TEMPLATE
-        copyFolderContentsRecursiveSync(c.paths.template.appConfigsDir, c.paths.project.appConfigsDir);
+//         const appConfigIds = listAppConfigsFoldersSync(false);
 
-        const appConfigIds = listAppConfigsFoldersSync(false);
+//         // Update App Title to match package.json
+//         try {
+//             const supPlats = c.files.project?.config?.defaults?.supportedPlatforms;
+//             appConfigIds.forEach((v) => {
+//                 const appConfigPath = path.join(c.paths.project.appConfigsDir, v, RnvFileName.renative);
+//                 const appConfig = readObjectSync<ConfigFileApp>(appConfigPath);
+//                 if (appConfig) {
+//                     if (appConfig.skipBootstrapCopy) {
+//                         fsUnlinkSync(appConfigPath);
+//                         if (v !== 'base') {
+//                             removeDirSync(path.join(c.paths.project.appConfigsDir, v));
+//                         }
+//                     } else if (!appConfig.hidden) {
+//                         appConfig.common = appConfig.common || {};
+//                         //TODO: this needs to use bootstrap_metadata to work properly
+//                         // appConfig.common.title = c.files.project.config?.defaults?.title;
+//                         // appConfig.common.id = c.files.project.config?.defaults?.id;
 
-        // Update App Title to match package.json
-        try {
-            const supPlats = c.files.project?.config?.defaults?.supportedPlatforms;
-            appConfigIds.forEach((v) => {
-                const appConfigPath = path.join(c.paths.project.appConfigsDir, v, ConfigName.renative);
-                const appConfig = readObjectSync<ConfigFileApp>(appConfigPath);
-                if (appConfig) {
-                    if (appConfig.skipBootstrapCopy) {
-                        fsUnlinkSync(appConfigPath);
-                        if (v !== 'base') {
-                            removeDirSync(path.join(c.paths.project.appConfigsDir, v));
-                        }
-                    } else if (!appConfig.hidden) {
-                        appConfig.common = appConfig.common || {};
-                        //TODO: this needs to use bootstrap_metadata to work properly
-                        // appConfig.common.title = c.files.project.config?.defaults?.title;
-                        // appConfig.common.id = c.files.project.config?.defaults?.id;
+//                         if (supPlats && appConfig.platforms) {
+//                             (Object.keys(appConfig.platforms) as PlatformKey[]).forEach((pk) => {
+//                                 if (!supPlats.includes(pk)) {
+//                                     delete appConfig.platforms?.[pk];
+//                                 }
+//                             });
+//                         }
 
-                        if (supPlats && appConfig.platforms) {
-                            (Object.keys(appConfig.platforms) as PlatformKey[]).forEach((pk) => {
-                                if (!supPlats.includes(pk)) {
-                                    delete appConfig.platforms?.[pk];
-                                }
-                            });
-                        }
+//                         writeRenativeConfigFile(appConfigPath, appConfig);
+//                     }
+//                 }
+//             });
+//         } catch (e) {
+//             logError(e);
+//         }
+//     }
+// };
 
-                        writeRenativeConfigFile(appConfigPath, appConfig);
-                    }
-                }
-            });
-        } catch (e) {
-            logError(e);
-        }
-    }
-};
+// const _configureProjectConfig = (c: RnvContext) =>
+//     new Promise<void>((resolve) => {
+//         // Check projectConfigs
+//         logDebug('configureProject:check projectConfigs');
+//         if (!fsExistsSync(c.paths.project.appConfigBase.dir)) {
+//             logInfo(
+//                 `Your projectConfig folder ${chalk().bold(
+//                     c.paths.project.appConfigBase.dir
+//                 )} is missing! CREATING...DONE`
+//             );
+//             copyFolderContentsRecursiveSync(c.paths.template.appConfigBase.dir, c.paths.project.appConfigBase.dir);
+//         }
+//         resolve();
+//     });
 
-const _configureProjectConfig = (c: RnvContext) =>
-    new Promise<void>((resolve) => {
-        // Check projectConfigs
-        logDebug('configureProject:check projectConfigs');
-        if (!fsExistsSync(c.paths.project.appConfigBase.dir)) {
-            logInfo(
-                `Your projectConfig folder ${chalk().bold(
-                    c.paths.project.appConfigBase.dir
-                )} is missing! CREATING...DONE`
-            );
-            copyFolderContentsRecursiveSync(c.paths.template.appConfigBase.dir, c.paths.project.appConfigBase.dir);
-        }
-        resolve();
-    });
+// const _configureRenativeConfig = async (c: RnvContext) => {
+//     // renative.json
+//     const templateConfig = readObjectSync<ConfigFileTemplate>(c.paths.template.configTemplate);
+//     logDebug('configureProject:check renative.json');
 
-const _configureRenativeConfig = async (c: RnvContext) => {
-    // renative.json
-    const templateConfig = readObjectSync<ConfigFileTemplate>(c.paths.template.configTemplate);
-    logDebug('configureProject:check renative.json');
+//     if (c.runtime.selectedTemplate || c.runtime.requiresForcedTemplateApply || c.files.project.config?.isNew) {
+//         logInfo(
+//             `Your ${c.paths.project.config} needs to be updated with ${c.paths.template.configTemplate}. UPDATING...DONE`
+//         );
+//         const mergedObjBase = getProjectTemplateMergedConfig(templateConfig);
+//         if (mergedObjBase) {
+//             const mergedObj = { ...mergedObjBase, ...(mergedObjBase.templateConfig?.renative_json || {}) };
 
-    if (c.runtime.selectedTemplate || c.runtime.requiresForcedTemplateApply || c.files.project.config?.isNew) {
-        logInfo(
-            `Your ${c.paths.project.config} needs to be updated with ${c.paths.template.configTemplate}. UPDATING...DONE`
-        );
-        const mergedObjBase = getProjectTemplateMergedConfig(templateConfig);
-        if (mergedObjBase) {
-            const mergedObj = { ...mergedObjBase, ...(mergedObjBase.templateConfig?.renative_json || {}) };
+//             // Do not override supportedPlatforms
+//             mergedObj.defaults = mergedObj.defaults || {};
+//             mergedObj.defaults.supportedPlatforms = c.files.project.config_original?.defaults?.supportedPlatforms;
+//             // Do not override engines
+//             mergedObj.engines = c.files.project.config_original?.engines;
+//             // Set current template
+//             if (c.runtime.currentTemplate) {
+//                 mergedObj.currentTemplate = c.runtime.currentTemplate;
+//             }
 
-            // Do not override supportedPlatforms
-            mergedObj.defaults = mergedObj.defaults || {};
-            mergedObj.defaults.supportedPlatforms = c.files.project.config_original?.defaults?.supportedPlatforms;
-            // Do not override engines
-            mergedObj.engines = c.files.project.config_original?.engines;
-            // Set current template
-            if (c.runtime.currentTemplate) {
-                mergedObj.currentTemplate = c.runtime.currentTemplate;
-            }
+//             // mergedObj.isNew = null;
+//             delete mergedObj.isNew;
+//             delete mergedObj.templateConfig;
+//             // c.files.project.config = mergedObj;
+//             writeRenativeConfigFile(c.paths.project.config, mergedObj);
+//             loadFileExtended(c.files.project, c.paths.project, 'config');
+//         }
+//     }
 
-            // mergedObj.isNew = null;
-            delete mergedObj.isNew;
-            delete mergedObj.templateConfig;
-            // c.files.project.config = mergedObj;
-            writeRenativeConfigFile(c.paths.project.config, mergedObj);
-            loadFileExtended(c.files.project, c.paths.project, 'config');
-        }
-    }
-
-    return true;
-};
+//     return true;
+// };
 
 const getProjectTemplateMergedConfig = (templateConfig: ConfigFileTemplate | null) => {
     const c = getContext();
@@ -217,8 +208,11 @@ const getProjectTemplateMergedConfig = (templateConfig: ConfigFileTemplate | nul
 };
 
 const _copyIncludedPath = (c: RnvContext, name: string) => {
-    const sourcePath = path.join(c.paths.template.dir, name);
+    const sourcePathOriginal = path.join(c.paths.template.dir, name);
+    const sourceOverridePath = path.join(c.paths.template.dir, RnvFolderName.templateOverrides, name);
     const destPath = path.join(c.paths.project.dir, name);
+    // If override exists use it, otherwise use original and continue with rest of the logic
+    const sourcePath = fsExistsSync(sourceOverridePath) ? sourceOverridePath : sourcePathOriginal;
     if (!fsExistsSync(destPath) && fsExistsSync(sourcePath)) {
         try {
             if (fsLstatSync(sourcePath).isDirectory()) {
@@ -265,11 +259,11 @@ export const configureTemplateFiles = async () => {
     }
 };
 
-export const configureEntryPoint = async (platform: RnvPlatform) => {
+export const configureEntryPoint = async () => {
     logDefault('configureEntryPoint');
     const c = getContext();
 
-    if (c.files.project.config?.isTemplate) return true;
+    if (c.buildConfig?.isTemplate) return true;
 
     const entryFile = getConfigProp('entryFile');
 
@@ -303,11 +297,11 @@ export const configureEntryPoint = async (platform: RnvPlatform) => {
 
 export const getInstalledTemplateOptions = (): PromptOptions | null => {
     const c = getContext();
-    if (c.files.project.config?.isTemplate) return null;
+    if (c.buildConfig?.isTemplate) return null;
     if (c.buildConfig.templates) {
         return generateOptions(c.buildConfig.templates);
     }
-    logError("You don't have any local templates installed", false, true);
+    logError("You don't have any local templates installed", { skipAnalytics: true });
     return null;
 };
 
@@ -319,10 +313,11 @@ export const isTemplateInstalled = () => {
 export const applyTemplate = async (selectedTemplate?: string) => {
     const c = getContext();
     logDefault('applyTemplate', `${c.buildConfig.currentTemplate}=>${selectedTemplate}`);
-    if (c.files.project.config?.isTemplate) return true;
+    if (c.buildConfig?.isTemplate) return true;
 
     if (!c.files.project.config) {
         logError('Project config not loaded. cannot apply template');
+
         return false;
     }
 
@@ -354,8 +349,7 @@ export const applyTemplate = async (selectedTemplate?: string) => {
     }
 
     await _applyTemplate(c);
-    await _configureSrc(c);
-    await _configureAppConfigs(c);
-    await _configureProjectConfig(c);
-    await _configureRenativeConfig(c);
+    // await _configureAppConfigs(c);
+    // await _configureProjectConfig(c);
+    // await _configureRenativeConfig(c);
 };

@@ -18,13 +18,23 @@ export * from './configs/templates';
 export * from './context/contextProps';
 export * from './configs/utils';
 
-export * from './projects';
+export * from './projects/appConfig';
+export * from './projects/assets';
+export * from './projects/fonts';
+export * from './projects/bootstrap';
+export * from './projects/version';
 export * from './projects/npm';
 export * from './projects/package';
-export * from './projects/dependencyManager';
+export * from './projects/dependencies';
+export * from './projects/fonts';
+export * from './projects/utils';
 
-export * from './tasks';
+export * from './tasks/taskFinder';
+export * from './tasks/taskExecutors';
+export * from './tasks/taskHelpers';
+export * from './tasks/taskRegistry';
 export * from './tasks/constants';
+export * from './tasks/taskCreator';
 
 export * from './schema';
 export * from './schema/defaults';
@@ -41,7 +51,6 @@ export * from './logger/defaults';
 export * from './api';
 export * from './api/provider';
 
-export * from './constants';
 export * from './env';
 export * from './formatter';
 export * from './templates';
@@ -54,7 +63,9 @@ export * from './buildHooks';
 export * from './migrator';
 
 export * from './enums/taskName';
-export * from './enums/configName';
+export * from './enums/fileName';
+export * from './enums/folderName';
+export * from './enums/platformName';
 
 //TYPES
 export * from './engines/types';
@@ -64,6 +75,8 @@ export * from './projects/types';
 export * from './schema/types';
 export * from './tasks/types';
 export * from './system/types';
+export * from './configs/types';
+export * from './env/types';
 export * from './api/types';
 export * from './types';
 export * from './schema/types';

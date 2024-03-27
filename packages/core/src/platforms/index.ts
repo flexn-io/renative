@@ -1,22 +1,18 @@
 import path from 'path';
-import { chalk, logDefault, logError, logWarning, logDebug } from '../logger';
+import { chalk, logDefault, logError, logWarning, logDebug, logInfo } from '../logger';
 import { cleanFolder, copyFolderContentsRecursiveSync } from '../system/fs';
 import { getTimestampPathsConfig, getAppFolder } from '../context/contextProps';
-import { SUPPORTED_PLATFORMS } from '../constants';
 import { generateOptions, inquirerPrompt } from '../api';
 import type { RnvPlatform, RnvPlatformWithAll } from '../types';
 import { updateProjectPlatforms } from '../configs/configProject';
 import { doResolve } from '../system/resolve';
 import { getContext } from '../context/provider';
+import { RnvPlatforms } from '../enums/platformName';
 
 export const logErrorPlatform = () => {
     const c = getContext();
 
-    logError(
-        `Platform: ${chalk().bold(c.platform)} doesn't support command: ${chalk().bold(c.command)}`,
-        true // kill it if we're not supporting this
-    );
-    return false;
+    return Promise.reject(`Platform: ${chalk().bold(c.platform)} doesn't support command: ${chalk().bold(c.command)}`);
 };
 
 export const generatePlatformChoices = () => {
@@ -92,16 +88,22 @@ export const createPlatformBuild = (platform: RnvPlatform) =>
         resolve();
     });
 
+const printCurrentPlatform = (platform: RnvPlatform) => {
+    const msg = `Current platform: ${chalk().white.bold(platform)}`;
+    logInfo(msg);
+};
+
 export const isPlatformSupported = async (isGlobalScope = false) => {
     const c = getContext();
 
-    if (c.platform && c.program.platform !== true && isGlobalScope) {
+    if (c.platform && c.program.opts().platform !== true && isGlobalScope) {
+        printCurrentPlatform(c.platform);
         return c.platform;
     }
 
     let platformsAsObj;
     if (isGlobalScope) {
-        platformsAsObj = SUPPORTED_PLATFORMS;
+        platformsAsObj = RnvPlatforms;
     } else {
         platformsAsObj = c.buildConfig ? c.buildConfig.platforms : c.supportedPlatforms;
     }
@@ -109,7 +111,7 @@ export const isPlatformSupported = async (isGlobalScope = false) => {
     if (!platformsAsObj) platformsAsObj = c.runtime.availablePlatforms;
     const opts = generateOptions(platformsAsObj);
 
-    if (!c.platform || c.program.platform === true || !c.runtime.availablePlatforms?.includes?.(c.platform)) {
+    if (!c.platform || c.program.opts().platform === true || !c.runtime.availablePlatforms?.includes?.(c.platform)) {
         const { platform } = await inquirerPrompt({
             name: 'platform',
             type: 'list',
@@ -139,7 +141,7 @@ export const isPlatformSupported = async (isGlobalScope = false) => {
             throw new Error('User canceled');
         }
     }
-
+    printCurrentPlatform(c.platform);
     return c.platform;
 };
 

@@ -155,6 +155,10 @@ export const CommonSchemaFragment = {
     custom: z.optional(Ext),
 };
 
+// const CommonSchemaFragmentSchema = z.object(CommonSchemaFragment);
+
+// type CommonSchemaFragmentTS = z.infer<typeof CommonSchemaFragmentSchema>;
+
 // const CommonBuildSchemes = z.record(z.string(), BuildSchemeBase.merge(PlatformBaseFragment));
 
 // export type _CommonBuildSchemesSchemaType = z.infer<typeof CommonBuildSchemes>;
@@ -174,5 +178,9 @@ export const CommonSchema = z
         ),
     })
     .describe('Common config props used as default props for all available buildSchemes');
+
+// type CommonSchemaTS = CommonSchemaFragmentTS & {
+//     buildSchemes: Record<string, CommonSchemaFragmentTS & BuildSchemeFragmentTS & PlatformBaseFragmentTS>;
+// };
 
 export type _CommonSchemaType = z.infer<typeof CommonSchema>;

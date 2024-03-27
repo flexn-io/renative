@@ -1,4 +1,3 @@
-import { generateOptions } from '../api';
 import { getContext } from '../context/provider';
 import { chalk, logInfo, logDefault, logWarning } from '../logger';
 import { doResolve } from '../system/resolve';
@@ -7,7 +6,7 @@ import { writeRenativeConfigFile } from './utils';
 export const checkIfTemplateConfigured = async () => {
     logDefault('checkIfTemplateConfigured');
     const c = getContext();
-    if (c.program.skipDependencyCheck || c.files.project.config?.isTemplate) return true;
+    if (c.program.opts().skipDependencyCheck || c.buildConfig?.isTemplate) return true;
     if (!c.buildConfig.templates) {
         logWarning(
             `Your ${chalk().bold(c.paths.project.config)} does not contain ${chalk().bold(
@@ -37,20 +36,4 @@ export const checkIfTemplateConfigured = async () => {
     writeRenativeConfigFile(c.paths.project.package, c.files.project.package);
 
     return true;
-};
-
-export const getTemplateOptions = (isGlobalScope?: boolean) => {
-    const c = getContext();
-    let defaultProjectTemplates;
-    if (isGlobalScope) {
-        defaultProjectTemplates = c.files.rnv.projectTemplates.config?.projectTemplates;
-    } else {
-        defaultProjectTemplates = c.buildConfig.projectTemplates || {};
-    }
-
-    return generateOptions(defaultProjectTemplates, false, null, (i, obj, mapping, defaultVal) => {
-        const exists = c.buildConfig.templates?.[defaultVal];
-        const installed = exists ? chalk().yellow(' (installed)') : '';
-        return ` [${chalk().grey(i + 1)}]> ${chalk().bold(defaultVal)}${installed} \n`;
-    });
 };

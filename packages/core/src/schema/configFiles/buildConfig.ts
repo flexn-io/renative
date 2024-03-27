@@ -3,7 +3,6 @@ import { _PlatformsSchemaType } from '../platforms';
 import { _PluginType } from '../plugins';
 import { _RootAppBaseSchemalType } from './app';
 import { _RootLocalSchemaType } from './local';
-import { _RootPluginsSchemaType } from './plugins';
 import { _RootProjectBaseSchemaType } from './project';
 import { _RootTemplatesSchemaType } from './templates';
 import { _RootWorkspaceSchemaType } from './workspace';
@@ -14,7 +13,7 @@ import { _RootWorkspaceSchemaType } from './workspace';
 // When all reantive json get merged into one file this happens conceptually anyway
 
 type RootPluginsMerged = {
-    pluginTemplates: Record<string, _RootPluginsSchemaType>;
+    scopedPluginTemplates: Record<string, _RootTemplatesSchemaType['pluginTemplates']>;
 };
 
 type Common = {

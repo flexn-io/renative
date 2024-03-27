@@ -37,7 +37,7 @@ import {
 import { fsExistsSync } from '@rnv/core';
 
 export const runWebOS = async (c: RnvContext) => {
-    const { hosted } = c.program;
+    const { hosted } = c.program.opts();
     const { target } = c.runtime;
     const { platform } = c;
 
@@ -119,7 +119,7 @@ export const buildWebOSProject = async () => {
 
     await buildCoreWebpackProject();
 
-    if (!c.program.hosted) {
+    if (!c.program.opts().hosted) {
         const tDir = path.join(getPlatformProjectDir()!, 'build');
         const tOut = path.join(getAppFolder()!, 'output');
 

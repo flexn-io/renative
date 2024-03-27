@@ -1,4 +1,4 @@
-import { BabelConfig } from '@rnv/core';
+import { BabelConfig, withBabelPluginModuleResolver } from '@rnv/adapter';
 
 export const withRNVBabel = (cnf: BabelConfig): BabelConfig => {
     const plugins = cnf?.plugins || [];
@@ -17,14 +17,6 @@ export const withRNVBabel = (cnf: BabelConfig): BabelConfig => {
             ],
         ],
         ...cnf,
-        plugins: [
-            [
-                require.resolve('babel-plugin-module-resolver'),
-                {
-                    root: [process.env.RNV_MONO_ROOT || '.'],
-                },
-            ],
-            ...plugins,
-        ],
+        plugins: [withBabelPluginModuleResolver(), ...plugins],
     };
 };

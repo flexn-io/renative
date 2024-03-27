@@ -3,7 +3,7 @@ const withFonts = require('next-fonts');
 import { Configuration, DefinePlugin } from 'webpack';
 import { NextConfig } from 'next';
 
-export function withRNWNext(nextConfig: NextConfig = {}): NextConfig {
+function _withRNWNext(nextConfig: NextConfig = {}): NextConfig {
     return {
         ...nextConfig,
         webpack(config: Configuration, options: any): Configuration {
@@ -90,7 +90,7 @@ export const withRNVNext = (config: NextConfig) => {
 
     let transModules: string[] = [];
 
-    const cnf1 = withRNWNext(withFonts(withImages(cnf)));
+    const cnf1 = _withRNWNext(withFonts(withImages(cnf)));
 
     if (process.env.RNV_EXTENSIONS) {
         cnf1.pageExtensions = process.env.RNV_EXTENSIONS.split(',');

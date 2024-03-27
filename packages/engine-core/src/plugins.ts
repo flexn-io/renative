@@ -1,5 +1,29 @@
-import { PluginListResponse, chalk, getContext } from '@rnv/core';
+import {
+    PluginListResponse,
+    chalk,
+    checkForPluginDependencies,
+    getContext,
+    installPackageDependencies,
+    logDefault,
+    overrideTemplatePlugins,
+} from '@rnv/core';
+import { configureFonts } from '@rnv/sdk-utils';
 import intersection from 'lodash/intersection';
+
+// export const configurePlugins = async () => {
+//     await installPackageDependenciesAndPlugins();
+// }
+
+export const installPackageDependenciesAndPlugins = async () => {
+    logDefault('installPackageDependenciesAndPlugins');
+
+    await installPackageDependencies();
+    await overrideTemplatePlugins();
+    await configureFonts();
+    await checkForPluginDependencies(async () => {
+        await installPackageDependenciesAndPlugins();
+    });
+};
 
 export const getPluginList = (isUpdate = false) => {
     const c = getContext();
@@ -13,8 +37,9 @@ export const getPluginList = (isUpdate = false) => {
 
     let i = 1;
 
-    Object.keys(c.files.rnv.pluginTemplates.configs).forEach((pk) => {
-        const plugins = c.files.rnv.pluginTemplates.configs[pk].pluginTemplates;
+    Object.keys(c.files.scopedConfigTemplates).forEach((pk) => {
+        const plugins = c.files.scopedConfigTemplates[pk]?.pluginTemplates;
+        if (!plugins) return;
         Object.keys(plugins).forEach((k) => {
             const plugin = plugins[k];
 

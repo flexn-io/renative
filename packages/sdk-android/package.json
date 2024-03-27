@@ -12,8 +12,7 @@
     "files": [
         "LICENSE",
         "lib",
-        "supportFiles",
-        "templates",
+        "templateFiles",
         "types.d.ts"
     ],
     "main": "lib/index.js",
@@ -32,7 +31,8 @@
     },
     "dependencies": {
         "@rnv/sdk-react-native": "1.0.0-rc.12",
-        "@rnv/sdk-utils": "1.0.0-rc.12"
+        "@rnv/sdk-utils": "1.0.0-rc.12",
+        "jetifier": "2.0.0"
     },
     "peerDependencies": {
         "@react-native-community/cli": "^11.3.8",

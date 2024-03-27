@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { DefaultsSchema, EnginesSchema } from './project';
-import { NpmDep, TemplateConfig } from '../shared';
+import { NpmDep, SupportedPlatforms, TemplateConfig } from '../shared';
 
 const BootstrapQuestionsSchema = z
     .array(
@@ -46,11 +46,12 @@ const BootstrapConfig = z
             engines: z.array(
                 z.object({
                     name: z.string(),
-                    supportedPlatforms: z.array(z.string()),
+                    supportedPlatforms: SupportedPlatforms,
                     nullifyIfFalse: z.boolean().optional(),
                 })
             ),
         }),
+        defaultSelectedPlatforms: SupportedPlatforms.optional(),
     })
     .partial();
 

@@ -216,23 +216,23 @@
                   "extendPlatform": {
                     "type": "string",
                     "enum": [
+                      "web",
                       "ios",
                       "android",
                       "androidtv",
-                      "androidwear",
                       "firetv",
-                      "web",
-                      "webtv",
-                      "tizen",
-                      "tizenmobile",
                       "tvos",
-                      "webos",
                       "macos",
-                      "windows",
                       "linux",
-                      "tizenwatch",
-                      "kaios",
+                      "windows",
+                      "tizen",
+                      "webos",
                       "chromecast",
+                      "kaios",
+                      "webtv",
+                      "androidwear",
+                      "tizenwatch",
+                      "tizenmobile",
                       "xbox"
                     ]
                   },
@@ -476,6 +476,10 @@
                 "newArchEnabled": {
                   "type": "boolean",
                   "description": "Enables new arch for android. Default: false"
+                },
+                "flipperEnabled": {
+                  "type": "boolean",
+                  "description": "Enables flipper  for ios. Default: true"
                 },
                 "reactNativeEngine": {
                   "type": "string",
@@ -956,6 +960,9 @@
                       },
                       "newArchEnabled": {
                         "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/newArchEnabled"
+                      },
+                      "flipperEnabled": {
+                        "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/flipperEnabled"
                       },
                       "reactNativeEngine": {
                         "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/reactNativeEngine"
@@ -3203,6 +3210,13 @@
                   {
                     "type": "object",
                     "properties": {
+                      "supportedPlatforms": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/definitions/rnv.app/properties/common/properties/buildSchemes/additionalProperties/properties/extendPlatform"
+                        },
+                        "description": "Array list of all supported platforms in current project"
+                      },
                       "disabled": {
                         "type": "boolean",
                         "default": false,

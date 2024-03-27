@@ -1,41 +1,14 @@
-import {
-    RnvTaskFn,
-    logErrorPlatform,
-    logTask,
-    RnvTaskOptionPresets,
-    executeTask,
-    shouldSkipTask,
-    RnvTask,
-    RnvTaskName,
-} from '@rnv/core';
-import { configureNextIfRequired } from '../sdk';
+import { RnvTaskOptionPresets, createTask, RnvTaskName } from '@rnv/core';
+import { configureNextIfRequired } from '../sdk/runner';
+import { SdkPlatforms } from '../sdk/constants';
 
-const taskConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
-    logTask('taskConfigure');
-
-    await executeTask(RnvTaskName.platformConfigure, RnvTaskName.configure, originTask);
-
-    if (shouldSkipTask(RnvTaskName.configure, originTask)) return true;
-
-    if (c.program.only && !!parentTask) {
-        return true;
-    }
-
-    switch (c.platform) {
-        case 'web':
-        case 'chromecast':
-            return configureNextIfRequired();
-        default:
-            return logErrorPlatform();
-    }
-};
-
-const Task: RnvTask = {
+export default createTask({
     description: 'Configure current project',
-    fn: taskConfigure,
+    dependsOn: [RnvTaskName.platformConfigure],
+    fn: async () => {
+        return configureNextIfRequired();
+    },
     task: RnvTaskName.configure,
-    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
-    platforms: ['web', 'chromecast'],
-};
-
-export default Task;
+    options: RnvTaskOptionPresets.withConfigure(),
+    platforms: SdkPlatforms,
+});

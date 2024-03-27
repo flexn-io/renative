@@ -1,18 +1,16 @@
-import { generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
+import { generateEngineExtensions, generateRnvTaskMap, RnvEngine } from '@rnv/core';
 import { withRNVMetro } from './adapters/metroAdapter';
 import { withRNVBabel } from './adapters/babelAdapter';
+import { Tasks as TasksSdkApple } from '@rnv/sdk-apple';
+import { Tasks as TasksSdkReactNative } from '@rnv/sdk-react-native';
+import { withRNVRNConfig } from '@rnv/sdk-react-native';
 //@ts-ignore
 import CNF from '../renative.engine.json';
-import taskRun from './tasks/taskRun';
-import taskPackage from './tasks/taskPackage';
-import taskBuild from './tasks/taskBuild';
-import taskConfigure from './tasks/taskConfigure';
-import taskStart from './tasks/taskStart';
-import taskExport from './tasks/taskExport';
-import { withRNVRNConfig } from '@rnv/sdk-react-native';
+//@ts-ignore
+import PKG from '../package.json';
 
 const Engine: RnvEngine = {
-    tasks: generateEngineTasks([taskRun, taskPackage, taskBuild, taskConfigure, taskStart, taskExport]),
+    tasks: generateRnvTaskMap([...TasksSdkApple, ...TasksSdkReactNative], PKG),
     config: CNF,
     runtimeExtraProps: {
         reactNativePackageName: 'react-native',

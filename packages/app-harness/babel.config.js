@@ -1,3 +1,3 @@
-const { withRNVBabel } = require('rnv');
+const { withRNVBabel } = require('@rnv/adapter');
 
 module.exports = withRNVBabel({});

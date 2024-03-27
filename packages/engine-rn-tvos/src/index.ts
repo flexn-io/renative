@@ -1,35 +1,17 @@
-import { generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
-import taskRun from './tasks/taskRun';
-import taskPackage from './tasks/taskPackage';
-import taskBuild from './tasks/taskBuild';
-import taskConfigure from './tasks/taskConfigure';
-import taskStart from './tasks/taskStart';
-import taskExport from './tasks/taskExport';
-import taskCryptoInstallCerts from './tasks/taskCryptoInstallCerts';
-import taskCryptoUpdateProfile from './tasks/taskCryptoUpdateProfile';
-import taskCryptoUpdateProfiles from './tasks/taskCryptoUpdateProfiles';
-import taskCryptoInstallProfiles from './tasks/taskCryptoInstallProfiles';
-import taskLog from './tasks/taskLog';
-//@ts-ignore
-import CNF from '../renative.engine.json';
+import { generateEngineExtensions, generateRnvTaskMap, RnvEngine } from '@rnv/core';
+import { Tasks as TasksSdkAndroid } from '@rnv/sdk-android';
+import { Tasks as TasksSdkApple } from '@rnv/sdk-apple';
+import { Tasks as TasksSdkReactNative } from '@rnv/sdk-react-native';
 import { withRNVBabel } from './adapters/babelAdapter';
 import { withRNVMetro } from './adapters/metroAdapter';
 import { withRNVRNConfig } from '@rnv/sdk-react-native';
+//@ts-ignore
+import CNF from '../renative.engine.json';
+//@ts-ignore
+import PKG from '../package.json';
 
 const Engine: RnvEngine = {
-    tasks: generateEngineTasks([
-        taskRun,
-        taskPackage,
-        taskBuild,
-        taskConfigure,
-        taskStart,
-        taskExport,
-        taskCryptoInstallCerts,
-        taskCryptoUpdateProfile,
-        taskCryptoUpdateProfiles,
-        taskCryptoInstallProfiles,
-        taskLog,
-    ]),
+    tasks: generateRnvTaskMap([...TasksSdkAndroid, ...TasksSdkApple, ...TasksSdkReactNative], PKG),
     config: CNF,
     runtimeExtraProps: {
         reactNativePackageName: 'react-native-tvos',

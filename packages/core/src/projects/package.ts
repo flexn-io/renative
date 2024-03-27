@@ -2,7 +2,7 @@ import path from 'path';
 import { fsExistsSync, fsWriteFileSync, loadFile, readObjectSync } from '../system/fs';
 import { logDefault, logWarning, logInfo } from '../logger';
 import { ConfigFileTemplate } from '../schema/configFiles/types';
-import { ConfigName } from '../enums/configName';
+import { RnvFileName } from '../enums/fileName';
 import { getContext } from '../context/provider';
 
 const packageJsonIsValid = () => {
@@ -29,14 +29,14 @@ export const checkAndCreateProjectPackage = async () => {
         if (!templateName) {
             logWarning('You are missing currentTemplate in your renative.json');
         }
-        const rnvVersion = c.files.rnv.package.version;
+        const rnvVersion = c.files.rnvCore.package.version;
 
         if (templateName) {
             c.paths.template.configTemplate = path.join(
                 c.paths.project.dir,
                 'node_modules',
                 templateName,
-                ConfigName.renativeTemplate
+                RnvFileName.renativeTemplate
             );
         }
 
@@ -55,7 +55,7 @@ export const checkAndCreateProjectPackage = async () => {
 
         if (templateName) {
             pkgJson.devDependencies[templateName] =
-                c.files.project.config?.templates[templateName]?.version || 'latest';
+                c.files.project.config?.templates?.[templateName]?.version || 'latest';
         }
         const pkgJsonStringClean = JSON.stringify(pkgJson, null, 2);
         fsWriteFileSync(c.paths.project.package, pkgJsonStringClean);

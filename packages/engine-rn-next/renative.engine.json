@@ -1,6 +1,7 @@
 {
     "$schema": "../../.rnv/schema/rnv.engine.json",
     "id": "engine-rn-next",
+    "packageName": "@rnv/engine-rn-next",
     "engineExtension": "rnx",
     "overview": "React native based engine with web transpiler provided by react-native-web and render by nextjs",
     "plugins": {

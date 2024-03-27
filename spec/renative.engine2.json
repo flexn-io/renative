@@ -1,0 +1,43 @@
+{
+    "$schema": "../../.rnv/schema/rnv.engine.json",
+    "engineConfig": {
+        "id": "engine-rn-electron",
+        "engineExtension": "rne",
+        "overview": "React native based engine with web transpiler provided by react-native-web and native desktop wrapper provided by electron",
+        "pluginDependencies": [
+            "react",
+            "react-art",
+            "react-dom",
+            "react-native",
+            "react-native-web",
+            "react-dev-utils"
+        ],
+        "npm": {
+            "devDependencies": {}
+        },
+        "platforms": {
+            "macos": {
+                "npm": {
+                    "devDependencies": {}
+                }
+            },
+            "windows": {
+                "npm": {
+                    "devDependencies": {}
+                }
+            },
+            "linux": {
+                "npm": {
+                    "devDependencies": {}
+                }
+            }
+        }
+    },
+    "plugins": {
+        "react": "source:rnv",
+        "react-art": "source:rnv",
+        "react-dom": "source:rnv",
+        "react-native": "source:rnv",
+        "react-native-web": "source:rnv"
+    }
+}

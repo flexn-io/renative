@@ -18,7 +18,19 @@ test('Execute task.rnv.kill', async () => {
     const ctx = getContext();
     ctx.paths.project.configExists = true;
     //WHEN
-    await expect(taskKill.fn?.(ctx)).resolves.toEqual(true);
+    await expect(
+        taskKill.fn?.({
+            ctx,
+            taskName: 'MOCK_taskName',
+            originTaskName: 'MOCK_originTaskName',
+            parentTaskName: 'MOCK_parentTaskName',
+            shouldSkip: false,
+        })
+    ).resolves.toEqual(true);
     //THEN
-    expect(executeTask).toHaveBeenCalledWith('app configure', 'kill', undefined);
+    expect(executeTask).toHaveBeenCalledWith({
+        originTaskName: 'MOCK_originTaskName',
+        parentTaskName: 'MOCK_taskName',
+        taskName: 'app configure',
+    });
 });

@@ -35,9 +35,7 @@ export const generateApiDefaults = (): RnvApi => ({
         logAndSave: defaultLog,
         chalk: defaultLog,
         logAppInfo: defaultLog,
-        logComplete: defaultLog,
         logDebug: defaultLog,
-        logEnd: defaultLog,
         logError: defaultLog,
         logExitTask: defaultLog,
         logHook: defaultLog,
@@ -80,9 +78,6 @@ export const generateApiDefaults = (): RnvApi => ({
             };
         },
         inquirerPrompt: async () => {
-            //NOOP
-        },
-        pressAnyKeyToContinue: async () => {
             //NOOP
         },
         inquirerSeparator() {

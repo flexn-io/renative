@@ -1,5 +1,13 @@
 import path from 'path';
-import { RnvContext, copyFileSync, fixPackageObject, fsExistsSync, readObjectSync, writeFileSync } from '@rnv/core';
+import {
+    RnvContext,
+    RnvFileName,
+    copyFileSync,
+    fixPackageObject,
+    fsExistsSync,
+    readObjectSync,
+    writeFileSync,
+} from '@rnv/core';
 import fs from 'fs';
 
 const merge = require('deepmerge');
@@ -29,7 +37,9 @@ const VERSIONED_PACKAGES = [
     'sdk-webos',
     'sdk-utils',
     'renative',
+    'config-templates',
     'integration-docker',
+    'adapter',
 ];
 
 type PackageConfig = {
@@ -49,7 +59,7 @@ const setPackageVersions = (c: RnvContext, version: string | undefined, versione
     const pkgFolder = path.join(c.paths.project.dir, 'packages');
     _updateJson(c.paths.project.package, v);
     versionedPackages.forEach(function (pkgName) {
-        _updateJson(path.join(pkgFolder, pkgName, 'package.json'), v);
+        _updateJson(path.join(pkgFolder, pkgName, RnvFileName.package), v);
     });
 };
 
@@ -116,7 +126,7 @@ export const prePublish = async (c: RnvContext) => {
         },
     });
 
-    _updateJson(path.join(pkgDirPath, 'rnv/coreTemplateFiles/renative.templates.json'), {
+    _updateJson(path.join(pkgDirPath, 'core/renative.templates.json'), {
         engineTemplates: {
             '@rnv/engine-rn': v,
             '@rnv/engine-rn-tvos': v,
@@ -142,7 +152,7 @@ export const prePublish = async (c: RnvContext) => {
         let pkgFile;
 
         if (fs.statSync(dirPath).isDirectory()) {
-            _pkgPath = path.join(dirPath, 'package.json');
+            _pkgPath = path.join(dirPath, RnvFileName.package);
             if (fsExistsSync(_pkgPath)) {
                 pkgFile = readObjectSync<any>(_pkgPath);
                 pkgName = pkgFile?.name;

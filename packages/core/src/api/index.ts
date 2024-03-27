@@ -47,7 +47,3 @@ export const inquirerSeparator: RnvApiPrompt['inquirerSeparator'] = (text?: stri
 export const generateOptions: RnvApiPrompt['generateOptions'] = (inputData, isMultiChoice, mapping, renderMethod) => {
     return getApi().prompt.generateOptions(inputData, isMultiChoice, mapping, renderMethod);
 };
-
-export const pressAnyKeyToContinue: RnvApiPrompt['pressAnyKeyToContinue'] = () => {
-    return getApi().prompt.pressAnyKeyToContinue();
-};

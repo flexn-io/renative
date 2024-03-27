@@ -180,8 +180,8 @@ const _mergeFeatures = (
 const getConfigPropArray = <T extends ConfigPropKey>(c: RnvContext, platform: RnvPlatform, key: T) => {
     const result: Array<ConfigProp[T]> = [];
     const configArr = [
-        c.files.defaultWorkspace.config,
-        c.files.rnv.projectTemplates.config,
+        c.files.dotRnv.config,
+        c.files.rnvConfigTemplates.config,
         // { plugins: extraPlugins },
         // { pluginTemplates },
         c.files.workspace.config,
@@ -221,7 +221,7 @@ export const parseAndroidManifestSync = () => {
     if (!platform) return;
 
     try {
-        const baseManifestFilePath = path.join(__dirname, `../supportFiles/AndroidManifest_${platform}.json`);
+        const baseManifestFilePath = path.join(__dirname, `../templateFiles/AndroidManifest_${platform}.json`);
         const baseManifestFile = readObjectSync<AndroidManifest>(baseManifestFilePath);
 
         if (!baseManifestFile) {

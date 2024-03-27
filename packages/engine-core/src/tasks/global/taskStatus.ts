@@ -1,14 +1,10 @@
-import { RnvTaskOptionPresets, RnvTask, RnvTaskName } from '@rnv/core';
+import { createTask, RnvTaskName } from '@rnv/core';
 
-const taskStatus = async () => Promise.resolve();
-
-const Task: RnvTask = {
+export default createTask({
     description: 'Show current info about the project',
-    fn: taskStatus,
+    fn: async () => {
+        return true;
+    },
     task: RnvTaskName.status,
-    options: RnvTaskOptionPresets.withBase(),
-    platforms: [],
     isGlobalScope: true,
-};
-
-export default Task;
+});

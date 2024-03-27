@@ -39,14 +39,9 @@ export const logDebug: RnvApiLogger['logDebug'] = (...args) => {
 
 export const isInfoEnabled: RnvApiLogger['isInfoEnabled'] = () => getApi().logger.isInfoEnabled();
 
-export const logComplete: RnvApiLogger['logComplete'] = (isEnd) => getApi().logger.logComplete(isEnd);
-
 export const logSuccess: RnvApiLogger['logSuccess'] = (msg) => getApi().logger.logSuccess(msg);
 
-export const logError: RnvApiLogger['logError'] = (e, isEnd, skipAnalytics) =>
-    getApi().logger.logError(e, isEnd, skipAnalytics);
-
-export const logEnd: RnvApiLogger['logEnd'] = (code) => getApi().logger.logEnd(code);
+export const logError: RnvApiLogger['logError'] = (e, skipAnalytics) => getApi().logger.logError(e, skipAnalytics);
 
 export const logInitialize: RnvApiLogger['logInitialize'] = () => {
     getApi().logger.logInitialize();

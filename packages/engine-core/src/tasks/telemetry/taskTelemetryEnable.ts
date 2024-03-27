@@ -1,39 +1,22 @@
-import {
-    chalk,
-    logTask,
-    logToSummary,
-    RnvTaskOptionPresets,
-    RnvTask,
-    RnvTaskFn,
-    RnvTaskName,
-    writeFileSync,
-} from '@rnv/core';
+import { chalk, logToSummary, createTask, RnvTaskName, writeFileSync } from '@rnv/core';
 
-const taskTelemetryEnable: RnvTaskFn = async (c) => {
-    logTask('taskTelemetryEnable');
+export default createTask({
+    description: 'Enables rnv telemetry on your machine',
+    fn: async ({ ctx }) => {
+        const { config } = ctx.files.dotRnv;
+        if (config) {
+            config.disableTelemetry = false;
 
-    const { config } = c.files.defaultWorkspace;
-    if (config) {
-        config.disableTelemetry = false;
+            writeFileSync(ctx.paths.dotRnv.config, config);
 
-        writeFileSync(c.paths.GLOBAL_RNV_CONFIG, config);
-
-        logToSummary(`   Succesfully ${chalk().green('enabled')} ReNative telemetry on your machine.
+            logToSummary(`   Succesfully ${chalk().green('enabled')} ReNative telemetry on your machine.
    
    ReNative telemetry is completely anonymous. Thank you for participating!
    Learn more: https://renative.org/telemetry `);
-    }
+        }
 
-    return true;
-};
-
-const Task: RnvTask = {
-    description: 'Enables rnv telemetry on your machine',
-    fn: taskTelemetryEnable,
+        return true;
+    },
     task: RnvTaskName.telemetryEnable,
-    options: RnvTaskOptionPresets.withBase(),
-    platforms: [],
     isGlobalScope: true,
-};
-
-export default Task;
+});

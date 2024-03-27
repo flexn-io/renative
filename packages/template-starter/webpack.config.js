@@ -1,3 +1,3 @@
-const { withRNVWebpack } = require('@rnv/engine-rn-web');
+const { withRNVWebpack } = require('@rnv/adapter');
 
 module.exports = withRNVWebpack({});

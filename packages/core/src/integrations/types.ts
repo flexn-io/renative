@@ -3,5 +3,5 @@ import { RnvTask } from '../tasks/types';
 
 export type RnvIntegration = {
     config: ConfigFileIntegration;
-    getTasks: () => Array<RnvTask>;
+    tasks: Record<string, RnvTask>;
 };

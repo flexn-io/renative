@@ -10,6 +10,7 @@ import {
     doResolvePath,
     parsePlugins,
     getContext,
+    RnvFileName,
 } from '@rnv/core';
 
 export const ejectGradleProject = async () => {
@@ -155,7 +156,7 @@ export const ejectGradleProject = async () => {
             c,
             extensionsFilter
         );
-        copyFileSync(path.join(pluginPath, 'package.json'), path.join(destPath, 'package.json'));
+        copyFileSync(path.join(pluginPath, RnvFileName.package), path.join(destPath, RnvFileName.package));
     });
 
     //= ==========

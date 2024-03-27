@@ -1,15 +1,14 @@
 import {
     RootAppSchema,
     RootEngineSchema,
-    RootGlobalSchema,
     RootIntegrationSchema,
     RootLocalSchema,
     RootPluginSchema,
-    RootPluginsSchema,
     RootPrivateSchema,
     RootProjectSchema,
     RootTemplateSchema,
     RootTemplatesSchema,
+    RootWorkspaceSchema,
     getContext,
     logSuccess,
 } from '@rnv/core';
@@ -23,8 +22,7 @@ export const generateSchema = async () => {
     _generateSchemaFile({ schema: RootAppSchema, schemaId: 'rnv.app' });
     _generateSchemaFile({ schema: RootLocalSchema, schemaId: 'rnv.local' });
     _generateSchemaFile({ schema: RootEngineSchema, schemaId: 'rnv.engine' });
-    _generateSchemaFile({ schema: RootGlobalSchema, schemaId: 'rnv.global' });
-    _generateSchemaFile({ schema: RootPluginsSchema, schemaId: 'rnv.plugins' });
+    _generateSchemaFile({ schema: RootWorkspaceSchema, schemaId: 'rnv.workspace' });
     _generateSchemaFile({ schema: RootTemplateSchema, schemaId: 'rnv.template' });
     _generateSchemaFile({ schema: RootPrivateSchema, schemaId: 'rnv.private' });
     _generateSchemaFile({ schema: RootPluginSchema, schemaId: 'rnv.plugin' });
@@ -42,7 +40,7 @@ const _generateSchemaFile = (opts: { schema: z.ZodObject<any>; schemaId: string 
 
     jsonSchema.definitions[schemaId].properties['$schema'] = {
         type: 'string',
-        description: 'schema definition', 
+        description: 'schema definition',
     };
 
     const destFolder = path.join(ctx.paths.project.dir, `packages/core/jsonSchema`);

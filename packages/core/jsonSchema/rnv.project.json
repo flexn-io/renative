@@ -54,23 +54,23 @@
               },
               "propertyNames": {
                 "enum": [
+                  "web",
                   "ios",
                   "android",
                   "androidtv",
-                  "androidwear",
                   "firetv",
-                  "web",
-                  "webtv",
-                  "tizen",
-                  "tizenmobile",
                   "tvos",
-                  "webos",
                   "macos",
-                  "windows",
                   "linux",
-                  "tizenwatch",
-                  "kaios",
+                  "windows",
+                  "tizen",
+                  "webos",
                   "chromecast",
+                  "kaios",
+                  "webtv",
+                  "androidwear",
+                  "tizenwatch",
+                  "tizenmobile",
                   "xbox"
                 ]
               },
@@ -81,23 +81,23 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "web",
                   "ios",
                   "android",
                   "androidtv",
-                  "androidwear",
                   "firetv",
-                  "web",
-                  "webtv",
-                  "tizen",
-                  "tizenmobile",
                   "tvos",
-                  "webos",
                   "macos",
-                  "windows",
                   "linux",
-                  "tizenwatch",
-                  "kaios",
+                  "windows",
+                  "tizen",
+                  "webos",
                   "chromecast",
+                  "kaios",
+                  "webtv",
+                  "androidwear",
+                  "tizenwatch",
+                  "tizenmobile",
                   "xbox"
                 ]
               },
@@ -128,23 +128,23 @@
               },
               "propertyNames": {
                 "enum": [
+                  "web",
                   "ios",
                   "android",
                   "androidtv",
-                  "androidwear",
                   "firetv",
-                  "web",
-                  "webtv",
-                  "tizen",
-                  "tizenmobile",
                   "tvos",
-                  "webos",
                   "macos",
-                  "windows",
                   "linux",
-                  "tizenwatch",
-                  "kaios",
+                  "windows",
+                  "tizen",
+                  "webos",
                   "chromecast",
+                  "kaios",
+                  "webtv",
+                  "androidwear",
+                  "tizenwatch",
+                  "tizenmobile",
                   "xbox"
                 ]
               },
@@ -213,23 +213,23 @@
               },
               "propertyNames": {
                 "enum": [
+                  "web",
                   "ios",
                   "android",
                   "androidtv",
-                  "androidwear",
                   "firetv",
-                  "web",
-                  "webtv",
-                  "tizen",
-                  "tizenmobile",
                   "tvos",
-                  "webos",
                   "macos",
-                  "windows",
                   "linux",
-                  "tizenwatch",
-                  "kaios",
+                  "windows",
+                  "tizen",
+                  "webos",
                   "chromecast",
+                  "kaios",
+                  "webtv",
+                  "androidwear",
+                  "tizenwatch",
+                  "tizenmobile",
                   "xbox"
                 ]
               },
@@ -367,23 +367,23 @@
                   },
                   "propertyNames": {
                     "enum": [
+                      "web",
                       "ios",
                       "android",
                       "androidtv",
-                      "androidwear",
                       "firetv",
-                      "web",
-                      "webtv",
-                      "tizen",
-                      "tizenmobile",
                       "tvos",
-                      "webos",
                       "macos",
-                      "windows",
                       "linux",
-                      "tizenwatch",
-                      "kaios",
+                      "windows",
+                      "tizen",
+                      "webos",
                       "chromecast",
+                      "kaios",
+                      "webtv",
+                      "androidwear",
+                      "tizenwatch",
+                      "tizenmobile",
                       "xbox"
                     ]
                   }
@@ -499,10 +499,6 @@
         "skipAutoUpdate": {
           "type": "boolean",
           "description": "Enables the equivalent to passing --skipDependencyCheck parameter on every rnv run so you don't have to use it"
-        },
-        "isNew": {
-          "type": "boolean",
-          "description": "Marker indicating that this project has just been bootstrapped. this prop is managed by rnv"
         },
         "common": {
           "type": "object",
@@ -934,6 +930,10 @@
                 "newArchEnabled": {
                   "type": "boolean",
                   "description": "Enables new arch for android. Default: false"
+                },
+                "flipperEnabled": {
+                  "type": "boolean",
+                  "description": "Enables flipper  for ios. Default: true"
                 },
                 "reactNativeEngine": {
                   "type": "string",
@@ -1414,6 +1414,9 @@
                       },
                       "newArchEnabled": {
                         "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/newArchEnabled"
+                      },
+                      "flipperEnabled": {
+                        "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/flipperEnabled"
                       },
                       "reactNativeEngine": {
                         "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/reactNativeEngine"
@@ -3661,6 +3664,10 @@
                   {
                     "type": "object",
                     "properties": {
+                      "supportedPlatforms": {
+                        "$ref": "#/definitions/rnv.project/properties/defaults/properties/supportedPlatforms",
+                        "description": "Array list of all supported platforms in current project"
+                      },
                       "disabled": {
                         "type": "boolean",
                         "default": false,
@@ -4017,13 +4024,6 @@
           "description": "schema definition"
         }
       },
-      "required": [
-        "workspaceID",
-        "projectVersion",
-        "projectName",
-        "templates",
-        "currentTemplate"
-      ],
       "additionalProperties": false
     }
   },

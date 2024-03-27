@@ -2,7 +2,12 @@
     "ignore_dirs": [
         "platformBuilds",
         "buildHooks/dist",
-        "../rnv",
+        "../adapter",
+        "../build-hooks-git",
+        "../build-hooks-schema",
+        "../cli",
+        "../config-templates",
+        "../core",
         "../engine-core",
         "../engine-lightning",
         "../engine-rn",
@@ -14,14 +19,17 @@
         "../engine-rn-windows",
         "../engine-roku",
         "../integration-docker",
-        "../integration-ftp",
-        "../integration-terraform",
-        "../integration-vercel",
+        "../integration-starter",
+        "../rnv",
         "../sdk-android",
         "../sdk-apple",
         "../sdk-kaios",
+        "../sdk-react-native",
+        "../sdk-telemetry",
         "../sdk-tizen",
+        "../sdk-utils",
         "../sdk-webos",
-        "../sdk-webpack"
+        "../sdk-webpack",
+        "../template-starter"
     ]
 }

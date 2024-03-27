@@ -522,7 +522,7 @@ export const parseSettingsGradleSync = () => {
         },
         {
             pattern: '{{RN_GRADLE_PROJECT_NAME}}',
-            override: c.files.project.config?.projectName.replace('/', '-'),
+            override: c.files.project.config?.projectName?.replace('/', '-'),
         },
     ];
 

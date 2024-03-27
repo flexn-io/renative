@@ -1,6 +1,6 @@
-// RNV-ADDITION
+// RNV-UPDATE ------------------------------------------
 import { getMergedConfig } from '../adapter';
-// RNV-ADDITION
+// RNV-UPDATE ------------------------------------------
 // Do this as the first thing so that any code reading it knows the right env.
 process.env.BABEL_ENV = 'development';
 process.env.NODE_ENV = 'development';
@@ -23,11 +23,11 @@ const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
 const { createCompiler, prepareProxy, prepareUrls } = require('react-dev-utils/WebpackDevServerUtils');
 // const openBrowser = require('react-dev-utils/openBrowser');
 const semver = require('semver');
-const { Logger } = require('rnv');
 const paths = require('../config/paths');
+// RNV-UPDATE ------------------------------------------
 // const configFactory = require('../config/webpack.config');
-// const configFactory = require('react-scripts/config/webpack.config.js');
 const config = getMergedConfig(require('../config/webpack.config')('development'), paths.appPath);
+// RNV-UPDATE ------------------------------------------
 
 const createDevServerConfig = require('../config/webpackDevServer.config');
 const getClientEnvironment = require('../config/env');
@@ -51,12 +51,11 @@ export default async () =>
         const HOST = process.env.HOST || '0.0.0.0';
 
         if (process.env.HOST) {
-            Logger.logInfo(
+            console.log(
                 `Attempting to bind to HOST environment variable: ${chalk.yellow(chalk.bold(process.env.HOST))}`
             );
-            Logger.logInfo("If this was unintentional, check that you haven't mistakenly set it in your shell.");
-            Logger.logInfo(`Learn more here: ${chalk.yellow('https://cra.link/advanced-config')}`);
-            Logger.logInfo();
+            console.log("If this was unintentional, check that you haven't mistakenly set it in your shell.");
+            console.log(`Learn more here: ${chalk.yellow('https://cra.link/advanced-config')}`);
         }
         const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
         const appName = require(paths.appPackageJson).name;

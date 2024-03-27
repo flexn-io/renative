@@ -142,15 +142,17 @@ export const installPackageDependencies = async (failOnError = false) => {
                 "You have a yarn.lock file but you don't have yarn installed. Install it or delete yarn.lock"
             );
         command = yarnLockExists ? 'yarn' : 'npm install';
-    } else if (c.program.packageManager) {
+    } else if (c.program.opts().packageManager) {
         // no lock file check cli option
-        if (['yarn', 'npm'].includes(c.program.packageManager)) {
-            command = c.program.packageManager === 'yarn' ? 'yarn' : 'npm install';
+        if (['yarn', 'npm'].includes(c.program.opts().packageManager)) {
+            command = c.program.opts().packageManager === 'yarn' ? 'yarn' : 'npm install';
             if (command === 'yarn' && !isYarnInstalled())
                 throw new Error("You specified yarn as packageManager but it's not installed");
         } else {
             throw new Error(
-                `Unsupported package manager ${c.program.packageManager}. Only yarn and npm are supported at the moment.`
+                `Unsupported package manager ${
+                    c.program.opts().packageManager
+                }. Only yarn and npm are supported at the moment.`
             );
         }
     } else {
@@ -179,6 +181,7 @@ export const installPackageDependencies = async (failOnError = false) => {
             `${e}\n Seems like your node_modules is corrupted by other libs. ReNative will try to fix it for you`
         );
         try {
+            // TODO: evalauate if this is still needed
             await cleanNodeModules();
             await installPackageDependencies(true);
         } catch (npmErr) {
@@ -212,19 +215,6 @@ export const installPackageDependencies = async (failOnError = false) => {
     }
 };
 
-export const jetifyIfRequired = async () => {
-    const c = getContext();
-    logDefault('jetifyIfRequired');
-    if (c.files.project.configLocal?._meta?.requiresJetify) {
-        if (doResolve('jetifier')) {
-            await executeAsync('npx jetify');
-            c.files.project.configLocal._meta.requiresJetify = false;
-            writeFileSync(c.paths.project.configLocal, c.files.project.configLocal);
-        }
-    }
-    return true;
-};
-
 export const cleanNodeModules = () =>
     new Promise<void>((resolve, reject) => {
         logDefault('cleanNodeModules');
@@ -251,12 +241,4 @@ export const cleanNodeModules = () =>
         removeDirs(dirs)
             .then(() => resolve())
             .catch((e) => reject(e));
-        // removeDirs([
-        //     path.join(c.paths.project.nodeModulesDir, 'react-native-safe-area-view/.git'),
-        //     path.join(c.paths.project.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
-        //     path.join(c.paths.project.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git'),
-        //     path.join(c.paths.rnv.nodeModulesDir, 'react-native-safe-area-view/.git'),
-        //     path.join(c.paths.rnv.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
-        //     path.join(c.paths.rnv.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git')
-        // ]).then(() => resolve()).catch(e => reject(e));
     });

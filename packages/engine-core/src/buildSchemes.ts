@@ -4,7 +4,7 @@ import { chalk, getContext, inquirerPrompt, logDefault, logError, logInfo, logWa
 export const isBuildSchemeSupported = async () => {
     logDefault('isBuildSchemeSupported');
     const c = getContext();
-    const { scheme } = c.program;
+    const { scheme } = c.program.opts();
 
     if (!c.platform) return;
 
@@ -52,8 +52,8 @@ export const isBuildSchemeSupported = async () => {
             logMessage: 'You need to specify scheme',
         });
 
-        c.program.scheme = schemeVals[selectedScheme];
-        c.runtime.scheme = c.program.scheme;
+        c.program.opts().scheme = schemeVals[selectedScheme];
+        c.runtime.scheme = c.program.opts().scheme;
     }
     logInfo(`Current Build Scheme: ${chalk().bold(c.runtime.scheme)}`);
     return true;

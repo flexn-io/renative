@@ -1,16 +1,18 @@
-import { generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
+import { generateEngineExtensions, generateRnvTaskMap, RnvEngine } from '@rnv/core';
 import { withRNVNext } from './adapters/nextAdapter';
 import { withRNVBabel } from './adapters/babelAdapter';
-//@ts-ignore
-import CNF from '../renative.engine.json';
 import taskRun from './tasks/taskRun';
 import taskBuild from './tasks/taskBuild';
 import taskConfigure from './tasks/taskConfigure';
 import taskStart from './tasks/taskStart';
 import taskExport from './tasks/taskExport';
+//@ts-ignore
+import CNF from '../renative.engine.json';
+//@ts-ignore
+import PKG from '../package.json';
 
 const Engine: RnvEngine = {
-    tasks: generateEngineTasks([taskRun, taskBuild, taskConfigure, taskStart, taskExport]),
+    tasks: generateRnvTaskMap([taskRun, taskBuild, taskConfigure, taskStart, taskExport], PKG),
     config: CNF,
     projectDirName: '',
     runtimeExtraProps: {},

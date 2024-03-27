@@ -15,10 +15,12 @@ const AppThemed = () => {
 
     const [pixelRatio, setPixelRatio] = useState(1);
     const [fontScale, setFontScale] = useState(1);
+    const [isClient, setIsClient] = useState(false);
 
     useEffect(() => {
         setPixelRatio(PixelRatio.get());
         setFontScale(PixelRatio.getFontScale());
+        setIsClient(true);
     }, []);
 
     return (
@@ -39,9 +41,11 @@ const AppThemed = () => {
                 <Text style={theme.styles.textH2} {...testProps('template-starter-home-screen-version-number-text')}>
                     v {packageJson.version}
                 </Text>
-                <Text style={theme.styles.textH3}>
-                    {`platform: ${Api.platform}, factor: ${Api.formFactor}, engine: ${Api.engine}`}
-                </Text>
+                {isClient ? (
+                    <Text style={theme.styles.textH3}>
+                        {`platform: ${Api.platform}, factor: ${Api.formFactor}, engine: ${Api.engine}`}
+                    </Text>
+                ) : null}
                 <Text style={theme.styles.textH3}>{`hermes: ${
                     typeof HermesInternal === 'object' && HermesInternal !== null ? 'yes' : 'no'
                 }`}</Text>

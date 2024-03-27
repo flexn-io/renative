@@ -10,33 +10,169 @@ export const DEFAULT_TASK_DESCRIPTIONS: Record<string, string> = {
     [RnvTaskName.export]: 'Export the app into deployable binary',
 };
 
-export const RnvTaskOptions: Record<string, RnvTaskOption> = {
+const _RnvTaskOptions = {
+    // CORE --------------------------------
+    help: {
+        shortcut: 'h',
+        description: 'Displays help info for particular command',
+    },
     info: {
         shortcut: 'i',
         isValueType: true,
         description: 'Show full debug Info',
     },
     printExec: {
+        key: 'print-exec',
         description: 'Print exec commands in full',
-    },
-    updatePods: {
-        shortcut: 'u',
-        description: 'Force update dependencies (iOS only)',
     },
     platform: {
         shortcut: 'p',
         isValueType: true,
         description: 'select specific Platform',
     },
+    skipTasks: {
+        key: 'skip-tasks',
+        isValueType: true,
+        isRequired: true,
+        description: 'List tasks which you want to skip during rnv execution',
+        examples: ['--skipTasks "configure,export"', '--skipTasks deploy'],
+    },
+    only: {
+        shortcut: 'o',
+        description: 'run Only top command (Skip dependencies)',
+    },
+    ci: {
+        description: 'CI/CD flag so it wont ask questions',
+    },
+    mono: {
+        description: 'Monochrome console output without chalk',
+    },
+    maxErrorLength: {
+        key: 'max-error-length',
+        isValueType: true,
+        isRequired: true,
+        description: 'Specify how many characters each error should display. Default 200',
+    },
+    json: {
+        description: 'Outputs the result as json',
+    },
+    yes: {
+        description: 'Default all prompts to yes',
+    },
+    telemetryDebug: {
+        description: 'If you have telemetry enabled, will print out exactly what is being collected into the console',
+    },
+    // OTHERS 1st --------------------------------
+    // Still present in core
+    packageManager: {
+        isValueType: true,
+        isRequired: true,
+        options: ['yarn', 'npm'],
+        description: 'Set specific package manager to use',
+        examples: ['--packageManager yarn', '--packageManager npm'],
+    },
+    npxMode: {
+        key: 'npx-mode',
+        description: 'Ensures you can use local npx rnv version after the command is done',
+    },
+    unlinked: {
+        description: 'Force engines to be loaded from node_modules rather than locally',
+    },
+    configName: {
+        isValueType: true,
+        isRequired: true,
+        description: 'Use custom name for ./renative.json. (applies only at root level)',
+    },
+    skipDependencyCheck: {
+        description: 'Skips auto update of npm dependencies if mismatch found',
+    },
     appConfigID: {
         shortcut: 'c',
         isValueType: true,
         description: 'select specific app Config id',
     },
+    skipRnvCheck: {
+        description: 'Skips auto update of rnv dependencies if mismatch found',
+    },
+    scheme: {
+        shortcut: 's',
+        isValueType: true,
+        description: 'select build Scheme',
+    },
+    engine: {
+        shortcut: 'e',
+        isValueType: true,
+        isRequired: true,
+        description: 'engine to be used ie "engine-rn"',
+    },
+    exeMethod: {
+        shortcut: 'x',
+        isValueType: true,
+        description: 'eXecutable method in buildHooks',
+    },
+    reset: {
+        shortcut: 'r',
+        description: 'also perform reset of platform build',
+    },
+    resetHard: {
+        shortcut: 'R',
+        description: 'also perform reset of platform platform and platform assets',
+    },
+    resetAssets: {
+        shortcut: 'a',
+        description: 'also perform reset of platform assets',
+    },
+    hooks: {
+        description: 'Force rebuild hooks',
+    },
+    // OTHERS 2nd --------------------------------
+    // Still present in core but ONLY in runtime defaults
+    hostIp: {
+        isValueType: true,
+        isRequired: true,
+        description: 'Custom IP override',
+    },
     target: {
         shortcut: 't',
         isValueType: true,
         description: 'select specific Target device/simulator',
+    },
+    host: {
+        shortcut: 'H',
+        isValueType: true,
+        isRequired: true,
+        description: 'custom Host ip',
+    },
+    port: {
+        shortcut: 'P',
+        isValueType: true,
+        isRequired: true,
+        description: 'custom Port',
+    },
+    hosted: {
+        description: 'Run in a hosted environment (skip budleAssets)',
+    },
+    // ENGINE-CORE --------------------------------
+
+    gitEnabled: {
+        description: 'Enable git in your newly created project',
+        isValueType: true,
+    },
+    answer: {
+        isValueType: true,
+        isVariadic: true,
+        description: 'Pass in answers to prompts',
+        examples: ['--answer question=response question2=response2', '--answer question=\'{"some": "json"}\''],
+    },
+    workspace: {
+        isValueType: true,
+        description: 'select the workspace for the new project',
+    },
+    template: {
+        shortcut: 'T',
+        isValueType: true,
+        isRequired: true,
+        description: 'select specific template',
     },
     projectName: {
         isValueType: true,
@@ -54,91 +190,26 @@ export const RnvTaskOptions: Record<string, RnvTaskOption> = {
         isValueType: true,
         description: 'select the title of the app',
     },
-    id: {
-        isValueType: true,
-        description: 'select the id of the app',
-    },
     appVersion: {
         isValueType: true,
         description: 'select the version of the app',
     },
-    workspace: {
+    id: {
         isValueType: true,
-        description: 'select the workspace for the new project',
+        description: 'select the id of the app',
     },
-    template: {
-        shortcut: 'T',
-        isValueType: true,
-        isRequired: true,
-        description: 'select specific template',
-    },
-    device: {
-        shortcut: 'd',
-        isValueType: true,
-        description: 'select connected Device',
-    },
-    scheme: {
-        shortcut: 's',
-        isValueType: true,
-        description: 'select build Scheme',
-    },
-    filter: {
-        shortcut: 'f',
-        isValueType: true,
-        isRequired: true,
-        description: 'Filter value',
-    },
-    list: {
-        shortcut: 'l',
-        description: 'return List of items related to command',
-    },
-    only: {
-        shortcut: 'o',
-        description: 'run Only top command (Skip dependencies)',
-    },
-    reset: {
-        shortcut: 'r',
-        description: 'also perform reset of platform build',
-    },
-    resetHard: {
-        shortcut: 'R',
-        description: 'also perform reset of platform platform and platform assets',
-    },
-    resetAssets: {
-        shortcut: 'a',
-        description: 'also perform reset of platform assets',
-    },
+    // ENGINE-CORE + SDK-APPLE --------------------------------
     key: {
         shortcut: 'k',
         isValueType: true,
         isRequired: true,
         description: 'Pass the key/password',
     },
-    blueprint: {
-        shortcut: 'b',
-        isValueType: true,
-        description: 'Blueprint for targets',
-    },
-    help: {
-        shortcut: 'h',
-        description: 'Displays help info for particular command',
-    },
-    host: {
-        shortcut: 'H',
+    // SDK-WEBPACK --------------------------------
+    debugIp: {
         isValueType: true,
         isRequired: true,
-        description: 'custom Host ip',
-    },
-    exeMethod: {
-        shortcut: 'x',
-        isValueType: true,
-        description: 'eXecutable method in buildHooks',
-    },
-    port: {
-        shortcut: 'P',
-        isValueType: true,
-        isRequired: true,
-        description: 'custom Port',
+        description: '(optional) overwrite the ip to which the remote debugger will connect',
     },
     debug: {
         shortcut: 'D',
@@ -151,29 +222,10 @@ export const RnvTaskOptions: Record<string, RnvTaskOption> = {
             '--debug //run remote debug with default preference (chii)',
         ],
     },
-    global: {
-        shortcut: 'G',
-        description: 'Flag for setting a config value for all RNV projects',
-    },
-    engine: {
-        shortcut: 'e',
-        isValueType: true,
-        isRequired: true,
-        description: 'engine to be used (next)',
-    },
-    debugIp: {
-        isValueType: true,
-        isRequired: true,
-        description: '(optional) overwrite the ip to which the remote debugger will connect',
-    },
-    ci: {
-        description: 'CI/CD flag so it wont ask questions',
-    },
-    mono: {
-        description: 'Monochrome console output without chalk',
-    },
-    skipNotifications: {
-        description: 'Skip sending any integrated notifications',
+    // SDK-APPLE --------------------------------
+    updatePods: {
+        shortcut: 'u',
+        description: 'Force update dependencies (iOS only)',
     },
     keychain: {
         isValueType: true,
@@ -195,23 +247,6 @@ export const RnvTaskOptions: Record<string, RnvTaskOption> = {
         isRequired: true,
         description: 'Name of provisionProfile',
     },
-    hosted: {
-        description: 'Run in a hosted environment (skip budleAssets)',
-    },
-    hooks: {
-        description: 'Force rebuild hooks',
-    },
-    maxErrorLength: {
-        isValueType: true,
-        isRequired: true,
-        description: 'Specify how many characters each error should display. Default 200',
-    },
-    skipTargetCheck: {
-        description: 'Skip Android target check, just display the raw adb devices to choose from',
-    },
-    analyzer: {
-        description: 'Enable real-time bundle analyzer',
-    },
     xcodebuildArgs: {
         isValueType: true,
         isRequired: true,
@@ -227,92 +262,81 @@ export const RnvTaskOptions: Record<string, RnvTaskOption> = {
         isRequired: true,
         description: 'pass down custom xcodebuild arguments',
     },
-    skipDependencyCheck: {
-        description: 'Skips auto update of npm dependencies if mismatch found',
+    // SDK-APPLE + SDK-ANDROID --------------------------------
+    skipTargetCheck: {
+        description: 'Skip Android target check, just display the raw adb devices to choose from',
     },
-    skipRnvCheck: {
-        description: 'Skips auto update of rnv dependencies if mismatch found',
-    },
-    configName: {
+    filter: {
+        shortcut: 'f',
         isValueType: true,
         isRequired: true,
-        description: 'Use custom name for ./renative.json. (applies only at root level)',
+        description: 'Filter value',
     },
-    sourceAppConfigID: {
+    device: {
+        shortcut: 'd',
         isValueType: true,
-        isRequired: true,
-        description: 'name of source appConfig folder to copy from',
+        description: 'select connected Device',
     },
-    hostIp: {
-        isValueType: true,
-        isRequired: true,
-        description: 'Custom IP override',
-    },
-    unlinked: {
-        description: 'Force engines to be loaded from node_modules rather than locally',
-    },
-    yes: {
-        description: 'Default all prompts to yes',
-    },
-    gitEnabled: {
-        description: 'Enable git in your newly created project',
-        isValueType: true,
-    },
-    npxMode: {
-        description: 'Ensures you can use local npx rnv version after the command is done',
-    },
-    json: {
-        description: 'Outputs the result as json',
-    },
-    packageManager: {
-        isValueType: true,
-        isRequired: true,
-        options: ['yarn', 'npm'],
-        description: 'Set specific package manager to use',
-        examples: ['--packageManager yarn', '--packageManager npm'],
-    },
-    skipTasks: {
-        isValueType: true,
-        isRequired: true,
-        description: 'List tasks which you want to skip during rnv execution',
-        examples: ['--skipTasks "configure,export"', '--skipTasks deploy'],
-    },
-    answer: {
-        isValueType: true,
-        isVariadic: true,
-        description: 'Pass in answers to prompts',
-        examples: ['--answer question=response question2=response2', '--answer question=\'{"some": "json"}\''],
-    },
+    // SDK-ANDROID --------------------------------
     resetAdb: {
         description: 'Forces to reset android adb',
     },
-    telemetryDebug: {
-        description: 'If you have telemetry enabled, will print out exactly what is being collected into the console',
-    },
+
+    // DEPRECATED --------------------------------
+
+    // global: {
+    //     shortcut: 'G',
+    //     description: 'Flag for setting a config value for all RNV projects',
+    // },
+    // skipNotifications: {
+    //     description: 'Skip sending any integrated notifications',
+    // },
+    // analyzer: {
+    //     description: 'Enable real-time bundle analyzer',
+    // },
+    // blueprint: {
+    //     shortcut: 'b',
+    //     isValueType: true,
+    //     description: 'Blueprint for targets',
+    // },
+    // list: {
+    //     shortcut: 'l',
+    //     description: 'return List of items related to command',
+    // },
 };
 
-type ParamKeysType = typeof RnvTaskOptions;
+export type ProgramOptionsKey = keyof typeof _RnvTaskOptions;
 
-type ProgramOptionsKey = keyof ParamKeysType;
+export const RnvTaskOptions = _RnvTaskOptions as Record<ProgramOptionsKey, RnvTaskOption>;
 
 //TODO: make this properly typed. Pass integration type to getContext?
 type ParamType = any; //boolean | string | undefined
 
-export type ParamKeys = Partial<Record<ProgramOptionsKey, ParamType>>;
+export type ParamKeys<ExtraKeys extends string = ProgramOptionsKey> = Partial<
+    Record<ProgramOptionsKey | ExtraKeys, ParamType>
+>;
 
 (Object.keys(RnvTaskOptions) as ProgramOptionsKey[]).forEach((k) => {
     RnvTaskOptions[k].key = k;
 });
 
-export const RnvTaskOptionPresets = {
-    withBase: (arr?: Array<RnvTaskOption>) =>
+export const RnvTaskCoreOptionPresets = {
+    withCore: (arr?: Array<RnvTaskOption>) =>
         [
             RnvTaskOptions.info,
             RnvTaskOptions.ci,
             RnvTaskOptions.mono,
             RnvTaskOptions.maxErrorLength,
             RnvTaskOptions.only,
+            RnvTaskOptions.yes,
+            // platform is necessary to be accepted as base for the `rnv` command to work with enginie plugins
+            RnvTaskOptions.platform,
+            RnvTaskOptions.help,
+            RnvTaskOptions.printExec,
         ].concat(arr || []),
+};
+
+export const RnvTaskOptionPresets = {
     withConfigure: (arr?: Array<RnvTaskOption>) =>
         [
             RnvTaskOptions.reset,
@@ -321,7 +345,8 @@ export const RnvTaskOptionPresets = {
             RnvTaskOptions.resetAssets,
             RnvTaskOptions.appConfigID,
             RnvTaskOptions.scheme,
-            RnvTaskOptions.platform,
+            RnvTaskOptions.packageManager,
+            // RnvTaskOptions.platform,
         ].concat(arr || []),
     withRun: (arr?: Array<RnvTaskOption>) =>
         [
@@ -329,7 +354,7 @@ export const RnvTaskOptionPresets = {
             RnvTaskOptions.device,
             RnvTaskOptions.hosted,
             RnvTaskOptions.port,
-            RnvTaskOptions.debug,
+            // RnvTaskOptions.debug,
             RnvTaskOptions.debugIp,
             RnvTaskOptions.skipTargetCheck,
             RnvTaskOptions.host,

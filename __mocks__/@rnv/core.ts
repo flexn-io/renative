@@ -61,6 +61,7 @@ const generateRnvConfigFileObj = () => {
 };
 
 const generateContextDefaults = (ctx?: Context) => {
+    const _opts = {};
     const runtime: any = {
         currentEngine: { rootPath: '' },
         enginesByPlatform: {},
@@ -99,11 +100,13 @@ const generateContextDefaults = (ctx?: Context) => {
         runtimePropsInjects: [],
         supportedPlatforms: [],
         systemPropsInjects: [],
-        program: {},
+        program: {
+            opts: () => _opts,
+        },
         buildConfig: {},
         command: '',
         subCommand: '',
-        platform: ctx?.program.platform ?? '',
+        platform: ctx?.program.opts().platform ?? '',
         process: {},
         //==========
         _renativePluginCache: {},
@@ -251,6 +254,7 @@ const generateContextDefaults = (ctx?: Context) => {
         },
     };
 };
+rnvcore.createTask = (task) => task;
 rnvcore.chalk = () => _chalkMono;
 rnvcore.createRnvContext = (ctx?: Context) => {
     rnvcore.__MOCK_RNV_CONTEXT = generateContextDefaults(ctx);

@@ -6,7 +6,6 @@ import {
     ConfigFileApp,
     ConfigFileLocal,
     ConfigFilePlugin,
-    ConfigFilePlugins,
     ConfigFilePrivate,
     ConfigFileProject,
     ConfigFileRuntime,
@@ -16,9 +15,10 @@ import {
 } from '../schema/configFiles/types';
 import { NpmPackageFile } from '../configs/types';
 import { ConfigFileBuildConfig } from '../schema/configFiles/buildConfig';
-import type { ParamKeys } from '../tasks/constants';
+import type { ParamKeys, ProgramOptionsKey } from '../tasks/constants';
 import { ExecaChildProcess } from 'execa';
 import { RnvPlugin } from '../plugins/types';
+import { RnvIntegration } from '../integrations/types';
 
 export type CreateContextOptions = {
     program: RnvContextProgram;
@@ -28,15 +28,20 @@ export type CreateContextOptions = {
     RNV_HOME_DIR?: string;
 };
 
-export type RnvContextProgram = ParamKeys & {
+export type RnvContextProgram<ExtraKeys extends string = never> = {
     args?: string[];
     rawArgs?: string[];
+    opts: () => ParamKeys<ExtraKeys>;
     option?: (cmd: string, desc: string) => void;
     parse?: (arg: string[]) => void;
+    allowUnknownOption: (p: boolean) => void;
+    showHelpAfterError: () => void;
+    outputHelp: () => void;
+    isHelpInvoked?: boolean;
 };
 
-export type RnvContext<Payload = any> = {
-    program: RnvContextProgram;
+export type RnvContext<Payload = any, ExtraOptionKeys extends string = ProgramOptionsKey> = {
+    program: RnvContextProgram<ExtraOptionKeys>;
     /**
      * Extra payload object used by 3rd party (ie @rnv/sdk-apple) to decorate context with extra typed information
      */
@@ -74,7 +79,11 @@ export type RnvContext<Payload = any> = {
     runtime: RnvContextRuntime;
     paths: RnvContextPaths;
     files: RnvContextFiles;
-    logMessages: Array<string>;
+    logging: {
+        logMessages: Array<string>;
+        containsError: boolean;
+        containsWarning: boolean;
+    };
     timeStart: Date;
     timeEnd: Date;
     isDefault: boolean;
@@ -89,6 +98,7 @@ export type RnvContextBuildConfig = Partial<ConfigFileBuildConfig> & {
 };
 
 export type RnvContextRuntime = {
+    integrationsByIndex: Array<RnvIntegration>;
     enginesByPlatform: Record<string, RnvEngine>;
     enginesByIndex: Array<RnvEngine>;
     enginesById: Record<string, RnvEngine>;
@@ -99,7 +109,6 @@ export type RnvContextRuntime = {
     platform: RnvPlatform;
     isTargetTrue: boolean;
     bundleAssets: boolean;
-    keepSessionActive: boolean;
     hasAllEnginesRegistered: boolean;
     requiresBootstrap: boolean;
     forceBuildHookRebuild: boolean;
@@ -122,7 +131,6 @@ export type RnvContextRuntime = {
     _platformBuildsSuffix?: string;
     platformBuildsProjectPath?: string;
     targetUDID?: string;
-    forceBundleAssets?: boolean;
     webpackTarget?: string;
     shouldOpenBrowser?: boolean;
     appId?: string;
@@ -145,25 +153,29 @@ export type RnvContextRuntime = {
 export type RuntimePropKey = keyof RnvContextRuntime;
 
 export type RnvContextFiles = {
-    rnv: {
-        pluginTemplates: {
-            config?: ConfigFilePlugins;
-            configs: Record<string, ConfigFilePlugins>;
-        };
-        projectTemplates: {
-            config?: ConfigFileTemplates;
-        };
+    dotRnv: {
         configWorkspaces?: ConfigFileWorkspaces;
+        config: ConfigFileWorkspace;
+    };
+    rnv: {
         package: NpmPackageFile;
     };
+    rnvCore: {
+        package: NpmPackageFile;
+    };
+    rnvConfigTemplates: {
+        package?: NpmPackageFile;
+        config?: ConfigFileTemplates;
+    };
+    scopedConfigTemplates: Record<string, ConfigFileTemplates>;
     workspace: RnvContextFileObj<ConfigFileWorkspace> & {
         project: RnvContextFileObj<ConfigFileProject>;
         appConfig: RnvContextFileObj<ConfigFileApp>;
     };
-    defaultWorkspace: RnvContextFileObj<ConfigFileWorkspace> & {
-        project: RnvContextFileObj<ConfigFileProject>;
-        appConfig: RnvContextFileObj<ConfigFileApp>;
-    };
+    // defaultWorkspace: RnvContextFileObj<ConfigFileWorkspace> & {
+    //     project: RnvContextFileObj<ConfigFileProject>;
+    //     appConfig: RnvContextFileObj<ConfigFileApp>;
+    // };
     project: RnvContextFileObj<ConfigFileProject> & {
         builds: Record<string, ConfigFileBuildConfig>;
         assets: {
@@ -185,31 +197,34 @@ export type RnvContextFileObj<T> = {
 };
 
 export type RnvContextPaths = {
-    GLOBAL_RNV_CONFIG: string;
-    GLOBAL_RNV_DIR: string;
-    RNV_HOME_DIR: string;
     IS_LINKED: boolean;
     IS_NPX_MODE: boolean;
-    CURRENT_DIR: string;
-    RNV_NODE_MODULES_DIR: string;
     //=======
-    rnv: {
+    user: {
+        homeDir: string;
+        currentDir: string;
+    };
+    dotRnv: {
+        dir: string;
+        config: string;
         configWorkspaces: string;
-        pluginTemplates: {
-            overrideDir?: string;
-            config?: string;
-            dirs: Record<string, string>;
-        };
-        projectTemplates: {
-            config: string;
-            dir: string;
-        };
-        engines: {
-            dir: string;
-        };
-        projectTemplate: {
-            dir: string;
-        };
+    };
+    rnvConfigTemplates: {
+        dir: string;
+        package: string;
+        config: string;
+        pluginTemplatesDir: string;
+    };
+    scopedConfigTemplates: {
+        pluginTemplatesDirs: Record<string, string>;
+        configs: Record<string, string>;
+    };
+    rnvCore: {
+        dir: string;
+        package: string;
+        templateFilesDir: string;
+    };
+    rnv: {
         dir: string;
         package: string;
     };
@@ -223,24 +238,24 @@ export type RnvContextPaths = {
         };
         appConfig: RnvContextPathObj;
     };
-    defaultWorkspace: RnvContextPathObj & {
-        project: {
-            appConfigBase: {
-                dir: string;
-            };
-            builds: {
-                dir: string;
-            };
-            assets: {
-                dir: string;
-            };
-        };
-        appConfig: {
-            configs: Array<string>;
-            configsPrivate: Array<string>;
-            configsLocal: Array<string>;
-        };
-    };
+    // defaultWorkspace: RnvContextPathObj & {
+    //     project: {
+    //         appConfigBase: {
+    //             dir: string;
+    //         };
+    //         builds: {
+    //             dir: string;
+    //         };
+    //         assets: {
+    //             dir: string;
+    //         };
+    //     };
+    //     appConfig: {
+    //         configs: Array<string>;
+    //         configsPrivate: Array<string>;
+    //         configsLocal: Array<string>;
+    //     };
+    // };
     project: RnvContextPathObj & {
         appConfigBase: {
             dir: string;
@@ -282,9 +297,6 @@ export type RnvContextPaths = {
         };
         tsconfig: string;
     };
-    home: {
-        dir: string;
-    };
     template: {
         appConfigBase: {
             dir: string;
@@ -300,7 +312,7 @@ export type RnvContextPaths = {
         config: string;
         dir: string;
     };
-    appConfigBase: string;
+    appConfigBase: string; //REMOVE?
 };
 
 export type RnvContextPathObj = {

@@ -4,7 +4,6 @@ import { _RootWorkspaceSchemaType } from './workspace';
 import { _RootIntegrationSchemaType } from './integration';
 import { _RootLocalSchemaType } from './local';
 import { _RootPluginSchemaType } from './plugin';
-import { _RootPluginsSchemaType } from './plugins';
 import { _RootPrivateSchemaType } from './private';
 import { _RootProjectSchemaType } from './project';
 import { _RootTemplateSchemaType } from './template';
@@ -24,9 +23,6 @@ export type ConfigFileEngine = _ConfigRootEngineType;
 
 // renative.plugin.json
 export type ConfigFilePlugin = _RootPluginSchemaType;
-
-// renative.plugins.json
-export type ConfigFilePlugins = _RootPluginsSchemaType;
 
 // renative.local.json
 export type ConfigFileLocal = _RootLocalSchemaType;

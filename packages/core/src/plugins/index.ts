@@ -2,7 +2,6 @@ import merge from 'deepmerge';
 import path from 'path';
 import { getAppConfigBuildsFolder, getAppFolder } from '../context/contextProps';
 import { parseRenativeConfigs } from '../configs';
-import { configureFonts } from '../projects';
 import {
     copyFolderContentsRecursiveSync,
     fsExistsSync,
@@ -22,11 +21,12 @@ import { inquirerPrompt } from '../api';
 import { writeRenativeConfigFile } from '../configs/utils';
 import { installPackageDependencies } from '../projects/npm';
 import { OverridesOptions, ResolveOptions } from '../system/types';
-import { ConfigFileOverrides, ConfigFilePlugin, ConfigFilePlugins } from '../schema/configFiles/types';
+import { ConfigFileOverrides, ConfigFilePlugin, ConfigFileTemplates } from '../schema/configFiles/types';
 import { NpmPackageFile } from '../configs/types';
 import { getContext } from '../context/provider';
 import { getConfigProp } from '../context/contextProps';
-import { ConfigName } from '../enums/configName';
+import { RnvFileName } from '../enums/fileName';
+import { AsyncCallback } from '../projects/types';
 
 const _getPluginScope = (plugin: RenativeConfigPlugin | string): RnvPluginScope => {
     if (typeof plugin === 'string') {
@@ -84,14 +84,14 @@ const _getMergedPlugin = (
     if (
         scope !== '' &&
         !!scope &&
-        !c.buildConfig.pluginTemplates?.[scope]?.pluginTemplates &&
+        !c.buildConfig.scopedPluginTemplates?.[scope] &&
         !c.runtime._skipPluginScopeWarnings
     ) {
         logWarning(`Plugin ${pluginKey} is not recognized plugin in ${scope} scope`);
     } else if (scope && scopes) {
         let skipScope = false;
         if (parentScope) {
-            const skipRnvOverrides = c.buildConfig.pluginTemplates?.[parentScope]?.disableRnvDefaultOverrides;
+            const skipRnvOverrides = c.buildConfig.disableRnvDefaultOverrides;
 
             if (skipRnvOverrides && scope === 'rnv') {
                 // Merges down to RNV defaults will be skipped
@@ -104,7 +104,7 @@ const _getMergedPlugin = (
 
     const parentPlugin = _getMergedPlugin(
         c,
-        c.buildConfig.pluginTemplates?.[scope]?.pluginTemplates?.[pluginKey],
+        c.buildConfig.scopedPluginTemplates?.[scope]?.[pluginKey],
         pluginKey,
         scope,
         scopes,
@@ -169,7 +169,7 @@ export const configurePlugins = async () => {
 
     const c = getContext();
 
-    if (c.program.skipDependencyCheck) return true;
+    if (c.program.opts().skipDependencyCheck) return true;
 
     if (!c.files.project.package.dependencies) {
         c.files.project.package.dependencies = {};
@@ -181,7 +181,7 @@ export const configurePlugins = async () => {
         return;
     }
 
-    const isTemplate = c.files.project.config?.isTemplate;
+    const isTemplate = c.buildConfig?.isTemplate;
     const newDeps: Record<string, string> = {};
     const newDevDeps: Record<string, string> = {};
     const { dependencies, devDependencies } = c.files.project.package;
@@ -191,7 +191,7 @@ export const configurePlugins = async () => {
 
         if (!plugin) {
             if (c.buildConfig?.plugins?.[k] === null) {
-                // Skip Warning as this is intentional "plugin":null
+                // Skip Warning as this is intentional "plugin":null override
             } else {
                 logWarning(
                     `Plugin with name ${chalk().bold(
@@ -201,8 +201,14 @@ export const configurePlugins = async () => {
                     )}`
                 );
             }
-        } else if (dependencies && dependencies[k]) {
-            if (plugin.disabled !== true && plugin.disableNpm !== true) {
+        } else if (
+            plugin &&
+            plugin.disabled !== true &&
+            plugin.disableNpm !== true &&
+            c.platform &&
+            (plugin.supportedPlatforms ? plugin.supportedPlatforms.includes(c.platform) : true)
+        ) {
+            if (dependencies && dependencies[k]) {
                 if (!plugin.version) {
                     if (!c.runtime._skipPluginScopeWarnings) {
                         logInfo(`Plugin ${k} not ready yet (waiting for scope ${plugin.scope}). SKIPPING...`);
@@ -210,17 +216,15 @@ export const configurePlugins = async () => {
                 } else if (dependencies[k] !== plugin.version) {
                     logWarning(
                         `Version mismatch of dependency ${chalk().bold(k)} between:
-${chalk().bold(c.paths.project.package)}: v(${chalk().red(dependencies[k])}) and
-${chalk().bold(c.paths.project.builds.config)}: v(${chalk().green(plugin.version)}).
-${ovMsg}`
+    ${chalk().bold(c.paths.project.package)}: v(${chalk().red(dependencies[k])}) and
+    ${chalk().bold(c.paths.project.builds.config)}: v(${chalk().green(plugin.version)}).
+    ${ovMsg}`
                     );
 
                     hasPackageChanged = true;
                     _applyPackageDependency(newDeps, k, plugin.version);
                 }
-            }
-        } else if (devDependencies && devDependencies[k]) {
-            if (plugin.disabled !== true && plugin.disableNpm !== true) {
+            } else if (devDependencies && devDependencies[k]) {
                 if (!plugin.version) {
                     if (!c.runtime._skipPluginScopeWarnings) {
                         logInfo(`Plugin ${k} not ready yet (waiting for scope ${plugin.scope}). SKIPPING...`);
@@ -234,17 +238,19 @@ ${ovMsg}`
                     hasPackageChanged = true;
                     _applyPackageDependency(newDevDeps, k, plugin.version);
                 }
-            }
-        } else if (plugin.disabled !== true && plugin.disableNpm !== true) {
-            // Dependency does not exists
-            if (plugin.version) {
-                logInfo(
-                    `Missing dependency ${chalk().bold(k)} v(${chalk().red(plugin.version)}) in package.json. ${ovMsg}`
-                );
-
-                hasPackageChanged = true;
+            } else {
+                // Dependency does not exists
                 if (plugin.version) {
-                    _applyPackageDependency(newDeps, k, plugin.version);
+                    logInfo(
+                        `Missing dependency ${chalk().bold(k)} v(${chalk().red(
+                            plugin.version
+                        )}) in package.json. ${ovMsg}`
+                    );
+
+                    hasPackageChanged = true;
+                    if (plugin.version) {
+                        _applyPackageDependency(newDeps, k, plugin.version);
+                    }
                 }
             }
         }
@@ -284,7 +290,7 @@ ${ovMsg}`
     if (isTemplate) return true;
 
     // c.runtime.skipPackageUpdate only reflects rnv version mismatch. should not prevent updating other deps
-    if (hasPackageChanged /*! c.runtime.skipPackageUpdate */ && !c.program.skipDependencyCheck) {
+    if (hasPackageChanged /*! c.runtime.skipPackageUpdate */ && !c.program.opts().skipDependencyCheck) {
         _updatePackage(c, { dependencies: newDeps, devDependencies: newDevDeps });
     }
 
@@ -327,13 +333,13 @@ const _resolvePluginDependencies = async (
         return true;
     }
 
-    const { pluginTemplates } = c.buildConfig;
+    const { scopedPluginTemplates } = c.buildConfig;
     const plugin = getMergedPlugin(c, key);
 
     const { scope } = _getPluginScope(keyScope);
 
     if (!plugin) {
-        const depPlugin = pluginTemplates?.[scope]?.pluginTemplates?.[key];
+        const depPlugin = scopedPluginTemplates?.[scope]?.[key];
         if (depPlugin) {
             // console.log('INSTALL PLUGIN???', key, depPlugin.source);
             const { confirm } = await inquirerPrompt({
@@ -424,15 +430,22 @@ export const parsePlugins = (
                         //TODO: consider supportedPlatforms for plugins
                         const isPluginPlatDisabled = pluginPlat.disabled === true;
                         const isPluginDisabled = plugin.disabled === true;
+                        const isPluginPlatSupported = plugin.supportedPlatforms
+                            ? plugin.supportedPlatforms.includes(platform)
+                            : true;
 
                         if (ignorePlatformObjectCheck || includeDisabledOrExcludedPlugins) {
                             if (isPluginDisabled) {
-                                logInfo(`Plugin ${key} is marked disabled. skipping.`);
+                                logDefault(`Plugin ${key} is marked disabled. skipping.`);
                             } else if (isPluginPlatDisabled) {
-                                logInfo(`Plugin ${key} is marked disabled for platform ${platform} skipping.`);
+                                logDefault(`Plugin ${key} is marked disabled for platform ${platform}. skipping.`);
+                            } else if (!isPluginPlatSupported) {
+                                logDefault(
+                                    `Plugin ${key}'s supportedPlatforms does not include ${platform}. skipping.`
+                                );
                             }
                             handleActivePlugin(plugin, pluginPlat, key);
-                        } else if (!isPluginPlatDisabled && !isPluginDisabled) {
+                        } else if (!isPluginPlatDisabled && !isPluginDisabled && isPluginPlatSupported) {
                             handleActivePlugin(plugin, pluginPlat, key);
                         }
                     } else if (includeDisabledOrExcludedPlugins) {
@@ -466,48 +479,6 @@ export const loadPluginTemplates = async () => {
     logDefault('loadPluginTemplates');
 
     const c = getContext();
-
-    //This comes from project dependency
-    let flexnPluginsPath = doResolve('@flexn/plugins');
-
-    if (!fsExistsSync(flexnPluginsPath)) {
-        //This comes from rnv built-in dependency (installed via npm)
-        flexnPluginsPath = path.resolve(__dirname, '../../node_modules/@flexn/plugins');
-        if (!fsExistsSync(flexnPluginsPath)) {
-            //This comes from rnv built-in dependency (installed via yarn might install it one level up)
-            flexnPluginsPath = path.resolve(__dirname, '../../../@flexn/plugins');
-            if (!fsExistsSync(flexnPluginsPath)) {
-                // This comes from rnv built-in dependency (installed via yarn might install it 2 level up but scoped to @rnv)
-                flexnPluginsPath = path.resolve(__dirname, '../../../../@flexn/plugins');
-                if (!fsExistsSync(flexnPluginsPath)) {
-                    return Promise.reject(`RNV Cannot find package: ${chalk().bold(flexnPluginsPath)}`);
-                }
-            }
-        }
-    }
-
-    if (!flexnPluginsPath) return Promise.reject(`flexnPluginsPath missing`);
-
-    const flexnPluginTemplatesPath = path.join(flexnPluginsPath, 'pluginTemplates');
-
-    const flexnPluginTemplates = readObjectSync<ConfigFilePlugins>(
-        path.join(flexnPluginTemplatesPath, 'renative.plugins.json')
-    );
-    const rnvPluginTemplates = readObjectSync<ConfigFilePlugins>(c.paths.rnv.pluginTemplates.config);
-
-    const cnf = merge(flexnPluginTemplates || {}, rnvPluginTemplates || {});
-
-    if (cnf) {
-        c.files.rnv.pluginTemplates.config = cnf;
-        c.files.rnv.pluginTemplates.configs = {
-            rnv: cnf,
-        };
-    }
-
-    //Override default rnv path with flexn one and add it rnv as overrider
-    c.paths.rnv.pluginTemplates.dirs = {
-        rnv: flexnPluginTemplatesPath,
-    };
 
     const customPluginTemplates = c.files.project.config?.paths?.pluginTemplates;
     if (customPluginTemplates) {
@@ -567,18 +538,18 @@ const _parsePluginTemplateDependencies = (
                         ptPath = `${doResolve(val.npm)}/${val.path}`;
                     }
 
-                    const ptConfig = path.join(ptPath, ConfigName.renativePlugins);
-                    c.paths.rnv.pluginTemplates.dirs[k] = ptPath;
+                    const ptConfig = path.join(ptPath, RnvFileName.renativeTemplates);
+                    c.paths.scopedConfigTemplates.pluginTemplatesDirs[k] = ptPath;
                     if (fsExistsSync(ptConfig)) {
-                        const ptConfigs = c.files.rnv.pluginTemplates.configs;
-                        const ptConfigFile = readObjectSync<ConfigFilePlugins>(ptConfig);
+                        const ptConfigs = c.files.scopedConfigTemplates;
+                        const ptConfigFile = readObjectSync<ConfigFileTemplates>(ptConfig);
                         if (ptConfigFile) {
                             ptConfigs[k] = ptConfigFile;
                         }
 
                         // _parsePluginTemplateDependencies(
                         //     c,
-                        //     c.files.rnv.pluginTemplates.configs[k].pluginTemplateDependencies,
+                        //     c.files.scopedPluginTemplates[k].pluginTemplateDependencies,
                         //     k
                         // );
                     } else {
@@ -738,15 +709,6 @@ export const overrideFileContents = (dest: string, override: Record<string, stri
     }
 };
 
-export const installPackageDependenciesAndPlugins = async () => {
-    logDefault('installPackageDependenciesAndPlugins');
-
-    await installPackageDependencies();
-    await overrideTemplatePlugins();
-    await configureFonts();
-    await checkForPluginDependencies();
-};
-
 const _getPluginConfiguration = (c: RnvContext, pluginName: string) => {
     let renativePlugin: ConfigFilePlugin | undefined;
     let renativePluginPath;
@@ -762,7 +724,7 @@ const _getPluginConfiguration = (c: RnvContext, pluginName: string) => {
     return renativePlugin;
 };
 
-export const checkForPluginDependencies = async () => {
+export const checkForPluginDependencies = async (postInjectHandler?: AsyncCallback) => {
     const c = getContext();
 
     const toAdd: Record<string, string> = {};
@@ -797,7 +759,7 @@ export const checkForPluginDependencies = async () => {
     if (Object.keys(toAdd).length) {
         // ask the user
         let install = false;
-        if (!c.program.ci) {
+        if (!c.program.opts().ci) {
             const answer = await inquirerPrompt({
                 type: 'confirm',
                 message: `Install ${Object.keys(toAdd).join(', ')}?`,
@@ -820,7 +782,9 @@ export const checkForPluginDependencies = async () => {
             // Need to reload merged files
             await parseRenativeConfigs();
             await configurePlugins();
-            await installPackageDependenciesAndPlugins();
+            if (postInjectHandler) {
+                await postInjectHandler();
+            }
         }
     }
 };
@@ -832,7 +796,7 @@ export const overrideTemplatePlugins = async () => {
 
     const c = getContext();
 
-    const rnvPluginsDirs = c.paths.rnv.pluginTemplates.dirs;
+    const rnvPluginsDirs = c.paths.scopedConfigTemplates.pluginTemplatesDirs;
     const appPluginDirs = c.paths.appConfig.pluginDirs;
 
     parsePlugins((plugin, pluginPlat, key) => {
@@ -841,12 +805,7 @@ export const overrideTemplatePlugins = async () => {
                 plugin._scopes.forEach((pluginScope) => {
                     const pluginOverridePath = rnvPluginsDirs[pluginScope];
                     if (pluginOverridePath) {
-                        const rnvOverridePath = path.join(c.paths.rnv.pluginTemplates.overrideDir!, key);
-                        if (fsExistsSync(rnvOverridePath)) {
-                            _overridePlugin(c, c.paths.rnv.pluginTemplates.overrideDir!, key);
-                        } else {
-                            _overridePlugin(c, pluginOverridePath, key);
-                        }
+                        _overridePlugin(c, pluginOverridePath, key);
                     }
                 });
             }
@@ -879,11 +838,6 @@ export const copyTemplatePluginsSync = (c: RnvContext) => {
                 });
             });
         }
-        // FOLDER MERGES FROM PROJECT CONFIG PLUGIN
-        // if (c.paths.rnv.pluginTemplates.dir) {
-        //     const sourcePathRnvPlugin = getAppConfigBuildsFolder(c, platform, path.join(c.paths.rnv.pluginTemplates.dir, key));
-        //     copyFolderContentsRecursiveSync(sourcePathRnvPlugin, destPath, true, undefined, false, objectInject);
-        // }
 
         // FOLDER MERGES FROM PROJECT CONFIG PLUGIN
         const sourcePath3 = getAppConfigBuildsFolder(path.join(c.paths.project.appConfigBase.dir, `plugins/${key}`));
@@ -904,14 +858,11 @@ export const copyTemplatePluginsSync = (c: RnvContext) => {
         copyFolderContentsRecursiveSync(sourcePath2sec, destPath, true, undefined, false, objectInject);
 
         // FOLDER MERGES FROM SCOPED PLUGIN TEMPLATES
-        Object.keys(c.paths.rnv.pluginTemplates.dirs).forEach((pathKey) => {
-            // TODO: required for external rnv scoped templates to take effect. need to test full implications
-            // if (pathKey !== 'rnv') {
-            const pluginTemplatePath = c.paths.rnv.pluginTemplates.dirs[pathKey];
-
+        // NOTE: default 'rnv' scope (@rnv/config-templates) is included in pluginTemplatesDirs
+        Object.keys(c.paths.scopedConfigTemplates.pluginTemplatesDirs).forEach((pathKey) => {
+            const pluginTemplatePath = c.paths.scopedConfigTemplates.pluginTemplatesDirs[pathKey];
             const sourcePath4sec = getAppConfigBuildsFolder(path.join(pluginTemplatePath, key));
             copyFolderContentsRecursiveSync(sourcePath4sec, destPath, true, undefined, false, objectInject);
-            // }
         });
     });
 };
