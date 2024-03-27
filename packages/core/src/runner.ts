@@ -74,7 +74,6 @@ export const executeRnvCore = async () => {
             }
         }
     }
-    console.log('KKFSSLSSLSLSL', c.platform);
 
     const result = await loadEngines();
     // If false make sure we reload configs as it means it's freshly installed
@@ -88,7 +87,6 @@ export const executeRnvCore = async () => {
     // }
 
     initTask = await findSuitableTask();
-    console.log('DKDKDKDKDK', initTask);
     return initializeTask(initTask);
 
     // if (c.command && !taskInstance?.ignoreEngines) {

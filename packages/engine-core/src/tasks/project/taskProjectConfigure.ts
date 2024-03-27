@@ -59,10 +59,10 @@ const configurePlatformBuilds = async () => {
 const Task: RnvTask = {
     description: 'Configure current project',
     fn: async ({ ctx, taskName, originTaskName, parentTaskName }) => {
-        const { paths, runtime, program } = ctx;
-        if (!paths.project.configExists) {
-            return Promise.reject(`${RnvTaskName.projectConfigure} not supported outside of renative project`);
-        }
+        const { runtime, program } = ctx;
+        // if (!paths.project.configExists) {
+        //     return Promise.reject(`${RnvTaskName.projectConfigure} not supported outside of renative project`);
+        // }
 
         await configurePlatformBuilds();
         await checkAndMigrateProject();

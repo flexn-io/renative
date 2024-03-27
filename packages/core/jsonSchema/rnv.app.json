@@ -477,6 +477,10 @@
                   "type": "boolean",
                   "description": "Enables new arch for android. Default: false"
                 },
+                "flipperEnabled": {
+                  "type": "boolean",
+                  "description": "Enables flipper  for ios. Default: true"
+                },
                 "reactNativeEngine": {
                   "type": "string",
                   "enum": [
@@ -956,6 +960,9 @@
                       },
                       "newArchEnabled": {
                         "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/newArchEnabled"
+                      },
+                      "flipperEnabled": {
+                        "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/flipperEnabled"
                       },
                       "reactNativeEngine": {
                         "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/reactNativeEngine"

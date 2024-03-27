@@ -22,7 +22,6 @@ import { registerRnvTasks } from '../tasks/taskRegistry';
 export const registerEngine = async (engine: RnvEngine, platform?: RnvPlatform, engConfig?: RnvEngineTemplate) => {
     const c = getContext();
     logDefault(`registerEngine:${engine.config.id}`);
-    console.log('DJDDJDJK', engine.config.id);
 
     c.runtime.enginesById[engine.config.id] = engine;
 
@@ -359,8 +358,6 @@ export const loadEngines = async (failOnMissingDeps?: boolean): Promise<boolean>
     logDefault('loadEngines');
     const c = getContext();
 
-    console.log('APAPAPAPAAPAP', c.paths.project.config);
-
     if (!fsExistsSync(c.paths.project.config)) return true;
 
     const filteredEngines: Record<string, string> = _getFilteredEngines(c);
@@ -477,8 +474,6 @@ const _resolvePkgPath = (c: RnvContext, packageName: string) => {
 
 const _registerPlatformEngine = async (c: RnvContext, platform: RnvPlatform | boolean): Promise<void> => {
     // Only register active platform engine to be faster
-    console.log('SJJSSJSJSJ', platform);
-
     if (platform === true || !platform) return;
     const selectedEngineTemplate = getEngineTemplateByPlatform(platform);
 

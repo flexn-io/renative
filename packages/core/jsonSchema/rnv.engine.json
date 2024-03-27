@@ -11,6 +11,9 @@
           "type": "string",
           "description": "ID of engine"
         },
+        "packageName": {
+          "type": "string"
+        },
         "engineExtension": {
           "type": "string",
           "description": "Engine extension ised by rnv during compilation"
@@ -96,6 +99,7 @@
       },
       "required": [
         "id",
+        "packageName",
         "engineExtension",
         "overview"
       ],

@@ -1,9 +1,24 @@
-import { buildHooks, inquirerPrompt, RnvTask, RnvTaskName, RnvTaskOptions } from '@rnv/core';
+import {
+    buildHooks,
+    executeTask,
+    fsExistsSync,
+    inquirerPrompt,
+    logInfo,
+    RnvTask,
+    RnvTaskName,
+    RnvTaskOptions,
+} from '@rnv/core';
 
 const Task: RnvTask = {
     description: 'Run specific build hook',
-    dependsOn: [RnvTaskName.projectConfigure],
-    fn: async ({ ctx }) => {
+    // dependsOn: [RnvTaskName.projectConfigure],
+    fn: async ({ ctx, taskName, originTaskName }) => {
+        if (fsExistsSync(ctx.paths.project.config)) {
+            await executeTask({ taskName: RnvTaskName.projectConfigure, parentTaskName: taskName, originTaskName });
+        } else {
+            logInfo('Your are running your buildHook outside of renative project. SKIPPING project configure');
+        }
+
         await buildHooks();
 
         if (!ctx.buildHooks) {

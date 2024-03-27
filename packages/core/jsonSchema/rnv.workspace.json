@@ -60,13 +60,16 @@
           "additionalProperties": {
             "type": "object",
             "properties": {
+              "packageName": {
+                "type": "string"
+              },
               "description": {
+                "type": "string"
+              },
+              "localPath": {
                 "type": "string"
               }
             },
-            "required": [
-              "description"
-            ],
             "additionalProperties": false
           }
         },

@@ -500,10 +500,6 @@
           "type": "boolean",
           "description": "Enables the equivalent to passing --skipDependencyCheck parameter on every rnv run so you don't have to use it"
         },
-        "isNew": {
-          "type": "boolean",
-          "description": "Marker indicating that this project has just been bootstrapped. this prop is managed by rnv"
-        },
         "common": {
           "type": "object",
           "properties": {
@@ -934,6 +930,10 @@
                 "newArchEnabled": {
                   "type": "boolean",
                   "description": "Enables new arch for android. Default: false"
+                },
+                "flipperEnabled": {
+                  "type": "boolean",
+                  "description": "Enables flipper  for ios. Default: true"
                 },
                 "reactNativeEngine": {
                   "type": "string",
@@ -1414,6 +1414,9 @@
                       },
                       "newArchEnabled": {
                         "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/newArchEnabled"
+                      },
+                      "flipperEnabled": {
+                        "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/flipperEnabled"
                       },
                       "reactNativeEngine": {
                         "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/reactNativeEngine"
