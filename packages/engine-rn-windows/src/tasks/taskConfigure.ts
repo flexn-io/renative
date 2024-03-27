@@ -1,8 +1,8 @@
-import { copySharedPlatforms, RnvTaskOptionPresets, configureEntryPoint, RnvTask, RnvTaskName } from '@rnv/core';
+import { copySharedPlatforms, RnvTaskOptionPresets, configureEntryPoint, createTask, RnvTaskName } from '@rnv/core';
 import { configureWindowsProject } from '../sdk';
 import { SdkPlatforms } from '../sdk/constants';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Configure current project',
     dependsOn: [RnvTaskName.platformConfigure],
     fn: async () => {
@@ -13,6 +13,4 @@ const Task: RnvTask = {
     task: RnvTaskName.configure,
     options: RnvTaskOptionPresets.withConfigure(),
     platforms: SdkPlatforms,
-};
-
-export default Task;
+});

@@ -4,7 +4,7 @@ import {
     generateBuildConfig,
     RnvContext,
     inquirerPrompt,
-    RnvTask,
+    createTask,
     RnvTaskName,
 } from '@rnv/core';
 import { getTemplateOptions } from '../../templates';
@@ -31,7 +31,7 @@ export const _addTemplate = (c: RnvContext, template: string) => {
     _writeObjectSync(c.paths.project.config, cnf);
 };
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Install additional template to the project',
     dependsOn: [RnvTaskName.projectConfigure],
     fn: async ({ ctx }) => {
@@ -49,6 +49,4 @@ const Task: RnvTask = {
         return true;
     },
     task: RnvTaskName.templateAdd,
-};
-
-export default Task;
+});

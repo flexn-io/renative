@@ -4,7 +4,7 @@ import { checkAndConfigureTizenSdks, checkTizenSdk } from '../installer';
 import { launchTizenSimulator } from '../deviceManager';
 import { SdkPlatforms } from '../constants';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Launch specific target',
     dependsOn: [RnvTaskName.workspaceConfigure],
     fn: async () => {
@@ -19,4 +19,4 @@ const Task: RnvTask = {
     isGlobalScope: true,
 };
 
-export default Task;
+

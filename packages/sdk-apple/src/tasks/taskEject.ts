@@ -1,8 +1,8 @@
-import { RnvTask, RnvTaskName, RnvTaskOptionPresets } from '@rnv/core';
+import { createTask, RnvTaskName, RnvTaskOptionPresets } from '@rnv/core';
 import { ejectXcodeProject } from '../ejector';
 import { SdkPlatforms } from '../common';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Eject current ios project app to self contained native project',
     dependsOn: [RnvTaskName.package],
     beforeDependsOn: async ({ ctx }) => {
@@ -15,6 +15,4 @@ const Task: RnvTask = {
     task: RnvTaskName.eject,
     options: RnvTaskOptionPresets.withConfigure(),
     platforms: SdkPlatforms,
-};
-
-export default Task;
+});

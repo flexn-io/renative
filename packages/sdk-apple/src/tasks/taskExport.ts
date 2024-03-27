@@ -1,8 +1,8 @@
-import { RnvTaskOptionPresets, RnvTask, RnvTaskName } from '@rnv/core';
+import { RnvTaskOptionPresets, createTask, RnvTaskName } from '@rnv/core';
 import { exportXcodeProject } from '../runner';
 import { SdkPlatforms } from '../common';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Export the app into deployable binary',
     dependsOn: [RnvTaskName.build],
     fn: async () => {
@@ -11,6 +11,4 @@ const Task: RnvTask = {
     task: RnvTaskName.export,
     options: RnvTaskOptionPresets.withConfigure(),
     platforms: SdkPlatforms,
-};
-
-export default Task;
+});

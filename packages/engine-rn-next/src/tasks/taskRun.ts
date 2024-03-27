@@ -1,8 +1,8 @@
-import { RnvTaskOptionPresets, RnvTask, RnvTaskName } from '@rnv/core';
+import { RnvTaskOptionPresets, RnvTaskName, createTask } from '@rnv/core';
 import { runWebNext } from '../sdk/runner';
 import { SdkPlatforms } from '../sdk/constants';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Run your app in browser',
     dependsOn: [RnvTaskName.configure],
     fn: async ({ ctx }) => {
@@ -13,6 +13,4 @@ const Task: RnvTask = {
     isPriorityOrder: true,
     options: RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun()),
     platforms: SdkPlatforms,
-};
-
-export default Task;
+});

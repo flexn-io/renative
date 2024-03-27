@@ -1,8 +1,8 @@
-import { RnvTask, RnvTaskName, RnvTaskOptionPresets, doResolve } from '@rnv/core';
+import { createTask, RnvTaskName, RnvTaskOptionPresets, doResolve } from '@rnv/core';
 import { startReactNative } from '../metroRunner';
 import { SdkPlatforms } from '../constants';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Starts react-native bundler',
     dependsOn: [RnvTaskName.configureSoft],
     //TODO: implement dependsOnTrigger
@@ -28,6 +28,4 @@ const Task: RnvTask = {
     task: RnvTaskName.start,
     options: RnvTaskOptionPresets.withConfigure(),
     platforms: SdkPlatforms,
-};
-
-export default Task;
+});

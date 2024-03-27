@@ -1,6 +1,6 @@
-import { logRaw, generateOptions, buildHooks, RnvTask, RnvTaskName } from '@rnv/core';
+import { logRaw, generateOptions, buildHooks, createTask, RnvTaskName } from '@rnv/core';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Get the list of all available pipes',
     dependsOn: [RnvTaskName.projectConfigure],
     fn: async ({ ctx }) => {
@@ -10,6 +10,4 @@ const Task: RnvTask = {
         logRaw(`Pipes:\n${pipeOpts.asString}`);
     },
     task: RnvTaskName.hooksPipes,
-};
-
-export default Task;
+});

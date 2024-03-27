@@ -8,7 +8,7 @@ import {
     getPlatformProjectDir,
     writeCleanFile,
     executeTask,
-    RnvTask,
+    createTask,
     getAppFolder,
     fsExistsSync,
     getAppConfigBuildsFolder,
@@ -71,7 +71,7 @@ const _configureHostedIfRequired = async (c: RnvContext) => {
     }
 };
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Run your app in browser',
     dependsOn: [RnvTaskName.configure],
     fn: async ({ ctx, taskName, originTaskName }) => {
@@ -114,6 +114,4 @@ const Task: RnvTask = {
     isPriorityOrder: true,
     options: RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun()),
     platforms: EnginePlatforms,
-};
-
-export default Task;
+});

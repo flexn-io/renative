@@ -1,8 +1,8 @@
-import { RnvTaskOptionPresets, RnvTask, RnvTaskName } from '@rnv/core';
+import { RnvTaskOptionPresets, createTask, RnvTaskName } from '@rnv/core';
 import { configureNextIfRequired } from '../sdk/runner';
 import { SdkPlatforms } from '../sdk/constants';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Configure current project',
     dependsOn: [RnvTaskName.platformConfigure],
     fn: async () => {
@@ -11,6 +11,4 @@ const Task: RnvTask = {
     task: RnvTaskName.configure,
     options: RnvTaskOptionPresets.withConfigure(),
     platforms: SdkPlatforms,
-};
-
-export default Task;
+});

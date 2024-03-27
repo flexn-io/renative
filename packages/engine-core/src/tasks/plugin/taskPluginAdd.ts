@@ -8,12 +8,12 @@ import {
     getApi,
     inquirerPrompt,
     RenativeConfigPlugin,
-    RnvTask,
+    createTask,
     RnvTaskName,
 } from '@rnv/core';
 import { getPluginList } from '../../plugins';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Add selected plugin to the project',
     dependsOn: [RnvTaskName.projectConfigure],
     fn: async ({ ctx, taskName, originTaskName }) => {
@@ -95,6 +95,4 @@ const Task: RnvTask = {
         return true;
     },
     task: RnvTaskName.pluginAdd,
-};
-
-export default Task;
+});

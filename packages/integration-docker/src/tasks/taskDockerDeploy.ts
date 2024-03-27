@@ -1,7 +1,7 @@
-import { RnvTask, RnvTaskName } from '@rnv/core';
+import { createTask, RnvTaskName } from '@rnv/core';
 import Docker from '../docker';
 
-const Task: RnvTask = {
+export default createTask({
     dependsOn: [RnvTaskName.export],
     description: 'Deploys your project to docker image',
     fn: async () => {
@@ -10,6 +10,4 @@ const Task: RnvTask = {
     },
     task: 'docker deploy',
     platforms: ['web'],
-};
-
-export default Task;
+});

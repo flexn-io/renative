@@ -9,13 +9,13 @@ import {
     logWarning,
     logDebug,
     logInfo,
-    RnvTask,
+    createTask,
     RnvTaskName,
     RnvFileName,
 } from '@rnv/core';
 import { writeFileSync } from 'fs';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Preconfigures your current workspace defined via "workspaceID" prop in renative config file',
     fn: async ({ ctx }) => {
         const { paths, files } = ctx;
@@ -81,6 +81,4 @@ const Task: RnvTask = {
     },
     task: RnvTaskName.workspaceConfigure,
     isGlobalScope: true,
-};
-
-export default Task;
+});

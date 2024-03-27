@@ -3,12 +3,12 @@ import {
     logToSummary,
     RnvTaskOptionPresets,
     getRegisteredEngines,
-    RnvTask,
+    createTask,
     RnvTaskName,
     generateStringFromTaskOption,
 } from '@rnv/core';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Display generic help',
     fn: async () => {
         // PARAMS
@@ -42,6 +42,4 @@ ${optsString}
     task: RnvTaskName.help,
     isGlobalScope: true,
     isPriorityOrder: true,
-};
-
-export default Task;
+});

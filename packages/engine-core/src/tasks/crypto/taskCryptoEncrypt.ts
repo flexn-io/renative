@@ -17,9 +17,9 @@ import {
     inquirerPrompt,
     RnvContext,
     copyFileSync,
-    RnvTask,
     RnvTaskName,
     getContext,
+    createTask,
 } from '@rnv/core';
 import { statSync } from 'fs';
 import { getEnvExportCmd, getEnvVar } from './common';
@@ -171,7 +171,7 @@ Make sure you take into account special characters that might need to be escaped
     }
 };
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Encrypts secure files from `~/<wokspace>/<project>/..` to project',
     dependsOn: [RnvTaskName.projectConfigure],
     fn: async ({ ctx }) => {
@@ -230,6 +230,4 @@ const Task: RnvTask = {
         }
     },
     task: RnvTaskName.cryptoEncrypt,
-};
-
-export default Task;
+});

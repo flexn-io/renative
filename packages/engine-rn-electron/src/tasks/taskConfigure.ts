@@ -1,8 +1,8 @@
-import { copySharedPlatforms, configureEntryPoint, RnvTask, RnvTaskName, RnvTaskOptionPresets } from '@rnv/core';
+import { copySharedPlatforms, configureEntryPoint, createTask, RnvTaskName, RnvTaskOptionPresets } from '@rnv/core';
 import { configureElectronProject } from '../sdk/runner';
 import { SdkPlatforms } from '../sdk/constants';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Configure current project',
     dependsOn: [RnvTaskName.platformConfigure],
     fn: async () => {
@@ -13,6 +13,4 @@ const Task: RnvTask = {
     task: RnvTaskName.configure,
     options: RnvTaskOptionPresets.withConfigure(),
     platforms: SdkPlatforms,
-};
-
-export default Task;
+});

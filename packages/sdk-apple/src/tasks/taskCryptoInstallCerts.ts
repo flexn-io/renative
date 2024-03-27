@@ -1,7 +1,7 @@
-import { logWarning, getFileListSync, executeAsync, RnvTask, RnvTaskName } from '@rnv/core';
+import { logWarning, getFileListSync, executeAsync, createTask, RnvTaskName } from '@rnv/core';
 import { SdkPlatforms } from '../common';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Installs certificates into keychain (mac only)',
     dependsOn: [RnvTaskName.projectConfigure],
     fn: async ({ ctx }) => {
@@ -19,6 +19,4 @@ const Task: RnvTask = {
     },
     task: RnvTaskName.cryptoInstallCerts,
     platforms: SdkPlatforms,
-};
-
-export default Task;
+});

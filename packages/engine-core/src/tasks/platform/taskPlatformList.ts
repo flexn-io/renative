@@ -1,6 +1,6 @@
-import { chalk, logToSummary, generatePlatformChoices, RnvTask, RnvTaskName } from '@rnv/core';
+import { chalk, logToSummary, generatePlatformChoices, createTask, RnvTaskName } from '@rnv/core';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'List all available platforms',
     dependsOn: [RnvTaskName.projectConfigure],
     fn: async () => {
@@ -9,6 +9,4 @@ const Task: RnvTask = {
         return true;
     },
     task: RnvTaskName.platformList,
-};
-
-export default Task;
+});

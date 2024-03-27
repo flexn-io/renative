@@ -1,4 +1,4 @@
-import { listAppConfigsFoldersSync, chalk, logTask, RnvTask, RnvTaskName } from '@rnv/core';
+import { listAppConfigsFoldersSync, chalk, logTask, createTask, RnvTaskName } from '@rnv/core';
 import { updateProfile } from '../fastlane';
 import { SdkPlatforms } from '../common';
 
@@ -10,7 +10,7 @@ const _updateProfile = (v: string) =>
             .catch((e) => reject(e));
     });
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Will attempt to update all provisioning profiles (mac only)',
     dependsOn: [RnvTaskName.projectConfigure],
     fn: async () => {
@@ -20,6 +20,4 @@ const Task: RnvTask = {
     },
     task: RnvTaskName.cryptoUpdateProfiles,
     platforms: SdkPlatforms,
-};
-
-export default Task;
+});

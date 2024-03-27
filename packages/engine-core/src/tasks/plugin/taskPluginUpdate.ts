@@ -1,6 +1,6 @@
-import { writeFileSync, logSuccess, logWarning, inquirerPrompt, RnvTask, RnvTaskName } from '@rnv/core';
+import { writeFileSync, logSuccess, logWarning, inquirerPrompt, createTask, RnvTaskName } from '@rnv/core';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Update specific plugin to latest supported version (rnv)',
     dependsOn: [RnvTaskName.projectConfigure],
     fn: async ({ ctx }) => {
@@ -32,6 +32,4 @@ const Task: RnvTask = {
         }
     },
     task: RnvTaskName.pluginUpdate,
-};
-
-export default Task;
+});

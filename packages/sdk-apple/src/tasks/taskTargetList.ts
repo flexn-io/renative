@@ -1,8 +1,8 @@
-import { RnvTask, RnvTaskName, RnvTaskOptions } from '@rnv/core';
+import { createTask, RnvTaskName, RnvTaskOptions } from '@rnv/core';
 import { listAppleDevices } from '../deviceManager';
 import { SdkPlatforms } from '../common';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'List all available targets for specific platform',
     dependsOn: [RnvTaskName.workspaceConfigure],
     fn: async () => {
@@ -12,6 +12,4 @@ const Task: RnvTask = {
     options: [RnvTaskOptions.target],
     platforms: SdkPlatforms,
     isGlobalScope: true, //TODO: evaluate this after moving to SDK
-};
-
-export default Task;
+});

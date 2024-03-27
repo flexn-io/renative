@@ -1,6 +1,6 @@
-import { generateOptions, chalk, logToSummary, RnvTask, RnvTaskName } from '@rnv/core';
+import { generateOptions, chalk, logToSummary, createTask, RnvTaskName } from '@rnv/core';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Show list of all available workspaces',
     dependsOn: [RnvTaskName.projectConfigure],
     fn: async ({ ctx }) => {
@@ -18,6 +18,4 @@ const Task: RnvTask = {
     },
     task: RnvTaskName.workspaceList,
     isGlobalScope: true,
-};
-
-export default Task;
+});

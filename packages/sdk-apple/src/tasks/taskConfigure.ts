@@ -1,9 +1,9 @@
-import { configureEntryPoint, RnvTask, RnvTaskName } from '@rnv/core';
+import { configureEntryPoint, createTask, RnvTaskName } from '@rnv/core';
 import { configureFontSources } from '@rnv/sdk-react-native';
 import { configureXcodeProject } from '../runner';
 import { SdkPlatforms } from '../common';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Configure current project',
     dependsOn: [RnvTaskName.platformConfigure],
     fn: async ({ ctx, parentTaskName }) => {
@@ -18,6 +18,4 @@ const Task: RnvTask = {
     },
     task: RnvTaskName.configure,
     platforms: SdkPlatforms,
-};
-
-export default Task;
+});

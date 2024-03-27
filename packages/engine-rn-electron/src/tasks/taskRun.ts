@@ -1,8 +1,8 @@
-import { RnvTask, RnvTaskName, RnvTaskOptionPresets } from '@rnv/core';
+import { createTask, RnvTaskName, RnvTaskOptionPresets } from '@rnv/core';
 import { runElectron } from '../sdk/runner';
 import { SdkPlatforms } from '../sdk/constants';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Run your electron app on your machine',
     dependsOn: [RnvTaskName.configure],
     fn: async () => {
@@ -12,6 +12,4 @@ const Task: RnvTask = {
     isPriorityOrder: true,
     options: RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun()),
     platforms: SdkPlatforms,
-};
-
-export default Task;
+});

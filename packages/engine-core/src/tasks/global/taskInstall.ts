@@ -1,7 +1,7 @@
-import { areNodeModulesInstalled, logInfo, RnvTask, RnvTaskName } from '@rnv/core';
+import { areNodeModulesInstalled, logInfo, createTask, RnvTaskName } from '@rnv/core';
 import { installPackageDependenciesAndPlugins } from '../../plugins';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Install package node_modules via yarn or npm',
     fn: async ({ ctx }) => {
         if (ctx.program.opts().skipDependencyCheck) return true;
@@ -20,6 +20,4 @@ const Task: RnvTask = {
         return true;
     },
     task: RnvTaskName.install,
-};
-
-export default Task;
+});

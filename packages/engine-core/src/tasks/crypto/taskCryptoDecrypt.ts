@@ -13,8 +13,8 @@ import {
     fsReadFileSync,
     inquirerPrompt,
     RnvContext,
-    RnvTask,
     RnvTaskName,
+    createTask,
 } from '@rnv/core';
 import { getEnvExportCmd, getEnvVar } from './common';
 
@@ -44,7 +44,7 @@ const _unzipAndCopy = async (
     logSuccess(`Files succesfully extracted into ${destFolder}`);
 };
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Decrypt encrypted project files into local `~/<wokspace>/<project>/..`',
     fn: async ({ ctx }) => {
         const crypto = ctx.files.project.config?.crypto;
@@ -198,6 +198,4 @@ and we will try to help!
         }
     },
     task: RnvTaskName.cryptoDecrypt,
-};
-
-export default Task;
+});

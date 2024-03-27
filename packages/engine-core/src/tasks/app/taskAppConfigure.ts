@@ -18,8 +18,8 @@ import {
     inquirerPrompt,
     RnvContext,
     inquirerSeparator,
-    RnvTask,
     RnvTaskName,
+    createTask,
 } from '@rnv/core';
 
 const _loadAppConfigIDfromDir = (dirName: string, appConfigsDir: string) => {
@@ -146,7 +146,7 @@ const _setAppId = (ctx: RnvContext, appId: string) => {
     ctx.runtime.appDir = path.join(ctx.paths.project.builds.dir, `${ctx.runtime.appId}_${ctx.platform}`);
 };
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Configure project with specific appConfig',
     fn: async ({ ctx }) => {
         ctx.paths.project.appConfigsDirNames = listAppConfigsFoldersSync(true);
@@ -206,6 +206,4 @@ const Task: RnvTask = {
     },
     task: RnvTaskName.appConfigure,
     options: RnvTaskOptionPresets.withConfigure(),
-};
-
-export default Task;
+});

@@ -1,8 +1,8 @@
-import { RnvTask, RnvTaskName } from '@rnv/core';
+import { createTask, RnvTaskName } from '@rnv/core';
 import { checkAndConfigureTizenSdks, checkTizenSdk } from '../installer';
 import { SdkPlatforms } from '../constants';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Configures sdks',
     isPrivate: true,
     fn: async () => {
@@ -11,6 +11,4 @@ const Task: RnvTask = {
     },
     task: RnvTaskName.sdkConfigure,
     platforms: SdkPlatforms,
-};
-
-export default Task;
+});

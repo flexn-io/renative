@@ -6,8 +6,8 @@ import {
     readObjectSync,
     fsExistsSync,
     validateRenativeProjectSchema,
-    RnvTask,
     RnvTaskName,
+    createTask,
 } from '@rnv/core';
 
 const configTargets = [
@@ -18,7 +18,7 @@ const configTargets = [
     'appConfig.configs',
 ];
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Checks validity and config health of your project',
     dependsOn: [RnvTaskName.appConfigure],
     beforeDependsOn: async () => {
@@ -86,6 +86,4 @@ const Task: RnvTask = {
     },
     task: RnvTaskName.doctor,
     isGlobalScope: true,
-};
-
-export default Task;
+});

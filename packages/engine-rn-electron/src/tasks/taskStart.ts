@@ -1,8 +1,8 @@
 import { runWebpackServer } from '@rnv/sdk-webpack';
-import { RnvTaskOptionPresets, RnvTask, RnvTaskName } from '@rnv/core';
+import { RnvTaskOptionPresets, createTask, RnvTaskName } from '@rnv/core';
 import { SdkPlatforms } from '../sdk/constants';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Starts bundler / server',
     dependsOn: [RnvTaskName.configure],
     fn: async () => {
@@ -11,6 +11,4 @@ const Task: RnvTask = {
     task: RnvTaskName.start,
     options: RnvTaskOptionPresets.withConfigure(),
     platforms: SdkPlatforms,
-};
-
-export default Task;
+});

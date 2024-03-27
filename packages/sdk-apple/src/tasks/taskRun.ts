@@ -3,7 +3,7 @@ import { startBundlerIfRequired, waitForBundlerIfRequired } from '@rnv/sdk-react
 import { getIosDeviceToRunOn, runXcodeProject } from '../runner';
 import { SdkPlatforms } from '../common';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Run your rn app on target device or emulator',
     dependsOn: [RnvTaskName.configure],
     fn: async ({ ctx, originTaskName }) => {
@@ -26,4 +26,4 @@ const Task: RnvTask = {
     platforms: SdkPlatforms,
 };
 
-export default Task;
+

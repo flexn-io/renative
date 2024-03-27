@@ -1,7 +1,7 @@
-import { RnvTask, RnvTaskName } from '@rnv/core';
+import { createTask, RnvTaskName } from '@rnv/core';
 import Docker from '../docker';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Exports your project to docker image',
     // TODO: we need to do this differently
     // Project neds to define pipeline of tasks instead of integration
@@ -12,6 +12,4 @@ const Task: RnvTask = {
     },
     task: 'docker export',
     platforms: ['web'],
-};
-
-export default Task;
+});

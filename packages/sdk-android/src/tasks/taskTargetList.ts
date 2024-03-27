@@ -1,9 +1,9 @@
-import { RnvTask, RnvTaskName, RnvTaskOptions } from '@rnv/core';
+import { createTask, RnvTaskName, RnvTaskOptions } from '@rnv/core';
 import { listAndroidTargets } from '../deviceManager';
 import { checkAndConfigureAndroidSdks, checkAndroidSdk } from '../installer';
 import { SdkPlatforms } from '../constants';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'List all available targets for specific platform',
     dependsOn: [RnvTaskName.workspaceConfigure],
     fn: async () => {
@@ -15,6 +15,4 @@ const Task: RnvTask = {
     options: [RnvTaskOptions.target],
     platforms: SdkPlatforms,
     isGlobalScope: true,
-};
-
-export default Task;
+});

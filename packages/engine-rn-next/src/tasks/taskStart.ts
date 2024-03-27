@@ -1,9 +1,9 @@
-import { logError, RnvTaskOptionPresets, RnvTask, RnvTaskName } from '@rnv/core';
+import { logError, RnvTaskOptionPresets, createTask, RnvTaskName } from '@rnv/core';
 import { runWebNext } from '../sdk/runner';
 import { openBrowser, waitForHost } from '@rnv/sdk-utils';
 import { SdkPlatforms } from '../sdk/constants';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Starts bundler / server',
     dependsOn: [RnvTaskName.configure],
     fn: async ({ ctx }) => {
@@ -16,6 +16,4 @@ const Task: RnvTask = {
     task: RnvTaskName.start,
     options: RnvTaskOptionPresets.withConfigure(),
     platforms: SdkPlatforms,
-};
-
-export default Task;
+});

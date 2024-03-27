@@ -22,7 +22,7 @@ import {
     initializeTask,
     findSuitableTask,
     generatePlatformAssetsRuntimeConfig,
-    RnvTask,
+    createTask,
     generateLocalJsonSchemas,
     RnvTaskName,
     getContext,
@@ -56,7 +56,7 @@ const configurePlatformBuilds = async () => {
     }
 };
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Configure current project',
     fn: async ({ ctx, taskName, originTaskName, parentTaskName }) => {
         const { runtime, program } = ctx;
@@ -154,6 +154,4 @@ const Task: RnvTask = {
         return true;
     },
     task: RnvTaskName.projectConfigure,
-};
-
-export default Task;
+});

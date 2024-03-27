@@ -10,7 +10,7 @@ import {
     injectPlatformDependencies,
     configureRuntimeDefaults,
     executeTask,
-    RnvTask,
+    createTask,
     RnvTaskName,
     installPackageDependencies,
     overrideTemplatePlugins,
@@ -18,7 +18,7 @@ import {
 import { isBuildSchemeSupported } from '../../buildSchemes';
 import { configureFonts } from '@rnv/sdk-utils';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Low-level task used by engines to prepare platformBuilds folder',
     dependsOn: [RnvTaskName.projectConfigure],
     fn: async ({ ctx, taskName, originTaskName }) => {
@@ -66,6 +66,4 @@ const Task: RnvTask = {
         return true;
     },
     task: RnvTaskName.platformConfigure,
-};
-
-export default Task;
+});

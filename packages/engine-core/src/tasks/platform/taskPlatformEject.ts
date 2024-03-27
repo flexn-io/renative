@@ -8,11 +8,11 @@ import {
     ejectPlatform,
     inquirerPrompt,
     PlatformKey,
-    RnvTask,
+    createTask,
     RnvTaskName,
 } from '@rnv/core';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Copy all platform files directly to project',
     fn: async ({ ctx }) => {
         const configOriginal = ctx.files.project.config_original;
@@ -64,6 +64,4 @@ TIP: You can select options with ${chalk().bold('SPACE')} key before pressing EN
         }
     },
     task: RnvTaskName.platformEject,
-};
-
-export default Task;
+});

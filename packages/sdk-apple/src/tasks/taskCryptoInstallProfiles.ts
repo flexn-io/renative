@@ -7,12 +7,12 @@ import {
     copyFileSync,
     mkdirSync,
     fsExistsSync,
-    RnvTask,
+    createTask,
     RnvTaskName,
 } from '@rnv/core';
 import { SdkPlatforms } from '../common';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Installs provisioning certificates found in your workspace (mac only)',
     dependsOn: [RnvTaskName.projectConfigure],
     fn: async ({ ctx }) => {
@@ -37,6 +37,4 @@ const Task: RnvTask = {
     },
     task: RnvTaskName.cryptoInstallProfiles,
     platforms: SdkPlatforms,
-};
-
-export default Task;
+});

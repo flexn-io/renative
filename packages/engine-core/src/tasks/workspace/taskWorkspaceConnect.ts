@@ -1,6 +1,6 @@
-import { inquirerPrompt, logRaw, getWorkspaceConnectionString, RnvTask, RnvTaskName } from '@rnv/core';
+import { inquirerPrompt, logRaw, getWorkspaceConnectionString, createTask, RnvTaskName } from '@rnv/core';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Connect project with selected workspace',
     dependsOn: [RnvTaskName.projectConfigure],
     fn: async ({ ctx }) => {
@@ -20,6 +20,4 @@ const Task: RnvTask = {
     },
     task: RnvTaskName.workspaceConnect,
     isGlobalScope: true,
-};
-
-export default Task;
+});

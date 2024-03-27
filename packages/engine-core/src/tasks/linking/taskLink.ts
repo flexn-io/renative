@@ -3,7 +3,7 @@ import {
     fsExistsSync,
     fsRenameSync,
     fsSymlinkSync,
-    RnvTask,
+    createTask,
     RnvTaskName,
     mkdirSync,
     chalk,
@@ -44,7 +44,7 @@ const _linkPackage = (pkg: LinkablePackage) => {
 
 const runtimeLibs = ['@rnv/renative'];
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Links development version or renative with this project',
     fn: async () => {
         const linkablePackages = traverseTargetProject(getSourceDir());
@@ -90,6 +90,4 @@ const Task: RnvTask = {
     options: [{ key: 'dir', description: 'Source folder to be linked into project', isValueType: true }],
     isGlobalScope: true,
     ignoreEngines: true,
-};
-
-export default Task;
+});

@@ -1,8 +1,8 @@
-import { RnvTaskOptionPresets, getConfigProp, RnvTask, RnvTaskName } from '@rnv/core';
+import { RnvTaskOptionPresets, getConfigProp, createTask, RnvTaskName } from '@rnv/core';
 import { SdkPlatforms } from '../sdk/constants';
 import { packageBundleForWindows } from '../sdk';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Package source files into bundle',
     dependsOn: [RnvTaskName.configure],
     fn: async () => {
@@ -15,6 +15,4 @@ const Task: RnvTask = {
     task: RnvTaskName.package,
     options: RnvTaskOptionPresets.withConfigure(),
     platforms: SdkPlatforms,
-};
-
-export default Task;
+});

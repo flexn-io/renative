@@ -4,12 +4,12 @@ import {
     fsExistsSync,
     inquirerPrompt,
     logInfo,
-    RnvTask,
+    createTask,
     RnvTaskName,
     RnvTaskOptions,
 } from '@rnv/core';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Run specific build hook',
     // dependsOn: [RnvTaskName.projectConfigure],
     fn: async ({ ctx, taskName, originTaskName }) => {
@@ -57,6 +57,4 @@ const Task: RnvTask = {
     options: [RnvTaskOptions.exeMethod],
     forceBuildHookRebuild: true,
     isGlobalScope: true,
-};
-
-export default Task;
+});

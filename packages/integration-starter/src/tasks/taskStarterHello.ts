@@ -1,6 +1,6 @@
-import { logSuccess, RnvTask } from '@rnv/core';
+import { createTask, logSuccess } from '@rnv/core';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Prints hello message',
     fn: async ({ ctx }) => {
         //TODO: switch to typed options once Context generics are supported
@@ -10,6 +10,4 @@ const Task: RnvTask = {
     },
     task: 'starter hello',
     options: [{ key: 'my-opt', description: 'Hello', isValueType: true }],
-};
-
-export default Task;
+});

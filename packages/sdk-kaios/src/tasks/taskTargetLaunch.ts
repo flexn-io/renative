@@ -1,9 +1,9 @@
-import { RnvTask, RnvTaskName, RnvTaskOptions } from '@rnv/core';
+import { createTask, RnvTaskName, RnvTaskOptions } from '@rnv/core';
 import { getTargetWithOptionalPrompt } from '@rnv/sdk-utils';
 import { launchKaiOSSimulator } from '../deviceManager';
 import { SdkPlatforms } from '../constants';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Launch specific target',
     dependsOn: [RnvTaskName.workspaceConfigure],
     fn: async () => {
@@ -14,6 +14,4 @@ const Task: RnvTask = {
     options: [RnvTaskOptions.target],
     platforms: SdkPlatforms,
     isGlobalScope: true,
-};
-
-export default Task;
+});

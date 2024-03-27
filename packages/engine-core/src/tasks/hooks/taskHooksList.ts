@@ -1,6 +1,6 @@
-import { logToSummary, generateOptions, buildHooks, RnvTask, RnvTaskName } from '@rnv/core';
+import { logToSummary, generateOptions, buildHooks, createTask, RnvTaskName } from '@rnv/core';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Get list of all available hooks',
     dependsOn: [RnvTaskName.projectConfigure],
     fn: async ({ ctx }) => {
@@ -21,6 +21,4 @@ const Task: RnvTask = {
     },
     task: RnvTaskName.hooksList,
     forceBuildHookRebuild: true,
-};
-
-export default Task;
+});

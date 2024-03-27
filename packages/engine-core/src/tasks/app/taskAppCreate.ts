@@ -12,13 +12,13 @@ import {
     inquirerPrompt,
     logInfo,
     logTask,
-    RnvTask,
     ConfigFileApp,
     RnvTaskName,
     getContext,
+    createTask,
 } from '@rnv/core';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Create new app config',
     fn: async () => {
         logTask('taskAppCreate');
@@ -175,6 +175,4 @@ const Task: RnvTask = {
         },
     ],
     task: RnvTaskName.appCreate,
-};
-
-export default Task;
+});

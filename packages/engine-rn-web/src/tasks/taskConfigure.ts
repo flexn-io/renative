@@ -3,7 +3,7 @@ import {
     copySharedPlatforms,
     RnvTaskOptionPresets,
     configureEntryPoint,
-    RnvTask,
+    createTask,
     RnvTaskName,
 } from '@rnv/core';
 import { configureWebProject, configureChromecastProject } from '@rnv/sdk-webpack';
@@ -12,7 +12,7 @@ import { configureWebOSProject } from '@rnv/sdk-webos';
 import { configureTizenProject } from '@rnv/sdk-tizen';
 import { EnginePlatforms } from '../constants';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Configure current project',
     dependsOn: [RnvTaskName.platformConfigure],
     fn: async ({ ctx }) => {
@@ -39,6 +39,4 @@ const Task: RnvTask = {
     task: RnvTaskName.configure,
     options: RnvTaskOptionPresets.withConfigure(),
     platforms: EnginePlatforms,
-};
-
-export default Task;
+});

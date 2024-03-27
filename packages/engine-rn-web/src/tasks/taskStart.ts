@@ -1,9 +1,9 @@
 import { runWebpackServer } from '@rnv/sdk-webpack';
-import { getConfigProp, logErrorPlatform, logError, RnvTaskOptionPresets, RnvTask, RnvTaskName } from '@rnv/core';
+import { getConfigProp, logErrorPlatform, logError, RnvTaskOptionPresets, createTask, RnvTaskName } from '@rnv/core';
 import { REMOTE_DEBUGGER_ENABLED_PLATFORMS, openBrowser, waitForHost } from '@rnv/sdk-utils';
 import { EnginePlatforms } from '../constants';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Starts bundler / server',
     dependsOn: [RnvTaskName.configure],
     fn: async ({ ctx }) => {
@@ -38,6 +38,4 @@ const Task: RnvTask = {
     task: RnvTaskName.start,
     options: RnvTaskOptionPresets.withConfigure(),
     platforms: EnginePlatforms,
-};
-
-export default Task;
+});

@@ -1,5 +1,4 @@
 import {
-    RnvTask,
     RnvTaskName,
     updateRenativeConfigs,
     logToSummary,
@@ -7,6 +6,7 @@ import {
     configureTemplateFiles,
     generateLocalJsonSchemas,
     RnvTaskOptions,
+    createTask,
 } from '@rnv/core';
 import inquiryProjectFolder from './questions/projectFolder';
 import inquiryBootstrapQuestions from './questions/bootstrapQuestions';
@@ -34,7 +34,7 @@ import {
     processChdirToProject,
 } from './questionHelpers';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Create new ReNative project',
     fn: async () => {
         // Initialize Project
@@ -95,6 +95,4 @@ const Task: RnvTask = {
     ],
     isGlobalScope: true,
     isPriorityOrder: true,
-};
-
-export default Task;
+});

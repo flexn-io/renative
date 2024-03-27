@@ -1,7 +1,7 @@
-import { logToSummary, RnvTask, RnvTaskName } from '@rnv/core';
+import { logToSummary, createTask, RnvTaskName } from '@rnv/core';
 import { getTemplateOptions } from '../../templates';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Show list of available templates',
     dependsOn: [RnvTaskName.projectConfigure],
     fn: async ({ ctx }) => {
@@ -11,6 +11,4 @@ const Task: RnvTask = {
     },
     task: RnvTaskName.templateList,
     isGlobalScope: true,
-};
-
-export default Task;
+});

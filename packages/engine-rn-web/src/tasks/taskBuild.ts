@@ -1,11 +1,11 @@
-import { logErrorPlatform, RnvTaskOptionPresets, RnvTask, RnvTaskName } from '@rnv/core';
+import { logErrorPlatform, RnvTaskOptionPresets, createTask, RnvTaskName } from '@rnv/core';
 import { buildWeb } from '@rnv/sdk-webpack';
 import { buildTizenProject } from '@rnv/sdk-tizen';
 import { buildWebOSProject } from '@rnv/sdk-webos';
 import { buildKaiOSProject } from '@rnv/sdk-kaios';
 import { EnginePlatforms } from '../constants';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Build project binary',
     dependsOn: [RnvTaskName.configure],
     fn: async ({ ctx }) => {
@@ -33,6 +33,4 @@ const Task: RnvTask = {
     task: RnvTaskName.build,
     options: RnvTaskOptionPresets.withConfigure(),
     platforms: EnginePlatforms,
-};
-
-export default Task;
+});

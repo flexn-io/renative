@@ -9,7 +9,7 @@ import {
     listAndSelectNpmVersion,
     fsExistsSync,
     readObjectSync,
-    RnvTask,
+    createTask,
     RnvTaskName,
     NpmPackageFile,
     ConfigFileProject,
@@ -17,7 +17,7 @@ import {
 } from '@rnv/core';
 import { installPackageDependenciesAndPlugins } from '../../plugins';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Upgrade or downgrade RNV dependencies in your ReNative project',
     fn: async ({ ctx, taskName, originTaskName }) => {
         const { paths, files } = ctx;
@@ -77,6 +77,4 @@ const Task: RnvTask = {
     },
     task: RnvTaskName.projectUpgrade,
     isGlobalScope: true,
-};
-
-export default Task;
+});

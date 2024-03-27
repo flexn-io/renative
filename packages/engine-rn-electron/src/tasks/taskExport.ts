@@ -1,8 +1,8 @@
-import { RnvTask, RnvTaskName, RnvTaskOptionPresets } from '@rnv/core';
+import { createTask, RnvTaskName, RnvTaskOptionPresets } from '@rnv/core';
 import { exportElectron } from '../sdk/runner';
 import { SdkPlatforms } from '../sdk/constants';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Export the app into deployable binary',
     dependsOn: [RnvTaskName.build],
     fn: async () => {
@@ -11,6 +11,4 @@ const Task: RnvTask = {
     task: RnvTaskName.export,
     options: RnvTaskOptionPresets.withConfigure(),
     platforms: SdkPlatforms,
-};
-
-export default Task;
+});

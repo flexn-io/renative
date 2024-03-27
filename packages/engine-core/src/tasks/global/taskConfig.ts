@@ -1,6 +1,6 @@
-import { RnvTask, RnvTaskName } from '@rnv/core';
+import { RnvTaskName, createTask } from '@rnv/core';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Display RNV config',
     dependsOn: [RnvTaskName.configureSoft],
     fn: async ({ ctx }) => {
@@ -8,6 +8,4 @@ const Task: RnvTask = {
         return true;
     },
     task: RnvTaskName.config,
-};
-
-export default Task;
+});

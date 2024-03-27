@@ -1,6 +1,6 @@
-import { updateProjectPlatforms, inquirerPrompt, RnvTask, RnvTaskName } from '@rnv/core';
+import { updateProjectPlatforms, inquirerPrompt, createTask, RnvTaskName } from '@rnv/core';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Allows you to change supportedPlatforms for your project',
     dependsOn: [RnvTaskName.projectConfigure],
     fn: async ({ ctx }) => {
@@ -19,6 +19,4 @@ const Task: RnvTask = {
         updateProjectPlatforms(inputSupportedPlatforms);
     },
     task: RnvTaskName.platformSetup,
-};
-
-export default Task;
+});

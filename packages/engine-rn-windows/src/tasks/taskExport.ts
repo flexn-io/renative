@@ -1,9 +1,9 @@
-import { RnvTaskOptionPresets, RnvTask, RnvTaskName } from '@rnv/core';
+import { RnvTaskOptionPresets, createTask, RnvTaskName } from '@rnv/core';
 import { clearWindowsTemporaryFiles, packageWindowsApp } from '../sdk';
 import { SdkPlatforms } from '../sdk/constants';
 
 // TODO Implement export windows app (currently it only seems to be available through VS Studio itself...)
-const Task: RnvTask = {
+export default createTask({
     description: 'Export the app into deployable binary',
     dependsOn: [RnvTaskName.build],
     fn: async () => {
@@ -13,6 +13,4 @@ const Task: RnvTask = {
     task: RnvTaskName.export,
     options: RnvTaskOptionPresets.withConfigure(),
     platforms: SdkPlatforms,
-};
-
-export default Task;
+});

@@ -3,11 +3,11 @@ import {
     getInstalledTemplateOptions,
     executeTask,
     inquirerPrompt,
-    RnvTask,
+    createTask,
     RnvTaskName,
 } from '@rnv/core';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Reset project to specific template',
     dependsOn: [RnvTaskName.projectConfigure],
     fn: async ({ ctx, taskName, originTaskName }) => {
@@ -40,6 +40,4 @@ const Task: RnvTask = {
         return true;
     },
     task: RnvTaskName.templateApply,
-};
-
-export default Task;
+});

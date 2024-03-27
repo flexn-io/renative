@@ -8,11 +8,11 @@ import {
     generatePlatformChoices,
     inquirerPrompt,
     PlatformKey,
-    RnvTask,
+    createTask,
     RnvTaskName,
 } from '@rnv/core';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Connect platform template back to rnv',
     dependsOn: [RnvTaskName.projectConfigure],
     fn: async ({ ctx }) => {
@@ -81,6 +81,4 @@ const Task: RnvTask = {
         );
     },
     task: RnvTaskName.platformConnect,
-};
-
-export default Task;
+});

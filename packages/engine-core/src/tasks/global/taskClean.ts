@@ -10,8 +10,8 @@ import {
     executeAsync,
     isSystemWin,
     inquirerPrompt,
-    RnvTask,
     RnvTaskName,
+    createTask,
 } from '@rnv/core';
 
 function clearWindowsCacheFiles() {
@@ -40,7 +40,7 @@ function clearWindowsCacheFiles() {
     return true;
 }
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Automatically removes all node_modules and lock in your project and its dependencies',
     fn: async ({ ctx }) => {
         const skipQuestion = ctx.program.opts().ci;
@@ -207,6 +207,4 @@ const Task: RnvTask = {
     },
     task: RnvTaskName.clean,
     isGlobalScope: true,
-};
-
-export default Task;
+});

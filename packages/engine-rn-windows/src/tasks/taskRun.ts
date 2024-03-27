@@ -1,9 +1,9 @@
-import { RnvTaskOptionPresets, RnvTask, RnvTaskName } from '@rnv/core';
+import { RnvTaskOptionPresets, createTask, RnvTaskName } from '@rnv/core';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '@rnv/sdk-react-native';
 import { clearWindowsTemporaryFiles, ruWindowsProject } from '../sdk';
 import { SdkPlatforms } from '../sdk/constants';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Run your app in a window on desktop',
     dependsOn: [RnvTaskName.configure],
     fn: async ({ originTaskName }) => {
@@ -16,6 +16,4 @@ const Task: RnvTask = {
     isPriorityOrder: true,
     options: RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun()),
     platforms: SdkPlatforms,
-};
-
-export default Task;
+});

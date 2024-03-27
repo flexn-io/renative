@@ -1,6 +1,6 @@
-import { chalk, logToSummary, RnvTask, RnvTaskName } from '@rnv/core';
+import { chalk, logToSummary, createTask, RnvTaskName } from '@rnv/core';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Show current rnv telemetry status on your machine',
     fn: async ({ ctx }) => {
         const disableTelemetry = ctx.files.dotRnv.config?.disableTelemetry;
@@ -26,6 +26,4 @@ const Task: RnvTask = {
     },
     task: RnvTaskName.telemetryStatus,
     isGlobalScope: true,
-};
-
-export default Task;
+});

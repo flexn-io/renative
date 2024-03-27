@@ -1,7 +1,7 @@
 import path from 'path';
-import { inquirerPrompt, createWorkspace, fsExistsSync, RnvTask, RnvTaskName } from '@rnv/core';
+import { inquirerPrompt, createWorkspace, fsExistsSync, createTask, RnvTaskName } from '@rnv/core';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Add new workspace',
     dependsOn: [RnvTaskName.projectConfigure],
     fn: async () => {
@@ -38,6 +38,4 @@ const Task: RnvTask = {
     },
     task: RnvTaskName.workspaceAdd,
     isGlobalScope: true,
-};
-
-export default Task;
+});

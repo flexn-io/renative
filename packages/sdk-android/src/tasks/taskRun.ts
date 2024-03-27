@@ -1,9 +1,9 @@
-import { getConfigProp, logSummary, RnvTask, RnvTaskName, RnvTaskOptionPresets } from '@rnv/core';
+import { getConfigProp, logSummary, createTask, RnvTaskName, RnvTaskOptionPresets } from '@rnv/core';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '@rnv/sdk-react-native';
 import { getAndroidDeviceToRunOn, packageAndroid, runAndroid } from '../runner';
 import { SdkPlatforms } from '../constants';
 
-const Task: RnvTask = {
+export default createTask({
     description: 'Run your rn app on target device or emulator',
     dependsOn: [RnvTaskName.configure],
     fn: async ({ ctx, originTaskName }) => {
@@ -30,6 +30,4 @@ const Task: RnvTask = {
     isPriorityOrder: true,
     options: RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun()),
     platforms: SdkPlatforms,
-};
-
-export default Task;
+});
