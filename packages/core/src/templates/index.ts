@@ -20,13 +20,13 @@ import { PromptOptions } from '../api/types';
 import { RnvPlatform } from '../types';
 // import { listAppConfigsFoldersSync } from '../configs/appConfigs';
 import { writeRenativeConfigFile } from '../configs/utils';
-import { checkIfProjectAndNodeModulesExists } from '../projects/dependencies';
 import { ConfigFileProject, ConfigFileTemplate } from '../schema/configFiles/types';
 // import { PlatformKey } from '../schema/types';
 import { getConfigProp } from '../context/contextProps';
 import { RnvFileName } from '../enums/fileName';
 import { getContext } from '../context/provider';
 import { RnvFolderName } from '../enums/folderName';
+import { checkIfProjectAndNodeModulesExists } from '../projects/npm';
 
 const _cleanProjectTemplateSync = (c: RnvContext) => {
     logDefault('_cleanProjectTemplateSync');

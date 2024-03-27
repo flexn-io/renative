@@ -60,6 +60,9 @@ const runtime: RnvContext['runtime'] = {
 export const generateContextDefaults = (): RnvContext => ({
     isDefault: true,
     isSystemWin: false,
+    mutations: {
+        pendingMutations: [],
+    },
     logging: {
         logMessages: [],
         containsError: false,

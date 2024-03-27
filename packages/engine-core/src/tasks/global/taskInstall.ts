@@ -1,4 +1,4 @@
-import { areNodeModulesInstalled, logInfo, createTask, RnvTaskName } from '@rnv/core';
+import { areNodeModulesInstalled, logInfo, createTask, RnvTaskName, handleMutations } from '@rnv/core';
 import { installPackageDependenciesAndPlugins } from '../../plugins';
 
 export default createTask({
@@ -15,6 +15,7 @@ export default createTask({
                 logInfo('node_modules folder is out of date. INSTALLING...');
             }
             ctx._requiresNpmInstall = false;
+            await handleMutations();
             await installPackageDependenciesAndPlugins();
         }
         return true;

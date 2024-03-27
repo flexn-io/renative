@@ -25,7 +25,7 @@ import { getContext } from '../context/provider';
 import { getConfigProp } from '../context/contextProps';
 import { RnvFileName } from '../enums/fileName';
 import { AsyncCallback, DependencyMutation } from '../projects/types';
-import { createDependencyMutation } from '../projects/dependencies';
+import { createDependencyMutation } from '../projects/mutations';
 import { updatePackage } from '../projects/package';
 
 const _getPluginScope = (plugin: RenativeConfigPlugin | string): RnvPluginScope => {

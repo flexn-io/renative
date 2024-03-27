@@ -3,12 +3,12 @@ import { executePipe } from '../buildHooks';
 import type { RnvContext } from '../context/types';
 import type { RnvTask } from './types';
 import { getApi } from '../api/provider';
-import { checkIfProjectAndNodeModulesExists } from '../projects/dependencies';
 import { getContext } from '../context/provider';
 import { RnvTaskName } from '../enums/taskName';
 import { generateStringFromTaskOption, shouldSkipTask } from './taskHelpers';
 import { getEngineRunnerByOwnerID } from '../engines';
 import { extractSingleExecutableTask, findTasksByTaskName } from './taskFinder';
+import { checkIfProjectAndNodeModulesExists } from '../projects/npm';
 
 let executedTasks: Record<string, number> = {};
 const TASK_LIMIT = 20;

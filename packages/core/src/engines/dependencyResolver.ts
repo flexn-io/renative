@@ -4,7 +4,7 @@ import { logDefault } from '../logger';
 import { getEngineRunnerByPlatform } from '.';
 import { NpmDepKey, NpmPackageFile } from '../configs/types';
 import { DependencyMutation } from '../projects/types';
-import { createDependencyMutation } from '../projects/dependencies';
+import { createDependencyMutation } from '../projects/mutations';
 
 export const resolveEngineDependencies = async () => {
     logDefault('resolveEngineDependencies');

@@ -7,6 +7,18 @@ import { RnvContext } from '../context/types';
 import { inquirerPrompt } from '../api';
 import { getContext } from '../context/provider';
 
+export const checkIfProjectAndNodeModulesExists = async () => {
+    logDefault('checkIfProjectAndNodeModulesExists');
+
+    const c = getContext();
+
+    if (c.paths.project.configExists && !fsExistsSync(c.paths.project.nodeModulesDir)) {
+        c._requiresNpmInstall = false;
+        logInfo('node_modules folder is missing. INSTALLING...');
+        await installPackageDependencies();
+    }
+};
+
 export const checkNpxIsInstalled = async () => {
     logDefault('checkNpxIsInstalled');
     if (!commandExistsSync('npx')) {

@@ -25,7 +25,7 @@ export * from './projects/bootstrap';
 export * from './projects/version';
 export * from './projects/npm';
 export * from './projects/package';
-export * from './projects/dependencies';
+export * from './projects/mutations';
 export * from './projects/fonts';
 export * from './projects/utils';
 

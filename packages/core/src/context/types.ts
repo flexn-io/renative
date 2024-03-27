@@ -2,7 +2,7 @@ import type { ConfigProp, ConfigPropKey, PlatformKey } from '../schema/types';
 import type { RnvEngine, RnvEnginePlatform } from '../engines/types';
 import type { OverridesOptions } from '../system/types';
 import type { RnvPlatform } from '../types';
-import {
+import type {
     ConfigFileApp,
     ConfigFileLocal,
     ConfigFilePlugin,
@@ -13,12 +13,13 @@ import {
     ConfigFileWorkspace,
     ConfigFileWorkspaces,
 } from '../schema/configFiles/types';
-import { NpmPackageFile } from '../configs/types';
-import { ConfigFileBuildConfig } from '../schema/configFiles/buildConfig';
+import type { NpmPackageFile } from '../configs/types';
+import type { ConfigFileBuildConfig } from '../schema/configFiles/buildConfig';
 import type { ParamKeys, ProgramOptionsKey } from '../tasks/constants';
-import { ExecaChildProcess } from 'execa';
-import { RnvPlugin } from '../plugins/types';
-import { RnvIntegration } from '../integrations/types';
+import type { ExecaChildProcess } from 'execa';
+import type { RnvPlugin } from '../plugins/types';
+import type { RnvIntegration } from '../integrations/types';
+import type { DependencyMutation } from '../projects/types';
 
 export type CreateContextOptions = {
     program: RnvContextProgram;
@@ -58,6 +59,9 @@ export type RnvContext<Payload = any, ExtraOptionKeys extends string = ProgramOp
      * complete object containing ALL renative.*.json files collected and merged during execution
      */
     buildConfig: RnvContextBuildConfig;
+    mutations: {
+        pendingMutations: Array<DependencyMutation>;
+    };
     assetConfig: object;
     platform: RnvPlatform;
     process: NodeJS.Process;
