@@ -15,7 +15,7 @@ test('Execute task.rnv.platform.list', async () => {
     //GIVEN
     const ctx = getContext();
     jest.mocked(generatePlatformChoices).mockReturnValue([
-        { name: 'MOCK_CHOICE', value: 'android', isConnected: false },
+        { name: 'MOCK_PLATFORM', value: 'android', isConnected: false },
     ]);
     //WHEN
     await expect(
@@ -30,5 +30,5 @@ test('Execute task.rnv.platform.list', async () => {
     //THEN
     expect(taskPlatformList.dependsOn).toEqual(['project configure']);
     expect(generatePlatformChoices).toHaveBeenCalled();
-    expect(logToSummary).toHaveBeenCalledWith(`Platforms:\n\nandroid\n`);
+    expect(logToSummary).toHaveBeenCalledWith(`Platforms:\n\n[1]> MOCK_PLATFORM\n`);
 });
