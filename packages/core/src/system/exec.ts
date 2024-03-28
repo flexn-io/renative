@@ -264,6 +264,7 @@ const execCLI = (c: RnvContext, cli: string, command: string, opts: ExecOptions 
         return Promise.reject('You need to pass c object as first parameter to execCLI()');
     }
     const p = c.cli[cli];
+
     if (!fsExistsSync(p)) {
         logDebug(
             `execCLI error: ${cli} | ${command}`,
@@ -344,6 +345,7 @@ const executeAsync = async (
     //         result = await _execute(c, cmdArr[i], opts);
     //     }
     // }
+    console.log('!!!!!!! cmd', _cmd, '!!!!!!! opts', _opts, '@@@@@@@@@@@');
     const result = await _execute(c, cmd, opts);
     return result;
 };

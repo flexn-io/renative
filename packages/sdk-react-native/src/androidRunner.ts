@@ -104,7 +104,13 @@ export const runReactNativeAndroid = async (
     if (udid) {
         command += ` --deviceId=${udid}`;
     }
-
+    console.log({
+        ...CoreEnvVars.BASE(),
+        ...CoreEnvVars.RNV_EXTENSIONS(),
+        ...EnvVars.RCT_METRO_PORT(),
+        ...EnvVars.RNV_REACT_NATIVE_PATH(),
+        ...EnvVars.RNV_APP_ID(),
+    });
     return executeAsync(c, command, {
         env: {
             ...CoreEnvVars.BASE(),

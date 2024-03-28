@@ -66,9 +66,9 @@ export const buildLightningProject = async (c: RnvContext) => {
     if (!platform) return;
 
     const certProfile = getConfigProp(c, c.platform, 'certificateProfile') || DEFAULTS.certificateProfile;
-
     const target = getConfigProp(c, platform, 'target', 'es6');
-    const tBuild = EnvVars.LNG_DIST_FOLDER().LNG_DIST_FOLDER;
+    const tBuild = getPlatformProjectDir(c)!;
+    // console.log('@@@@@@@ target', target, '@@@@@@@ tBuild', tBuild);
 
     const tOut = path.join(tBuild || '', 'output');
 
@@ -107,18 +107,20 @@ export const configureLightningProject = async (c: RnvContext) => {
     }
     await copyAssetsFolder(c, platform);
     await _configureProject(c);
-    console.log('configureLightningProject', JSON.stringify(c.paths, null, 2));
+    // console.log('configureLightningProject', JSON.stringify(c.paths, null, 2));
+
+    copyBuildsFolder(c, platform);
     _copyAssets(c);
-    return copyBuildsFolder(c, platform);
 };
 
 const _copyAssets = (c: RnvContext) => {
     logTask('copyLightningAssets');
-    const staticFolder = path.join(getAppFolder(c, true), 'static');
+    const staticFolder = path.join(getAppFolder(c, true), 'project/static');
 
     // copy fonts
     const fontsSrcs = c.paths.appConfig.fontsDirs;
     const fontsDest = path.join(staticFolder, 'fonts');
+    console.log(fontsSrcs, fontsDest);
     fontsSrcs.forEach((fontSrc) => {
         if (fsExistsSync(fontSrc)) {
             copyFolderContentsRecursiveSync(fontSrc, fontsDest);
