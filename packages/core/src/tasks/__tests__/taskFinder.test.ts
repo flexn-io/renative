@@ -1,19 +1,17 @@
 import { findSuitableTask } from '../taskFinder';
-import { DEFAULT_TASK_DESCRIPTIONS } from '../constants';
 import { getContext } from '../../context/provider';
 import { generateContextDefaults } from '../../context/defaults';
 import { getTaskNameFromCommand } from '../taskHelpers';
 import { getRegisteredTasks } from '../taskRegistry';
+import { RnvTaskMap } from '../types';
+import { inquirerPrompt } from '../../api';
 
-jest.mock('../../engines');
 jest.mock('../taskHelpers');
 jest.mock('../taskRegistry');
 jest.mock('chalk');
 jest.mock('../../logger');
-jest.mock('../../api');
 jest.mock('../../context/provider');
-jest.mock('../constants', () => ({ DEFAULT_TASK_DESCRIPTIONS: {} }));
-jest.mock('../../projects/dependencies');
+jest.mock('../../api');
 
 beforeEach(() => {
     // NOTE: do not call createRnvContext() in core library itself
@@ -23,23 +21,11 @@ afterEach(() => {
     jest.resetAllMocks();
 });
 
-// const ENGINE_MOCK_PROPS = {
-//     platforms: {},
-//     config: {
-//         id: '',
-//         engineExtension: '',
-//         overview: '',
-//         packageName: '',
-//     },
-//     projectDirName: '',
-//     runtimeExtraProps: {},
-//     serverDirName: '',
-// };
-
-const MOCK_TASKS = {
+const MOCK_TASKS: RnvTaskMap = {
     ['en1::mock-task']: {
-        description: 'mock task 1',
+        description: 'mock task 1 with ios',
         task: 'mock-task',
+        platforms: ['ios'],
         options: [],
     },
     ['en1::mock-task-2']: {
@@ -48,82 +34,50 @@ const MOCK_TASKS = {
         options: [],
     },
     ['en2::mock-task']: {
-        description: 'mock task 1',
+        description: 'mock task 1 with android',
         task: 'mock-task',
+        platforms: ['android'],
         options: [],
     },
 };
 
-// const rnvEngineMock1: RnvEngine = {
-//     ...ENGINE_MOCK_PROPS,
-//     tasks: {
-//         ['mock-task']: {
-//             description: 'mock task 1',
-//             task: 'mock-task',
-//             options: [],
-//         },
-//     },
-// };
-
-// const rnvEngineMock2: RnvEngine = {
-//     ...ENGINE_MOCK_PROPS,
-//     tasks: {
-//         //NOTE: order of task here is IMPORTANT
-//         ['mock-task-2']: {
-//             description: 'mock task 2',
-//             task: 'mock-task-2',
-//             options: [],
-//         },
-//         ['mock-task']: {
-//             description: 'mock task 1',
-//             task: 'mock-task',
-//             options: [],
-//         },
-//     },
-// };
-
 describe('Get suitable tasks', () => {
-    it('should return all tasks for given 1 engine', () => {
+    it('should return matching task for matching command', async () => {
         // GIVEN
-        jest.mocked(getTaskNameFromCommand).mockReturnValue('');
+        jest.mocked(getTaskNameFromCommand).mockReturnValue('mock-task-2');
         jest.mocked(getContext).mockReturnValue(generateContextDefaults());
         jest.mocked(getRegisteredTasks).mockReturnValue({ ...MOCK_TASKS });
-        // jest.mocked(getRegisteredEngines).mockReturnValue([rnvEngineMock1]);
-        // jest.mocked(checkIfProjectAndNodeModulesExists).mockResolvedValue();
         // WHEN
-        const result = findSuitableTask();
+        const result = await findSuitableTask();
         // THEN
-        expect(Object.keys(result)).toEqual(['mock-task']);
-        expect(result['mock-task'].description).toEqual('mock task 1');
+        expect(result?.description).toEqual('mock task 2');
     });
 
-    it('should return common description for tasks from 2 different engines but same name', () => {
+    it('should return matching task filtered by command and platform out of 2 conflicting ones', async () => {
         // GIVEN
         jest.mocked(getTaskNameFromCommand).mockReturnValue('mock-task');
         jest.mocked(getContext).mockReturnValue(generateContextDefaults());
-        // jest.mocked(getRegisteredEngines).mockReturnValue([rnvEngineMock1, rnvEngineMock2]);
+        const ctx = getContext();
+        ctx.platform = 'ios';
         jest.mocked(getRegisteredTasks).mockReturnValue({ ...MOCK_TASKS });
-        // jest.mocked(checkIfProjectAndNodeModulesExists).mockResolvedValue();
-        DEFAULT_TASK_DESCRIPTIONS['mock-task'] = 'mock task common';
         // WHEN
-        const result = findSuitableTask();
+        const result = await findSuitableTask();
         // THEN
-        expect(Object.keys(result)).toEqual(['mock-task', 'mock-task-2']);
-        expect(result['mock-task'].description).toEqual('mock task common');
+        expect(result?.description).toEqual('mock task 1 with ios');
     });
 
-    it('should return first task description for tasks from 2 different engines but same name if common desc not available', () => {
+    it('should trigger inquirer if result is more than 1 task available', async () => {
         // GIVEN
-        jest.mocked(getTaskNameFromCommand).mockReturnValue('');
+        jest.mocked(getTaskNameFromCommand).mockReturnValue('mock-task');
         jest.mocked(getContext).mockReturnValue(generateContextDefaults());
+        jest.mocked(inquirerPrompt).mockResolvedValue(MOCK_TASKS['en1::mock-task']);
+        const ctx = getContext();
+        ctx.platform = null;
         jest.mocked(getRegisteredTasks).mockReturnValue({ ...MOCK_TASKS });
-        // jest.mocked(getRegisteredEngines).mockReturnValue([rnvEngineMock2, rnvEngineMock1]);
-        // jest.mocked(checkIfProjectAndNodeModulesExists).mockResolvedValue();
-        delete DEFAULT_TASK_DESCRIPTIONS['mock-task'];
         // WHEN
-        const result = findSuitableTask();
+        const result = await findSuitableTask();
         // THEN
-        expect(Object.keys(result)).toEqual(['mock-task-2', 'mock-task']);
-        expect(result['mock-task'].description).toEqual('mock task 1');
+        expect(inquirerPrompt).toHaveBeenCalledTimes(1);
+        expect(result).toEqual(MOCK_TASKS['en1::mock-task']);
     });
 });

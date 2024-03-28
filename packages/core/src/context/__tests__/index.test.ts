@@ -35,6 +35,7 @@ describe('Context tests', () => {
             'isDefault',
             'isSystemWin',
             'logging',
+            'mutations',
             'paths',
             'payload',
             'platform',

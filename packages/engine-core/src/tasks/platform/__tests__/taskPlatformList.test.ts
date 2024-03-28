@@ -1,4 +1,4 @@
-import { createRnvContext, executeTask, generatePlatformChoices, getContext } from '@rnv/core';
+import { createRnvContext, generatePlatformChoices, getContext, logToSummary } from '@rnv/core';
 import taskPlatformList from '../taskPlatformList';
 
 jest.mock('@rnv/core');
@@ -14,7 +14,9 @@ afterEach(() => {
 test('Execute task.rnv.platform.list', async () => {
     //GIVEN
     const ctx = getContext();
-    jest.mocked(generatePlatformChoices).mockReturnValue([]);
+    jest.mocked(generatePlatformChoices).mockReturnValue([
+        { name: 'MOCK_CHOICE', value: 'android', isConnected: false },
+    ]);
     //WHEN
     await expect(
         taskPlatformList.fn?.({
@@ -26,5 +28,7 @@ test('Execute task.rnv.platform.list', async () => {
         })
     ).resolves.toEqual(true);
     //THEN
-    expect(executeTask).toHaveBeenCalledWith('project configure', 'platform list', undefined);
+    expect(taskPlatformList.dependsOn).toEqual(['project configure']);
+    expect(generatePlatformChoices).toHaveBeenCalled();
+    expect(logToSummary).toHaveBeenCalledWith(`Platforms:\n\nandroid\n`);
 });

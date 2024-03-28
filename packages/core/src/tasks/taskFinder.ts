@@ -1,8 +1,9 @@
-import { logDefault } from '../logger';
+import { logDefault, logWarning } from '../logger';
 import type { RnvTask } from './types';
 import { getContext } from '../context/provider';
 import { getRegisteredTasks } from './taskRegistry';
 import { getTaskNameFromCommand, selectPlatformIfRequired } from './taskHelpers';
+import { inquirerPrompt } from '../api';
 
 export const findSuitableTask = async (): Promise<RnvTask | undefined> => {
     logDefault('findSuitableTask');
@@ -58,20 +59,31 @@ export const extractSingleExecutableTask = async (
                 hasPlatformAwareTasks = true;
             }
         });
+
         if (hasPlatformAwareTasks) {
             // Restart the process now we defined specific platform
             await selectPlatformIfRequired();
             const newSuitableTasks = await findTasksByTaskName(taskName);
             if (newSuitableTasks.length === 0) {
-                throw new Error('TODO cannot find any suitable tasks after platform selection');
+                logWarning('No suitable tasks found after platform selection');
+                // throw new Error('TODO cannot find any suitable tasks after platform selection');
             } else if (newSuitableTasks.length === 1) {
                 return newSuitableTasks[0];
             }
         }
 
-        throw new Error('TODO interactive selection multiple tasks');
+        logWarning(`Multiple competing tasks found for ${taskName} task. Please select one:`);
+        const { result } = await inquirerPrompt({
+            type: 'list',
+            name: 'result',
+            message: 'Select task',
+            choices: suitableTasks.map((v) => ({
+                name: `${v.task} - registered to: ${v.ownerID}`,
+                value: v,
+            })),
+        });
+        return result;
     }
     // Found no tasks
-    // throw new Error('TODO found no tasks');
     return undefined;
 };
