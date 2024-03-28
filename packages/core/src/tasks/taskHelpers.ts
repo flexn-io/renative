@@ -25,6 +25,7 @@ export const selectPlatformIfRequired = async () => {
     // TODO: move this to more generic place?
     c.runtime.availablePlatforms = c.buildConfig.defaults?.supportedPlatforms || [];
     c.runtime.engine = getEngineRunnerByPlatform(c.platform);
+    c.runtime.runtimeExtraProps = c.runtime.engine?.runtimeExtraProps || {};
 };
 
 export const getTaskNameFromCommand = (): string | undefined => {

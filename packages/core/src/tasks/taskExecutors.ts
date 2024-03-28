@@ -57,6 +57,7 @@ export const initializeTask = async (taskInstance: RnvTask | undefined) => {
     // let's pick it based on task ownerID
     if (!c.runtime.engine) {
         c.runtime.engine = getEngineRunnerByOwnerID(taskInstance);
+        c.runtime.runtimeExtraProps = c.runtime.engine?.runtimeExtraProps || {};
     }
 
     logInfo(`Current engine: ${chalk().bold(taskInstance.ownerID)} ${chalk().grey(`(${c.runtime.engine?.rootPath})`)}`);
