@@ -34,6 +34,7 @@
     "dependencies": {
         "@react-native/babel-preset": "0.73.21",
         "@rnv/sdk-tizen": "1.0.0-rc.12",
+        "@rnv/sdk-kaios": "1.0.0-rc.12",
         "@rnv/sdk-utils": "1.0.0-rc.12",
         "@rnv/sdk-webos": "1.0.0-rc.12",
         "@rnv/sdk-webpack": "1.0.0-rc.12",
