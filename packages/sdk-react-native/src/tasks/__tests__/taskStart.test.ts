@@ -1,4 +1,4 @@
-import { RnvTaskName, createRnvContext, doResolve, executeTask, getContext } from '@rnv/core';
+import { RnvTaskName, createRnvContext, doResolve, getContext } from '@rnv/core';
 import taskStart from '../taskStart';
 import { startReactNative } from '../../metroRunner';
 
@@ -19,7 +19,6 @@ describe('taskStart', () => {
         // GIVEN
         const ctx = getContext();
         ctx.platform = 'ios';
-        jest.mocked(executeTask).mockResolvedValueOnce(undefined);
         // WHEN
         await taskStart.fn?.({
             ctx,
@@ -30,7 +29,6 @@ describe('taskStart', () => {
         });
         // THEN
         expect(taskStart.dependsOn).toEqual([RnvTaskName.configureSoft]);
-
         expect(startReactNative).toHaveBeenCalledWith({ waitForBundler: true });
     });
     it('Execute task.rnv.start', async () => {
@@ -66,7 +64,6 @@ describe('taskStart', () => {
             shouldSkip: false,
         });
         // THEN
-        expect(executeTask).toHaveBeenCalledTimes(1);
         expect(startReactNative).toHaveBeenCalledWith({
             waitForBundler: true,
             customCliPath: 'MOCKED_PATH/local-cli/cli.js',

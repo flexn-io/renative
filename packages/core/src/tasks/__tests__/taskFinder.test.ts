@@ -70,7 +70,7 @@ describe('Get suitable tasks', () => {
         // GIVEN
         jest.mocked(getTaskNameFromCommand).mockReturnValue('mock-task');
         jest.mocked(getContext).mockReturnValue(generateContextDefaults());
-        jest.mocked(inquirerPrompt).mockResolvedValue(MOCK_TASKS['en1::mock-task']);
+        jest.mocked(inquirerPrompt).mockResolvedValue({ result: MOCK_TASKS['en1::mock-task'] });
         const ctx = getContext();
         ctx.platform = null;
         jest.mocked(getRegisteredTasks).mockReturnValue({ ...MOCK_TASKS });

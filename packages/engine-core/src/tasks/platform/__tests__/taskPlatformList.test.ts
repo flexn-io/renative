@@ -30,5 +30,5 @@ test('Execute task.rnv.platform.list', async () => {
     //THEN
     expect(taskPlatformList.dependsOn).toEqual(['project configure']);
     expect(generatePlatformChoices).toHaveBeenCalled();
-    expect(logToSummary).toHaveBeenCalledWith(`Platforms:\n\n[1]> MOCK_PLATFORM\n`);
+    expect(logToSummary).toHaveBeenCalledWith(`Platforms:\n\n [1]> MOCK_PLATFORM`);
 });

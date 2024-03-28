@@ -10,30 +10,32 @@ type Context = {
 
 const rnvcore: any = jest.createMockFromModule('@rnv/core');
 
-const _chalkCols: any = {
-    white: (v) => v,
-    green: (v) => v,
-    red: (v) => v,
-    yellow: (v) => v,
-    default: (v) => v,
-    gray: (v) => v,
-    grey: (v) => v,
-    blue: (v) => v,
-    cyan: (v) => v,
-    magenta: (v) => v,
-    bold: (v) => v,
-    rgb: (v) => v,
-};
-function mockChalk() {
-    return _chalkCols;
+function mockChalk(v) {
+    return v;
 }
-Object.assign(mockChalk, _chalkCols);
-Object.keys(_chalkCols).forEach((key) => {
-    _chalkCols[key] = mockChalk;
-});
-const _chalkMono = {
-    ..._chalkCols,
+
+const _chalkCols: any = {
+    white: mockChalk,
+    green: mockChalk,
+    red: mockChalk,
+    yellow: mockChalk,
+    default: mockChalk,
+    gray: mockChalk,
+    grey: mockChalk,
+    blue: mockChalk,
+    cyan: mockChalk,
+    magenta: mockChalk,
+    bold: mockChalk,
+    rgb: mockChalk,
 };
+
+Object.assign(mockChalk, _chalkCols);
+// Object.keys(_chalkCols).forEach((key) => {
+//     _chalkCols[key] = mockChalk;
+// });
+// const _chalkMono = {
+//     ..._chalkCols,
+// };
 
 const generateRnvConfigPathObj = () => {
     return {
@@ -255,7 +257,7 @@ const generateContextDefaults = (ctx?: Context) => {
     };
 };
 rnvcore.createTask = (task) => task;
-rnvcore.chalk = () => _chalkMono;
+rnvcore.chalk = () => _chalkCols;
 rnvcore.createRnvContext = (ctx?: Context) => {
     rnvcore.__MOCK_RNV_CONTEXT = generateContextDefaults(ctx);
 };
