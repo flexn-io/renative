@@ -1,11 +1,4 @@
-import {
-    logErrorPlatform,
-    copySharedPlatforms,
-    RnvTaskOptionPresets,
-    configureEntryPoint,
-    createTask,
-    RnvTaskName,
-} from '@rnv/core';
+import { logErrorPlatform, copySharedPlatforms, RnvTaskOptionPresets, createTask, RnvTaskName } from '@rnv/core';
 import { configureWebProject, configureChromecastProject } from '@rnv/sdk-webpack';
 import { configureKaiOSProject } from '@rnv/sdk-kaios';
 import { configureWebOSProject } from '@rnv/sdk-webos';
@@ -16,7 +9,6 @@ export default createTask({
     description: 'Configure current project',
     dependsOn: [RnvTaskName.platformConfigure],
     fn: async ({ ctx }) => {
-        await configureEntryPoint();
         await copySharedPlatforms();
         switch (ctx.platform) {
             case 'web':

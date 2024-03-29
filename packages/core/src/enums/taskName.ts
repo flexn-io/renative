@@ -33,7 +33,7 @@ export const RnvTaskName = {
     platformConnect: 'platform connect',
     platformEject: 'platform eject',
     platformList: 'platform list',
-    platformSetup: 'platform setup',
+    projectPlatforms: 'project platforms',
     sdkConfigure: 'sdk configure',
     projectConfigure: 'project configure',
     projectUpgrade: 'project upgrade',

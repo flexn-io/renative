@@ -50,7 +50,6 @@ const runtime: RnvContext['runtime'] = {
     skipBuildHooks: false,
     skipActiveServerCheck: false,
     versionCheckCompleted: false,
-    requiresForcedTemplateApply: false,
     forceBuildHookRebuild: false,
     requiresBootstrap: false,
     port: 3000,

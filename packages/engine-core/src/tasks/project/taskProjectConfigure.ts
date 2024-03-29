@@ -8,7 +8,6 @@ import {
     updateRenativeConfigs,
     configureRuntimeDefaults,
     applyTemplate,
-    checkIfTemplateConfigured,
     configureTemplateFiles,
     isTemplateInstalled,
     fsExistsSync,
@@ -80,7 +79,6 @@ export default createTask({
             return true;
         }
 
-        await checkIfTemplateConfigured();
         await executeTask({ taskName: RnvTaskName.install, parentTaskName: taskName, originTaskName });
 
         if (originTaskName !== RnvTaskName.cryptoDecrypt) {

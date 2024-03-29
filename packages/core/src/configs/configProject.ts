@@ -20,8 +20,6 @@ const SYNCED_DEPS = [
     '@rnv/template-starter',
 ];
 
-const SYNCED_TEMPLATES = ['@rnv/template-starter'];
-
 export const upgradeProjectDependencies = (version: string) => {
     logDefault('upgradeProjectDependencies');
 
@@ -55,11 +53,9 @@ export const upgradeDependencies = (
     _fixDeps(packageFile?.devDependencies, version);
     _fixDeps(packageFile?.dependencies, version);
     _fixDeps(packageFile?.peerDependencies, version);
-    SYNCED_TEMPLATES.forEach((templ) => {
-        if (configFile?.templates?.[templ]?.version) {
-            configFile.templates[templ].version = version;
-        }
-    });
+    if (configFile?.templateConfig) {
+        configFile.templateConfig.version = version;
+    }
 
     if (packageFile) {
         writeFileSync(packagesPath, packageFile);

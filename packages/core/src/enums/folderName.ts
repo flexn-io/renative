@@ -17,4 +17,6 @@ export const RnvFolderName = {
     npmCache: 'npm_cache',
     // Convention folder for storing secrets per projects managed by rnv crypto
     secrets: 'secrets',
+    // Special folder for storing all build hooks in your project
+    buildHooks: 'buildHooks',
 } as const;

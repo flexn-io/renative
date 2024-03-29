@@ -71,32 +71,9 @@ const Integrations = z
     .record(z.string(), z.object({}))
     .describe('Object containing integration configurations where key represents package name');
 
-// const Engine = z.union([
-//     z.literal('source:rnv'),
-//     z.object({
-//         version: z.optional(z.string()),
-//     }),
-// ]);
-
 const Engine = z.literal('source:rnv');
 
 const IsMonoRepo = z.boolean().describe('Mark if your project is part of monorepo');
-
-const Template = z.object({
-    version: z.string(),
-});
-
-const Templates = z
-    .record(z.string(), Template)
-    .describe(
-        'Stores installed templates info in your project.\n\nNOTE: This prop will be updated by rnv if you run `rnv template install`'
-    );
-
-const CurrentTemplate = z
-    .string()
-    .describe(
-        'Currently active template used in this project. this allows you to re-bootstrap whole project by running `rnv template apply`'
-    );
 
 const Crypto = z
     .object({
@@ -203,49 +180,55 @@ const Paths = z
     })
     .describe('Define custom paths for RNV to look into');
 
-const UseTemplate = z.object({
-    name: z.string(),
-    version: z.string(),
-    excludedPaths: z.optional(z.array(z.string())),
-});
-
 //LEVEl 0 (ROOT)
 
 const RootProjectBaseFragment = {
     workspaceID: WorkspaceID.optional(),
-    projectVersion: z.string().optional(),
+    projectVersion: z.string().optional(), // TODO: if undefined it should infer from package.json
     projectName: ProjectName.optional(),
-    isMonorepo: z.optional(IsMonoRepo),
-    useTemplate: z.optional(UseTemplate),
+
     isTemplate: z.boolean().optional(),
     defaults: z.optional(DefaultsSchema),
     pipes: z.optional(Pipes),
-    templates: Templates.optional(),
-    currentTemplate: CurrentTemplate.optional(),
     crypto: z.optional(Crypto),
     paths: z.optional(Paths),
     permissions: z.optional(Permissions),
-    engines: z.optional(EnginesSchema),
-    custom: z.optional(Ext),
+    engines: z.optional(EnginesSchema), // TODO: rename to mods (mods with type engine in the future) ?
     enableHookRebuild: z.optional(EnableHookRebuild),
-    monoRoot: z.optional(MonoRoot),
-    extendsTemplate: z.optional(ExtendTemplate),
+    extendsTemplate: z.optional(ExtendTemplate), // TODO: rename to "extendsConfig"
     tasks: z.optional(Tasks),
-    integrations: z.optional(Integrations),
+    integrations: z.optional(Integrations), // TODO: rename to mods
     env: z.optional(Env),
     runtime: z.optional(Runtime),
     templateConfig: TemplateConfig.optional(),
+    _meta: z.optional(
+        z.object({
+            requires_first_template_apply: z.optional(SupportedPlatforms),
+        })
+    ),
+    // DEPRECATED
+
+    isMonorepo: z.optional(IsMonoRepo), // TODO: remove and use auto detection
+    monoRoot: z.optional(MonoRoot), // TODO: remove and use auto detection
+    custom: z.optional(Ext), // TODO: find better way to handle
     skipAutoUpdate: z
         .boolean()
         .optional()
         .describe(
             "Enables the equivalent to passing --skipDependencyCheck parameter on every rnv run so you don't have to use it"
         ),
+    // REMOVED
+    // useTemplate: z.optional(UseTemplate),
     // isNew: z
-    //     .boolean()
-    //     .optional()
-    //     .describe('Marker indicating that this project has just been bootstrapped. this prop is managed by rnv'),
+    // templates: Templates.optional(),
+    // currentTemplate: CurrentTemplate.optional(),
 };
+
+// const UseTemplate = z.object({
+//     name: z.string(),
+//     version: z.string(),
+//     excludedPaths: z.optional(z.array(z.string())),
+// });
 
 const RootProjectBaseSchema = z.object(RootProjectBaseFragment);
 const RootProjectCommonSchema = z.object({ common: z.optional(CommonSchema) });

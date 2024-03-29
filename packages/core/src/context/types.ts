@@ -118,7 +118,6 @@ export type RnvContextRuntime = {
     forceBuildHookRebuild: boolean;
     disableReset: boolean;
     skipActiveServerCheck: boolean;
-    requiresForcedTemplateApply: boolean;
     isWSConfirmed: boolean;
     _skipNativeDepResolutions: boolean;
     versionCheckCompleted: boolean;
@@ -131,7 +130,6 @@ export type RnvContextRuntime = {
     currentPlatform?: RnvEnginePlatform;
     currentEngine?: RnvEngine;
     skipPackageUpdate?: boolean;
-    selectedTemplate?: string;
     _platformBuildsSuffix?: string;
     platformBuildsProjectPath?: string;
     targetUDID?: string;
@@ -143,7 +141,6 @@ export type RnvContextRuntime = {
     localhost?: string;
     scheme?: string;
     appDir?: string;
-    activeTemplate?: string;
     timestamp?: number;
     appConfigDir?: string;
     currentTemplate?: string;

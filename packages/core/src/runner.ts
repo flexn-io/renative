@@ -5,7 +5,6 @@ import { checkAndMigrateProject } from './migrator';
 import { configureRuntimeDefaults } from './context/runtime';
 import { findSuitableTask } from './tasks/taskFinder';
 import { updateRenativeConfigs } from './plugins';
-import { checkAndBootstrapIfRequired } from './projects/bootstrap';
 import { loadDefaultConfigTemplates } from './configs';
 import { getApi } from './api/provider';
 import { RnvTask } from './tasks/types';
@@ -40,7 +39,7 @@ export const executeRnvCore = async () => {
     await configureRuntimeDefaults();
     await checkAndMigrateProject();
     await updateRenativeConfigs();
-    await checkAndBootstrapIfRequired();
+    // await checkAndBootstrapIfRequired();
 
     // TODO: rename to something more meaningful or DEPRECATE entirely
     if (c.program.opts().npxMode) {

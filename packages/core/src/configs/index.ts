@@ -24,7 +24,7 @@ export const loadFileExtended = (fileObj: Record<string, any>, pathObj: RnvConte
     const extendsTemplate = fileObj[key]?.extendsTemplate;
     if (key === 'config' && extendsTemplate) {
         // extendsTemplate only applies to standard 'config'
-        let currTemplate = c.files.project[key]?.currentTemplate || fileObj[key].currentTemplate;
+        let currTemplate = c.files.project[key]?.templateConfig?.name || fileObj[key].templateConfig?.name;
         if (!currTemplate) {
             if (extendsTemplate.startsWith('@')) {
                 currTemplate = extendsTemplate.split('/').slice(0, 2).join('/');

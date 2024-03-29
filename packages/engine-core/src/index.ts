@@ -6,10 +6,8 @@ import taskPlatformEject from './tasks/platform/taskPlatformEject';
 import taskPlatformConnect from './tasks/platform/taskPlatformConnect';
 import taskPlatformList from './tasks/platform/taskPlatformList';
 import taskPlatformConfigure from './tasks/platform/taskPlatformConfigure';
-import taskPlatformSetup from './tasks/platform/taskPlatformSetup';
-import taskTemplateAdd from './tasks/template/taskTemplateAdd';
+import taskPlatformSetup from './tasks/project/taskProjectPlatforms';
 import taskTemplateApply from './tasks/template/taskTemplateApply';
-import taskTemplateList from './tasks/template/taskTemplateList';
 import taskPluginAdd from './tasks/plugin/taskPluginAdd';
 import taskPluginList from './tasks/plugin/taskPluginList';
 import taskPluginUpdate from './tasks/plugin/taskPluginUpdate';
@@ -63,9 +61,7 @@ const Engine: RnvEngine = {
             taskPlatformList,
             taskPlatformConfigure,
             taskPlatformSetup,
-            taskTemplateAdd,
             taskTemplateApply,
-            taskTemplateList,
             taskPluginAdd,
             taskPluginList,
             taskPluginUpdate,

@@ -2,10 +2,10 @@ import path from 'path';
 import { build } from 'esbuild';
 import { logDebug, logError, logHook, logInfo } from '../logger';
 import { fsExistsSync, copyFolderContentsRecursiveSync } from '../system/fs';
-import { doResolve } from '../system/resolve';
 import { inquirerPrompt } from '../api';
 import { getConfigProp } from '../context/contextProps';
 import { getContext } from '../context/provider';
+import { RnvFolderName } from '../enums/folderName';
 
 export const executePipe = async (key: string) => {
     const c = getContext();
@@ -70,11 +70,10 @@ export const buildHooks = async () => {
         }
 
         if (confirmed) {
-            const templatePath = c.buildConfig.currentTemplate ? doResolve(c.buildConfig.currentTemplate) : null;
-            let buildHooksSource;
+            const templatePath = c.paths.template.dir;
+            let buildHooksSource = path.join(templatePath, RnvFolderName.buildHooks, 'src');
             // if there is a template and has buildhooks folder, use that instead of the default
-            if (templatePath && fsExistsSync(`${templatePath}/buildHooks/src`)) {
-                buildHooksSource = path.join(templatePath, 'buildHooks/src');
+            if (fsExistsSync(buildHooksSource)) {
                 shouldBuildHook = true;
             } else {
                 buildHooksSource = path.join(c.paths.rnvCore.templateFilesDir, 'buildHooksSrc');

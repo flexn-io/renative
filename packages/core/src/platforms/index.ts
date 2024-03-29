@@ -4,7 +4,6 @@ import { cleanFolder, copyFolderContentsRecursiveSync } from '../system/fs';
 import { getTimestampPathsConfig, getAppFolder } from '../context/contextProps';
 import { generateOptions, inquirerPrompt } from '../api';
 import type { RnvPlatform, RnvPlatformWithAll } from '../types';
-import { updateProjectPlatforms } from '../configs/configProject';
 import { doResolve } from '../system/resolve';
 import { getContext } from '../context/provider';
 import { RnvPlatforms } from '../enums/platformName';
@@ -123,24 +122,6 @@ export const isPlatformSupported = async (isGlobalScope = false) => {
         c.platform = platform;
     }
 
-    const configuredPlatforms = c.files.project.config?.defaults?.supportedPlatforms;
-
-    if (c.platform && Array.isArray(configuredPlatforms) && !configuredPlatforms.includes(c.platform)) {
-        const { confirm } = await inquirerPrompt({
-            type: 'confirm',
-            message: `Platform ${c.platform} is not supported by your project. Would you like to enable it?`,
-        });
-
-        if (confirm) {
-            const newPlatforms = [...configuredPlatforms, c.platform];
-            updateProjectPlatforms(newPlatforms);
-            c.buildConfig.defaults = c.buildConfig.defaults || {};
-            c.buildConfig.defaults.supportedPlatforms = newPlatforms;
-            // await configureEntryPoints(c);
-        } else {
-            throw new Error('User canceled');
-        }
-    }
     printCurrentPlatform(c.platform);
     return c.platform;
 };

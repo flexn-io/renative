@@ -46,6 +46,8 @@ export const NpmDep = z.record(z.string(), z.string());
 
 export const TemplateConfig = z
     .object({
+        name: z.string().optional(),
+        version: z.string().optional(),
         disabled: z.boolean().optional(),
         includedPaths: z
             .array(

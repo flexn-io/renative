@@ -1,43 +1,25 @@
-import {
-    applyTemplate,
-    getInstalledTemplateOptions,
-    executeTask,
-    inquirerPrompt,
-    createTask,
-    RnvTaskName,
-} from '@rnv/core';
+import { applyTemplate, createTask, RnvTaskName, logInfo, inquirerPrompt } from '@rnv/core';
 
 export default createTask({
-    description: 'Reset project to specific template',
+    description: 'Reapply template (if configured) to current project',
     dependsOn: [RnvTaskName.projectConfigure],
-    fn: async ({ ctx, taskName, originTaskName }) => {
-        const { buildConfig, program } = ctx;
+    fn: async ({ ctx }) => {
+        const { buildConfig } = ctx;
         if (buildConfig?.isTemplate) {
             return Promise.reject('Template projects cannot use template apply command');
         }
-
-        if (program.opts().template) {
-            await applyTemplate(program.opts().template);
-            if (program.opts().appConfigID) {
-                await executeTask({ taskName: RnvTaskName.appConfigure, parentTaskName: taskName, originTaskName });
-            }
-
-            return true;
-        }
-        const opts = await getInstalledTemplateOptions();
-
-        const { template } = await inquirerPrompt({
-            type: 'list',
-            message: 'Pick which template to install',
-            name: 'template',
-            choices: opts?.keysAsArray,
+        logInfo(
+            'This command will reapply template to current project. files will be overwritten. make sure you backed up your project before proceeding.'
+        );
+        const { confirm } = await inquirerPrompt({
+            type: 'confirm',
+            name: 'confirm',
+            message: 'Proceed?',
         });
-
-        await applyTemplate(template);
-        if (program.opts().appConfigID) {
-            await executeTask({ taskName: RnvTaskName.appConfigure, parentTaskName: taskName, originTaskName });
+        if (!confirm) {
+            return;
         }
-        return true;
+        return applyTemplate();
     },
     task: RnvTaskName.templateApply,
 });

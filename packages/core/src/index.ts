@@ -14,14 +14,12 @@ export * from './configs/configLocal';
 export * from './configs/engines';
 export * from './configs/configProject';
 export * from './configs/platformAssets';
-export * from './configs/templates';
 export * from './context/contextProps';
 export * from './configs/utils';
 
 export * from './projects/appConfig';
 export * from './projects/assets';
 export * from './projects/fonts';
-export * from './projects/bootstrap';
 export * from './projects/version';
 export * from './projects/npm';
 export * from './projects/package';

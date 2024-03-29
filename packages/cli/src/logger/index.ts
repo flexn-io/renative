@@ -277,8 +277,8 @@ export const logSummary = (opts?: { header?: string; headerStyle?: 'success' | '
         // }
         str += printIntoBox(`Engine: ${currentChalk.gray(ctx.runtime?.engine?.config?.id || '')}`);
     }
-    if (ctx.runtime?.activeTemplate) {
-        str += printIntoBox(`Template: ${currentChalk.gray(ctx.runtime?.activeTemplate)}`);
+    if (ctx.runtime?.currentTemplate) {
+        str += printIntoBox(`Template: ${currentChalk.gray(ctx.runtime?.currentTemplate)}`);
     }
     if (ctx.buildConfig?._meta?.currentAppConfigId) {
         str += printIntoBox(`App Config (-c): ${_highlightColor(ctx.buildConfig._meta?.currentAppConfigId)}`);

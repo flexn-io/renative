@@ -7,7 +7,6 @@ import {
     fsReaddirSync,
     readObjectSync,
     writeFileSync,
-    doResolve,
     configureRuntimeDefaults,
     inquirerPrompt,
     logInfo,
@@ -36,14 +35,12 @@ export default createTask({
                 sourcePath = sourceAppConfigDirPath;
             }
         } else if (c.program.opts().ci) {
-            if (c.buildConfig.currentTemplate) {
-                const tacPath = doResolve(c.buildConfig.currentTemplate);
-                if (tacPath && fsExistsSync(tacPath)) {
-                    const tacDirsPath = path.join(tacPath, 'appConfigs');
-                    const tacDirs = fsReaddirSync(tacDirsPath);
+            if (c.paths.template.appConfigsDir) {
+                if (fsExistsSync(c.paths.template.appConfigsDir)) {
+                    const tacDirs = fsReaddirSync(c.paths.template.appConfigsDir);
                     tacDirs.forEach((v) => {
                         if (v !== 'base') {
-                            const pth = path.join(tacDirsPath, v);
+                            const pth = path.join(c.paths.template.appConfigsDir, v);
                             if (fsLstatSync(pth).isDirectory()) {
                                 sourcePath = pth;
                             }
@@ -75,24 +72,20 @@ export default createTask({
             });
 
             // Template Configs
-            if (c.buildConfig.currentTemplate) {
-                const tacPath = doResolve(c.buildConfig.currentTemplate);
-                if (tacPath && fsExistsSync(tacPath)) {
-                    const tacDirsPath = path.join(tacPath, 'appConfigs');
-                    const tacDirs = fsReaddirSync(tacDirsPath);
-                    tacDirs.forEach((v) => {
-                        if (v !== 'base') {
-                            const pth = path.join(tacDirsPath, v);
-                            if (fsLstatSync(pth).isDirectory()) {
-                                const key = `template>${v}`;
-                                appConfigChoices.push(key);
-                                appConfigChoicesObj[key] = {
-                                    path: pth,
-                                };
-                            }
+            if (c.paths.template.appConfigsDir) {
+                const tacDirs = fsReaddirSync(c.paths.template.appConfigsDir);
+                tacDirs.forEach((v) => {
+                    if (v !== 'base') {
+                        const pth = path.join(c.paths.template.appConfigsDir, v);
+                        if (fsLstatSync(pth).isDirectory()) {
+                            const key = `template>${v}`;
+                            appConfigChoices.push(key);
+                            appConfigChoicesObj[key] = {
+                                path: pth,
+                            };
                         }
-                    });
-                }
+                    }
+                });
             }
 
             const { sourceAppConfig } = await inquirerPrompt({

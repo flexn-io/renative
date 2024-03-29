@@ -22,9 +22,8 @@ const RootAppBaseFragment = {
     id: z.optional(Id),
     custom: z.optional(Ext),
     hidden: z.optional(Hidden),
-    extendsTemplate: z.optional(ExtendTemplate),
-    extend: z.optional(Extend),
-    skipBootstrapCopy: z.boolean().optional(),
+    extendsTemplate: z.optional(ExtendTemplate), // TODO: rename to "extendsConfig"
+    extend: z.optional(Extend), // TODO: rename to "extendsAppConfigID"
 };
 
 const RootAppBaseSchema = z.object(RootAppBaseFragment);

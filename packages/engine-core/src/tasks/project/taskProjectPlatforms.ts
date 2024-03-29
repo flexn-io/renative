@@ -18,5 +18,5 @@ export default createTask({
 
         updateProjectPlatforms(inputSupportedPlatforms);
     },
-    task: RnvTaskName.platformSetup,
+    task: RnvTaskName.projectPlatforms,
 });
