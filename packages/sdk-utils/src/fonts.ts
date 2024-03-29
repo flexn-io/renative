@@ -52,6 +52,9 @@ export const configureFonts = async () => {
     });
 
     fontsObj += '];';
+    if (!fsExistsSync(c.paths.project.assets.dir)) {
+        mkdirSync(c.paths.project.assets.dir);
+    }
     if (!fsExistsSync(c.paths.project.assets.runtimeDir)) {
         mkdirSync(c.paths.project.assets.runtimeDir);
     }
