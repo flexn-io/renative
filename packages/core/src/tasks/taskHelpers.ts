@@ -5,6 +5,8 @@ import { RnvTask, RnvTaskMap, RnvTaskOption } from './types';
 
 export const selectPlatformIfRequired = async () => {
     const c = getContext();
+    // TODO: move this to more generic place?
+    c.runtime.availablePlatforms = c.buildConfig.defaults?.supportedPlatforms || [];
     if (!c.platform) {
         const taskName = getTaskNameFromCommand();
         const platforms = c.runtime.availablePlatforms;
@@ -23,7 +25,6 @@ export const selectPlatformIfRequired = async () => {
         }
     }
     // TODO: move this to more generic place?
-    c.runtime.availablePlatforms = c.buildConfig.defaults?.supportedPlatforms || [];
     c.runtime.engine = getEngineRunnerByPlatform(c.platform);
     c.runtime.runtimeExtraProps = c.runtime.engine?.runtimeExtraProps || {};
 };
@@ -39,14 +40,17 @@ export const getTaskNameFromCommand = (): string | undefined => {
     return taskName;
 };
 
-export const generateRnvTaskMap = (taskArr: Array<RnvTask>, config: { name: string }) => {
+export const generateRnvTaskMap = (taskArr: Array<RnvTask>, config: { name?: string; packageName?: string }) => {
     const tasks: RnvTaskMap = {};
+
+    const ownerID = config.packageName || config.name;
+    if (!ownerID) throw new Error('generateRnvTaskMap() requires config.<packageName | name> to be defined!');
 
     taskArr.forEach((taskBlueprint) => {
         const taskInstance = { ...taskBlueprint };
         const plts = taskInstance.platforms || [];
         const key = `${config.name}:${plts.join('-')}:${taskInstance.task}`;
-        taskInstance.ownerID = config.name;
+        taskInstance.ownerID = ownerID;
         taskInstance.key = key;
         tasks[key] = taskInstance;
     });
