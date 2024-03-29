@@ -26,7 +26,11 @@ export const checkIfTemplateConfigured = async () => {
         }
         if (c.files.project.package.devDependencies) {
             if (c.files.project.package.devDependencies[k] !== obj.version) {
-                logInfo(`Updating template ${chalk().bold(`${k}`)} => ${chalk().green(obj.version)}. ...DONE`);
+                logInfo(
+                    `Updating template ${chalk().bold(`${k}`)} ${chalk().red(
+                        c.files.project.package.devDependencies[k]
+                    )} => ${chalk().green(obj.version)}. ...DONE`
+                );
             }
 
             c.files.project.package.devDependencies[k] = obj.version;
