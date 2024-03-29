@@ -1,4 +1,4 @@
-import { logDefault, logInitTask, logExitTask, chalk, logRaw, logInfo } from '../logger';
+import { logDefault, logInitTask, logExitTask, chalk, logRaw, logInfo, logToSummary } from '../logger';
 import { executePipe } from '../buildHooks';
 import type { RnvContext } from '../context/types';
 import type { RnvTask } from './types';
@@ -35,12 +35,20 @@ export const executeTask = async (opts: {
     const inOnlyMode = ctx.program.opts().only;
     if (skipInOnlyMode && inOnlyMode) {
         const availableTasks = findTasksByTaskName(alternativeTaskInOnlyMode || RnvTaskName.configureSoft);
-        const taskInstance = await extractSingleExecutableTask(availableTasks, taskName);
+        const taskInstance = await extractSingleExecutableTask(availableTasks.match, taskName);
         return _executeTaskInstance({ taskInstance, parentTaskName, originTaskName, isOptional, isFirstTask });
     }
 
     const availableTasks = findTasksByTaskName(taskName);
-    const taskInstance = await extractSingleExecutableTask(availableTasks, taskName);
+
+    if (availableTasks.match.length === 0 && !isOptional) {
+        logToSummary(`Current task registry:
+${availableTasks.available.map((t) => `${t.task} ${chalk().gray(t.ownerID)}`).join('\n')}        
+`);
+        return Promise.reject(`Task "${taskName}" not found in registry!`);
+    }
+
+    const taskInstance = await extractSingleExecutableTask(availableTasks.match, taskName);
     return _executeTaskInstance({ taskInstance, parentTaskName, originTaskName, isOptional, isFirstTask });
 };
 
@@ -60,7 +68,15 @@ export const initializeTask = async (taskInstance: RnvTask | undefined) => {
         c.runtime.runtimeExtraProps = c.runtime.engine?.runtimeExtraProps || {};
     }
 
-    logInfo(`Current engine: ${chalk().bold(taskInstance.ownerID)} ${chalk().grey(`(${c.runtime.engine?.rootPath})`)}`);
+    if (c.runtime.engine?.config) {
+        logInfo(
+            `Current engine: ${chalk().bold(c.runtime.engine?.config?.id)} ${chalk().grey(
+                `(${c.runtime.engine?.rootPath})`
+            )}`
+        );
+    } else {
+        logInfo(`Current engine: n/a`);
+    }
 
     c.runtime.task = task;
     executedTasks = {};

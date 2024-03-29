@@ -17,7 +17,7 @@ export const findSuitableTask = async (): Promise<RnvTask | undefined> => {
     }
     const suitableTasks = findTasksByTaskName(taskName);
 
-    const taskInstance = await extractSingleExecutableTask(suitableTasks, taskName);
+    const taskInstance = await extractSingleExecutableTask(suitableTasks.match, taskName);
     return taskInstance;
 };
 
@@ -25,7 +25,8 @@ export const findTasksByTaskName = (taskName: string) => {
     const result: RnvTask[] = [];
     const ctx = getContext();
     const tasks = getRegisteredTasks();
-    Object.values(tasks).forEach((v) => {
+    const taskArr = Object.values(tasks);
+    taskArr.forEach((v) => {
         const plat = ctx.platform;
         if (v.platforms && plat) {
             if (!v.platforms.includes(plat)) {
@@ -42,7 +43,7 @@ export const findTasksByTaskName = (taskName: string) => {
             result.push(v);
         }
     });
-    return result;
+    return { match: result, available: taskArr };
 };
 
 export const extractSingleExecutableTask = async (
@@ -64,11 +65,11 @@ export const extractSingleExecutableTask = async (
             // Restart the process now we defined specific platform
             await selectPlatformIfRequired();
             const newSuitableTasks = await findTasksByTaskName(taskName);
-            if (newSuitableTasks.length === 0) {
+            if (newSuitableTasks.match.length === 0) {
                 logWarning('No suitable tasks found after platform selection');
                 // throw new Error('TODO cannot find any suitable tasks after platform selection');
-            } else if (newSuitableTasks.length === 1) {
-                return newSuitableTasks[0];
+            } else if (newSuitableTasks.match.length === 1) {
+                return newSuitableTasks.match[0];
             }
         }
 

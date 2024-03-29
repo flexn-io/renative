@@ -1,15 +1,18 @@
 import { inquirerPrompt } from '../api';
 import { getContext } from '../context/provider';
-import { getEngineRunnerByPlatform } from '../engines';
+import { getEngineRunnerByPlatform, registerPlatformEngine } from '../engines';
 import { RnvTask, RnvTaskMap, RnvTaskOption } from './types';
 
-export const selectPlatformIfRequired = async () => {
+export const selectPlatformIfRequired = async (
+    knownTaskInstance?: RnvTask,
+    registerEngineIfPlatformSelected?: boolean
+) => {
     const c = getContext();
     // TODO: move this to more generic place?
     c.runtime.availablePlatforms = c.buildConfig.defaults?.supportedPlatforms || [];
     if (!c.platform) {
         const taskName = getTaskNameFromCommand();
-        const platforms = c.runtime.availablePlatforms;
+        const platforms = knownTaskInstance?.platforms || c.runtime.availablePlatforms;
         if (platforms) {
             if (platforms.length === 1) {
                 c.platform = platforms[0];
@@ -17,14 +20,18 @@ export const selectPlatformIfRequired = async () => {
                 const { platform } = await inquirerPrompt({
                     type: 'list',
                     name: 'platform',
-                    message: `Pick a platform for task: "rnv ${taskName}"`,
+                    message: `Pick a platform for task: "rnv ${knownTaskInstance?.task || taskName}"`,
                     choices: platforms,
                 });
                 c.platform = platform;
             }
         }
     }
-    // TODO: move this to more generic place?
+
+    // TODO: move all below to more generic place?
+    if (registerEngineIfPlatformSelected) {
+        await registerPlatformEngine(c.platform);
+    }
     c.runtime.engine = getEngineRunnerByPlatform(c.platform);
     c.runtime.runtimeExtraProps = c.runtime.engine?.runtimeExtraProps || {};
 };

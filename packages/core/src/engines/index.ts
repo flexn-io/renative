@@ -127,7 +127,7 @@ export const registerMissingPlatformEngines = async (taskInstance?: RnvTask) => 
     ) {
         const registerEngineList: Array<Promise<void>> = [];
         c.buildConfig.defaults?.supportedPlatforms?.forEach((platform) => {
-            registerEngineList.push(_registerPlatformEngine(c, platform));
+            registerEngineList.push(registerPlatformEngine(platform));
         });
 
         if (registerEngineList.length) {
@@ -148,7 +148,7 @@ export const registerAllPlatformEngines = async () => {
     }
     const registerEngineList: Array<Promise<void>> = [];
     c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
-        registerEngineList.push(_registerPlatformEngine(c, platform));
+        registerEngineList.push(registerPlatformEngine(platform));
     });
 
     if (registerEngineList.length) {
@@ -386,8 +386,8 @@ const getScopedVersion = (
     return null;
 };
 
-export const loadEngines = async (failOnMissingDeps?: boolean): Promise<boolean> => {
-    logDefault('loadEngines');
+export const installEngines = async (failOnMissingDeps?: boolean): Promise<boolean> => {
+    logDefault('installEngines');
     const c = getContext();
 
     if (!fsExistsSync(c.paths.project.config)) return true;
@@ -442,7 +442,7 @@ ${enginesToInstall.map((v) => `> ${v.key}@${v.version}`).join('\n')}
         writeFileSync(c.paths.project.package, c.files.project.package);
 
         await installPackageDependencies();
-        return loadEngines(true);
+        return installEngines(true);
     }
     const plugDepsCount = await loadEnginePluginDeps(engineConfigs);
     // const pkgDepsCount = await loadEnginePackageDeps(engineConfigs);
@@ -457,7 +457,7 @@ ${enginesToInstall.map((v) => `> ${v.key}@${v.version}`).join('\n')}
     }
 
     // All engines ready to be registered
-    _registerPlatformEngine(c, c.platform);
+    registerPlatformEngine(c.platform);
     return true;
 };
 
@@ -490,8 +490,9 @@ const _resolvePkgPath = (c: RnvContext, packageName: string) => {
     return pkgPath;
 };
 
-const _registerPlatformEngine = async (c: RnvContext, platform: RnvPlatform | boolean): Promise<void> => {
+export const registerPlatformEngine = async (platform: RnvPlatform | boolean): Promise<void> => {
     // Only register active platform engine to be faster
+    const c = getContext();
     if (platform === true || !platform) return;
     const selectedEngineTemplate = getEngineTemplateByPlatform(platform);
 

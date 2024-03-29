@@ -1,5 +1,5 @@
 import { getContext } from './context/provider';
-import { loadEngines, registerMissingPlatformEngines } from './engines';
+import { installEngines, registerMissingPlatformEngines } from './engines';
 import { loadIntegrations } from './integrations';
 import { checkAndMigrateProject } from './migrator';
 import { configureRuntimeDefaults } from './context/runtime';
@@ -11,6 +11,7 @@ import { getApi } from './api/provider';
 import { RnvTask } from './tasks/types';
 import { runInteractiveWizard, runInteractiveWizardForSubTasks } from './tasks/wizard';
 import { initializeTask } from './tasks/taskExecutors';
+import { selectPlatformIfRequired } from './tasks/taskHelpers';
 
 export const exitRnvCore = async (code: number) => {
     const ctx = getContext();
@@ -23,8 +24,8 @@ export const exitRnvCore = async (code: number) => {
     }
 };
 
-const loadAllEngineTasks = async () => {
-    const result = await loadEngines();
+const _installAndRegisterAllEngines = async () => {
+    const result = await installEngines();
     // If false make sure we reload configs as it means it's freshly installed
     if (!result) {
         await updateRenativeConfigs();
@@ -49,7 +50,7 @@ export const executeRnvCore = async () => {
     // for "rnv" we simply load all engines upfront
     const { configExists } = c.paths.project;
     if (!c.command && configExists) {
-        await loadAllEngineTasks();
+        await _installAndRegisterAllEngines();
         await loadIntegrations();
         return runInteractiveWizard();
     }
@@ -68,11 +69,17 @@ export const executeRnvCore = async () => {
     await loadIntegrations();
     initTask = await findSuitableTask();
     if (initTask) {
+        if (initTask.platforms) {
+            // If integration task requires platform selection
+            // we do it here so correct engine is registered properly
+            await selectPlatformIfRequired(initTask, true);
+        }
+
         return initializeTask(initTask);
     }
 
     // Still no task found. time to load all engines to see if anything matches
-    await loadAllEngineTasks();
+    await _installAndRegisterAllEngines();
     initTask = await findSuitableTask();
     if (initTask) {
         return initializeTask(initTask);
