@@ -1,10 +1,10 @@
 import { z } from 'zod';
-import { TemplateAndroidBaseFragment } from './templateAndroidBase';
+import { zodTemplateAndroidBaseFragment } from './templateAndroidBase';
 
-export const TemplateAndroidFragment = {
+export const zodTemplateAndroidFragment = {
     templateAndroid: z.optional(
         z.object({
-            ...TemplateAndroidBaseFragment,
+            ...zodTemplateAndroidBaseFragment,
             settings_gradle: z.optional(z.object({})),
             gradle_wrapper_properties: z.optional(z.object({})),
             SplashActivity_java: z.optional(z.object({})),

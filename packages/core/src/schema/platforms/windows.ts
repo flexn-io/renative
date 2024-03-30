@@ -1,15 +1,15 @@
 import { z } from 'zod';
-import { PlatformBaseFragment } from './fragments/base';
-import { CommonSchemaFragment } from '../common';
-import { PlatformElectronFragment } from './fragments/electron';
-import { PlatformWindowsFragment } from './fragments/windows';
-import { PlatformReactNativeFragment } from './fragments/reactNative';
+import { zodPlatformBaseFragment } from './fragments/base';
+import { zodCommonSchemaFragment } from '../common';
+import { zodPlatformElectronFragment } from './fragments/electron';
+import { zodPlatformWindowsFragment } from './fragments/windows';
+import { zodPlatformReactNativeFragment } from './fragments/reactNative';
 
-export const PlatformWindowsSchema = CommonSchemaFragment.merge(
+export const PlatformWindowsSchema = zodCommonSchemaFragment.merge(
     z.object({
-        ...PlatformBaseFragment,
-        ...PlatformElectronFragment,
-        ...PlatformReactNativeFragment,
-        ...PlatformWindowsFragment,
+        ...zodPlatformBaseFragment,
+        ...zodPlatformElectronFragment,
+        ...zodPlatformReactNativeFragment,
+        ...zodPlatformWindowsFragment,
     })
 );

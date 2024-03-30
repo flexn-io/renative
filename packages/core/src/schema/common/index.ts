@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { BuildSchemeFragment, BundleId, Ext, HexColor, Runtime } from '../shared';
-import { PlatformBaseFragment } from '../platforms/fragments/base';
+import { zodBuildSchemeFragment, BundleId, Ext, HexColor, Runtime, RnvBuildSchemeFragment } from '../shared';
+import { zodPlatformBaseFragment } from '../platforms/fragments/base';
 
 // DEPRECATED?
 export const SplashScreen = z.boolean().describe('Enable or disable splash screen');
@@ -130,7 +130,7 @@ IN: 1.0.23 OUT: 100230000
 
 //LEVEl 1
 
-export const CommonSchemaFragment = z.object({
+export const zodCommonSchemaFragment = z.object({
     includedPermissions: z.optional(IncludedPermissions),
     excludedPermissions: z.optional(ExcludedPermissions),
     id: z.optional(BundleId),
@@ -154,23 +154,27 @@ export const CommonSchemaFragment = z.object({
     runtime: z.optional(Runtime),
     custom: z.optional(Ext),
 });
-export type RnvConfigCommonFragment = z.infer<typeof CommonSchemaFragment>;
+export type RnvCommonSchemaFragment = z.infer<typeof zodCommonSchemaFragment>;
 
-export const CommonSchema: any = CommonSchemaFragment.merge(
-    z.object({
-        buildSchemes: z.optional(
-            z.record(
-                z.string(),
-                CommonSchemaFragment.merge(
-                    BuildSchemeFragment.merge(
-                        z.object({
-                            ...PlatformBaseFragment,
-                        })
+export const zodCommonSchema: any = zodCommonSchemaFragment
+    .merge(
+        z.object({
+            buildSchemes: z.optional(
+                z.record(
+                    z.string(),
+                    zodCommonSchemaFragment.merge(
+                        zodBuildSchemeFragment.merge(
+                            z.object({
+                                ...zodPlatformBaseFragment,
+                            })
+                        )
                     )
                 )
-            )
-        ),
-    })
-).describe('Common config props used as default props for all available buildSchemes');
+            ),
+        })
+    )
+    .describe('Common config props used as default props for all available buildSchemes');
 
-export type _CommonSchemaType = z.infer<typeof CommonSchema>;
+export type _CommonSchemaType = RnvCommonSchemaFragment & {
+    buildSchemes?: Record<string, RnvCommonSchemaFragment & RnvBuildSchemeFragment>;
+};

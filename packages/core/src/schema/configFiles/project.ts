@@ -1,5 +1,5 @@
 import { AnyZodObject, z } from 'zod';
-import { CommonSchema } from '../common';
+import { zodCommonSchema } from '../common';
 import { Ext, ExtendTemplate, PlatformsKeys, Runtime, SupportedPlatforms, TemplateConfig } from '../shared';
 import { PlatformsSchema } from '../platforms';
 import { PluginsSchema } from '../plugins';
@@ -182,7 +182,7 @@ const Paths = z
 
 //LEVEl 0 (ROOT)
 
-const RootProjectBaseFragment = {
+const zodRootProjectBaseFragment = {
     workspaceID: WorkspaceID.optional(),
     projectVersion: z.string().optional(), // TODO: if undefined it should infer from package.json
     projectName: ProjectName.optional(),
@@ -230,8 +230,8 @@ const RootProjectBaseFragment = {
 //     excludedPaths: z.optional(z.array(z.string())),
 // });
 
-const RootProjectBaseSchema = z.object(RootProjectBaseFragment);
-const RootProjectCommonSchema = z.object({ common: z.optional(CommonSchema) });
+const RootProjectBaseSchema = z.object(zodRootProjectBaseFragment);
+const RootProjectCommonSchema = z.object({ common: z.optional(zodCommonSchema) });
 const RootProjectPlatformsSchema = z.object({ platforms: z.optional(PlatformsSchema) });
 const RootProjectPluginsSchema = z.object({ plugins: z.optional(PluginsSchema) });
 

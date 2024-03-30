@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const PlatformReactNativeFragment = {
+export const zodPlatformReactNativeFragment = {
     reactNativeEngine: z.optional(
         z
             .enum(['jsc', 'v8-android', 'v8-android-nointl', 'v8-android-jit', 'v8-android-jit-nointl', 'hermes'])

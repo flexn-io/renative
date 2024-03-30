@@ -1,5 +1,5 @@
 import { z } from 'zod';
 
-export const PlatformLightningFragment = {
+export const zodPlatformLightningFragment = {
     target: z.string().optional(),
 };

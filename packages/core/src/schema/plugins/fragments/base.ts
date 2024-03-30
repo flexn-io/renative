@@ -50,7 +50,7 @@ const Deprecated = z
 
 const DisablePluginTemplateOverrides = z.boolean().describe('Disables plugin overrides for selected plugin');
 
-export const PluginBaseFragment = {
+export const zodPluginBaseFragment = {
     supportedPlatforms: SupportedPlatforms.optional(),
     disabled: z.optional(Disabled),
     props: z.optional(Props),

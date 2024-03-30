@@ -4,7 +4,7 @@ import { DEFAULTS } from '../../defaults';
 const EnableAndroidX = z.union([z.boolean(), z.string()]).default(true).describe('Enables new android X architecture');
 const EnableJetifier = z.union([z.boolean(), z.string()]).default(true).describe('Enables Jetifier');
 
-export const PlatformAndroidFragment = {
+export const zodPlatformAndroidFragment = {
     enableAndroidX: z.optional(EnableAndroidX),
     enableJetifier: z.optional(EnableJetifier),
     signingConfig: z.optional(

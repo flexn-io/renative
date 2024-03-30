@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const PlatformElectronFragment = {
+export const zodPlatformElectronFragment = {
     electronConfig: z
         .any()
         .optional()

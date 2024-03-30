@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const PlatformWindowsFragment = {
+export const zodPlatformWindowsFragment = {
     templateVSProject: z.optional(
         z.object({
             language: z.string().describe('Specify generated project language: cpp for C++ or cs for C#').optional(),

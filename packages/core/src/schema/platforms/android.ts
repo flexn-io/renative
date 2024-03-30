@@ -1,15 +1,15 @@
 import { z } from 'zod';
-import { CommonSchemaFragment } from '../common';
-import { PlatformBaseFragment } from './fragments/base';
-import { PlatformAndroidFragment } from './fragments/android';
-import { TemplateAndroidFragment } from './fragments/templateAndroid';
-import { PlatformReactNativeFragment } from './fragments/reactNative';
+import { zodCommonSchemaFragment } from '../common';
+import { zodPlatformBaseFragment } from './fragments/base';
+import { zodPlatformAndroidFragment } from './fragments/android';
+import { zodTemplateAndroidFragment } from './fragments/templateAndroid';
+import { zodPlatformReactNativeFragment } from './fragments/reactNative';
 
-export const PlatformAndroidSchema = CommonSchemaFragment.merge(
+export const PlatformAndroidSchema = zodCommonSchemaFragment.merge(
     z.object({
-        ...PlatformBaseFragment,
-        ...PlatformAndroidFragment,
-        ...PlatformReactNativeFragment,
-        ...TemplateAndroidFragment,
+        ...zodPlatformBaseFragment,
+        ...zodPlatformAndroidFragment,
+        ...zodPlatformReactNativeFragment,
+        ...zodTemplateAndroidFragment,
     })
 );

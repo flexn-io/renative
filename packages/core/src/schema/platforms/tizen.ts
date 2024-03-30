@@ -1,15 +1,15 @@
 import { z } from 'zod';
-import { PlatformBaseFragment } from './fragments/base';
-import { PlatformTizenFragment } from './fragments/tizen';
-import { CommonSchemaFragment } from '../common';
-import { PlatformWebpackFragment } from './fragments/webpack';
-import { PlatformWebFragment } from './fragments/web';
+import { zodPlatformBaseFragment } from './fragments/base';
+import { zodPlatformTizenFragment } from './fragments/tizen';
+import { zodCommonSchemaFragment } from '../common';
+import { zodPlatformWebpackFragment } from './fragments/webpack';
+import { zodPlatformWebFragment } from './fragments/web';
 
-export const PlatformTizenSchema = CommonSchemaFragment.merge(
+export const PlatformTizenSchema = zodCommonSchemaFragment.merge(
     z.object({
-        ...PlatformBaseFragment,
-        ...PlatformTizenFragment,
-        ...PlatformWebFragment,
-        ...PlatformWebpackFragment,
+        ...zodPlatformBaseFragment,
+        ...zodPlatformTizenFragment,
+        ...zodPlatformWebFragment,
+        ...zodPlatformWebpackFragment,
     })
 );

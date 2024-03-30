@@ -34,7 +34,7 @@ const TeamID = z.string().describe('Apple teamID');
 const SystemCapabilities = z.record(z.string(), z.boolean());
 const provisioningProfiles = z.record(z.string());
 
-export const PlatformiOSFragment = {
+export const zodPlatformiOSFragment = {
     ignoreWarnings: z.optional(IgnoreWarnings),
     ignoreLogs: z.optional(IgnoreLogs),
     deploymentTarget: z.optional(DeploymentTarget),

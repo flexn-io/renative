@@ -28,7 +28,7 @@ export const AssetFolderPlatform = z
         'Alternative platform assets. This is useful for example when you want to use same android assets in androidtv and want to avoid duplicating assets'
     );
 
-export const PlatformBaseFragment = {
+export const zodPlatformBaseFragment = {
     extendPlatform: z.optional(PlatformsKeys),
     assetFolderPlatform: z.optional(AssetFolderPlatform),
     engine: z.optional(PlatformEngine),
@@ -39,3 +39,5 @@ export const PlatformBaseFragment = {
     bundleIsDev: z.optional(BundleIsDev),
     getJsBundleFile: z.string().optional(),
 };
+const _zodPlatformBaseFragment = z.object(zodPlatformBaseFragment);
+export type RnvCommonSchemaFragment = z.infer<typeof _zodPlatformBaseFragment>;

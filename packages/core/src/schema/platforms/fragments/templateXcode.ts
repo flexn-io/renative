@@ -1,10 +1,10 @@
 import { z } from 'zod';
-import { TemplateXcodeBaseFragment } from './templateXcodeBase';
+import { zodTemplateXcodeBaseFragment } from './templateXcodeBase';
 
-export const TemplateXcodeFragment = {
+export const zodTemplateXcodeFragment = {
     templateXcode: z.optional(
         z.object({
-            ...TemplateXcodeBaseFragment,
+            ...zodTemplateXcodeBaseFragment,
         })
     ),
 };

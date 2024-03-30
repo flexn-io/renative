@@ -1,31 +1,31 @@
 import { z } from 'zod';
-import { PluginPlatformAndroidFragment } from './fragments/platformAndroid';
-import { PluginPlatformiOSFragment } from './fragments/platformIos';
-import { PluginPlatformBaseFragment } from './fragments/platformBase';
-import { PluginBaseFragment } from './fragments/base';
+import { zodPluginPlatformAndroidFragment } from './fragments/platformAndroid';
+import { zodPluginPlatformiOSFragment } from './fragments/platformIos';
+import { zodPluginPlatformBaseFragment } from './fragments/platformBase';
+import { zodPluginBaseFragment } from './fragments/base';
 
 const androidSchema = z
     .object({
-        ...PluginPlatformBaseFragment,
-        ...PluginPlatformAndroidFragment,
+        ...zodPluginPlatformBaseFragment,
+        ...zodPluginPlatformAndroidFragment,
     })
     .optional();
 
 const iosSchema = z
     .object({
-        ...PluginPlatformBaseFragment,
-        ...PluginPlatformiOSFragment,
+        ...zodPluginPlatformBaseFragment,
+        ...zodPluginPlatformiOSFragment,
     })
     .optional();
 
 const genericSchema = z
     .object({
-        ...PluginPlatformBaseFragment,
+        ...zodPluginPlatformBaseFragment,
     })
     .optional();
 
 export const PluginSchema = z.object({
-    ...PluginBaseFragment,
+    ...zodPluginBaseFragment,
     android: androidSchema,
     androidtv: androidSchema,
     androidwear: androidSchema,
@@ -47,9 +47,9 @@ export const PluginSchema = z.object({
 });
 
 const PluginPlatformMergedSchema = z.object({
-    ...PluginPlatformBaseFragment,
-    ...PluginPlatformiOSFragment,
-    ...PluginPlatformAndroidFragment,
+    ...zodPluginPlatformBaseFragment,
+    ...zodPluginPlatformiOSFragment,
+    ...zodPluginPlatformAndroidFragment,
 });
 
 export type _PluginPlatformMergedSchemaType = z.infer<typeof PluginPlatformMergedSchema>;

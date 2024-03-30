@@ -1,17 +1,17 @@
 import { z } from 'zod';
-import { PlatformBaseFragment } from './fragments/base';
-import { CommonSchemaFragment } from '../common';
-import { PlatformiOSFragment } from './fragments/ios';
-import { PlatformElectronFragment } from './fragments/electron';
-import { TemplateXcodeFragment } from './fragments/templateXcode';
-import { PlatformReactNativeFragment } from './fragments/reactNative';
+import { zodPlatformBaseFragment } from './fragments/base';
+import { zodCommonSchemaFragment } from '../common';
+import { zodPlatformiOSFragment } from './fragments/ios';
+import { zodPlatformElectronFragment } from './fragments/electron';
+import { zodTemplateXcodeFragment } from './fragments/templateXcode';
+import { zodPlatformReactNativeFragment } from './fragments/reactNative';
 
-export const PlatformMacosSchema = CommonSchemaFragment.merge(
+export const PlatformMacosSchema = zodCommonSchemaFragment.merge(
     z.object({
-        ...PlatformBaseFragment,
-        ...PlatformiOSFragment,
-        ...PlatformReactNativeFragment,
-        ...TemplateXcodeFragment,
-        ...PlatformElectronFragment,
+        ...zodPlatformBaseFragment,
+        ...zodPlatformiOSFragment,
+        ...zodPlatformReactNativeFragment,
+        ...zodTemplateXcodeFragment,
+        ...zodPlatformElectronFragment,
     })
 );

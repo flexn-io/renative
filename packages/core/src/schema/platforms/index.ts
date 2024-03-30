@@ -1,48 +1,48 @@
 import { z } from 'zod';
 import { PlatformAndroidSchema } from './android';
 import { PlatformiOSSchema } from './ios';
-import { PlatformElectronFragment } from './fragments/electron';
+import { zodPlatformElectronFragment } from './fragments/electron';
 import { PlatformWindowsSchema } from './windows';
-import { PlatformWebpackFragment } from './fragments/webpack';
-import { PlatformNextJsFragment } from './fragments/nextjs';
-import { PlatformLightningFragment } from './fragments/lightning';
-import { PlatformReactNativeFragment } from './fragments/reactNative';
-import { PlatformBaseFragment } from './fragments/base';
+import { zodPlatformWebpackFragment } from './fragments/webpack';
+import { zodPlatformNextJsFragment } from './fragments/nextjs';
+import { zodPlatformLightningFragment } from './fragments/lightning';
+import { zodPlatformReactNativeFragment } from './fragments/reactNative';
+import { zodPlatformBaseFragment } from './fragments/base';
 import { PlatformMacosSchema } from './macos';
 import { PlatformWebSchema } from './web';
 import { PlatformTizenSchema } from './tizen';
 import { PlatformWebosSchema } from './webos';
-import { CommonSchemaFragment } from '../common';
-import { PlatformWebOSFragment } from './fragments/webos';
-import { PlatformWindowsFragment } from './fragments/windows';
-import { PlatformTizenFragment } from './fragments/tizen';
-import { PlatformWebFragment } from './fragments/web';
-import { PlatformAndroidFragment } from './fragments/android';
-import { PlatformiOSFragment } from './fragments/ios';
-import { TemplateAndroidFragment } from './fragments/templateAndroid';
-import { TemplateXcodeFragment } from './fragments/templateXcode';
+import { zodCommonSchemaFragment } from '../common';
+import { zodPlatformWebOSFragment } from './fragments/webos';
+import { zodPlatformWindowsFragment } from './fragments/windows';
+import { zodPlatformTizenFragment } from './fragments/tizen';
+import { zodPlatformWebFragment } from './fragments/web';
+import { zodPlatformAndroidFragment } from './fragments/android';
+import { zodPlatformiOSFragment } from './fragments/ios';
+import { zodTemplateAndroidFragment } from './fragments/templateAndroid';
+import { zodTemplateXcodeFragment } from './fragments/templateXcode';
 
-const MergedPlatformPlainObject = CommonSchemaFragment.merge(
-    CommonSchemaFragment.merge(
+const MergedPlatformPlainObject = zodCommonSchemaFragment.merge(
+    zodCommonSchemaFragment.merge(
         z.object({
             //BASE
-            ...PlatformBaseFragment,
+            ...zodPlatformBaseFragment,
             //PLATFORMS
-            ...PlatformiOSFragment,
-            ...PlatformAndroidFragment,
-            ...PlatformWebFragment,
-            ...PlatformTizenFragment,
-            ...PlatformWindowsFragment,
-            ...PlatformWebOSFragment,
+            ...zodPlatformiOSFragment,
+            ...zodPlatformAndroidFragment,
+            ...zodPlatformWebFragment,
+            ...zodPlatformTizenFragment,
+            ...zodPlatformWindowsFragment,
+            ...zodPlatformWebOSFragment,
             //ENGINES
-            ...PlatformLightningFragment,
-            ...PlatformReactNativeFragment,
-            ...PlatformWebpackFragment,
-            ...PlatformElectronFragment,
-            ...PlatformNextJsFragment,
-            ...TemplateAndroidFragment,
-            ...TemplateXcodeFragment,
-            ...PlatformLightningFragment,
+            ...zodPlatformLightningFragment,
+            ...zodPlatformReactNativeFragment,
+            ...zodPlatformWebpackFragment,
+            ...zodPlatformElectronFragment,
+            ...zodPlatformNextJsFragment,
+            ...zodTemplateAndroidFragment,
+            ...zodTemplateXcodeFragment,
+            ...zodPlatformLightningFragment,
         })
     )
 );

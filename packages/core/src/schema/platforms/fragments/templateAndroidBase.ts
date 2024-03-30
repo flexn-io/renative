@@ -73,7 +73,7 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 
 // });
 
-export const TemplateAndroidBaseFragment = {
+export const zodTemplateAndroidBaseFragment = {
     gradle_properties: z.optional(GradleProperties),
     build_gradle: z.optional(BuildGradle),
     app_build_gradle: z.optional(AppBuildGradle),

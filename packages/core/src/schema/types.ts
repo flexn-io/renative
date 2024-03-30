@@ -52,3 +52,24 @@ export type AndroidManifest = _AndroidManifestType;
 //         console.log(plugin);
 //     }
 // };
+
+export type PlatformsMapSchema<T> = {
+    android: T;
+    androidtv: T;
+    androidwear: T;
+    firetv: T;
+    ios: T;
+    tvos: T;
+    tizen: T;
+    tizenmobile: T;
+    tizenwatch: T;
+    webos: T;
+    web: T;
+    webtv: T;
+    chromecast: T;
+    kaios: T;
+    macos: T;
+    linux: T;
+    windows: T;
+    xbox: T;
+};

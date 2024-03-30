@@ -1,5 +1,5 @@
 import { AnyZodObject, z } from 'zod';
-import { CommonSchema } from '../common';
+import { zodCommonSchema } from '../common';
 import { Ext, ExtendTemplate } from '../shared';
 import { PlatformsSchema } from '../platforms';
 import { PluginsSchema } from '../plugins';
@@ -18,7 +18,7 @@ const Hidden = z
 
 //LEVEl 0 (ROOT)
 
-const RootAppBaseFragment = {
+const zodRootAppBaseFragment = {
     id: z.optional(Id),
     custom: z.optional(Ext),
     hidden: z.optional(Hidden),
@@ -26,8 +26,8 @@ const RootAppBaseFragment = {
     extend: z.optional(Extend), // TODO: rename to "extendsAppConfigID"
 };
 
-const RootAppBaseSchema = z.object(RootAppBaseFragment);
-const RootAppCommonSchema = z.object({ common: z.optional(CommonSchema) });
+const RootAppBaseSchema = z.object(zodRootAppBaseFragment);
+const RootAppCommonSchema = z.object({ common: z.optional(zodCommonSchema) });
 const RootAppPlatformsSchema = z.object({ platforms: z.optional(PlatformsSchema) });
 const RootAppPluginsSchema = z.object({ plugins: z.optional(PluginsSchema) });
 

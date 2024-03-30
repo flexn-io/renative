@@ -5,7 +5,7 @@ const WebpackConfig = z.object({
     customScripts: z.array(z.string()).optional().describe('Allows you to inject custom script into html header'),
 });
 
-export const PlatformWebpackFragment = {
+export const zodPlatformWebpackFragment = {
     webpackConfig: z.optional(WebpackConfig),
 
     // webpackConfig: {

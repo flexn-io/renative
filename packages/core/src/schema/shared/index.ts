@@ -35,7 +35,7 @@ export const DefaultTargets = z
 
 export const BundleId = z.string().describe('Bundle ID of application. ie: com.example.myapp');
 
-export const BuildSchemeFragment = z.object({
+export const zodBuildSchemeFragment = z.object({
     enabled: z.optional(z.boolean().describe('Defines whether build scheme shows up in options to run')),
     description: z.optional(
         z
@@ -45,7 +45,7 @@ export const BuildSchemeFragment = z.object({
             )
     ),
 });
-export type RnvConfigBuildSchemeFragment = z.infer<typeof BuildSchemeFragment>;
+export type RnvBuildSchemeFragment = z.infer<typeof zodBuildSchemeFragment>;
 
 export const NpmDep = z.record(z.string(), z.string());
 

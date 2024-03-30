@@ -1,15 +1,15 @@
 import { z } from 'zod';
-import { PlatformBaseFragment } from './fragments/base';
-import { CommonSchemaFragment } from '../common';
-import { PlatformWebpackFragment } from './fragments/webpack';
-import { PlatformWebFragment } from './fragments/web';
-import { PlatformWebOSFragment } from './fragments/webos';
+import { zodPlatformBaseFragment } from './fragments/base';
+import { zodCommonSchemaFragment } from '../common';
+import { zodPlatformWebpackFragment } from './fragments/webpack';
+import { zodPlatformWebFragment } from './fragments/web';
+import { zodPlatformWebOSFragment } from './fragments/webos';
 
-export const PlatformWebosSchema = CommonSchemaFragment.merge(
+export const PlatformWebosSchema = zodCommonSchemaFragment.merge(
     z.object({
-        ...PlatformBaseFragment,
-        ...PlatformWebFragment,
-        ...PlatformWebpackFragment,
-        ...PlatformWebOSFragment,
+        ...zodPlatformBaseFragment,
+        ...zodPlatformWebFragment,
+        ...zodPlatformWebpackFragment,
+        ...zodPlatformWebOSFragment,
     })
 );

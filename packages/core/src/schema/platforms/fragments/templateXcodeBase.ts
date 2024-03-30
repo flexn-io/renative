@@ -77,7 +77,7 @@ const AppDelegateH = z.object({
 
 const InfoPlist = z.object({});
 
-export const TemplateXcodeBaseFragment = {
+export const zodTemplateXcodeBaseFragment = {
     Podfile: z.optional(Podfile),
     project_pbxproj: z.optional(XcodeProj),
     AppDelegate_mm: z.optional(AppDelegateMm),

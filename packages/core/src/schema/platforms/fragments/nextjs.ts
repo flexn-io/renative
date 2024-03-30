@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const PlatformNextJsFragment = {
+export const zodPlatformNextJsFragment = {
     pagesDir: z.string().describe('Custom pages directory used by nextjs. Use relative paths').optional(),
     outputDir: z
         .string()
