@@ -88,11 +88,13 @@ const _runWebBrowser = (devServerHost: string, port: number, alreadyStarted: boo
         const c = getContext();
         logDefault('_runWebBrowser', `ip:${devServerHost} port:${port} openBrowser:${!!c.runtime.shouldOpenBrowser}`);
         if (!c.runtime.shouldOpenBrowser) return resolve();
-        const wait = waitForHost('')
+        const wait = waitForHost('', { maxAttempts: 10, checkInterval: 1000 })
             .then(() => {
                 openBrowser(`http://${devServerHost}:${port}/`);
             })
             .catch((e) => {
+                // Let's opent the browser anyway as sometimes we get timeout waiting for next to compile
+                openBrowser(`http://${devServerHost}:${port}/`);
                 logWarning(e);
             });
         if (alreadyStarted) return wait; // if it's already started, return the promise so it rnv will wait, otherwise it will exit before opening the browser

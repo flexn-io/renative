@@ -57,12 +57,15 @@ export const getDevServerHost = () => {
     return devServerHostFixed;
 };
 
-export const waitForHost = async (suffix = 'assets/bundle.js') => {
+export const waitForHost = async (
+    suffix = 'assets/bundle.js',
+    opts?: { maxAttempts: number; checkInterval: number }
+) => {
     const c = getContext();
     logDefault('waitForHost', `port:${c.runtime.port}`);
     let attempts = 0;
-    const maxAttempts = 10;
-    const CHECK_INTEVAL = 2000;
+    const maxAttempts = opts?.maxAttempts || 10;
+    const CHECK_INTEVAL = opts?.checkInterval || 2000;
     // const spinner = ora('Waiting for webpack to finish...').start();
 
     const devServerHost = getDevServerHost();
