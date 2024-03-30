@@ -130,7 +130,7 @@ IN: 1.0.23 OUT: 100230000
 
 //LEVEl 1
 
-export const CommonSchemaFragment = {
+export const CommonSchemaFragment = z.object({
     includedPermissions: z.optional(IncludedPermissions),
     excludedPermissions: z.optional(ExcludedPermissions),
     id: z.optional(BundleId),
@@ -153,34 +153,24 @@ export const CommonSchemaFragment = {
     excludedPlugins: z.optional(ExcludedPlugins),
     runtime: z.optional(Runtime),
     custom: z.optional(Ext),
-};
+});
+export type RnvConfigCommonFragment = z.infer<typeof CommonSchemaFragment>;
 
-// const CommonSchemaFragmentSchema = z.object(CommonSchemaFragment);
-
-// type CommonSchemaFragmentTS = z.infer<typeof CommonSchemaFragmentSchema>;
-
-// const CommonBuildSchemes = z.record(z.string(), BuildSchemeBase.merge(PlatformBaseFragment));
-
-// export type _CommonBuildSchemesSchemaType = z.infer<typeof CommonBuildSchemes>;
-
-export const CommonSchema = z
-    .object({
-        ...CommonSchemaFragment,
+export const CommonSchema: any = CommonSchemaFragment.merge(
+    z.object({
         buildSchemes: z.optional(
             z.record(
                 z.string(),
-                z.object({
-                    ...CommonSchemaFragment,
-                    ...BuildSchemeFragment,
-                    ...PlatformBaseFragment,
-                })
+                CommonSchemaFragment.merge(
+                    BuildSchemeFragment.merge(
+                        z.object({
+                            ...PlatformBaseFragment,
+                        })
+                    )
+                )
             )
         ),
     })
-    .describe('Common config props used as default props for all available buildSchemes');
-
-// type CommonSchemaTS = CommonSchemaFragmentTS & {
-//     buildSchemes: Record<string, CommonSchemaFragmentTS & BuildSchemeFragmentTS & PlatformBaseFragmentTS>;
-// };
+).describe('Common config props used as default props for all available buildSchemes');
 
 export type _CommonSchemaType = z.infer<typeof CommonSchema>;

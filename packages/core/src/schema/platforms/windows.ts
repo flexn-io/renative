@@ -5,10 +5,11 @@ import { PlatformElectronFragment } from './fragments/electron';
 import { PlatformWindowsFragment } from './fragments/windows';
 import { PlatformReactNativeFragment } from './fragments/reactNative';
 
-export const PlatformWindowsSchema = z.object({
-    ...CommonSchemaFragment,
-    ...PlatformBaseFragment,
-    ...PlatformElectronFragment,
-    ...PlatformReactNativeFragment,
-    ...PlatformWindowsFragment,
-});
+export const PlatformWindowsSchema = CommonSchemaFragment.merge(
+    z.object({
+        ...PlatformBaseFragment,
+        ...PlatformElectronFragment,
+        ...PlatformReactNativeFragment,
+        ...PlatformWindowsFragment,
+    })
+);

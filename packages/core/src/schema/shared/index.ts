@@ -35,7 +35,7 @@ export const DefaultTargets = z
 
 export const BundleId = z.string().describe('Bundle ID of application. ie: com.example.myapp');
 
-export const BuildSchemeFragment = {
+export const BuildSchemeFragment = z.object({
     enabled: z.optional(z.boolean().describe('Defines whether build scheme shows up in options to run')),
     description: z.optional(
         z
@@ -44,7 +44,8 @@ export const BuildSchemeFragment = {
                 'Custom description of the buildScheme will be displayed directly in cli if you run rnv with an empty paramener `-s`'
             )
     ),
-};
+});
+export type RnvConfigBuildSchemeFragment = z.infer<typeof BuildSchemeFragment>;
 
 export const NpmDep = z.record(z.string(), z.string());
 

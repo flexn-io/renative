@@ -5,10 +5,11 @@ import { CommonSchemaFragment } from '../common';
 import { TemplateXcodeFragment } from './fragments/templateXcode';
 import { PlatformReactNativeFragment } from './fragments/reactNative';
 
-export const PlatformiOSSchema = z.object({
-    ...CommonSchemaFragment,
-    ...PlatformBaseFragment,
-    ...PlatformiOSFragment,
-    ...PlatformReactNativeFragment,
-    ...TemplateXcodeFragment,
-});
+export const PlatformiOSSchema = CommonSchemaFragment.merge(
+    z.object({
+        ...PlatformBaseFragment,
+        ...PlatformiOSFragment,
+        ...PlatformReactNativeFragment,
+        ...TemplateXcodeFragment,
+    })
+);

@@ -5,10 +5,11 @@ import { PlatformWebpackFragment } from './fragments/webpack';
 import { PlatformWebFragment } from './fragments/web';
 import { PlatformWebOSFragment } from './fragments/webos';
 
-export const PlatformWebosSchema = z.object({
-    ...CommonSchemaFragment,
-    ...PlatformBaseFragment,
-    ...PlatformWebFragment,
-    ...PlatformWebpackFragment,
-    ...PlatformWebOSFragment,
-});
+export const PlatformWebosSchema = CommonSchemaFragment.merge(
+    z.object({
+        ...PlatformBaseFragment,
+        ...PlatformWebFragment,
+        ...PlatformWebpackFragment,
+        ...PlatformWebOSFragment,
+    })
+);

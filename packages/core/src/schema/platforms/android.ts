@@ -5,10 +5,11 @@ import { PlatformAndroidFragment } from './fragments/android';
 import { TemplateAndroidFragment } from './fragments/templateAndroid';
 import { PlatformReactNativeFragment } from './fragments/reactNative';
 
-export const PlatformAndroidSchema = z.object({
-    ...CommonSchemaFragment,
-    ...PlatformBaseFragment,
-    ...PlatformAndroidFragment,
-    ...PlatformReactNativeFragment,
-    ...TemplateAndroidFragment,
-});
+export const PlatformAndroidSchema = CommonSchemaFragment.merge(
+    z.object({
+        ...PlatformBaseFragment,
+        ...PlatformAndroidFragment,
+        ...PlatformReactNativeFragment,
+        ...TemplateAndroidFragment,
+    })
+);

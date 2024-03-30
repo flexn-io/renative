@@ -6,11 +6,12 @@ import { PlatformElectronFragment } from './fragments/electron';
 import { TemplateXcodeFragment } from './fragments/templateXcode';
 import { PlatformReactNativeFragment } from './fragments/reactNative';
 
-export const PlatformMacosSchema = z.object({
-    ...CommonSchemaFragment,
-    ...PlatformBaseFragment,
-    ...PlatformiOSFragment,
-    ...PlatformReactNativeFragment,
-    ...TemplateXcodeFragment,
-    ...PlatformElectronFragment,
-});
+export const PlatformMacosSchema = CommonSchemaFragment.merge(
+    z.object({
+        ...PlatformBaseFragment,
+        ...PlatformiOSFragment,
+        ...PlatformReactNativeFragment,
+        ...TemplateXcodeFragment,
+        ...PlatformElectronFragment,
+    })
+);

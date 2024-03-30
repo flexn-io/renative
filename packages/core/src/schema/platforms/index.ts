@@ -22,27 +22,30 @@ import { PlatformiOSFragment } from './fragments/ios';
 import { TemplateAndroidFragment } from './fragments/templateAndroid';
 import { TemplateXcodeFragment } from './fragments/templateXcode';
 
-const MergedPlatformPlainObject = z.object({
-    //BASE
-    ...CommonSchemaFragment,
-    ...PlatformBaseFragment,
-    //PLATFORMS
-    ...PlatformiOSFragment,
-    ...PlatformAndroidFragment,
-    ...PlatformWebFragment,
-    ...PlatformTizenFragment,
-    ...PlatformWindowsFragment,
-    ...PlatformWebOSFragment,
-    //ENGINES
-    ...PlatformLightningFragment,
-    ...PlatformReactNativeFragment,
-    ...PlatformWebpackFragment,
-    ...PlatformElectronFragment,
-    ...PlatformNextJsFragment,
-    ...TemplateAndroidFragment,
-    ...TemplateXcodeFragment,
-    ...PlatformLightningFragment,
-});
+const MergedPlatformPlainObject = CommonSchemaFragment.merge(
+    CommonSchemaFragment.merge(
+        z.object({
+            //BASE
+            ...PlatformBaseFragment,
+            //PLATFORMS
+            ...PlatformiOSFragment,
+            ...PlatformAndroidFragment,
+            ...PlatformWebFragment,
+            ...PlatformTizenFragment,
+            ...PlatformWindowsFragment,
+            ...PlatformWebOSFragment,
+            //ENGINES
+            ...PlatformLightningFragment,
+            ...PlatformReactNativeFragment,
+            ...PlatformWebpackFragment,
+            ...PlatformElectronFragment,
+            ...PlatformNextJsFragment,
+            ...TemplateAndroidFragment,
+            ...TemplateXcodeFragment,
+            ...PlatformLightningFragment,
+        })
+    )
+);
 
 export type _MergedPlatformObjectType = z.infer<typeof MergedPlatformPlainObject>;
 
