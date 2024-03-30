@@ -3,10 +3,10 @@ import {
     executeTask,
     fsExistsSync,
     inquirerPrompt,
-    logInfo,
     createTask,
     RnvTaskName,
     RnvTaskOptions,
+    logDebug,
 } from '@rnv/core';
 
 export default createTask({
@@ -16,7 +16,7 @@ export default createTask({
         if (fsExistsSync(ctx.paths.project.config)) {
             await executeTask({ taskName: RnvTaskName.projectConfigure, parentTaskName: taskName, originTaskName });
         } else {
-            logInfo('Your are running your buildHook outside of renative project. SKIPPING project configure');
+            logDebug('Your are running your buildHook outside of renative project. SKIPPING project configure');
         }
 
         await buildHooks();

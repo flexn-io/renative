@@ -40,12 +40,10 @@
         },
         "targets": {}
     },
-    "templates": {
-        "@rnv/template-starter": {
-            "version": "1.0.0-rc.12"
-        }
+    "templateConfig": {
+        "name": "@rnv/template-starter",
+        "version": "1.0.0-rc.12"
     },
-    "currentTemplate": "@rnv/template-starter",
     "platforms": {
         "android": {
             "minSdkVersion": 26,

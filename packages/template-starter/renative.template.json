@@ -1,5 +1,5 @@
 {
-    "$schema": ".rnv/schema/rnv.template.json",
+    "$schema": "../../.rnv/schema/rnv.template.json",
     "templateConfig": {
         "disabled": false,
         "includedPaths": [
@@ -21,15 +21,15 @@
             },
             {
                 "paths": ["Gemfile", "metro.config.js", ".bundle", "react-native.config.js"],
-                "engines": ["engine-rn", "engine-rn-tvos"]
+                "platforms": ["ios", "android", "tvos", "firetv", "androidtv"]
             },
             {
                 "paths": ["next.config.js", "next-env.d.ts", "src/pages"],
-                "engines": ["engine-rn-next"]
+                "platforms": ["web"]
             },
             {
                 "paths": ["webpack.config.js"],
-                "engines": ["engine-web", "engine-rn-electron"]
+                "platforms": ["macos", "tizen", "webos", "tizenwatch", "tizenmobile"]
             }
         ],
         "renative_json": {

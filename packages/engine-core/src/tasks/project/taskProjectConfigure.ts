@@ -25,9 +25,6 @@ import {
     generateLocalJsonSchemas,
     RnvTaskName,
     getContext,
-    // parseRenativeConfigs,
-    // parseAppConfigs,
-    // loadFileExtended,
 } from '@rnv/core';
 import { checkCrypto } from '../crypto/common';
 import { installPackageDependenciesAndPlugins } from '../../plugins';
@@ -102,7 +99,7 @@ export default createTask({
             }
             await applyTemplate();
             // We need to ensure appConfigs are populated from template before proceeding further
-            await configureTemplateFiles();
+            // await configureTemplateFiles(); // NOTE: We only do this during bootstrap once
             await configureRuntimeDefaults();
             await executeTask({ taskName: RnvTaskName.install, parentTaskName: taskName, originTaskName });
 

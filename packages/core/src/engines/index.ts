@@ -190,6 +190,7 @@ export const loadEnginePluginDeps = async (engineConfigs: Array<RnvEngineInstall
             }
         }
     });
+
     if (hasAddedPlugins) {
         const engineKeys = engineConfigs.map((v) => v.key);
         const addedPluginsKeys = Object.keys(addedPlugins);
@@ -222,112 +223,116 @@ export const loadEnginePackageDeps = async (engineConfigs: Array<RnvEngineInstal
     if (c.program.opts().skipDependencyCheck || c.buildConfig?.isTemplate) return 0;
     // Check engine dependencies
     // const addedDeps = [];
-
+    const engConfigs: ConfigFileEngine[] = [];
     engineConfigs.forEach((ecf) => {
         const engineConfig = readObjectSync<ConfigFileEngine>(ecf.configPath);
-        c.buildConfig.defaults?.supportedPlatforms?.forEach((platform) => {
-            const npm = engineConfig?.platforms?.[platform]?.npm || {};
-            if (npm) {
-                if (npm.devDependencies) {
-                    const deps = c.files.project.package.devDependencies || {};
-                    Object.keys(npm.devDependencies).forEach((k) => {
-                        if (!deps[k]) {
-                            const isMonorepo = getConfigProp('isMonorepo');
-                            if (isMonorepo) {
-                                logInfo(
-                                    `Engine ${ecf.key} requires npm devDependency ${k} for platform ${platform}. project marked as monorepo. SKIPPING`
-                                );
-                            } else {
-                                // logInfo(
-                                //     `Engine ${ecf.key} requires npm devDependency ${k} for platform ${platform}. ADDING...DONE`
-                                // );
-                                createDependencyMutation({
-                                    name: k,
-                                    updated: {
-                                        version: npm.devDependencies?.[k] || 'N/A',
-                                    },
-                                    type: 'devDependencies',
-                                    msg: `Missing dependency for platform ${platform}`,
-                                    source: `engine.npm (${ecf.key})`,
-                                    targetPath: c.paths.project.package,
-                                });
-                                // if (npm.devDependencies?.[k]) {
-                                //     deps[k] = npm.devDependencies[k];
-                                //     addedDeps.push(k);
-                                // }
-                            }
-                        }
-                    });
-                    c.files.project.package.devDependencies = deps;
-                }
-                if (npm.dependencies) {
-                    const deps = c.files.project.package.dependencies || {};
-                    Object.keys(npm.dependencies).forEach((k) => {
-                        if (!deps[k]) {
-                            if (c.buildConfig?.isTemplate) {
-                                if (!c.files.project.package.devDependencies?.[k]) {
-                                    logWarning(
-                                        `Engine ${ecf.key} requires npm dependency ${k} for platform ${platform}. which in template project should be placed in devDependencies`
+        if (engineConfig) {
+            engConfigs.push(engineConfig);
+            c.buildConfig.defaults?.supportedPlatforms?.forEach((platform) => {
+                const npm = engineConfig?.platforms?.[platform]?.npm || {};
+                if (npm) {
+                    if (npm.devDependencies) {
+                        const deps = c.files.project.package.devDependencies || {};
+                        Object.keys(npm.devDependencies).forEach((k) => {
+                            if (!deps[k]) {
+                                const isMonorepo = getConfigProp('isMonorepo');
+                                if (isMonorepo) {
+                                    logInfo(
+                                        `Engine ${ecf.key} requires npm devDependency ${k} for platform ${platform}. project marked as monorepo. SKIPPING`
                                     );
+                                } else {
+                                    // logInfo(
+                                    //     `Engine ${ecf.key} requires npm devDependency ${k} for platform ${platform}. ADDING...DONE`
+                                    // );
+                                    createDependencyMutation({
+                                        name: k,
+                                        updated: {
+                                            version: npm.devDependencies?.[k] || 'N/A',
+                                        },
+                                        type: 'devDependencies',
+                                        msg: `Missing dependency for platform ${platform}`,
+                                        source: `engine.npm (${ecf.key})`,
+                                        targetPath: c.paths.project.package,
+                                    });
+                                    // if (npm.devDependencies?.[k]) {
+                                    //     deps[k] = npm.devDependencies[k];
+                                    //     addedDeps.push(k);
+                                    // }
                                 }
-                            } else {
-                                // logInfo(
-                                //     `Engine ${ecf.key} requires npm dependency ${k} for platform ${platform}. ADDING...DONE`
-                                // );
+                            }
+                        });
+                        c.files.project.package.devDependencies = deps;
+                    }
+                    if (npm.dependencies) {
+                        const deps = c.files.project.package.dependencies || {};
+                        Object.keys(npm.dependencies).forEach((k) => {
+                            if (!deps[k]) {
+                                if (c.buildConfig?.isTemplate) {
+                                    if (!c.files.project.package.devDependencies?.[k]) {
+                                        logWarning(
+                                            `Engine ${ecf.key} requires npm dependency ${k} for platform ${platform}. which in template project should be placed in devDependencies`
+                                        );
+                                    }
+                                } else {
+                                    // logInfo(
+                                    //     `Engine ${ecf.key} requires npm dependency ${k} for platform ${platform}. ADDING...DONE`
+                                    // );
+                                    createDependencyMutation({
+                                        name: k,
+                                        updated: {
+                                            version: npm.dependencies?.[k] || 'N/A',
+                                        },
+                                        type: 'dependencies',
+                                        msg: `Missing dependency for platform ${platform}`,
+                                        source: `engine.npm (${ecf.key})`,
+                                        targetPath: c.paths.project.package,
+                                    });
+                                    // if (npm.dependencies?.[k]) {
+                                    //     deps[k] = npm.dependencies[k];
+                                    //     addedDeps.push(k);
+                                    // }
+                                }
+                            }
+                        });
+                        c.files.project.package.dependencies = deps;
+                    }
+                    if (npm.optionalDependencies) {
+                        const deps = c.files.project.package.optionalDependencies || {};
+                        Object.keys(npm.optionalDependencies).forEach((k) => {
+                            if (!deps[k]) {
+                                logInfo(
+                                    `Engine ${ecf.key} requires npm optionalDependency ${k} for platform ${platform}. ADDING...DONE`
+                                );
                                 createDependencyMutation({
                                     name: k,
                                     updated: {
-                                        version: npm.dependencies?.[k] || 'N/A',
+                                        version: npm.optionalDependencies?.[k] || 'N/A',
                                     },
-                                    type: 'dependencies',
-                                    msg: `Missing dependency for platform ${platform}`,
+                                    type: 'optionalDependencies',
+                                    msg: `Missing optionalDependency for platform ${platform}`,
                                     source: `engine.npm (${ecf.key})`,
                                     targetPath: c.paths.project.package,
                                 });
-                                // if (npm.dependencies?.[k]) {
-                                //     deps[k] = npm.dependencies[k];
+                                // if (npm.optionalDependencies?.[k]) {
+                                //     deps[k] = npm.optionalDependencies[k];
                                 //     addedDeps.push(k);
                                 // }
                             }
-                        }
-                    });
-                    c.files.project.package.dependencies = deps;
-                }
-                if (npm.optionalDependencies) {
-                    const deps = c.files.project.package.optionalDependencies || {};
-                    Object.keys(npm.optionalDependencies).forEach((k) => {
-                        if (!deps[k]) {
-                            logInfo(
-                                `Engine ${ecf.key} requires npm optionalDependency ${k} for platform ${platform}. ADDING...DONE`
-                            );
-                            createDependencyMutation({
-                                name: k,
-                                updated: {
-                                    version: npm.optionalDependencies?.[k] || 'N/A',
-                                },
-                                type: 'optionalDependencies',
-                                msg: `Missing optionalDependency for platform ${platform}`,
-                                source: `engine.npm (${ecf.key})`,
-                                targetPath: c.paths.project.package,
-                            });
-                            // if (npm.optionalDependencies?.[k]) {
-                            //     deps[k] = npm.optionalDependencies[k];
-                            //     addedDeps.push(k);
-                            // }
-                        }
-                    });
-                    c.files.project.package.optionalDependencies = deps;
-                }
+                        });
+                        c.files.project.package.optionalDependencies = deps;
+                    }
 
-                // if (addedDeps.length > 0) {
-                //     writeFileSync(c.paths.project.package, c.files.project.package);
-                // }
-                //
-            }
-        });
+                    // if (addedDeps.length > 0) {
+                    //     writeFileSync(c.paths.project.package, c.files.project.package);
+                    // }
+                    //
+                }
+            });
+        }
     });
+
+    c.engineConfigs = engConfigs;
     return true;
-    console.log('KURVA');
 
     // return addedDeps.length;
 };
@@ -430,7 +435,7 @@ ${enginesToInstall.map((v) => `> ${v.key}@${v.version} path: ${v.engineRootPath}
 ${enginesToInstall.map((v) => `> ${v.key}@${v.version}`).join('\n')}
  ADDING TO PACKAGE.JSON...DONE`);
 
-        await checkAndCreateProjectPackage();
+        await checkAndCreateProjectPackage(); //TODO: consider to move this to better location
         const pkg = c.files.project.package;
         const devDeps = pkg.devDependencies || {};
         pkg.devDependencies = devDeps;

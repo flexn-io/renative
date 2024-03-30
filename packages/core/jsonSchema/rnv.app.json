@@ -23,9 +23,6 @@
           "type": "string",
           "description": "extend another appConfig by id"
         },
-        "skipBootstrapCopy": {
-          "type": "boolean"
-        },
         "common": {
           "type": "object",
           "properties": {

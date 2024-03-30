@@ -9,6 +9,10 @@ export const Runtime = z
 
 export const PlatformsKeys = z.enum(RnvPlatforms);
 
+export const SupportedPlatforms = z
+    .array(PlatformsKeys)
+    .describe('Array list of all supported platforms in current project');
+
 export type _PlatformsKeysType = z.infer<typeof PlatformsKeys>;
 
 export const HexColor = z.string().min(4).max(9).regex(/^#/);
@@ -56,6 +60,7 @@ export const TemplateConfig = z
                     z.object({
                         paths: z.array(z.string()),
                         engines: z.array(z.string()).optional(),
+                        platforms: SupportedPlatforms.optional(),
                     }),
                 ])
             )
@@ -83,10 +88,6 @@ export const TemplateConfig = z
         ),
     })
     .describe('Used in `renative.template.json` allows you to define template behaviour.');
-
-export const SupportedPlatforms = z
-    .array(PlatformsKeys)
-    .describe('Array list of all supported platforms in current project');
 
 export const ProjectTemplates = z.record(
     z.string(),

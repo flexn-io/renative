@@ -125,6 +125,12 @@
         "templateConfig": {
           "type": "object",
           "properties": {
+            "name": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            },
             "disabled": {
               "type": "boolean"
             },
@@ -149,6 +155,10 @@
                         "items": {
                           "type": "string"
                         }
+                      },
+                      "platforms": {
+                        "$ref": "#/definitions/rnv.template/properties/defaults/properties/supportedPlatforms",
+                        "description": "Array list of all supported platforms in current project"
                       }
                     },
                     "required": [

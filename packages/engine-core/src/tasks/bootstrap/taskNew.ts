@@ -68,6 +68,7 @@ export default createTask({
         await configureConfigOverrides(payload);
         await saveProgressIntoProjectConfig(payload);
         // Now we can apply template (required for appConfigs to be generated properly)
+        await updateRenativeConfigs();
         await applyTemplate();
         await configureTemplateFiles();
         await generateLocalJsonSchemas();

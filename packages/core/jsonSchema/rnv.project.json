@@ -15,32 +15,6 @@
           "type": "string",
           "description": "Name of the project which will be used in workspace as folder name. this will also be used as part of the KEY in crypto env var generator"
         },
-        "isMonorepo": {
-          "type": "boolean",
-          "description": "Mark if your project is part of monorepo"
-        },
-        "useTemplate": {
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string"
-            },
-            "version": {
-              "type": "string"
-            },
-            "excludedPaths": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          "required": [
-            "name",
-            "version"
-          ],
-          "additionalProperties": false
-        },
         "isTemplate": {
           "type": "boolean"
         },
@@ -160,26 +134,6 @@
             "type": "string"
           },
           "description": "To avoid rnv building `buildHooks/src` every time you can specify which specific pipes should trigger recompile of buildHooks"
-        },
-        "templates": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "object",
-            "properties": {
-              "version": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "version"
-            ],
-            "additionalProperties": false
-          },
-          "description": "Stores installed templates info in your project.\n\nNOTE: This prop will be updated by rnv if you run `rnv template install`"
-        },
-        "currentTemplate": {
-          "type": "string",
-          "description": "Currently active template used in this project. this allows you to re-bootstrap whole project by running `rnv template apply`"
         },
         "crypto": {
           "type": "object",
@@ -324,16 +278,9 @@
           },
           "description": "List of engines available in this project"
         },
-        "custom": {
-          "description": "Object used to extend your renative with custom props. This allows renative json schema to be validated"
-        },
         "enableHookRebuild": {
           "type": "boolean",
           "description": "If set to true in `./renative.json` build hooks will be compiled at each rnv command run. If set to `false` (default) rebuild will be triggered only if `dist` folder is missing, `-r` has been passed or you run `rnv hooks run` directly making your rnv commands faster"
-        },
-        "monoRoot": {
-          "type": "string",
-          "description": "Define custom path to monorepo root where starting point is project directory"
         },
         "extendsTemplate": {
           "type": "string",
@@ -418,6 +365,12 @@
         "templateConfig": {
           "type": "object",
           "properties": {
+            "name": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            },
             "disabled": {
               "type": "boolean"
             },
@@ -442,6 +395,10 @@
                         "items": {
                           "type": "string"
                         }
+                      },
+                      "platforms": {
+                        "$ref": "#/definitions/rnv.project/properties/defaults/properties/supportedPlatforms",
+                        "description": "Array list of all supported platforms in current project"
                       }
                     },
                     "required": [
@@ -495,6 +452,26 @@
           },
           "additionalProperties": false,
           "description": "Used in `renative.template.json` allows you to define template behaviour."
+        },
+        "_meta": {
+          "type": "object",
+          "properties": {
+            "requires_first_template_apply": {
+              "$ref": "#/definitions/rnv.project/properties/defaults/properties/supportedPlatforms"
+            }
+          },
+          "additionalProperties": false
+        },
+        "isMonorepo": {
+          "type": "boolean",
+          "description": "Mark if your project is part of monorepo"
+        },
+        "monoRoot": {
+          "type": "string",
+          "description": "Define custom path to monorepo root where starting point is project directory"
+        },
+        "custom": {
+          "description": "Object used to extend your renative with custom props. This allows renative json schema to be validated"
         },
         "skipAutoUpdate": {
           "type": "boolean",

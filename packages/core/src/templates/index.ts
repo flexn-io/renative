@@ -25,24 +25,30 @@ export const configureTemplateFiles = async () => {
 
     let mergedObj = _getProjectTemplateMergedConfig(templateConfig);
     const includedPaths = mergedObj?.templateConfig?.includedPaths;
-    // includedPaths can contain paths with repeated base folders ie: ["src/dir1", "src/dir2", "src/dir3",...]
-    // We need to keep track of folders not allowed to be added into if they exist
-    // but allowed to be added into if they di not exist prior to configureTemplateFiles call
-    const folderOverrideLock: string[] = [];
+
     if (includedPaths) {
         includedPaths.forEach((pth) => {
             if (c.paths.template.dir) {
                 if (typeof pth === 'string') {
-                    _copyIncludedPaths(c, pth, folderOverrideLock);
+                    _copyIncludedPaths(c, pth);
                 } else {
-                    const engId = c.runtime.engine?.config?.id;
-                    if (!pth.engines || (engId && pth.engines?.includes?.(engId))) {
-                        const incPaths = pth.paths;
-                        if (incPaths.length > 0) {
-                            incPaths.forEach((pth) => {
-                                _copyIncludedPaths(c, pth, folderOverrideLock);
-                            });
+                    let matched: boolean = true;
+                    const suPlats = c.buildConfig?.defaults?.supportedPlatforms || [];
+                    if (pth.platforms && suPlats?.length) {
+                        const match = pth.platforms.some((v) => suPlats.includes(v));
+                        if (!match) {
+                            matched = false;
                         }
+                    } else if (pth.engines?.length) {
+                        const engId = c.runtime.engine?.config?.id;
+                        if (engId && !pth.engines?.includes?.(engId)) {
+                            matched = false;
+                        }
+                    }
+                    if (matched) {
+                        pth.paths.forEach((pth) => {
+                            _copyIncludedPaths(c, pth);
+                        });
                     }
                 }
             }
@@ -115,19 +121,10 @@ const _getProjectTemplateMergedConfig = (templateConfig: ConfigFileTemplate | nu
     return null;
 };
 
-const _copyIncludedPaths = (c: RnvContext, name: string, copyWhitelist: string[]) => {
+const _copyIncludedPaths = (c: RnvContext, name: string) => {
     const sourcePathOriginal = path.join(c.paths.template.dir, name);
     const sourceOverridePath = path.join(c.paths.template.dir, RnvFolderName.templateOverrides, name);
     const destPath = path.join(c.paths.project.dir, name);
-    // Make sure we do not override existing folders at root of project
-    const destRootPath = path.join(c.paths.project.dir, name.split('/')[0]);
-    const rootDirExists = fsExistsSync(destRootPath);
-    if (!rootDirExists) {
-        copyWhitelist.push(destRootPath);
-    }
-    if (rootDirExists && !copyWhitelist.includes(destRootPath)) {
-        return;
-    }
     // If override exists use it, otherwise use original and continue with rest of the logic
     const sourcePath = fsExistsSync(sourceOverridePath) ? sourceOverridePath : sourcePathOriginal;
     if (!fsExistsSync(destPath) && fsExistsSync(sourcePath)) {

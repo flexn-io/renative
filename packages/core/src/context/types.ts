@@ -4,6 +4,7 @@ import type { OverridesOptions } from '../system/types';
 import type { RnvPlatform } from '../types';
 import type {
     ConfigFileApp,
+    ConfigFileEngine,
     ConfigFileLocal,
     ConfigFilePlugin,
     ConfigFilePrivate,
@@ -62,6 +63,7 @@ export type RnvContext<Payload = any, ExtraOptionKeys extends string = ProgramOp
     mutations: {
         pendingMutations: Array<DependencyMutation>;
     };
+    engineConfigs: ConfigFileEngine[];
     assetConfig: object;
     platform: RnvPlatform;
     process: NodeJS.Process;
