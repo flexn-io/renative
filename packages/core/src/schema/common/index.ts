@@ -175,6 +175,8 @@ export const zodCommonSchema: AnyZodObject = zodCommonSchemaFragment
     )
     .describe('Common config props used as default props for all available buildSchemes');
 
+export type RnvCommonBuildSchemeSchema = RnvCommonSchemaFragment & RnvBuildSchemeFragment & RnvPlatformBaseFragment;
+
 export type RnvCommonSchema = RnvCommonSchemaFragment & {
-    buildSchemes?: Record<string, RnvCommonSchemaFragment & RnvBuildSchemeFragment & RnvPlatformBaseFragment>;
+    buildSchemes?: Record<string, RnvCommonBuildSchemeSchema>;
 };

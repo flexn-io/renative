@@ -3,7 +3,7 @@ import { RnvContext } from './types';
 import { chalk, logError, logWarning } from '../logger';
 import { ConfigFileBuildConfig } from '../schema';
 import { ConfigProp, ConfigPropKey } from '../schema/types';
-import { BuildConfigPropKey, BuildSchemePropKey, CommonPropKey } from '../types';
+import { BuildConfigKey, PlatformBuildSchemeKey, CommonPropKey, CommonBuildSchemeKey } from '../types';
 import { TimestampPathsConfig } from '../system/types';
 import path from 'path';
 import { fsExistsSync } from '../system/fs';
@@ -61,18 +61,18 @@ export const _getConfigProp = <T extends ConfigPropKey>(
         scheme = {};
     }
 
-    const resultScheme = key && scheme[key as BuildSchemePropKey];
     const resultCommonRoot = getFlavouredProp(sourceObj.common || {}, key as CommonPropKey);
 
     const bs = (c.runtime.scheme && sourceObj.common?.buildSchemes?.[c.runtime.scheme]) || {};
 
-    const resultCommonScheme = c.runtime.scheme && getFlavouredProp(bs, key as any);
+    const resultCommonScheme = c.runtime.scheme && getFlavouredProp(bs, key as CommonBuildSchemeKey);
 
     const resultCommon = resultCommonScheme || resultCommonRoot;
 
+    const resultScheme = key && scheme[key as PlatformBuildSchemeKey];
     let result = _getValueOrMergedObject(resultScheme, resultPlatforms, resultCommon);
     if (result === undefined) {
-        result = getFlavouredProp(sourceObj, key as BuildConfigPropKey);
+        result = getFlavouredProp(sourceObj, key as BuildConfigKey);
     }
 
     if (result === undefined) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined

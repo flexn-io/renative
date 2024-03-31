@@ -49,14 +49,13 @@ const zodMergedPlatformPlainObject = zodCommonSchemaFragment.merge(
     )
 );
 
-export type _MergedPlatformObjectType = z.infer<typeof zodMergedPlatformPlainObject>;
+export type RnvPlatformSchemaFragment = z.infer<typeof zodMergedPlatformPlainObject>;
 
 const desc = 'Allows to customize platforms configurations based on chosen build scheme `-s`';
 
 const androidSchema = z
     .optional(PlatformAndroidSchema.extend({ buildSchemes: z.record(z.string(), PlatformAndroidSchema).optional() }))
     .describe(desc);
-// const androidSchema = generatePlatform(PlatformAndroid);
 const iosSchema = z
     .optional(PlatformiOSSchema.extend({ buildSchemes: z.record(z.string(), PlatformiOSSchema).optional() }))
     .describe(desc);
@@ -101,9 +100,9 @@ export const zodPlatformsSchema: AnyZodObject = z
     .describe('Object containing platform configurations');
 
 // export type RnvPlatformsSchema = z.infer<typeof zodPlatformsSchema>;
-export type RnvPlatformsSchema = Record<
-    RnvPlatformNameKey,
-    _MergedPlatformObjectType & {
-        buildSchemes?: Record<string, RnvCommonSchemaFragment & RnvBuildSchemeFragment & _MergedPlatformObjectType>;
-    }
->;
+export type RnvPlatformBuildSchemeSchema = RnvCommonSchemaFragment & RnvBuildSchemeFragment & RnvPlatformSchemaFragment;
+
+export type RnvPlatformSchema = RnvPlatformSchemaFragment & {
+    buildSchemes?: Record<string, RnvPlatformBuildSchemeSchema>;
+};
+export type RnvPlatformsSchema = Partial<Record<RnvPlatformNameKey, RnvPlatformSchema>>;

@@ -182,47 +182,49 @@ const Paths = z
 
 //LEVEl 0 (ROOT)
 
-const zodRootProjectBaseFragment = z.object({
-    workspaceID: WorkspaceID.optional(),
-    projectVersion: z.string().optional(), // TODO: if undefined it should infer from package.json
-    projectName: ProjectName.optional(),
+const zodRootProjectBaseFragment = z
+    .object({
+        workspaceID: WorkspaceID,
+        projectVersion: z.string(), // TODO: if undefined it should infer from package.json
+        projectName: ProjectName,
 
-    isTemplate: z.boolean().optional(),
-    defaults: z.optional(DefaultsSchema),
-    pipes: z.optional(Pipes),
-    crypto: z.optional(Crypto),
-    paths: z.optional(Paths),
-    permissions: z.optional(Permissions),
-    engines: z.optional(EnginesSchema), // TODO: rename to mods (mods with type engine in the future) ?
-    enableHookRebuild: z.optional(EnableHookRebuild),
-    extendsTemplate: z.optional(ExtendTemplate), // TODO: rename to "extendsConfig"
-    tasks: z.optional(Tasks),
-    integrations: z.optional(Integrations), // TODO: rename to mods
-    env: z.optional(Env),
-    runtime: z.optional(Runtime),
-    templateConfig: TemplateConfig,
-    _meta: z.optional(
-        z.object({
-            requires_first_template_apply: z.optional(SupportedPlatforms),
-        })
-    ),
-    // DEPRECATED
-
-    isMonorepo: z.optional(IsMonoRepo), // TODO: remove and use auto detection
-    monoRoot: z.optional(MonoRoot), // TODO: remove and use auto detection
-    custom: z.optional(Ext), // TODO: find better way to handle
-    skipAutoUpdate: z
-        .boolean()
-        .optional()
-        .describe(
-            "Enables the equivalent to passing --skipDependencyCheck parameter on every rnv run so you don't have to use it"
+        isTemplate: z.boolean(),
+        defaults: z.optional(DefaultsSchema),
+        pipes: z.optional(Pipes),
+        crypto: z.optional(Crypto),
+        paths: z.optional(Paths),
+        permissions: z.optional(Permissions),
+        engines: z.optional(EnginesSchema), // TODO: rename to mods (mods with type engine in the future) ?
+        enableHookRebuild: z.optional(EnableHookRebuild),
+        extendsTemplate: z.optional(ExtendTemplate), // TODO: rename to "extendsConfig"
+        tasks: z.optional(Tasks),
+        integrations: z.optional(Integrations), // TODO: rename to mods
+        env: z.optional(Env),
+        runtime: z.optional(Runtime),
+        templateConfig: z.optional(TemplateConfig),
+        _meta: z.optional(
+            z.object({
+                requires_first_template_apply: z.optional(SupportedPlatforms),
+            })
         ),
-    // REMOVED
-    // useTemplate: z.optional(UseTemplate),
-    // isNew: z
-    // templates: Templates.optional(),
-    // currentTemplate: CurrentTemplate.optional(),
-});
+        // DEPRECATED
+
+        isMonorepo: z.optional(IsMonoRepo), // TODO: remove and use auto detection
+        monoRoot: z.optional(MonoRoot), // TODO: remove and use auto detection
+        custom: z.optional(Ext), // TODO: find better way to handle
+        skipAutoUpdate: z
+            .boolean()
+
+            .describe(
+                "Enables the equivalent to passing --skipDependencyCheck parameter on every rnv run so you don't have to use it"
+            ),
+        // REMOVED
+        // useTemplate: z.optional(UseTemplate),
+        // isNew: z
+        // templates: Templates,
+        // currentTemplate: CurrentTemplate,
+    })
+    .partial();
 export type RnvRootProjectBaseFragment = z.infer<typeof zodRootProjectBaseFragment>;
 
 // NOTE: Need to explictly type this to generic zod object to avoid TS error:
@@ -237,7 +239,7 @@ export const zodRootProjectSchema: AnyZodObject = zodRootProjectBaseFragment
     .merge(zodRootProjectPluginsSchema);
 
 export type RnvRootProjectSchema = RnvRootProjectBaseFragment & {
-    common: RnvCommonSchema;
-    platforms: RnvPlatformsSchema;
-    plugins: RnvPluginsSchema;
+    common?: RnvCommonSchema;
+    platforms?: RnvPlatformsSchema;
+    plugins?: RnvPluginsSchema;
 };

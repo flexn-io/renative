@@ -8,7 +8,6 @@ import {
     updateRenativeConfigs,
     configureRuntimeDefaults,
     applyTemplate,
-    configureTemplateFiles,
     isTemplateInstalled,
     fsExistsSync,
     fsMkdirSync,

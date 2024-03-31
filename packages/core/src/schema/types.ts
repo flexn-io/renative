@@ -1,6 +1,6 @@
-import type { RnvPluginSchema } from './plugins';
+import type { RnvPluginPlatformSchema, RnvPluginSchema } from './plugins';
 import type { _AppDelegateMethodType } from './platforms/fragments/templateXcodeBase';
-import type { _MergedPlatformObjectType } from './platforms';
+import type { RnvPlatformSchemaFragment } from './platforms';
 import type { _RootAppBaseSchemalType } from './configFiles/app';
 
 import type { RnvRootProjectBaseFragment } from './configFiles/project';
@@ -16,7 +16,7 @@ import { type RnvPlatformNameKey } from '../enums/platformName';
 export type ConfigProp = RnvRootProjectBaseFragment &
     _RootAppBaseSchemalType &
     _MergedPlatformPrivateObjectType &
-    _MergedPlatformObjectType;
+    RnvPlatformSchemaFragment;
 
 export type ConfigPropKey = keyof ConfigProp;
 
@@ -24,11 +24,11 @@ export type ConfigPropKey = keyof ConfigProp;
 // SUB-TYPES
 //===============================
 
-export type RenativeConfigPlugin = Partial<Exclude<ConfigFileBuildConfig['plugins'][string], string | null>>;
+export type RenativeConfigPlugin = RnvPluginSchema;
 
 export type RenativeConfigPaths = ConfigFileBuildConfig['paths'];
 
-export type RenativeConfigPluginPlatform = RnvPluginSchema[PlatformKey];
+export type RenativeConfigPluginPlatform = RnvPluginPlatformSchema;
 
 export type RenativeWebpackConfig = RenativeConfigPlugin['webpackConfig'];
 

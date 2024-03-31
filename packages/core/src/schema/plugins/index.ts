@@ -54,9 +54,9 @@ const zodPluginPlatformMergedSchema = z.object({
     ...zodPluginPlatformAndroidFragment,
 });
 
-export type RnvPluginSchema = RnvPluginBaseFragment &
-    Record<PlatformKey, z.infer<typeof zodPluginPlatformMergedSchema>>;
-
+export type RnvPluginPlatformSchema = z.infer<typeof zodPluginPlatformMergedSchema>;
+export type RnvPluginPlatformsSchema = Record<PlatformKey, RnvPluginPlatformSchema>;
+export type RnvPluginSchema = RnvPluginBaseFragment & Partial<RnvPluginPlatformsSchema>;
 export type RnvPluginsSchema = Record<string, RnvPluginSchema | string>;
 
 export const zodPluginsSchema = z

@@ -29,6 +29,7 @@ describe('Context tests', () => {
             'cli',
             'command',
             'configPropsInjects',
+            'engineConfigs',
             'files',
             'injectableConfigProps',
             'isBuildHooksReady',

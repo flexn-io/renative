@@ -3,7 +3,7 @@ import { chalk, logDefault, logError, logWarning, logDebug, logInfo } from '../l
 import { cleanFolder, copyFolderContentsRecursiveSync } from '../system/fs';
 import { getTimestampPathsConfig, getAppFolder } from '../context/contextProps';
 import { generateOptions, inquirerPrompt } from '../api';
-import type { RnvPlatform, RnvPlatformWithAll } from '../types';
+import type { RnvPlatform } from '../types';
 import { doResolve } from '../system/resolve';
 import { getContext } from '../context/provider';
 import { RnvPlatforms } from '../enums/platformName';
@@ -27,14 +27,14 @@ export const generatePlatformChoices = () => {
     return options;
 };
 
-export const cleanPlatformBuild = async (platform: RnvPlatform) => {
+export const cleanPlatformBuild = async (platform: RnvPlatform, cleanAllPlatforms?: boolean) => {
     logDebug('cleanPlatformBuild');
 
     const c = getContext();
 
     const cleanTasks = [];
 
-    if ((platform as RnvPlatformWithAll) === 'all' && c.buildConfig.platforms) {
+    if (cleanAllPlatforms && c.buildConfig.platforms) {
         Object.keys(c.buildConfig.platforms).forEach((k) => {
             if (isPlatformSupportedSync(k as RnvPlatform)) {
                 const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${k}`);
