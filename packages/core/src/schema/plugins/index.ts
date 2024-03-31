@@ -1,8 +1,9 @@
-import { z } from 'zod';
+import { AnyZodObject, z } from 'zod';
 import { zodPluginPlatformAndroidFragment } from './fragments/platformAndroid';
 import { zodPluginPlatformiOSFragment } from './fragments/platformIos';
 import { zodPluginPlatformBaseFragment } from './fragments/platformBase';
-import { zodPluginBaseFragment } from './fragments/base';
+import { RnvPluginBaseFragment, zodPluginBaseFragment } from './fragments/base';
+import { PlatformKey } from '../types';
 
 const androidSchema = z
     .object({
@@ -24,7 +25,7 @@ const genericSchema = z
     })
     .optional();
 
-export const PluginSchema = z.object({
+export const zodPluginSchema: AnyZodObject = z.object({
     ...zodPluginBaseFragment,
     android: androidSchema,
     androidtv: androidSchema,
@@ -46,18 +47,20 @@ export const PluginSchema = z.object({
     xbox: genericSchema,
 });
 
-const PluginPlatformMergedSchema = z.object({
+// TODO: don't create new zod object. use native types
+const zodPluginPlatformMergedSchema = z.object({
     ...zodPluginPlatformBaseFragment,
     ...zodPluginPlatformiOSFragment,
     ...zodPluginPlatformAndroidFragment,
 });
 
-export type _PluginPlatformMergedSchemaType = z.infer<typeof PluginPlatformMergedSchema>;
+export type RnvPluginSchema = RnvPluginBaseFragment &
+    Record<PlatformKey, z.infer<typeof zodPluginPlatformMergedSchema>>;
 
-export type _PluginType = z.infer<typeof PluginSchema>;
+export type RnvPluginsSchema = Record<string, RnvPluginSchema | string>;
 
-export const PluginsSchema = z
-    .record(z.string(), z.union([PluginSchema, z.string()]).nullable())
+export const zodPluginsSchema = z
+    .record(z.string(), z.union([zodPluginSchema, z.string()]).nullable())
     .describe(
         'Define all plugins available in your project. you can then use `includedPlugins` and `excludedPlugins` props to define active and inactive plugins per each app config'
     );

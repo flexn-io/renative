@@ -1,6 +1,6 @@
-import { z } from 'zod';
+import { AnyZodObject, z } from 'zod';
 import { zodBuildSchemeFragment, BundleId, Ext, HexColor, Runtime, RnvBuildSchemeFragment } from '../shared';
-import { zodPlatformBaseFragment } from '../platforms/fragments/base';
+import { RnvPlatformBaseFragment, zodPlatformBaseFragment } from '../platforms/fragments/base';
 
 // DEPRECATED?
 export const SplashScreen = z.boolean().describe('Enable or disable splash screen');
@@ -156,7 +156,7 @@ export const zodCommonSchemaFragment = z.object({
 });
 export type RnvCommonSchemaFragment = z.infer<typeof zodCommonSchemaFragment>;
 
-export const zodCommonSchema: any = zodCommonSchemaFragment
+export const zodCommonSchema: AnyZodObject = zodCommonSchemaFragment
     .merge(
         z.object({
             buildSchemes: z.optional(
@@ -175,6 +175,6 @@ export const zodCommonSchema: any = zodCommonSchemaFragment
     )
     .describe('Common config props used as default props for all available buildSchemes');
 
-export type _CommonSchemaType = RnvCommonSchemaFragment & {
-    buildSchemes?: Record<string, RnvCommonSchemaFragment & RnvBuildSchemeFragment>;
+export type RnvCommonSchema = RnvCommonSchemaFragment & {
+    buildSchemes?: Record<string, RnvCommonSchemaFragment & RnvBuildSchemeFragment & RnvPlatformBaseFragment>;
 };

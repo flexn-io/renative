@@ -1,5 +1,5 @@
 export { RootAppSchema } from './configFiles/app';
-export { RootProjectSchema } from './configFiles/project';
+export { zodRootProjectSchema as RootProjectSchema } from './configFiles/project';
 export { RootEngineSchema } from './configFiles/engine';
 export { RootWorkspaceSchema } from './configFiles/workspace';
 export { RootLocalSchema } from './configFiles/local';

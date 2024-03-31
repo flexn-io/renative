@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { AnyZodObject, z } from 'zod';
 import { PlatformAndroidSchema } from './android';
 import { PlatformiOSSchema } from './ios';
 import { zodPlatformElectronFragment } from './fragments/electron';
@@ -12,7 +12,7 @@ import { PlatformMacosSchema } from './macos';
 import { PlatformWebSchema } from './web';
 import { PlatformTizenSchema } from './tizen';
 import { PlatformWebosSchema } from './webos';
-import { zodCommonSchemaFragment } from '../common';
+import { RnvCommonSchemaFragment, zodCommonSchemaFragment } from '../common';
 import { zodPlatformWebOSFragment } from './fragments/webos';
 import { zodPlatformWindowsFragment } from './fragments/windows';
 import { zodPlatformTizenFragment } from './fragments/tizen';
@@ -21,8 +21,10 @@ import { zodPlatformAndroidFragment } from './fragments/android';
 import { zodPlatformiOSFragment } from './fragments/ios';
 import { zodTemplateAndroidFragment } from './fragments/templateAndroid';
 import { zodTemplateXcodeFragment } from './fragments/templateXcode';
+import { RnvPlatformNameKey } from '../../enums/platformName';
+import { RnvBuildSchemeFragment } from '../shared';
 
-const MergedPlatformPlainObject = zodCommonSchemaFragment.merge(
+const zodMergedPlatformPlainObject = zodCommonSchemaFragment.merge(
     zodCommonSchemaFragment.merge(
         z.object({
             //BASE
@@ -47,7 +49,7 @@ const MergedPlatformPlainObject = zodCommonSchemaFragment.merge(
     )
 );
 
-export type _MergedPlatformObjectType = z.infer<typeof MergedPlatformPlainObject>;
+export type _MergedPlatformObjectType = z.infer<typeof zodMergedPlatformPlainObject>;
 
 const desc = 'Allows to customize platforms configurations based on chosen build scheme `-s`';
 
@@ -75,7 +77,7 @@ const webosSchema = z
     .optional(PlatformWebosSchema.extend({ buildSchemes: z.record(z.string(), PlatformWebosSchema).optional() }))
     .describe(desc);
 
-export const PlatformsSchema = z
+export const zodPlatformsSchema: AnyZodObject = z
     .object({
         android: androidSchema,
         androidtv: androidSchema,
@@ -98,4 +100,10 @@ export const PlatformsSchema = z
     })
     .describe('Object containing platform configurations');
 
-export type _PlatformsSchemaType = z.infer<typeof PlatformsSchema>;
+// export type RnvPlatformsSchema = z.infer<typeof zodPlatformsSchema>;
+export type RnvPlatformsSchema = Record<
+    RnvPlatformNameKey,
+    _MergedPlatformObjectType & {
+        buildSchemes?: Record<string, RnvCommonSchemaFragment & RnvBuildSchemeFragment & _MergedPlatformObjectType>;
+    }
+>;

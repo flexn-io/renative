@@ -69,3 +69,6 @@ export const zodPluginBaseFragment = {
     // webpack: z.optional(Webpack), //Should this be at root plugin??? // DEPRECATED
     // 'engine-rn-next': z.optional(Webpack), //Should this be at root plugin??? // DEPRECATED
 };
+const _zodPluginBaseFragment = z.object(zodPluginBaseFragment);
+
+export type RnvPluginBaseFragment = z.infer<typeof _zodPluginBaseFragment>;

@@ -73,19 +73,17 @@ export const TemplateConfig = z
                 $schema: z.string().optional(),
                 extendsTemplate: z.string().optional(),
             })
-            .passthrough()
+
             .optional(),
         package_json: z.optional(
-            z
-                .object({
-                    dependencies: z.optional(NpmDep),
-                    devDependencies: z.optional(NpmDep),
-                    peerDependencies: z.optional(NpmDep),
-                    optionalDependencies: z.optional(NpmDep),
-                    name: z.string().optional(),
-                    version: z.string().optional(),
-                })
-                .passthrough()
+            z.object({
+                dependencies: z.optional(NpmDep),
+                devDependencies: z.optional(NpmDep),
+                peerDependencies: z.optional(NpmDep),
+                optionalDependencies: z.optional(NpmDep),
+                name: z.string().optional(),
+                version: z.string().optional(),
+            })
         ),
     })
     .describe('Used in `renative.template.json` allows you to define template behaviour.');

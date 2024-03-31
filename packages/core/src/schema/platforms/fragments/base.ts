@@ -40,4 +40,4 @@ export const zodPlatformBaseFragment = {
     getJsBundleFile: z.string().optional(),
 };
 const _zodPlatformBaseFragment = z.object(zodPlatformBaseFragment);
-export type RnvCommonSchemaFragment = z.infer<typeof _zodPlatformBaseFragment>;
+export type RnvPlatformBaseFragment = z.infer<typeof _zodPlatformBaseFragment>;

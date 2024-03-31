@@ -1,9 +1,9 @@
 import { z } from 'zod';
 import { PlatformsKeys, ProjectTemplates } from '../shared';
-import { PluginSchema } from '../plugins';
+import { zodPluginSchema } from '../plugins';
 
 export const PluginTemplates = z
-    .record(z.string(), PluginSchema)
+    .record(z.string(), zodPluginSchema)
     .describe('Define all plugins available to be merged with project plugins');
 
 export const DisableRnvDefaultOverrides = z

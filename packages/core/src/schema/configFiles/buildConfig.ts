@@ -1,9 +1,9 @@
-import { _CommonSchemaType } from '../common';
-import { _PlatformsSchemaType } from '../platforms';
-import { _PluginType } from '../plugins';
+import { RnvCommonSchema } from '../common';
+import { RnvPlatformsSchema } from '../platforms';
+import { RnvPluginsSchema } from '../plugins';
 import { _RootAppBaseSchemalType } from './app';
 import { _RootLocalSchemaType } from './local';
-import { _RootProjectBaseSchemaType } from './project';
+import { RnvRootProjectBaseFragment } from './project';
 import { _RootTemplatesSchemaType } from './templates';
 import { _RootWorkspaceSchemaType } from './workspace';
 
@@ -17,18 +17,18 @@ type RootPluginsMerged = {
 };
 
 type Common = {
-    common: _CommonSchemaType;
+    common: RnvCommonSchema;
 };
 
 type PluginsMap = {
-    plugins: Record<string, _PluginType | string>;
+    plugins: RnvPluginsSchema;
 };
 
 type PlatformsMap = {
-    platforms: _PlatformsSchemaType;
+    platforms: RnvPlatformsSchema;
 };
 
-type _ConfigRootMerged =
+export type ConfigFileBuildConfig =
     //Templates
     _RootTemplatesSchemaType &
         //Global
@@ -36,11 +36,9 @@ type _ConfigRootMerged =
         //Plugins (multiple roots merged under scope object)
         RootPluginsMerged &
         //Project + App
-        Required<_RootProjectBaseSchemaType> &
+        Required<RnvRootProjectBaseFragment> &
         _RootLocalSchemaType &
         _RootAppBaseSchemalType &
         Common &
         PluginsMap &
         PlatformsMap;
-
-export type ConfigFileBuildConfig = _ConfigRootMerged;

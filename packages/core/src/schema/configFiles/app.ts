@@ -1,8 +1,8 @@
 import { AnyZodObject, z } from 'zod';
 import { zodCommonSchema } from '../common';
 import { Ext, ExtendTemplate } from '../shared';
-import { PlatformsSchema } from '../platforms';
-import { PluginsSchema } from '../plugins';
+import { zodPlatformsSchema } from '../platforms';
+import { zodPluginsSchema } from '../plugins';
 
 export const Extend = z.string().describe('extend another appConfig by id');
 
@@ -28,8 +28,8 @@ const zodRootAppBaseFragment = {
 
 const RootAppBaseSchema = z.object(zodRootAppBaseFragment);
 const RootAppCommonSchema = z.object({ common: z.optional(zodCommonSchema) });
-const RootAppPlatformsSchema = z.object({ platforms: z.optional(PlatformsSchema) });
-const RootAppPluginsSchema = z.object({ plugins: z.optional(PluginsSchema) });
+const RootAppPlatformsSchema = z.object({ platforms: z.optional(zodPlatformsSchema) });
+const RootAppPluginsSchema = z.object({ plugins: z.optional(zodPluginsSchema) });
 
 // NOTE: Need to explictly type this to generic zod object to avoid TS error:
 // The inferred type of this node exceeds the maximum length the compiler will serialize...

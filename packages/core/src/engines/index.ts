@@ -350,18 +350,20 @@ const _getFilteredEngines = (c: RnvContext) => {
     const ENGINE_ID_MAP = c.files.rnvConfigTemplates.config?.engineIdMap || {};
 
     supportedPlatforms.forEach((v) => {
-        const platforms = c.files.project.config?.platforms || {};
-        const engineKey = platforms[v]?.engine || rnvPlatforms?.[v]?.engine;
+        if (c.files.project.config) {
+            const platforms = c.files.project.config?.platforms || {};
+            const engineKey = platforms[v]?.engine || rnvPlatforms?.[v]?.engine;
 
-        if (engineKey) {
-            const engKey = ENGINE_ID_MAP[engineKey] || engineKey;
-            if (engines[engKey]) {
-                filteredEngines[engKey] = engines[engKey];
+            if (engineKey) {
+                const engKey = ENGINE_ID_MAP[engineKey] || engineKey;
+                if (engines[engKey]) {
+                    filteredEngines[engKey] = engines[engKey];
+                } else {
+                    logWarning(`Platform ${v} requires engine ${engKey} which is not available in engines list`);
+                }
             } else {
-                logWarning(`Platform ${v} requires engine ${engKey} which is not available in engines list`);
+                logWarning(`Platform ${v} has no engine configured`);
             }
-        } else {
-            logWarning(`Platform ${v} has no engine configured`);
         }
     });
     return filteredEngines;

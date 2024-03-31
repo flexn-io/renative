@@ -154,16 +154,18 @@ export const generateBuildConfig = () => {
     c.buildConfig = sanitizeDynamicProps(c.buildConfig, propConfig);
 
     //Merge extendPlatform
-    const platforms = c.buildConfig.platforms || {};
-    (Object.keys(platforms) as PlatformKey[]).forEach((k) => {
-        const plat = platforms[k];
-        if (plat?.extendPlatform) {
-            const extPlat = platforms[plat?.extendPlatform];
-            if (extPlat) {
-                platforms[k] = merge(extPlat, plat);
+    if (c.buildConfig.platforms) {
+        const platforms = c.buildConfig.platforms || {};
+        (Object.keys(platforms) as PlatformKey[]).forEach((k) => {
+            const plat = platforms[k];
+            if (plat?.extendPlatform) {
+                const extPlat = platforms[plat?.extendPlatform];
+                if (extPlat) {
+                    platforms[k] = merge(extPlat, plat);
+                }
             }
-        }
-    });
+        });
+    }
 
     logDebug('BUILD_CONFIG', Object.keys(c.buildConfig));
 

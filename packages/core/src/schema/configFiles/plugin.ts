@@ -1,8 +1,8 @@
 import { z } from 'zod';
 import { Ext } from '../shared';
-import { PluginSchema } from '../plugins';
+import { zodPluginSchema } from '../plugins';
 
-export const RootPluginSchema = PluginSchema.extend({
+export const RootPluginSchema = zodPluginSchema.extend({
     custom: z.optional(Ext),
 });
 

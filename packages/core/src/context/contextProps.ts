@@ -3,7 +3,7 @@ import { RnvContext } from './types';
 import { chalk, logError, logWarning } from '../logger';
 import { ConfigFileBuildConfig } from '../schema';
 import { ConfigProp, ConfigPropKey } from '../schema/types';
-import { BuildConfigPropKey, BuildSchemePropKey, CommonPropKey, PlatPropKey } from '../types';
+import { BuildConfigPropKey, BuildSchemePropKey, CommonPropKey } from '../types';
 import { TimestampPathsConfig } from '../system/types';
 import path from 'path';
 import { fsExistsSync } from '../system/fs';
@@ -56,16 +56,17 @@ export const _getConfigProp = <T extends ConfigPropKey>(
     let scheme;
     if (platformObj && ps) {
         scheme = platformObj.buildSchemes?.[ps] || {};
-        resultPlatforms = getFlavouredProp(platformObj, key as PlatPropKey);
+        resultPlatforms = getFlavouredProp(platformObj, key as any);
     } else {
         scheme = {};
     }
 
     const resultScheme = key && scheme[key as BuildSchemePropKey];
     const resultCommonRoot = getFlavouredProp(sourceObj.common || {}, key as CommonPropKey);
-    const resultCommonScheme =
-        c.runtime.scheme &&
-        getFlavouredProp(sourceObj.common?.buildSchemes?.[c.runtime.scheme] || {}, key as BuildSchemePropKey);
+
+    const bs = (c.runtime.scheme && sourceObj.common?.buildSchemes?.[c.runtime.scheme]) || {};
+
+    const resultCommonScheme = c.runtime.scheme && getFlavouredProp(bs, key as any);
 
     const resultCommon = resultCommonScheme || resultCommonRoot;
 

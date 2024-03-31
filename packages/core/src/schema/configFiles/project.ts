@@ -1,8 +1,8 @@
 import { AnyZodObject, z } from 'zod';
-import { zodCommonSchema } from '../common';
+import { RnvCommonSchema, zodCommonSchema } from '../common';
 import { Ext, ExtendTemplate, PlatformsKeys, Runtime, SupportedPlatforms, TemplateConfig } from '../shared';
-import { PlatformsSchema } from '../platforms';
-import { PluginsSchema } from '../plugins';
+import { RnvPlatformsSchema, zodPlatformsSchema as zodPlatformsSchema } from '../platforms';
+import { RnvPluginsSchema, zodPluginsSchema } from '../plugins';
 
 const DefaultCommandSchemes = z
     .record(z.enum(['run', 'export', 'build']), z.string())
@@ -182,7 +182,7 @@ const Paths = z
 
 //LEVEl 0 (ROOT)
 
-const zodRootProjectBaseFragment = {
+const zodRootProjectBaseFragment = z.object({
     workspaceID: WorkspaceID.optional(),
     projectVersion: z.string().optional(), // TODO: if undefined it should infer from package.json
     projectName: ProjectName.optional(),
@@ -200,7 +200,7 @@ const zodRootProjectBaseFragment = {
     integrations: z.optional(Integrations), // TODO: rename to mods
     env: z.optional(Env),
     runtime: z.optional(Runtime),
-    templateConfig: TemplateConfig.optional(),
+    templateConfig: TemplateConfig,
     _meta: z.optional(
         z.object({
             requires_first_template_apply: z.optional(SupportedPlatforms),
@@ -222,29 +222,22 @@ const zodRootProjectBaseFragment = {
     // isNew: z
     // templates: Templates.optional(),
     // currentTemplate: CurrentTemplate.optional(),
-};
-
-// const UseTemplate = z.object({
-//     name: z.string(),
-//     version: z.string(),
-//     excludedPaths: z.optional(z.array(z.string())),
-// });
-
-const RootProjectBaseSchema = z.object(zodRootProjectBaseFragment);
-const RootProjectCommonSchema = z.object({ common: z.optional(zodCommonSchema) });
-const RootProjectPlatformsSchema = z.object({ platforms: z.optional(PlatformsSchema) });
-const RootProjectPluginsSchema = z.object({ plugins: z.optional(PluginsSchema) });
+});
+export type RnvRootProjectBaseFragment = z.infer<typeof zodRootProjectBaseFragment>;
 
 // NOTE: Need to explictly type this to generic zod object to avoid TS error:
 // The inferred type of this node exceeds the maximum length the compiler will serialize...
 // This is ok we only use this full schema for runtime validations. actual types
-export const RootProjectSchema: AnyZodObject = RootProjectBaseSchema.merge(RootProjectCommonSchema)
-    .merge(RootProjectPlatformsSchema)
-    .merge(RootProjectPluginsSchema);
+const zodRootProjectCommonSchema: AnyZodObject = z.object({ common: z.optional(zodCommonSchema) });
+const zodRootProjectPlatformsSchema: AnyZodObject = z.object({ platforms: z.optional(zodPlatformsSchema) });
+const zodRootProjectPluginsSchema: AnyZodObject = z.object({ plugins: z.optional(zodPluginsSchema) });
+export const zodRootProjectSchema: AnyZodObject = zodRootProjectBaseFragment
+    .merge(zodRootProjectCommonSchema)
+    .merge(zodRootProjectPlatformsSchema)
+    .merge(zodRootProjectPluginsSchema);
 
-export type _RootProjectBaseSchemaType = z.infer<typeof RootProjectBaseSchema>;
-
-export type _RootProjectSchemaType = z.infer<typeof RootProjectBaseSchema> &
-    z.infer<typeof RootProjectCommonSchema> &
-    z.infer<typeof RootProjectPlatformsSchema> &
-    z.infer<typeof RootProjectPluginsSchema>;
+export type RnvRootProjectSchema = RnvRootProjectBaseFragment & {
+    common: RnvCommonSchema;
+    platforms: RnvPlatformsSchema;
+    plugins: RnvPluginsSchema;
+};
