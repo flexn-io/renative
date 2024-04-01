@@ -25,7 +25,7 @@ export type ConfigPropKey = keyof ConfigProp;
 
 export type RenativeConfigPlugin = RnvPluginSchema;
 
-export type RenativeConfigPaths = RnvRootProjectBaseFragment['paths'];
+export type RenativeConfigPaths = Required<RnvRootProjectBaseFragment>['paths'];
 
 export type RenativeConfigPluginPlatform = RnvPluginPlatformSchema;
 

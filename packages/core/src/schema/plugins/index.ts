@@ -1,60 +1,42 @@
 import { AnyZodObject, z } from 'zod';
-import { zodPluginPlatformAndroidFragment } from './fragments/platformAndroid';
-import { zodPluginPlatformiOSFragment } from './fragments/platformIos';
-import { zodPluginPlatformBaseFragment } from './fragments/platformBase';
+import { RnvPluginPlatformAndroidFragment, zodPluginPlatformAndroidFragment } from './fragments/platformAndroid';
+import { RnvPluginPlatformiOSFragment, zodPluginPlatformiOSFragment } from './fragments/platformIos';
+import { RnvPluginPlatformBaseFragment, zodPluginPlatformBaseFragment } from './fragments/platformBase';
 import { RnvPluginBaseFragment, zodPluginBaseFragment } from './fragments/base';
 import { PlatformKey } from '../types';
 
-const androidSchema = z
-    .object({
-        ...zodPluginPlatformBaseFragment,
-        ...zodPluginPlatformAndroidFragment,
+const androidSchema = zodPluginPlatformBaseFragment.merge(zodPluginPlatformAndroidFragment);
+
+const iosSchema = zodPluginPlatformBaseFragment.merge(zodPluginPlatformiOSFragment);
+
+const genericSchema = zodPluginPlatformBaseFragment;
+
+export const zodPluginSchema: AnyZodObject = zodPluginBaseFragment.merge(
+    z.object({
+        android: androidSchema,
+        androidtv: androidSchema,
+        androidwear: androidSchema,
+        firetv: androidSchema,
+        ios: iosSchema,
+        tvos: iosSchema,
+        tizen: genericSchema,
+        tizenmobile: genericSchema,
+        tizenwatch: genericSchema,
+        webos: genericSchema,
+        web: genericSchema,
+        webtv: genericSchema,
+        chromecast: genericSchema,
+        kaios: genericSchema,
+        macos: genericSchema,
+        linux: genericSchema,
+        windows: genericSchema,
+        xbox: genericSchema,
     })
-    .optional();
+);
 
-const iosSchema = z
-    .object({
-        ...zodPluginPlatformBaseFragment,
-        ...zodPluginPlatformiOSFragment,
-    })
-    .optional();
-
-const genericSchema = z
-    .object({
-        ...zodPluginPlatformBaseFragment,
-    })
-    .optional();
-
-export const zodPluginSchema: AnyZodObject = z.object({
-    ...zodPluginBaseFragment,
-    android: androidSchema,
-    androidtv: androidSchema,
-    androidwear: androidSchema,
-    firetv: androidSchema,
-    ios: iosSchema,
-    tvos: iosSchema,
-    tizen: genericSchema,
-    tizenmobile: genericSchema,
-    tizenwatch: genericSchema,
-    webos: genericSchema,
-    web: genericSchema,
-    webtv: genericSchema,
-    chromecast: genericSchema,
-    kaios: genericSchema,
-    macos: genericSchema,
-    linux: genericSchema,
-    windows: genericSchema,
-    xbox: genericSchema,
-});
-
-// TODO: don't create new zod object. use native types
-const zodPluginPlatformMergedSchema = z.object({
-    ...zodPluginPlatformBaseFragment,
-    ...zodPluginPlatformiOSFragment,
-    ...zodPluginPlatformAndroidFragment,
-});
-
-export type RnvPluginPlatformSchema = z.infer<typeof zodPluginPlatformMergedSchema>;
+export type RnvPluginPlatformSchema = RnvPluginPlatformBaseFragment &
+    RnvPluginPlatformAndroidFragment &
+    RnvPluginPlatformiOSFragment;
 export type RnvPluginPlatformsSchema = Record<PlatformKey, RnvPluginPlatformSchema>;
 export type RnvPluginSchema = RnvPluginBaseFragment & Partial<RnvPluginPlatformsSchema>;
 export type RnvPluginsSchema = Record<string, RnvPluginSchema | string>;

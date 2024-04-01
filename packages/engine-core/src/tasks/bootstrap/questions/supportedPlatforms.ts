@@ -40,9 +40,8 @@ const Question = async (data: NewProjectData) => {
     // ]
 
     const supportedPlatforms =
-        files.template.renativeTemplateConfig?.defaults?.supportedPlatforms ||
-        files.template.renativeConfig?.defaults?.supportedPlatforms ||
-        [];
+        // files.template.renativeTemplateConfig?.templateConfig?.renative_json?..supportedPlatforms ||
+        files.template.renativeConfig?.defaults?.supportedPlatforms || [];
 
     supportedPlatforms.sort((a, b) => RnvPlatforms.indexOf(a) - RnvPlatforms.indexOf(b));
 

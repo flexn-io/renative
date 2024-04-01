@@ -27,6 +27,7 @@ import { RnvFileName } from '../enums/fileName';
 import { AsyncCallback } from '../projects/types';
 import { createDependencyMutation } from '../projects/mutations';
 import { updatePackage } from '../projects/package';
+import { RnvPluginPlatformSchema } from '../schema/plugins';
 
 const _getPluginScope = (plugin: RenativeConfigPlugin | string): RnvPluginScope => {
     if (typeof plugin === 'string') {
@@ -484,7 +485,7 @@ export const parsePlugins = (
                         (includedPlugins.includes('*') || includedPlugins.includes(key)) &&
                         !excludedPlugins.includes(key)
                     ) {
-                        const pluginPlat = plugin[platform] || {};
+                        const pluginPlat: RnvPluginPlatformSchema = plugin[platform] || {};
 
                         // NOTE: we do not want to disable plugin just because object is missing. instead we will let people to do it explicitly
                         // {

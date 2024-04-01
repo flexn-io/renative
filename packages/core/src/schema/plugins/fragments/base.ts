@@ -50,25 +50,26 @@ const Deprecated = z
 
 const DisablePluginTemplateOverrides = z.boolean().describe('Disables plugin overrides for selected plugin');
 
-export const zodPluginBaseFragment = {
-    supportedPlatforms: zodSupportedPlatforms.optional(),
-    disabled: z.optional(Disabled),
-    props: z.optional(Props),
-    version: z.optional(Version),
-    deprecated: z.optional(Deprecated),
-    source: z.optional(Source),
-    disableNpm: z.optional(NoNpm),
-    skipMerge: z.optional(SkipMerge),
-    npm: z.optional(Npm), //=> npmDependencies
-    pluginDependencies: z.optional(PluginDependencies),
-    webpackConfig: z.optional(Webpack), //Should this be at root plugin???
-    disablePluginTemplateOverrides: z.optional(DisablePluginTemplateOverrides),
-    fontSources: z.array(z.string()).optional(),
-    // 'no-npm': z.optional(NoNpm),//DEPRECATED => disableNpm
-    // plugins: z.optional(PluginDependencies),  //DEPRECATED => pluginDependencies
-    // webpack: z.optional(Webpack), //Should this be at root plugin??? // DEPRECATED
-    // 'engine-rn-next': z.optional(Webpack), //Should this be at root plugin??? // DEPRECATED
-};
-const _zodPluginBaseFragment = z.object(zodPluginBaseFragment);
+export const zodPluginBaseFragment = z
+    .object({
+        supportedPlatforms: zodSupportedPlatforms.optional(),
+        disabled: z.optional(Disabled),
+        props: z.optional(Props),
+        version: z.optional(Version),
+        deprecated: z.optional(Deprecated),
+        source: z.optional(Source),
+        disableNpm: z.optional(NoNpm),
+        skipMerge: z.optional(SkipMerge),
+        npm: z.optional(Npm), //=> npmDependencies
+        pluginDependencies: z.optional(PluginDependencies),
+        webpackConfig: z.optional(Webpack), //Should this be at root plugin???
+        disablePluginTemplateOverrides: z.optional(DisablePluginTemplateOverrides),
+        fontSources: z.array(z.string()).optional(),
+        // 'no-npm': z.optional(NoNpm),//DEPRECATED => disableNpm
+        // plugins: z.optional(PluginDependencies),  //DEPRECATED => pluginDependencies
+        // webpack: z.optional(Webpack), //Should this be at root plugin??? // DEPRECATED
+        // 'engine-rn-next': z.optional(Webpack), //Should this be at root plugin??? // DEPRECATED
+    })
+    .partial();
 
-export type RnvPluginBaseFragment = z.infer<typeof _zodPluginBaseFragment>;
+export type RnvPluginBaseFragment = z.infer<typeof zodPluginBaseFragment>;

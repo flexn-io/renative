@@ -1,10 +1,12 @@
 import { z } from 'zod';
 
-export const zodPlatformReactNativeFragment = z.object({
-    reactNativeEngine: z
-        .enum(['jsc', 'v8-android', 'v8-android-nointl', 'v8-android-jit', 'v8-android-jit-nointl', 'hermes'])
-        .default('hermes')
-        .describe('Allows you to define specific native render engine to be used'),
-});
+export const zodPlatformReactNativeFragment = z
+    .object({
+        reactNativeEngine: z
+            .enum(['jsc', 'v8-android', 'v8-android-nointl', 'v8-android-jit', 'v8-android-jit-nointl', 'hermes'])
+            .default('hermes')
+            .describe('Allows you to define specific native render engine to be used'),
+    })
+    .partial();
 
 export type RnvPlatformReactNativeFragment = z.infer<typeof zodPlatformReactNativeFragment>;

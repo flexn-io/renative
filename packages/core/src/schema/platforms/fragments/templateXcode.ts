@@ -81,14 +81,18 @@ const InfoPlist = z.object({});
 
 export type _AppDelegateMethodType = z.infer<typeof AppDelegateMethod>;
 
-export const zodTemplateXcodeFragment = z.object({
-    templateXcode: z.object({
-        Podfile: z.optional(Podfile),
-        project_pbxproj: z.optional(XcodeProj),
-        AppDelegate_mm: z.optional(AppDelegateMm),
-        AppDelegate_h: z.optional(AppDelegateH),
-        Info_plist: z.optional(InfoPlist),
-    }),
-});
+export const zodTemplateXcodeFragment = z
+    .object({
+        templateXcode: z
+            .object({
+                Podfile: z.optional(Podfile),
+                project_pbxproj: z.optional(XcodeProj),
+                AppDelegate_mm: z.optional(AppDelegateMm),
+                AppDelegate_h: z.optional(AppDelegateH),
+                Info_plist: z.optional(InfoPlist),
+            })
+            .partial(),
+    })
+    .partial();
 
 export type RnvTemplateXcodeFragment = z.infer<typeof zodTemplateXcodeFragment>;

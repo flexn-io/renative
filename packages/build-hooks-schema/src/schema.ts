@@ -1,7 +1,6 @@
 import {
     RootAppSchema,
     RootEngineSchema,
-    RootIntegrationSchema,
     RootLocalSchema,
     RootPluginSchema,
     RootPrivateSchema,
@@ -11,6 +10,7 @@ import {
     RootWorkspaceSchema,
     getContext,
     logSuccess,
+    zodRootIntegrationSchema,
 } from '@rnv/core';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { z } from 'zod';
@@ -27,7 +27,7 @@ export const generateSchema = async () => {
     _generateSchemaFile({ schema: RootPrivateSchema, schemaId: 'rnv.private' });
     _generateSchemaFile({ schema: RootPluginSchema, schemaId: 'rnv.plugin' });
     _generateSchemaFile({ schema: RootTemplatesSchema, schemaId: 'rnv.templates' });
-    _generateSchemaFile({ schema: RootIntegrationSchema, schemaId: 'rnv.integration' });
+    _generateSchemaFile({ schema: zodRootIntegrationSchema, schemaId: 'rnv.integration' });
 
     logSuccess('Sucessfully exported renative.project.json schema');
 };

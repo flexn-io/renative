@@ -203,7 +203,7 @@ const getConfigPropArray = <T extends ConfigPropKey>(c: RnvContext, platform: Rn
     configArr.forEach((config) => {
         if (config) {
             //TODO: this is bit of a hack. _getConfigProp expectes already merged obj needs to be redone
-            const val = _getConfigProp(c, key, null, config as ConfigFileBuildConfig);
+            const val = _getConfigProp(c, key, undefined, config as ConfigFileBuildConfig);
             if (val) {
                 result.push(val);
             }

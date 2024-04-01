@@ -73,62 +73,68 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 
 // });
 
-export const zodTemplateAndroidFragment = z.object({
-    gradle_properties: z.optional(GradleProperties),
-    build_gradle: z.optional(BuildGradle),
-    app_build_gradle: z.optional(AppBuildGradle),
-    AndroidManifest_xml: z.optional(AndroidManifest),
-    strings_xml: z.optional(
-        z.object({
-            children: z.optional(
-                z.array(
-                    z.object({
-                        tag: z.string(),
-                        name: z.string(),
-                        child_value: z.string(),
-                    })
-                )
-            ),
-        })
-    ),
-    MainActivity_kt: z.optional(
-        z.object({
-            onCreate: z
-                .string({})
-                .optional()
-                .default('super.onCreate(savedInstanceState)')
-                .describe('Overrides super.onCreate method handler of MainActivity.java'),
-            imports: z.array(z.string()).optional(),
-            methods: z.array(z.string()).optional(),
-            createMethods: z.array(z.string()).optional(),
-            resultMethods: z.array(z.string()).optional(),
-        })
-    ),
-    MainApplication_kt: z.optional(
-        z
+export const zodTemplateAndroidFragment = z
+    .object({
+        templateAndroid: z
             .object({
-                imports: z.array(z.string()).optional(),
-                methods: z.array(z.string()).optional(),
-                createMethods: z.array(z.string()).optional(),
-                packages: z.array(z.string()).optional(),
-                packageParams: z.array(z.string()).optional(),
+                gradle_properties: z.optional(GradleProperties),
+                build_gradle: z.optional(BuildGradle),
+                app_build_gradle: z.optional(AppBuildGradle),
+                AndroidManifest_xml: z.optional(AndroidManifest),
+                strings_xml: z.optional(
+                    z.object({
+                        children: z.optional(
+                            z.array(
+                                z.object({
+                                    tag: z.string(),
+                                    name: z.string(),
+                                    child_value: z.string(),
+                                })
+                            )
+                        ),
+                    })
+                ),
+                MainActivity_kt: z.optional(
+                    z.object({
+                        onCreate: z
+                            .string({})
+                            .optional()
+                            .default('super.onCreate(savedInstanceState)')
+                            .describe('Overrides super.onCreate method handler of MainActivity.java'),
+                        imports: z.array(z.string()).optional(),
+                        methods: z.array(z.string()).optional(),
+                        createMethods: z.array(z.string()).optional(),
+                        resultMethods: z.array(z.string()).optional(),
+                    })
+                ),
+                MainApplication_kt: z.optional(
+                    z
+                        .object({
+                            imports: z.array(z.string()).optional(),
+                            methods: z.array(z.string()).optional(),
+                            createMethods: z.array(z.string()).optional(),
+                            packages: z.array(z.string()).optional(),
+                            packageParams: z.array(z.string()).optional(),
 
-                // onCreate: z
-                //     .string({})
-                //     .optional()
-                //     .default('super.onCreate(savedInstanceState)')
-                //     .describe('Overrides super.onCreate method handler of MainActivity.java'),
+                            // onCreate: z
+                            //     .string({})
+                            //     .optional()
+                            //     .default('super.onCreate(savedInstanceState)')
+                            //     .describe('Overrides super.onCreate method handler of MainActivity.java'),
+                        })
+                        .describe('Allows you to configure behaviour of MainActivity')
+                ),
+
+                settings_gradle: z.optional(z.object({})),
+                gradle_wrapper_properties: z.optional(z.object({})),
+                SplashActivity_java: z.optional(z.object({})),
+                styles_xml: z.optional(z.object({})),
+                colors_xml: z.optional(z.object({})),
+                proguard_rules_pro: z.optional(z.object({})),
             })
-            .describe('Allows you to configure behaviour of MainActivity')
-    ),
-
-    settings_gradle: z.optional(z.object({})),
-    gradle_wrapper_properties: z.optional(z.object({})),
-    SplashActivity_java: z.optional(z.object({})),
-    styles_xml: z.optional(z.object({})),
-    colors_xml: z.optional(z.object({})),
-    proguard_rules_pro: z.optional(z.object({})),
-});
+            .partial(),
+    })
+    .partial();
 // .describe('Allows more advanced modifications to Android based project template');
 
 export type _ManifestChildWithChildrenType = z.infer<typeof ManifestChildWithChildren>;

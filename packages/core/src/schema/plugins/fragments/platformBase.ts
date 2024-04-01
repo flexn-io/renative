@@ -14,8 +14,9 @@ const Path = z
         'Enables you to pass custom path to plugin. If undefined, the default `node_modules/[plugin-name]` will be used.'
     );
 
-export const zodPluginPlatformBaseFragment = {
+export const zodPluginPlatformBaseFragment = z.object({
     disabled: z.optional(Disabled),
     forceLinking: z.optional(ForceLinking),
     path: z.optional(Path),
-};
+});
+export type RnvPluginPlatformBaseFragment = Partial<z.infer<typeof zodPluginPlatformBaseFragment>>;

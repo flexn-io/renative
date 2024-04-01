@@ -22,7 +22,9 @@ export const registerEngine = async (engine: RnvEngine, platform?: RnvPlatform, 
     const c = getContext();
     logDefault(`registerEngine:${engine.config.id}`);
 
-    c.runtime.enginesById[engine.config.id] = engine;
+    if (engine.config.id) {
+        c.runtime.enginesById[engine.config.id] = engine;
+    }
 
     c.runtime.enginesByIndex.push(engine);
     if (engConfig?.packageName) {
@@ -68,7 +70,11 @@ export const registerEngineExtension = (ext: string | null, eExt?: string | null
 
 export const generateEngineExtensions = (exts: Array<string>, config: ConfigFileEngine) => {
     const { id, engineExtension } = config;
-    let extArr = [...registerEngineExtension(id)];
+    let extArr: string[] = [];
+    if (id) {
+        extArr = [...registerEngineExtension(id)];
+    }
+
     exts.forEach((ext) => {
         extArr = extArr.concat(registerEngineExtension(ext, engineExtension));
     });

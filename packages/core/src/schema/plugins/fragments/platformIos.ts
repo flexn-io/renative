@@ -9,14 +9,15 @@ const Version = z.string().describe('Version of pod');
 
 const BuildType = z.enum(['dynamic', 'static']).describe('Build type of the pod');
 
-export const zodPluginPlatformiOSFragment = {
+export const zodPluginPlatformiOSFragment = zodTemplateXcodeFragment.extend({
     git: z.optional(Git),
     commit: z.optional(Commit),
     version: z.optional(Version),
     podNames: z.optional(z.array(z.string())),
     podName: z.optional(z.string()),
     staticFrameworks: z.optional(z.array(z.string())),
-    templateXcode: zodTemplateXcodeFragment,
     isStatic: z.boolean().optional(),
     buildType: z.optional(BuildType),
-};
+});
+
+export type RnvPluginPlatformiOSFragment = Partial<z.infer<typeof zodPluginPlatformiOSFragment>>;

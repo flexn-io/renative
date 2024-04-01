@@ -66,8 +66,8 @@ export const RootTemplateSchema: AnyZodObject = z.object({
 export type RnvRootTemplateSchema = {
     // defaults: RnvDefault,
     // engines: z.optional(EnginesSchema),
-    templateConfig: RnvTemplateConfigFragment;
-    bootstrapConfig: RnvBootstrapConfig;
+    templateConfig?: RnvTemplateConfigFragment;
+    bootstrapConfig?: RnvBootstrapConfig;
 };
 
 // {
