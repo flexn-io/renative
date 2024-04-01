@@ -3,7 +3,7 @@ import { zodPlatformsKeys } from '../../shared';
 
 export const zodPlatformBaseFragment = z
     .object({
-        extendPlatform: z.optional(zodPlatformsKeys),
+        extendPlatform: zodPlatformsKeys,
         assetFolderPlatform: z
             .string()
             .describe(

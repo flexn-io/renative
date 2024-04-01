@@ -25,7 +25,7 @@ export const zodRootAppBaseFragment = z
 // NOTE: Need to explictly type this to generic zod object to avoid TS error:
 // The inferred type of this node exceeds the maximum length the compiler will serialize...
 // This is ok we only use this full schema for runtime validations. actual types
-export const zodRootAppSchema: AnyZodObject = zodRootAppBaseFragment
+export const zodConfigFileApp: AnyZodObject = zodRootAppBaseFragment
     .merge(zodRootProjectCommonSchema)
     .merge(zodRootProjectPlatformsSchema)
     .merge(zodRootProjectPluginsSchema);

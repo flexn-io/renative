@@ -5,15 +5,16 @@ export const zodPlatformElectronFragment = z
         electronConfig: z.any().describe('Allows you to configure electron app as per https://www.electron.build/'),
         BrowserWindow: z
             .object({
-                width: z.number().optional(),
-                height: z.number().optional(),
+                width: z.number(),
+                height: z.number(),
                 webPreferences: z
                     .object({
-                        devTools: z.boolean().optional(),
+                        devTools: z.boolean(),
                     })
-                    .optional()
+
                     .describe('Extra web preferences of electron app'),
             })
+            .partial()
             .describe('Allows you to configure electron wrapper app window'),
         // electronTemplate: z.optional(z.object({})),
         // electronConfig: {

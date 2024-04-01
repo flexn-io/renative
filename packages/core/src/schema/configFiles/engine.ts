@@ -17,7 +17,7 @@ const zodEnginePlatform = z.object({
     npm: z.optional(zodEngineNpm),
 });
 
-export const zodRootEngineSchema = z
+export const zodConfigFileEngine = z
     .object({
         custom: z.optional(zodExt),
         id: z.string().describe('ID of engine'),

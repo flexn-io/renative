@@ -6,4 +6,4 @@ export const zodPluginFragment = z.object({
     custom: z.optional(zodExt),
 });
 
-export const zodRootPluginSchema: AnyZodObject = zodPluginSchema.merge(zodPluginFragment);
+export const zodConfigFilePlugin: AnyZodObject = zodPluginSchema.merge(zodPluginFragment).partial();

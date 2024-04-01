@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { zodPlatformsKeys, zodProjectTemplates } from '../shared';
 import { zodPluginSchema } from '../plugins';
 
-export const zodRootTemplatesSchema = z
+export const zodConfigFileTemplates = z
     .object({
         projectTemplates: zodProjectTemplates,
         engineIdMap: z.record(z.string(), z.string()),

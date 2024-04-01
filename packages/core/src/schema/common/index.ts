@@ -77,13 +77,15 @@ export const zodCommonSchemaFragment = z
 
 export const zodCommonSchema: AnyZodObject = zodCommonSchemaFragment
     .merge(
-        z.object({
-            buildSchemes: z.optional(
-                z.record(
-                    z.string(),
-                    zodCommonSchemaFragment.merge(zodBuildSchemeFragment.merge(zodPlatformBaseFragment))
-                )
-            ),
-        })
+        z
+            .object({
+                buildSchemes: z.optional(
+                    z.record(
+                        z.string(),
+                        zodCommonSchemaFragment.merge(zodBuildSchemeFragment.merge(zodPlatformBaseFragment))
+                    )
+                ),
+            })
+            .partial()
     )
     .describe('Common config props used as default props for all available buildSchemes');

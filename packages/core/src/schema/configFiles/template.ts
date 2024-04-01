@@ -33,7 +33,7 @@ const zodBootstrapQuestionsSchema = z
     )
     .describe('Defines list of custom bootstrap questions');
 
-export const zodBootstrapConfig = z
+export const zodConfigTemplateBootstrapConfig = z
     .object({
         bootstrapQuestions: zodBootstrapQuestionsSchema,
         rnvNewPatchDependencies: z
@@ -50,16 +50,18 @@ export const zodBootstrapConfig = z
                 })
             ),
         }),
-        defaultSelectedPlatforms: zodSupportedPlatforms.optional(),
+        defaultSelectedPlatforms: zodSupportedPlatforms,
     })
     .partial();
 
-export const zodRootTemplateSchema: AnyZodObject = z.object({
-    // defaults: z.optional(DefaultsSchema),
-    // engines: z.optional(EnginesSchema),
-    templateConfig: zodTemplateConfigFragment.optional(),
-    bootstrapConfig: zodBootstrapConfig.optional(),
-});
+export const zodConfigFileTemplate: AnyZodObject = z
+    .object({
+        // defaults: z.optional(DefaultsSchema),
+        // engines: z.optional(EnginesSchema),
+        templateConfig: zodTemplateConfigFragment,
+        bootstrapConfig: zodConfigTemplateBootstrapConfig,
+    })
+    .partial();
 
 // {
 //     title: 'Which service to use?',
@@ -83,5 +85,3 @@ export const zodRootTemplateSchema: AnyZodObject = z.object({
 //         },
 //     ],
 // },
-
-// export type _RootTemplateSchemaType = z.infer<typeof RootTemplateSchema>;

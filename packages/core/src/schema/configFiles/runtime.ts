@@ -1,5 +1,5 @@
 import { z } from 'zod';
 
-export const zodRootRuntimeSchema = z.object({
+export const zodConfigFileRuntime = z.object({
     // extend: z.optional(z.string()),
 });

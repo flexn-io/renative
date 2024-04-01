@@ -13,8 +13,6 @@ export const zodSupportedPlatforms = z
     .array(zodPlatformsKeys)
     .describe('Array list of all supported platforms in current project');
 
-export type _PlatformsKeysType = z.infer<typeof zodPlatformsKeys>;
-
 export const zodExt = z
     .any()
     .describe(

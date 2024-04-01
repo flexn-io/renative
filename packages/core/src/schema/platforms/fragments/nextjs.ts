@@ -13,6 +13,6 @@ export const zodPlatformNextJsFragment = z
             .describe(
                 'Custom export directory used by nextjs equivalent to `npx next export --outdir <exportDir>`. Use relative paths'
             ),
-        nextTranspileModules: z.optional(z.array(z.string())),
+        nextTranspileModules: z.array(z.string()),
     })
     .partial();

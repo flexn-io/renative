@@ -2,37 +2,38 @@ import { z } from 'zod';
 
 const zodPodfile = z
     .object({
-        injectLines: z.optional(z.array(z.string())),
-        post_install: z.optional(z.array(z.string())),
+        injectLines: z.array(z.string()),
+        post_install: z.array(z.string()),
         sources: z
             .optional(z.array(z.string()))
             .describe('Array of URLs that will be injected on top of the Podfile as sources'),
-        podDependencies: z.optional(z.array(z.string())),
-        staticPods: z.optional(z.array(z.string())),
+        podDependencies: z.array(z.string()),
+        staticPods: z.array(z.string()),
         header: z
             .optional(z.array(z.string()))
             .describe('Array of strings that will be injected on top of the Podfile'),
     })
+    .partial()
     .describe('Allows to manipulate Podfile');
 
 // type RnvPodfile = z.infer<typeof zodPodfile>;
 
-const zodXcodeProj = z.object({
-    sourceFiles: z.optional(z.array(z.string())),
-    resourceFiles: z.optional(z.array(z.string())),
-    headerFiles: z.optional(z.array(z.string())),
-    buildPhases: z.optional(
-        z.array(
+const zodXcodeProj = z
+    .object({
+        sourceFiles: z.array(z.string()),
+        resourceFiles: z.array(z.string()),
+        headerFiles: z.array(z.string()),
+        buildPhases: z.array(
             z.object({
                 shellPath: z.string(),
                 shellScript: z.string(),
                 inputPaths: z.array(z.string()),
             })
-        )
-    ),
-    frameworks: z.optional(z.array(z.string())),
-    buildSettings: z.optional(z.record(z.string(), z.string())),
-});
+        ),
+        frameworks: z.array(z.string()),
+        buildSettings: z.record(z.string(), z.string()),
+    })
+    .partial();
 // type RnvXcodeProj = z.infer<typeof zodXcodeProj>;
 
 export const zodAppDelegateMethod = z.union([
@@ -44,9 +45,9 @@ export const zodAppDelegateMethod = z.union([
     }),
 ]);
 
-const zodAppDelegateMm = z.object({
-    appDelegateMethods: z.optional(
-        z.object({
+const zodAppDelegateMm = z
+    .object({
+        appDelegateMethods: z.object({
             application: z
                 .object({
                     didFinishLaunchingWithOptions: z.array(zodAppDelegateMethod).optional(),
@@ -69,28 +70,29 @@ const zodAppDelegateMm = z.object({
                     didReceiveNotificationResponse: z.array(zodAppDelegateMethod).optional(),
                 })
                 .optional(),
-        })
-    ),
-    appDelegateImports: z.optional(z.array(z.string())),
-});
-const zodAppDelegateH = z.object({
-    appDelegateImports: z.optional(z.array(z.string())),
-    appDelegateExtensions: z.optional(z.array(z.string())),
-});
+        }),
+
+        appDelegateImports: z.array(z.string()),
+    })
+    .partial();
+const zodAppDelegateH = z
+    .object({
+        appDelegateImports: z.array(z.string()),
+        appDelegateExtensions: z.array(z.string()),
+    })
+    .partial();
 
 const zodInfoPlist = z.object({});
-
-// .describe('Allows more advanced modifications to Xcode based project template');
 
 export const zodTemplateXcodeFragment = z
     .object({
         templateXcode: z
             .object({
-                Podfile: z.optional(zodPodfile),
-                project_pbxproj: z.optional(zodXcodeProj),
-                AppDelegate_mm: z.optional(zodAppDelegateMm),
-                AppDelegate_h: z.optional(zodAppDelegateH),
-                Info_plist: z.optional(zodInfoPlist),
+                Podfile: zodPodfile,
+                project_pbxproj: zodXcodeProj,
+                AppDelegate_mm: zodAppDelegateMm,
+                AppDelegate_h: zodAppDelegateH,
+                Info_plist: zodInfoPlist,
             })
             .partial(),
     })

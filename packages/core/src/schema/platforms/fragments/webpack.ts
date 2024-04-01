@@ -2,13 +2,15 @@ import { z } from 'zod';
 
 export const zodPlatformWebpackFragment = z
     .object({
-        webpackConfig: z.object({
-            publicUrl: z.string().optional(),
-            customScripts: z
-                .array(z.string())
-                .optional()
-                .describe('Allows you to inject custom script into html header'),
-        }),
+        webpackConfig: z
+            .object({
+                publicUrl: z.string(),
+                customScripts: z
+                    .array(z.string())
+
+                    .describe('Allows you to inject custom script into html header'),
+            })
+            .partial(),
 
         // webpackConfig: {
         //     additionalProperties: true,

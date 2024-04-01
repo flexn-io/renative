@@ -5,28 +5,30 @@ export const zodPlatformiOSFragment = z
         ignoreWarnings: z.boolean().describe('Injects `inhibit_all_warnings` into Podfile'),
         ignoreLogs: z.boolean().describe('Passes `-quiet` to xcodebuild command'),
         deploymentTarget: z.string().describe('Deployment target for xcodepoj'),
-        orientationSupport: z.object({
-            phone: z.optional(z.array(z.string())),
-            // phone: [
-            //                 'UIInterfaceOrientationPortrait',
-            //                 'UIInterfaceOrientationPortraitUpsideDown',
-            //                 'UIInterfaceOrientationLandscapeLeft',
-            //                 'UIInterfaceOrientationLandscapeRight',
-            //             ],
-            tab: z.optional(z.array(z.string())),
-            //             tab: [
-            //                 'UIInterfaceOrientationPortrait',
-            //                 'UIInterfaceOrientationPortraitUpsideDown',
-            //                 'UIInterfaceOrientationLandscapeLeft',
-            //                 'UIInterfaceOrientationLandscapeRight',
-            //             ],
-        }),
+        orientationSupport: z
+            .object({
+                phone: z.array(z.string()),
+                // phone: [
+                //                 'UIInterfaceOrientationPortrait',
+                //                 'UIInterfaceOrientationPortraitUpsideDown',
+                //                 'UIInterfaceOrientationLandscapeLeft',
+                //                 'UIInterfaceOrientationLandscapeRight',
+                //             ],
+                tab: z.array(z.string()),
+                //             tab: [
+                //                 'UIInterfaceOrientationPortrait',
+                //                 'UIInterfaceOrientationPortraitUpsideDown',
+                //                 'UIInterfaceOrientationLandscapeLeft',
+                //                 'UIInterfaceOrientationLandscapeRight',
+                //             ],
+            })
+            .partial(),
         teamID: z.string().describe('Apple teamID'),
         excludedArchs: z
             .array(z.string())
             .describe('Defines excluded architectures. This transforms to xcodeproj: `EXCLUDED_ARCHS="<VAL VAL ...>"`'),
         urlScheme: z.string().describe('URL Scheme for the app used for deeplinking'),
-        teamIdentifier: z.optional(z.string().describe('Apple developer team ID')),
+        teamIdentifier: z.string().describe('Apple developer team ID'),
         scheme: z.string(),
         schemeTarget: z.string(),
         appleId: z.string(),
@@ -38,7 +40,7 @@ export const zodPlatformiOSFragment = z
         provisionProfileSpecifiers: z.record(z.string(), z.string()),
         allowProvisioningUpdates: z.boolean(),
         provisioningProfiles: z.record(z.string()),
-        codeSignIdentities: z.optional(z.record(z.string(), z.string())),
+        codeSignIdentities: z.record(z.string(), z.string()),
         systemCapabilities: z.record(z.string(), z.boolean()),
         entitlements: z.record(z.string()),
         runScheme: z.string(),

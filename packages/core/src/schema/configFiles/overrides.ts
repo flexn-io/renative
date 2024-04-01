@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
-export const zodRootOverridesSchema = z.object({
-    overrides: z.record(z.string(), z.record(z.string(), z.string())),
-});
+export const zodConfigFileOverrides = z
+    .object({
+        overrides: z.record(z.string(), z.record(z.string(), z.string())),
+    })
+    .partial();

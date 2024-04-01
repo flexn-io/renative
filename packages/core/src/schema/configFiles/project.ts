@@ -138,8 +138,7 @@ export const zodRootProjectBaseFragment = z
             .describe('Object containing integration configurations where key represents package name'), // TODO: rename to mods
         env: z.record(z.string(), z.any()).describe('Object containing injected env variables'),
         runtime: zodRuntime,
-        // DEPRECATED
-
+        // DEPRECATED --------------
         isMonorepo: z.boolean().describe('Mark if your project is part of monorepo'), // TODO: remove and use auto detection
         monoRoot: z.string().describe('Define custom path to monorepo root where starting point is project directory'), // TODO: remove and use auto detection
         custom: zodExt, // TODO: find better way to handle
@@ -149,7 +148,6 @@ export const zodRootProjectBaseFragment = z
             .describe(
                 "Enables the equivalent to passing --skipDependencyCheck parameter on every rnv run so you don't have to use it"
             ),
-
         // REMOVED
         // useTemplate: z.optional(UseTemplate),
         // isNew: z
@@ -164,7 +162,7 @@ export const zodRootProjectBaseFragment = z
 export const zodRootProjectCommonSchema: AnyZodObject = z.object({ common: z.optional(zodCommonSchema) });
 export const zodRootProjectPlatformsSchema: AnyZodObject = z.object({ platforms: z.optional(zodPlatformsSchema) });
 export const zodRootProjectPluginsSchema: AnyZodObject = z.object({ plugins: z.optional(zodPluginsSchema) });
-export const zodRootProjectSchema: AnyZodObject = zodRootProjectBaseFragment
+export const zodConfigFileProject: AnyZodObject = zodRootProjectBaseFragment
     .merge(zodRootProjectCommonSchema)
     .merge(zodRootProjectPlatformsSchema)
     .merge(zodRootProjectPluginsSchema)
