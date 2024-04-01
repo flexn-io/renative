@@ -1,10 +1,10 @@
 import { getRealPath, writeFileSync } from '../system/fs';
 import { chalk, logDefault, logWarning } from '../logger';
-import { RnvPlatform } from '../types';
-import { PlatformKey } from '../schema/types';
-import { NpmPackageFile } from './types';
-import { ConfigFileProject } from '../schema/configFiles/types';
+import { type RnvPlatform } from '../types';
+import { type NpmPackageFile } from './types';
 import { getContext } from '../context/provider';
+import { PlatformKey } from '../enums/platformName';
+import { type ConfigFileProject } from '../schema/configFiles/project';
 
 const SYNCED_DEPS = [
     'rnv',

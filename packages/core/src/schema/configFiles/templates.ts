@@ -38,3 +38,6 @@ export const RootTemplatesSchema = z
     .partial();
 
 export type _RootTemplatesSchemaType = z.infer<typeof RootTemplatesSchema>;
+
+// renative.templates.json
+export type ConfigFileTemplates = _RootTemplatesSchemaType;

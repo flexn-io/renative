@@ -33,3 +33,6 @@ export const RootWorkspaceSchema = z.object({
 });
 
 export type _RootWorkspaceSchemaType = z.infer<typeof RootWorkspaceSchema>;
+
+// renative.workspace.json
+export type ConfigFileWorkspace = _RootWorkspaceSchemaType;

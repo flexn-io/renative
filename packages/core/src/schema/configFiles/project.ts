@@ -186,3 +186,7 @@ export type RnvRootProjectSchema = RnvRootProjectBaseFragment & {
     platforms?: RnvPlatformsSchema;
     plugins?: RnvPluginsSchema;
 };
+// renative.json
+export type ConfigFileProject = RnvRootProjectSchema;
+
+export type ConfigProjectPaths = Required<RnvRootProjectBaseFragment>['paths'];

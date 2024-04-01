@@ -47,4 +47,7 @@ export const RootPrivateSchema = z.object({
 
 export type _RootPrivateSchemaType = z.infer<typeof RootPrivateSchema>;
 
+// renative.private.json
+export type ConfigFilePrivate = _RootPrivateSchemaType;
+
 export type _MergedPlatformPrivateObjectType = z.infer<typeof PlatformAndroid>;

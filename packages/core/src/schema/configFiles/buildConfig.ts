@@ -37,6 +37,11 @@ export type ConfigFileBuildConfig =
         RnvRootProjectSchema &
         _RootLocalSchemaType &
         RnvRootAppBaseFragment;
+
+export type BuildConfigKey = keyof ConfigFileBuildConfig;
+
 // Common &
 // PluginsMap &
 // PlatformsMap;
+
+// export type RenativeConfigRnvTaskName = keyof Required<Required<ConfigFileBuildConfig>['tasks']>;

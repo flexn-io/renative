@@ -5,3 +5,6 @@ export const RootRuntimeSchema = z.object({
 });
 
 export type _RootRuntimeSchemaType = z.infer<typeof RootRuntimeSchema>;
+
+// renative.runtime.json
+export type ConfigFileRuntime = _RootRuntimeSchemaType;

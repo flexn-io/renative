@@ -9,3 +9,6 @@ const zodPluginFragment = z.object({
 export const RootPluginSchema: AnyZodObject = zodPluginSchema.merge(zodPluginFragment);
 
 export type _RootPluginSchemaType = RnvPluginSchema & z.infer<typeof zodPluginFragment>;
+
+// renative.plugin.json
+export type ConfigFilePlugin = _RootPluginSchemaType;

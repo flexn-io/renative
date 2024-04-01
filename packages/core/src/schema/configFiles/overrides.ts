@@ -5,3 +5,6 @@ export const zodRootOverridesSchema = z.object({
 });
 
 export type RnvRootOverridesSchema = z.infer<typeof zodRootOverridesSchema>;
+
+//overrides.json
+export type ConfigFileOverrides = RnvRootOverridesSchema;

@@ -37,6 +37,7 @@ export * from './tasks/taskCreator';
 export * from './schema';
 export * from './schema/defaults';
 export * from './schema/schemaManager';
+export * from './schema/common';
 
 export * from './system/exec';
 export * from './system/fs';

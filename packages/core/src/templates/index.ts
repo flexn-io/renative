@@ -10,11 +10,12 @@ import {
 import { chalk, logError, logInfo, logWarning, logDefault, logDebug } from '../logger';
 import { doResolve } from '../system/resolve';
 import { RnvContext } from '../context/types';
-import { ConfigFileProject, ConfigFileTemplate } from '../schema/configFiles/types';
 import { RnvFileName } from '../enums/fileName';
 import { getContext } from '../context/provider';
 import { RnvFolderName } from '../enums/folderName';
 import { checkIfProjectAndNodeModulesExists } from '../projects/npm';
+import { type ConfigFileTemplate } from '../schema/configFiles/template';
+import { type ConfigFileProject } from '../schema/configFiles/project';
 
 export const configureTemplateFiles = async () => {
     logDefault('configureTemplateFiles');

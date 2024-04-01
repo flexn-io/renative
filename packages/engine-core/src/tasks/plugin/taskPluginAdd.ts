@@ -7,7 +7,7 @@ import {
     PluginListResponseItem,
     getApi,
     inquirerPrompt,
-    RenativeConfigPlugin,
+    RnvPluginSchema,
     createTask,
     RnvTaskName,
 } from '@rnv/core';
@@ -75,7 +75,7 @@ export default createTask({
                 });
                 finalProps[pluginProps[i2]] = propValue;
             }
-            const pluginToAdd: RenativeConfigPlugin = {};
+            const pluginToAdd: RnvPluginSchema = {};
             pluginToAdd.props = finalProps;
             cnfPlugins[pluginKey] = pluginToAdd;
         }

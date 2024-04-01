@@ -81,3 +81,4 @@ export const RnvPlatforms = [
 
 type RnvPlatformName = typeof RnvPlatformName;
 export type RnvPlatformNameKey = keyof RnvPlatformName;
+export type PlatformKey = RnvPlatformNameKey;

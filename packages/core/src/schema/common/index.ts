@@ -75,6 +75,7 @@ export const zodCommonSchemaFragment = z
     })
     .partial();
 export type RnvCommonSchemaFragment = z.infer<typeof zodCommonSchemaFragment>;
+export type CommonPropKey = keyof RnvCommonSchemaFragment; // We Request keys excluding buildScheme (not RnvCommonSchema)
 
 export const zodCommonSchema: AnyZodObject = zodCommonSchemaFragment
     .merge(
@@ -92,6 +93,7 @@ export const zodCommonSchema: AnyZodObject = zodCommonSchemaFragment
 export type RnvCommonBuildSchemeSchema = Partial<
     RnvCommonSchemaFragment & RnvBuildSchemeFragment & RnvPlatformBaseFragment
 >;
+export type CommonBuildSchemeKey = keyof RnvCommonBuildSchemeSchema;
 
 export type RnvCommonSchema = Partial<RnvCommonSchemaFragment> & {
     buildSchemes?: Record<string, RnvCommonBuildSchemeSchema>;

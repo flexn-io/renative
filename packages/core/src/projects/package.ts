@@ -2,11 +2,11 @@ import path from 'path';
 import merge from 'deepmerge';
 import { fsExistsSync, fsWriteFileSync, loadFile, readObjectSync } from '../system/fs';
 import { logDefault, logWarning, logInfo } from '../logger';
-import { ConfigFileTemplate } from '../schema/configFiles/types';
 import { RnvFileName } from '../enums/fileName';
 import { getContext } from '../context/provider';
-import { NpmPackageFile } from '../configs/types';
+import { type NpmPackageFile } from '../configs/types';
 import { writeRenativeConfigFile } from '../configs/utils';
+import { type ConfigFileTemplate } from '../schema/configFiles/template';
 
 export const updatePackage = (override: Partial<NpmPackageFile>) => {
     const c = getContext();

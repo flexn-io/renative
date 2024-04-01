@@ -39,3 +39,5 @@ export type RnvRootAppSchema = RnvRootAppBaseFragment & {
     platforms?: RnvPlatformsSchema;
     plugins?: RnvPluginsSchema;
 };
+// appConfigs/**/renative.json
+export type ConfigFileApp = RnvRootAppSchema;

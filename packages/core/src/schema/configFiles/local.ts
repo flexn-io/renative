@@ -18,3 +18,6 @@ export const RootLocalSchema = z.object({
 });
 
 export type _RootLocalSchemaType = z.infer<typeof RootLocalSchema>;
+
+// renative.local.json
+export type ConfigFileLocal = _RootLocalSchemaType;

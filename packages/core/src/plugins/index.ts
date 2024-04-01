@@ -13,23 +13,25 @@ import {
 } from '../system/fs';
 import { chalk, logDebug, logError, logInfo, logSuccess, logDefault, logWarning } from '../logger';
 import { doResolve } from '../system/resolve';
-import { RnvContext } from '../context/types';
-import { PluginCallback, RnvPlugin, RnvPluginScope } from './types';
-import { RenativeConfigPaths, RenativeConfigPlugin, RenativeConfigPluginPlatform } from '../schema/types';
+import { type RnvContext } from '../context/types';
+import { type PluginCallback, type RnvPlugin, type RnvPluginScope } from './types';
 import { inquirerPrompt } from '../api';
 import { writeRenativeConfigFile } from '../configs/utils';
 import { installPackageDependencies } from '../projects/npm';
-import { OverridesOptions, ResolveOptions } from '../system/types';
-import { ConfigFileOverrides, ConfigFilePlugin, ConfigFileTemplates } from '../schema/configFiles/types';
+import { type OverridesOptions, type ResolveOptions } from '../system/types';
 import { getContext } from '../context/provider';
 import { getConfigProp } from '../context/contextProps';
 import { RnvFileName } from '../enums/fileName';
-import { AsyncCallback } from '../projects/types';
+import { type AsyncCallback } from '../projects/types';
 import { createDependencyMutation } from '../projects/mutations';
 import { updatePackage } from '../projects/package';
-import { RnvPluginPlatformSchema } from '../schema/plugins';
+import { type RnvPluginPlatformSchema, type RnvPluginSchema } from '../schema/plugins';
+import { type ConfigProjectPaths } from '../schema/configFiles/project';
+import { type ConfigFileTemplates } from '../schema/configFiles/templates';
+import { type ConfigFileOverrides } from '../schema/configFiles/overrides';
+import { type ConfigFilePlugin } from '../schema/configFiles/plugin';
 
-const _getPluginScope = (plugin: RenativeConfigPlugin | string): RnvPluginScope => {
+const _getPluginScope = (plugin: RnvPluginSchema | string): RnvPluginScope => {
     if (typeof plugin === 'string') {
         if (plugin.startsWith('source:')) {
             return { scope: plugin.split(':').pop() || 'rnv' };
@@ -60,7 +62,7 @@ export const getMergedPlugin = (c: RnvContext, key: string) => {
 
 const _getMergedPlugin = (
     c: RnvContext,
-    plugin: RenativeConfigPlugin | string | undefined,
+    plugin: RnvPluginSchema | string | undefined,
     pluginKey: string,
     parentScope?: string,
     scopes?: Array<string>,
@@ -111,7 +113,7 @@ const _getMergedPlugin = (
         scopes,
         true
     );
-    let currentPlugin: RenativeConfigPlugin;
+    let currentPlugin: RnvPluginSchema;
     if (typeof plugin === 'string' || plugin instanceof String) {
         currentPlugin = {};
     } else {
@@ -389,7 +391,7 @@ export const resolvePluginDependants = async () => {
 const _resolvePluginDependencies = async (
     c: RnvContext,
     key: string,
-    keyScope: RenativeConfigPlugin | string,
+    keyScope: RnvPluginSchema | string,
     parentKey?: string
 ) => {
     // IMPORTANT: Do not cache this valuse as they need to be refreshed every
@@ -458,7 +460,7 @@ export const parsePlugins = (
 
         const excludedPlugins = getConfigProp('excludedPlugins') || [];
 
-        const handleActivePlugin = (plugin: RnvPlugin, pluginPlat: RenativeConfigPluginPlatform, key: string) => {
+        const handleActivePlugin = (plugin: RnvPlugin, pluginPlat: RnvPluginPlatformSchema, key: string) => {
             // log deprecated if present
             if (plugin.deprecated) {
                 logWarning(plugin.deprecated);
@@ -581,7 +583,7 @@ export const loadPluginTemplates = async () => {
 
 const _parsePluginTemplateDependencies = (
     c: RnvContext,
-    customPluginTemplates: RenativeConfigPaths['pluginTemplates'],
+    customPluginTemplates: ConfigProjectPaths['pluginTemplates'],
     scope = 'root'
 ) => {
     logDefault('_parsePluginTemplateDependencies', `scope:${scope}`);

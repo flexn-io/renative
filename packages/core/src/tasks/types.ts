@@ -1,5 +1,5 @@
 import { RnvContext } from '../context/types';
-import type { PlatformKey } from '../schema/types';
+import { PlatformKey } from '../enums/platformName';
 
 export type RnvTask = {
     task: string;

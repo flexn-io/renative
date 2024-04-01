@@ -2,9 +2,9 @@ import path from 'path';
 
 import { fsExistsSync, fsReaddirSync, fsLstatSync, readObjectSync } from '../system/fs';
 import { logDefault, logWarning } from '../logger';
-import { ConfigFileApp } from '../schema/configFiles/types';
 import { RnvFileName } from '../enums/fileName';
 import { getContext } from '../context/provider';
+import { type ConfigFileApp } from '../schema/configFiles/app';
 
 const IGNORE_FOLDERS = ['.git'];
 

@@ -32,3 +32,5 @@ export const RootEngineSchema = z
     .partial();
 
 export type RnvRootEngineSchema = z.infer<typeof RootEngineSchema>;
+// renative.engine.json
+export type ConfigFileEngine = RnvRootEngineSchema;

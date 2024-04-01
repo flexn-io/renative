@@ -90,9 +90,11 @@ export type RnvPlatformSchemaFragment = RnvCommonSchemaFragment &
     RnvPlatformNextJsFragment &
     RnvTemplateAndroidFragment &
     RnvTemplateXcodeFragment;
+export type PlatPropKey = keyof RnvPlatformSchemaFragment; // We Request keys excluding buildScheme (not RnvPlatformSchema)
 
 // export type RnvPlatformsSchema = z.infer<typeof zodPlatformsSchema>;
 export type RnvPlatformBuildSchemeSchema = RnvCommonSchemaFragment & RnvBuildSchemeFragment & RnvPlatformSchemaFragment;
+export type PlatformBuildSchemeKey = keyof RnvPlatformBuildSchemeSchema;
 
 export type RnvPlatformSchema = RnvPlatformSchemaFragment & {
     buildSchemes?: Record<string, RnvPlatformBuildSchemeSchema>;

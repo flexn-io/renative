@@ -5,3 +5,6 @@ export const zodRootIntegrationSchema = z.object({
 });
 //
 export type RnvRootIntegrationSchema = z.infer<typeof zodRootIntegrationSchema>;
+
+// renative.integration.json
+export type ConfigFileIntegration = RnvRootIntegrationSchema;

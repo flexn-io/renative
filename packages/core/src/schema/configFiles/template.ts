@@ -70,6 +70,9 @@ export type RnvRootTemplateSchema = {
     bootstrapConfig?: RnvBootstrapConfig;
 };
 
+// renative.template.json
+export type ConfigFileTemplate = RnvRootTemplateSchema;
+
 // {
 //     title: 'Which service to use?',
 //     type: 'list',

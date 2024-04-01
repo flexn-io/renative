@@ -4,9 +4,10 @@ import { getContext } from '../context/provider';
 
 import path from 'path';
 import { chalk, logDefault, logDebug, logInfo, logWarning } from '../logger';
-import { RnvContext } from '../context/types';
+import { type RnvContext } from '../context/types';
 import { generateOptions, inquirerPrompt } from '../api';
-import { ConfigFileWorkspace, ConfigFileWorkspaces } from '../schema/configFiles/types';
+import { type ConfigFileWorkspace } from '../schema/configFiles/workspace';
+import { type ConfigFileWorkspaces } from '../schema/configFiles/workspaces';
 
 export const createWorkspace = async (workspaceID: string, workspacePath: string) => {
     const c = getContext();

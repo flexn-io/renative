@@ -13,7 +13,7 @@ import { chalk, logDefault, logWarning, logDebug } from '../logger';
 import { getContext } from '../context/provider';
 import type { RnvContext, RnvContextBuildConfig } from '../context/types';
 import { FileUtilsPropConfig } from '../system/types';
-import { PlatformKey } from '../schema/types';
+import { PlatformKey } from '../enums/platformName';
 
 const _arrayMergeOverride = (_destinationArray: Array<string>, sourceArray: Array<string>) => sourceArray;
 

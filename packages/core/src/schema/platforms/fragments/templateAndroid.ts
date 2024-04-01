@@ -137,8 +137,8 @@ export const zodTemplateAndroidFragment = z
     .partial();
 // .describe('Allows more advanced modifications to Android based project template');
 
-export type _ManifestChildWithChildrenType = z.infer<typeof ManifestChildWithChildren>;
+export type AndroidManifestNode = z.infer<typeof ManifestChildWithChildren>;
 
-export type _AndroidManifestType = z.infer<typeof AndroidManifest>;
+export type AndroidManifest = z.infer<typeof AndroidManifest>;
 
 export type RnvTemplateAndroidFragment = z.infer<typeof zodTemplateAndroidFragment>;

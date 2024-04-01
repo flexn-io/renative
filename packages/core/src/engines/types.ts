@@ -1,5 +1,5 @@
-import { ConfigFileEngine } from '../schema/configFiles/types';
-import type { PlatformKey } from '../schema/types';
+import { PlatformKey } from '../enums/platformName';
+import { type ConfigFileEngine } from '../schema/configFiles/engine';
 import type { RnvTaskMap } from '../tasks/types';
 
 export type RnvEngine = {
