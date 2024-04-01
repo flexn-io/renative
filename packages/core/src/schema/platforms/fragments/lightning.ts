@@ -5,5 +5,3 @@ export const zodPlatformLightningFragment = z
         target: z.string(),
     })
     .partial();
-
-export type RnvPlatformLightningFragment = z.infer<typeof zodPlatformLightningFragment>;

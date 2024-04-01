@@ -1,25 +1,28 @@
-import { type ConfigProp, type ConfigPropKey } from '../schema/types';
-import { type RnvEngine, type RnvEnginePlatform } from '../engines/types';
-import { type OverridesOptions } from '../system/types';
-import { type RnvPlatform } from '../types';
-import { type NpmPackageFile } from '../configs/types';
-import { type ConfigFileBuildConfig } from '../schema/configFiles/buildConfig';
+import type {
+    ConfigFileApp,
+    ConfigFileBuildConfig,
+    ConfigFileEngine,
+    ConfigFileLocal,
+    ConfigFilePlugin,
+    ConfigFilePrivate,
+    ConfigFileProject,
+    ConfigFileRuntime,
+    ConfigFileTemplates,
+    ConfigFileWorkspace,
+    ConfigFileWorkspaces,
+    ConfigProp,
+    ConfigPropKey,
+} from '../schema/types';
+import type { RnvEngine, RnvEnginePlatform } from '../engines/types';
+import type { OverridesOptions } from '../system/types';
+import type { RnvPlatform } from '../types';
+import type { NpmPackageFile } from '../configs/types';
 import { type ParamKeys, type ProgramOptionsKey } from '../tasks/constants';
 import { type ExecaChildProcess } from 'execa';
 import { type RnvPlugin } from '../plugins/types';
-import { type RnvIntegration } from '../integrations/types';
-import { type DependencyMutation } from '../projects/types';
+import type { RnvIntegration } from '../integrations/types';
+import type { DependencyMutation } from '../projects/types';
 import { PlatformKey } from '../enums/platformName';
-import { type ConfigFileWorkspaces } from '../schema/configFiles/workspaces';
-import { type ConfigFileWorkspace } from '../schema/configFiles/workspace';
-import { type ConfigFileTemplates } from '../schema/configFiles/templates';
-import { type ConfigFileRuntime } from '../schema/configFiles/runtime';
-import { type ConfigFileProject } from '../schema/configFiles/project';
-import { type ConfigFileApp } from '../schema/configFiles/app';
-import { type ConfigFileLocal } from '../schema/configFiles/local';
-import { type ConfigFilePrivate } from '../schema/configFiles/private';
-import { type ConfigFilePlugin } from '../schema/configFiles/plugin';
-import { type ConfigFileEngine } from '../schema/configFiles/engine';
 
 export type CreateContextOptions = {
     program: RnvContextProgram;

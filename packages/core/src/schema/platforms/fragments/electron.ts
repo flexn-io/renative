@@ -74,5 +74,3 @@ export const zodPlatformElectronFragment = z
         // },
     })
     .partial();
-
-export type RnvPlatformElectronFragment = z.infer<typeof zodPlatformElectronFragment>;

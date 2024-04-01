@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import type { ConfigAndroidManifestChildType } from '../../types';
 
 const GradleProperties = z
     .record(z.string(), z.union([z.string(), z.boolean(), z.number()]))
@@ -35,7 +36,7 @@ const AppBuildGradle = z
     })
     .describe('Overrides values in `app/build.gradle` file of generated android based project');
 
-const ManifestChildBase = z.object({
+export const zodManifestChildBase = z.object({
     tag: z.string(),
     'android:name': z.string(),
     'android:required': z.optional(z.boolean()),
@@ -53,17 +54,13 @@ const ManifestChildBase = z.object({
 //     children?: Array<ManifestFeature>;
 // };
 
-export type _ManifestChildType = z.infer<typeof ManifestChildBase> & {
-    children?: _ManifestChildType[];
-};
-
-const ManifestChildWithChildren: z.ZodType<_ManifestChildType> = ManifestChildBase.extend({
-    children: z.lazy(() => ManifestChildWithChildren.array()),
+export const zodManifestChildWithChildren: z.ZodType<ConfigAndroidManifestChildType> = zodManifestChildBase.extend({
+    children: z.lazy(() => zodManifestChildWithChildren.array()),
 });
 
-const AndroidManifest = ManifestChildBase.extend({
+export const zodAndroidManifest = zodManifestChildBase.extend({
     package: z.string().optional(),
-    children: z.array(ManifestChildWithChildren),
+    children: z.array(zodManifestChildWithChildren),
 }).describe(`Allows you to directly manipulate \`AndroidManifest.xml\` via json override mechanism
 Injects / Overrides values in AndroidManifest.xml file of generated android based project
 > IMPORTANT: always ensure that your object contains \`tag\` and \`android:name\` to target correct tag to merge into
@@ -80,7 +77,7 @@ export const zodTemplateAndroidFragment = z
                 gradle_properties: z.optional(GradleProperties),
                 build_gradle: z.optional(BuildGradle),
                 app_build_gradle: z.optional(AppBuildGradle),
-                AndroidManifest_xml: z.optional(AndroidManifest),
+                AndroidManifest_xml: z.optional(zodAndroidManifest),
                 strings_xml: z.optional(
                     z.object({
                         children: z.optional(
@@ -136,9 +133,3 @@ export const zodTemplateAndroidFragment = z
     })
     .partial();
 // .describe('Allows more advanced modifications to Android based project template');
-
-export type AndroidManifestNode = z.infer<typeof ManifestChildWithChildren>;
-
-export type AndroidManifest = z.infer<typeof AndroidManifest>;
-
-export type RnvTemplateAndroidFragment = z.infer<typeof zodTemplateAndroidFragment>;

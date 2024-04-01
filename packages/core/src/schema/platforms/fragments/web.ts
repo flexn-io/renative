@@ -7,5 +7,3 @@ export const zodPlatformWebFragment = z
         environment: z.string(),
     })
     .partial();
-
-export type RnvPlatformWebFragment = z.infer<typeof zodPlatformWebFragment>;

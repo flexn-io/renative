@@ -1,4 +1,4 @@
-import { type ConfigFileIntegration } from '../schema/configFiles/integration';
+import type { ConfigFileIntegration } from '../schema/types';
 import { RnvTask } from '../tasks/types';
 
 export type RnvIntegration = {

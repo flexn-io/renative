@@ -4,10 +4,10 @@ import { installPackageDependencies } from '../projects/npm';
 import { logDebug, logDefault, chalk, logInfo, logWarning, logError } from '../logger';
 import { doResolve } from '../system/resolve';
 import { configurePlugins } from '../plugins';
-import { type RnvContext } from '../context/types';
-import { type RnvTask } from '../tasks/types';
-import { type RenativeConfigVersion, type RnvPlatform } from '../types';
-import { type RnvEngine, type RnvEngineInstallConfig, type RnvEngineTemplate } from './types';
+import type { RnvContext } from '../context/types';
+import type { RnvTask } from '../tasks/types';
+import type { RenativeConfigVersion, RnvPlatform } from '../types';
+import type { RnvEngine, RnvEngineInstallConfig, RnvEngineTemplate } from './types';
 import { inquirerPrompt } from '../api';
 import { getContext } from '../context/provider';
 import { writeRenativeConfigFile } from '../configs/utils';
@@ -16,7 +16,7 @@ import { getEngineTemplateByPlatform } from '../configs/engines';
 import { getConfigProp } from '../context/contextProps';
 import { registerRnvTasks } from '../tasks/taskRegistry';
 import { createDependencyMutation } from '../projects/mutations';
-import { type ConfigFileEngine } from '../schema/configFiles/engine';
+import type { ConfigFileEngine } from '../schema/types';
 
 export const registerEngine = async (engine: RnvEngine, platform?: RnvPlatform, engConfig?: RnvEngineTemplate) => {
     const c = getContext();

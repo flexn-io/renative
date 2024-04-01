@@ -26,5 +26,3 @@ export const zodPlatformBaseFragment = z
         getJsBundleFile: z.string(),
     })
     .partial();
-
-export type RnvPlatformBaseFragment = z.infer<typeof zodPlatformBaseFragment>;

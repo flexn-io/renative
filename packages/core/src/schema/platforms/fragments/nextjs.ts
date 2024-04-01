@@ -16,5 +16,3 @@ export const zodPlatformNextJsFragment = z
         nextTranspileModules: z.optional(z.array(z.string())),
     })
     .partial();
-
-export type RnvPlatformNextJsFragment = z.infer<typeof zodPlatformNextJsFragment>;

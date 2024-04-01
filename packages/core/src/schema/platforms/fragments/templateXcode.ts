@@ -35,7 +35,7 @@ const zodXcodeProj = z.object({
 });
 // type RnvXcodeProj = z.infer<typeof zodXcodeProj>;
 
-const AppDelegateMethod = z.union([
+export const zodAppDelegateMethod = z.union([
     z.string(),
     z.object({
         order: z.number(),
@@ -49,24 +49,24 @@ const zodAppDelegateMm = z.object({
         z.object({
             application: z
                 .object({
-                    didFinishLaunchingWithOptions: z.array(AppDelegateMethod).optional(),
-                    applicationDidBecomeActive: z.array(AppDelegateMethod).optional(),
-                    open: z.array(AppDelegateMethod).optional(),
-                    supportedInterfaceOrientationsFor: z.array(AppDelegateMethod).optional(),
-                    didReceiveRemoteNotification: z.array(AppDelegateMethod).optional(),
-                    didFailToRegisterForRemoteNotificationsWithError: z.array(AppDelegateMethod).optional(),
-                    didReceive: z.array(AppDelegateMethod).optional(),
-                    didRegister: z.array(AppDelegateMethod).optional(),
-                    didRegisterForRemoteNotificationsWithDeviceToken: z.array(AppDelegateMethod).optional(),
-                    continue: z.array(AppDelegateMethod).optional(),
-                    didConnectCarInterfaceController: z.array(AppDelegateMethod).optional(),
-                    didDisconnectCarInterfaceController: z.array(AppDelegateMethod).optional(),
+                    didFinishLaunchingWithOptions: z.array(zodAppDelegateMethod).optional(),
+                    applicationDidBecomeActive: z.array(zodAppDelegateMethod).optional(),
+                    open: z.array(zodAppDelegateMethod).optional(),
+                    supportedInterfaceOrientationsFor: z.array(zodAppDelegateMethod).optional(),
+                    didReceiveRemoteNotification: z.array(zodAppDelegateMethod).optional(),
+                    didFailToRegisterForRemoteNotificationsWithError: z.array(zodAppDelegateMethod).optional(),
+                    didReceive: z.array(zodAppDelegateMethod).optional(),
+                    didRegister: z.array(zodAppDelegateMethod).optional(),
+                    didRegisterForRemoteNotificationsWithDeviceToken: z.array(zodAppDelegateMethod).optional(),
+                    continue: z.array(zodAppDelegateMethod).optional(),
+                    didConnectCarInterfaceController: z.array(zodAppDelegateMethod).optional(),
+                    didDisconnectCarInterfaceController: z.array(zodAppDelegateMethod).optional(),
                 })
                 .optional(),
             userNotificationCenter: z
                 .object({
-                    willPresent: z.array(AppDelegateMethod).optional(),
-                    didReceiveNotificationResponse: z.array(AppDelegateMethod).optional(),
+                    willPresent: z.array(zodAppDelegateMethod).optional(),
+                    didReceiveNotificationResponse: z.array(zodAppDelegateMethod).optional(),
                 })
                 .optional(),
         })
@@ -82,8 +82,6 @@ const zodInfoPlist = z.object({});
 
 // .describe('Allows more advanced modifications to Xcode based project template');
 
-export type ConfigAppDelegateMethod = z.infer<typeof AppDelegateMethod>;
-
 export const zodTemplateXcodeFragment = z
     .object({
         templateXcode: z
@@ -97,5 +95,3 @@ export const zodTemplateXcodeFragment = z
             .partial(),
     })
     .partial();
-
-export type RnvTemplateXcodeFragment = z.infer<typeof zodTemplateXcodeFragment>;

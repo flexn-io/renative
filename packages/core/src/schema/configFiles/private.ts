@@ -3,7 +3,7 @@ import { z } from 'zod';
 const SENSITIVE =
     '> WARNING. this prop is sensitive and should not be stored in standard `renative.json` configs. use `renative.private.json` files instead!\n\n';
 
-const PlatformAndroid = z
+export const zodPrivatePlatformAndroid = z
     .object({
         storePassword: z.string().describe(`${SENSITIVE}storePassword for keystore file`).optional(),
         keyPassword: z.string().describe(`${SENSITIVE}keyPassword for keystore file`).optional(),
@@ -12,9 +12,9 @@ const PlatformAndroid = z
     })
     .optional();
 
-const PlatformGeneric = z.object({}).optional();
+const zodPrivatePlatformGeneric = z.object({}).optional();
 
-export const RootPrivateSchema = z.object({
+export const zodRootPrivateSchema = z.object({
     private: z
         .record(z.any())
         .describe(
@@ -23,31 +23,24 @@ export const RootPrivateSchema = z.object({
         .optional(),
     platforms: z
         .object({
-            android: PlatformAndroid,
-            androidtv: PlatformAndroid,
-            androidwear: PlatformAndroid,
-            firetv: PlatformAndroid,
-            ios: PlatformGeneric,
-            tvos: PlatformGeneric,
-            tizen: PlatformGeneric,
-            tizenmobile: PlatformGeneric,
-            tizenwatch: PlatformGeneric,
-            webos: PlatformGeneric,
-            web: PlatformGeneric,
-            webtv: PlatformGeneric,
-            chromecast: PlatformGeneric,
-            kaios: PlatformGeneric,
-            macos: PlatformGeneric,
-            linux: PlatformGeneric,
-            windows: PlatformGeneric,
-            xbox: PlatformGeneric,
+            android: zodPrivatePlatformAndroid,
+            androidtv: zodPrivatePlatformAndroid,
+            androidwear: zodPrivatePlatformAndroid,
+            firetv: zodPrivatePlatformAndroid,
+            ios: zodPrivatePlatformGeneric,
+            tvos: zodPrivatePlatformGeneric,
+            tizen: zodPrivatePlatformGeneric,
+            tizenmobile: zodPrivatePlatformGeneric,
+            tizenwatch: zodPrivatePlatformGeneric,
+            webos: zodPrivatePlatformGeneric,
+            web: zodPrivatePlatformGeneric,
+            webtv: zodPrivatePlatformGeneric,
+            chromecast: zodPrivatePlatformGeneric,
+            kaios: zodPrivatePlatformGeneric,
+            macos: zodPrivatePlatformGeneric,
+            linux: zodPrivatePlatformGeneric,
+            windows: zodPrivatePlatformGeneric,
+            xbox: zodPrivatePlatformGeneric,
         })
         .optional(),
 });
-
-export type _RootPrivateSchemaType = z.infer<typeof RootPrivateSchema>;
-
-// renative.private.json
-export type ConfigFilePrivate = _RootPrivateSchemaType;
-
-export type _MergedPlatformPrivateObjectType = z.infer<typeof PlatformAndroid>;

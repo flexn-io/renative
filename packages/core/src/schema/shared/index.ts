@@ -35,9 +35,8 @@ export const zodBuildSchemeFragment = z.object({
             )
     ),
 });
-export type RnvBuildSchemeFragment = z.infer<typeof zodBuildSchemeFragment>;
 
-export const NpmDep = z.record(z.string(), z.string());
+export const zodNpmDep = z.record(z.string(), z.string());
 
 export const zodTemplateConfigFragment = z
     .object({
@@ -67,17 +66,16 @@ export const zodTemplateConfigFragment = z
             .optional(),
         package_json: z.optional(
             z.object({
-                dependencies: z.optional(NpmDep),
-                devDependencies: z.optional(NpmDep),
-                peerDependencies: z.optional(NpmDep),
-                optionalDependencies: z.optional(NpmDep),
+                dependencies: z.optional(zodNpmDep),
+                devDependencies: z.optional(zodNpmDep),
+                peerDependencies: z.optional(zodNpmDep),
+                optionalDependencies: z.optional(zodNpmDep),
                 name: z.string().optional(),
                 version: z.string().optional(),
             })
         ),
     })
     .describe('Used in `renative.template.json` allows you to define template behaviour.');
-export type RnvTemplateConfigFragment = z.infer<typeof zodTemplateConfigFragment>;
 
 export const zodProjectTemplates = z.record(
     z.string(),

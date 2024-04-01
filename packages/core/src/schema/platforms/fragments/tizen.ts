@@ -7,5 +7,3 @@ export const zodPlatformTizenFragment = z
         appName: z.string(),
     })
     .partial();
-
-export type RnvPlatformTizenFragment = z.infer<typeof zodPlatformTizenFragment>;

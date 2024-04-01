@@ -19,4 +19,3 @@ export const zodPluginPlatformBaseFragment = z.object({
     forceLinking: z.optional(ForceLinking),
     path: z.optional(Path),
 });
-export type RnvPluginPlatformBaseFragment = Partial<z.infer<typeof zodPluginPlatformBaseFragment>>;

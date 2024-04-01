@@ -10,14 +10,9 @@ const Meta = z.object({
 
 //LEVEl 0 (ROOT)
 
-export const RootLocalSchema = z.object({
+export const zodRootLocalSchema = z.object({
     workspaceAppConfigsDir: z.optional(WorkspaceAppConfigsDir),
     defaultTargets: z.optional(zodDefaultTargets),
     _meta: z.optional(Meta),
     // extend: z.optional(z.string()),
 });
-
-export type _RootLocalSchemaType = z.infer<typeof RootLocalSchema>;
-
-// renative.local.json
-export type ConfigFileLocal = _RootLocalSchemaType;

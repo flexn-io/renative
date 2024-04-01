@@ -1,5 +1,4 @@
-import { ConfigFilePlugin } from '../schema/configFiles/plugin';
-import { type RnvPluginPlatformSchema, type RnvPluginSchema } from '../schema/plugins';
+import type { ConfigFilePlugin, RnvPluginPlatformSchema, RnvPluginSchema } from '../schema/types';
 
 export type PluginCallback = (plugin: RnvPlugin, pluginPlat: RnvPluginPlatformSchema, key: string) => void;
 

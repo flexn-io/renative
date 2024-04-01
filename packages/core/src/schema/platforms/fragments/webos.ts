@@ -5,5 +5,3 @@ export const zodPlatformWebOSFragment = z
         iconColor: z.string(),
     })
     .partial();
-
-export type RnvPlatformWebOSFragment = z.infer<typeof zodPlatformWebOSFragment>;

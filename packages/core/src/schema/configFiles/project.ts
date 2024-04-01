@@ -1,17 +1,10 @@
 import { AnyZodObject, z } from 'zod';
-import { type RnvCommonSchema, zodCommonSchema } from '../common';
-import {
-    type RnvTemplateConfigFragment,
-    zodExt,
-    zodPlatformsKeys,
-    zodRuntime,
-    zodSupportedPlatforms,
-    zodTemplateConfigFragment,
-} from '../shared';
-import { type RnvPlatformsSchema, zodPlatformsSchema } from '../platforms';
-import { type RnvPluginsSchema, zodPluginsSchema } from '../plugins';
+import { zodCommonSchema } from '../common';
+import { zodExt, zodPlatformsKeys, zodRuntime, zodSupportedPlatforms, zodTemplateConfigFragment } from '../shared';
+import { zodPlatformsSchema } from '../platforms';
+import { zodPluginsSchema } from '../plugins';
 
-const zodRootProjectBaseFragment = z
+export const zodRootProjectBaseFragment = z
     .object({
         workspaceID: z
             .string() //TODO: no spaces
@@ -164,9 +157,6 @@ const zodRootProjectBaseFragment = z
         // currentTemplate: CurrentTemplate,
     })
     .partial();
-export type RnvRootProjectBaseFragment = z.infer<typeof zodRootProjectBaseFragment> & {
-    templateConfig?: RnvTemplateConfigFragment;
-};
 
 // NOTE: Need to explictly type this to generic zod object to avoid TS error:
 // The inferred type of this node exceeds the maximum length the compiler will serialize...
@@ -180,13 +170,3 @@ export const zodRootProjectSchema: AnyZodObject = zodRootProjectBaseFragment
     .merge(zodRootProjectPluginsSchema)
     .extend({ templateConfig: zodTemplateConfigFragment })
     .partial();
-
-export type RnvRootProjectSchema = RnvRootProjectBaseFragment & {
-    common?: RnvCommonSchema;
-    platforms?: RnvPlatformsSchema;
-    plugins?: RnvPluginsSchema;
-};
-// renative.json
-export type ConfigFileProject = RnvRootProjectSchema;
-
-export type ConfigProjectPaths = Required<RnvRootProjectBaseFragment>['paths'];

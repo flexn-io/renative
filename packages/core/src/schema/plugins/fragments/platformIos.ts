@@ -19,5 +19,3 @@ export const zodPluginPlatformiOSFragment = zodTemplateXcodeFragment.extend({
     isStatic: z.boolean().optional(),
     buildType: z.optional(BuildType),
 });
-
-export type RnvPluginPlatformiOSFragment = Partial<z.infer<typeof zodPluginPlatformiOSFragment>>;

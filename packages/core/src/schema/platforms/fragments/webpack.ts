@@ -49,5 +49,3 @@ export const zodPlatformWebpackFragment = z
         // },
     })
     .partial();
-
-export type RnvPlatformWebpackFragment = z.infer<typeof zodPlatformWebpackFragment>;

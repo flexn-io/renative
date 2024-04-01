@@ -8,5 +8,3 @@ export const zodPluginPlatformAndroidFragment = zodTemplateAndroidFragment.exten
     implementation: z.optional(z.string()),
     package: z.optional(z.string()),
 });
-
-export type RnvPluginPlatformAndroidFragment = Partial<z.infer<typeof zodPluginPlatformAndroidFragment>>;

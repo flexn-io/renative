@@ -1,21 +1,18 @@
 import { AnyZodObject, z } from 'zod';
-import { type RnvPlatformElectronFragment, zodPlatformElectronFragment } from './fragments/electron';
-import { type RnvPlatformWebpackFragment, zodPlatformWebpackFragment } from './fragments/webpack';
-import { type RnvPlatformNextJsFragment, zodPlatformNextJsFragment } from './fragments/nextjs';
-import { type RnvPlatformLightningFragment } from './fragments/lightning';
-import { type RnvPlatformReactNativeFragment, zodPlatformReactNativeFragment } from './fragments/reactNative';
-import { type RnvPlatformBaseFragment, zodPlatformBaseFragment } from './fragments/base';
-import { type RnvCommonSchemaFragment, zodCommonSchemaFragment } from '../common';
-import { type RnvPlatformWebOSFragment, zodPlatformWebOSFragment } from './fragments/webos';
-import { type RnvPlatformWindowsFragment, zodPlatformWindowsFragment } from './fragments/windows';
-import { type RnvPlatformTizenFragment, zodPlatformTizenFragment } from './fragments/tizen';
-import { type RnvPlatformWebFragment, zodPlatformWebFragment } from './fragments/web';
-import { type RnvPlatformAndroidFragment, zodPlatformAndroidFragment } from './fragments/android';
-import { type RnvPlatformiOSFragment, zodPlatformiOSFragment } from './fragments/ios';
-import { type RnvTemplateAndroidFragment, zodTemplateAndroidFragment } from './fragments/templateAndroid';
-import { type RnvTemplateXcodeFragment, zodTemplateXcodeFragment } from './fragments/templateXcode';
-import { type RnvPlatformNameKey } from '../../enums/platformName';
-import { type RnvBuildSchemeFragment } from '../shared';
+import { zodPlatformElectronFragment } from './fragments/electron';
+import { zodPlatformWebpackFragment } from './fragments/webpack';
+import { zodPlatformNextJsFragment } from './fragments/nextjs';
+import { zodPlatformReactNativeFragment } from './fragments/reactNative';
+import { zodPlatformBaseFragment } from './fragments/base';
+import { zodCommonSchemaFragment } from '../common';
+import { zodPlatformWebOSFragment } from './fragments/webos';
+import { zodPlatformWindowsFragment } from './fragments/windows';
+import { zodPlatformTizenFragment } from './fragments/tizen';
+import { zodPlatformWebFragment } from './fragments/web';
+import { zodPlatformAndroidFragment } from './fragments/android';
+import { zodPlatformiOSFragment } from './fragments/ios';
+import { zodTemplateAndroidFragment } from './fragments/templateAndroid';
+import { zodTemplateXcodeFragment } from './fragments/templateXcode';
 
 const createPlatformSchema = (obj: AnyZodObject): AnyZodObject => {
     const zodPlatformSchema = zodCommonSchemaFragment.merge(zodPlatformBaseFragment).merge(obj);
@@ -74,29 +71,3 @@ export const zodPlatformsSchema: AnyZodObject = z
         xbox: windowsSchema,
     })
     .describe('Object containing platform configurations');
-
-export type RnvPlatformSchemaFragment = RnvCommonSchemaFragment &
-    RnvPlatformBaseFragment &
-    RnvPlatformiOSFragment &
-    RnvPlatformAndroidFragment &
-    RnvPlatformWebFragment &
-    RnvPlatformTizenFragment &
-    RnvPlatformWindowsFragment &
-    RnvPlatformWebOSFragment &
-    RnvPlatformLightningFragment &
-    RnvPlatformReactNativeFragment &
-    RnvPlatformWebpackFragment &
-    RnvPlatformElectronFragment &
-    RnvPlatformNextJsFragment &
-    RnvTemplateAndroidFragment &
-    RnvTemplateXcodeFragment;
-export type PlatPropKey = keyof RnvPlatformSchemaFragment; // We Request keys excluding buildScheme (not RnvPlatformSchema)
-
-// export type RnvPlatformsSchema = z.infer<typeof zodPlatformsSchema>;
-export type RnvPlatformBuildSchemeSchema = RnvCommonSchemaFragment & RnvBuildSchemeFragment & RnvPlatformSchemaFragment;
-export type PlatformBuildSchemeKey = keyof RnvPlatformBuildSchemeSchema;
-
-export type RnvPlatformSchema = RnvPlatformSchemaFragment & {
-    buildSchemes?: Record<string, RnvPlatformBuildSchemeSchema>;
-};
-export type RnvPlatformsSchema = Partial<Record<RnvPlatformNameKey, RnvPlatformSchema>>;

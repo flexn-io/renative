@@ -18,7 +18,7 @@ const SDKsSchema = z
 
 //LEVEl 0 (ROOT)
 
-export const RootWorkspaceSchema = z.object({
+export const zodRootWorkspaceSchema = z.object({
     defaultTargets: z.optional(zodDefaultTargets),
     sdks: z.optional(SDKsSchema),
     projectTemplates: zodProjectTemplates.optional(),
@@ -31,8 +31,3 @@ export const RootWorkspaceSchema = z.object({
         .optional()
         .describe('Enables you to define custom global appConfigs location that every project will automatically use'),
 });
-
-export type _RootWorkspaceSchemaType = z.infer<typeof RootWorkspaceSchema>;
-
-// renative.workspace.json
-export type ConfigFileWorkspace = _RootWorkspaceSchemaType;

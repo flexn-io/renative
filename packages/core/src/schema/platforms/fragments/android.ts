@@ -72,5 +72,3 @@ export const zodPlatformAndroidFragment = z
         flipperEnabled: z.boolean().describe('Enables flipper  for ios. Default: true'),
     })
     .partial();
-
-export type RnvPlatformAndroidFragment = z.infer<typeof zodPlatformAndroidFragment>;

@@ -1,13 +1,13 @@
 import {
-    RootAppSchema,
-    RootEngineSchema,
-    RootLocalSchema,
-    RootPluginSchema,
-    RootPrivateSchema,
-    RootProjectSchema,
-    RootTemplateSchema,
-    RootTemplatesSchema,
-    RootWorkspaceSchema,
+    zodRootAppSchema,
+    zodRootEngineSchema,
+    zodRootLocalSchema,
+    zodRootPluginSchema,
+    zodRootPrivateSchema,
+    zodRootProjectSchema,
+    zodRootTemplateSchema,
+    zodRootTemplatesSchema,
+    zodRootWorkspaceSchema,
     getContext,
     logSuccess,
     zodRootIntegrationSchema,
@@ -18,15 +18,15 @@ import path from 'path';
 import fs from 'fs';
 
 export const generateSchema = async () => {
-    _generateSchemaFile({ schema: RootProjectSchema, schemaId: 'rnv.project' });
-    _generateSchemaFile({ schema: RootAppSchema, schemaId: 'rnv.app' });
-    _generateSchemaFile({ schema: RootLocalSchema, schemaId: 'rnv.local' });
-    _generateSchemaFile({ schema: RootEngineSchema, schemaId: 'rnv.engine' });
-    _generateSchemaFile({ schema: RootWorkspaceSchema, schemaId: 'rnv.workspace' });
-    _generateSchemaFile({ schema: RootTemplateSchema, schemaId: 'rnv.template' });
-    _generateSchemaFile({ schema: RootPrivateSchema, schemaId: 'rnv.private' });
-    _generateSchemaFile({ schema: RootPluginSchema, schemaId: 'rnv.plugin' });
-    _generateSchemaFile({ schema: RootTemplatesSchema, schemaId: 'rnv.templates' });
+    _generateSchemaFile({ schema: zodRootProjectSchema, schemaId: 'rnv.project' });
+    _generateSchemaFile({ schema: zodRootAppSchema, schemaId: 'rnv.app' });
+    _generateSchemaFile({ schema: zodRootLocalSchema, schemaId: 'rnv.local' });
+    _generateSchemaFile({ schema: zodRootEngineSchema, schemaId: 'rnv.engine' });
+    _generateSchemaFile({ schema: zodRootWorkspaceSchema, schemaId: 'rnv.workspace' });
+    _generateSchemaFile({ schema: zodRootTemplateSchema, schemaId: 'rnv.template' });
+    _generateSchemaFile({ schema: zodRootPrivateSchema, schemaId: 'rnv.private' });
+    _generateSchemaFile({ schema: zodRootPluginSchema, schemaId: 'rnv.plugin' });
+    _generateSchemaFile({ schema: zodRootTemplatesSchema, schemaId: 'rnv.templates' });
     _generateSchemaFile({ schema: zodRootIntegrationSchema, schemaId: 'rnv.integration' });
 
     logSuccess('Sucessfully exported renative.project.json schema');

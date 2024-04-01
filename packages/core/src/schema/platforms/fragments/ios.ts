@@ -92,5 +92,3 @@ export const zodPlatformiOSFragment = z
         // },
     })
     .partial();
-
-export type RnvPlatformiOSFragment = z.infer<typeof zodPlatformiOSFragment>;

@@ -75,5 +75,3 @@ export const zodPlatformWindowsFragment = z
         ),
     })
     .partial();
-
-export type RnvPlatformWindowsFragment = z.infer<typeof zodPlatformWindowsFragment>;

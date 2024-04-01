@@ -17,7 +17,7 @@ const zodEnginePlatform = z.object({
     npm: z.optional(zodEngineNpm),
 });
 
-export const RootEngineSchema = z
+export const zodRootEngineSchema = z
     .object({
         custom: z.optional(zodExt),
         id: z.string().describe('ID of engine'),
@@ -30,7 +30,3 @@ export const RootEngineSchema = z
         platforms: z.record(zodPlatformsKeys, zodEnginePlatform),
     })
     .partial();
-
-export type RnvRootEngineSchema = z.infer<typeof RootEngineSchema>;
-// renative.engine.json
-export type ConfigFileEngine = RnvRootEngineSchema;

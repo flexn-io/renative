@@ -14,8 +14,7 @@ import { RnvFileName } from '../enums/fileName';
 import { getContext } from '../context/provider';
 import { RnvFolderName } from '../enums/folderName';
 import { checkIfProjectAndNodeModulesExists } from '../projects/npm';
-import { type ConfigFileTemplate } from '../schema/configFiles/template';
-import { type ConfigFileProject } from '../schema/configFiles/project';
+import type { ConfigFileProject, ConfigFileTemplate } from '../schema/types';
 
 export const configureTemplateFiles = async () => {
     logDefault('configureTemplateFiles');

@@ -6,7 +6,7 @@ import { RnvFileName } from '../enums/fileName';
 import { getContext } from '../context/provider';
 import { type NpmPackageFile } from '../configs/types';
 import { writeRenativeConfigFile } from '../configs/utils';
-import { type ConfigFileTemplate } from '../schema/configFiles/template';
+import type { ConfigFileTemplate } from '../schema/types';
 
 export const updatePackage = (override: Partial<NpmPackageFile>) => {
     const c = getContext();

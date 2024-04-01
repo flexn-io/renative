@@ -1,9 +1,8 @@
 import { AnyZodObject, z } from 'zod';
-import { RnvPluginPlatformAndroidFragment, zodPluginPlatformAndroidFragment } from './fragments/platformAndroid';
-import { RnvPluginPlatformiOSFragment, zodPluginPlatformiOSFragment } from './fragments/platformIos';
-import { RnvPluginPlatformBaseFragment, zodPluginPlatformBaseFragment } from './fragments/platformBase';
-import { RnvPluginBaseFragment, zodPluginBaseFragment } from './fragments/base';
-import { PlatformKey } from '../../enums/platformName';
+import { zodPluginPlatformAndroidFragment } from './fragments/platformAndroid';
+import { zodPluginPlatformiOSFragment } from './fragments/platformIos';
+import { zodPluginPlatformBaseFragment } from './fragments/platformBase';
+import { zodPluginBaseFragment } from './fragments/base';
 
 const androidSchema = zodPluginPlatformBaseFragment.merge(zodPluginPlatformAndroidFragment);
 
@@ -40,10 +39,4 @@ export const zodPluginsSchema = z
         'Define all plugins available in your project. you can then use `includedPlugins` and `excludedPlugins` props to define active and inactive plugins per each app config'
     );
 
-export type RnvPluginPlatformSchema = RnvPluginPlatformBaseFragment &
-    RnvPluginPlatformAndroidFragment &
-    RnvPluginPlatformiOSFragment;
-export type RnvPluginPlatformsSchema = Record<PlatformKey, RnvPluginPlatformSchema>;
-export type RnvPluginSchema = RnvPluginBaseFragment & Partial<RnvPluginPlatformsSchema>;
-export type RnvPluginsSchema = Record<string, RnvPluginSchema | string>;
 // export type RenativeWebpackConfig = RnvPluginSchema['webpackConfig'];

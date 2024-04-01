@@ -13,23 +13,26 @@ import {
 } from '../system/fs';
 import { chalk, logDebug, logError, logInfo, logSuccess, logDefault, logWarning } from '../logger';
 import { doResolve } from '../system/resolve';
-import { type RnvContext } from '../context/types';
-import { type PluginCallback, type RnvPlugin, type RnvPluginScope } from './types';
+import type { RnvContext } from '../context/types';
+import type { PluginCallback, RnvPlugin, RnvPluginScope } from './types';
 import { inquirerPrompt } from '../api';
 import { writeRenativeConfigFile } from '../configs/utils';
 import { installPackageDependencies } from '../projects/npm';
-import { type OverridesOptions, type ResolveOptions } from '../system/types';
+import type { OverridesOptions, ResolveOptions } from '../system/types';
 import { getContext } from '../context/provider';
 import { getConfigProp } from '../context/contextProps';
 import { RnvFileName } from '../enums/fileName';
-import { type AsyncCallback } from '../projects/types';
+import type { AsyncCallback } from '../projects/types';
 import { createDependencyMutation } from '../projects/mutations';
 import { updatePackage } from '../projects/package';
-import { type RnvPluginPlatformSchema, type RnvPluginSchema } from '../schema/plugins';
-import { type ConfigProjectPaths } from '../schema/configFiles/project';
-import { type ConfigFileTemplates } from '../schema/configFiles/templates';
-import { type ConfigFileOverrides } from '../schema/configFiles/overrides';
-import { type ConfigFilePlugin } from '../schema/configFiles/plugin';
+import type {
+    ConfigFileOverrides,
+    ConfigFilePlugin,
+    ConfigFileTemplates,
+    ConfigProjectPaths,
+    RnvPluginPlatformSchema,
+    RnvPluginSchema,
+} from '../schema/types';
 
 const _getPluginScope = (plugin: RnvPluginSchema | string): RnvPluginScope => {
     if (typeof plugin === 'string') {

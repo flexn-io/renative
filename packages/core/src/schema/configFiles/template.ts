@@ -1,5 +1,5 @@
 import { AnyZodObject, z } from 'zod';
-import { NpmDep, RnvTemplateConfigFragment, zodSupportedPlatforms, zodTemplateConfigFragment } from '../shared';
+import { zodNpmDep, zodSupportedPlatforms, zodTemplateConfigFragment } from '../shared';
 
 const zodBootstrapQuestionsSchema = z
     .array(
@@ -33,11 +33,11 @@ const zodBootstrapQuestionsSchema = z
     )
     .describe('Defines list of custom bootstrap questions');
 
-const zodBootstrapConfig = z
+export const zodBootstrapConfig = z
     .object({
         bootstrapQuestions: zodBootstrapQuestionsSchema,
         rnvNewPatchDependencies: z
-            .optional(NpmDep)
+            .optional(zodNpmDep)
             .describe(
                 'This ensures that the correct version of the npm packages will be used to run the project for the first time after creation'
             ),
@@ -54,24 +54,12 @@ const zodBootstrapConfig = z
     })
     .partial();
 
-type RnvBootstrapConfig = z.infer<typeof zodBootstrapConfig>;
-
-export const RootTemplateSchema: AnyZodObject = z.object({
+export const zodRootTemplateSchema: AnyZodObject = z.object({
     // defaults: z.optional(DefaultsSchema),
     // engines: z.optional(EnginesSchema),
     templateConfig: zodTemplateConfigFragment.optional(),
     bootstrapConfig: zodBootstrapConfig.optional(),
 });
-
-export type RnvRootTemplateSchema = {
-    // defaults: RnvDefault,
-    // engines: z.optional(EnginesSchema),
-    templateConfig?: RnvTemplateConfigFragment;
-    bootstrapConfig?: RnvBootstrapConfig;
-};
-
-// renative.template.json
-export type ConfigFileTemplate = RnvRootTemplateSchema;
 
 // {
 //     title: 'Which service to use?',

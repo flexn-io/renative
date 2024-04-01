@@ -8,5 +8,3 @@ export const zodPlatformReactNativeFragment = z
             .describe('Allows you to define specific native render engine to be used'),
     })
     .partial();
-
-export type RnvPlatformReactNativeFragment = z.infer<typeof zodPlatformReactNativeFragment>;

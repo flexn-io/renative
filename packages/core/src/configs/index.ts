@@ -3,7 +3,7 @@ import path from 'path';
 import { mergeObjects, fsExistsSync, fsReaddirSync, getRealPath, readObjectSync, loadFile } from '../system/fs';
 import { logWarning, logDebug, logDefault, chalk } from '../logger';
 import { doResolve } from '../system/resolve';
-import { type RnvContextFileObj, type RnvContextPathObj, type RnvContextFileKey } from '../context/types';
+import type { RnvContextFileObj, RnvContextPathObj, RnvContextFileKey } from '../context/types';
 import { generateRnvConfigPathObj } from '../context/defaults';
 import { generateContextPaths } from '../context';
 import { generateBuildConfig } from './buildConfig';
@@ -13,7 +13,7 @@ import { generatePlatformTemplatePaths } from './configProject';
 import { RnvFileName } from '../enums/fileName';
 import { getContext } from '../context/provider';
 import { RnvFolderName } from '../enums/folderName';
-import { type ConfigFileTemplates } from '../schema/configFiles/templates';
+import type { ConfigFileTemplates } from '../schema/types';
 
 export const loadFileExtended = (fileObj: Record<string, any>, pathObj: RnvContextPathObj, key: RnvContextFileKey) => {
     const c = getContext();

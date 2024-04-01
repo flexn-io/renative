@@ -1,15 +1,20 @@
-import { type GetConfigPropFn } from '../api/types';
-import { type RnvContext } from './types';
+import type { GetConfigPropFn } from '../api/types';
+import type { RnvContext } from './types';
 import { chalk, logError, logWarning } from '../logger';
-import { type ConfigFileBuildConfig } from '../schema';
-import { type ConfigProp, type ConfigPropKey } from '../schema/types';
-import { type TimestampPathsConfig } from '../system/types';
+import type {
+    BuildConfigKey,
+    CommonBuildSchemeKey,
+    CommonPropKey,
+    ConfigFileBuildConfig,
+    ConfigProp,
+    ConfigPropKey,
+    PlatformBuildSchemeKey,
+    RnvCommonBuildSchemeSchema,
+} from '../schema/types';
+import type { TimestampPathsConfig } from '../system/types';
 import path from 'path';
 import { fsExistsSync } from '../system/fs';
 import { getContext } from './provider';
-import { type CommonBuildSchemeKey, type CommonPropKey, type RnvCommonBuildSchemeSchema } from '../schema/common';
-import { type PlatformBuildSchemeKey } from '../schema/platforms';
-import { type BuildConfigKey } from '../schema/configFiles/buildConfig';
 
 const _getValueOrMergedObject = (resultScheme: object, resultPlatforms: object, resultCommon: object) => {
     if (resultScheme !== undefined) {

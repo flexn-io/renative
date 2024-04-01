@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { zodPlatformsKeys, zodProjectTemplates } from '../shared';
 import { zodPluginSchema } from '../plugins';
 
-export const RootTemplatesSchema = z
+export const zodRootTemplatesSchema = z
     .object({
         projectTemplates: zodProjectTemplates,
         engineIdMap: z.record(z.string(), z.string()),
@@ -36,8 +36,3 @@ export const RootTemplatesSchema = z
             ),
     })
     .partial();
-
-export type _RootTemplatesSchemaType = z.infer<typeof RootTemplatesSchema>;
-
-// renative.templates.json
-export type ConfigFileTemplates = _RootTemplatesSchemaType;

@@ -1,6 +1,6 @@
 import { AnyZodObject, z } from 'zod';
-import { zodBuildSchemeFragment, zodExt, zodRuntime, RnvBuildSchemeFragment } from '../shared';
-import { RnvPlatformBaseFragment, zodPlatformBaseFragment } from '../platforms/fragments/base';
+import { zodBuildSchemeFragment, zodExt, zodRuntime } from '../shared';
+import { zodPlatformBaseFragment } from '../platforms/fragments/base';
 
 export const zodCommonSchemaFragment = z
     .object({
@@ -74,8 +74,6 @@ export const zodCommonSchemaFragment = z
         custom: z.optional(zodExt),
     })
     .partial();
-export type RnvCommonSchemaFragment = z.infer<typeof zodCommonSchemaFragment>;
-export type CommonPropKey = keyof RnvCommonSchemaFragment; // We Request keys excluding buildScheme (not RnvCommonSchema)
 
 export const zodCommonSchema: AnyZodObject = zodCommonSchemaFragment
     .merge(
@@ -89,12 +87,3 @@ export const zodCommonSchema: AnyZodObject = zodCommonSchemaFragment
         })
     )
     .describe('Common config props used as default props for all available buildSchemes');
-
-export type RnvCommonBuildSchemeSchema = Partial<
-    RnvCommonSchemaFragment & RnvBuildSchemeFragment & RnvPlatformBaseFragment
->;
-export type CommonBuildSchemeKey = keyof RnvCommonBuildSchemeSchema;
-
-export type RnvCommonSchema = Partial<RnvCommonSchemaFragment> & {
-    buildSchemes?: Record<string, RnvCommonBuildSchemeSchema>;
-};

@@ -4,7 +4,7 @@ import { fsExistsSync, fsReaddirSync, fsLstatSync, readObjectSync } from '../sys
 import { logDefault, logWarning } from '../logger';
 import { RnvFileName } from '../enums/fileName';
 import { getContext } from '../context/provider';
-import { type ConfigFileApp } from '../schema/configFiles/app';
+import { ConfigFileApp } from '../schema/types';
 
 const IGNORE_FOLDERS = ['.git'];
 

@@ -1,13 +1,10 @@
 import { fsExistsSync, writeFileSync, readObjectSync, mkdirSync } from '../system/fs';
-
 import { getContext } from '../context/provider';
-
 import path from 'path';
 import { chalk, logDefault, logDebug, logInfo, logWarning } from '../logger';
-import { type RnvContext } from '../context/types';
+import type { RnvContext } from '../context/types';
 import { generateOptions, inquirerPrompt } from '../api';
-import { type ConfigFileWorkspace } from '../schema/configFiles/workspace';
-import { type ConfigFileWorkspaces } from '../schema/configFiles/workspaces';
+import type { ConfigFileWorkspace, ConfigFileWorkspaces } from '../schema/types';
 
 export const createWorkspace = async (workspaceID: string, workspacePath: string) => {
     const c = getContext();

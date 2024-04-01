@@ -14,8 +14,3 @@ export const zodRootWorkspacesSchema = z.object({
         })
     ),
 });
-
-export type RnvRootWorkspacesSchema = z.infer<typeof zodRootWorkspacesSchema>;
-
-// renative.workspaces.json
-export type ConfigFileWorkspaces = RnvRootWorkspacesSchema;
