@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const zodRootWorkspacesSchema = z.object({
+export const zodFileWorkspaces = z.object({
     workspaces: z.record(
         z.string(),
         z.object({

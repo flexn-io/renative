@@ -7,7 +7,7 @@ import {
     zodRootProjectSchema,
     zodRootTemplateSchema,
     zodRootTemplatesSchema,
-    zodRootWorkspaceSchema,
+    zodConfigFileWorkspace,
     getContext,
     logSuccess,
     zodRootIntegrationSchema,
@@ -22,7 +22,7 @@ export const generateSchema = async () => {
     _generateSchemaFile({ schema: zodRootAppSchema, schemaId: 'rnv.app' });
     _generateSchemaFile({ schema: zodRootLocalSchema, schemaId: 'rnv.local' });
     _generateSchemaFile({ schema: zodRootEngineSchema, schemaId: 'rnv.engine' });
-    _generateSchemaFile({ schema: zodRootWorkspaceSchema, schemaId: 'rnv.workspace' });
+    _generateSchemaFile({ schema: zodConfigFileWorkspace, schemaId: 'rnv.workspace' });
     _generateSchemaFile({ schema: zodRootTemplateSchema, schemaId: 'rnv.template' });
     _generateSchemaFile({ schema: zodRootPrivateSchema, schemaId: 'rnv.private' });
     _generateSchemaFile({ schema: zodRootPluginSchema, schemaId: 'rnv.plugin' });

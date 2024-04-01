@@ -18,7 +18,7 @@ const SDKsSchema = z
 
 //LEVEl 0 (ROOT)
 
-export const zodRootWorkspaceSchema = z.object({
+export const zodConfigFileWorkspace = z.object({
     defaultTargets: z.optional(zodDefaultTargets),
     sdks: z.optional(SDKsSchema),
     projectTemplates: zodProjectTemplates.optional(),

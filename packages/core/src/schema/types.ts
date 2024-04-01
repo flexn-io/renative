@@ -36,15 +36,8 @@ import { zodRootRuntimeSchema } from './configFiles/runtime';
 import { zodBootstrapConfig } from './configFiles/template';
 import { zodRootProjectBaseFragment } from './configFiles/project';
 import { zodRootTemplatesSchema } from './configFiles/templates';
-import { zodRootWorkspaceSchema } from './configFiles/workspace';
-import { zodRootWorkspacesSchema } from './configFiles/workspaces';
-
-export type ConfigProp = Required<RnvRootProjectBaseFragment> &
-    Required<RnvRootAppBaseFragment> &
-    Required<_MergedPlatformPrivateObjectType> &
-    Required<RnvPlatformSchemaFragment>;
-
-export type ConfigPropKey = keyof ConfigProp;
+import { zodConfigFileWorkspace } from './configFiles/workspace';
+import { zodFileWorkspaces } from './configFiles/workspaces';
 
 // Shared -----------------------
 //
@@ -129,50 +122,41 @@ export type ConfigFileApp = RnvRootAppSchema;
 // BuildConfig -----------------------
 //
 type RootPluginsMerged = {
-    scopedPluginTemplates: Record<string, _RootTemplatesSchemaType['pluginTemplates']>;
+    scopedPluginTemplates: Record<string, ConfigFileTemplates['pluginTemplates']>;
 };
-
-export type ConfigFileBuildConfig =
-    //Templates
-    _RootTemplatesSchemaType &
-        //Global
-        _RootWorkspaceSchemaType &
-        //Plugins (multiple roots merged under scope object)
-        RootPluginsMerged &
-        //Project + App
-        // Required<RnvRootProjectBaseFragment> &
-        RnvRootProjectSchema &
-        _RootLocalSchemaType &
-        RnvRootAppBaseFragment;
-
+export type ConfigProp = Required<RnvRootProjectBaseFragment> &
+    Required<RnvRootAppBaseFragment> &
+    Required<ConfigPrivatePlatformAndroid> &
+    Required<RnvPlatformSchemaFragment>;
+export type ConfigPropKey = keyof ConfigProp;
 export type BuildConfigKey = keyof ConfigFileBuildConfig;
+// renative.build.json
+export type ConfigFileBuildConfig = ConfigFileTemplates &
+    ConfigFileWorkspace &
+    RootPluginsMerged &
+    ConfigFileProject &
+    ConfigFileLocal &
+    RnvRootAppBaseFragment;
 
 // Engine -----------------------
 //
-export type RnvRootEngineSchema = z.infer<typeof zodRootEngineSchema>;
 // renative.engine.json
-export type ConfigFileEngine = RnvRootEngineSchema;
+export type ConfigFileEngine = z.infer<typeof zodRootEngineSchema>;
 
 // Integration -----------------------
 //
-export type RnvRootIntegrationSchema = z.infer<typeof zodRootIntegrationSchema>;
-
 // renative.integration.json
-export type ConfigFileIntegration = RnvRootIntegrationSchema;
+export type ConfigFileIntegration = z.infer<typeof zodRootIntegrationSchema>;
 
 // Local -----------------------
 //
-export type _RootLocalSchemaType = z.infer<typeof zodRootLocalSchema>;
-
 // renative.local.json
-export type ConfigFileLocal = _RootLocalSchemaType;
+export type ConfigFileLocal = z.infer<typeof zodRootLocalSchema>;
 
 // Overrides -----------------------
 //
-export type RnvRootOverridesSchema = z.infer<typeof zodRootOverridesSchema>;
-
 //overrides.json
-export type ConfigFileOverrides = RnvRootOverridesSchema;
+export type ConfigFileOverrides = z.infer<typeof zodRootOverridesSchema>;
 
 // Plugin -----------------------
 //
@@ -180,81 +164,61 @@ export type RnvPluginBaseFragment = z.infer<typeof zodPluginBaseFragment>;
 export type RnvPluginPlatformAndroidFragment = Partial<z.infer<typeof zodPluginPlatformAndroidFragment>>;
 export type RnvPluginPlatformBaseFragment = Partial<z.infer<typeof zodPluginPlatformBaseFragment>>;
 export type RnvPluginPlatformiOSFragment = Partial<z.infer<typeof zodPluginPlatformiOSFragment>>;
-
 export type RnvPluginPlatformSchema = RnvPluginPlatformBaseFragment &
     RnvPluginPlatformAndroidFragment &
     RnvPluginPlatformiOSFragment;
 export type RnvPluginPlatformsSchema = Record<PlatformKey, RnvPluginPlatformSchema>;
 export type RnvPluginSchema = RnvPluginBaseFragment & Partial<RnvPluginPlatformsSchema>;
 export type RnvPluginsSchema = Record<string, RnvPluginSchema | string>;
-
-export type _RootPluginSchemaType = RnvPluginSchema & z.infer<typeof zodPluginFragment>;
-
 // renative.plugin.json
-export type ConfigFilePlugin = _RootPluginSchemaType;
+export type ConfigFilePlugin = RnvPluginSchema & z.infer<typeof zodPluginFragment>;
 
 // Private -----------------------
 //
-export type _RootPrivateSchemaType = z.infer<typeof zodRootPrivateSchema>;
-
+export type ConfigPrivatePlatformAndroid = z.infer<typeof zodPrivatePlatformAndroid>;
 // renative.private.json
-export type ConfigFilePrivate = _RootPrivateSchemaType;
-
-export type _MergedPlatformPrivateObjectType = z.infer<typeof zodPrivatePlatformAndroid>;
+export type ConfigFilePrivate = z.infer<typeof zodRootPrivateSchema>;
 
 // Project -----------------------
 //
 export type RnvRootProjectBaseFragment = z.infer<typeof zodRootProjectBaseFragment> & {
     templateConfig?: RnvTemplateConfigFragment;
 };
-export type RnvRootProjectSchema = RnvRootProjectBaseFragment & {
+export type ConfigProjectPaths = Required<RnvRootProjectBaseFragment>['paths'];
+// renative.json
+export type ConfigFileProject = RnvRootProjectBaseFragment & {
     common?: RnvCommonSchema;
     platforms?: RnvPlatformsSchema;
     plugins?: RnvPluginsSchema;
 };
-// renative.json
-export type ConfigFileProject = RnvRootProjectSchema;
-
-export type ConfigProjectPaths = Required<RnvRootProjectBaseFragment>['paths'];
 
 // Runtime -----------------------
 //
-export type _RootRuntimeSchemaType = z.infer<typeof zodRootRuntimeSchema>;
-
 // renative.runtime.json
-export type ConfigFileRuntime = _RootRuntimeSchemaType;
+export type ConfigFileRuntime = z.infer<typeof zodRootRuntimeSchema>;
 
 // Template -----------------------
 //
 type RnvBootstrapConfig = z.infer<typeof zodBootstrapConfig>;
-
-export type RnvRootTemplateSchema = {
+// renative.template.json
+export type ConfigFileTemplate = {
     // defaults: RnvDefault,
     // engines: z.optional(EnginesSchema),
     templateConfig?: RnvTemplateConfigFragment;
     bootstrapConfig?: RnvBootstrapConfig;
 };
 
-// renative.template.json
-export type ConfigFileTemplate = RnvRootTemplateSchema;
-
 // Templates -----------------------
 //
-export type _RootTemplatesSchemaType = z.infer<typeof zodRootTemplatesSchema>;
-
 // renative.templates.json
-export type ConfigFileTemplates = _RootTemplatesSchemaType;
+export type ConfigFileTemplates = z.infer<typeof zodRootTemplatesSchema>;
 
 // Workspace -----------------------
 //
-export type _RootWorkspaceSchemaType = z.infer<typeof zodRootWorkspaceSchema>;
-
 // renative.workspace.json
-export type ConfigFileWorkspace = _RootWorkspaceSchemaType;
+export type ConfigFileWorkspace = z.infer<typeof zodConfigFileWorkspace>;
 
 // Workspaces -----------------------
 //
-export type RnvRootWorkspacesSchema = z.infer<typeof zodRootWorkspacesSchema>;
-
 // renative.workspaces.json
-export type ConfigFileWorkspaces = RnvRootWorkspacesSchema;
+export type ConfigFileWorkspaces = z.infer<typeof zodFileWorkspaces>;
