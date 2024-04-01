@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-export const RootIntegrationSchema = z.object({
+export const zodRootIntegrationSchema = z.object({
     packageName: z.string(),
 });
 
-export type _RootIntegrationSchemaType = z.infer<typeof RootIntegrationSchema>;
+export type RnvRootIntegrationSchema = z.infer<typeof zodRootIntegrationSchema>;

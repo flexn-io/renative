@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const zodPlatformWindowsFragment = {
+export const zodPlatformWindowsFragment = z.object({
     templateVSProject: z.optional(
         z.object({
             language: z.string().describe('Specify generated project language: cpp for C++ or cs for C#').optional(),
@@ -64,4 +64,6 @@ export const zodPlatformWindowsFragment = {
             packageExtension: z.string().optional(),
         })
     ),
-};
+});
+
+export type RnvPlatformWindowsFragment = z.infer<typeof zodPlatformWindowsFragment>;

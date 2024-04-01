@@ -1,6 +1,6 @@
 import { AnyZodObject, z } from 'zod';
 
-import { PlatformsKeys, SupportedPlatforms } from '../shared';
+import { zodPlatformsKeys, zodSupportedPlatforms } from '../shared';
 
 const _generatePlatformsSchema = (schema: AnyZodObject) => {
     return z.object({
@@ -47,7 +47,7 @@ const SchemaPluginPlatform = z.object({
 });
 
 const SchemaPluginBase = z.object({
-    supportedPlatforms: SupportedPlatforms.optional(),
+    supportedPlatforms: zodSupportedPlatforms.optional(),
     disabled: z.boolean().default(false).describe('Marks plugin disabled'),
     props: z.record(z.string(), z.string()).describe('Custom props passed to plugin'),
     version: z.string().describe('Version of plugin. Typically package version'),
@@ -113,7 +113,7 @@ const SchemaPlatform = z.object({
         .string()
         .describe('ID of engine to be used for this platform. Note: engine must be registered in `engines` field'),
 
-    extendPlatform: z.optional(PlatformsKeys),
+    extendPlatform: z.optional(zodPlatformsKeys),
     assetFolderPlatform: z
         .string()
         .describe(
@@ -208,11 +208,11 @@ const SchemaProject = z.object({
     defaults: z
         .object({
             ports: z
-                .record(PlatformsKeys, z.number()) //TODO maxValue(65535)
+                .record(zodPlatformsKeys, z.number()) //TODO maxValue(65535)
                 .describe(
                     'Allows you to assign custom port per each supported platform specific to this project. this is useful if you foten switch between multiple projects and do not want to experience constant port conflicts'
                 ),
-            supportedPlatforms: SupportedPlatforms,
+            supportedPlatforms: zodSupportedPlatforms,
             portOffset: z.number().describe('Offset each port default value by increment'),
             defaultCommandSchemes: z
                 .record(z.enum(['run', 'export', 'build']), z.string())
@@ -220,7 +220,7 @@ const SchemaProject = z.object({
                     'List of default schemes for each rnv command. This is useful if you want to avoid specifying `-s ...` every time your run rnv command. bu default rnv uses `-s debug`. NOTE: you can only use schemes you defined in `buildSchemes`'
                 ),
             targets: z
-                .record(PlatformsKeys, z.string())
+                .record(zodPlatformsKeys, z.string())
                 .describe('Override of default targets specific to this project'),
         })
         .describe('Default system config for this project'),
@@ -250,7 +250,7 @@ const SchemaProject = z.object({
         .object({
             appConfigsDir: z.string().describe('Custom path to appConfigs. defaults to `./appConfigs`'),
             platformTemplatesDirs: z
-                .record(PlatformsKeys, z.string())
+                .record(zodPlatformsKeys, z.string())
                 .describe(
                     'Custom location of ejected platform templates. this is populated after you run `rnv platform eject`'
                 ),
@@ -310,7 +310,7 @@ const SchemaProject = z.object({
             install: z.object({
                 script: z.string(),
                 platform: z.record(
-                    PlatformsKeys,
+                    zodPlatformsKeys,
                     z.object({
                         ignore: z.boolean(),
                         ignoreTasks: z.array(z.string()),
@@ -349,7 +349,7 @@ const SchemaTemplate = z
                     z.object({
                         paths: z.array(z.string()),
                         engines: z.array(z.string()).optional(),
-                        platforms: SupportedPlatforms.optional(),
+                        platforms: zodSupportedPlatforms.optional(),
                     }),
                 ])
             )

@@ -1,48 +1,38 @@
 import { z } from 'zod';
-import { PlatformsKeys, ProjectTemplates } from '../shared';
+import { zodPlatformsKeys, zodProjectTemplates } from '../shared';
 import { zodPluginSchema } from '../plugins';
 
-export const PluginTemplates = z
-    .record(z.string(), zodPluginSchema)
-    .describe('Define all plugins available to be merged with project plugins');
-
-export const DisableRnvDefaultOverrides = z
-    .boolean()
-    .describe(
-        'Disables default rnv scope plugin overrides and merges. Useful if you want to test entirely clean plugin template list'
-    );
-
 export const RootTemplatesSchema = z.object({
-    projectTemplates: ProjectTemplates.optional(),
-    engineIdMap: z.record(z.string(), z.string()).optional(),
-    engineTemplates: z
-        .record(
-            z.string(),
-            z.object({
-                version: z.string(),
-                id: z.string(),
-                key: z.string().optional(),
-            })
-        )
-        .optional(),
-    integrationTemplates: z
-        .record(
-            z.string(),
-            z.object({
-                version: z.string(),
-            })
-        )
-        .optional(),
-    platformTemplates: z
-        .record(
-            PlatformsKeys,
-            z.object({
-                engine: z.string(),
-            })
-        )
-        .optional(),
-    pluginTemplates: PluginTemplates.optional(),
-    disableRnvDefaultOverrides: z.optional(DisableRnvDefaultOverrides),
+    projectTemplates: zodProjectTemplates,
+    engineIdMap: z.record(z.string(), z.string()),
+    engineTemplates: z.record(
+        z.string(),
+        z.object({
+            version: z.string(),
+            id: z.string(),
+            key: z.string(),
+        })
+    ),
+    integrationTemplates: z.record(
+        z.string(),
+        z.object({
+            version: z.string(),
+        })
+    ),
+    platformTemplates: z.record(
+        zodPlatformsKeys,
+        z.object({
+            engine: z.string(),
+        })
+    ),
+    pluginTemplates: z
+        .record(z.string(), zodPluginSchema)
+        .describe('Define all plugins available to be merged with project plugins'),
+    disableRnvDefaultOverrides: z
+        .boolean()
+        .describe(
+            'Disables default rnv scope plugin overrides and merges. Useful if you want to test entirely clean plugin template list'
+        ),
 });
 
 export type _RootTemplatesSchemaType = z.infer<typeof RootTemplatesSchema>;

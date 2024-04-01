@@ -1,12 +1,10 @@
 import { z } from 'zod';
 
-const WebpackConfig = z.object({
-    publicUrl: z.string().optional(),
-    customScripts: z.array(z.string()).optional().describe('Allows you to inject custom script into html header'),
-});
-
-export const zodPlatformWebpackFragment = {
-    webpackConfig: z.optional(WebpackConfig),
+export const zodPlatformWebpackFragment = z.object({
+    webpackConfig: z.object({
+        publicUrl: z.string().optional(),
+        customScripts: z.array(z.string()).optional().describe('Allows you to inject custom script into html header'),
+    }),
 
     // webpackConfig: {
     //     additionalProperties: true,
@@ -45,4 +43,6 @@ export const zodPlatformWebpackFragment = {
     //         },
     //     },
     // },
-};
+});
+
+export type RnvPlatformWebpackFragment = z.infer<typeof zodPlatformWebpackFragment>;

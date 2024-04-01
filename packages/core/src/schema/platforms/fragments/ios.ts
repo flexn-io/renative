@@ -1,81 +1,61 @@
 import { z } from 'zod';
 
-const IgnoreWarnings = z.boolean().describe('Injects `inhibit_all_warnings` into Podfile');
-
-const IgnoreLogs = z.boolean().describe('Passes `-quiet` to xcodebuild command');
-
-const DeploymentTarget = z.string().describe('Deployment target for xcodepoj');
-
-const OrientationSupport = z.object({
-    phone: z.optional(z.array(z.string())),
-    // phone: [
-    //                 'UIInterfaceOrientationPortrait',
-    //                 'UIInterfaceOrientationPortraitUpsideDown',
-    //                 'UIInterfaceOrientationLandscapeLeft',
-    //                 'UIInterfaceOrientationLandscapeRight',
-    //             ],
-    tab: z.optional(z.array(z.string())),
-    //             tab: [
-    //                 'UIInterfaceOrientationPortrait',
-    //                 'UIInterfaceOrientationPortraitUpsideDown',
-    //                 'UIInterfaceOrientationLandscapeLeft',
-    //                 'UIInterfaceOrientationLandscapeRight',
-    //             ],
-});
-
-const ExcludedArchs = z
-    .array(z.string())
-    .describe('Defines excluded architectures. This transforms to xcodeproj: `EXCLUDED_ARCHS="<VAL VAL ...>"`'); //['arm64']
-
-const URLScheme = z.string().describe('URL Scheme for the app used for deeplinking');
-
-const TeamID = z.string().describe('Apple teamID');
-
-const SystemCapabilities = z.record(z.string(), z.boolean());
-const provisioningProfiles = z.record(z.string());
-
-export const zodPlatformiOSFragment = {
-    ignoreWarnings: z.optional(IgnoreWarnings),
-    ignoreLogs: z.optional(IgnoreLogs),
-    deploymentTarget: z.optional(DeploymentTarget),
-    orientationSupport: z.optional(OrientationSupport),
-    teamID: z.optional(TeamID),
-    excludedArchs: z.optional(ExcludedArchs),
-    urlScheme: z.optional(URLScheme),
-    teamIdentifier: z.optional(z.string().describe('Apple developer team ID')),
-    scheme: z.string().optional(),
-    schemeTarget: z.string().optional(),
-    appleId: z.string().optional(),
-    provisioningStyle: z.string().optional(),
-    newArchEnabled: z.boolean().optional().describe('Enables new archs for iOS. Default: false'),
-    codeSignIdentity: z.string().describe('Special property which tells Xcode how to build your project').optional(),
-    commandLineArguments: z
+export const zodPlatformiOSFragment = z.object({
+    ignoreWarnings: z.boolean().describe('Injects `inhibit_all_warnings` into Podfile'),
+    ignoreLogs: z.boolean().describe('Passes `-quiet` to xcodebuild command'),
+    deploymentTarget: z.string().describe('Deployment target for xcodepoj'),
+    orientationSupport: z.object({
+        phone: z.optional(z.array(z.string())),
+        // phone: [
+        //                 'UIInterfaceOrientationPortrait',
+        //                 'UIInterfaceOrientationPortraitUpsideDown',
+        //                 'UIInterfaceOrientationLandscapeLeft',
+        //                 'UIInterfaceOrientationLandscapeRight',
+        //             ],
+        tab: z.optional(z.array(z.string())),
+        //             tab: [
+        //                 'UIInterfaceOrientationPortrait',
+        //                 'UIInterfaceOrientationPortraitUpsideDown',
+        //                 'UIInterfaceOrientationLandscapeLeft',
+        //                 'UIInterfaceOrientationLandscapeRight',
+        //             ],
+    }),
+    teamID: z.string().describe('Apple teamID'),
+    excludedArchs: z
         .array(z.string())
-        .describe('Allows you to pass launch arguments to active scheme')
-        .optional(),
-    provisionProfileSpecifier: z.string().optional(),
-    provisionProfileSpecifiers: z.record(z.string(), z.string()).optional(),
-    allowProvisioningUpdates: z.boolean().optional(),
-    provisioningProfiles: z.optional(provisioningProfiles),
+        .describe('Defines excluded architectures. This transforms to xcodeproj: `EXCLUDED_ARCHS="<VAL VAL ...>"`'),
+    urlScheme: z.string().describe('URL Scheme for the app used for deeplinking'),
+    teamIdentifier: z.optional(z.string().describe('Apple developer team ID')),
+    scheme: z.string(),
+    schemeTarget: z.string(),
+    appleId: z.string(),
+    provisioningStyle: z.string(),
+    newArchEnabled: z.boolean().describe('Enables new archs for iOS. Default: false'),
+    codeSignIdentity: z.string().describe('Special property which tells Xcode how to build your project'),
+    commandLineArguments: z.array(z.string()).describe('Allows you to pass launch arguments to active scheme'),
+    provisionProfileSpecifier: z.string(),
+    provisionProfileSpecifiers: z.record(z.string(), z.string()),
+    allowProvisioningUpdates: z.boolean(),
+    provisioningProfiles: z.record(z.string()),
     codeSignIdentities: z.optional(z.record(z.string(), z.string())),
-    systemCapabilities: z.optional(SystemCapabilities),
-    entitlements: z.record(z.string()).optional(),
-    runScheme: z.string().optional(),
-    sdk: z.string().optional(),
-    testFlightId: z.string().optional(),
-    firebaseId: z.string().optional(),
+    systemCapabilities: z.record(z.string(), z.boolean()),
+    entitlements: z.record(z.string()),
+    runScheme: z.string(),
+    sdk: z.string(),
+    testFlightId: z.string(),
+    firebaseId: z.string(),
     exportOptions: z
         .object({
-            method: z.string().optional(),
-            teamID: z.string().optional(),
-            uploadBitcode: z.boolean().optional(),
-            compileBitcode: z.boolean().optional(),
-            uploadSymbols: z.boolean().optional(),
-            signingStyle: z.string().optional(),
-            signingCertificate: z.string().optional(),
-            provisioningProfiles: z.record(z.string()).optional(),
+            method: z.string(),
+            teamID: z.string(),
+            uploadBitcode: z.boolean(),
+            compileBitcode: z.boolean(),
+            uploadSymbols: z.boolean(),
+            signingStyle: z.string(),
+            signingCertificate: z.string(),
+            provisioningProfiles: z.record(z.string()),
         })
-        .optional(),
+        .partial(),
     // systemCapabilities: {
     //     additionalProperties: true,
     //     type: 'object',
@@ -109,4 +89,6 @@ export const zodPlatformiOSFragment = {
     //         },
     //     ],
     // },
-};
+});
+
+export type RnvPlatformiOSFragment = z.infer<typeof zodPlatformiOSFragment>;

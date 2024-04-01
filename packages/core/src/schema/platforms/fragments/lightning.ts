@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
-export const zodPlatformLightningFragment = {
-    target: z.string().optional(),
-};
+export const zodPlatformLightningFragment = z.object({
+    target: z.string(),
+});
+
+export type RnvPlatformLightningFragment = z.infer<typeof zodPlatformLightningFragment>;

@@ -1,11 +1,9 @@
 import { z } from 'zod';
 
-const AppName = z.string();
+export const zodPlatformTizenFragment = z.object({
+    package: z.string(),
+    certificateProfile: z.string(),
+    appName: z.string(),
+});
 
-const CertificateProfile = z.string();
-
-export const zodPlatformTizenFragment = {
-    package: z.optional(z.string()),
-    certificateProfile: z.optional(CertificateProfile),
-    appName: z.optional(AppName),
-};
+export type RnvPlatformTizenFragment = z.infer<typeof zodPlatformTizenFragment>;

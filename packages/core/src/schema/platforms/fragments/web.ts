@@ -1,7 +1,9 @@
 import { z } from 'zod';
 
-export const zodPlatformWebFragment = {
-    timestampBuildFiles: z.array(z.string()).optional(),
-    devServerHost: z.string().optional(),
-    environment: z.string().optional(),
-};
+export const zodPlatformWebFragment = z.object({
+    timestampBuildFiles: z.array(z.string()),
+    devServerHost: z.string(),
+    environment: z.string(),
+});
+
+export type RnvPlatformWebFragment = z.infer<typeof zodPlatformWebFragment>;

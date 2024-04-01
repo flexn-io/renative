@@ -1,10 +1,7 @@
 import { z } from 'zod';
 
-export const zodPlatformElectronFragment = {
-    electronConfig: z
-        .any()
-        .optional()
-        .describe('Allows you to configure electron app as per https://www.electron.build/'),
+export const zodPlatformElectronFragment = z.object({
+    electronConfig: z.any().describe('Allows you to configure electron app as per https://www.electron.build/'),
     BrowserWindow: z
         .object({
             width: z.number().optional(),
@@ -16,7 +13,6 @@ export const zodPlatformElectronFragment = {
                 .optional()
                 .describe('Extra web preferences of electron app'),
         })
-        .optional()
         .describe('Allows you to configure electron wrapper app window'),
     // electronTemplate: z.optional(z.object({})),
     // electronConfig: {
@@ -75,4 +71,6 @@ export const zodPlatformElectronFragment = {
     //         },
     //     },
     // },
-};
+});
+
+export type RnvPlatformElectronFragment = z.infer<typeof zodPlatformElectronFragment>;

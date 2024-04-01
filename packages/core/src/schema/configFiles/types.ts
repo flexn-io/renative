@@ -1,14 +1,14 @@
-import { _RootAppSchemaType } from './app';
-import { _ConfigRootEngineType } from './engine';
+import { RnvRootAppSchemaType } from './app';
+import { RnvRootEngineSchema } from './engine';
 import { _RootWorkspaceSchemaType } from './workspace';
-import { _RootIntegrationSchemaType } from './integration';
+import { RnvRootIntegrationSchema } from './integration';
 import { _RootLocalSchemaType } from './local';
 import { _RootPluginSchemaType } from './plugin';
 import { _RootPrivateSchemaType } from './private';
 import { RnvRootProjectSchema } from './project';
 import { _RootTemplateSchemaType } from './template';
 import { _RootTemplatesSchemaType } from './templates';
-import { _RootWorkspacesSchemaType } from './workspaces';
+import { RnvRootWorkspacesSchema } from './workspaces';
 import { _RootRuntimeSchemaType } from './runtime';
 import { _RootOverridesSchemaType } from './overrides';
 
@@ -16,10 +16,10 @@ import { _RootOverridesSchemaType } from './overrides';
 export type ConfigFileProject = RnvRootProjectSchema;
 
 // appConfigs/**/renative.json
-export type ConfigFileApp = _RootAppSchemaType;
+export type ConfigFileApp = RnvRootAppSchemaType;
 
 // renative.engine.json
-export type ConfigFileEngine = _ConfigRootEngineType;
+export type ConfigFileEngine = RnvRootEngineSchema;
 
 // renative.plugin.json
 export type ConfigFilePlugin = _RootPluginSchemaType;
@@ -40,10 +40,10 @@ export type ConfigFileTemplates = _RootTemplatesSchemaType;
 export type ConfigFileWorkspace = _RootWorkspaceSchemaType;
 
 // renative.workspaces.json
-export type ConfigFileWorkspaces = _RootWorkspacesSchemaType;
+export type ConfigFileWorkspaces = RnvRootWorkspacesSchema;
 
 // renative.integration.json
-export type ConfigFileIntegration = _RootIntegrationSchemaType;
+export type ConfigFileIntegration = RnvRootIntegrationSchema;
 
 // renative.runtime.json
 export type ConfigFileRuntime = _RootRuntimeSchemaType;

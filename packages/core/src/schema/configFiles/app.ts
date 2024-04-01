@@ -1,46 +1,39 @@
 import { AnyZodObject, z } from 'zod';
-import { zodCommonSchema } from '../common';
-import { Ext, ExtendTemplate } from '../shared';
-import { zodPlatformsSchema } from '../platforms';
-import { zodPluginsSchema } from '../plugins';
+import { RnvCommonSchema } from '../common';
+import { zodExt } from '../shared';
+import { RnvPlatformsSchema } from '../platforms';
+import { RnvPluginsSchema } from '../plugins';
+import { zodRootProjectCommonSchema, zodRootProjectPlatformsSchema, zodRootProjectPluginsSchema } from './project';
 
-export const Extend = z.string().describe('extend another appConfig by id');
-
-const Id = z
-    .string()
-    .describe('ID of the app in `./appConfigs/[APP_ID]/renative.json`. MUST match APP_ID name of the folder');
-
-const Hidden = z
-    .boolean()
-    .describe(
-        'If set to true in `./appConfigs/[APP_ID]/renative.json` the APP_ID will be hidden from list of appConfigs `-c`'
-    );
-
-//LEVEl 0 (ROOT)
-
-const zodRootAppBaseFragment = {
-    id: z.optional(Id),
-    custom: z.optional(Ext),
-    hidden: z.optional(Hidden),
-    extendsTemplate: z.optional(ExtendTemplate), // TODO: rename to "extendsConfig"
-    extend: z.optional(Extend), // TODO: rename to "extendsAppConfigID"
-};
-
-const RootAppBaseSchema = z.object(zodRootAppBaseFragment);
-const RootAppCommonSchema = z.object({ common: z.optional(zodCommonSchema) });
-const RootAppPlatformsSchema = z.object({ platforms: z.optional(zodPlatformsSchema) });
-const RootAppPluginsSchema = z.object({ plugins: z.optional(zodPluginsSchema) });
+const zodRootAppBaseFragment = z.object({
+    id: z
+        .string()
+        .describe('ID of the app in `./appConfigs/[APP_ID]/renative.json`. MUST match APP_ID name of the folder'),
+    custom: z.optional(zodExt),
+    hidden: z
+        .boolean()
+        .describe(
+            'If set to true in `./appConfigs/[APP_ID]/renative.json` the APP_ID will be hidden from list of appConfigs `-c`'
+        ),
+    extendsTemplate: z
+        .string()
+        .describe(
+            'You can extend another renative.json file of currently applied template by providing relative or full package name path. Exampe: `@rnv/template-starter/renative.json`'
+        ), // TODO: rename to "extendsConfig"
+    extend: z.string().describe('extend another appConfig by id'), // TODO: rename to "extendsAppConfigID"
+});
+export type RnvRootAppBaseFragment = z.infer<typeof zodRootAppBaseFragment>;
 
 // NOTE: Need to explictly type this to generic zod object to avoid TS error:
 // The inferred type of this node exceeds the maximum length the compiler will serialize...
 // This is ok we only use this full schema for runtime validations. actual types
-export const RootAppSchema: AnyZodObject = RootAppBaseSchema.merge(RootAppCommonSchema)
-    .merge(RootAppPlatformsSchema)
-    .merge(RootAppPluginsSchema);
+export const RootAppSchema: AnyZodObject = zodRootAppBaseFragment
+    .merge(zodRootProjectCommonSchema)
+    .merge(zodRootProjectPlatformsSchema)
+    .merge(zodRootProjectPluginsSchema);
 
-export type _RootAppBaseSchemalType = z.infer<typeof RootAppBaseSchema>;
-
-export type _RootAppSchemaType = z.infer<typeof RootAppBaseSchema> &
-    z.infer<typeof RootAppCommonSchema> &
-    z.infer<typeof RootAppPlatformsSchema> &
-    z.infer<typeof RootAppPluginsSchema>;
+export type RnvRootAppSchemaType = RnvRootAppBaseFragment & {
+    common?: RnvCommonSchema;
+    platforms?: RnvPlatformsSchema;
+    plugins?: RnvPluginsSchema;
+};

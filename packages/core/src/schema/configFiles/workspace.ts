@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { DefaultTargets, ProjectTemplates } from '../shared';
+import { zodDefaultTargets, zodProjectTemplates } from '../shared';
 
 const SDKsSchema = z
     .object({
@@ -19,9 +19,9 @@ const SDKsSchema = z
 //LEVEl 0 (ROOT)
 
 export const RootWorkspaceSchema = z.object({
-    defaultTargets: z.optional(DefaultTargets),
+    defaultTargets: z.optional(zodDefaultTargets),
     sdks: z.optional(SDKsSchema),
-    projectTemplates: ProjectTemplates.optional(),
+    projectTemplates: zodProjectTemplates.optional(),
     disableTelemetry: z
         .boolean()
         .optional()
