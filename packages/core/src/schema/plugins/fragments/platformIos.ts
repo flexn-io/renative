@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { zodTemplateXcodeBaseFragment } from '../../platforms/fragments/templateXcodeBase';
+import { zodTemplateXcodeFragment } from '../../platforms/fragments/templateXcode';
 
 const Git = z.string().describe('Alternative git url for pod instead of version');
 
@@ -16,7 +16,7 @@ export const zodPluginPlatformiOSFragment = {
     podNames: z.optional(z.array(z.string())),
     podName: z.optional(z.string()),
     staticFrameworks: z.optional(z.array(z.string())),
-    templateXcode: z.optional(z.object(zodTemplateXcodeBaseFragment)),
+    templateXcode: zodTemplateXcodeFragment,
     isStatic: z.boolean().optional(),
     buildType: z.optional(BuildType),
 };

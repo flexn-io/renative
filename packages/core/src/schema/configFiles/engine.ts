@@ -14,7 +14,7 @@ const zodEngineNpm = z
 
 const zodEnginePlatform = z.object({
     engine: z.optional(z.string()),
-    npm: z.optional(zodNpmDep),
+    npm: z.optional(zodEngineNpm),
 });
 
 export const RootEngineSchema = z.object({

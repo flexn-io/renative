@@ -32,7 +32,7 @@ export const RootAppSchema: AnyZodObject = zodRootAppBaseFragment
     .merge(zodRootProjectPlatformsSchema)
     .merge(zodRootProjectPluginsSchema);
 
-export type RnvRootAppSchemaType = RnvRootAppBaseFragment & {
+export type RnvRootAppSchema = RnvRootAppBaseFragment & {
     common?: RnvCommonSchema;
     platforms?: RnvPlatformsSchema;
     plugins?: RnvPluginsSchema;

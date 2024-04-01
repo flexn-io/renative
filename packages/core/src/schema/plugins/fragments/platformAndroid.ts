@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { zodTemplateAndroidBaseFragment } from '../../platforms/fragments/templateAndroidBase';
+import { zodTemplateAndroidFragment } from '../../platforms/fragments/templateAndroid';
 
 export const zodPluginPlatformAndroidFragment = {
     projectName: z.optional(z.string()),
@@ -7,5 +7,5 @@ export const zodPluginPlatformAndroidFragment = {
     skipImplementation: z.optional(z.boolean()),
     implementation: z.optional(z.string()),
     package: z.optional(z.string()),
-    templateAndroid: z.optional(z.object(zodTemplateAndroidBaseFragment)),
+    templateAndroid: zodTemplateAndroidFragment,
 };

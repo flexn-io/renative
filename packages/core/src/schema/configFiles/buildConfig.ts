@@ -1,6 +1,6 @@
 import { type RnvRootAppBaseFragment } from './app';
 import { type _RootLocalSchemaType } from './local';
-import { type RnvRootProjectBaseFragment } from './project';
+import { type RnvRootProjectSchema } from './project';
 import { type _RootTemplatesSchemaType } from './templates';
 import { type _RootWorkspaceSchemaType } from './workspace';
 
@@ -34,7 +34,7 @@ export type ConfigFileBuildConfig =
         RootPluginsMerged &
         //Project + App
         // Required<RnvRootProjectBaseFragment> &
-        RnvRootProjectBaseFragment &
+        RnvRootProjectSchema &
         _RootLocalSchemaType &
         RnvRootAppBaseFragment;
 // Common &

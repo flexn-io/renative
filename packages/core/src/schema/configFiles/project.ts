@@ -87,6 +87,7 @@ const zodRootProjectBaseFragment = z
                 ).describe(`
         Allows you to define custom plugin template scopes. default scope for all plugins is \`rnv\`.`),
             })
+            .partial()
             .describe('Define custom paths for RNV to look into'),
         permissions: z
             .object({
@@ -162,7 +163,9 @@ const zodRootProjectBaseFragment = z
         // currentTemplate: CurrentTemplate,
     })
     .partial();
-export type RnvRootProjectBaseFragment = z.infer<typeof zodRootProjectBaseFragment>;
+export type RnvRootProjectBaseFragment = z.infer<typeof zodRootProjectBaseFragment> & {
+    templateConfig: RnvTemplateConfigFragment;
+};
 
 // NOTE: Need to explictly type this to generic zod object to avoid TS error:
 // The inferred type of this node exceeds the maximum length the compiler will serialize...
@@ -180,5 +183,4 @@ export type RnvRootProjectSchema = RnvRootProjectBaseFragment & {
     common?: RnvCommonSchema;
     platforms?: RnvPlatformsSchema;
     plugins?: RnvPluginsSchema;
-    templateConfig: RnvTemplateConfigFragment;
 };

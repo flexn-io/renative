@@ -7,7 +7,7 @@ export { RootPluginSchema } from './configFiles/plugin';
 export { RootPrivateSchema } from './configFiles/private';
 export { RootTemplateSchema } from './configFiles/template';
 export { RootTemplatesSchema } from './configFiles/templates';
-export { RootIntegrationSchema } from './configFiles/integration';
+export { zodRootIntegrationSchema } from './configFiles/integration';
 
 export { ConfigFileBuildConfig } from './configFiles/buildConfig';
 

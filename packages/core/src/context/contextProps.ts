@@ -8,6 +8,7 @@ import { TimestampPathsConfig } from '../system/types';
 import path from 'path';
 import { fsExistsSync } from '../system/fs';
 import { getContext } from './provider';
+import { RnvCommonBuildSchemeSchema } from '../schema/common';
 
 const _getValueOrMergedObject = (resultScheme: object, resultPlatforms: object, resultCommon: object) => {
     if (resultScheme !== undefined) {
@@ -27,10 +28,7 @@ const _getValueOrMergedObject = (resultScheme: object, resultPlatforms: object, 
     return resultCommon;
 };
 
-export const getConfigProp: GetConfigPropFn = <T extends ConfigPropKey>(
-    key: T,
-    defaultVal?: ConfigProp[T]
-): ConfigProp[T] => {
+export const getConfigProp: GetConfigPropFn = <T extends ConfigPropKey>(key: T, defaultVal?: ConfigProp[T]) => {
     const c = getContext();
     if (!c.buildConfig) {
         logError('getConfigProp: c.buildConfig is undefined!');
@@ -44,7 +42,7 @@ export const _getConfigProp = <T extends ConfigPropKey>(
     key: T,
     defaultVal?: ConfigProp[T],
     sourceObj?: Partial<ConfigFileBuildConfig>
-): ConfigProp[T] => {
+): ConfigProp[T] | undefined => {
     const { platform } = c;
     if (!sourceObj || !platform) return undefined;
 
@@ -63,7 +61,8 @@ export const _getConfigProp = <T extends ConfigPropKey>(
 
     const resultCommonRoot = getFlavouredProp(sourceObj.common || {}, key as CommonPropKey);
 
-    const bs = (c.runtime.scheme && sourceObj.common?.buildSchemes?.[c.runtime.scheme]) || {};
+    const bs: RnvCommonBuildSchemeSchema =
+        (!!c.runtime.scheme && sourceObj.common?.buildSchemes?.[c.runtime.scheme]) || {};
 
     const resultCommonScheme = c.runtime.scheme && getFlavouredProp(bs, key as CommonBuildSchemeKey);
 
