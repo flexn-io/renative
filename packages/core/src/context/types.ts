@@ -15,14 +15,13 @@ import type {
 } from '../schema/types';
 import type { RnvEngine, RnvEnginePlatform } from '../engines/types';
 import type { OverridesOptions } from '../system/types';
-import type { RnvPlatform } from '../types';
+import type { RnvPlatform, RnvPlatformKey } from '../types';
 import type { NpmPackageFile } from '../configs/types';
 import { type ParamKeys, type ProgramOptionsKey } from '../tasks/constants';
 import { type ExecaChildProcess } from 'execa';
 import { type RnvPlugin } from '../plugins/types';
 import type { RnvIntegration } from '../integrations/types';
 import type { DependencyMutation } from '../projects/types';
-import { PlatformKey } from '../enums/platformName';
 
 export type CreateContextOptions = {
     program: RnvContextProgram;
@@ -113,7 +112,7 @@ export type RnvContextRuntime = {
     missingEnginePlugins: Record<string, string>;
     supportedPlatforms: Array<RnvContextPlatform>;
     runtimeExtraProps: Record<string, string>;
-    availablePlatforms: Array<PlatformKey>;
+    availablePlatforms: Array<RnvPlatformKey>;
     platform: RnvPlatform;
     isTargetTrue: boolean;
     bundleAssets: boolean;
@@ -339,7 +338,7 @@ export type RnvContextPathObj = {
 };
 
 export type RnvContextPlatform = {
-    platform: PlatformKey;
+    platform: RnvPlatformKey;
     isConnected: boolean;
     engine?: RnvEngine;
     port?: number;

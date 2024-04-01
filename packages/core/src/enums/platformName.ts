@@ -78,6 +78,3 @@ export const RnvPlatforms = [
     RnvPlatformName.tizenmobile,
     RnvPlatformName.xbox,
 ] as const;
-
-export type RnvPlatformNameKey = keyof typeof RnvPlatformName;
-export type PlatformKey = RnvPlatformNameKey;

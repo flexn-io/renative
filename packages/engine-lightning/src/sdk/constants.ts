@@ -1,3 +1,3 @@
-import { PlatformKey } from '@rnv/core';
+import { RnvPlatformKey } from '@rnv/core';
 
-export const SdkPlatforms: Array<PlatformKey> = ['tizen', 'webos'];
+export const SdkPlatforms: Array<RnvPlatformKey> = ['tizen', 'webos'];

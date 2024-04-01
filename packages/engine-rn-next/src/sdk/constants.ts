@@ -1,3 +1,3 @@
-import { PlatformKey } from '@rnv/core';
+import { RnvPlatformKey } from '@rnv/core';
 
-export const SdkPlatforms: Array<PlatformKey> = ['web', 'chromecast'];
+export const SdkPlatforms: Array<RnvPlatformKey> = ['web', 'chromecast'];

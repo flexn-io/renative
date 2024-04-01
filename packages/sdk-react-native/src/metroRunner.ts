@@ -1,6 +1,6 @@
 import {
     CoreEnvVars,
-    PlatformKey,
+    RnvPlatformKey,
     chalk,
     executeAsync,
     logError,
@@ -14,7 +14,7 @@ import { isBundlerActive } from './common';
 import { EnvVars } from './env';
 import { confirmActiveBundler, getEntryFile } from '@rnv/sdk-utils';
 
-const BUNDLER_PLATFORMS: Partial<Record<PlatformKey, PlatformKey>> = {};
+const BUNDLER_PLATFORMS: Partial<Record<RnvPlatformKey, RnvPlatformKey>> = {};
 
 BUNDLER_PLATFORMS['ios'] = 'ios';
 BUNDLER_PLATFORMS['tvos'] = 'ios';

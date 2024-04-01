@@ -29,7 +29,7 @@ import {
     DEFAULTS,
     RnvPlatform,
     logInfo,
-    PlatformKey,
+    RnvPlatformKey,
     getContext,
 } from '@rnv/core';
 import { parseAndroidManifestSync, injectPluginManifestSync } from './manifestParser';
@@ -228,7 +228,7 @@ const _checkSigningCerts = async (c: Context) => {
             const platforms = c.files.workspace.appConfig.configPrivate?.platforms || {};
 
             if (c.files.workspace.appConfig.configPrivate) {
-                const platCandidates: PlatformKey[] = ['androidwear', 'androidtv', 'android', 'firetv'];
+                const platCandidates: RnvPlatformKey[] = ['androidwear', 'androidtv', 'android', 'firetv'];
 
                 platCandidates.forEach((v) => {
                     if (c.files.workspace.appConfig.configPrivate?.platforms?.[v]) {

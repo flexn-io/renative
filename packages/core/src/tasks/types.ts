@@ -1,12 +1,12 @@
-import { RnvContext } from '../context/types';
-import { PlatformKey } from '../enums/platformName';
+import type { RnvContext } from '../context/types';
+import type { RnvPlatformKey } from '../types';
 
 export type RnvTask = {
     task: string;
     dependsOn?: string[];
     options?: Array<RnvTaskOption>;
     isGlobalScope?: boolean;
-    platforms?: Array<PlatformKey>;
+    platforms?: Array<RnvPlatformKey>;
     description: string;
     forceBuildHookRebuild?: boolean;
     beforeDependsOn?: RnvTaskFn;

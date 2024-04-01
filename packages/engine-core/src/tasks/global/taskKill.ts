@@ -1,5 +1,5 @@
 import {
-    PlatformKey,
+    RnvPlatformKey,
     RnvContext,
     createTask,
     RnvTaskName,
@@ -18,7 +18,7 @@ export default createTask({
         const usedPorts: RnvContext['runtime']['supportedPlatforms'] = [];
         let platArray: RnvContext['runtime']['supportedPlatforms'] = [];
         const results = [];
-        let ports: Partial<Record<PlatformKey, number>> = {};
+        let ports: Partial<Record<RnvPlatformKey, number>> = {};
 
         await configureRuntimeDefaults();
 

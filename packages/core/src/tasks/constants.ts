@@ -282,7 +282,7 @@ const _RnvTaskOptions = {
         description: 'Forces to reset android adb',
     },
 
-    // DEPRECATED --------------------------------
+    // DEPRECATED & REMOVED --------------------------------
 
     // global: {
     //     shortcut: 'G',

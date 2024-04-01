@@ -1,3 +1,3 @@
-import { PlatformKey } from '@rnv/core';
+import { RnvPlatformKey } from '@rnv/core';
 
-export const SdkPlatforms: Array<PlatformKey> = ['windows', 'xbox'];
+export const SdkPlatforms: Array<RnvPlatformKey> = ['windows', 'xbox'];

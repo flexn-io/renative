@@ -1,6 +1,6 @@
-import { PlatformKey } from '@rnv/core';
+import { RnvPlatformKey } from '@rnv/core';
 
-export const EnginePlatforms: Array<PlatformKey> = [
+export const EnginePlatforms: Array<RnvPlatformKey> = [
     'web',
     'webtv',
     'tizen',

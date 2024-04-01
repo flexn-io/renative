@@ -1,9 +1,8 @@
 import { getRealPath, writeFileSync } from '../system/fs';
 import { chalk, logDefault, logWarning } from '../logger';
-import type { RnvPlatform } from '../types';
+import type { RnvPlatform, RnvPlatformKey } from '../types';
 import type { NpmPackageFile } from './types';
 import { getContext } from '../context/provider';
-import { PlatformKey } from '../enums/platformName';
 import type { ConfigFileProject } from '../schema/types';
 
 const SYNCED_DEPS = [
@@ -79,7 +78,7 @@ const _fixDeps = (deps: Record<string, string> | undefined, version: string) => 
     });
 };
 
-export const updateProjectPlatforms = (platforms: Array<PlatformKey>) => {
+export const updateProjectPlatforms = (platforms: Array<RnvPlatformKey>) => {
     const c = getContext();
 
     const {

@@ -1,3 +1,3 @@
-import { PlatformKey } from '@rnv/core';
+import { RnvPlatformKey } from '@rnv/core';
 
-export const SdkPlatforms: Array<PlatformKey> = ['macos', 'windows', 'linux'];
+export const SdkPlatforms: Array<RnvPlatformKey> = ['macos', 'windows', 'linux'];

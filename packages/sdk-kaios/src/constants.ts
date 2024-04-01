@@ -1,5 +1,5 @@
-import { PlatformKey } from '@rnv/core';
+import { RnvPlatformKey } from '@rnv/core';
 
 export const CLI_KAIOS_EMULATOR = 'kaiosEmulator';
 
-export const SdkPlatforms: Array<PlatformKey> = ['kaios'];
+export const SdkPlatforms: Array<RnvPlatformKey> = ['kaios'];

@@ -1,6 +1,6 @@
-import { PlatformKey } from '@rnv/core';
+import { RnvPlatformKey } from '@rnv/core';
 
-export const SdkPlatforms: Array<PlatformKey> = [
+export const SdkPlatforms: Array<RnvPlatformKey> = [
     'ios',
     'android',
     'androidtv',

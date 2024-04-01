@@ -7,7 +7,7 @@ import {
     generatePlatformChoices,
     ejectPlatform,
     inquirerPrompt,
-    PlatformKey,
+    RnvPlatformKey,
     createTask,
     RnvTaskName,
 } from '@rnv/core';
@@ -21,7 +21,7 @@ export default createTask({
             return;
         }
 
-        let selectedPlatforms: Array<PlatformKey>;
+        let selectedPlatforms: Array<RnvPlatformKey>;
         if (ctx.platform) {
             selectedPlatforms = [ctx.platform];
         } else {

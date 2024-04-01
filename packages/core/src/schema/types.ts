@@ -20,7 +20,6 @@ import { zodPlatformWebFragment } from './platforms/fragments/web';
 import { zodPlatformWebOSFragment } from './platforms/fragments/webos';
 import { zodPlatformWebpackFragment } from './platforms/fragments/webpack';
 import { zodPlatformWindowsFragment } from './platforms/fragments/windows';
-import { PlatformKey, RnvPlatformNameKey } from '../enums/platformName';
 import { zodRootAppBaseFragment } from './configFiles/app';
 import { zodConfigFileEngine } from './configFiles/engine';
 import { zodConfigFileIntergation } from './configFiles/integration';
@@ -38,6 +37,7 @@ import { zodRootProjectBaseFragment } from './configFiles/project';
 import { zodConfigFileTemplates } from './configFiles/templates';
 import { zodConfigFileWorkspace } from './configFiles/workspace';
 import { zodConfigFileWorkspaces } from './configFiles/workspaces';
+import type { RnvPlatformKey } from '../types';
 
 // Shared -----------------------
 //
@@ -105,7 +105,7 @@ export type PlatformBuildSchemeKey = keyof RnvPlatformBuildSchemeSchema;
 export type RnvPlatformSchema = RnvPlatformSchemaFragment & {
     buildSchemes?: Record<string, RnvPlatformBuildSchemeSchema>;
 };
-export type RnvPlatformsSchema = Partial<Record<RnvPlatformNameKey, RnvPlatformSchema>>;
+export type RnvPlatformsSchema = Partial<Record<RnvPlatformKey, RnvPlatformSchema>>;
 
 // App -----------------------
 //
@@ -167,7 +167,7 @@ export type RnvPluginPlatformiOSFragment = Partial<z.infer<typeof zodPluginPlatf
 export type RnvPluginPlatformSchema = RnvPluginPlatformBaseFragment &
     RnvPluginPlatformAndroidFragment &
     RnvPluginPlatformiOSFragment;
-export type RnvPluginPlatformsSchema = Record<PlatformKey, RnvPluginPlatformSchema>;
+export type RnvPluginPlatformsSchema = Record<RnvPlatformKey, RnvPluginPlatformSchema>;
 export type RnvPluginSchema = RnvPluginBaseFragment & Partial<RnvPluginPlatformsSchema>;
 export type RnvPluginsSchema = Record<string, RnvPluginSchema | string>;
 // renative.plugin.json

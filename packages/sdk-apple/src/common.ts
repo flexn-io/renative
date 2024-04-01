@@ -1,4 +1,4 @@
-import { PlatformKey, getConfigProp, getContext } from '@rnv/core';
+import { RnvPlatformKey, getConfigProp, getContext } from '@rnv/core';
 
 export const getAppFolderName = () => {
     const c = getContext();
@@ -16,4 +16,4 @@ export const getAppFolderName = () => {
     return 'RNVApp';
 };
 
-export const SdkPlatforms: Array<PlatformKey> = ['ios', 'tvos', 'macos'];
+export const SdkPlatforms: Array<RnvPlatformKey> = ['ios', 'tvos', 'macos'];

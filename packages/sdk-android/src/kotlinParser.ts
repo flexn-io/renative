@@ -10,7 +10,7 @@ import {
 import path from 'path';
 import { getBuildFilePath, getEntryFile, getAppId, addSystemInjects } from '@rnv/sdk-utils';
 
-// const JS_BUNDLE_DEFAULTS: Partial<Record<PlatformKey, string>> = {
+// const JS_BUNDLE_DEFAULTS: Partial<Record<RnvPlatformKey, string>> = {
 //     // Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
 //     androidwear: '"assets://index.androidwear.bundle"',
 // };

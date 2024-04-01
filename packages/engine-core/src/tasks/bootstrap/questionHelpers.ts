@@ -1,5 +1,5 @@
 import {
-    PlatformKey,
+    RnvPlatformKey,
     RnvFileName,
     chalk,
     getApi,
@@ -110,7 +110,7 @@ export const configureConfigOverrides = async (data: NewProjectData) => {
     // In case of copied config instead of extended we want to cleanup unused platforms
     if (renativeConfig.platforms) {
         Object.keys(renativeConfig.platforms).forEach((k) => {
-            const key = k as PlatformKey;
+            const key = k as RnvPlatformKey;
             if (!supPlats.includes(key) && renativeConfig.platforms) {
                 delete renativeConfig.platforms[key];
             }

@@ -1,3 +1,3 @@
-import { PlatformKey } from '@rnv/core';
+import { RnvPlatformKey } from '@rnv/core';
 
-export const REMOTE_DEBUGGER_ENABLED_PLATFORMS: PlatformKey[] = ['tizen', 'tizenmobile', 'tizenwatch'];
+export const REMOTE_DEBUGGER_ENABLED_PLATFORMS: RnvPlatformKey[] = ['tizen', 'tizenmobile', 'tizenwatch'];

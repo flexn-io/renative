@@ -4,7 +4,7 @@ import type {
     ConfigFileTemplate,
     ConfigFileTemplates,
     NpmPackageFile,
-    PlatformKey,
+    RnvPlatformKey,
 } from '@rnv/core';
 
 export type NewProjectData = {
@@ -29,7 +29,7 @@ export type NewProjectData = {
         workspaceID?: string;
         packageName?: string;
         tepmplate?: TemplateOptionValue;
-        supportedPlatforms?: Array<PlatformKey>;
+        supportedPlatforms?: Array<RnvPlatformKey>;
     };
     files: {
         template: {

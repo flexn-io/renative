@@ -12,8 +12,8 @@ import {
 import { chalk, logDefault, logWarning, logDebug } from '../logger';
 import { getContext } from '../context/provider';
 import type { RnvContext, RnvContextBuildConfig } from '../context/types';
-import { FileUtilsPropConfig } from '../system/types';
-import { PlatformKey } from '../enums/platformName';
+import type { FileUtilsPropConfig } from '../system/types';
+import type { RnvPlatformKey } from '../types';
 
 const _arrayMergeOverride = (_destinationArray: Array<string>, sourceArray: Array<string>) => sourceArray;
 
@@ -156,7 +156,7 @@ export const generateBuildConfig = () => {
     //Merge extendPlatform
     if (c.buildConfig.platforms) {
         const platforms = c.buildConfig.platforms || {};
-        (Object.keys(platforms) as PlatformKey[]).forEach((k) => {
+        (Object.keys(platforms) as RnvPlatformKey[]).forEach((k) => {
             const plat = platforms[k];
             if (plat?.extendPlatform) {
                 const extPlat = platforms[plat?.extendPlatform];

@@ -22,7 +22,7 @@ import {
     inquirerPrompt,
     executeAsync,
     ExecOptionsPresets,
-    PlatformKey,
+    RnvPlatformKey,
     getContext,
 } from '@rnv/core';
 import { CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from './constants';
@@ -688,7 +688,7 @@ export const checkForActiveEmulator = (emulatorName?: string) =>
                         } else {
                             logRaw(`looking for active emulators: attempt ${attempts}/${maxAttempts}`);
                             attempts++;
-                            const check: PlatformKey[] = ['androidtv', 'firetv', 'androidwear'];
+                            const check: RnvPlatformKey[] = ['androidtv', 'firetv', 'androidwear'];
                             if (check.includes(platform) && attempts === 2) {
                                 await resetAdb(true); // from time to time adb reports a recently started atv emu as being offline. Restarting adb fixes it
                             }
