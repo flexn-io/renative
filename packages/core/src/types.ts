@@ -1,4 +1,4 @@
-import { PlatformKey } from './enums/platformName';
+import { type PlatformKey } from './enums/platformName';
 
 export type RnvPlatform = PlatformKey | null;
 export type RenativeConfigVersion = string | { version: string };

@@ -1,42 +1,6 @@
 import { z } from 'zod';
 import type { ConfigAndroidManifestChildType } from '../../types';
 
-const GradleProperties = z
-    .record(z.string(), z.union([z.string(), z.boolean(), z.number()]))
-    .describe('Overrides values in `gradle.properties` file of generated android based project');
-
-const BuildGradle = z
-    .object({
-        allprojects: z.object({
-            repositories: z.record(z.string(), z.boolean()).describe('Customize repositories section of build.gradle'),
-        }),
-        plugins: z.array(z.string()),
-        buildscript: z.object({
-            repositories: z.record(z.string(), z.boolean()),
-            dependencies: z.record(z.string(), z.boolean()),
-        }),
-        dexOptions: z.record(z.string(), z.boolean()),
-        injectAfterAll: z.array(z.string()),
-    })
-    .partial()
-    .describe('Overrides values in `build.gradle` file of generated android based project');
-
-const AppBuildGradle = z
-    .object({
-        apply: z.array(z.string()),
-        defaultConfig: z.array(z.string()),
-        buildTypes: z.object({
-            debug: z.optional(z.array(z.string())),
-            release: z.optional(z.array(z.string())),
-        }),
-
-        afterEvaluate: z.array(z.string()),
-        implementations: z.array(z.string()),
-        implementation: z.string(),
-    })
-    .partial()
-    .describe('Overrides values in `app/build.gradle` file of generated android based project');
-
 export const zodManifestChildBase = z.object({
     tag: z.string(),
     'android:name': z.string(),
@@ -67,17 +31,45 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 > IMPORTANT: always ensure that your object contains \`tag\` and \`android:name\` to target correct tag to merge into
  `);
 
-// const Gradle = z.object({
-
-// });
-
 export const zodTemplateAndroidFragment = z
     .object({
         templateAndroid: z
             .object({
-                gradle_properties: GradleProperties,
-                build_gradle: BuildGradle,
-                app_build_gradle: AppBuildGradle,
+                gradle_properties: z
+                    .record(z.string(), z.union([z.string(), z.boolean(), z.number()]))
+                    .describe('Overrides values in `gradle.properties` file of generated android based project'),
+                build_gradle: z
+                    .object({
+                        allprojects: z.object({
+                            repositories: z
+                                .record(z.string(), z.boolean())
+                                .describe('Customize repositories section of build.gradle'),
+                        }),
+                        plugins: z.array(z.string()),
+                        buildscript: z.object({
+                            repositories: z.record(z.string(), z.boolean()),
+                            dependencies: z.record(z.string(), z.boolean()),
+                        }),
+                        dexOptions: z.record(z.string(), z.boolean()),
+                        injectAfterAll: z.array(z.string()),
+                    })
+                    .partial()
+                    .describe('Overrides values in `build.gradle` file of generated android based project'),
+                app_build_gradle: z
+                    .object({
+                        apply: z.array(z.string()),
+                        defaultConfig: z.array(z.string()),
+                        buildTypes: z.object({
+                            debug: z.optional(z.array(z.string())),
+                            release: z.optional(z.array(z.string())),
+                        }),
+
+                        afterEvaluate: z.array(z.string()),
+                        implementations: z.array(z.string()),
+                        implementation: z.string(),
+                    })
+                    .partial()
+                    .describe('Overrides values in `app/build.gradle` file of generated android based project'),
                 AndroidManifest_xml: zodAndroidManifest,
                 strings_xml: z.object({
                     children: z.array(
@@ -108,10 +100,8 @@ export const zodTemplateAndroidFragment = z
                         createMethods: z.array(z.string()),
                         packages: z.array(z.string()),
                         packageParams: z.array(z.string()),
-
                         // onCreate: z
                         //     .string({})
-                        //
                         //     .default('super.onCreate(savedInstanceState)')
                         //     .describe('Overrides super.onCreate method handler of MainActivity.java'),
                     })

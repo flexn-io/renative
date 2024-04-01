@@ -79,6 +79,5 @@ export const RnvPlatforms = [
     RnvPlatformName.xbox,
 ] as const;
 
-type RnvPlatformName = typeof RnvPlatformName;
-export type RnvPlatformNameKey = keyof RnvPlatformName;
+export type RnvPlatformNameKey = keyof typeof RnvPlatformName;
 export type PlatformKey = RnvPlatformNameKey;
