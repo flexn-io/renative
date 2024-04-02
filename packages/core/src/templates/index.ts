@@ -81,7 +81,16 @@ const _applyTemplate = async (c: RnvContext) => {
     logDefault('_applyTemplate');
 
     const tplName = c.buildConfig.templateConfig?.name;
-    c.paths.template.dir = doResolve(tplName) || 'Error: unresolved';
+    if (!tplName) {
+        logError(`Template config missing. Make sure renative.json >> templateConfig.name is set`);
+        return;
+    }
+    const tpPath = doResolve(tplName);
+    if (!tpPath) {
+        logError(`Template ${tplName} not found. Make sure it's installed`);
+        return;
+    }
+    c.paths.template.dir = tpPath;
 
     if (c.paths.template.dir) {
         c.paths.template.configTemplate = path.join(c.paths.template.dir, RnvFileName.renativeTemplate);

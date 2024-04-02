@@ -553,6 +553,7 @@ export const loadPluginTemplates = async () => {
     const customPluginTemplates = c.files.project.config?.paths?.pluginTemplates;
     if (customPluginTemplates) {
         const missingDeps = _parsePluginTemplateDependencies(c, customPluginTemplates);
+
         if (missingDeps.length) {
             const dependencies = c.files.project.package.dependencies || {};
             c.files.project.package.dependencies = dependencies;
@@ -601,15 +602,23 @@ const _parsePluginTemplateDependencies = (
 
                 if (npmDep) {
                     let ptPath;
+                    let ptConfig;
+                    let ptRootPath;
                     if (npmDep.startsWith('file:')) {
                         ptPath = path.join(c.paths.project.dir, npmDep.replace('file:', ''), val.path || '');
                     } else {
-                        // ptPath = path.join(c.paths.project.nodeModulesDir, val.npm, val.path || '');
-                        ptPath = `${doResolve(val.npm)}/${val.path}`;
+                        ptRootPath = doResolve(val.npm);
+                    }
+                    if (ptRootPath) {
+                        ptPath = path.join(ptRootPath, val.path);
+                        c.paths.scopedConfigTemplates.pluginTemplatesDirs[k] = ptPath;
+                        ptConfig = path.join(ptRootPath, RnvFileName.renativeTemplates);
+                        if (!fsExistsSync(ptConfig)) {
+                            // DEPRECATED Legacy Support
+                            ptConfig = path.join(ptRootPath, val.path, 'renative.plugins.json');
+                        }
                     }
 
-                    const ptConfig = path.join(ptPath, RnvFileName.renativeTemplates);
-                    c.paths.scopedConfigTemplates.pluginTemplatesDirs[k] = ptPath;
                     if (fsExistsSync(ptConfig)) {
                         const ptConfigs = c.files.scopedConfigTemplates;
                         const ptConfigFile = readObjectSync<ConfigFileTemplates>(ptConfig);
