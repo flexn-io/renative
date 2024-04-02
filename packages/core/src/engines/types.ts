@@ -4,22 +4,24 @@ import type { ConfigFileEngine } from '../schema/types';
 import type { RnvTask, RnvTaskMap } from '../tasks/types';
 import type { RnvPlatformKey } from '../types';
 
+export type RnvEnginePlatforms = Partial<Record<RnvPlatformKey, RnvEnginePlatform>>;
+
 export type CreateRnvEngineOpts<OKey extends string> = {
     originalTemplatePlatformsDir?: string;
-    platforms: Partial<Record<RnvPlatformKey, RnvEnginePlatform>>;
+    platforms: RnvEnginePlatforms;
     config: ConfigFileEngine;
     tasks: ReadonlyArray<RnvTask<OKey>>;
     rootPath?: string;
     originalTemplatePlatformProjectDir?: string;
-    projectDirName: string;
-    runtimeExtraProps: Record<string, string>;
+    projectDirName?: string;
+    runtimeExtraProps?: Record<string, string>;
     outputDirName?: string;
-    serverDirName: string;
+    serverDirName?: string;
 };
 
 export type RnvEngine<OKey extends string = string> = {
     originalTemplatePlatformsDir?: string;
-    platforms: Partial<Record<RnvPlatformKey, RnvEnginePlatform>>;
+    platforms: RnvEnginePlatforms;
     config: ConfigFileEngine;
     tasks: RnvTaskMap<OKey>;
     rootPath?: string;

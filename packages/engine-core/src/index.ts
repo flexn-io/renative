@@ -37,7 +37,7 @@ import taskTelemetryEnable from './tasks/telemetry/taskTelemetryEnable';
 import taskTelemetryDisable from './tasks/telemetry/taskTelemetryDisable';
 import taskSwitch from './tasks/app/taskAppSwitch';
 
-const CNF: ConfigFileEngine = {
+const Config: ConfigFileEngine = {
     id: 'engine-core',
     platforms: {},
     npm: {},
@@ -47,7 +47,6 @@ const CNF: ConfigFileEngine = {
 };
 
 const Engine = createRnvEngine({
-    runtimeExtraProps: {},
     serverDirName: '',
     tasks: [
         taskCryptoDecrypt,
@@ -87,34 +86,15 @@ const Engine = createRnvEngine({
         taskTelemetryDisable,
         taskSwitch,
     ],
-    config: CNF,
+    config: Config,
     // package: '',
     projectDirName: '',
     // ejectPlatform: null,
     platforms: {},
     rootPath: __dirname,
 });
+
 // export newly decorated type for getContext proxy with decorated types
 export type GetContext = GetContextType<typeof Engine.getContext>;
-
-// export type GetContext = GetContextType<typeof Engine>;
-
-// type Eng = typeof Engine;
-// type EngTasks = Eng['tasks'];
-// type EngOpts = Required<Required<Eng['tasks'][string]>['options'][number]>['key'];
-
-// type Booo<T extends RnvEngine> = T['tasks'][string];
-
-// type Booo2<T extends RnvEngine> = Readonly<Booo<T>['options']>;
-
-// type Booo2<T extends RnvEngine> = Readonly<Required<T['tasks'][string]>['options']>
-// type Booo2<T extends RnvEngine> = Readonly<Required<T['tasks'][string]>['options']>
-// type Booo2<T extends RnvEngine> = Readonly<Required<T['tasks'][string]>['options']>
-
-// type Booo3<T extends RnvEngine> = Readonly<Booo<T>>[number]
-
-// const xxx: EngOpts = 'dsdfsdfsdfsd';
-// const xxx2: EngTasks;
-// console.log('DDJDJD', xxx, xxx2['ddd'].beforeDependsOn);
 
 export default Engine;

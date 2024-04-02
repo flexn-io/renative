@@ -1,4 +1,4 @@
-import { RnvEngine, generateRnvTaskMap, generateEngineExtensions } from '@rnv/core';
+import { createRnvEngine, GetContextType } from '@rnv/core';
 import { withRNVMetro } from './adapters/metroAdapter';
 import { withRNVBabel } from './adapters/babelAdapter';
 import taskBuild from './tasks/taskBuild';
@@ -7,32 +7,25 @@ import taskExport from './tasks/taskExport';
 import taskPackage from './tasks/taskPackage';
 import taskRun from './tasks/taskRun';
 import { Tasks as TasksSdkReactNative, withRNVRNConfig } from '@rnv/sdk-react-native';
-//@ts-ignore
-import CNF from '../renative.engine.json';
-//@ts-ignore
-import PKG from '../package.json';
+import { Config } from './config';
 
-const Engine: RnvEngine = {
-    tasks: generateRnvTaskMap(
-        [taskRun, taskPackage, taskBuild, taskConfigure, taskExport, ...TasksSdkReactNative],
-        PKG
-    ),
-    config: CNF,
-    projectDirName: '',
-    runtimeExtraProps: {},
-    serverDirName: '',
+const Engine = createRnvEngine({
+    tasks: [taskRun, taskPackage, taskBuild, taskConfigure, taskExport, ...TasksSdkReactNative],
+    config: Config,
     platforms: {
         windows: {
             defaultPort: 8092,
-            extensions: generateEngineExtensions(['windows.desktop', 'windows', 'win', 'desktop'], CNF),
+            extensions: ['windows.desktop', 'windows', 'win', 'desktop'],
         },
         xbox: {
             defaultPort: 8099,
             // What works on windows will work on xbox, but it needs to be scaled as for TVs
-            extensions: generateEngineExtensions(['xbox', 'windows', 'win', 'tv', 'desktop'], CNF),
+            extensions: ['xbox', 'windows', 'win', 'tv', 'desktop'],
         },
     },
-};
+});
+
+export type GetContext = GetContextType<typeof Engine.getContext>;
 
 export { withRNVMetro, withRNVBabel, withRNVRNConfig };
 

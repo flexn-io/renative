@@ -1,17 +1,14 @@
-import { generateEngineExtensions, generateRnvTaskMap, RnvEngine } from '@rnv/core';
+import { createRnvEngine, GetContextType } from '@rnv/core';
 import { withRNVMetro } from './adapters/metroAdapter';
 import { withRNVBabel } from './adapters/babelAdapter';
 import { Tasks as TasksSdkApple } from '@rnv/sdk-apple';
 import { Tasks as TasksSdkReactNative } from '@rnv/sdk-react-native';
 import { withRNVRNConfig } from '@rnv/sdk-react-native';
-//@ts-ignore
-import CNF from '../renative.engine.json';
-//@ts-ignore
-import PKG from '../package.json';
+import { Config } from './config';
 
-const Engine: RnvEngine = {
-    tasks: generateRnvTaskMap([...TasksSdkApple, ...TasksSdkReactNative], PKG),
-    config: CNF,
+const Engine = createRnvEngine({
+    tasks: [...TasksSdkApple, ...TasksSdkReactNative],
+    config: Config,
     runtimeExtraProps: {
         reactNativePackageName: 'react-native',
         reactNativeMetroConfigName: 'metro.config.js',
@@ -22,13 +19,12 @@ const Engine: RnvEngine = {
     platforms: {
         macos: {
             defaultPort: 8086,
-            extensions: generateEngineExtensions(
-                ['macos.desktop', 'desktop', 'macos', 'desktop.native', 'native'],
-                CNF
-            ),
+            extensions: ['macos.desktop', 'desktop', 'macos', 'desktop.native', 'native'],
         },
     },
-};
+});
+
+export type GetContext = GetContextType<typeof Engine.getContext>;
 
 export { withRNVMetro, withRNVBabel, withRNVRNConfig };
 

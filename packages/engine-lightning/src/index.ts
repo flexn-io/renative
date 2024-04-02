@@ -1,33 +1,30 @@
-import { RnvEngine, generateEngineExtensions, generateRnvTaskMap } from '@rnv/core';
+import { GetContextType, createRnvEngine } from '@rnv/core';
 import { Tasks as TasksSdkWebOS } from '@rnv/sdk-webos';
 import { Tasks as TasksSdkTizen } from '@rnv/sdk-tizen';
 import taskBuild from './tasks/taskBuild';
 import taskConfigure from './tasks/taskConfigure';
 import taskRun from './tasks/taskRun';
-//@ts-ignore
-import CNF from '../renative.engine.json';
-//@ts-ignore
-import PKG from '../package.json';
+import { Config } from './config';
 
-const Engine: RnvEngine = {
-    tasks: generateRnvTaskMap([taskRun, taskBuild, taskConfigure, ...TasksSdkWebOS, ...TasksSdkTizen], PKG),
-    config: CNF,
+const Engine = createRnvEngine({
+    tasks: [taskRun, taskBuild, taskConfigure, ...TasksSdkWebOS, ...TasksSdkTizen],
+    config: Config,
     projectDirName: 'project',
     serverDirName: 'server',
-    runtimeExtraProps: {},
-    // ejectPlatform: null,
     platforms: {
         tizen: {
             defaultPort: 8087,
             isWebHosted: true,
-            extensions: generateEngineExtensions(['lng', 'tizen.tv', 'web.tv', 'tv', 'tizen', 'tv.web', 'web'], CNF),
+            extensions: ['lng', 'tizen.tv', 'web.tv', 'tv', 'tizen', 'tv.web', 'web'],
         },
         webos: {
             defaultPort: 8088,
             isWebHosted: true,
-            extensions: generateEngineExtensions(['lng', 'webos.tv', 'web.tv', 'tv', 'webos', 'tv.web', 'web'], CNF),
+            extensions: ['lng', 'webos.tv', 'web.tv', 'tv', 'webos', 'tv.web', 'web'],
         },
     },
-};
+});
+
+export type GetContext = GetContextType<typeof Engine.getContext>;
 
 export default Engine;
