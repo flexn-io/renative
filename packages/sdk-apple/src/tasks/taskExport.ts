@@ -1,6 +1,6 @@
-import { RnvTaskOptionPresets, createTask, RnvTaskName } from '@rnv/core';
+import { createTask, RnvTaskName } from '@rnv/core';
 import { exportXcodeProject } from '../runner';
-import { SdkPlatforms } from '../common';
+import { SDKTaskOptionPresets, SdkPlatforms } from '../common';
 
 export default createTask({
     description: 'Export the app into deployable binary',
@@ -9,6 +9,6 @@ export default createTask({
         return exportXcodeProject();
     },
     task: RnvTaskName.export,
-    options: RnvTaskOptionPresets.withConfigure(),
+    options: SDKTaskOptionPresets.withConfigure(),
     platforms: SdkPlatforms,
 });

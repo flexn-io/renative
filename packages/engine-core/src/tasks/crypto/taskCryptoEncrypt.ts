@@ -15,14 +15,13 @@ import {
     fsReadFileSync,
     fsReaddir,
     inquirerPrompt,
-    RnvContext,
     copyFileSync,
     RnvTaskName,
-    getContext,
     createTask,
 } from '@rnv/core';
 import { statSync } from 'fs';
-import { getEnvExportCmd, getEnvVar } from './common';
+import { TaskOptions, getEnvExportCmd, getEnvVar } from './common';
+import { getContext } from '../../getContext';
 
 const iocane = require('iocane');
 
@@ -90,7 +89,8 @@ const initializeCryptoDirectory = async (sourceFolder: string) => {
     });
 };
 
-const _checkAndConfigureCrypto = async (ctx: RnvContext) => {
+const _checkAndConfigureCrypto = async () => {
+    const ctx = getContext();
     // handle missing config
     const source = `./${ctx.files.project.config?.projectName}`;
 
@@ -181,7 +181,7 @@ export default createTask({
 
         const source = `./${projectName}`;
 
-        await _checkAndConfigureCrypto(ctx);
+        await _checkAndConfigureCrypto();
 
         const destRaw = ctx.files.project.config?.crypto?.path;
         const tsWorkspacePath = path.join(ctx.paths.workspace.dir, projectName, 'timestamp');
@@ -229,5 +229,6 @@ export default createTask({
             logWarning(`You don't have {{ crypto.path }} specificed in ${chalk().bold(ctx.paths.appConfigBase)}`);
         }
     },
+    options: [TaskOptions.key],
     task: RnvTaskName.cryptoEncrypt,
 });

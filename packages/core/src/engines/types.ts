@@ -1,5 +1,4 @@
-// import type { RnvContext } from '../context/types';
-import { RnvContext } from '../context/types';
+import type { RnvContext } from '../context/types';
 import type { ConfigFileEngine } from '../schema/types';
 import type { RnvTask, RnvTaskMap } from '../tasks/types';
 import type { RnvPlatformKey } from '../types';
@@ -52,10 +51,6 @@ export type RnvEngineInstallConfig = {
     engineRootPath?: string;
     configPath?: string;
 };
-
-export type GetReturnType<Type> = Type extends (...args: never[]) => infer Return ? Return : never;
-
-export type GetContextType<Type> = () => GetReturnType<Type>;
 
 // export type GetContextType<T extends RnvEngine> = () => RnvContext<
 //     any,

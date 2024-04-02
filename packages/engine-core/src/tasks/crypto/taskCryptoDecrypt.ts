@@ -16,7 +16,7 @@ import {
     RnvTaskName,
     createTask,
 } from '@rnv/core';
-import { getEnvExportCmd, getEnvVar } from './common';
+import { TaskOptions, getEnvExportCmd, getEnvVar } from './common';
 
 const iocane = require('iocane');
 
@@ -197,5 +197,6 @@ and we will try to help!
             return true;
         }
     },
+    options: [TaskOptions.key],
     task: RnvTaskName.cryptoDecrypt,
 });

@@ -346,3 +346,7 @@ export type RnvContextPlatform = {
 };
 
 export type RnvContextFileKey = 'config' | 'configLocal' | 'configPrivate';
+
+export type GetReturnType<Type> = Type extends (...args: never[]) => infer Return ? Return : never;
+
+export type GetContextType<Type> = () => GetReturnType<Type>;

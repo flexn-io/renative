@@ -1,6 +1,6 @@
-import { createTask, RnvTaskName, RnvTaskOptionPresets } from '@rnv/core';
+import { createTask, RnvTaskName } from '@rnv/core';
 import { ejectXcodeProject } from '../ejector';
-import { SdkPlatforms } from '../common';
+import { SdkPlatforms, SDKTaskOptionPresets } from '../common';
 
 export default createTask({
     description: 'Eject current ios project app to self contained native project',
@@ -13,6 +13,6 @@ export default createTask({
         return ejectXcodeProject();
     },
     task: RnvTaskName.eject,
-    options: RnvTaskOptionPresets.withConfigure(),
+    options: SDKTaskOptionPresets.withConfigure(),
     platforms: SdkPlatforms,
 });

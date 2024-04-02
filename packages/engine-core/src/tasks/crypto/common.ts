@@ -81,3 +81,13 @@ you should run decrypt`);
         }
     }
 };
+
+export const TaskOptions = {
+    key: {
+        key: 'key',
+        shortcut: 'k',
+        isValueType: true,
+        isRequired: true,
+        description: 'Pass the key/password',
+    },
+};

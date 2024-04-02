@@ -14,6 +14,8 @@ import taskPackage from './tasks/taskPackage';
 import taskConfigure from './tasks/taskConfigure';
 import taskRun from './tasks/taskRun';
 import taskBuild from './tasks/taskBuild';
+import { GetContextType, createRnvSDK } from '@rnv/core';
+// import { bookla } from './runner2';
 
 export const Tasks = [
     taskTargetLaunch,
@@ -29,3 +31,9 @@ export const Tasks = [
     taskRun,
     taskBuild,
 ];
+
+const Sdk = createRnvSDK({
+    tasks: Tasks,
+});
+
+export type GetContext = GetContextType<typeof Sdk.getContext>;

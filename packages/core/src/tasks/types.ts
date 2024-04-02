@@ -10,7 +10,7 @@ export type CreateRnvTaskOpt<OKey extends string = string> = {
     description: string;
     forceBuildHookRebuild?: boolean;
     beforeDependsOn?: RnvTaskFn;
-    fn?: RnvTaskFn;
+    fn?: RnvTaskFn<OKey>;
     fnHelp?: RnvTaskHelpFn;
     isPrivate?: boolean;
     isPriorityOrder?: boolean;
@@ -26,7 +26,7 @@ export type RnvTask<OKey extends string = string> = {
     description: string;
     forceBuildHookRebuild?: boolean;
     beforeDependsOn?: RnvTaskFn;
-    fn?: RnvTaskFn;
+    fn?: RnvTaskFn<OKey>;
     fnHelp?: RnvTaskHelpFn;
     isPrivate?: boolean;
     isPriorityOrder?: boolean;

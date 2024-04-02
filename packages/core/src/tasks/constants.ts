@@ -179,16 +179,6 @@ const _RnvTaskOptions = {
         key: 'hosted',
         description: 'Run in a hosted environment (skip budleAssets)',
     },
-    // ENGINE-CORE --------------------------------
-
-    // ENGINE-CORE + SDK-APPLE --------------------------------
-    key: {
-        key: 'key',
-        shortcut: 'k',
-        isValueType: true,
-        isRequired: true,
-        description: 'Pass the key/password',
-    },
     // SDK-WEBPACK --------------------------------
     debugIp: {
         key: 'debug-ip',
@@ -207,54 +197,6 @@ const _RnvTaskOptions = {
             '--debug false //force disable remote debug',
             '--debug //run remote debug with default preference (chii)',
         ],
-    },
-    // SDK-APPLE --------------------------------
-    updatePods: {
-        key: 'update-pods',
-        shortcut: 'u',
-        description: 'Force update dependencies (iOS only)',
-    },
-    keychain: {
-        key: 'keychain',
-        isValueType: true,
-        isRequired: true,
-        description: 'Name of the keychain',
-    },
-    provisioningStyle: {
-        key: 'provisioning-style',
-        isValueType: true,
-        isRequired: true,
-        description: 'Set provisioningStyle (Automatic | Manual)',
-    },
-    codeSignIdentity: {
-        key: 'code-sign-identity',
-        isValueType: true,
-        isRequired: true,
-        description: 'Set codeSignIdentity (ie iPhone Distribution)',
-    },
-    provisionProfileSpecifier: {
-        key: 'provision-profile-specifier',
-        isValueType: true,
-        isRequired: true,
-        description: 'Name of provisionProfile',
-    },
-    xcodebuildArgs: {
-        key: 'xcodebuild-args',
-        isValueType: true,
-        isRequired: true,
-        description: 'pass down custom xcodebuild arguments',
-    },
-    xcodebuildArchiveArgs: {
-        key: 'xcodebuild-archive-args',
-        isValueType: true,
-        isRequired: true,
-        description: 'pass down custom xcodebuild arguments',
-    },
-    xcodebuildExportArgs: {
-        key: 'xcodebuild-export-args',
-        isValueType: true,
-        isRequired: true,
-        description: 'pass down custom xcodebuild arguments',
     },
     // SDK-APPLE + SDK-ANDROID --------------------------------
     skipTargetCheck: {
@@ -279,28 +221,6 @@ const _RnvTaskOptions = {
         key: 'reset-adb',
         description: 'Forces to reset android adb',
     },
-
-    // DEPRECATED & REMOVED --------------------------------
-
-    // global: {
-    //     shortcut: 'G',
-    //     description: 'Flag for setting a config value for all RNV projects',
-    // },
-    // skipNotifications: {
-    //     description: 'Skip sending any integrated notifications',
-    // },
-    // analyzer: {
-    //     description: 'Enable real-time bundle analyzer',
-    // },
-    // blueprint: {
-    //     shortcut: 'b',
-    //     isValueType: true,
-    //     description: 'Blueprint for targets',
-    // },
-    // list: {
-    //     shortcut: 'l',
-    //     description: 'return List of items related to command',
-    // },
 };
 
 export type ProgramOptionsKey = keyof typeof _RnvTaskOptions;
@@ -321,14 +241,13 @@ export type ParamKeys<ExtraKeys extends string = ProgramOptionsKey> = Partial<
 export const RnvTaskCoreOptionPresets = {
     withCore: (arr?: Array<RnvTaskOption>) =>
         [
+            RnvTaskOptions.platform, // platform is necessary to be accepted as base for the `rnv` command to work with enginie plugins
             RnvTaskOptions.info,
             RnvTaskOptions.ci,
             RnvTaskOptions.mono,
             RnvTaskOptions.maxErrorLength,
             RnvTaskOptions.only,
             RnvTaskOptions.yes,
-            // platform is necessary to be accepted as base for the `rnv` command to work with enginie plugins
-            RnvTaskOptions.platform,
             RnvTaskOptions.help,
             RnvTaskOptions.printExec,
         ].concat(arr || []),

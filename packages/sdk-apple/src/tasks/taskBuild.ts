@@ -1,6 +1,6 @@
-import { createTask, RnvTaskName, RnvTaskOptionPresets } from '@rnv/core';
+import { createTask, RnvTaskName } from '@rnv/core';
 import { buildXcodeProject } from '../runner';
-import { SdkPlatforms } from '../common';
+import { SdkPlatforms, SDKTaskOptionPresets, SDKTaskOptions } from '../common';
 
 export default createTask({
     description: 'Build project binary',
@@ -13,6 +13,6 @@ export default createTask({
         return buildXcodeProject();
     },
     task: RnvTaskName.build,
-    options: RnvTaskOptionPresets.withConfigure(),
+    options: SDKTaskOptionPresets.withConfigure([SDKTaskOptions.xcodebuildArgs]),
     platforms: SdkPlatforms,
 });

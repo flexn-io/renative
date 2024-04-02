@@ -22,7 +22,6 @@ import {
     logRaw,
     inquirerPrompt,
     CoreEnvVars,
-    getContext,
 } from '@rnv/core';
 import { getAppleDevices } from './deviceManager';
 
@@ -36,6 +35,7 @@ import { AppleDevice, Context } from './types';
 import { ObjectEncodingOptions } from 'fs';
 import { packageReactNativeIOS, runCocoaPods, runReactNativeIOS, EnvVars } from '@rnv/sdk-react-native';
 import { registerDevice } from './fastlane';
+import { getContext } from './getContext';
 
 export const packageBundleForXcode = () => {
     return packageReactNativeIOS();
@@ -303,14 +303,13 @@ const _checkLockAndExec = async (
             );
             if (isAutomaticSigningDisabled) {
                 return _handleProvisioningIssues(
-                    c,
                     e,
                     "Your iOS App Development provisioning profiles don't match. under manual signing mode"
                 );
             }
             const isProvisioningMissing = e.includes('requires a provisioning profile');
             if (isProvisioningMissing) {
-                return _handleProvisioningIssues(c, e, 'Your iOS App requires a provisioning profile');
+                return _handleProvisioningIssues(e, 'Your iOS App requires a provisioning profile');
             }
         }
 
@@ -361,7 +360,8 @@ Type in your Apple Team ID to be used (will be saved to ${c.paths.appConfig?.con
     }
 };
 
-const _handleProvisioningIssues = async (c: Context, e: unknown, msg: string) => {
+const _handleProvisioningIssues = async (e: unknown, msg: string) => {
+    const c = getContext();
     const provisioningStyle = c.program.opts().provisioningStyle || getConfigProp('provisioningStyle');
     const appFolderName = getAppFolderName(); // Sometimes xcodebuild reports Automatic signing is disabled but it could be keychain not accepted by user
     const isProvAutomatic = provisioningStyle === 'Automatic';
@@ -833,7 +833,7 @@ export const configureXcodeProject = async () => {
     await parseEntitlementsPlist();
     await parseInfoPlist();
     await copyBuildsFolder();
-    await runCocoaPods();
+    await runCocoaPods(c.program.opts().updatePods);
     await parseXcodeProject();
     return true;
 };

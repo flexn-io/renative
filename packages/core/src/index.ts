@@ -55,6 +55,8 @@ export * from './engines';
 export * from './engines/engineCreator';
 export * from './engines/dependencyResolver';
 
+export * from './sdks/sdkCreator';
+
 export * from './system/exec';
 export * from './system/fs';
 export * from './system/is';
@@ -83,6 +85,7 @@ export * from './enums/platformName';
 
 //TYPES
 export * from './engines/types';
+export * from './sdks/types';
 export * from './context/types';
 export * from './plugins/types';
 export * from './projects/types';

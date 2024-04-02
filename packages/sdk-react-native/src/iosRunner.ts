@@ -123,11 +123,14 @@ const generateCombinedChecksum = () => {
     return combinedChecksum;
 };
 
-const checkIfPodsIsRequired = (c: RnvContext): { result: boolean; reason: string; code: number } => {
+const checkIfPodsIsRequired = (
+    c: RnvContext,
+    forceUpdatePods: boolean
+): { result: boolean; reason: string; code: number } => {
     if (c.runtime._skipNativeDepResolutions) {
         return { result: false, reason: `Command ${getCurrentCommand(true)} explicitly skips pod checks`, code: 1 };
     }
-    if (c.program.opts().updatePods) {
+    if (forceUpdatePods) {
         return { result: true, reason: 'You passed --updatePods option', code: 2 };
     }
     const appFolder = getAppFolder();
@@ -169,11 +172,11 @@ const updatePodsChecksum = () => {
     return fsWriteFileSync(podChecksumPath, combinedChecksum);
 };
 
-export const runCocoaPods = async () => {
+export const runCocoaPods = async (forceUpdatePods: boolean) => {
     const c = getContext();
-    logDefault('runCocoaPods', `forceUpdate:${!!c.program.opts().updatePods}`);
+    logDefault('runCocoaPods', `forceUpdate:${!!forceUpdatePods}`);
 
-    const checkResult = await checkIfPodsIsRequired(c);
+    const checkResult = await checkIfPodsIsRequired(c, forceUpdatePods);
 
     if (!checkResult.result) {
         logInfo(`Skipping pod action. Reason: ${checkResult.reason}`);
@@ -203,7 +206,7 @@ export const runCocoaPods = async () => {
             ...EnvVars.RNV_FLIPPER_ENABLED(),
         };
 
-        if (c.program.opts().updatePods) {
+        if (forceUpdatePods) {
             await executeAsync('bundle exec pod update', {
                 cwd: appFolder,
                 env,
