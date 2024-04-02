@@ -22,7 +22,6 @@ import taskStatus from './tasks/global/taskStatus';
 import taskConfig from './tasks/global/taskConfig';
 import taskHelp from './tasks/global/taskHelp';
 import taskNew from './tasks/bootstrap/taskNew';
-import taskInstall from './tasks/global/taskInstall';
 import taskProjectConfigure from './tasks/project/taskProjectConfigure';
 import taskProjectUpgrade from './tasks/project/taskProjectUpgrade';
 import taskAppConfigure from './tasks/app/taskAppConfigure';
@@ -76,7 +75,6 @@ const Engine: RnvEngine = {
             taskConfig,
             taskHelp,
             taskNew,
-            taskInstall,
             taskProjectConfigure,
             taskProjectUpgrade,
             taskAppConfigure,

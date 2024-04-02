@@ -522,7 +522,7 @@ export const logWarning = (msg: string | boolean | unknown) => {
         });
     }
     ctx.logging.containsWarning = true;
-    logAndSave(currentChalk.yellow(`warn:${_getCurrentTask()} ${msgSn}`));
+    logAndSave(currentChalk.yellow(`warn: ${_getCurrentTask()} ${msgSn}`));
 };
 
 export const logInfo = (msg: string) => {

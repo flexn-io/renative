@@ -26,7 +26,7 @@ import {
     getContext,
 } from '@rnv/core';
 import { checkCrypto } from '../crypto/common';
-import { installPackageDependenciesAndPlugins } from '../../plugins';
+import { checkAndInstallIfRequired, installPackageDependenciesAndPlugins } from '../../taskHelpers';
 import { configureFonts } from '@rnv/sdk-utils';
 
 const checkIsRenativeProject = async () => {
@@ -75,7 +75,7 @@ export default createTask({
             return true;
         }
 
-        await executeTask({ taskName: RnvTaskName.install, parentTaskName: taskName, originTaskName });
+        await checkAndInstallIfRequired();
 
         if (originTaskName !== RnvTaskName.cryptoDecrypt) {
             //If we explicitly running rnv crypto decrypt there is no need to check crypto
@@ -100,7 +100,7 @@ export default createTask({
             // We need to ensure appConfigs are populated from template before proceeding further
             // await configureTemplateFiles(); // NOTE: We only do this during bootstrap once
             await configureRuntimeDefaults();
-            await executeTask({ taskName: RnvTaskName.install, parentTaskName: taskName, originTaskName });
+            await checkAndInstallIfRequired();
 
             await executeTask({ taskName: RnvTaskName.appConfigure, parentTaskName: taskName, originTaskName });
 

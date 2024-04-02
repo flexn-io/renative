@@ -15,7 +15,7 @@ import {
     ConfigFileProject,
     RnvFileName,
 } from '@rnv/core';
-import { installPackageDependenciesAndPlugins } from '../../plugins';
+import { installPackageDependenciesAndPlugins } from '../../taskHelpers';
 
 export default createTask({
     description: 'Upgrade or downgrade RNV dependencies in your ReNative project',

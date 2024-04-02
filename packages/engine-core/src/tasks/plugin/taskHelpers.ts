@@ -1,29 +1,5 @@
-import {
-    PluginListResponse,
-    chalk,
-    checkForPluginDependencies,
-    getContext,
-    installPackageDependencies,
-    logDefault,
-    overrideTemplatePlugins,
-} from '@rnv/core';
-import { configureFonts } from '@rnv/sdk-utils';
+import { PluginListResponse, chalk, getContext } from '@rnv/core';
 import intersection from 'lodash/intersection';
-
-// export const configurePlugins = async () => {
-//     await installPackageDependenciesAndPlugins();
-// }
-
-export const installPackageDependenciesAndPlugins = async () => {
-    logDefault('installPackageDependenciesAndPlugins');
-
-    await installPackageDependencies();
-    await overrideTemplatePlugins();
-    await configureFonts();
-    await checkForPluginDependencies(async () => {
-        await installPackageDependenciesAndPlugins();
-    });
-};
 
 export const getPluginList = (isUpdate = false) => {
     const c = getContext();

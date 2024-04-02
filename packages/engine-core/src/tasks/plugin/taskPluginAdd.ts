@@ -3,7 +3,6 @@ import {
     chalk,
     logSuccess,
     resolvePluginDependants,
-    executeTask,
     PluginListResponseItem,
     getApi,
     inquirerPrompt,
@@ -11,12 +10,13 @@ import {
     createTask,
     RnvTaskName,
 } from '@rnv/core';
-import { getPluginList } from '../../plugins';
+import { checkAndInstallIfRequired } from '../../taskHelpers';
+import { getPluginList } from './taskHelpers';
 
 export default createTask({
     description: 'Add selected plugin to the project',
     dependsOn: [RnvTaskName.projectConfigure],
-    fn: async ({ ctx, taskName, originTaskName }) => {
+    fn: async ({ ctx }) => {
         const selPluginKey = ctx.program.rawArgs?.[4];
 
         const o = getPluginList();
@@ -87,8 +87,7 @@ export default createTask({
         writeRenativeConfigFile(ctx.paths.project.config, cnfOriginal);
 
         await resolvePluginDependants();
-
-        await executeTask({ taskName: RnvTaskName.install, parentTaskName: taskName, originTaskName });
+        await checkAndInstallIfRequired();
 
         spinner.succeed('All plugins installed!');
         logSuccess('Plugins installed successfully!');

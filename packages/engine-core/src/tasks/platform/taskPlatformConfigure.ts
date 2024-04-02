@@ -18,6 +18,7 @@ import {
 } from '@rnv/core';
 import { isBuildSchemeSupported } from '../../buildSchemes';
 import path from 'path';
+import { checkAndInstallIfRequired } from '../../taskHelpers';
 // import { configureFonts } from '@rnv/sdk-utils';
 
 export default createTask({
@@ -49,8 +50,7 @@ export default createTask({
         });
 
         await configureRuntimeDefaults();
-
-        await executeTask({ taskName: RnvTaskName.install, parentTaskName: taskName, originTaskName });
+        await checkAndInstallIfRequired();
 
         const hasBuild = fsExistsSync(ctx.paths.project.builds.dir);
         logTask('', `taskPlatformConfigure hasBuildFolderPresent:${hasBuild}`);
