@@ -3,6 +3,9 @@ import { RnvTaskName, createTask, logSuccess } from '@rnv/core';
 export default createTask({
     description: 'Prints hello message',
     dependsOn: [RnvTaskName.package],
+    beforeDependsOn: async () => {
+        console.log('>>> beforeDependsOn called!!!');
+    },
     fn: async ({ ctx }) => {
         //TODO: switch to typed options once Context generics are supported
         const opts: any = ctx.program.opts();

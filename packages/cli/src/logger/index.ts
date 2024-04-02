@@ -300,11 +300,11 @@ export const logSummary = (opts?: { header?: string; headerStyle?: 'success' | '
     if (ctx.program?.opts()?.resetHard) {
         str += printIntoBox(`Reset Project and Assets (-R): ${_highlightColor(!!ctx.program?.opts()?.resetHard)}`);
     }
-    if (ctx.runtime?.supportedPlatforms?.length) {
-        const plats = ctx.runtime.supportedPlatforms.map(
-            (v) => `${currentChalk.gray(v.platform)}${v.isConnected ? '' : '(ejected)'}`
-        );
-        str += printArrIntoBox(plats, 'Supported Platforms: ');
+    if (ctx.runtime?.availablePlatforms?.length) {
+        // const plats = ctx.runtime.availablePlatforms.map((v) => `${currentChalk.gray(v)}`);
+        // str += printArrIntoBox(plats, 'Supported Platforms: ');
+
+        str += printIntoBox(`Supported Platforms: ${currentChalk.gray(ctx.runtime.availablePlatforms.join(', '))}`);
     }
 
     if (ctx.process) {

@@ -425,7 +425,7 @@ export const installEngines = async (failOnMissingDeps?: boolean): Promise<boole
             }
         } else {
             readyEngines.push(k);
-            logInfo(`Load engine: ${k} ${chalk().gray(`(${engineRootPath})`)}`);
+            logDefault(`Found engine: ${k} ${chalk().gray(`(${engineRootPath})`)}`);
             engineConfigs.push({
                 key: k,
                 engineRootPath,

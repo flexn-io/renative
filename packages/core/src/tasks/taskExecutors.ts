@@ -150,6 +150,15 @@ Description: ${taskInstance.description}
     const shouldSkip = shouldSkipTask({ taskName: taskInstance.task });
     if (taskInstance.dependsOn) {
         for (const dep of taskInstance.dependsOn) {
+            if (taskInstance.beforeDependsOn) {
+                await taskInstance.beforeDependsOn({
+                    taskName: dep,
+                    parentTaskName: taskInstance.task,
+                    originTaskName,
+                    ctx: c,
+                    shouldSkip: false,
+                });
+            }
             await executeTask({ taskName: dep, parentTaskName: taskInstance.task, originTaskName });
         }
     }
