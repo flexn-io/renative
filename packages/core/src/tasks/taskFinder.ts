@@ -7,12 +7,9 @@ import { inquirerPrompt } from '../api';
 
 export const findSuitableTask = async (): Promise<RnvTask | undefined> => {
     logDefault('findSuitableTask');
-    // const c = getContext();
-
     const taskName = getTaskNameFromCommand();
     if (!taskName) {
         // Trigger auto selection outside of this function
-        // throw new Error('TODO interactive selection offer all tasks');
         return undefined;
     }
     const suitableTasks = findTasksByTaskName(taskName);
@@ -28,7 +25,8 @@ export const findTasksByTaskName = (taskName: string) => {
     const taskArr = Object.values(tasks);
     taskArr.forEach((v) => {
         const plat = ctx.platform;
-        if (v.platforms && plat) {
+
+        if (v.platforms && typeof plat === 'string') {
             if (!v.platforms.includes(plat)) {
                 // If we found a task with platform restriction and it does not match current platform we skip it
                 return;
@@ -38,7 +36,6 @@ export const findTasksByTaskName = (taskName: string) => {
                 return;
             }
         }
-
         if (v.task === taskName) {
             result.push(v);
         }

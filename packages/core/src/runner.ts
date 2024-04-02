@@ -10,7 +10,8 @@ import { getApi } from './api/provider';
 import { RnvTask } from './tasks/types';
 import { runInteractiveWizard, runInteractiveWizardForSubTasks } from './tasks/wizard';
 import { initializeTask } from './tasks/taskExecutors';
-import { selectPlatformIfRequired } from './tasks/taskHelpers';
+import { getTaskNameFromCommand, selectPlatformIfRequired } from './tasks/taskHelpers';
+import { logInfo } from './logger';
 
 export const exitRnvCore = async (code: number) => {
     const ctx = getContext();
@@ -85,5 +86,6 @@ export const executeRnvCore = async () => {
     }
 
     // Still no task found. time to check sub tasks options via wizard
+    logInfo(`Did not find exact match for ${getTaskNameFromCommand()}. Running interactive wizard for sub-tasks`);
     return runInteractiveWizardForSubTasks();
 };

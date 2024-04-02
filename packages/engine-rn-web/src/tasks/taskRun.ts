@@ -1,7 +1,6 @@
 import {
     RnvContext,
     RnvTaskOptionPresets,
-    logErrorPlatform,
     logTask,
     logDebug,
     getConfigProp,
@@ -107,7 +106,7 @@ export default createTask({
                 }
                 return runChromecast(ctx);
             default:
-                return logErrorPlatform();
+            // Do nothing
         }
     },
     task: RnvTaskName.run,

@@ -1,4 +1,4 @@
-import { logErrorPlatform, copySharedPlatforms, RnvTaskOptionPresets, createTask, RnvTaskName } from '@rnv/core';
+import { copySharedPlatforms, RnvTaskOptionPresets, createTask, RnvTaskName } from '@rnv/core';
 import { configureWebProject, configureChromecastProject } from '@rnv/sdk-webpack';
 import { configureKaiOSProject } from '@rnv/sdk-kaios';
 import { configureWebOSProject } from '@rnv/sdk-webos';
@@ -25,7 +25,7 @@ export default createTask({
             case 'kaios':
                 return configureKaiOSProject();
             default:
-                return logErrorPlatform();
+            // DO nothing
         }
     },
     task: RnvTaskName.configure,

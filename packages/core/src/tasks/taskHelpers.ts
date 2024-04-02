@@ -1,7 +1,14 @@
 import { inquirerPrompt } from '../api';
 import { getContext } from '../context/provider';
 import { getEngineRunnerByPlatform, registerPlatformEngine } from '../engines';
+import { chalk, logInfo } from '../logger';
 import { RnvTask, RnvTaskMap, RnvTaskOption } from './types';
+
+const printCurrentPlatform = () => {
+    const ctx = getContext();
+    const msg = `Current platform: ${chalk().white.bold(ctx.platform)}`;
+    logInfo(msg);
+};
 
 export const selectPlatformIfRequired = async (
     knownTaskInstance?: RnvTask,
@@ -10,12 +17,16 @@ export const selectPlatformIfRequired = async (
     const c = getContext();
     // TODO: move this to more generic place?
     c.runtime.availablePlatforms = c.buildConfig.defaults?.supportedPlatforms || [];
-    if (!c.platform) {
+    if (typeof c.platform !== 'string') {
         const taskName = getTaskNameFromCommand();
         const platforms = knownTaskInstance?.platforms || c.runtime.availablePlatforms;
         if (platforms) {
             if (platforms.length === 1) {
+                logInfo(
+                    `Task "${knownTaskInstance?.task}" has only one supported platform: "${platforms[0]}". Automatically selecting it.`
+                );
                 c.platform = platforms[0];
+                c.program.opts().platform = c.platform;
             } else {
                 const { platform } = await inquirerPrompt({
                     type: 'list',
@@ -25,9 +36,11 @@ export const selectPlatformIfRequired = async (
                 });
                 c.platform = platform;
             }
+            printCurrentPlatform();
         }
+    } else {
+        printCurrentPlatform();
     }
-
     // TODO: move all below to more generic place?
     if (registerEngineIfPlatformSelected) {
         await registerPlatformEngine(c.platform);

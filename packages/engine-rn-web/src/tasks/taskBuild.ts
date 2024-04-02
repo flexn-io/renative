@@ -1,4 +1,4 @@
-import { logErrorPlatform, RnvTaskOptionPresets, createTask, RnvTaskName } from '@rnv/core';
+import { RnvTaskOptionPresets, createTask, RnvTaskName } from '@rnv/core';
 import { buildWeb } from '@rnv/sdk-webpack';
 import { buildTizenProject } from '@rnv/sdk-tizen';
 import { buildWebOSProject } from '@rnv/sdk-webos';
@@ -27,7 +27,7 @@ export default createTask({
                 await buildWebOSProject();
                 return;
             default:
-                logErrorPlatform();
+            // DO nothing
         }
     },
     task: RnvTaskName.build,

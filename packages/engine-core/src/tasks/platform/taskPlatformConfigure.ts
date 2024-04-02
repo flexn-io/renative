@@ -4,7 +4,6 @@ import {
     logInfo,
     fsExistsSync,
     getAppFolder,
-    isPlatformSupported,
     cleanPlatformBuild,
     createPlatformBuild,
     configureRuntimeDefaults,
@@ -27,7 +26,6 @@ export default createTask({
     dependsOn: [RnvTaskName.projectConfigure],
     fn: async ({ ctx, taskName, originTaskName }) => {
         const { program } = ctx;
-        await isPlatformSupported();
         await isBuildSchemeSupported();
 
         const entryFile = getConfigProp('entryFile');

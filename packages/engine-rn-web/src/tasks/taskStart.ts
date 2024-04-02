@@ -1,5 +1,5 @@
 import { runWebpackServer } from '@rnv/sdk-webpack';
-import { getConfigProp, logErrorPlatform, logError, RnvTaskOptionPresets, createTask, RnvTaskName } from '@rnv/core';
+import { getConfigProp, logError, RnvTaskOptionPresets, createTask, RnvTaskName } from '@rnv/core';
 import { REMOTE_DEBUGGER_ENABLED_PLATFORMS, openBrowser, waitForHost } from '@rnv/sdk-utils';
 import { EnginePlatforms } from '../constants';
 
@@ -20,20 +20,7 @@ export default createTask({
         const isWeinreEnabled =
             (platform && REMOTE_DEBUGGER_ENABLED_PLATFORMS.includes(platform) && !bundleAssets && !hosted) || undefined;
 
-        switch (platform) {
-            case 'web':
-            case 'webtv':
-            case 'tizen':
-            case 'webos':
-            case 'tizenmobile':
-            case 'tizenwatch':
-                return runWebpackServer(isWeinreEnabled);
-            default:
-                if (hosted) {
-                    return Promise.reject('This platform does not support hosted mode');
-                }
-                return logErrorPlatform();
-        }
+        return runWebpackServer(isWeinreEnabled);
     },
     task: RnvTaskName.start,
     options: RnvTaskOptionPresets.withConfigure(),

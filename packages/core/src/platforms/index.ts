@@ -1,18 +1,10 @@
 import path from 'path';
-import { chalk, logDefault, logError, logWarning, logDebug, logInfo } from '../logger';
+import { chalk, logDefault, logError, logWarning, logDebug } from '../logger';
 import { cleanFolder, copyFolderContentsRecursiveSync } from '../system/fs';
 import { getTimestampPathsConfig, getAppFolder } from '../context/contextProps';
-import { generateOptions, inquirerPrompt } from '../api';
 import type { RnvPlatform } from '../types';
 import { doResolve } from '../system/resolve';
 import { getContext } from '../context/provider';
-import { RnvPlatforms } from '../enums/platformName';
-
-export const logErrorPlatform = () => {
-    const c = getContext();
-
-    return Promise.reject(`Platform: ${chalk().bold(c.platform)} doesn't support command: ${chalk().bold(c.command)}`);
-};
 
 export const generatePlatformChoices = () => {
     const c = getContext();
@@ -36,12 +28,12 @@ export const cleanPlatformBuild = async (platform: RnvPlatform, cleanAllPlatform
 
     if (cleanAllPlatforms && c.buildConfig.platforms) {
         Object.keys(c.buildConfig.platforms).forEach((k) => {
-            if (isPlatformSupportedSync(k as RnvPlatform)) {
+            if (_isPlatformSupportedSync(k as RnvPlatform)) {
                 const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${k}`);
                 cleanTasks.push(cleanFolder(pPath));
             }
         });
-    } else if (isPlatformSupportedSync(platform)) {
+    } else if (_isPlatformSupportedSync(platform)) {
         const pPath = getAppFolder();
         cleanTasks.push(cleanFolder(pPath));
     }
@@ -54,7 +46,7 @@ export const createPlatformBuild = (platform: RnvPlatform) =>
         logDefault('createPlatformBuild');
         const c = getContext();
 
-        if (!platform || !isPlatformSupportedSync(platform, undefined, reject)) return;
+        if (!platform || !_isPlatformSupportedSync(platform, undefined, reject)) return;
 
         const ptDir = c.paths.project.platformTemplatesDirs[platform];
         if (!ptDir) {
@@ -87,46 +79,7 @@ export const createPlatformBuild = (platform: RnvPlatform) =>
         resolve();
     });
 
-const printCurrentPlatform = (platform: RnvPlatform) => {
-    const msg = `Current platform: ${chalk().white.bold(platform)}`;
-    logInfo(msg);
-};
-
-export const isPlatformSupported = async (isGlobalScope = false) => {
-    const c = getContext();
-
-    if (c.platform && c.program.opts().platform !== true && isGlobalScope) {
-        printCurrentPlatform(c.platform);
-        return c.platform;
-    }
-
-    let platformsAsObj;
-    if (isGlobalScope) {
-        platformsAsObj = RnvPlatforms;
-    } else {
-        platformsAsObj = c.buildConfig ? c.buildConfig.platforms : c.supportedPlatforms;
-    }
-
-    if (!platformsAsObj) platformsAsObj = c.runtime.availablePlatforms;
-    const opts = generateOptions(platformsAsObj);
-
-    if (!c.platform || c.program.opts().platform === true || !c.runtime.availablePlatforms?.includes?.(c.platform)) {
-        const { platform } = await inquirerPrompt({
-            name: 'platform',
-            type: 'list',
-            message: 'Pick one of available platforms',
-            choices: opts.keysAsArray,
-            logMessage: 'You need to specify platform',
-        });
-
-        c.platform = platform;
-    }
-
-    printCurrentPlatform(c.platform);
-    return c.platform;
-};
-
-export const isPlatformSupportedSync = (platform: RnvPlatform, resolve?: () => void, reject?: (e: string) => void) => {
+const _isPlatformSupportedSync = (platform: RnvPlatform, resolve?: () => void, reject?: (e: string) => void) => {
     if (!platform) {
         if (reject) {
             reject(

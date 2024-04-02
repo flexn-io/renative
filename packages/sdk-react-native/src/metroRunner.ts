@@ -4,7 +4,6 @@ import {
     chalk,
     executeAsync,
     logError,
-    logErrorPlatform,
     logInfo,
     logRaw,
     logDefault,
@@ -33,7 +32,6 @@ export const startReactNative = async (opts: {
     logDefault('startReactNative');
 
     if (!c.platform) {
-        logErrorPlatform();
         return false;
     }
 

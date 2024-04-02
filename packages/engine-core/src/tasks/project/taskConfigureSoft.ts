@@ -1,4 +1,4 @@
-import { executeTask, configureRuntimeDefaults, isPlatformSupported, createTask, RnvTaskName } from '@rnv/core';
+import { executeTask, configureRuntimeDefaults, createTask, RnvTaskName } from '@rnv/core';
 import { isBuildSchemeSupported } from '../../buildSchemes';
 
 export default createTask({
@@ -6,8 +6,6 @@ export default createTask({
     fn: async ({ taskName, originTaskName }) => {
         await configureRuntimeDefaults();
         await executeTask({ taskName: RnvTaskName.appConfigure, parentTaskName: taskName, originTaskName });
-
-        await isPlatformSupported();
         await isBuildSchemeSupported();
 
         await executeTask({
