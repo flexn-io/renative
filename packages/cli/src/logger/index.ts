@@ -453,7 +453,7 @@ const getLogCounter = (task: string, skipAddition = false) => {
         TASK_COUNTER[task] += 1;
     }
 
-    const taskCount = currentChalk.grey(`[${TASK_COUNTER[task]}]`);
+    const taskCount = currentChalk.grey(`(${TASK_COUNTER[task]}x)`);
     return taskCount;
 };
 
@@ -493,8 +493,8 @@ export const logExitTask = (task: string) => {
             message: stripAnsi(_sanitizePaths(task)),
         });
     }
-    const taskCount = getLogCounter(task, true);
-    const msg = `${currentChalk.green('task:')} ${currentChalk.green('✔')} ${task} ${taskCount}`;
+    // const taskCount = getLogCounter(task, true);
+    const msg = `${currentChalk.green('task:')} ${currentChalk.green('✔')} ${task}`;
 
     console.log(msg);
 };

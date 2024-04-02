@@ -4,7 +4,6 @@ import {
     getContext,
     installPackageDependencies,
     logDefault,
-    logInfo,
     overrideTemplatePlugins,
 } from '@rnv/core';
 import { configureFonts } from '@rnv/sdk-utils';
@@ -27,12 +26,11 @@ export const checkAndInstallIfRequired = async () => {
     if (isNmInstalled && !ctx._requiresNpmInstall) {
         return true;
     }
-    if (!isNmInstalled) {
-        logInfo('node_modules folder is missing. INSTALLING...');
-    } else if (ctx._requiresNpmInstall) {
-        logInfo('node_modules folder is out of date. INSTALLING...');
-    }
+    // if (!isNmInstalled) {
+    //     logInfo('node_modules folder is missing. INSTALLING...');
+    // } else if (ctx._requiresNpmInstall) {
+    //     logInfo('node_modules folder is out of date. INSTALLING...');
+    // }
 
-    ctx._requiresNpmInstall = false;
     await installPackageDependenciesAndPlugins();
 };

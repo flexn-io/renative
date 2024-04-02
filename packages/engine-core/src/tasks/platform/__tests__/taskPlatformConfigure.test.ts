@@ -1,7 +1,17 @@
-import { createRnvContext, executeTask, getContext } from '@rnv/core';
+import {
+    configureRuntimeDefaults,
+    createPlatformBuild,
+    createRnvContext,
+    executeTask,
+    getContext,
+    resolveEngineDependencies,
+} from '@rnv/core';
 import taskPlatformConfigure from '../taskPlatformConfigure';
+import { checkAndInstallIfRequired } from '../../../taskHelpers';
+import { isBuildSchemeSupported } from '../../../buildSchemes';
 
 jest.mock('../../../buildSchemes');
+jest.mock('../../../taskHelpers');
 jest.mock('@rnv/core');
 
 beforeEach(() => {
@@ -15,6 +25,7 @@ afterEach(() => {
 test('Execute task.rnv.platform.configure', async () => {
     //GIVEN
     const ctx = getContext();
+    jest.mocked(checkAndInstallIfRequired).mockResolvedValue(true);
     //WHEN
     await expect(
         taskPlatformConfigure.fn?.({
@@ -32,9 +43,9 @@ test('Execute task.rnv.platform.configure', async () => {
         parentTaskName: 'MOCK_taskName',
         taskName: 'sdk configure',
     });
-    expect(executeTask).toHaveBeenCalledWith({
-        originTaskName: 'MOCK_originTaskName',
-        parentTaskName: 'MOCK_taskName',
-        taskName: 'install',
-    });
+    expect(isBuildSchemeSupported).toHaveBeenCalled();
+    expect(configureRuntimeDefaults).toHaveBeenCalled();
+    expect(createPlatformBuild).toHaveBeenCalled();
+    expect(resolveEngineDependencies).toHaveBeenCalled();
+    expect(checkAndInstallIfRequired).toHaveBeenCalled();
 });

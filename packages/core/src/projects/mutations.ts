@@ -60,7 +60,7 @@ export const handleMutations = async () => {
     updatePackage(updateObj);
 
     if (confirm === choices[1]) {
-        // We update package butt tell up stream to skip install
+        // We update package but tell up stream to skip install
         return false;
     }
 

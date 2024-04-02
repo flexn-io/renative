@@ -123,7 +123,10 @@ export const installPackageDependencies = async (failOnError = false) => {
     const c = getContext();
     const result = await handleMutations();
 
-    if (!result) return;
+    if (!result) {
+        c._requiresNpmInstall = false;
+        return;
+    }
 
     c.runtime.forceBuildHookRebuild = true;
     const customScript = _getInstallScript(c);
