@@ -345,7 +345,6 @@ const executeAsync = async (
     //         result = await _execute(c, cmdArr[i], opts);
     //     }
     // }
-    console.log('!!!!!!! cmd', _cmd, '!!!!!!! opts', _opts, '@@@@@@@@@@@');
     const result = await _execute(c, cmd, opts);
     return result;
 };

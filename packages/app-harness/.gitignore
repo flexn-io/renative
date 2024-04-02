@@ -68,3 +68,6 @@ build
 
 platformBuilds/harness_tizen/build
 platformBuilds/harness_tizen/build
+
+platformBuilds/harness_webos/build
+platformBuilds/harness_webos/build

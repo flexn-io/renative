@@ -8,7 +8,7 @@ import taskRun from './tasks/taskRun';
 const Engine: RnvEngine = {
     tasks: generateEngineTasks([taskRun, taskBuild, taskConfigure]),
     config: CNF,
-    projectDirName: 'project',
+    projectDirName: '',
     serverDirName: 'server',
     runtimeExtraProps: {},
     // ejectPlatform: null,
