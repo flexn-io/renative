@@ -154,50 +154,6 @@ const _RnvTaskOptions = {
     },
     // ENGINE-CORE --------------------------------
 
-    gitEnabled: {
-        description: 'Enable git in your newly created project',
-        isValueType: true,
-    },
-    answer: {
-        isValueType: true,
-        isVariadic: true,
-        description: 'Pass in answers to prompts',
-        examples: ['--answer question=response question2=response2', '--answer question=\'{"some": "json"}\''],
-    },
-    workspace: {
-        isValueType: true,
-        description: 'select the workspace for the new project',
-    },
-    template: {
-        shortcut: 'T',
-        isValueType: true,
-        isRequired: true,
-        description: 'select specific template',
-    },
-    projectName: {
-        isValueType: true,
-        description: 'select the name of the new project',
-    },
-    projectTemplate: {
-        isValueType: true,
-        description: 'select the template of new project',
-    },
-    templateVersion: {
-        isValueType: true,
-        description: 'select the template version',
-    },
-    title: {
-        isValueType: true,
-        description: 'select the title of the app',
-    },
-    appVersion: {
-        isValueType: true,
-        description: 'select the version of the app',
-    },
-    id: {
-        isValueType: true,
-        description: 'select the id of the app',
-    },
     // ENGINE-CORE + SDK-APPLE --------------------------------
     key: {
         shortcut: 'k',

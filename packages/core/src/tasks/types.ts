@@ -1,7 +1,7 @@
 import type { RnvContext } from '../context/types';
 import type { RnvPlatformKey } from '../types';
 
-export type RnvTask = {
+export type CreateRnvTaskOpt = {
     task: string;
     dependsOn?: string[];
     options?: Array<RnvTaskOption>;
@@ -15,8 +15,25 @@ export type RnvTask = {
     isPrivate?: boolean;
     isPriorityOrder?: boolean;
     ignoreEngines?: boolean;
+};
+
+export type RnvTask = {
+    task: string;
+    dependsOn?: string[];
+    options?: ReadonlyArray<RnvTaskOption>;
+    // options?: Record<string, RnvTaskOption>;
+    isGlobalScope?: boolean;
+    platforms?: Array<RnvPlatformKey>;
+    description: string;
+    forceBuildHookRebuild?: boolean;
+    beforeDependsOn?: RnvTaskFn;
+    fn?: RnvTaskFn;
+    fnHelp?: RnvTaskHelpFn;
+    isPrivate?: boolean;
+    isPriorityOrder?: boolean;
+    ignoreEngines?: boolean;
     ownerID?: string;
-    key?: string;
+    key: string;
 };
 
 export type TaskPromptOption = {

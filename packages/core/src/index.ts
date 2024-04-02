@@ -51,6 +51,10 @@ export * from './schema/configFiles/templates';
 export * from './schema/configFiles/workspace';
 export * from './schema/configFiles/workspaces';
 
+export * from './engines';
+export * from './engines/engineCreator';
+export * from './engines/dependencyResolver';
+
 export * from './system/exec';
 export * from './system/fs';
 export * from './system/is';
@@ -67,8 +71,6 @@ export * from './formatter';
 export * from './templates';
 export * from './integrations';
 export * from './runner';
-export * from './engines';
-export * from './engines/dependencyResolver';
 export * from './platforms';
 export * from './plugins';
 export * from './buildHooks';

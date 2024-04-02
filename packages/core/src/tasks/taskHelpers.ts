@@ -47,7 +47,7 @@ export const getTaskNameFromCommand = (): string | undefined => {
     return taskName;
 };
 
-export const generateRnvTaskMap = (taskArr: Array<RnvTask>, config: { name?: string; packageName?: string }) => {
+export const generateRnvTaskMap = <T>(taskArr: RnvTask[], config: { name?: string; packageName?: string }) => {
     const tasks: RnvTaskMap = {};
 
     const ownerID = config.packageName || config.name;
