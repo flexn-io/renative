@@ -52,10 +52,13 @@ export * from './schema/configFiles/workspace';
 export * from './schema/configFiles/workspaces';
 
 export * from './engines';
-export * from './engines/engineCreator';
+export * from './engines/creator';
 export * from './engines/dependencyResolver';
 
-export * from './sdks/sdkCreator';
+export * from './sdks/creator';
+
+export * from './integrations/creator';
+export * from './integrations';
 
 export * from './system/exec';
 export * from './system/fs';
@@ -71,7 +74,6 @@ export * from './api/provider';
 export * from './env';
 export * from './formatter';
 export * from './templates';
-export * from './integrations';
 export * from './runner';
 export * from './platforms';
 export * from './plugins';
@@ -84,6 +86,7 @@ export * from './enums/folderName';
 export * from './enums/platformName';
 
 //TYPES
+export * from './types';
 export * from './engines/types';
 export * from './sdks/types';
 export * from './context/types';
@@ -95,5 +98,4 @@ export * from './system/types';
 export * from './configs/types';
 export * from './env/types';
 export * from './api/types';
-export * from './types';
 export * from './integrations/types';

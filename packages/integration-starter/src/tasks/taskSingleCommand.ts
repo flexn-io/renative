@@ -7,10 +7,8 @@ export default createTask({
         console.log('>>> beforeDependsOn called!!!');
     },
     fn: async ({ ctx }) => {
-        //TODO: switch to typed options once Context generics are supported
-        const opts = ctx.program.opts();
         logSuccess(`Hello from Integration Starter single command! 
-        --my-opt value: ${opts.myOpt}`);
+        --my-opt value: ${ctx.program.opts().myOpt}`);
     },
     task: 'starter-single-command',
     platforms: ['ios', 'android'],

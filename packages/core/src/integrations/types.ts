@@ -1,7 +1,14 @@
 import type { ConfigFileIntegration } from '../schema/types';
-import { RnvTask } from '../tasks/types';
+import type { RnvContext } from '../context/types';
+import type { RnvTaskMap, RnvTask } from '../tasks/types';
 
-export type RnvIntegration = {
+export type CreateRnvIntegrationOpts<OKey extends string> = {
     config: ConfigFileIntegration;
-    tasks: Record<string, RnvTask>;
+    tasks: ReadonlyArray<RnvTask<OKey>>;
+};
+
+export type RnvIntegration<OKey extends string = string> = {
+    config: ConfigFileIntegration;
+    tasks: RnvTaskMap<OKey>;
+    getContext: () => RnvContext<any, OKey>;
 };
