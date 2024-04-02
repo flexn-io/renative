@@ -1,15 +1,7 @@
-import {
-    commandExistsSync,
-    executeAsync,
-    fsExistsSync,
-    getContext,
-    inquirerPrompt,
-    logInfo,
-    logTask,
-    logWarning,
-} from '@rnv/core';
+import { commandExistsSync, executeAsync, fsExistsSync, inquirerPrompt, logInfo, logTask, logWarning } from '@rnv/core';
 import type { NewProjectData } from '../types';
 import path from 'path';
+import { getContext } from '../../../getContext';
 
 const Question = async (data: NewProjectData) => {
     const c = getContext();

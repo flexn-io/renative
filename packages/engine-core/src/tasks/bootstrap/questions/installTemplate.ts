@@ -11,7 +11,6 @@ import {
     fsExistsSync,
     fsLstatSync,
     fsReaddirSync,
-    getContext,
     inquirerPrompt,
     inquirerSeparator,
     isYarnInstalled,
@@ -25,6 +24,7 @@ import path from 'path';
 import { checkInputValue } from '../questionHelpers';
 import { saveProgressIntoProjectConfig } from '../questionHelpers';
 import { merge } from 'lodash';
+import { getContext } from '../../../getContext';
 
 const Question = async (data: NewProjectData) => {
     const { inputs, defaults, files } = data;

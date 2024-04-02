@@ -13,9 +13,9 @@ import {
     logTask,
     ConfigFileApp,
     RnvTaskName,
-    getContext,
     createTask,
 } from '@rnv/core';
+import { getContext } from '../../getContext';
 
 export default createTask({
     description: 'Create new app config',
@@ -26,7 +26,7 @@ export default createTask({
 
         let sourcePath: string | undefined;
 
-        const c = getContext<any, 'sourceAppConfigID'>();
+        const c = getContext();
 
         if (c.program.opts().sourceAppConfigID) {
             const sourceAppConfigDirPath = path.join(c.paths.project.appConfigsDir, c.program.opts().sourceAppConfigID);

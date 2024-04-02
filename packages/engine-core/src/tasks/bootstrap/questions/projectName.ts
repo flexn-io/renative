@@ -1,6 +1,7 @@
-import { getContext, inquirerPrompt } from '@rnv/core';
+import { inquirerPrompt } from '@rnv/core';
 import type { NewProjectData } from '../types';
 import { checkInputValue } from '../questionHelpers';
+import { getContext } from '../../../getContext';
 
 const Question = async (data: NewProjectData): Promise<void> => {
     const c = getContext();

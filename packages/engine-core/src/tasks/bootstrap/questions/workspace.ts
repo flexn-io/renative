@@ -1,6 +1,7 @@
-import { getContext, getWorkspaceOptions, inquirerPrompt } from '@rnv/core';
+import { getWorkspaceOptions, inquirerPrompt } from '@rnv/core';
 import type { NewProjectData } from '../types';
 import { checkInputValue } from '../questionHelpers';
+import { getContext } from '../../../getContext';
 
 const Question = async (data: NewProjectData) => {
     const c = getContext();

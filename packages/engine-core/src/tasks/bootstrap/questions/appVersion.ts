@@ -1,8 +1,8 @@
-import { getContext } from '@rnv/core';
 import type { NewProjectData } from '../types';
 import { validateAndAssign } from '../questionHelpers';
 import semver from 'semver';
 import { merge } from 'lodash';
+import { getContext } from '../../../getContext';
 
 const Question = async (data: NewProjectData) => {
     const c = getContext();

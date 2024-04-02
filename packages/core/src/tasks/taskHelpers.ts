@@ -11,7 +11,7 @@ const printCurrentPlatform = () => {
 };
 
 export const selectPlatformIfRequired = async (
-    knownTaskInstance?: RnvTask,
+    knownTaskInstance?: RnvTask<string>,
     registerEngineIfPlatformSelected?: boolean
 ) => {
     const c = getContext();
@@ -60,8 +60,11 @@ export const getTaskNameFromCommand = (): string | undefined => {
     return taskName;
 };
 
-export const generateRnvTaskMap = (taskArr: Array<RnvTask>, config: { name?: string; packageName?: string }) => {
-    const tasks: RnvTaskMap = {};
+export const generateRnvTaskMap = <OKey extends string>(
+    taskArr: ReadonlyArray<RnvTask<OKey>>,
+    config: { name?: string; packageName?: string }
+) => {
+    const tasks: RnvTaskMap<OKey> = {};
 
     const ownerID = config.packageName || config.name;
     if (!ownerID) throw new Error('generateRnvTaskMap() requires config.<packageName | name> to be defined!');

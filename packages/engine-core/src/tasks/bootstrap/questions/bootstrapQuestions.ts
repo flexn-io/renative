@@ -1,6 +1,7 @@
-import { ConfigFileTemplate, PromptParams, getContext, inquirerPrompt, logDebug } from '@rnv/core';
+import { ConfigFileTemplate, PromptParams, inquirerPrompt, logDebug } from '@rnv/core';
 import lSet from 'lodash/set';
 import type { NewProjectData } from '../types';
+import { getContext } from '../../../getContext';
 
 type ConfigProp = Required<Required<ConfigFileTemplate>['bootstrapConfig']>['bootstrapQuestions'][number]['configProp'];
 type BootstrapQuestions = Required<Required<ConfigFileTemplate>['bootstrapConfig']>['bootstrapQuestions'];
