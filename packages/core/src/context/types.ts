@@ -22,6 +22,7 @@ import { type ExecaChildProcess } from 'execa';
 import { type RnvPlugin } from '../plugins/types';
 import type { RnvIntegration } from '../integrations/types';
 import type { DependencyMutation } from '../projects/types';
+import { CamelCasedProperties } from 'type-fest';
 
 export type CreateContextOptions = {
     program: RnvContextProgram;
@@ -34,7 +35,7 @@ export type CreateContextOptions = {
 export type RnvContextProgram<ExtraKeys extends string = never> = {
     args?: string[];
     rawArgs?: string[];
-    opts: () => ParamKeys<ExtraKeys>;
+    opts: () => CamelCasedProperties<ParamKeys<ExtraKeys>>;
     option?: (cmd: string, desc: string) => void;
     parse?: (arg: string[]) => void;
     allowUnknownOption: (p: boolean) => void;

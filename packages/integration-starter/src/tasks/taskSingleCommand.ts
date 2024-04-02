@@ -8,7 +8,7 @@ export default createTask({
     },
     fn: async ({ ctx }) => {
         //TODO: switch to typed options once Context generics are supported
-        const opts: any = ctx.program.opts();
+        const opts = ctx.program.opts();
         logSuccess(`Hello from Integration Starter single command! 
         --my-opt value: ${opts.myOpt}`);
     },
