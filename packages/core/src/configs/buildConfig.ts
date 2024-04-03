@@ -12,8 +12,8 @@ import {
 import { chalk, logDefault, logWarning, logDebug } from '../logger';
 import { getContext } from '../context/provider';
 import type { RnvContext, RnvContextBuildConfig } from '../context/types';
-import { FileUtilsPropConfig } from '../system/types';
-import { PlatformKey } from '../schema/types';
+import type { FileUtilsPropConfig } from '../system/types';
+import type { RnvPlatformKey } from '../types';
 
 const _arrayMergeOverride = (_destinationArray: Array<string>, sourceArray: Array<string>) => sourceArray;
 
@@ -51,9 +51,9 @@ export const generateBuildConfig = () => {
     const c = getContext();
 
     const mergeOrder = [
-        c.paths.defaultWorkspace.config,
-        c.paths.rnv.projectTemplates.config,
-        c.paths.rnv.pluginTemplates.config,
+        // TODO: do we need to merge .rnv/renative.json with .customWorkspace/reantive.json ?
+        // c.paths.dotRnv.config,
+        c.paths.rnvConfigTemplates.config,
         c.paths.workspace.config,
         c.paths.workspace.configPrivate,
         c.paths.workspace.configLocal,
@@ -81,19 +81,20 @@ export const generateBuildConfig = () => {
         return exists;
     });
 
-    const pluginTemplates: Record<string, any> = {};
-    if (c.files.rnv.pluginTemplates.configs) {
-        Object.keys(c.files.rnv.pluginTemplates.configs).forEach((v) => {
-            const plgs = c.files.rnv.pluginTemplates.configs[v];
-            pluginTemplates[v] = plgs;
+    const scopedPluginTemplates: Record<string, any> = {};
+    if (c.files.scopedConfigTemplates) {
+        Object.keys(c.files.scopedConfigTemplates).forEach((v) => {
+            const plgs = c.files.scopedConfigTemplates[v].pluginTemplates;
+            scopedPluginTemplates[v] = plgs;
         });
     }
 
     const extraPlugins = getEnginesPluginDelta();
 
     const mergeFiles = [
-        c.files.defaultWorkspace.config,
-        c.files.rnv.projectTemplates.config,
+        // TODO: do we need to merge .rnv/renative.json with .customWorkspace/reantive.json ?
+        // c.files.dotRnv.config,
+        c.files.rnvConfigTemplates.config,
         { plugins: extraPlugins },
         // { pluginTemplates },
         c.files.workspace.config,
@@ -140,7 +141,8 @@ export const generateBuildConfig = () => {
         arrayMerge: _arrayMergeOverride,
     });
     out = merge({}, out);
-    out.pluginTemplates = pluginTemplates;
+    // out.pluginTemplates = pluginTemplates;
+    out.scopedPluginTemplates = scopedPluginTemplates;
 
     c.buildConfig = sanitizeDynamicRefs<RnvContextBuildConfig>(c, out);
     const propConfig: FileUtilsPropConfig = {
@@ -152,16 +154,18 @@ export const generateBuildConfig = () => {
     c.buildConfig = sanitizeDynamicProps(c.buildConfig, propConfig);
 
     //Merge extendPlatform
-    const platforms = c.buildConfig.platforms || {};
-    (Object.keys(platforms) as PlatformKey[]).forEach((k) => {
-        const plat = platforms[k];
-        if (plat?.extendPlatform) {
-            const extPlat = platforms[plat?.extendPlatform];
-            if (extPlat) {
-                platforms[k] = merge(extPlat, plat);
+    if (c.buildConfig.platforms) {
+        const platforms = c.buildConfig.platforms || {};
+        (Object.keys(platforms) as RnvPlatformKey[]).forEach((k) => {
+            const plat = platforms[k];
+            if (plat?.extendPlatform) {
+                const extPlat = platforms[plat?.extendPlatform];
+                if (extPlat) {
+                    platforms[k] = merge(extPlat, plat);
+                }
             }
-        }
-    });
+        });
+    }
 
     logDebug('BUILD_CONFIG', Object.keys(c.buildConfig));
 
@@ -191,7 +195,7 @@ export const generateBuildConfig = () => {
 };
 
 const _checkBuildSchemeIfEngine = (c: RnvContext) => {
-    const { scheme } = c.program;
+    const { scheme } = c.program.opts();
     if (!c.platform || !scheme) return;
 
     const platform = c.buildConfig?.platforms?.[c.platform];

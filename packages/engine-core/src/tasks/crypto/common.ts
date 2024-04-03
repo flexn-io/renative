@@ -36,11 +36,11 @@ export const getEnvVar = () => {
     return envVar;
 };
 
-export const checkCrypto = async (parentTask?: string, originTask?: string) => {
+export const checkCrypto = async (parentTaskName?: string, originTaskName?: string) => {
     const c = getContext();
     logTask('checkCrypto');
 
-    if (c.program.ci || c.files.project.config?.crypto?.isOptional) return;
+    if (c.program.opts().ci || c.files.project.config?.crypto?.isOptional) return;
 
     const sourceRaw = c.files.project.config?.crypto?.path;
     if (!c.files.project.package.name) {
@@ -71,7 +71,7 @@ export const checkCrypto = async (parentTask?: string, originTask?: string) => {
 project timestamp: ${chalk().grey(`${tsProject} - ${new Date(tsProject)}`)}
 workspace timestamp: ${chalk().grey(`${tsWorkspace} - ${new Date(tsWorkspace)}`)}
 you should run decrypt`);
-                await executeTask(RnvTaskName.cryptoDecrypt, parentTask, originTask);
+                await executeTask({ taskName: RnvTaskName.cryptoDecrypt, parentTaskName, originTaskName });
                 return;
             }
 
@@ -80,4 +80,14 @@ you should run decrypt`);
             }
         }
     }
+};
+
+export const TaskOptions = {
+    key: {
+        key: 'key',
+        shortcut: 'k',
+        isValueType: true,
+        isRequired: true,
+        description: 'Pass the key/password',
+    },
 };

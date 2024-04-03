@@ -1,63 +1,38 @@
-import { z } from 'zod';
-import { PluginPlatformAndroidFragment } from './fragments/platformAndroid';
-import { PluginPlatformiOSFragment } from './fragments/platformIos';
-import { PluginPlatformBaseFragment } from './fragments/platformBase';
-import { PluginBaseFragment } from './fragments/base';
+import { AnyZodObject, z } from 'zod';
+import { zodPluginPlatformAndroidFragment } from './fragments/platformAndroid';
+import { zodPluginPlatformiOSFragment } from './fragments/platformIos';
+import { zodPluginPlatformBaseFragment } from './fragments/platformBase';
+import { zodPluginBaseFragment } from './fragments/base';
 
-const androidSchema = z
-    .object({
-        ...PluginPlatformBaseFragment,
-        ...PluginPlatformAndroidFragment,
+const zodAndroidSchema = zodPluginPlatformBaseFragment.merge(zodPluginPlatformAndroidFragment);
+
+const zodIOSSchema = zodPluginPlatformBaseFragment.merge(zodPluginPlatformiOSFragment);
+
+export const zodPluginSchema: AnyZodObject = zodPluginBaseFragment.merge(
+    z.object({
+        android: zodAndroidSchema,
+        androidtv: zodAndroidSchema,
+        androidwear: zodAndroidSchema,
+        firetv: zodAndroidSchema,
+        ios: zodIOSSchema,
+        tvos: zodIOSSchema,
+        tizen: zodPluginPlatformBaseFragment,
+        tizenmobile: zodPluginPlatformBaseFragment,
+        tizenwatch: zodPluginPlatformBaseFragment,
+        webos: zodPluginPlatformBaseFragment,
+        web: zodPluginPlatformBaseFragment,
+        webtv: zodPluginPlatformBaseFragment,
+        chromecast: zodPluginPlatformBaseFragment,
+        kaios: zodPluginPlatformBaseFragment,
+        macos: zodPluginPlatformBaseFragment,
+        linux: zodPluginPlatformBaseFragment,
+        windows: zodPluginPlatformBaseFragment,
+        xbox: zodPluginPlatformBaseFragment,
     })
-    .optional();
+);
 
-const iosSchema = z
-    .object({
-        ...PluginPlatformBaseFragment,
-        ...PluginPlatformiOSFragment,
-    })
-    .optional();
-
-const genericSchema = z
-    .object({
-        ...PluginPlatformBaseFragment,
-    })
-    .optional();
-
-export const PluginSchema = z.object({
-    ...PluginBaseFragment,
-    android: androidSchema,
-    androidtv: androidSchema,
-    androidwear: androidSchema,
-    firetv: androidSchema,
-    ios: iosSchema,
-    tvos: iosSchema,
-    tizen: genericSchema,
-    tizenmobile: genericSchema,
-    tizenwatch: genericSchema,
-    webos: genericSchema,
-    web: genericSchema,
-    webtv: genericSchema,
-    chromecast: genericSchema,
-    kaios: genericSchema,
-    macos: genericSchema,
-    linux: genericSchema,
-    windows: genericSchema,
-    xbox: genericSchema,
-});
-
-const PluginPlatformMergedSchema = z.object({
-    ...PluginPlatformBaseFragment,
-    ...PluginPlatformiOSFragment,
-    ...PluginPlatformAndroidFragment,
-});
-
-export type _PluginPlatformMergedSchemaType = z.infer<typeof PluginPlatformMergedSchema>;
-
-export type _PluginType = z.infer<typeof PluginSchema>;
-
-export const PluginsSchema = z
-    .record(z.string(), z.union([PluginSchema, z.string()]).nullable())
+export const zodPluginsSchema = z
+    .record(z.string(), z.union([zodPluginSchema, z.string()]).nullable())
     .describe(
         'Define all plugins available in your project. you can then use `includedPlugins` and `excludedPlugins` props to define active and inactive plugins per each app config'
     );

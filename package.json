@@ -56,8 +56,8 @@
         "url": "git://github.com/flexn-io/renative.git"
     },
     "scripts": {
-        "bootstrap": "yarn run link:rnv && npx lerna bootstrap && yarn build",
-        "bootstrap-clean": "rimraf -I ./node_modules; npx lerna clean --yes && yarn bootstrap",
+        "bootstrap": "npx lerna@6 bootstrap && yarn build && yarn link:rnv",
+        "bootstrap-clean": "rimraf -I ./node_modules; npx lerna@6 clean --yes && yarn bootstrap",
         "build": "lerna run build",
         "compile": "npx lerna run compile",
         "deploy:canary": "yarn pre-publish && npx lerna publish from-package --dist-tag canary && git push --tags origin HEAD",
@@ -99,7 +99,6 @@
         "@typescript-eslint/eslint-plugin": "^5.4.0",
         "@typescript-eslint/parser": "^5.4.0",
         "babel-jest": "29.6.3",
-        "babel-plugin-module-resolver": "^5.0.0",
         "deepmerge": "3.2.0",
         "eslint": "8.19.0",
         "eslint-config-prettier": "8.8.0",
@@ -143,12 +142,10 @@
             "webpack",
             "mini-css-extract-plugin",
             "execa",
-            "**/@flexn/plugins",
             "**/@flexn/graybox",
             "**/appium-*",
             "**/@wdio/*",
             "**/@react-native/metro-babel-transformer"
         ]
-    },
-    "resolutions": {}
+    }
 }

@@ -1,5 +1,8 @@
 import { z } from 'zod';
 
-export const RootIntegrationSchema = z.object({});
-
-export type _RootIntegrationSchemaType = z.infer<typeof RootIntegrationSchema>;
+export const zodConfigFileIntergation = z
+    .object({
+        packageName: z.string(),
+    })
+    .partial();
+//

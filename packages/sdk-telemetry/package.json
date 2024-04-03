@@ -1,0 +1,44 @@
+{
+    "name": "@rnv/sdk-telemetry",
+    "version": "1.0.0-rc.12",
+    "description": "ReNative Telemetry SDK",
+    "keywords": [],
+    "homepage": "https://github.com/flexn-io/renative#readme",
+    "bugs": {
+        "url": "https://github.com/flexn-io/renative/issues"
+    },
+    "license": "MIT",
+    "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
+    "files": [
+        "LICENSE",
+        "lib",
+        "types.d.ts"
+    ],
+    "main": "lib/index.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/flexn-io/renative.git"
+    },
+    "scripts": {
+        "bootstrap": "yarn && yarn build && npm link",
+        "build": "yarn clean && yarn compile",
+        "clean": "rimraf -I ./lib && rimraf -I tsconfig.tsbuildinfo",
+        "compile": "tsc -b tsconfig.json",
+        "compile:prod": "tsc -b tsconfig.json",
+        "lint": "eslint . --ext .ts",
+        "watch": "tsc --watch --preserveWatchOutput"
+    },
+    "dependencies": {
+        "@rnv/sdk-utils": "1.0.0-rc.12",
+        "@sentry/integrations": "7.57.0",
+        "@sentry/node": "7.57.0",
+        "node-machine-id": "^1.1.12"
+    },
+    "peerDependencies": {
+        "@rnv/core": "^1.0.0-rc.12"
+    },
+    "private": false,
+    "publishConfig": {
+        "access": "public"
+    }
+}

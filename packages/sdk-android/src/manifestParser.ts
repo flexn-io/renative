@@ -180,8 +180,8 @@ const _mergeFeatures = (
 const getConfigPropArray = <T extends ConfigPropKey>(c: RnvContext, platform: RnvPlatform, key: T) => {
     const result: Array<ConfigProp[T]> = [];
     const configArr = [
-        c.files.defaultWorkspace.config,
-        c.files.rnv.projectTemplates.config,
+        c.files.dotRnv.config,
+        c.files.rnvConfigTemplates.config,
         // { plugins: extraPlugins },
         // { pluginTemplates },
         c.files.workspace.config,
@@ -203,7 +203,7 @@ const getConfigPropArray = <T extends ConfigPropKey>(c: RnvContext, platform: Rn
     configArr.forEach((config) => {
         if (config) {
             //TODO: this is bit of a hack. _getConfigProp expectes already merged obj needs to be redone
-            const val = _getConfigProp(c, key, null, config as ConfigFileBuildConfig);
+            const val = _getConfigProp(c, key, undefined, config as ConfigFileBuildConfig);
             if (val) {
                 result.push(val);
             }
@@ -221,7 +221,7 @@ export const parseAndroidManifestSync = () => {
     if (!platform) return;
 
     try {
-        const baseManifestFilePath = path.join(__dirname, `../supportFiles/AndroidManifest_${platform}.json`);
+        const baseManifestFilePath = path.join(__dirname, `../templateFiles/AndroidManifest_${platform}.json`);
         const baseManifestFile = readObjectSync<AndroidManifest>(baseManifestFilePath);
 
         if (!baseManifestFile) {

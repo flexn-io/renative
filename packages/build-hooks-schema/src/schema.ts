@@ -1,35 +1,35 @@
-import {
-    RootAppSchema,
-    RootEngineSchema,
-    RootGlobalSchema,
-    RootIntegrationSchema,
-    RootLocalSchema,
-    RootPluginSchema,
-    RootPluginsSchema,
-    RootPrivateSchema,
-    RootProjectSchema,
-    RootTemplateSchema,
-    RootTemplatesSchema,
-    getContext,
-    logSuccess,
-} from '@rnv/core';
+import { ZodFileSchema, ZodSharedSchema, getContext, logSuccess } from '@rnv/core';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { z } from 'zod';
 import path from 'path';
 import fs from 'fs';
 
 export const generateSchema = async () => {
-    _generateSchemaFile({ schema: RootProjectSchema, schemaId: 'rnv.project' });
-    _generateSchemaFile({ schema: RootAppSchema, schemaId: 'rnv.app' });
-    _generateSchemaFile({ schema: RootLocalSchema, schemaId: 'rnv.local' });
-    _generateSchemaFile({ schema: RootEngineSchema, schemaId: 'rnv.engine' });
-    _generateSchemaFile({ schema: RootGlobalSchema, schemaId: 'rnv.global' });
-    _generateSchemaFile({ schema: RootPluginsSchema, schemaId: 'rnv.plugins' });
-    _generateSchemaFile({ schema: RootTemplateSchema, schemaId: 'rnv.template' });
-    _generateSchemaFile({ schema: RootPrivateSchema, schemaId: 'rnv.private' });
-    _generateSchemaFile({ schema: RootPluginSchema, schemaId: 'rnv.plugin' });
-    _generateSchemaFile({ schema: RootTemplatesSchema, schemaId: 'rnv.templates' });
-    _generateSchemaFile({ schema: RootIntegrationSchema, schemaId: 'rnv.integration' });
+    const {
+        zodConfigFilePlugin,
+        zodConfigFilePrivate,
+        zodConfigFileProject,
+        zodConfigFileTemplate,
+        zodConfigFileTemplates,
+        zodConfigFileWorkspace,
+        zodConfigFileIntergation,
+        zodConfigFileApp,
+        zodConfigFileLocal,
+        zodConfigFileEngine,
+        zodConfigFileRoot,
+    } = ZodFileSchema;
+
+    _generateSchemaFile({ schema: zodConfigFileProject, schemaId: 'rnv.project' });
+    _generateSchemaFile({ schema: zodConfigFileApp, schemaId: 'rnv.app' });
+    _generateSchemaFile({ schema: zodConfigFileLocal, schemaId: 'rnv.local' });
+    _generateSchemaFile({ schema: zodConfigFileEngine, schemaId: 'rnv.engine' });
+    _generateSchemaFile({ schema: zodConfigFileWorkspace, schemaId: 'rnv.workspace' });
+    _generateSchemaFile({ schema: zodConfigFileTemplate, schemaId: 'rnv.template' });
+    _generateSchemaFile({ schema: zodConfigFilePrivate, schemaId: 'rnv.private' });
+    _generateSchemaFile({ schema: zodConfigFilePlugin, schemaId: 'rnv.plugin' });
+    _generateSchemaFile({ schema: zodConfigFileTemplates, schemaId: 'rnv.templates' });
+    _generateSchemaFile({ schema: zodConfigFileIntergation, schemaId: 'rnv.integration' });
+    _generateSchemaFile({ schema: zodConfigFileRoot, schemaId: 'rnv.root' });
 
     logSuccess('Sucessfully exported renative.project.json schema');
 };
@@ -37,12 +37,17 @@ export const generateSchema = async () => {
 const _generateSchemaFile = (opts: { schema: z.ZodObject<any>; schemaId: string }) => {
     const { schema, schemaId } = opts;
     const ctx = getContext();
-    const jsonSchema: any = zodToJsonSchema(schema, schemaId);
+    const jsonSchema: any = zodToJsonSchema(schema, {
+        name: schemaId,
+        definitions: {
+            ...ZodSharedSchema,
+        },
+    });
     jsonSchema['$schema'] = 'http://json-schema.org/draft-04/schema#';
 
     jsonSchema.definitions[schemaId].properties['$schema'] = {
         type: 'string',
-        description: 'schema definition', 
+        description: 'schema definition',
     };
 
     const destFolder = path.join(ctx.paths.project.dir, `packages/core/jsonSchema`);

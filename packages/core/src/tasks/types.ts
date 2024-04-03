@@ -1,23 +1,46 @@
 import type { RnvContext } from '../context/types';
-import type { PlatformKey } from '../schema/types';
+import type { RnvPlatformKey } from '../types';
 
-export type RnvTask = {
+export type CreateRnvTaskOpt<OKey extends string = string> = {
     task: string;
-    options: Array<RnvTaskOption>;
+    dependsOn?: string[];
+    options?: ReadonlyArray<RnvTaskOption<OKey>>;
     isGlobalScope?: boolean;
-    platforms: Array<PlatformKey>;
+    platforms?: Array<RnvPlatformKey>;
     description: string;
     forceBuildHookRebuild?: boolean;
-    fn?: RnvTaskFn;
-    fnHelp?: RnvTaskFn;
+    beforeDependsOn?: RnvTaskFn;
+    fn?: RnvTaskFn<OKey>;
+    fnHelp?: RnvTaskHelpFn;
     isPrivate?: boolean;
     isPriorityOrder?: boolean;
     ignoreEngines?: boolean;
 };
 
+export type RnvTask<OKey extends string = string> = {
+    task: string;
+    dependsOn?: string[];
+    options?: ReadonlyArray<RnvTaskOption<OKey>>;
+    isGlobalScope?: boolean;
+    platforms?: Array<RnvPlatformKey>;
+    description: string;
+    forceBuildHookRebuild?: boolean;
+    beforeDependsOn?: RnvTaskFn;
+    fn?: RnvTaskFn<OKey>;
+    fnHelp?: RnvTaskHelpFn;
+    isPrivate?: boolean;
+    isPriorityOrder?: boolean;
+    ignoreEngines?: boolean;
+    ownerID?: string;
+    key: string;
+};
+
 export type TaskPromptOption = {
     name: string;
-    value: string;
+    value: {
+        taskName: string;
+        subTsks?: TaskPromptOption[];
+    };
     command: string;
     asArray?: string[];
     subCommand?: string;
@@ -30,21 +53,29 @@ export type TaskPromptOption = {
     params?: Array<RnvTaskOption>;
 };
 
-export type RnvTaskOption = {
+export type RnvTaskOption<OKey extends string = string> = {
     shortcut?: string;
-    key?: string;
+    key: OKey;
     isRequired?: boolean;
     isValueType?: boolean;
     isVariadic?: boolean;
     description: string;
     examples?: Array<string>;
-    options?: Array<string>;
+    // options?: ReadonlyArray<RnvTaskOption<OKey>>;
 };
 
-export type RnvTaskMap = Record<string, RnvTask>;
+export type RnvTaskMap<OKey extends string = string> = Record<string, RnvTask<OKey>>;
 
 //Too many choices of return types
-export type RnvTaskFn = (c: RnvContext, parentTask?: string, originTask?: string) => Promise<any>; // Promise<boolean | void | string>;
+export type RnvTaskFn<OKey extends string = string> = (opts: {
+    ctx: RnvContext<any, OKey>;
+    taskName: string;
+    parentTaskName: string | undefined;
+    originTaskName: string | undefined;
+    shouldSkip: boolean;
+}) => Promise<any>; // Promise<boolean | void | string>;
+
+export type RnvTaskHelpFn = () => Promise<void>;
 
 export type TaskItemMap = Record<
     string,

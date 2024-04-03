@@ -1,57 +1,46 @@
-import path from 'path';
-import {
-    logInfo,
-    logTask,
-    logSuccess,
-    RnvTaskOptionPresets,
-    fsExistsSync,
-    fsRenameSync,
-    fsUnlinkSync,
-    fsLstatSync,
-    RnvTaskFn,
-    RnvContext,
-    RnvTask,
-    RnvTaskName,
-} from '@rnv/core';
-import { RNV_PACKAGES } from './constants';
+import { logInfo, fsRenameSync, fsUnlinkSync, createTask, RnvTaskName, chalk } from '@rnv/core';
+import { getSourceDir, traverseTargetProject } from './linker';
+import { LinkablePackage } from './types';
 
-const _unlinkPackage = (c: RnvContext, key: string) => {
-    const rnvPath = path.join(c.paths.project.nodeModulesDir, key);
-    const rnvPathUnlinked = path.join(c.paths.project.nodeModulesDir, `${key}_unlinked`);
-
-    if (!fsExistsSync(rnvPathUnlinked)) {
-        logInfo(`${key} is not linked. SKIPPING`);
-    } else if (fsExistsSync(rnvPath)) {
-        if (fsLstatSync(rnvPath).isSymbolicLink()) {
-            fsUnlinkSync(rnvPath);
-            fsRenameSync(rnvPathUnlinked, rnvPath);
-            logSuccess(`${key} => unlink => SUCCESS`);
-        } else {
-            logInfo(`${key} is not a symlink anymore. SKIPPING`);
-        }
+const _unlinkPackage = (pkg: LinkablePackage) => {
+    if (pkg.isBrokenLink) {
+        logInfo(`${pkg.name} is a ${chalk().red('broken')} link. Attempting to fix...`);
+        fsUnlinkSync(pkg.nmPath);
+    } else if (pkg.isLinked && pkg.unlinkedPathExists) {
+        fsUnlinkSync(pkg.nmPath);
+        fsRenameSync(pkg.unlinkedPath, pkg.nmPath);
+        logInfo(`${chalk().green('✔')} ${pkg.name} (${chalk().gray(pkg.nmPath)})`);
+    } else if (!pkg.isLinked) {
+        logInfo(`${pkg.name} is not linked. SKIPPING`);
+    } else if (pkg.skipLinking) {
+        logInfo(`${pkg.name} is set to skip linking. SKIPPING`);
     }
 };
 
-const taskUnlink: RnvTaskFn = async (c) => {
-    logTask('taskUnlink');
-
-    RNV_PACKAGES.forEach((pkg) => {
-        if (!pkg.skipLinking) {
-            _unlinkPackage(c, pkg.packageName);
-        }
-    });
-
-    return true;
-};
-
-const Task: RnvTask = {
+export default createTask({
     description: 'Replaces rnv version in project with original node_modules version',
-    fn: taskUnlink,
+    fn: async () => {
+        const linkablePackages = traverseTargetProject(getSourceDir());
+
+        let msg = 'Found following source packages:\n\n';
+
+        linkablePackages.forEach((pkg) => {
+            msg += `${pkg.nmPath.replace(pkg.name, chalk().bold(pkg.name))} ${
+                pkg.isBrokenLink ? chalk().red('(broken)') : pkg.isLinked ? chalk().green('(linked)') : '(unlinked)'
+            }\n`;
+        });
+
+        logInfo(msg);
+
+        logInfo('Unlinking packages...');
+
+        linkablePackages.forEach((pkg) => {
+            _unlinkPackage(pkg);
+        });
+
+        return true;
+    },
     task: RnvTaskName.unlink,
-    options: RnvTaskOptionPresets.withBase(),
-    platforms: [],
     isGlobalScope: true,
     ignoreEngines: true,
-};
-
-export default Task;
+});

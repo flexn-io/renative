@@ -8,39 +8,15 @@
         "@rnv/engine-rn-tvos": "source:rnv",
         "@rnv/engine-rn-web": "source:rnv"
     },
-    "isTemplate": true,
     "projectName": "@rnv/template-starter",
     "enableHookRebuild": false,
     "workspaceID": "rnv",
-    "isMonorepo": true,
     "paths": {
         "appConfigsDir": "./appConfigs",
         "platformAssetsDir": "./platformAssets",
         "platformBuildsDir": "./platformBuilds"
     },
-    "tasks": {
-        "install": {
-            "script": "yarn bootstrap"
-        }
-    },
     "defaults": {
-        "ports": {
-            "ios": 8082,
-            "android": 8083,
-            "androidtv": 8084,
-            "firetv": 8098,
-            "tvos": 8085,
-            "macos": 8086,
-            "web": 8080,
-            "tizen": 8087,
-            "webos": 8088,
-            "androidwear": 8089,
-            "tizenwatch": 8090,
-            "tizenmobile": 8091,
-            "windows": 8092,
-            "xbox": 8099,
-            "kaios": 8093
-        },
         "supportedPlatforms": [
             "ios",
             "android",
@@ -48,14 +24,11 @@
             "firetv",
             "androidwear",
             "web",
-            "webtv",
             "tizen",
             "tvos",
             "webos",
             "macos",
-            "windows",
             "tizenwatch",
-            "tizenmobile",
             "kaios",
             "chromecast",
             "linux"
@@ -67,12 +40,10 @@
         },
         "targets": {}
     },
-    "templates": {
-        "@rnv/template-starter": {
-            "version": "1.0.0-rc.12"
-        }
+    "templateConfig": {
+        "name": "@rnv/template-starter",
+        "version": "1.0.0-rc.12"
     },
-    "currentTemplate": "@rnv/template-starter",
     "platforms": {
         "android": {
             "minSdkVersion": 26,
@@ -140,11 +111,19 @@
         "react-art": "source:rnv",
         "react-dom": "source:rnv",
         "react-native-gesture-handler": "source:rnv",
-        "@react-native-community/cli-platform-ios": "source:rnv",
+        "@react-native-community/cli-platform-ios": {
+            "supportedPlatforms": ["tvos", "ios"]
+        },
         "react-native": "source:rnv",
-        "next": "source:rnv",
-        "react-native-web": "source:rnv",
-        "react-native-tvos": "source:rnv"
+        "next": {
+            "supportedPlatforms": ["web"]
+        },
+        "react-native-web": {
+            "supportedPlatforms": ["web", "tizen", "webos", "macos"]
+        },
+        "react-native-tvos": {
+            "supportedPlatforms": ["tvos", "firetv", "androidtv"]
+        }
     },
     "permissions": {
         "ios": {},

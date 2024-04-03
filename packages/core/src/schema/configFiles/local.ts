@@ -1,20 +1,16 @@
 import { z } from 'zod';
-import { DefaultTargets } from '../shared';
+import { zodDefaultTargets } from '../shared';
 
-const WorkspaceAppConfigsDir = z.string().describe('Defines app configs dir outside of current project');
-
-const Meta = z.object({
-    currentAppConfigId: z.optional(z.string()),
-    requiresJetify: z.optional(z.boolean()),
-});
-
-//LEVEl 0 (ROOT)
-
-export const RootLocalSchema = z.object({
-    workspaceAppConfigsDir: z.optional(WorkspaceAppConfigsDir),
-    defaultTargets: z.optional(DefaultTargets),
-    _meta: z.optional(Meta),
-    // extend: z.optional(z.string()),
-});
-
-export type _RootLocalSchemaType = z.infer<typeof RootLocalSchema>;
+export const zodConfigFileLocal = z
+    .object({
+        workspaceAppConfigsDir: z.string().describe('Defines app configs dir outside of current project'),
+        defaultTargets: zodDefaultTargets,
+        _meta: z
+            .object({
+                currentAppConfigId: z.optional(z.string()),
+                requiresJetify: z.optional(z.boolean()),
+            })
+            .partial(),
+        // extend: z.optional(z.string()),
+    })
+    .partial();

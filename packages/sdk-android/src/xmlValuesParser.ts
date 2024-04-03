@@ -1,6 +1,6 @@
 import path from 'path';
 import {
-    RenativeConfigPluginPlatform,
+    RnvPluginPlatformSchema,
     getAppFolder,
     getConfigProp,
     writeFileSync,
@@ -40,7 +40,7 @@ export const parseValuesColorsSync = () => {
     writeCleanFile(getBuildFilePath(stringsPath), path.join(appFolder, stringsPath), injects, undefined, c);
 };
 
-export const injectPluginXmlValuesSync = (plugin: RenativeConfigPluginPlatform) => {
+export const injectPluginXmlValuesSync = (plugin: RnvPluginPlatformSchema) => {
     const rStrings = plugin.templateAndroid?.strings_xml?.children;
     if (rStrings) {
         const c = getContext();

@@ -1,5 +1,5 @@
 <!--
 Generate by ReNative (https://renative.org)
-BASE: packages/rnv/src/sdk-android/supportFiles/AndroidManifest_firetv.json
+BASE: packages/rnv/src/sdk-android/templateFiles/AndroidManifest_firetv.json
 -->
 {{PLUGIN_MANIFEST_FILE}}

@@ -33,8 +33,10 @@
     },
     "dependencies": {
         "chalk": "4.1.0",
-        "commander": "^6.2.0",
-        "inquirer": "8.2.0"
+        "commander": "12.0.0",
+        "inquirer": "8.2.0",
+        "@rnv/sdk-telemetry": "1.0.0-rc.12",
+        "@rnv/engine-core": "1.0.0-rc.12"
     },
     "peerDependencies": {
         "@rnv/core": "^1.0.0-rc.12"
@@ -42,6 +44,5 @@
     "private": false,
     "publishConfig": {
         "access": "public"
-    },
-    "gitHead": "48ef244c6ec2e206cbfd72fe8770d8dc03387591"
+    }
 }

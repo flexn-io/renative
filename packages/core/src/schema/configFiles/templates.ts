@@ -1,33 +1,38 @@
 import { z } from 'zod';
-import { PlatformsKeys } from '../shared';
+import { zodPlatformsKeys, zodProjectTemplates } from '../shared';
+import { zodPluginSchema } from '../plugins';
 
-export const RootTemplatesSchema = z.object({
-    projectTemplates: z.record(
-        z.string(),
-        z.object({
-            description: z.string(),
-        })
-    ),
-    engineTemplates: z.record(
-        z.string(),
-        z.object({
-            version: z.string(),
-            id: z.string(),
-            key: z.string().optional(),
-        })
-    ),
-    integrationTemplates: z.record(
-        z.string(),
-        z.object({
-            version: z.string(),
-        })
-    ),
-    platformTemplates: z.record(
-        PlatformsKeys,
-        z.object({
-            engine: z.string(),
-        })
-    ),
-});
-
-export type _RootTemplatesSchemaType = z.infer<typeof RootTemplatesSchema>;
+export const zodConfigFileTemplates = z
+    .object({
+        projectTemplates: zodProjectTemplates,
+        engineIdMap: z.record(z.string(), z.string()),
+        engineTemplates: z.record(
+            z.string(),
+            z.object({
+                version: z.string(),
+                id: z.string(),
+                key: z.string(),
+            })
+        ),
+        integrationTemplates: z.record(
+            z.string(),
+            z.object({
+                version: z.string(),
+            })
+        ),
+        platformTemplates: z.record(
+            zodPlatformsKeys,
+            z.object({
+                engine: z.string(),
+            })
+        ),
+        pluginTemplates: z
+            .record(z.string(), zodPluginSchema)
+            .describe('Define all plugins available to be merged with project plugins'),
+        disableRnvDefaultOverrides: z
+            .boolean()
+            .describe(
+                'Disables default rnv scope plugin overrides and merges. Useful if you want to test entirely clean plugin template list'
+            ),
+    })
+    .partial();

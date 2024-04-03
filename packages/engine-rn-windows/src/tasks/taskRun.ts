@@ -1,48 +1,19 @@
-import {
-    logErrorPlatform,
-    logTask,
-    RnvTaskOptionPresets,
-    RnvTaskFn,
-    executeOrSkipTask,
-    shouldSkipTask,
-    RnvTask,
-    RnvTaskName,
-} from '@rnv/core';
-import { SDKWindows } from '../sdks';
+import { RnvTaskOptionPresets, createTask, RnvTaskName } from '@rnv/core';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '@rnv/sdk-react-native';
+import { clearWindowsTemporaryFiles, ruWindowsProject } from '../sdk';
+import { SdkPlatforms } from '../sdk/constants';
 
-const { ruWindowsProject, clearWindowsTemporaryFiles } = SDKWindows;
-
-const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
-    const { platform } = c;
-    const { port } = c.runtime;
-    const { target } = c.runtime;
-    const { hosted } = c.program;
-    logTask('taskRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
-
-    await executeOrSkipTask(RnvTaskName.configure, RnvTaskName.run, originTask);
-
-    if (shouldSkipTask(RnvTaskName.run, originTask)) return true;
-
-    switch (platform) {
-        case 'xbox':
-        case 'windows':
-            await clearWindowsTemporaryFiles(c);
-            await startBundlerIfRequired(RnvTaskName.run, originTask);
-            await ruWindowsProject(c);
-            return waitForBundlerIfRequired();
-        default:
-            return logErrorPlatform();
-    }
-};
-
-const Task: RnvTask = {
+export default createTask({
     description: 'Run your app in a window on desktop',
-    fn: taskRun,
+    dependsOn: [RnvTaskName.configure],
+    fn: async ({ originTaskName }) => {
+        await clearWindowsTemporaryFiles();
+        await startBundlerIfRequired(RnvTaskName.run, originTaskName);
+        await ruWindowsProject();
+        return waitForBundlerIfRequired();
+    },
     task: RnvTaskName.run,
     isPriorityOrder: true,
-    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun())),
-    platforms: ['windows', 'xbox'],
-};
-
-export default Task;
+    options: RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun()),
+    platforms: SdkPlatforms,
+});

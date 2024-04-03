@@ -1,8 +1,7 @@
-import { z } from 'zod';
-import { DefaultsSchema, EnginesSchema } from './project';
-import { NpmDep, TemplateConfig } from '../shared';
+import { AnyZodObject, z } from 'zod';
+import { zodNpmDep, zodSupportedPlatforms, zodTemplateConfigFragment } from '../shared';
 
-const BootstrapQuestionsSchema = z
+const zodBootstrapQuestionsSchema = z
     .array(
         z.object({
             options: z
@@ -34,11 +33,11 @@ const BootstrapQuestionsSchema = z
     )
     .describe('Defines list of custom bootstrap questions');
 
-const BootstrapConfig = z
+export const zodConfigTemplateBootstrapConfig = z
     .object({
-        bootstrapQuestions: BootstrapQuestionsSchema,
+        bootstrapQuestions: zodBootstrapQuestionsSchema,
         rnvNewPatchDependencies: z
-            .optional(NpmDep)
+            .optional(zodNpmDep)
             .describe(
                 'This ensures that the correct version of the npm packages will be used to run the project for the first time after creation'
             ),
@@ -46,20 +45,23 @@ const BootstrapConfig = z
             engines: z.array(
                 z.object({
                     name: z.string(),
-                    supportedPlatforms: z.array(z.string()),
+                    supportedPlatforms: zodSupportedPlatforms,
                     nullifyIfFalse: z.boolean().optional(),
                 })
             ),
         }),
+        defaultSelectedPlatforms: zodSupportedPlatforms,
     })
     .partial();
 
-export const RootTemplateSchema = z.object({
-    defaults: z.optional(DefaultsSchema),
-    engines: z.optional(EnginesSchema),
-    templateConfig: TemplateConfig.optional(),
-    bootstrapConfig: BootstrapConfig.optional(),
-});
+export const zodConfigFileTemplate: AnyZodObject = z
+    .object({
+        // defaults: z.optional(DefaultsSchema),
+        // engines: z.optional(EnginesSchema),
+        templateConfig: zodTemplateConfigFragment,
+        bootstrapConfig: zodConfigTemplateBootstrapConfig,
+    })
+    .partial();
 
 // {
 //     title: 'Which service to use?',
@@ -83,5 +85,3 @@ export const RootTemplateSchema = z.object({
 //         },
 //     ],
 // },
-
-export type _RootTemplateSchemaType = z.infer<typeof RootTemplateSchema>;

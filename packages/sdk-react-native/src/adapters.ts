@@ -172,7 +172,7 @@ export const withMetroConfig = (projectRoot: string): ConfigT => {
                 },
             }),
         },
-        watchFolders: [],
+        watchFolders: [process.env.RNV_MONO_ROOT || process.cwd()],
     };
     const { mergeConfig, getDefaultConfig } = require('metro-config');
 

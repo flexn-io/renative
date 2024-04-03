@@ -1,78 +1,55 @@
-import { z } from 'zod';
-import { PlatformAndroidSchema } from './android';
-import { PlatformiOSSchema } from './ios';
-import { PlatformElectronFragment } from './fragments/electron';
-import { PlatformWindowsSchema } from './windows';
-import { PlatformWebpackFragment } from './fragments/webpack';
-import { PlatformNextJsFragment } from './fragments/nextjs';
-import { PlatformLightningFragment } from './fragments/lightning';
-import { PlatformReactNativeFragment } from './fragments/reactNative';
-import { PlatformBaseFragment } from './fragments/base';
-import { PlatformMacosSchema } from './macos';
-import { PlatformWebSchema } from './web';
-import { PlatformTizenSchema } from './tizen';
-import { PlatformWebosSchema } from './webos';
-import { CommonSchemaFragment } from '../common';
-import { PlatformWebOSFragment } from './fragments/webos';
-import { PlatformWindowsFragment } from './fragments/windows';
-import { PlatformTizenFragment } from './fragments/tizen';
-import { PlatformWebFragment } from './fragments/web';
-import { PlatformAndroidFragment } from './fragments/android';
-import { PlatformiOSFragment } from './fragments/ios';
-import { TemplateAndroidFragment } from './fragments/templateAndroid';
-import { TemplateXcodeFragment } from './fragments/templateXcode';
+import { AnyZodObject, z } from 'zod';
+import { zodPlatformElectronFragment } from './fragments/electron';
+import { zodPlatformWebpackFragment } from './fragments/webpack';
+import { zodPlatformNextJsFragment } from './fragments/nextjs';
+import { zodPlatformReactNativeFragment } from './fragments/reactNative';
+import { zodPlatformBaseFragment } from './fragments/base';
+import { zodCommonSchemaFragment } from '../common';
+import { zodPlatformWebOSFragment } from './fragments/webos';
+import { zodPlatformWindowsFragment } from './fragments/windows';
+import { zodPlatformTizenFragment } from './fragments/tizen';
+import { zodPlatformWebFragment } from './fragments/web';
+import { zodPlatformAndroidFragment } from './fragments/android';
+import { zodPlatformiOSFragment } from './fragments/ios';
+import { zodTemplateAndroidFragment } from './fragments/templateAndroid';
+import { zodTemplateXcodeFragment } from './fragments/templateXcode';
 
-const MergedPlatformPlainObject = z.object({
-    //BASE
-    ...CommonSchemaFragment,
-    ...PlatformBaseFragment,
-    //PLATFORMS
-    ...PlatformiOSFragment,
-    ...PlatformAndroidFragment,
-    ...PlatformWebFragment,
-    ...PlatformTizenFragment,
-    ...PlatformWindowsFragment,
-    ...PlatformWebOSFragment,
-    //ENGINES
-    ...PlatformLightningFragment,
-    ...PlatformReactNativeFragment,
-    ...PlatformWebpackFragment,
-    ...PlatformElectronFragment,
-    ...PlatformNextJsFragment,
-    ...TemplateAndroidFragment,
-    ...TemplateXcodeFragment,
-    ...PlatformLightningFragment,
-});
+const createPlatformSchema = (obj: AnyZodObject): AnyZodObject => {
+    const zodPlatformSchema = zodCommonSchemaFragment.merge(zodPlatformBaseFragment).merge(obj);
+    return z.object({ buildSchemes: z.record(z.string(), zodPlatformSchema) });
+};
 
-export type _MergedPlatformObjectType = z.infer<typeof MergedPlatformPlainObject>;
+const androidSchema = createPlatformSchema(
+    zodPlatformAndroidFragment.merge(zodPlatformReactNativeFragment.merge(zodTemplateAndroidFragment))
+);
 
-const desc = 'Allows to customize platforms configurations based on chosen build scheme `-s`';
+const iosSchema = createPlatformSchema(
+    zodPlatformiOSFragment.merge(zodPlatformReactNativeFragment.merge(zodTemplateXcodeFragment))
+);
 
-const androidSchema = z
-    .optional(PlatformAndroidSchema.extend({ buildSchemes: z.record(z.string(), PlatformAndroidSchema).optional() }))
-    .describe(desc);
-// const androidSchema = generatePlatform(PlatformAndroid);
-const iosSchema = z
-    .optional(PlatformiOSSchema.extend({ buildSchemes: z.record(z.string(), PlatformiOSSchema).optional() }))
-    .describe(desc);
-const macosSchema = z
-    .optional(PlatformMacosSchema.extend({ buildSchemes: z.record(z.string(), PlatformMacosSchema).optional() }))
-    .describe(desc);
-const windowsSchema = z
-    .optional(PlatformWindowsSchema.extend({ buildSchemes: z.record(z.string(), PlatformWindowsSchema).optional() }))
-    .describe(desc);
-const tizenSchema = z
-    .optional(PlatformTizenSchema.extend({ buildSchemes: z.record(z.string(), PlatformTizenSchema).optional() }))
-    .describe(desc);
-const webSchema = z
-    .optional(PlatformWebSchema.extend({ buildSchemes: z.record(z.string(), PlatformWebSchema).optional() }))
-    .describe(desc);
+const tizenSchema = createPlatformSchema(
+    zodPlatformTizenFragment.merge(zodPlatformWebFragment.merge(zodPlatformWebpackFragment))
+);
 
-const webosSchema = z
-    .optional(PlatformWebosSchema.extend({ buildSchemes: z.record(z.string(), PlatformWebosSchema).optional() }))
-    .describe(desc);
+const webosSchema = createPlatformSchema(
+    zodPlatformWebOSFragment.merge(zodPlatformWebFragment.merge(zodPlatformWebpackFragment))
+);
 
-export const PlatformsSchema = z
+const webSchema = createPlatformSchema(
+    zodPlatformWebpackFragment.merge(zodPlatformNextJsFragment.merge(zodPlatformWebFragment))
+);
+
+const macosSchema = createPlatformSchema(
+    zodPlatformiOSFragment.merge(
+        zodPlatformReactNativeFragment.merge(zodTemplateXcodeFragment.merge(zodPlatformElectronFragment))
+    )
+);
+
+const windowsSchema = createPlatformSchema(
+    zodPlatformElectronFragment.merge(zodPlatformReactNativeFragment.merge(zodPlatformWindowsFragment))
+);
+
+export const zodPlatformsSchema: AnyZodObject = z
     .object({
         android: androidSchema,
         androidtv: androidSchema,
@@ -94,5 +71,3 @@ export const PlatformsSchema = z
         xbox: windowsSchema,
     })
     .describe('Object containing platform configurations');
-
-export type _PlatformsSchemaType = z.infer<typeof PlatformsSchema>;

@@ -1,9 +1,9 @@
-import { z } from 'zod';
-import { Ext } from '../shared';
-import { PluginSchema } from '../plugins';
+import { AnyZodObject, z } from 'zod';
+import { zodExt } from '../shared';
+import { zodPluginSchema } from '../plugins';
 
-export const RootPluginSchema = PluginSchema.extend({
-    custom: z.optional(Ext),
+export const zodPluginFragment = z.object({
+    custom: z.optional(zodExt),
 });
 
-export type _RootPluginSchemaType = z.infer<typeof RootPluginSchema>;
+export const zodConfigFilePlugin: AnyZodObject = zodPluginSchema.merge(zodPluginFragment).partial();

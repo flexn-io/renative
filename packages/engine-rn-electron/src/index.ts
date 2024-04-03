@@ -1,47 +1,35 @@
-import { generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
-//@ts-ignore
-import CNF from '../renative.engine.json';
+import { createRnvEngine, GetContextType } from '@rnv/core';
 import taskBuild from './tasks/taskBuild';
 import taskConfigure from './tasks/taskConfigure';
 import taskExport from './tasks/taskExport';
 import taskRun from './tasks/taskRun';
 import taskStart from './tasks/taskStart';
 import { withRNVBabel } from './adapter';
+import { Config } from './config';
 
-const Engine: RnvEngine = {
-    tasks: generateEngineTasks([taskRun, taskBuild, taskConfigure, taskStart, taskExport]),
-    config: CNF,
-    projectDirName: '',
-    serverDirName: '',
-    // ejectPlatform: null,
-    runtimeExtraProps: {},
+const Engine = createRnvEngine({
+    tasks: [taskRun, taskBuild, taskConfigure, taskStart, taskExport],
+    config: Config,
     platforms: {
         macos: {
             defaultPort: 8086,
             isWebHosted: true,
-            extensions: generateEngineExtensions(
-                ['macos.desktop', 'desktop', 'macos', 'desktop.web', 'electron', 'web'],
-                CNF
-            ),
+            extensions: ['macos.desktop', 'desktop', 'macos', 'desktop.web', 'electron', 'web'],
         },
         windows: {
             defaultPort: 8092,
             isWebHosted: true,
-            extensions: generateEngineExtensions(
-                ['windows.desktop', 'desktop', 'windows', 'desktop.web', 'electron', 'web'],
-                CNF
-            ),
+            extensions: ['windows.desktop', 'desktop', 'windows', 'desktop.web', 'electron', 'web'],
         },
         linux: {
             defaultPort: 8100,
             isWebHosted: true,
-            extensions: generateEngineExtensions(
-                ['linux.desktop', 'desktop', 'linux', 'desktop.web', 'electron', 'web'],
-                CNF
-            ),
+            extensions: ['linux.desktop', 'desktop', 'linux', 'desktop.web', 'electron', 'web'],
         },
     },
-};
+});
+
+export type GetContext = GetContextType<typeof Engine.getContext>;
 
 export { withRNVBabel };
 

@@ -1,10 +1,9 @@
 import { getRealPath, writeFileSync } from '../system/fs';
 import { chalk, logDefault, logWarning } from '../logger';
-import { RnvPlatform } from '../types';
-import { PlatformKey } from '../schema/types';
-import { NpmPackageFile } from './types';
-import { ConfigFileProject } from '../schema/configFiles/types';
+import type { RnvPlatform, RnvPlatformKey } from '../types';
+import type { NpmPackageFile } from './types';
 import { getContext } from '../context/provider';
+import type { ConfigFileProject } from '../schema/types';
 
 const SYNCED_DEPS = [
     'rnv',
@@ -19,8 +18,6 @@ const SYNCED_DEPS = [
     '@rnv/renative',
     '@rnv/template-starter',
 ];
-
-const SYNCED_TEMPLATES = ['@rnv/template-starter'];
 
 export const upgradeProjectDependencies = (version: string) => {
     logDefault('upgradeProjectDependencies');
@@ -55,11 +52,9 @@ export const upgradeDependencies = (
     _fixDeps(packageFile?.devDependencies, version);
     _fixDeps(packageFile?.dependencies, version);
     _fixDeps(packageFile?.peerDependencies, version);
-    SYNCED_TEMPLATES.forEach((templ) => {
-        if (configFile?.templates?.[templ]?.version) {
-            configFile.templates[templ].version = version;
-        }
-    });
+    if (configFile?.templateConfig) {
+        configFile.templateConfig.version = version;
+    }
 
     if (packageFile) {
         writeFileSync(packagesPath, packageFile);
@@ -83,7 +78,7 @@ const _fixDeps = (deps: Record<string, string> | undefined, version: string) => 
     });
 };
 
-export const updateProjectPlatforms = (platforms: Array<PlatformKey>) => {
+export const updateProjectPlatforms = (platforms: Array<RnvPlatformKey>) => {
     const c = getContext();
 
     const {
