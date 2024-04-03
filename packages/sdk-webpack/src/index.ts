@@ -1,4 +1,3 @@
-import axios from 'axios';
 import path from 'path';
 import commandExists from 'command-exists';
 import {
@@ -23,7 +22,14 @@ import {
     Env,
     getContext,
 } from '@rnv/core';
-import { checkPortInUse, getDevServerHost, openBrowser, waitForHost, confirmActiveBundler } from '@rnv/sdk-utils';
+import {
+    checkPortInUse,
+    getDevServerHost,
+    openBrowser,
+    waitForHost,
+    confirmActiveBundler,
+    axios,
+} from '@rnv/sdk-utils';
 import { EnvVars } from './env';
 import { withRNVWebpack } from './adapter';
 export { withRNVWebpack };

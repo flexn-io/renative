@@ -29,6 +29,7 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
+        "@rnv/sdk-utils": "1.0.0-rc.12",
         "@sentry/integrations": "7.57.0",
         "@sentry/node": "7.57.0",
         "node-machine-id": "^1.1.12"

@@ -1062,7 +1062,7 @@
             "version": "5.2.11"
         },
         "aws-amplify": "4.3.13",
-        "axios": "0.24.0",
+        "axios": "1.6.0",
         "crashlytics": {
             "android": {
                 "mainActivity": {

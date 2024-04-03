@@ -5,7 +5,6 @@ import { runTizen } from '@rnv/sdk-tizen';
 
 jest.mock('fs');
 jest.mock('path');
-jest.mock('axios');
 jest.mock('@rnv/core');
 jest.mock('process');
 jest.mock('@rnv/sdk-webpack');

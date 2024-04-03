@@ -1,5 +1,4 @@
 import path from 'path';
-import axios from 'axios';
 import {
     logDefault,
     executeTask,
@@ -12,7 +11,7 @@ import {
     RnvTaskName,
     getContext,
 } from '@rnv/core';
-import { confirmActiveBundler } from '@rnv/sdk-utils';
+import { confirmActiveBundler, axios } from '@rnv/sdk-utils';
 
 let keepRNVRunning = false;
 
