@@ -7,7 +7,7 @@ import { zodConfigFileWorkspace } from './workspace';
 import { zodConfigFileWorkspaces } from './workspaces';
 import { zodConfigFileTemplates } from './templates';
 import { zodConfigFileOverrides } from './overrides';
-import { zodConfigFileIntergation } from './integration';
+import { zodConfigFileIntegration } from './integration';
 import { zodConfigFileEngine } from './engine';
 import { zodConfigFilePlugin } from './plugin';
 import { zodConfigFilePrivate } from './private';
@@ -17,7 +17,7 @@ export const zodConfigFileRoot: AnyZodObject = z.object({
     project: zodConfigFileProject,
     local: zodConfigFileLocal,
     overrides: zodConfigFileOverrides,
-    integration: zodConfigFileIntergation,
+    integration: zodConfigFileIntegration,
     engine: zodConfigFileEngine,
     plugin: zodConfigFilePlugin,
     private: zodConfigFilePrivate,

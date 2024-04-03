@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const zodConfigFileIntergation = z
+export const zodConfigFileIntegration = z
     .object({
         packageName: z.string(),
     })

@@ -22,7 +22,7 @@ import { zodPlatformWebpackFragment } from './platforms/fragments/webpack';
 import { zodPlatformWindowsFragment } from './platforms/fragments/windows';
 import { zodRootAppBaseFragment } from './configFiles/app';
 import { zodConfigFileEngine } from './configFiles/engine';
-import { zodConfigFileIntergation } from './configFiles/integration';
+import { zodConfigFileIntegration } from './configFiles/integration';
 import { zodConfigFileLocal } from './configFiles/local';
 import { zodConfigFileOverrides } from './configFiles/overrides';
 import { zodPluginBaseFragment } from './plugins/fragments/base';
@@ -146,7 +146,7 @@ export type ConfigFileEngine = z.infer<typeof zodConfigFileEngine>;
 // Integration -----------------------
 //
 // renative.integration.json
-export type ConfigFileIntegration = z.infer<typeof zodConfigFileIntergation>;
+export type ConfigFileIntegration = z.infer<typeof zodConfigFileIntegration>;
 
 // Local -----------------------
 //
