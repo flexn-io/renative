@@ -16,7 +16,10 @@ export const handleMutations = async () => {
     const ctx = getContext();
     const mutations = ctx.mutations.pendingMutations;
     if (!mutations.length) return true;
-    logWarning('Updates to package.json are required:');
+    const isTemplate = ctx.buildConfig?.isTemplate;
+    logWarning(
+        `Updates to package.json are required:${isTemplate ? ' (only info. skipping due to template mode)' : ''}`
+    );
     let msg = '';
     mutations.forEach((m) => {
         msg += `- ${chalk().bold(m.name)} (${chalk().red(m.original?.version || 'N/A')}) => (${chalk().green(
@@ -24,9 +27,7 @@ export const handleMutations = async () => {
         )}) ${chalk().gray(`${m.msg} | ${m.source}`)}\n`;
     });
     logRaw(msg);
-    const isTemplate = ctx.buildConfig?.isTemplate;
-
-    if (isTemplate) return true;
+    if (isTemplate) return false;
     //Check with user
     const choices = [
         'Update package and install (recommended)',
