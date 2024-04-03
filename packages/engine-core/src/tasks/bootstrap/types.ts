@@ -28,7 +28,7 @@ export type NewProjectData = {
         appTitle?: string;
         workspaceID?: string;
         packageName?: string;
-        tepmplate?: TemplateOptionValue;
+        template?: TemplateOptionValue;
         supportedPlatforms?: Array<RnvPlatformKey>;
     };
     files: {

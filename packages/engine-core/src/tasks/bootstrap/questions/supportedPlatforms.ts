@@ -53,7 +53,7 @@ const Question = async (data: NewProjectData) => {
 
     if (supportedPlatforms.length === 0) {
         logError(
-            `Template ${inputs.tepmplate?.packageName} does not seem to export any default platforms to support. contact the author.`
+            `Template ${inputs.template?.packageName} does not seem to export any default platforms to support. contact the author.`
         );
     }
 

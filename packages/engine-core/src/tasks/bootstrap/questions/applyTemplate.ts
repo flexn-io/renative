@@ -5,7 +5,7 @@ const Question = async (data: NewProjectData): Promise<void> => {
     const c = getContext();
     const { inputs, files } = data;
 
-    const tplName = inputs.tepmplate?.packageName;
+    const tplName = inputs.template?.packageName;
     if (!tplName) {
         return Promise.reject('Template not selected');
     }

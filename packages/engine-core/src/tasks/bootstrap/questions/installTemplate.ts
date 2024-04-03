@@ -58,10 +58,10 @@ const Question = async (data: NewProjectData) => {
     options.push(noTemplate);
     let localTemplatePath: string | undefined;
 
-    inputs.tepmplate = {};
+    inputs.template = {};
 
     if (checkInputValue(projectTemplate)) {
-        inputs.tepmplate.packageName = projectTemplate;
+        inputs.template.packageName = projectTemplate;
     } else {
         const iRes = await inquirerPrompt({
             name: 'inputTemplate',
@@ -72,7 +72,7 @@ const Question = async (data: NewProjectData) => {
             choices: options,
         });
         const result: TemplateOption['value'] = iRes.inputTemplate;
-        inputs.tepmplate.type = result.type;
+        inputs.template.type = result.type;
 
         if (result.type === 'custom') {
             const { inputTemplateCustom } = await inquirerPrompt({
@@ -80,7 +80,7 @@ const Question = async (data: NewProjectData) => {
                 type: 'input',
                 message: 'NPM package name:',
             });
-            inputs.tepmplate.packageName = inputTemplateCustom;
+            inputs.template.packageName = inputTemplateCustom;
         } else if (result.type === 'local') {
             const { inputTemplateLocal } = await inquirerPrompt({
                 name: 'inputTemplateLocal',
@@ -95,7 +95,7 @@ const Question = async (data: NewProjectData) => {
             if (result.localPath) {
                 localTemplatePath = result.localPath;
             } else {
-                inputs.tepmplate.packageName = result.packageName;
+                inputs.template.packageName = result.packageName;
             }
         }
     }
@@ -117,11 +117,11 @@ const Question = async (data: NewProjectData) => {
             return Promise.reject(`Invalid package ${localTemplatePkgPath} missing name field`);
         }
 
-        inputs.tepmplate.packageName = pkg.name;
-        inputs.tepmplate.version = pkg.version;
-        inputs.tepmplate.localPath = localTemplatePath;
+        inputs.template.packageName = pkg.name;
+        inputs.template.version = pkg.version;
+        inputs.template.localPath = localTemplatePath;
 
-        if (!inputs.tepmplate) return;
+        if (!inputs.template) return;
 
         const nmTemplatePath = path.join(nmDir, pkg?.name);
 
@@ -152,19 +152,19 @@ const Question = async (data: NewProjectData) => {
             }
         });
 
-        if (!inputs.tepmplate.packageName) {
+        if (!inputs.template.packageName) {
             return;
         }
         // NOTE: this is a workaround for npm/yarn bug where manually added packages are overriden on next install
-        const filePath = `file:${RnvFolderName.dotRnv}/${RnvFolderName.npmCache}/${inputs.tepmplate.packageName}`;
+        const filePath = `file:${RnvFolderName.dotRnv}/${RnvFolderName.npmCache}/${inputs.template.packageName}`;
         files.project.packageJson = merge(files.project.packageJson, {
             devDependencies: {
-                [inputs.tepmplate?.packageName]: filePath,
+                [inputs.template?.packageName]: filePath,
             },
         });
         files.project.renativeConfig = merge(files.project.renativeConfig, {
             templates: {
-                [inputs.tepmplate.packageName]: {
+                [inputs.template.packageName]: {
                     version: filePath,
                 },
             },
@@ -175,15 +175,13 @@ const Question = async (data: NewProjectData) => {
         });
     } else {
         if (checkInputValue(templateVersion)) {
-            inputs.tepmplate.version = templateVersion;
+            inputs.template.version = templateVersion;
         } else {
-            inputs.tepmplate.version = await listAndSelectNpmVersion(inputs.tepmplate.packageName || '');
+            inputs.template.version = await listAndSelectNpmVersion(inputs.template.packageName || '');
         }
 
         await executeAsync(
-            `${isYarnInstalled() ? 'yarn' : 'npm'} add ${inputs.tepmplate.packageName}@${
-                inputs.tepmplate.version
-            } --dev`,
+            `${isYarnInstalled() ? 'yarn' : 'npm'} add ${inputs.template.packageName}@${inputs.template.version} --dev`,
             {
                 cwd: c.paths.project.dir,
             }
@@ -191,18 +189,18 @@ const Question = async (data: NewProjectData) => {
         // Check if node_modules folder exists
         if (!fsExistsSync(nmDir)) {
             return Promise.reject(
-                `${isYarnInstalled() ? 'yarn' : 'npm'} add ${inputs.tepmplate.packageName}@${
-                    inputs.tepmplate.version
+                `${isYarnInstalled() ? 'yarn' : 'npm'} add ${inputs.template.packageName}@${
+                    inputs.template.version
                 } : FAILED. this could happen if you have package.json accidentally created somewhere in parent directory`
             );
         }
     }
 
-    if (!inputs.tepmplate.packageName) {
+    if (!inputs.template.packageName) {
         return;
     }
 
-    const templateDir = path.join(c.paths.project.dir, 'node_modules', inputs.tepmplate.packageName);
+    const templateDir = path.join(c.paths.project.dir, 'node_modules', inputs.template.packageName);
 
     const renativeTemplateConfig =
         readObjectSync<ConfigFileTemplate>(path.join(templateDir, RnvFileName.renativeTemplate)) || {};

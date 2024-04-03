@@ -158,7 +158,7 @@ export const telemetryNewProject = async (data: NewProjectData) => {
         const { inputs } = data;
         getApi().analytics.captureEvent({
             type: 'newProject',
-            template: inputs.tepmplate?.packageName,
+            template: inputs.template?.packageName,
             platforms: inputs.supportedPlatforms,
         });
     } catch (e) {
@@ -169,8 +169,8 @@ export const telemetryNewProject = async (data: NewProjectData) => {
 export const generateProjectOverview = (data: NewProjectData) => {
     const { inputs } = data;
 
-    // const addon = inputs.tepmplate?.localPath ? ` ${chalk().gray(inputs.tepmplate?.localPath)}` : '';
-    const tempString = inputs.tepmplate?.localPath || `${inputs.tepmplate?.packageName}@${inputs.tepmplate?.version}`;
+    // const addon = inputs.template?.localPath ? ` ${chalk().gray(inputs.template?.localPath)}` : '';
+    const tempString = inputs.template?.localPath || `${inputs.template?.packageName}@${inputs.template?.version}`;
 
     const highlight = chalk().bold;
 

@@ -6,7 +6,7 @@ const Question = async (data: NewProjectData) => {
 
     const { inputs } = data;
 
-    if (!inputs.tepmplate?.packageName) {
+    if (!inputs.template?.packageName) {
         return Promise.reject('Template not selected');
     }
 
@@ -17,13 +17,13 @@ const Question = async (data: NewProjectData) => {
     const allKeys = Object.keys(projTemplates);
 
     if (
-        (!allKeys.includes(inputs.tepmplate.packageName) || !!inputs.tepmplate.localPath) &&
-        inputs.tepmplate.type !== 'existing'
+        (!allKeys.includes(inputs.template.packageName) || !!inputs.template.localPath) &&
+        inputs.template.type !== 'existing'
     ) {
         const { confirmAddTemplate } = await inquirerPrompt({
             name: 'confirmAddTemplate',
             type: 'confirm',
-            message: `Would you like to add ${chalk().bold(inputs.tepmplate.packageName)} to your ${
+            message: `Would you like to add ${chalk().bold(inputs.template.packageName)} to your ${
                 inputs.workspaceID
             } workspace template list?`,
         });
@@ -31,7 +31,7 @@ const Question = async (data: NewProjectData) => {
         const { templateName } = await inquirerPrompt({
             name: 'templateName',
             type: 'input',
-            default: `${inputs.tepmplate.packageName} (local)`,
+            default: `${inputs.template.packageName} (local)`,
             validate: (v) => !allKeys.includes(v) || 'Name already exists',
             message: 'Add short description',
         });
@@ -42,9 +42,9 @@ const Question = async (data: NewProjectData) => {
                     configFile.projectTemplates = {};
                 }
                 configFile.projectTemplates[templateName] = {
-                    packageName: inputs.tepmplate.packageName,
-                    localPath: inputs.tepmplate.localPath,
-                    description: inputs.tepmplate.description,
+                    packageName: inputs.template.packageName,
+                    localPath: inputs.template.localPath,
+                    description: inputs.template.description,
                 };
                 writeFileSync(c.paths.workspace.config, configFile);
 
