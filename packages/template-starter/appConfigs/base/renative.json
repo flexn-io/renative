@@ -1,7 +1,6 @@
 {
     "$schema": "../../.rnv/schema/rnv.app.json",
     "id": "base",
-    "skipBootstrapCopy": true,
     "hidden": true,
     "common": {
         "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",

@@ -1,8 +1,8 @@
-import { z } from 'zod';
+import { AnyZodObject, z } from 'zod';
 import { zodPlatformsKeys, zodProjectTemplates } from '../shared';
 import { zodPluginSchema } from '../plugins';
 
-export const zodConfigFileTemplates = z
+export const zodConfigFileTemplates: AnyZodObject = z
     .object({
         projectTemplates: zodProjectTemplates,
         engineIdMap: z.record(z.string(), z.string()),

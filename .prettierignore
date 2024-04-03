@@ -5,15 +5,14 @@ node_modules
 .next
 .vscode
 
-appConfigs
+appConfigs/**/*
 platformBuilds
 platformAssets
-renative.local.json
-renative.private.json
 renative.build.json
-renative.runtime.json
-rnv-config.local.json
 metro.config.local.js
+
+!/**/*/renative.json
+!/**/*/rnv.json
 
 coverage
 build

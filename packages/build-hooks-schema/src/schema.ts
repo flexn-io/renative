@@ -18,7 +18,7 @@ export const generateSchema = async () => {
         zodConfigFileEngine,
         zodConfigFileRoot,
     } = ZodFileSchema;
-
+    // LEGACY
     _generateSchemaFile({ schema: zodConfigFileProject, schemaId: 'rnv.project' });
     _generateSchemaFile({ schema: zodConfigFileApp, schemaId: 'rnv.app' });
     _generateSchemaFile({ schema: zodConfigFileLocal, schemaId: 'rnv.local' });
@@ -29,7 +29,8 @@ export const generateSchema = async () => {
     _generateSchemaFile({ schema: zodConfigFilePlugin, schemaId: 'rnv.plugin' });
     _generateSchemaFile({ schema: zodConfigFileTemplates, schemaId: 'rnv.templates' });
     _generateSchemaFile({ schema: zodConfigFileIntergation, schemaId: 'rnv.integration' });
-    _generateSchemaFile({ schema: zodConfigFileRoot, schemaId: 'rnv.root' });
+    // CURRENT
+    _generateSchemaFile({ schema: zodConfigFileRoot, schemaId: 'renative-1.0.schema' });
 
     logSuccess('Sucessfully exported renative.project.json schema');
 };

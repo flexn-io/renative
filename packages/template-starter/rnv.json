@@ -1,0 +1,143 @@
+{
+    "$schema": ".rnv/schema/renative-1.0.schema.json",
+    "project": {
+        "engines": {
+            "@rnv/engine-lightning": "source:rnv",
+            "@rnv/engine-rn": "source:rnv",
+            "@rnv/engine-rn-electron": "source:rnv",
+            "@rnv/engine-rn-next": "source:rnv",
+            "@rnv/engine-rn-tvos": "source:rnv",
+            "@rnv/engine-rn-web": "source:rnv"
+        },
+        "projectName": "@rnv/template-starter",
+        "enableHookRebuild": false,
+        "workspaceID": "rnv",
+        "paths": {
+            "appConfigsDir": "./appConfigs",
+            "platformAssetsDir": "./platformAssets",
+            "platformBuildsDir": "./platformBuilds"
+        },
+        "defaults": {
+            "supportedPlatforms": [
+                "ios",
+                "android",
+                "androidtv",
+                "firetv",
+                "androidwear",
+                "web",
+                "tizen",
+                "tvos",
+                "webos",
+                "macos",
+                "tizenwatch",
+                "kaios",
+                "chromecast",
+                "linux"
+            ],
+            "defaultCommandSchemes": {
+                "run": "debug",
+                "build": "release",
+                "export": "release"
+            },
+            "targets": {}
+        },
+        "templateConfig": {
+            "name": "@rnv/template-starter",
+            "version": "1.0.0-rc.12"
+        },
+        "platforms": {
+            "android": {
+                "minSdkVersion": 26,
+                "targetSdkVersion": 34,
+                "compileSdkVersion": 34,
+                "buildToolsVersion": "34.0.0",
+                "gradleBuildToolsVersion": "4.2.2",
+                "gradleWrapperVersion": "8.3",
+                "ndkVersion": "25.1.8937393",
+                "kotlinVersion": "1.8.0",
+                "reactNativeEngine": "hermes",
+                "enableAndroidX": true,
+                "enableJetifier": true,
+                "templateAndroid": {
+                    "gradle_properties": {
+                        "android.useDeprecatedNdk": true,
+                        "android.debug.obsoleteApi": true,
+                        "org.gradle.jvmargs": "-Xmx3g -XX:MaxPermSize=2048m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8",
+                        "org.gradle.daemon": true,
+                        "org.gradle.parallel": true,
+                        "org.gradle.configureondemand": true
+                    },
+                    "MainActivity_kt": {
+                        "onCreate": "super.onCreate(null)"
+                    }
+                }
+            },
+            "androidtv": {
+                "extendPlatform": "android",
+                "engine": "engine-rn-tvos"
+            },
+            "androidwear": {
+                "extendPlatform": "android"
+            },
+            "firetv": {
+                "minSdkVersion": 21,
+                "extendPlatform": "android",
+                "engine": "engine-rn-tvos",
+                "includedPermissions": ["INTERNET"]
+            },
+            "web": {
+                "engine": "engine-rn-next"
+            },
+            "tvos": {
+                "engine": "engine-rn-tvos",
+                "schemeTarget": "RNVApp-tvOS",
+                "deploymentTarget": "14.0",
+                "reactNativeEngine": "hermes"
+            },
+            "macos": {
+                "engine": "engine-rn-electron"
+            },
+            "windows": {
+                "engine": "engine-rn-electron"
+            },
+            "ios": {
+                "engine": "engine-rn",
+                "deploymentTarget": "14.0",
+                "reactNativeEngine": "hermes"
+            }
+        },
+        "plugins": {
+            "@rnv/renative": "source:rnv",
+            "react": "source:rnv",
+            "react-art": "source:rnv",
+            "react-dom": "source:rnv",
+            "react-native-gesture-handler": "source:rnv",
+            "@react-native-community/cli-platform-ios": {
+                "supportedPlatforms": ["tvos", "ios"]
+            },
+            "react-native": "source:rnv",
+            "next": {
+                "supportedPlatforms": ["web"]
+            },
+            "react-native-web": {
+                "supportedPlatforms": ["web", "tizen", "webos", "macos"]
+            },
+            "react-native-tvos": {
+                "supportedPlatforms": ["tvos", "firetv", "androidtv"]
+            }
+        },
+        "permissions": {
+            "ios": {},
+            "android": {
+                "INTERNET": {
+                    "key": "android.permission.INTERNET",
+                    "security": "normal"
+                },
+                "SYSTEM_ALERT_WINDOW": {
+                    "key": "android.permission.SYSTEM_ALERT_WINDOW",
+                    "security": "signature"
+                }
+            }
+        }
+    }
+}

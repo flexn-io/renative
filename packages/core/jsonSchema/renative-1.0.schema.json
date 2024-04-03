@@ -1,5 +1,5 @@
 {
-  "$ref": "#/definitions/rnv.root",
+  "$ref": "#/definitions/renative-1.0.schema",
   "definitions": {
     "zodRuntime": {
       "description": "This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code"
@@ -3291,7 +3291,7 @@
       },
       "additionalProperties": false
     },
-    "rnv.root": {
+    "renative-1.0.schema": {
       "type": "object",
       "properties": {
         "app": {
@@ -3793,13 +3793,13 @@
                   }
                 },
                 "devDependencies": {
-                  "$ref": "#/definitions/rnv.root/properties/engine/properties/npm/properties/dependencies"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/engine/properties/npm/properties/dependencies"
                 },
                 "peerDependencies": {
-                  "$ref": "#/definitions/rnv.root/properties/engine/properties/npm/properties/dependencies"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/engine/properties/npm/properties/dependencies"
                 },
                 "optionalDependencies": {
-                  "$ref": "#/definitions/rnv.root/properties/engine/properties/npm/properties/dependencies"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/engine/properties/npm/properties/dependencies"
                 }
               },
               "additionalProperties": false,
@@ -3814,7 +3814,7 @@
                     "type": "string"
                   },
                   "npm": {
-                    "$ref": "#/definitions/rnv.root/properties/engine/properties/npm"
+                    "$ref": "#/definitions/renative-1.0.schema/properties/engine/properties/npm"
                   }
                 },
                 "additionalProperties": false
@@ -3993,53 +3993,53 @@
                   "additionalProperties": false
                 },
                 "androidtv": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/android"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/android"
                 },
                 "androidwear": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/android"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/android"
                 },
                 "firetv": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/android"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/android"
                 },
                 "ios": {},
                 "tvos": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/ios"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/ios"
                 },
                 "tizen": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/ios"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/ios"
                 },
                 "tizenmobile": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/ios"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/ios"
                 },
                 "tizenwatch": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/ios"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/ios"
                 },
                 "webos": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/ios"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/ios"
                 },
                 "web": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/ios"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/ios"
                 },
                 "webtv": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/ios"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/ios"
                 },
                 "chromecast": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/ios"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/ios"
                 },
                 "kaios": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/ios"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/ios"
                 },
                 "macos": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/ios"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/ios"
                 },
                 "linux": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/ios"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/ios"
                 },
                 "windows": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/ios"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/ios"
                 },
                 "xbox": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/ios"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/ios"
                 }
               },
               "additionalProperties": false
