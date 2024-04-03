@@ -453,7 +453,7 @@ const getLogCounter = (task: string, skipAddition = false) => {
         TASK_COUNTER[task] += 1;
     }
 
-    const taskCount = currentChalk.grey(`(${TASK_COUNTER[task]}x)`);
+    const taskCount = currentChalk.grey(`↺${TASK_COUNTER[task]}`);
     return taskCount;
 };
 

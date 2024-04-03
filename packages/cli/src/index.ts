@@ -19,7 +19,10 @@ import {
     getConfigProp,
     doResolve,
     exitRnvCore,
+    registerRnvTasks,
+    generateRnvTaskMap,
 } from '@rnv/core';
+import TelemetrySDK from '@rnv/sdk-telemetry';
 import { Telemetry } from '@rnv/sdk-telemetry';
 import EngineCore from '@rnv/engine-core';
 
@@ -136,7 +139,8 @@ export const executeRnv = async ({
     loadWorkspacesConfigSync();
 
     Telemetry.initialize();
-
+    // Example of how to register set of tasks manually
+    registerRnvTasks(generateRnvTaskMap(TelemetrySDK.tasks, { packageName: '@rnv/sdk-telemetry' }));
     await registerEngine(EngineCore);
 
     await executeRnvCore();

@@ -32,9 +32,7 @@ import taskRvnKill from './tasks/global/taskKill';
 import taskRvnDoctor from './tasks/global/taskDoctor';
 import taskLink from './tasks/linking/taskLink';
 import taskUnlink from './tasks/linking/taskUnlink';
-import taskTelemetryStatus from './tasks/telemetry/taskTelemetryStatus';
-import taskTelemetryEnable from './tasks/telemetry/taskTelemetryEnable';
-import taskTelemetryDisable from './tasks/telemetry/taskTelemetryDisable';
+
 import taskSwitch from './tasks/app/taskAppSwitch';
 
 const Config: ConfigFileEngine = {
@@ -81,9 +79,6 @@ const Engine = createRnvEngine({
         taskRvnDoctor,
         taskLink,
         taskUnlink,
-        taskTelemetryStatus,
-        taskTelemetryEnable,
-        taskTelemetryDisable,
         taskSwitch,
     ],
     config: Config,
