@@ -1,23 +1,24 @@
-import {
-    zodConfigFilePlugin,
-    zodConfigFilePrivate,
-    zodConfigFileProject,
-    zodConfigFileTemplate,
-    zodConfigFileTemplates,
-    zodConfigFileWorkspace,
-    getContext,
-    logSuccess,
-    zodConfigFileIntergation,
-    zodConfigFileApp,
-    zodConfigFileLocal,
-    zodConfigFileEngine,
-} from '@rnv/core';
+import { ZodFileSchema, ZodSharedSchema, getContext, logSuccess } from '@rnv/core';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { z } from 'zod';
 import path from 'path';
 import fs from 'fs';
 
 export const generateSchema = async () => {
+    const {
+        zodConfigFilePlugin,
+        zodConfigFilePrivate,
+        zodConfigFileProject,
+        zodConfigFileTemplate,
+        zodConfigFileTemplates,
+        zodConfigFileWorkspace,
+        zodConfigFileIntergation,
+        zodConfigFileApp,
+        zodConfigFileLocal,
+        zodConfigFileEngine,
+        zodConfigFileRoot,
+    } = ZodFileSchema;
+
     _generateSchemaFile({ schema: zodConfigFileProject, schemaId: 'rnv.project' });
     _generateSchemaFile({ schema: zodConfigFileApp, schemaId: 'rnv.app' });
     _generateSchemaFile({ schema: zodConfigFileLocal, schemaId: 'rnv.local' });
@@ -28,6 +29,7 @@ export const generateSchema = async () => {
     _generateSchemaFile({ schema: zodConfigFilePlugin, schemaId: 'rnv.plugin' });
     _generateSchemaFile({ schema: zodConfigFileTemplates, schemaId: 'rnv.templates' });
     _generateSchemaFile({ schema: zodConfigFileIntergation, schemaId: 'rnv.integration' });
+    _generateSchemaFile({ schema: zodConfigFileRoot, schemaId: 'rnv.root' });
 
     logSuccess('Sucessfully exported renative.project.json schema');
 };
@@ -35,7 +37,12 @@ export const generateSchema = async () => {
 const _generateSchemaFile = (opts: { schema: z.ZodObject<any>; schemaId: string }) => {
     const { schema, schemaId } = opts;
     const ctx = getContext();
-    const jsonSchema: any = zodToJsonSchema(schema, schemaId);
+    const jsonSchema: any = zodToJsonSchema(schema, {
+        name: schemaId,
+        definitions: {
+            ...ZodSharedSchema,
+        },
+    });
     jsonSchema['$schema'] = 'http://json-schema.org/draft-04/schema#';
 
     jsonSchema.definitions[schemaId].properties['$schema'] = {
