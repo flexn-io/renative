@@ -15,7 +15,6 @@ import taskConfigure from './tasks/taskConfigure';
 import taskRun from './tasks/taskRun';
 import taskBuild from './tasks/taskBuild';
 import { GetContextType, createRnvSDK } from '@rnv/core';
-// import { bookla } from './runner2';
 
 export const Tasks = [
     taskTargetLaunch,

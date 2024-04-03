@@ -5,3 +5,7 @@ export const createTask = <OKey extends string>(task: CreateRnvTaskOpt<OKey>) =>
 
     return response;
 };
+
+export const createTaskOptionsMap = () => {
+    // TODO
+};

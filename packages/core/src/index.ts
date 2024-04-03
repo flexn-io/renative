@@ -32,7 +32,7 @@ export * from './tasks/taskExecutors';
 export * from './tasks/taskHelpers';
 export * from './tasks/taskRegistry';
 export * from './tasks/constants';
-export * from './tasks/taskCreator';
+export * from './tasks/creators';
 
 export * from './schema/defaults';
 export * from './schema/schemaManager';
