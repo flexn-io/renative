@@ -146,7 +146,7 @@
             "version": "0.2.4"
         },
         "@lightningjs/cli": {
-            "version": "2.11.0"
+            "version": "2.13.0"
         },
         "@lightningjs/core": {
             "version": "2.12.1"
