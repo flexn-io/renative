@@ -60,3 +60,11 @@ public/
 reporting
 
 .bundle/
+
+dist
+releases
+.tmp
+build
+
+platformBuilds/harness_tizen
+platformBuilds/harness_tizen
