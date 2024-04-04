@@ -42,7 +42,7 @@
     },
     "templateConfig": {
         "name": "@rnv/template-starter",
-        "version": "1.0.0-rc.12"
+        "version": "1.0.0-rc.13"
     },
     "platforms": {
         "android": {

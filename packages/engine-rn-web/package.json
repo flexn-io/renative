@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-web",
-    "version": "1.0.0-rc.12",
+    "version": "1.0.0-rc.13",
     "description": "ReNative Engine to build web based platforms with react native support.",
     "keywords": [
         "react-native"
@@ -33,16 +33,16 @@
     },
     "dependencies": {
         "@react-native/babel-preset": "0.73.21",
-        "@rnv/adapter": "1.0.0-rc.12",
-        "@rnv/sdk-kaios": "1.0.0-rc.12",
-        "@rnv/sdk-tizen": "1.0.0-rc.12",
-        "@rnv/sdk-utils": "1.0.0-rc.12",
-        "@rnv/sdk-webos": "1.0.0-rc.12",
-        "@rnv/sdk-webpack": "1.0.0-rc.12",
+        "@rnv/adapter": "1.0.0-rc.13",
+        "@rnv/sdk-kaios": "1.0.0-rc.13",
+        "@rnv/sdk-tizen": "1.0.0-rc.13",
+        "@rnv/sdk-utils": "1.0.0-rc.13",
+        "@rnv/sdk-webos": "1.0.0-rc.13",
+        "@rnv/sdk-webpack": "1.0.0-rc.13",
         "metro-react-native-babel-preset": "0.76.8"
     },
     "peerDependencies": {
-        "@rnv/core": "^1.0.0-rc.12"
+        "@rnv/core": "^1.0.0-rc.13"
     },
     "private": false,
     "publishConfig": {

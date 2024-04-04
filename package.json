@@ -1,6 +1,6 @@
 {
     "name": "@flexn/renative-monorepo",
-    "version": "1.0.0-rc.12",
+    "version": "1.0.0-rc.13",
     "description": "🚀🚀🚀 Unified Development Platform. Bootstrap, Develop & Deploy `iOS`, `tvOS`, `Android`, `Android TV`, `Fire TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `Linux` and `Chromecast` platforms",
     "keywords": [
         "android tv",
@@ -68,7 +68,7 @@
         "link:rnv": "npm r rnv -g && cd packages/rnv && npm link",
         "lint": "npx eslint ./packages",
         "postinstall": "npx lerna link --force-local && npx jetify",
-        "pre-publish": "yarn build && yarn lint && yarn test && rnv hooks run -x prePublish -r && rnv hooks run -x gitCommitAndTag",
+        "pre-publish": "yarn build && yarn link:rnv && yarn lint && yarn test && rnv hooks run -x prePublish && rnv hooks run -x gitCommitAndTag",
         "prettier-write-all": "npx prettier '**/*.{js,jsx,ts,tsx,mjs,cjs,json,md}' --write --config .prettierrc.js",
         "prettier-write-json": "npx prettier '**/{package.json,renative.plugins.json,renative.json}' --write --config .prettierrc.js",
         "report-circular": "npx madge --circular --extensions ts --exclude '\\.(d.ts)$' ./packages",
@@ -84,8 +84,8 @@
         "@flexn/eslint-config": "1.0.0",
         "@flexn/prettier-config": "1.0.0",
         "@flexn/typescript-config": "1.0.0",
-        "@rnv/build-hooks-git": "1.0.0-rc.12",
-        "@rnv/core": "1.0.0-rc.12",
+        "@rnv/build-hooks-git": "1.0.0-rc.13",
+        "@rnv/core": "1.0.0-rc.13",
         "@types/jest": "^29.5.12",
         "@types/kill-port": "2.0.0",
         "@types/lodash.get": "4.4.7",
