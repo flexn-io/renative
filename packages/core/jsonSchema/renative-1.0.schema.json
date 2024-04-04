@@ -166,7 +166,8 @@
             },
             "version": {
               "type": "string"
-            }
+            },
+            "browserslist": {}
           },
           "additionalProperties": false
         }
@@ -1053,67 +1054,40 @@
                           "type": "object",
                           "properties": {
                             "didFinishLaunchingWithOptions": {
-                              "type": "array",
-                              "items": {
-                                "anyOf": [
-                                  {
-                                    "type": "string"
-                                  },
-                                  {
-                                    "type": "object",
-                                    "properties": {
-                                      "order": {
-                                        "type": "number"
-                                      },
-                                      "value": {
-                                        "type": "string"
-                                      },
-                                      "weight": {
-                                        "type": "number"
-                                      }
-                                    },
-                                    "required": [
-                                      "order",
-                                      "value",
-                                      "weight"
-                                    ],
-                                    "additionalProperties": false
-                                  }
-                                ]
-                              }
+                              "$ref": "#/definitions/zodAppDelegateMethod"
                             },
                             "applicationDidBecomeActive": {
-                              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
+                              "$ref": "#/definitions/zodAppDelegateMethod"
                             },
                             "open": {
-                              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
+                              "$ref": "#/definitions/zodAppDelegateMethod"
                             },
                             "supportedInterfaceOrientationsFor": {
-                              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
+                              "$ref": "#/definitions/zodAppDelegateMethod"
                             },
                             "didReceiveRemoteNotification": {
-                              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
+                              "$ref": "#/definitions/zodAppDelegateMethod"
                             },
                             "didFailToRegisterForRemoteNotificationsWithError": {
-                              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
+                              "$ref": "#/definitions/zodAppDelegateMethod"
                             },
                             "didReceive": {
-                              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
+                              "$ref": "#/definitions/zodAppDelegateMethod"
                             },
                             "didRegister": {
-                              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
+                              "$ref": "#/definitions/zodAppDelegateMethod"
                             },
                             "didRegisterForRemoteNotificationsWithDeviceToken": {
-                              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
+                              "$ref": "#/definitions/zodAppDelegateMethod"
                             },
                             "continue": {
-                              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
+                              "$ref": "#/definitions/zodAppDelegateMethod"
                             },
                             "didConnectCarInterfaceController": {
-                              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
+                              "$ref": "#/definitions/zodAppDelegateMethod"
                             },
                             "didDisconnectCarInterfaceController": {
-                              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
+                              "$ref": "#/definitions/zodAppDelegateMethod"
                             }
                           },
                           "additionalProperties": false
@@ -1122,10 +1096,10 @@
                           "type": "object",
                           "properties": {
                             "willPresent": {
-                              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
+                              "$ref": "#/definitions/zodAppDelegateMethod"
                             },
                             "didReceiveNotificationResponse": {
-                              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
+                              "$ref": "#/definitions/zodAppDelegateMethod"
                             }
                           },
                           "additionalProperties": false
@@ -1259,26 +1233,6 @@
           "$ref": "#/definitions/zodPluginPlatformBaseFragment"
         }
       },
-      "required": [
-        "android",
-        "androidtv",
-        "androidwear",
-        "firetv",
-        "ios",
-        "tvos",
-        "tizen",
-        "tizenmobile",
-        "tizenwatch",
-        "webos",
-        "web",
-        "webtv",
-        "chromecast",
-        "kaios",
-        "macos",
-        "linux",
-        "windows",
-        "xbox"
-      ],
       "additionalProperties": false
     },
     "zodPluginsSchema": {
@@ -4360,6 +4314,36 @@
       "additionalProperties": false,
       "description": "Allows more advanced modifications to Android based project template"
     },
+    "zodAppDelegateMethod": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "order": {
+                "type": "number"
+              },
+              "value": {
+                "type": "string"
+              },
+              "weight": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "order",
+              "value",
+              "weight"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
     "zodTemplateXcodeFragment": {
       "type": "object",
       "properties": {
@@ -5002,55 +4986,55 @@
               "$ref": "#/definitions/zodPluginSchema/properties/android"
             },
             "androidtv": {
-              "$ref": "#/definitions/zodPluginSchema/properties/android"
+              "$ref": "#/definitions/zodPluginSchema/properties/androidtv"
             },
             "androidwear": {
-              "$ref": "#/definitions/zodPluginSchema/properties/android"
+              "$ref": "#/definitions/zodPluginSchema/properties/androidwear"
             },
             "firetv": {
-              "$ref": "#/definitions/zodPluginSchema/properties/android"
+              "$ref": "#/definitions/zodPluginSchema/properties/firetv"
             },
             "ios": {
               "$ref": "#/definitions/zodPluginSchema/properties/ios"
             },
             "tvos": {
-              "$ref": "#/definitions/zodPluginSchema/properties/ios"
+              "$ref": "#/definitions/zodPluginSchema/properties/tvos"
             },
             "tizen": {
-              "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+              "$ref": "#/definitions/zodPluginSchema/properties/tizen"
             },
             "tizenmobile": {
-              "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+              "$ref": "#/definitions/zodPluginSchema/properties/tizenmobile"
             },
             "tizenwatch": {
-              "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+              "$ref": "#/definitions/zodPluginSchema/properties/tizenwatch"
             },
             "webos": {
-              "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+              "$ref": "#/definitions/zodPluginSchema/properties/webos"
             },
             "web": {
-              "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+              "$ref": "#/definitions/zodPluginSchema/properties/web"
             },
             "webtv": {
-              "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+              "$ref": "#/definitions/zodPluginSchema/properties/webtv"
             },
             "chromecast": {
-              "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+              "$ref": "#/definitions/zodPluginSchema/properties/chromecast"
             },
             "kaios": {
-              "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+              "$ref": "#/definitions/zodPluginSchema/properties/kaios"
             },
             "macos": {
-              "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+              "$ref": "#/definitions/zodPluginSchema/properties/macos"
             },
             "linux": {
-              "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+              "$ref": "#/definitions/zodPluginSchema/properties/linux"
             },
             "windows": {
-              "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+              "$ref": "#/definitions/zodPluginSchema/properties/windows"
             },
             "xbox": {
-              "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+              "$ref": "#/definitions/zodPluginSchema/properties/xbox"
             },
             "custom": {
               "$ref": "#/definitions/zodExt"

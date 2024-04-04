@@ -20,16 +20,41 @@
                 ]
             },
             {
-                "paths": ["Gemfile", "metro.config.js", ".bundle", "react-native.config.js"],
-                "platforms": ["ios", "android", "tvos", "firetv", "androidtv"]
+                "paths": [
+                    "Gemfile",
+                    "metro.config.js",
+                    ".bundle",
+                    "react-native.config.js"
+                ],
+                "platforms": [
+                    "ios",
+                    "android",
+                    "tvos",
+                    "firetv",
+                    "androidtv"
+                ]
             },
             {
-                "paths": ["next.config.js", "next-env.d.ts", "src/pages"],
-                "platforms": ["web"]
+                "paths": [
+                    "next.config.js",
+                    "next-env.d.ts",
+                    "src/pages"
+                ],
+                "platforms": [
+                    "web"
+                ]
             },
             {
-                "paths": ["webpack.config.js"],
-                "platforms": ["macos", "tizen", "webos", "tizenwatch", "tizenmobile"]
+                "paths": [
+                    "webpack.config.js"
+                ],
+                "platforms": [
+                    "macos",
+                    "tizen",
+                    "webos",
+                    "tizenwatch",
+                    "tizenmobile"
+                ]
             }
         ],
         "renative_json": {
@@ -50,8 +75,16 @@
                 "@rnv/config-templates": "1.0.0-rc.12"
             },
             "browserslist": {
-                "production": [">0.2%", "not dead", "not op_mini all"],
-                "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
+                "production": [
+                    ">0.2%",
+                    "not dead",
+                    "not op_mini all"
+                ],
+                "development": [
+                    "last 1 chrome version",
+                    "last 1 firefox version",
+                    "last 1 safari version"
+                ]
             }
         }
     },
@@ -60,6 +93,10 @@
             "pkg-dir": "7.0.0",
             "xmlbuilder": "^15.1.1"
         },
-        "defaultSelectedPlatforms": ["web", "ios", "android"]
+        "defaultSelectedPlatforms": [
+            "web",
+            "ios",
+            "android"
+        ]
     }
 }

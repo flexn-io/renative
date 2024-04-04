@@ -110,7 +110,8 @@
                 },
                 "version": {
                   "type": "string"
-                }
+                },
+                "browserslist": {}
               },
               "additionalProperties": false
             }

@@ -20,6 +20,70 @@ type RnvConfig = {
     };
     // reantive.project.json
     project: {
+        useTemplates: {
+            '@rnv/template-configs': '1.1.2';
+            '@rnv/template-starter': '12.0.4';
+        };
+        projectName: string;
+        engines: {};
+        extendsConfig: string;
+        supportedPlatforms: [];
+        platforms: {
+            android: {
+                buildSchemes: {};
+            };
+        };
+        plugins: {
+            'plugin-a': {};
+        };
+    };
+    // reantive.template.json
+    templateProject: {
+        bootstrapConfig: {};
+    };
+    templateEngines: {
+        engines: {};
+    };
+    templateIntegrations: {
+        integrations: {};
+    };
+    templateProjects: {
+        projects: {};
+    };
+    templatePlugins: {
+        plugins: {};
+    };
+    // reantive.workspace.json
+    workspace: {};
+    // reantive.engine.json
+    engine: {};
+    // reantive.integration.json
+    integration: {};
+    // reantive.solution.json
+    solution: {};
+    // reantive.local.json
+    local: {};
+    // reantive.private.json
+    private: {};
+    // renative.runtime.json
+    runtime: {};
+    // reantive.templates.json
+    // configTemplates: {
+    //     plugins: {};
+    //     templates: {};
+    //     integrations: {};
+    // };
+};
+
+type RnvConfig = {
+    // reantive.app.json
+    app: {
+        id: string;
+        appConfigID: string;
+        common: {};
+    };
+    // reantive.project.json
+    project: {
         projectName: string;
         engines: {};
         extendsConfig: string;

@@ -63,14 +63,17 @@ export const zodTemplateConfigFragment = z
 
             .optional(),
         package_json: z.optional(
-            z.object({
-                dependencies: z.optional(zodNpmDep),
-                devDependencies: z.optional(zodNpmDep),
-                peerDependencies: z.optional(zodNpmDep),
-                optionalDependencies: z.optional(zodNpmDep),
-                name: z.string().optional(),
-                version: z.string().optional(),
-            })
+            z
+                .object({
+                    dependencies: zodNpmDep,
+                    devDependencies: zodNpmDep,
+                    peerDependencies: zodNpmDep,
+                    optionalDependencies: zodNpmDep,
+                    name: z.string(),
+                    version: z.string(),
+                    browserslist: z.any(),
+                })
+                .partial()
         ),
     })
     .describe('Used in `renative.template.json` allows you to define template behaviour.');

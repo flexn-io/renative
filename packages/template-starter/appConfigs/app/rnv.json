@@ -4,11 +4,5 @@
         "extendsTemplate": "@rnv/template-starter/appConfigs/base/rnv.json",
         "id": "app"
     },
-    "project": {
-        "common": {
-            "runtime": {
-                "welcomeMessage": "Hello ReNative!"
-            }
-        }
-    }
+    "project": {}
 }

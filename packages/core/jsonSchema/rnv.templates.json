@@ -959,26 +959,6 @@
                 "$ref": "#/definitions/rnv.templates/properties/pluginTemplates/additionalProperties/properties/tizen"
               }
             },
-            "required": [
-              "android",
-              "androidtv",
-              "androidwear",
-              "firetv",
-              "ios",
-              "tvos",
-              "tizen",
-              "tizenmobile",
-              "tizenwatch",
-              "webos",
-              "web",
-              "webtv",
-              "chromecast",
-              "kaios",
-              "macos",
-              "linux",
-              "windows",
-              "xbox"
-            ],
             "additionalProperties": false
           },
           "description": "Define all plugins available to be merged with project plugins"

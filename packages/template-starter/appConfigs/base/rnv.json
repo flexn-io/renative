@@ -4,11 +4,5 @@
         "id": "base",
         "hidden": true
     },
-    "project": {
-        "common": {
-            "runtime": {
-                "welcomeMessage": "Hello ReNative!"
-            }
-        }
-    }
+    "project": {}
 }

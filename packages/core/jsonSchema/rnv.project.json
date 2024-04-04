@@ -4031,26 +4031,6 @@
                         "$ref": "#/definitions/rnv.project/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/tizen"
                       }
                     },
-                    "required": [
-                      "android",
-                      "androidtv",
-                      "androidwear",
-                      "firetv",
-                      "ios",
-                      "tvos",
-                      "tizen",
-                      "tizenmobile",
-                      "tizenwatch",
-                      "webos",
-                      "web",
-                      "webtv",
-                      "chromecast",
-                      "kaios",
-                      "macos",
-                      "linux",
-                      "windows",
-                      "xbox"
-                    ],
                     "additionalProperties": false
                   },
                   {
@@ -4148,7 +4128,8 @@
                 },
                 "version": {
                   "type": "string"
-                }
+                },
+                "browserslist": {}
               },
               "additionalProperties": false
             }
