@@ -82,7 +82,6 @@ renative.build.json
 renative.runtime.json
 rnv.private.json
 rnv.local.json
-rnv.local.json
 rnv.build.json
 rnv.runtime.json
 metro.config.local.js
