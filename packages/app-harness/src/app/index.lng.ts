@@ -1,11 +1,19 @@
-import Lightning from "@lightningjs/core";
+import { Router, Utils } from '@lightningjs/sdk';
+import HomeScreen from '../components/HomeScreen/index.lng';
+export default class App extends Router.App {
+    static getFonts() {
+        return [{ family: 'Inter-Light', url: Utils.asset('fonts/Inter-Light.ttf') }];
+    }
 
-export default class App extends Lightning.Component {
-    static _template() {
-        return {
-            RoundedRectangle: {
-                texture: Lightning.Tools.getRoundRect(100, 10, 4),
-            },
-        };
+    _setup() {
+        Router.startRouter({
+            root: 'home',
+            routes: [
+                {
+                    path: 'home',
+                    component: HomeScreen as any,
+                },
+            ],
+        });
     }
 }
