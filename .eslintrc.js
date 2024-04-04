@@ -3,4 +3,7 @@ module.exports = {
     settings: {
         'import/core-modules': ['@flexn/eslint-config'],
     },
+    rules: {
+        '@typescript-eslint/no-empty-interface': 'warn',
+    },
 };

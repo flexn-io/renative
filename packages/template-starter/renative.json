@@ -1,5 +1,4 @@
 {
-    "$schema": ".rnv/schema/rnv.project.json",
     "engines": {
         "@rnv/engine-lightning": "source:rnv",
         "@rnv/engine-rn": "source:rnv",
@@ -8,6 +7,7 @@
         "@rnv/engine-rn-tvos": "source:rnv",
         "@rnv/engine-rn-web": "source:rnv"
     },
+    "$schema": ".rnv/schema/rnv.project.json",
     "projectName": "@rnv/template-starter",
     "enableHookRebuild": false,
     "workspaceID": "rnv",
@@ -82,7 +82,9 @@
             "minSdkVersion": 21,
             "extendPlatform": "android",
             "engine": "engine-rn-tvos",
-            "includedPermissions": ["INTERNET"]
+            "includedPermissions": [
+                "INTERNET"
+            ]
         },
         "web": {
             "engine": "engine-rn-next"
@@ -112,17 +114,31 @@
         "react-dom": "source:rnv",
         "react-native-gesture-handler": "source:rnv",
         "@react-native-community/cli-platform-ios": {
-            "supportedPlatforms": ["tvos", "ios"]
+            "supportedPlatforms": [
+                "tvos",
+                "ios"
+            ]
         },
         "react-native": "source:rnv",
         "next": {
-            "supportedPlatforms": ["web"]
+            "supportedPlatforms": [
+                "web"
+            ]
         },
         "react-native-web": {
-            "supportedPlatforms": ["web", "tizen", "webos", "macos"]
+            "supportedPlatforms": [
+                "web",
+                "tizen",
+                "webos",
+                "macos"
+            ]
         },
         "react-native-tvos": {
-            "supportedPlatforms": ["tvos", "firetv", "androidtv"]
+            "supportedPlatforms": [
+                "tvos",
+                "firetv",
+                "androidtv"
+            ]
         }
     },
     "permissions": {

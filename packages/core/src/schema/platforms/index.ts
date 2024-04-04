@@ -16,7 +16,10 @@ import { zodTemplateXcodeFragment } from './fragments/templateXcode';
 
 const createPlatformSchema = (obj: AnyZodObject): AnyZodObject => {
     const zodPlatformSchema = zodCommonSchemaFragment.merge(zodPlatformBaseFragment).merge(obj);
-    return z.object({ buildSchemes: z.record(z.string(), zodPlatformSchema) });
+    return z
+        .object({ buildSchemes: z.record(z.string(), zodPlatformSchema) })
+        .merge(zodPlatformSchema)
+        .partial();
 };
 
 const androidSchema = createPlatformSchema(
@@ -70,4 +73,5 @@ export const zodPlatformsSchema: AnyZodObject = z
         windows: windowsSchema,
         xbox: windowsSchema,
     })
+    .partial()
     .describe('Object containing platform configurations');

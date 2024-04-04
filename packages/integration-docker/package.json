@@ -1,6 +1,6 @@
 {
     "name": "@rnv/integration-docker",
-    "version": "0.1.0-alpha.1",
+    "version": "1.0.0-rc.12",
     "description": "Gives RNV the possibility to deploy web apps as a Docker image published to dockerhub",
     "keywords": [
         "docker",

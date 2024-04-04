@@ -1,5 +1,5 @@
 {
-  "$ref": "#/definitions/rnv.root",
+  "$ref": "#/definitions/renative-1.0.schema",
   "definitions": {
     "zodRuntime": {
       "description": "This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code"
@@ -166,7 +166,8 @@
             },
             "version": {
               "type": "string"
-            }
+            },
+            "browserslist": {}
           },
           "additionalProperties": false
         }
@@ -1053,76 +1054,40 @@
                           "type": "object",
                           "properties": {
                             "didFinishLaunchingWithOptions": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/zodAppDelegateMethod"
-                              }
+                              "$ref": "#/definitions/zodAppDelegateMethod"
                             },
                             "applicationDidBecomeActive": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/zodAppDelegateMethod"
-                              }
+                              "$ref": "#/definitions/zodAppDelegateMethod"
                             },
                             "open": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/zodAppDelegateMethod"
-                              }
+                              "$ref": "#/definitions/zodAppDelegateMethod"
                             },
                             "supportedInterfaceOrientationsFor": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/zodAppDelegateMethod"
-                              }
+                              "$ref": "#/definitions/zodAppDelegateMethod"
                             },
                             "didReceiveRemoteNotification": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/zodAppDelegateMethod"
-                              }
+                              "$ref": "#/definitions/zodAppDelegateMethod"
                             },
                             "didFailToRegisterForRemoteNotificationsWithError": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/zodAppDelegateMethod"
-                              }
+                              "$ref": "#/definitions/zodAppDelegateMethod"
                             },
                             "didReceive": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/zodAppDelegateMethod"
-                              }
+                              "$ref": "#/definitions/zodAppDelegateMethod"
                             },
                             "didRegister": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/zodAppDelegateMethod"
-                              }
+                              "$ref": "#/definitions/zodAppDelegateMethod"
                             },
                             "didRegisterForRemoteNotificationsWithDeviceToken": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/zodAppDelegateMethod"
-                              }
+                              "$ref": "#/definitions/zodAppDelegateMethod"
                             },
                             "continue": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/zodAppDelegateMethod"
-                              }
+                              "$ref": "#/definitions/zodAppDelegateMethod"
                             },
                             "didConnectCarInterfaceController": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/zodAppDelegateMethod"
-                              }
+                              "$ref": "#/definitions/zodAppDelegateMethod"
                             },
                             "didDisconnectCarInterfaceController": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/zodAppDelegateMethod"
-                              }
+                              "$ref": "#/definitions/zodAppDelegateMethod"
                             }
                           },
                           "additionalProperties": false
@@ -1131,16 +1096,10 @@
                           "type": "object",
                           "properties": {
                             "willPresent": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/zodAppDelegateMethod"
-                              }
+                              "$ref": "#/definitions/zodAppDelegateMethod"
                             },
                             "didReceiveNotificationResponse": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/zodAppDelegateMethod"
-                              }
+                              "$ref": "#/definitions/zodAppDelegateMethod"
                             }
                           },
                           "additionalProperties": false
@@ -1274,26 +1233,6 @@
           "$ref": "#/definitions/zodPluginPlatformBaseFragment"
         }
       },
-      "required": [
-        "android",
-        "androidtv",
-        "androidwear",
-        "firetv",
-        "ios",
-        "tvos",
-        "tizen",
-        "tizenmobile",
-        "tizenwatch",
-        "webos",
-        "web",
-        "webtv",
-        "chromecast",
-        "kaios",
-        "macos",
-        "linux",
-        "windows",
-        "xbox"
-      ],
       "additionalProperties": false
     },
     "zodPluginsSchema": {
@@ -1678,11 +1617,224 @@
                 },
                 "additionalProperties": false
               }
+            },
+            "includedPermissions": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/includedPermissions",
+              "description": "Allows you to include specific permissions by their KEY defined in `permissions` object. Use: `['*']` to include all"
+            },
+            "excludedPermissions": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/excludedPermissions",
+              "description": "Allows you to exclude specific permissions by their KEY defined in `permissions` object. Use: `['*']` to exclude all"
+            },
+            "id": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/id",
+              "description": "Bundle ID of application. ie: com.example.myapp"
+            },
+            "idSuffix": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/idSuffix"
+            },
+            "version": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/version",
+              "description": "Semver style version of your app"
+            },
+            "versionCode": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/versionCode",
+              "description": "Manual verride of generated version code"
+            },
+            "versionFormat": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/versionFormat",
+              "description": "Allows you to fine-tune app version defined in package.json or renative.json.\n    If you do not define versionFormat, no formatting will apply to version.\n    "
+            },
+            "versionCodeFormat": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/versionCodeFormat",
+              "description": "Allows you to fine-tune auto generated version codes.\n    Version code is autogenerated from app version defined in package.json or renative.json.\n    "
+            },
+            "versionCodeOffset": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/versionCodeOffset"
+            },
+            "title": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/title",
+              "description": "Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website"
+            },
+            "description": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/description",
+              "description": "General description of your app. This prop will be injected to actual projects where description field is applicable"
+            },
+            "author": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/author",
+              "description": "Author name"
+            },
+            "license": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/license",
+              "description": "Injects license information into app"
+            },
+            "includedFonts": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/includedFonts",
+              "description": "Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all"
+            },
+            "backgroundColor": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/backgroundColor",
+              "description": "Defines root view backgroundColor for all platforms in HEX format"
+            },
+            "splashScreen": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/splashScreen",
+              "description": "Enable or disable splash screen"
+            },
+            "fontSources": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/fontSources",
+              "description": "Array of paths to location of external Fonts. you can use resolve function here example: `{{resolvePackage(react-native-vector-icons)}}/Fonts`"
+            },
+            "assetSources": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/assetSources",
+              "description": "Array of paths to alternative external assets. this will take priority over ./appConfigs/base/assets folder on your local project. You can use resolve function here example: `{{resolvePackage(@flexn/template-starter)}}/appConfigs/base/assets`"
+            },
+            "includedPlugins": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/includedPlugins",
+              "description": "Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.\n\nNOTE: includedPlugins is evaluated before excludedPlugins. Use: `['*']` to include all"
+            },
+            "excludedPlugins": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/excludedPlugins",
+              "description": "Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.\n\nNOTE: excludedPlugins is evaluated after includedPlugins. Use: `['*']` to exclude all"
+            },
+            "runtime": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/runtime"
+            },
+            "custom": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/custom"
+            },
+            "extendPlatform": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/extendPlatform"
+            },
+            "assetFolderPlatform": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/assetFolderPlatform",
+              "description": "Alternative platform assets. This is useful for example when you want to use same android assets in androidtv and want to avoid duplicating assets"
+            },
+            "engine": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/engine",
+              "description": "ID of engine to be used for this platform. Note: engine must be registered in `engines` field"
+            },
+            "entryFile": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/entryFile",
+              "description": "Alternative name of the entry file without `.js` extension"
+            },
+            "bundleAssets": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/bundleAssets",
+              "description": "If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds"
+            },
+            "enableSourceMaps": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/enableSourceMaps",
+              "description": "If set to `true` dedicated source map file will be generated alongside of compiled js bundle"
+            },
+            "bundleIsDev": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/bundleIsDev",
+              "description": "If set to `true` debug build will be generated"
+            },
+            "getJsBundleFile": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/getJsBundleFile"
+            },
+            "enableAndroidX": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/enableAndroidX",
+              "description": "Enables new android X architecture"
+            },
+            "enableJetifier": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/enableJetifier",
+              "description": "Enables Jetifier"
+            },
+            "signingConfig": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/signingConfig",
+              "description": "Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`"
+            },
+            "minSdkVersion": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/minSdkVersion",
+              "description": "Minimum Android SDK version device has to have in order for app to run"
+            },
+            "multipleAPKs": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/multipleAPKs",
+              "description": "If set to `true`, apk will be split into multiple ones for each architecture: \"armeabi-v7a\", \"x86\", \"arm64-v8a\", \"x86_64\""
+            },
+            "aab": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/aab",
+              "description": "If set to true, android project will generate app.aab instead of apk"
+            },
+            "extraGradleParams": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/extraGradleParams",
+              "description": "Allows passing extra params to gradle command"
+            },
+            "minifyEnabled": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/minifyEnabled",
+              "description": "Sets minifyEnabled buildType property in app/build.gradle"
+            },
+            "targetSdkVersion": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/targetSdkVersion",
+              "description": "Allows you define custom targetSdkVersion equivalent to: `targetSdkVersion = [VERSION]` in build.gradle"
+            },
+            "compileSdkVersion": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/compileSdkVersion",
+              "description": "Allows you define custom compileSdkVersion equivalent to: `compileSdkVersion = [VERSION]` in build.gradle"
+            },
+            "kotlinVersion": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/kotlinVersion",
+              "description": "Allows you define custom kotlin version"
+            },
+            "ndkVersion": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/ndkVersion",
+              "description": "Allows you define custom ndkVersion equivalent to: `ndkVersion = [VERSION]` in build.gradle"
+            },
+            "supportLibVersion": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/supportLibVersion",
+              "description": "Allows you define custom supportLibVersion equivalent to: `supportLibVersion = [VERSION]` in build.gradle"
+            },
+            "googleServicesVersion": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/googleServicesVersion",
+              "description": "Allows you define custom googleServicesVersion equivalent to: `googleServicesVersion = [VERSION]` in build.gradle"
+            },
+            "gradleBuildToolsVersion": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/gradleBuildToolsVersion",
+              "description": "Allows you define custom gradle build tools version equivalent to:  `classpath 'com.android.tools.build:gradle:[VERSION]'`"
+            },
+            "gradleWrapperVersion": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/gradleWrapperVersion",
+              "description": "Allows you define custom gradle wrapper version equivalent to: `distributionUrl=https\\://services.gradle.org/distributions/gradle-[VERSION]-all.zip`"
+            },
+            "excludedFeatures": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/excludedFeatures",
+              "description": "Override features definitions in AndroidManifest.xml by exclusion"
+            },
+            "includedFeatures": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/includedFeatures",
+              "description": "Override features definitions in AndroidManifest.xml by inclusion"
+            },
+            "buildToolsVersion": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/buildToolsVersion",
+              "description": "Override android build tools version"
+            },
+            "disableSigning": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/disableSigning"
+            },
+            "storeFile": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/storeFile",
+              "description": "Name of the store file in android project"
+            },
+            "keyAlias": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/keyAlias",
+              "description": "Key alias of the store file in android project"
+            },
+            "newArchEnabled": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/newArchEnabled",
+              "description": "Enables new arch for android. Default: false"
+            },
+            "flipperEnabled": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/flipperEnabled",
+              "description": "Enables flipper  for ios. Default: true"
+            },
+            "reactNativeEngine": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/reactNativeEngine",
+              "description": "Allows you to define specific native render engine to be used"
+            },
+            "templateAndroid": {
+              "$ref": "#/definitions/zodPluginSchema/properties/android/properties/templateAndroid"
             }
           },
-          "required": [
-            "buildSchemes"
-          ],
           "additionalProperties": false
         },
         "androidtv": {
@@ -1958,11 +2110,220 @@
                 },
                 "additionalProperties": false
               }
+            },
+            "includedPermissions": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/includedPermissions",
+              "description": "Allows you to include specific permissions by their KEY defined in `permissions` object. Use: `['*']` to include all"
+            },
+            "excludedPermissions": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/excludedPermissions",
+              "description": "Allows you to exclude specific permissions by their KEY defined in `permissions` object. Use: `['*']` to exclude all"
+            },
+            "id": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/id",
+              "description": "Bundle ID of application. ie: com.example.myapp"
+            },
+            "idSuffix": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/idSuffix"
+            },
+            "version": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/version",
+              "description": "Semver style version of your app"
+            },
+            "versionCode": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/versionCode",
+              "description": "Manual verride of generated version code"
+            },
+            "versionFormat": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/versionFormat",
+              "description": "Allows you to fine-tune app version defined in package.json or renative.json.\n    If you do not define versionFormat, no formatting will apply to version.\n    "
+            },
+            "versionCodeFormat": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/versionCodeFormat",
+              "description": "Allows you to fine-tune auto generated version codes.\n    Version code is autogenerated from app version defined in package.json or renative.json.\n    "
+            },
+            "versionCodeOffset": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/versionCodeOffset"
+            },
+            "title": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/title",
+              "description": "Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website"
+            },
+            "description": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/description",
+              "description": "General description of your app. This prop will be injected to actual projects where description field is applicable"
+            },
+            "author": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/author",
+              "description": "Author name"
+            },
+            "license": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/license",
+              "description": "Injects license information into app"
+            },
+            "includedFonts": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/includedFonts",
+              "description": "Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all"
+            },
+            "backgroundColor": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/backgroundColor",
+              "description": "Defines root view backgroundColor for all platforms in HEX format"
+            },
+            "splashScreen": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/splashScreen",
+              "description": "Enable or disable splash screen"
+            },
+            "fontSources": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/fontSources",
+              "description": "Array of paths to location of external Fonts. you can use resolve function here example: `{{resolvePackage(react-native-vector-icons)}}/Fonts`"
+            },
+            "assetSources": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/assetSources",
+              "description": "Array of paths to alternative external assets. this will take priority over ./appConfigs/base/assets folder on your local project. You can use resolve function here example: `{{resolvePackage(@flexn/template-starter)}}/appConfigs/base/assets`"
+            },
+            "includedPlugins": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/includedPlugins",
+              "description": "Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.\n\nNOTE: includedPlugins is evaluated before excludedPlugins. Use: `['*']` to include all"
+            },
+            "excludedPlugins": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/excludedPlugins",
+              "description": "Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.\n\nNOTE: excludedPlugins is evaluated after includedPlugins. Use: `['*']` to exclude all"
+            },
+            "runtime": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/runtime"
+            },
+            "custom": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/custom"
+            },
+            "extendPlatform": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/extendPlatform"
+            },
+            "assetFolderPlatform": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/assetFolderPlatform",
+              "description": "Alternative platform assets. This is useful for example when you want to use same android assets in androidtv and want to avoid duplicating assets"
+            },
+            "engine": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/engine",
+              "description": "ID of engine to be used for this platform. Note: engine must be registered in `engines` field"
+            },
+            "entryFile": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/entryFile",
+              "description": "Alternative name of the entry file without `.js` extension"
+            },
+            "bundleAssets": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/bundleAssets",
+              "description": "If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds"
+            },
+            "enableSourceMaps": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/enableSourceMaps",
+              "description": "If set to `true` dedicated source map file will be generated alongside of compiled js bundle"
+            },
+            "bundleIsDev": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/bundleIsDev",
+              "description": "If set to `true` debug build will be generated"
+            },
+            "getJsBundleFile": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/getJsBundleFile"
+            },
+            "ignoreWarnings": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/ignoreWarnings",
+              "description": "Injects `inhibit_all_warnings` into Podfile"
+            },
+            "ignoreLogs": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/ignoreLogs",
+              "description": "Passes `-quiet` to xcodebuild command"
+            },
+            "deploymentTarget": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/deploymentTarget",
+              "description": "Deployment target for xcodepoj"
+            },
+            "orientationSupport": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/orientationSupport"
+            },
+            "teamID": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/teamID",
+              "description": "Apple teamID"
+            },
+            "excludedArchs": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/excludedArchs",
+              "description": "Defines excluded architectures. This transforms to xcodeproj: `EXCLUDED_ARCHS=\"<VAL VAL ...>\"`"
+            },
+            "urlScheme": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/urlScheme",
+              "description": "URL Scheme for the app used for deeplinking"
+            },
+            "teamIdentifier": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/teamIdentifier",
+              "description": "Apple developer team ID"
+            },
+            "scheme": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/scheme"
+            },
+            "schemeTarget": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/schemeTarget"
+            },
+            "appleId": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/appleId"
+            },
+            "provisioningStyle": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/provisioningStyle"
+            },
+            "newArchEnabled": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/newArchEnabled",
+              "description": "Enables new archs for iOS. Default: false"
+            },
+            "codeSignIdentity": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/codeSignIdentity",
+              "description": "Special property which tells Xcode how to build your project"
+            },
+            "commandLineArguments": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/commandLineArguments",
+              "description": "Allows you to pass launch arguments to active scheme"
+            },
+            "provisionProfileSpecifier": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/provisionProfileSpecifier"
+            },
+            "provisionProfileSpecifiers": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/provisionProfileSpecifiers"
+            },
+            "allowProvisioningUpdates": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/allowProvisioningUpdates"
+            },
+            "provisioningProfiles": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/provisioningProfiles"
+            },
+            "codeSignIdentities": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/codeSignIdentities"
+            },
+            "systemCapabilities": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/systemCapabilities"
+            },
+            "entitlements": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/entitlements"
+            },
+            "runScheme": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/runScheme"
+            },
+            "sdk": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/sdk"
+            },
+            "testFlightId": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/testFlightId"
+            },
+            "firebaseId": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/firebaseId"
+            },
+            "exportOptions": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/exportOptions"
+            },
+            "reactNativeEngine": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/reactNativeEngine",
+              "description": "Allows you to define specific native render engine to be used"
+            },
+            "templateXcode": {
+              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode"
             }
           },
-          "required": [
-            "buildSchemes"
-          ],
           "additionalProperties": false
         },
         "tvos": {
@@ -2106,11 +2467,143 @@
                 },
                 "additionalProperties": false
               }
+            },
+            "includedPermissions": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/includedPermissions",
+              "description": "Allows you to include specific permissions by their KEY defined in `permissions` object. Use: `['*']` to include all"
+            },
+            "excludedPermissions": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/excludedPermissions",
+              "description": "Allows you to exclude specific permissions by their KEY defined in `permissions` object. Use: `['*']` to exclude all"
+            },
+            "id": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/id",
+              "description": "Bundle ID of application. ie: com.example.myapp"
+            },
+            "idSuffix": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/idSuffix"
+            },
+            "version": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/version",
+              "description": "Semver style version of your app"
+            },
+            "versionCode": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/versionCode",
+              "description": "Manual verride of generated version code"
+            },
+            "versionFormat": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/versionFormat",
+              "description": "Allows you to fine-tune app version defined in package.json or renative.json.\n    If you do not define versionFormat, no formatting will apply to version.\n    "
+            },
+            "versionCodeFormat": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/versionCodeFormat",
+              "description": "Allows you to fine-tune auto generated version codes.\n    Version code is autogenerated from app version defined in package.json or renative.json.\n    "
+            },
+            "versionCodeOffset": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/versionCodeOffset"
+            },
+            "title": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/title",
+              "description": "Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website"
+            },
+            "description": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/description",
+              "description": "General description of your app. This prop will be injected to actual projects where description field is applicable"
+            },
+            "author": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/author",
+              "description": "Author name"
+            },
+            "license": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/license",
+              "description": "Injects license information into app"
+            },
+            "includedFonts": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/includedFonts",
+              "description": "Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all"
+            },
+            "backgroundColor": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/backgroundColor",
+              "description": "Defines root view backgroundColor for all platforms in HEX format"
+            },
+            "splashScreen": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/splashScreen",
+              "description": "Enable or disable splash screen"
+            },
+            "fontSources": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/fontSources",
+              "description": "Array of paths to location of external Fonts. you can use resolve function here example: `{{resolvePackage(react-native-vector-icons)}}/Fonts`"
+            },
+            "assetSources": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/assetSources",
+              "description": "Array of paths to alternative external assets. this will take priority over ./appConfigs/base/assets folder on your local project. You can use resolve function here example: `{{resolvePackage(@flexn/template-starter)}}/appConfigs/base/assets`"
+            },
+            "includedPlugins": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/includedPlugins",
+              "description": "Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.\n\nNOTE: includedPlugins is evaluated before excludedPlugins. Use: `['*']` to include all"
+            },
+            "excludedPlugins": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/excludedPlugins",
+              "description": "Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.\n\nNOTE: excludedPlugins is evaluated after includedPlugins. Use: `['*']` to exclude all"
+            },
+            "runtime": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/runtime"
+            },
+            "custom": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/custom"
+            },
+            "extendPlatform": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/extendPlatform"
+            },
+            "assetFolderPlatform": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/assetFolderPlatform",
+              "description": "Alternative platform assets. This is useful for example when you want to use same android assets in androidtv and want to avoid duplicating assets"
+            },
+            "engine": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/engine",
+              "description": "ID of engine to be used for this platform. Note: engine must be registered in `engines` field"
+            },
+            "entryFile": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/entryFile",
+              "description": "Alternative name of the entry file without `.js` extension"
+            },
+            "bundleAssets": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/bundleAssets",
+              "description": "If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds"
+            },
+            "enableSourceMaps": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/enableSourceMaps",
+              "description": "If set to `true` dedicated source map file will be generated alongside of compiled js bundle"
+            },
+            "bundleIsDev": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/bundleIsDev",
+              "description": "If set to `true` debug build will be generated"
+            },
+            "getJsBundleFile": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/getJsBundleFile"
+            },
+            "package": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/tizen/properties/buildSchemes/additionalProperties/properties/package"
+            },
+            "certificateProfile": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/tizen/properties/buildSchemes/additionalProperties/properties/certificateProfile"
+            },
+            "appName": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/tizen/properties/buildSchemes/additionalProperties/properties/appName"
+            },
+            "timestampBuildFiles": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/tizen/properties/buildSchemes/additionalProperties/properties/timestampBuildFiles"
+            },
+            "devServerHost": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/tizen/properties/buildSchemes/additionalProperties/properties/devServerHost"
+            },
+            "environment": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/tizen/properties/buildSchemes/additionalProperties/properties/environment"
+            },
+            "webpackConfig": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/tizen/properties/buildSchemes/additionalProperties/properties/webpackConfig"
             }
           },
-          "required": [
-            "buildSchemes"
-          ],
           "additionalProperties": false
         },
         "tizenmobile": {
@@ -2235,11 +2728,137 @@
                 },
                 "additionalProperties": false
               }
+            },
+            "includedPermissions": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/includedPermissions",
+              "description": "Allows you to include specific permissions by their KEY defined in `permissions` object. Use: `['*']` to include all"
+            },
+            "excludedPermissions": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/excludedPermissions",
+              "description": "Allows you to exclude specific permissions by their KEY defined in `permissions` object. Use: `['*']` to exclude all"
+            },
+            "id": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/id",
+              "description": "Bundle ID of application. ie: com.example.myapp"
+            },
+            "idSuffix": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/idSuffix"
+            },
+            "version": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/version",
+              "description": "Semver style version of your app"
+            },
+            "versionCode": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/versionCode",
+              "description": "Manual verride of generated version code"
+            },
+            "versionFormat": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/versionFormat",
+              "description": "Allows you to fine-tune app version defined in package.json or renative.json.\n    If you do not define versionFormat, no formatting will apply to version.\n    "
+            },
+            "versionCodeFormat": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/versionCodeFormat",
+              "description": "Allows you to fine-tune auto generated version codes.\n    Version code is autogenerated from app version defined in package.json or renative.json.\n    "
+            },
+            "versionCodeOffset": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/versionCodeOffset"
+            },
+            "title": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/title",
+              "description": "Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website"
+            },
+            "description": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/description",
+              "description": "General description of your app. This prop will be injected to actual projects where description field is applicable"
+            },
+            "author": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/author",
+              "description": "Author name"
+            },
+            "license": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/license",
+              "description": "Injects license information into app"
+            },
+            "includedFonts": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/includedFonts",
+              "description": "Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all"
+            },
+            "backgroundColor": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/backgroundColor",
+              "description": "Defines root view backgroundColor for all platforms in HEX format"
+            },
+            "splashScreen": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/splashScreen",
+              "description": "Enable or disable splash screen"
+            },
+            "fontSources": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/fontSources",
+              "description": "Array of paths to location of external Fonts. you can use resolve function here example: `{{resolvePackage(react-native-vector-icons)}}/Fonts`"
+            },
+            "assetSources": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/assetSources",
+              "description": "Array of paths to alternative external assets. this will take priority over ./appConfigs/base/assets folder on your local project. You can use resolve function here example: `{{resolvePackage(@flexn/template-starter)}}/appConfigs/base/assets`"
+            },
+            "includedPlugins": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/includedPlugins",
+              "description": "Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.\n\nNOTE: includedPlugins is evaluated before excludedPlugins. Use: `['*']` to include all"
+            },
+            "excludedPlugins": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/excludedPlugins",
+              "description": "Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.\n\nNOTE: excludedPlugins is evaluated after includedPlugins. Use: `['*']` to exclude all"
+            },
+            "runtime": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/runtime"
+            },
+            "custom": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/custom"
+            },
+            "extendPlatform": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/extendPlatform"
+            },
+            "assetFolderPlatform": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/assetFolderPlatform",
+              "description": "Alternative platform assets. This is useful for example when you want to use same android assets in androidtv and want to avoid duplicating assets"
+            },
+            "engine": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/engine",
+              "description": "ID of engine to be used for this platform. Note: engine must be registered in `engines` field"
+            },
+            "entryFile": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/entryFile",
+              "description": "Alternative name of the entry file without `.js` extension"
+            },
+            "bundleAssets": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/bundleAssets",
+              "description": "If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds"
+            },
+            "enableSourceMaps": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/enableSourceMaps",
+              "description": "If set to `true` dedicated source map file will be generated alongside of compiled js bundle"
+            },
+            "bundleIsDev": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/bundleIsDev",
+              "description": "If set to `true` debug build will be generated"
+            },
+            "getJsBundleFile": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/getJsBundleFile"
+            },
+            "iconColor": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/webos/properties/buildSchemes/additionalProperties/properties/iconColor"
+            },
+            "timestampBuildFiles": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/tizen/properties/buildSchemes/additionalProperties/properties/timestampBuildFiles"
+            },
+            "devServerHost": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/tizen/properties/buildSchemes/additionalProperties/properties/devServerHost"
+            },
+            "environment": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/tizen/properties/buildSchemes/additionalProperties/properties/environment"
+            },
+            "webpackConfig": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/tizen/properties/buildSchemes/additionalProperties/properties/webpackConfig"
             }
           },
-          "required": [
-            "buildSchemes"
-          ],
           "additionalProperties": false
         },
         "web": {
@@ -2373,11 +2992,149 @@
                 },
                 "additionalProperties": false
               }
+            },
+            "includedPermissions": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/includedPermissions",
+              "description": "Allows you to include specific permissions by their KEY defined in `permissions` object. Use: `['*']` to include all"
+            },
+            "excludedPermissions": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/excludedPermissions",
+              "description": "Allows you to exclude specific permissions by their KEY defined in `permissions` object. Use: `['*']` to exclude all"
+            },
+            "id": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/id",
+              "description": "Bundle ID of application. ie: com.example.myapp"
+            },
+            "idSuffix": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/idSuffix"
+            },
+            "version": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/version",
+              "description": "Semver style version of your app"
+            },
+            "versionCode": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/versionCode",
+              "description": "Manual verride of generated version code"
+            },
+            "versionFormat": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/versionFormat",
+              "description": "Allows you to fine-tune app version defined in package.json or renative.json.\n    If you do not define versionFormat, no formatting will apply to version.\n    "
+            },
+            "versionCodeFormat": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/versionCodeFormat",
+              "description": "Allows you to fine-tune auto generated version codes.\n    Version code is autogenerated from app version defined in package.json or renative.json.\n    "
+            },
+            "versionCodeOffset": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/versionCodeOffset"
+            },
+            "title": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/title",
+              "description": "Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website"
+            },
+            "description": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/description",
+              "description": "General description of your app. This prop will be injected to actual projects where description field is applicable"
+            },
+            "author": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/author",
+              "description": "Author name"
+            },
+            "license": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/license",
+              "description": "Injects license information into app"
+            },
+            "includedFonts": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/includedFonts",
+              "description": "Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all"
+            },
+            "backgroundColor": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/backgroundColor",
+              "description": "Defines root view backgroundColor for all platforms in HEX format"
+            },
+            "splashScreen": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/splashScreen",
+              "description": "Enable or disable splash screen"
+            },
+            "fontSources": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/fontSources",
+              "description": "Array of paths to location of external Fonts. you can use resolve function here example: `{{resolvePackage(react-native-vector-icons)}}/Fonts`"
+            },
+            "assetSources": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/assetSources",
+              "description": "Array of paths to alternative external assets. this will take priority over ./appConfigs/base/assets folder on your local project. You can use resolve function here example: `{{resolvePackage(@flexn/template-starter)}}/appConfigs/base/assets`"
+            },
+            "includedPlugins": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/includedPlugins",
+              "description": "Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.\n\nNOTE: includedPlugins is evaluated before excludedPlugins. Use: `['*']` to include all"
+            },
+            "excludedPlugins": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/excludedPlugins",
+              "description": "Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.\n\nNOTE: excludedPlugins is evaluated after includedPlugins. Use: `['*']` to exclude all"
+            },
+            "runtime": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/runtime"
+            },
+            "custom": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/custom"
+            },
+            "extendPlatform": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/extendPlatform"
+            },
+            "assetFolderPlatform": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/assetFolderPlatform",
+              "description": "Alternative platform assets. This is useful for example when you want to use same android assets in androidtv and want to avoid duplicating assets"
+            },
+            "engine": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/engine",
+              "description": "ID of engine to be used for this platform. Note: engine must be registered in `engines` field"
+            },
+            "entryFile": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/entryFile",
+              "description": "Alternative name of the entry file without `.js` extension"
+            },
+            "bundleAssets": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/bundleAssets",
+              "description": "If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds"
+            },
+            "enableSourceMaps": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/enableSourceMaps",
+              "description": "If set to `true` dedicated source map file will be generated alongside of compiled js bundle"
+            },
+            "bundleIsDev": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/bundleIsDev",
+              "description": "If set to `true` debug build will be generated"
+            },
+            "getJsBundleFile": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/getJsBundleFile"
+            },
+            "webpackConfig": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/tizen/properties/buildSchemes/additionalProperties/properties/webpackConfig"
+            },
+            "pagesDir": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/web/properties/buildSchemes/additionalProperties/properties/pagesDir",
+              "description": "Custom pages directory used by nextjs. Use relative paths"
+            },
+            "outputDir": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/web/properties/buildSchemes/additionalProperties/properties/outputDir",
+              "description": "Custom output directory used by nextjs equivalent to `npx next build` with custom outputDir. Use relative paths"
+            },
+            "exportDir": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/web/properties/buildSchemes/additionalProperties/properties/exportDir",
+              "description": "Custom export directory used by nextjs equivalent to `npx next export --outdir <exportDir>`. Use relative paths"
+            },
+            "nextTranspileModules": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/web/properties/buildSchemes/additionalProperties/properties/nextTranspileModules"
+            },
+            "timestampBuildFiles": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/tizen/properties/buildSchemes/additionalProperties/properties/timestampBuildFiles"
+            },
+            "devServerHost": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/tizen/properties/buildSchemes/additionalProperties/properties/devServerHost"
+            },
+            "environment": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/tizen/properties/buildSchemes/additionalProperties/properties/environment"
             }
           },
-          "required": [
-            "buildSchemes"
-          ],
           "additionalProperties": false
         },
         "webtv": {
@@ -2606,11 +3363,228 @@
                 },
                 "additionalProperties": false
               }
+            },
+            "includedPermissions": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/includedPermissions",
+              "description": "Allows you to include specific permissions by their KEY defined in `permissions` object. Use: `['*']` to include all"
+            },
+            "excludedPermissions": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/excludedPermissions",
+              "description": "Allows you to exclude specific permissions by their KEY defined in `permissions` object. Use: `['*']` to exclude all"
+            },
+            "id": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/id",
+              "description": "Bundle ID of application. ie: com.example.myapp"
+            },
+            "idSuffix": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/idSuffix"
+            },
+            "version": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/version",
+              "description": "Semver style version of your app"
+            },
+            "versionCode": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/versionCode",
+              "description": "Manual verride of generated version code"
+            },
+            "versionFormat": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/versionFormat",
+              "description": "Allows you to fine-tune app version defined in package.json or renative.json.\n    If you do not define versionFormat, no formatting will apply to version.\n    "
+            },
+            "versionCodeFormat": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/versionCodeFormat",
+              "description": "Allows you to fine-tune auto generated version codes.\n    Version code is autogenerated from app version defined in package.json or renative.json.\n    "
+            },
+            "versionCodeOffset": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/versionCodeOffset"
+            },
+            "title": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/title",
+              "description": "Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website"
+            },
+            "description": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/description",
+              "description": "General description of your app. This prop will be injected to actual projects where description field is applicable"
+            },
+            "author": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/author",
+              "description": "Author name"
+            },
+            "license": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/license",
+              "description": "Injects license information into app"
+            },
+            "includedFonts": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/includedFonts",
+              "description": "Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all"
+            },
+            "backgroundColor": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/backgroundColor",
+              "description": "Defines root view backgroundColor for all platforms in HEX format"
+            },
+            "splashScreen": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/splashScreen",
+              "description": "Enable or disable splash screen"
+            },
+            "fontSources": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/fontSources",
+              "description": "Array of paths to location of external Fonts. you can use resolve function here example: `{{resolvePackage(react-native-vector-icons)}}/Fonts`"
+            },
+            "assetSources": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/assetSources",
+              "description": "Array of paths to alternative external assets. this will take priority over ./appConfigs/base/assets folder on your local project. You can use resolve function here example: `{{resolvePackage(@flexn/template-starter)}}/appConfigs/base/assets`"
+            },
+            "includedPlugins": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/includedPlugins",
+              "description": "Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.\n\nNOTE: includedPlugins is evaluated before excludedPlugins. Use: `['*']` to include all"
+            },
+            "excludedPlugins": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/excludedPlugins",
+              "description": "Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.\n\nNOTE: excludedPlugins is evaluated after includedPlugins. Use: `['*']` to exclude all"
+            },
+            "runtime": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/runtime"
+            },
+            "custom": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/custom"
+            },
+            "extendPlatform": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/extendPlatform"
+            },
+            "assetFolderPlatform": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/assetFolderPlatform",
+              "description": "Alternative platform assets. This is useful for example when you want to use same android assets in androidtv and want to avoid duplicating assets"
+            },
+            "engine": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/engine",
+              "description": "ID of engine to be used for this platform. Note: engine must be registered in `engines` field"
+            },
+            "entryFile": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/entryFile",
+              "description": "Alternative name of the entry file without `.js` extension"
+            },
+            "bundleAssets": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/bundleAssets",
+              "description": "If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds"
+            },
+            "enableSourceMaps": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/enableSourceMaps",
+              "description": "If set to `true` dedicated source map file will be generated alongside of compiled js bundle"
+            },
+            "bundleIsDev": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/bundleIsDev",
+              "description": "If set to `true` debug build will be generated"
+            },
+            "getJsBundleFile": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/getJsBundleFile"
+            },
+            "ignoreWarnings": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/ignoreWarnings",
+              "description": "Injects `inhibit_all_warnings` into Podfile"
+            },
+            "ignoreLogs": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/ignoreLogs",
+              "description": "Passes `-quiet` to xcodebuild command"
+            },
+            "deploymentTarget": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/deploymentTarget",
+              "description": "Deployment target for xcodepoj"
+            },
+            "orientationSupport": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/orientationSupport"
+            },
+            "teamID": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/teamID",
+              "description": "Apple teamID"
+            },
+            "excludedArchs": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/excludedArchs",
+              "description": "Defines excluded architectures. This transforms to xcodeproj: `EXCLUDED_ARCHS=\"<VAL VAL ...>\"`"
+            },
+            "urlScheme": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/urlScheme",
+              "description": "URL Scheme for the app used for deeplinking"
+            },
+            "teamIdentifier": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/teamIdentifier",
+              "description": "Apple developer team ID"
+            },
+            "scheme": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/scheme"
+            },
+            "schemeTarget": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/schemeTarget"
+            },
+            "appleId": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/appleId"
+            },
+            "provisioningStyle": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/provisioningStyle"
+            },
+            "newArchEnabled": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/newArchEnabled",
+              "description": "Enables new archs for iOS. Default: false"
+            },
+            "codeSignIdentity": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/codeSignIdentity",
+              "description": "Special property which tells Xcode how to build your project"
+            },
+            "commandLineArguments": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/commandLineArguments",
+              "description": "Allows you to pass launch arguments to active scheme"
+            },
+            "provisionProfileSpecifier": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/provisionProfileSpecifier"
+            },
+            "provisionProfileSpecifiers": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/provisionProfileSpecifiers"
+            },
+            "allowProvisioningUpdates": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/allowProvisioningUpdates"
+            },
+            "provisioningProfiles": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/provisioningProfiles"
+            },
+            "codeSignIdentities": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/codeSignIdentities"
+            },
+            "systemCapabilities": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/systemCapabilities"
+            },
+            "entitlements": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/entitlements"
+            },
+            "runScheme": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/runScheme"
+            },
+            "sdk": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/sdk"
+            },
+            "testFlightId": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/testFlightId"
+            },
+            "firebaseId": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/firebaseId"
+            },
+            "exportOptions": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/exportOptions"
+            },
+            "reactNativeEngine": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/reactNativeEngine",
+              "description": "Allows you to define specific native render engine to be used"
+            },
+            "templateXcode": {
+              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode"
+            },
+            "electronConfig": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/macos/properties/buildSchemes/additionalProperties/properties/electronConfig",
+              "description": "Allows you to configure electron app as per https://www.electron.build/"
+            },
+            "BrowserWindow": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/macos/properties/buildSchemes/additionalProperties/properties/BrowserWindow",
+              "description": "Allows you to configure electron wrapper app window"
             }
           },
-          "required": [
-            "buildSchemes"
-          ],
           "additionalProperties": false
         },
         "linux": {
@@ -2846,37 +3820,143 @@
                 },
                 "additionalProperties": false
               }
+            },
+            "includedPermissions": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/includedPermissions",
+              "description": "Allows you to include specific permissions by their KEY defined in `permissions` object. Use: `['*']` to include all"
+            },
+            "excludedPermissions": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/excludedPermissions",
+              "description": "Allows you to exclude specific permissions by their KEY defined in `permissions` object. Use: `['*']` to exclude all"
+            },
+            "id": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/id",
+              "description": "Bundle ID of application. ie: com.example.myapp"
+            },
+            "idSuffix": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/idSuffix"
+            },
+            "version": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/version",
+              "description": "Semver style version of your app"
+            },
+            "versionCode": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/versionCode",
+              "description": "Manual verride of generated version code"
+            },
+            "versionFormat": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/versionFormat",
+              "description": "Allows you to fine-tune app version defined in package.json or renative.json.\n    If you do not define versionFormat, no formatting will apply to version.\n    "
+            },
+            "versionCodeFormat": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/versionCodeFormat",
+              "description": "Allows you to fine-tune auto generated version codes.\n    Version code is autogenerated from app version defined in package.json or renative.json.\n    "
+            },
+            "versionCodeOffset": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/versionCodeOffset"
+            },
+            "title": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/title",
+              "description": "Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website"
+            },
+            "description": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/description",
+              "description": "General description of your app. This prop will be injected to actual projects where description field is applicable"
+            },
+            "author": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/author",
+              "description": "Author name"
+            },
+            "license": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/license",
+              "description": "Injects license information into app"
+            },
+            "includedFonts": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/includedFonts",
+              "description": "Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all"
+            },
+            "backgroundColor": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/backgroundColor",
+              "description": "Defines root view backgroundColor for all platforms in HEX format"
+            },
+            "splashScreen": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/splashScreen",
+              "description": "Enable or disable splash screen"
+            },
+            "fontSources": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/fontSources",
+              "description": "Array of paths to location of external Fonts. you can use resolve function here example: `{{resolvePackage(react-native-vector-icons)}}/Fonts`"
+            },
+            "assetSources": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/assetSources",
+              "description": "Array of paths to alternative external assets. this will take priority over ./appConfigs/base/assets folder on your local project. You can use resolve function here example: `{{resolvePackage(@flexn/template-starter)}}/appConfigs/base/assets`"
+            },
+            "includedPlugins": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/includedPlugins",
+              "description": "Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.\n\nNOTE: includedPlugins is evaluated before excludedPlugins. Use: `['*']` to include all"
+            },
+            "excludedPlugins": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/excludedPlugins",
+              "description": "Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.\n\nNOTE: excludedPlugins is evaluated after includedPlugins. Use: `['*']` to exclude all"
+            },
+            "runtime": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/runtime"
+            },
+            "custom": {
+              "$ref": "#/definitions/zodCommonSchemaFragment/properties/custom"
+            },
+            "extendPlatform": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/extendPlatform"
+            },
+            "assetFolderPlatform": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/assetFolderPlatform",
+              "description": "Alternative platform assets. This is useful for example when you want to use same android assets in androidtv and want to avoid duplicating assets"
+            },
+            "engine": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/engine",
+              "description": "ID of engine to be used for this platform. Note: engine must be registered in `engines` field"
+            },
+            "entryFile": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/entryFile",
+              "description": "Alternative name of the entry file without `.js` extension"
+            },
+            "bundleAssets": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/bundleAssets",
+              "description": "If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds"
+            },
+            "enableSourceMaps": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/enableSourceMaps",
+              "description": "If set to `true` dedicated source map file will be generated alongside of compiled js bundle"
+            },
+            "bundleIsDev": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/bundleIsDev",
+              "description": "If set to `true` debug build will be generated"
+            },
+            "getJsBundleFile": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/getJsBundleFile"
+            },
+            "electronConfig": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/macos/properties/buildSchemes/additionalProperties/properties/electronConfig",
+              "description": "Allows you to configure electron app as per https://www.electron.build/"
+            },
+            "BrowserWindow": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/macos/properties/buildSchemes/additionalProperties/properties/BrowserWindow",
+              "description": "Allows you to configure electron wrapper app window"
+            },
+            "reactNativeEngine": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/reactNativeEngine",
+              "description": "Allows you to define specific native render engine to be used"
+            },
+            "templateVSProject": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/windows/properties/buildSchemes/additionalProperties/properties/templateVSProject"
             }
           },
-          "required": [
-            "buildSchemes"
-          ],
           "additionalProperties": false
         },
         "xbox": {
           "$ref": "#/definitions/zodPlatformsSchema/properties/windows"
         }
       },
-      "required": [
-        "android",
-        "androidtv",
-        "androidwear",
-        "firetv",
-        "ios",
-        "tvos",
-        "tizen",
-        "tizenmobile",
-        "tizenwatch",
-        "webos",
-        "web",
-        "webtv",
-        "chromecast",
-        "kaios",
-        "macos",
-        "linux",
-        "windows",
-        "xbox"
-      ],
       "additionalProperties": false,
       "description": "Object containing platform configurations"
     },
@@ -3235,31 +4315,34 @@
       "description": "Allows more advanced modifications to Android based project template"
     },
     "zodAppDelegateMethod": {
-      "anyOf": [
-        {
-          "type": "string"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "order": {
-              "type": "number"
-            },
-            "value": {
-              "type": "string"
-            },
-            "weight": {
-              "type": "number"
-            }
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "string"
           },
-          "required": [
-            "order",
-            "value",
-            "weight"
-          ],
-          "additionalProperties": false
-        }
-      ]
+          {
+            "type": "object",
+            "properties": {
+              "order": {
+                "type": "number"
+              },
+              "value": {
+                "type": "string"
+              },
+              "weight": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "order",
+              "value",
+              "weight"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
     },
     "zodTemplateXcodeFragment": {
       "type": "object",
@@ -3291,7 +4374,7 @@
       },
       "additionalProperties": false
     },
-    "rnv.root": {
+    "renative-1.0.schema": {
       "type": "object",
       "properties": {
         "app": {
@@ -3793,13 +4876,13 @@
                   }
                 },
                 "devDependencies": {
-                  "$ref": "#/definitions/rnv.root/properties/engine/properties/npm/properties/dependencies"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/engine/properties/npm/properties/dependencies"
                 },
                 "peerDependencies": {
-                  "$ref": "#/definitions/rnv.root/properties/engine/properties/npm/properties/dependencies"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/engine/properties/npm/properties/dependencies"
                 },
                 "optionalDependencies": {
-                  "$ref": "#/definitions/rnv.root/properties/engine/properties/npm/properties/dependencies"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/engine/properties/npm/properties/dependencies"
                 }
               },
               "additionalProperties": false,
@@ -3814,7 +4897,7 @@
                     "type": "string"
                   },
                   "npm": {
-                    "$ref": "#/definitions/rnv.root/properties/engine/properties/npm"
+                    "$ref": "#/definitions/renative-1.0.schema/properties/engine/properties/npm"
                   }
                 },
                 "additionalProperties": false
@@ -3903,55 +4986,55 @@
               "$ref": "#/definitions/zodPluginSchema/properties/android"
             },
             "androidtv": {
-              "$ref": "#/definitions/zodPluginSchema/properties/android"
+              "$ref": "#/definitions/zodPluginSchema/properties/androidtv"
             },
             "androidwear": {
-              "$ref": "#/definitions/zodPluginSchema/properties/android"
+              "$ref": "#/definitions/zodPluginSchema/properties/androidwear"
             },
             "firetv": {
-              "$ref": "#/definitions/zodPluginSchema/properties/android"
+              "$ref": "#/definitions/zodPluginSchema/properties/firetv"
             },
             "ios": {
               "$ref": "#/definitions/zodPluginSchema/properties/ios"
             },
             "tvos": {
-              "$ref": "#/definitions/zodPluginSchema/properties/ios"
+              "$ref": "#/definitions/zodPluginSchema/properties/tvos"
             },
             "tizen": {
-              "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+              "$ref": "#/definitions/zodPluginSchema/properties/tizen"
             },
             "tizenmobile": {
-              "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+              "$ref": "#/definitions/zodPluginSchema/properties/tizenmobile"
             },
             "tizenwatch": {
-              "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+              "$ref": "#/definitions/zodPluginSchema/properties/tizenwatch"
             },
             "webos": {
-              "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+              "$ref": "#/definitions/zodPluginSchema/properties/webos"
             },
             "web": {
-              "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+              "$ref": "#/definitions/zodPluginSchema/properties/web"
             },
             "webtv": {
-              "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+              "$ref": "#/definitions/zodPluginSchema/properties/webtv"
             },
             "chromecast": {
-              "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+              "$ref": "#/definitions/zodPluginSchema/properties/chromecast"
             },
             "kaios": {
-              "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+              "$ref": "#/definitions/zodPluginSchema/properties/kaios"
             },
             "macos": {
-              "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+              "$ref": "#/definitions/zodPluginSchema/properties/macos"
             },
             "linux": {
-              "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+              "$ref": "#/definitions/zodPluginSchema/properties/linux"
             },
             "windows": {
-              "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+              "$ref": "#/definitions/zodPluginSchema/properties/windows"
             },
             "xbox": {
-              "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+              "$ref": "#/definitions/zodPluginSchema/properties/xbox"
             },
             "custom": {
               "$ref": "#/definitions/zodExt"
@@ -3993,53 +5076,53 @@
                   "additionalProperties": false
                 },
                 "androidtv": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/android"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/android"
                 },
                 "androidwear": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/android"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/android"
                 },
                 "firetv": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/android"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/android"
                 },
                 "ios": {},
                 "tvos": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/ios"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/ios"
                 },
                 "tizen": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/ios"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/ios"
                 },
                 "tizenmobile": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/ios"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/ios"
                 },
                 "tizenwatch": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/ios"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/ios"
                 },
                 "webos": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/ios"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/ios"
                 },
                 "web": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/ios"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/ios"
                 },
                 "webtv": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/ios"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/ios"
                 },
                 "chromecast": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/ios"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/ios"
                 },
                 "kaios": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/ios"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/ios"
                 },
                 "macos": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/ios"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/ios"
                 },
                 "linux": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/ios"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/ios"
                 },
                 "windows": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/ios"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/ios"
                 },
                 "xbox": {
-                  "$ref": "#/definitions/rnv.root/properties/private/properties/platforms/properties/ios"
+                  "$ref": "#/definitions/renative-1.0.schema/properties/private/properties/platforms/properties/ios"
                 }
               },
               "additionalProperties": false

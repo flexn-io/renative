@@ -9,26 +9,28 @@ const zodAndroidSchema = zodPluginPlatformBaseFragment.merge(zodPluginPlatformAn
 const zodIOSSchema = zodPluginPlatformBaseFragment.merge(zodPluginPlatformiOSFragment);
 
 export const zodPluginSchema: AnyZodObject = zodPluginBaseFragment.merge(
-    z.object({
-        android: zodAndroidSchema,
-        androidtv: zodAndroidSchema,
-        androidwear: zodAndroidSchema,
-        firetv: zodAndroidSchema,
-        ios: zodIOSSchema,
-        tvos: zodIOSSchema,
-        tizen: zodPluginPlatformBaseFragment,
-        tizenmobile: zodPluginPlatformBaseFragment,
-        tizenwatch: zodPluginPlatformBaseFragment,
-        webos: zodPluginPlatformBaseFragment,
-        web: zodPluginPlatformBaseFragment,
-        webtv: zodPluginPlatformBaseFragment,
-        chromecast: zodPluginPlatformBaseFragment,
-        kaios: zodPluginPlatformBaseFragment,
-        macos: zodPluginPlatformBaseFragment,
-        linux: zodPluginPlatformBaseFragment,
-        windows: zodPluginPlatformBaseFragment,
-        xbox: zodPluginPlatformBaseFragment,
-    })
+    z
+        .object({
+            android: zodAndroidSchema,
+            androidtv: zodAndroidSchema,
+            androidwear: zodAndroidSchema,
+            firetv: zodAndroidSchema,
+            ios: zodIOSSchema,
+            tvos: zodIOSSchema,
+            tizen: zodPluginPlatformBaseFragment,
+            tizenmobile: zodPluginPlatformBaseFragment,
+            tizenwatch: zodPluginPlatformBaseFragment,
+            webos: zodPluginPlatformBaseFragment,
+            web: zodPluginPlatformBaseFragment,
+            webtv: zodPluginPlatformBaseFragment,
+            chromecast: zodPluginPlatformBaseFragment,
+            kaios: zodPluginPlatformBaseFragment,
+            macos: zodPluginPlatformBaseFragment,
+            linux: zodPluginPlatformBaseFragment,
+            windows: zodPluginPlatformBaseFragment,
+            xbox: zodPluginPlatformBaseFragment,
+        })
+        .partial()
 );
 
 export const zodPluginsSchema = z
