@@ -14,7 +14,10 @@ import {
     zodManifestChildWithChildren,
     zodTemplateAndroidFragment,
 } from './platforms/fragments/templateAndroid';
-import { zodAppDelegateMethod, zodTemplateXcodeFragment } from './platforms/fragments/templateXcode';
+import {
+    type ConfigTemplateXcodeAppDelegateMethod,
+    zodTemplateXcodeFragment,
+} from './platforms/fragments/templateXcode';
 import { zodPlatformTizenFragment } from './platforms/fragments/tizen';
 import { zodPlatformWebFragment } from './platforms/fragments/web';
 import { zodPlatformWebOSFragment } from './platforms/fragments/webos';
@@ -74,7 +77,7 @@ export type ConfigAndroidManifestChildType = z.infer<typeof zodManifestChildBase
 export type AndroidManifest = z.infer<typeof zodAndroidManifest>;
 export type RnvTemplateAndroidFragment = z.infer<typeof zodTemplateAndroidFragment>;
 export type RnvTemplateXcodeFragment = z.infer<typeof zodTemplateXcodeFragment>;
-export type ConfigAppDelegateMethod = z.infer<typeof zodAppDelegateMethod>;
+export type ConfigAppDelegateMethod = ConfigTemplateXcodeAppDelegateMethod[number];
 export type RnvPlatformTizenFragment = z.infer<typeof zodPlatformTizenFragment>;
 export type RnvPlatformWebFragment = z.infer<typeof zodPlatformWebFragment>;
 export type RnvPlatformWebOSFragment = z.infer<typeof zodPlatformWebOSFragment>;
@@ -111,13 +114,12 @@ export type RnvPlatformsSchema = Partial<Record<RnvPlatformKey, RnvPlatformSchem
 //
 export type RnvRootAppBaseFragment = z.infer<typeof zodRootAppBaseFragment>;
 
-export type RnvRootAppSchema = RnvRootAppBaseFragment & {
+export type ConfigFileApp = RnvRootAppBaseFragment & {
     common?: RnvCommonSchema;
     platforms?: RnvPlatformsSchema;
     plugins?: RnvPluginsSchema;
 };
 // appConfigs/**/renative.json
-export type ConfigFileApp = RnvRootAppSchema;
 
 // BuildConfig -----------------------
 //
@@ -192,11 +194,6 @@ export type ConfigFileProject = RnvRootProjectBaseFragment & {
     plugins?: RnvPluginsSchema;
 };
 
-// Runtime -----------------------
-//
-// renative.runtime.json
-export type ConfigFileRuntime = z.infer<typeof zodConfigFileRuntime>;
-
 // Template -----------------------
 //
 type ConfigTemplateBootstrapConfig = z.infer<typeof zodConfigTemplateBootstrapConfig>;
@@ -222,3 +219,25 @@ export type ConfigFileWorkspace = z.infer<typeof zodConfigFileWorkspace>;
 //
 // renative.workspaces.json
 export type ConfigFileWorkspaces = z.infer<typeof zodConfigFileWorkspaces>;
+
+export type ConfigFileRenative = {
+    app: ConfigFileApp;
+    project: ConfigFileProject;
+    local: ConfigFileLocal;
+    overrides: ConfigFileOverrides;
+    integration: ConfigFileIntegration;
+    engine: ConfigFileEngine;
+    plugin: ConfigFilePlugin;
+    private: ConfigFilePrivate;
+    templateProject: ConfigFileTemplate;
+    templateIntegrations: ConfigFileTemplates;
+    templateProjects: ConfigFileTemplates;
+    templatePlugins: ConfigFileTemplates;
+    workspace: ConfigFileWorkspace;
+    workspaces: ConfigFileWorkspaces;
+};
+
+// Runtime -----------------------
+//
+// renative.runtime.json
+export type ConfigFileRuntime = z.infer<typeof zodConfigFileRuntime>;

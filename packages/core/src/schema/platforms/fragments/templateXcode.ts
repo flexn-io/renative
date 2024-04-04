@@ -13,8 +13,8 @@ const _zodAppDelegateMethod = z.array(
         }),
     ])
 );
-interface ConfigAppDelegateMethod extends z.infer<typeof _zodAppDelegateMethod> {}
-const zodAppDelegateMethod = T<ConfigAppDelegateMethod>(_zodAppDelegateMethod);
+export interface ConfigTemplateXcodeAppDelegateMethod extends z.infer<typeof _zodAppDelegateMethod> {}
+export const zodAppDelegateMethod = T<ConfigTemplateXcodeAppDelegateMethod>(_zodAppDelegateMethod);
 
 const _application = z
     .object({
@@ -32,7 +32,7 @@ const _application = z
         didDisconnectCarInterfaceController: zodAppDelegateMethod,
     })
     .partial();
-interface Tapplication extends z.infer<typeof _application> {}
+export interface ConfigTemplateXcodeApplication extends z.infer<typeof _application> {}
 
 const project_pbxproj = z
     .object({
@@ -50,7 +50,7 @@ const project_pbxproj = z
         buildSettings: z.record(z.string(), z.string()),
     })
     .partial();
-interface project_pbxprojT extends z.infer<typeof project_pbxproj> {}
+export interface ConfigTemplateXcodeProjectPbxproj extends z.infer<typeof project_pbxproj> {}
 
 export const zodTemplateXcodeFragment = z
     .object({
@@ -71,12 +71,12 @@ export const zodTemplateXcodeFragment = z
                     })
                     .partial()
                     .describe('Allows to manipulate Podfile'),
-                project_pbxproj: T<project_pbxprojT>(project_pbxproj),
+                project_pbxproj: T<ConfigTemplateXcodeProjectPbxproj>(project_pbxproj),
                 AppDelegate_mm: z
                     .object({
                         appDelegateMethods: z
                             .object({
-                                application: T<Tapplication>(_application),
+                                application: T<ConfigTemplateXcodeApplication>(_application),
                                 userNotificationCenter: z
                                     .object({
                                         willPresent: zodAppDelegateMethod,

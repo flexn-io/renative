@@ -34,7 +34,7 @@ export const zodAndroidManifest = zodManifestChildBase.extend({
 Injects / Overrides values in AndroidManifest.xml file of generated android based project
 > IMPORTANT: always ensure that your object contains \`tag\` and \`android:name\` to target correct tag to merge into
  `);
-interface zodAndroidManifestT extends z.infer<typeof zodAndroidManifest> {}
+export interface ConfigTemplateAndroidAndroidManifest extends z.infer<typeof zodAndroidManifest> {}
 
 const MainActivity_kt = z
     .object({
@@ -49,7 +49,7 @@ const MainActivity_kt = z
         resultMethods: z.array(z.string()),
     })
     .partial();
-interface MainActivity_ktT extends z.infer<typeof MainActivity_kt> {}
+export interface ConfigTemplateAndroidMainActivityKT extends z.infer<typeof MainActivity_kt> {}
 
 const MainApplication_kt = z
     .object({
@@ -65,7 +65,7 @@ const MainApplication_kt = z
     })
     .partial()
     .describe('Allows you to configure behaviour of MainActivity');
-interface MainApplication_ktT extends z.infer<typeof MainApplication_kt> {}
+export interface ConfigTemplateAndroidMainApplicationKT extends z.infer<typeof MainApplication_kt> {}
 
 const templateAndroid = z
     .object({
@@ -104,7 +104,7 @@ const templateAndroid = z
             })
             .partial()
             .describe('Overrides values in `app/build.gradle` file of generated android based project'),
-        AndroidManifest_xml: T<zodAndroidManifestT>(zodAndroidManifest),
+        AndroidManifest_xml: T<ConfigTemplateAndroidAndroidManifest>(zodAndroidManifest),
         strings_xml: z.object({
             children: z.array(
                 z.object({
@@ -114,8 +114,8 @@ const templateAndroid = z
                 })
             ),
         }),
-        MainActivity_kt: T<MainActivity_ktT>(MainActivity_kt),
-        MainApplication_kt: T<MainApplication_ktT>(MainApplication_kt),
+        MainActivity_kt: T<ConfigTemplateAndroidMainActivityKT>(MainActivity_kt),
+        MainApplication_kt: T<ConfigTemplateAndroidMainApplicationKT>(MainApplication_kt),
         settings_gradle: z.object({}),
         gradle_wrapper_properties: z.object({}),
         SplashActivity_java: z.object({}),
@@ -124,11 +124,11 @@ const templateAndroid = z
         proguard_rules_pro: z.object({}),
     })
     .partial();
-interface templateAndroidT extends z.infer<typeof templateAndroid> {}
+export interface ConfigTemplateAndroidBase extends z.infer<typeof templateAndroid> {}
 
 export const zodTemplateAndroidFragment = z
     .object({
-        templateAndroid: T<templateAndroidT>(templateAndroid),
+        templateAndroid: T<ConfigTemplateAndroidBase>(templateAndroid),
     })
     .partial()
     .describe('Allows more advanced modifications to Android based project template');
