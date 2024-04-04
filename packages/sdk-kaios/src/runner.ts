@@ -1,4 +1,4 @@
-import { buildCoreWebpackProject, configureCoreWebProject } from '@rnv/sdk-webpack';
+import { buildCoreWebpackProject, configureCoreWebProject, runWebpackServer } from '@rnv/sdk-webpack';
 import path from 'path';
 import {
     getPlatformProjectDir,
@@ -9,10 +9,22 @@ import {
     copyBuildsFolder,
     copyAssetsFolder,
     getContext,
+    getConfigProp,
+    chalk,
+    logError,
+    logInfo,
 } from '@rnv/core';
 import { launchKaiOSSimulator } from './deviceManager';
 
-import { getAppAuthor, getAppDescription, getAppTitle } from '@rnv/sdk-utils';
+import {
+    REMOTE_DEBUGGER_ENABLED_PLATFORMS,
+    checkPortInUse,
+    confirmActiveBundler,
+    getAppAuthor,
+    getAppDescription,
+    getAppTitle,
+    waitForHost,
+} from '@rnv/sdk-utils';
 
 export const configureKaiOSProject = async () => {
     const c = getContext();
@@ -49,10 +61,55 @@ const _configureProject = () =>
 
 export const runKaiOSProject = async () => {
     logDefault('runKaiOSProject');
+    const c = getContext();
+    const { platform } = c;
+    const { hosted } = c.program.opts();
 
-    await buildCoreWebpackProject();
-    await launchKaiOSSimulator(true);
-    return true;
+    if (!platform) return;
+
+    const bundleAssets = getConfigProp('bundleAssets') === true;
+    const isHosted = hosted && !bundleAssets;
+
+    if (isHosted) {
+        const isPortActive = await checkPortInUse(c.runtime.port);
+        if (isPortActive) {
+            const resetCompleted = await confirmActiveBundler();
+            c.runtime.skipActiveServerCheck = !resetCompleted;
+        }
+        logDefault('runKaios', `hosted:${!!isHosted}`);
+        return true;
+    }
+
+    if (bundleAssets) {
+        await buildCoreWebpackProject();
+        await launchKaiOSSimulator(true);
+    } else {
+        const isPortActive = await checkPortInUse(c.runtime.port);
+        const isWeinreEnabled = REMOTE_DEBUGGER_ENABLED_PLATFORMS.includes(platform) && !bundleAssets && !hosted;
+
+        if (!isPortActive) {
+            logInfo(
+                `Your ${chalk().bold(platform)} devServer at port ${chalk().bold(
+                    c.runtime.port
+                )} is not running. Starting it up for you...`
+            );
+            waitForHost('')
+                .then(() => launchKaiOSSimulator(true))
+                .catch(logError);
+            await runWebpackServer(isWeinreEnabled);
+        } else {
+            const resetCompleted = await confirmActiveBundler();
+
+            if (resetCompleted) {
+                waitForHost('')
+                    .then(() => launchKaiOSSimulator(true))
+                    .catch(logError);
+                await runWebpackServer(isWeinreEnabled);
+            } else {
+                await launchKaiOSSimulator(true);
+            }
+        }
+    }
 };
 
 export const buildKaiOSProject = async () => {
