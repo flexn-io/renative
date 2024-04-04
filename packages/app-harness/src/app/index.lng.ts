@@ -1,4 +1,4 @@
-import { Lightning } from '@lightningjs/sdk';
+import Lightning from "@lightningjs/core";
 
 export default class App extends Lightning.Component {
     static _template() {

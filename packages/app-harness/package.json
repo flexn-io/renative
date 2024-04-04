@@ -39,7 +39,7 @@
         "watch": "tsc --watch --preserveWatchOutput --noEmit"
     },
     "dependencies": {
-        "@lightningjs/sdk": "5.2.0",
+        "@lightningjs/sdk": "5.5.1",
         "@react-native-community/push-notification-ios": "1.11.0",
         "@react-native-firebase/app": "18.6.1",
         "@rnv/renative": "1.0.0-rc.12",
@@ -59,7 +59,7 @@
         "react-native-web": "0.19.9",
         "react-native-fs": "2.20.0",
         "rn-fetch-blob": "0.12.0",
-        "@lightningjs/cli": "2.11.0"
+        "@lightningjs/cli": "2.13.0"
     },
     "devDependencies": {
         "@flexn/assets-renative-outline": "0.3.3",

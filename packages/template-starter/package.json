@@ -95,7 +95,7 @@
     "devDependencies": {
         "@flexn/assets-renative-outline": "0.3.3",
         "@flexn/graybox": "1.0.0-feat.12",
-        "@lightningjs/sdk": "5.2.0",
+        "@lightningjs/sdk": "5.5.1",
         "@rnv/core": "1.0.0-rc.12",
         "@rnv/engine-lightning": "1.0.0-rc.12",
         "@rnv/engine-rn": "1.0.0-rc.12",

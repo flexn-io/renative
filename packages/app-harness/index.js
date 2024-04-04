@@ -1,3 +1,3 @@
-import Main from './src/entry/';
+import Main from './src/entry';
 
 export default Main;
