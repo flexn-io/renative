@@ -13,6 +13,7 @@ import {
     chalk,
     logError,
     logInfo,
+    RnvContext,
 } from '@rnv/core';
 import { launchKaiOSSimulator } from './deviceManager';
 
@@ -59,9 +60,8 @@ const _configureProject = () =>
         resolve();
     });
 
-export const runKaiOSProject = async () => {
+export const runKaiOSProject = async (c: RnvContext) => {
     logDefault('runKaiOSProject');
-    const c = getContext();
     const { platform } = c;
     const { hosted } = c.program.opts();
 
