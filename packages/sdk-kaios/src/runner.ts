@@ -47,8 +47,7 @@ const _configureProject = () =>
         if (!isPlatformActive(resolve)) return;
 
         const appFolder = getPlatformProjectDir();
-
-        const manifestFilePath = path.join(appFolder!, 'manifest.webapp');
+        const manifestFilePath = path.join(appFolder!, 'public/manifest.webapp');
         const manifestFile = JSON.parse(fsReadFileSync(manifestFilePath).toString());
 
         manifestFile.name = `${getAppTitle()}`;
