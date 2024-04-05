@@ -44,7 +44,7 @@ const Question = async (data: NewProjectData) => {
         const value = projectTemplates[k];
         const option: TemplateOption = {
             name: `${k} ${chalk().grey(`- ${value.localPath || value.description}`)}`,
-            value: { ...value, type: 'existing' },
+            value: { ...value, type: 'existing', packageName: value?.packageName || k },
         };
         options.push(option);
         if (value.localPath) {
@@ -176,8 +176,10 @@ const Question = async (data: NewProjectData) => {
     } else {
         if (checkInputValue(templateVersion)) {
             inputs.template.version = templateVersion;
+        } else if (inputs.template.packageName) {
+            inputs.template.version = await listAndSelectNpmVersion(inputs.template.packageName);
         } else {
-            inputs.template.version = await listAndSelectNpmVersion(inputs.template.packageName || '');
+            return Promise.reject('Template package name is required');
         }
 
         await executeAsync(

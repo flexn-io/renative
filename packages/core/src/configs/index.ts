@@ -185,9 +185,14 @@ const _loadConfigFiles = (
 
 const generateLookupPaths = (pkgName: string) => {
     const pathLookups: string[] = [
+        // Following ones are for monorepo
         path.join(__dirname, '../..', RnvFolderName.nodeModules, pkgName),
         path.resolve(__dirname, '../../..', RnvFolderName.nodeModules, pkgName),
         path.resolve(__dirname, '../../../..', RnvFolderName.nodeModules, pkgName),
+        // Following ones are for globally installed RNV
+        path.join(__dirname, '../..', pkgName),
+        path.resolve(__dirname, '../../..', pkgName),
+        path.resolve(__dirname, '../../../..', pkgName),
     ];
     return pathLookups;
 };
