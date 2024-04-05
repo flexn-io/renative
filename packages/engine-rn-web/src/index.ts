@@ -51,7 +51,7 @@ const Engine = createRnvEngine({
         kaios: {
             defaultPort: 8093,
             isWebHosted: true,
-            extensions: ['kaios.mobile', 'mobile', 'kaios', 'mobile.web', 'native'],
+            extensions: ['kaios', 'kaios.mobile', 'mobile', 'mobile.web', 'native', 'tv.web', 'web'],
         },
     },
 });
