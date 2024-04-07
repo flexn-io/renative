@@ -5,6 +5,10 @@ jest.mock('fs');
 jest.mock('process');
 jest.mock('../../logger');
 
+beforeEach(() => {
+    // NOTE: do not call createRnvContext() in core library itself. It is not a mock
+});
+
 describe('Context tests', () => {
     it('test getContext returns object with keys', async () => {
         // GIVEN
