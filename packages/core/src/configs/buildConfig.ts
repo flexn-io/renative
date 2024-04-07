@@ -191,17 +191,17 @@ export const generateBuildConfig = () => {
         }
     }
 
-    _checkBuildSchemeIfEngine(c);
+    _checkEngineOverride(c);
 };
 
-const _checkBuildSchemeIfEngine = (c: RnvContext) => {
-    const { scheme } = c.program.opts();
-    if (!c.platform || !scheme) return;
+const _checkEngineOverride = (c: RnvContext) => {
+    const { scheme, engine } = c.program.opts();
+    if (!c.platform || !scheme || !engine) return;
 
     const platform = c.buildConfig?.platforms?.[c.platform];
     if (!platform) return;
 
-    const definedEngine = platform.buildSchemes?.[scheme]?.engine;
+    const definedEngine = platform.buildSchemes?.[scheme]?.engine || engine;
     if (definedEngine) {
         platform.engine = definedEngine;
     }

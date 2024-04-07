@@ -241,6 +241,8 @@ export type ParamKeys<ExtraKeys extends string = ProgramOptionsKey> = Partial<
 export const RnvTaskCoreOptionPresets = {
     withCore: (arr?: Array<RnvTaskOption>) =>
         [
+            RnvTaskOptions.scheme, // temporary workaround
+            RnvTaskOptions.engine, // temporary workaround
             RnvTaskOptions.platform, // platform is necessary to be accepted as base for the `rnv` command to work with enginie plugins
             RnvTaskOptions.info,
             RnvTaskOptions.ci,
@@ -258,10 +260,10 @@ export const RnvTaskOptionPresets = {
         [
             RnvTaskOptions.reset,
             RnvTaskOptions.resetHard,
-            RnvTaskOptions.engine,
+            // RnvTaskOptions.engine,
             RnvTaskOptions.resetAssets,
             RnvTaskOptions.appConfigID,
-            RnvTaskOptions.scheme,
+            // RnvTaskOptions.scheme,
             RnvTaskOptions.packageManager,
             // RnvTaskOptions.platform,
         ].concat(arr || []),
