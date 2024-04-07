@@ -24,7 +24,7 @@ export const zodAndroidResources = zodResourcesChildBase.extend({
 Injects / Overrides values in res/values files of generated android based project
 > IMPORTANT: always ensure that your object contains \`tag\` and \`name\` to target correct tag to merge into
  `);
-
+// We using interfaces to reduce the size of d.ts files (zod + types in d.ts files are huge)
 export interface ConfigTemplateAndroidResources extends z.infer<typeof zodAndroidResources> {}
 
 // AndroidManifest.xml
@@ -51,6 +51,7 @@ export const zodAndroidManifest = zodManifestChildBase.extend({
 Injects / Overrides values in AndroidManifest.xml file of generated android based project
 > IMPORTANT: always ensure that your object contains \`tag\` and \`android:name\` to target correct tag to merge into
  `);
+// We using interfaces to reduce the size of d.ts files (zod + types in d.ts files are huge)
 export interface ConfigTemplateAndroidAndroidManifest extends z.infer<typeof zodAndroidManifest> {}
 
 // MainActivity.kt
@@ -68,6 +69,7 @@ const zodMainActivity_kt = z
         resultMethods: z.array(z.string()),
     })
     .partial();
+// We using interfaces to reduce the size of d.ts files (zod + types in d.ts files are huge)
 export interface ConfigTemplateAndroidMainActivityKT extends z.infer<typeof zodMainActivity_kt> {}
 
 // MainApplication.kt
@@ -86,6 +88,7 @@ const zodMainApplication_kt = z
     })
     .partial()
     .describe('Allows you to configure behaviour of MainActivity');
+// We using interfaces to reduce the size of d.ts files (zod + types in d.ts files are huge)
 export interface ConfigTemplateAndroidMainApplicationKT extends z.infer<typeof zodMainApplication_kt> {}
 
 // templateAndroid
@@ -139,6 +142,7 @@ const templateAndroid = z
         proguard_rules_pro: z.object({}),
     })
     .partial();
+// We using interfaces to reduce the size of d.ts files (zod + types in d.ts files are huge)
 export interface ConfigTemplateAndroidBase extends z.infer<typeof templateAndroid> {}
 
 export const zodTemplateAndroidFragment = z

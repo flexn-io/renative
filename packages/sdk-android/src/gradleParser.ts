@@ -1,6 +1,6 @@
 import {
     OverridesOptions,
-    RnvPluginPlatformSchema,
+    ConfigPluginPlatformSchema,
     RnvContext,
     RnvPlugin,
     chalk,
@@ -586,7 +586,7 @@ export const parseGradlePropertiesSync = () => {
     writeCleanFile(getBuildFilePath(gradleProperties), path.join(appFolder, gradleProperties), injects, undefined, c);
 };
 
-export const injectPluginGradleSync = (pluginRoot: RnvPlugin, plugin: RnvPluginPlatformSchema, key: string) => {
+export const injectPluginGradleSync = (pluginRoot: RnvPlugin, plugin: ConfigPluginPlatformSchema, key: string) => {
     // const keyFixed = key.replace(/\//g, '-').replace(/@/g, '');
     // const packagePath = plugin.path ?? `${key}/android`;
     // let pathAbsolute;
@@ -631,7 +631,7 @@ export const injectPluginGradleSync = (pluginRoot: RnvPlugin, plugin: RnvPluginP
     }
 };
 
-export const parseAndroidConfigObject = (plugin?: RnvPluginPlatformSchema, key = '') => {
+export const parseAndroidConfigObject = (plugin?: ConfigPluginPlatformSchema, key = '') => {
     // APP/BUILD.GRADLE
     const c = getContext();
     const templateAndroid = plugin?.templateAndroid;

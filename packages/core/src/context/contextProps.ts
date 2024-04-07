@@ -9,7 +9,7 @@ import type {
     GetConfigPropVal,
     GetConfigRootPropVal,
     PlatformBuildSchemeKey,
-    RnvCommonBuildSchemeSchema,
+    ConfigCommonBuildSchemeSchema,
 } from '../schema/types';
 import type { TimestampPathsConfig } from '../system/types';
 import path from 'path';
@@ -72,7 +72,7 @@ export const getConfigProp = <T, K extends ConfigPropKeyMerged<T>>(
 
     const resultCommonRoot = getFlavouredProp(sourceObj.common || {}, key as CommonPropKey);
 
-    const bs: RnvCommonBuildSchemeSchema =
+    const bs: ConfigCommonBuildSchemeSchema =
         (!!c.runtime.scheme && sourceObj.common?.buildSchemes?.[c.runtime.scheme]) || {};
 
     const resultCommonScheme = c.runtime.scheme && getFlavouredProp(bs, key as CommonBuildSchemeKey);

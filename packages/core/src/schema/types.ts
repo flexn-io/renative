@@ -47,87 +47,89 @@ import type { RnvPlatformKey } from '../types';
 
 // Shared -----------------------
 //
-export type RnvBuildSchemeFragment = z.infer<typeof zodBuildSchemeFragment>;
-export type RnvTemplateConfigFragment = z.infer<typeof zodTemplateConfigFragment>;
+export type ConfigBuildSchemeFragment = z.infer<typeof zodBuildSchemeFragment>;
+export type ConfigTemplateConfigFragment = z.infer<typeof zodTemplateConfigFragment>;
 
 // Common -----------------------
 //
-export type RnvCommonSchemaFragment = z.infer<typeof zodCommonSchemaFragment>;
-export type CommonPropKey = keyof RnvCommonSchemaFragment; // We Request keys excluding buildScheme (not RnvCommonSchema)
+export type ConfigCommonSchemaFragment = z.infer<typeof zodCommonSchemaFragment>;
+export type CommonPropKey = keyof ConfigCommonSchemaFragment; // We Request keys excluding buildScheme (not ConfigCommonSchema)
 
-export type RnvCommonBuildSchemeSchema = Partial<
-    RnvCommonSchemaFragment & RnvBuildSchemeFragment & RnvPlatformBaseFragment
+export type ConfigCommonBuildSchemeSchema = Partial<
+    ConfigCommonSchemaFragment & ConfigBuildSchemeFragment & ConfigPlatformBaseFragment
 >;
-export type CommonBuildSchemeKey = keyof RnvCommonBuildSchemeSchema;
+export type CommonBuildSchemeKey = keyof ConfigCommonBuildSchemeSchema;
 
-export type RnvCommonSchema = Partial<RnvCommonSchemaFragment> & {
-    buildSchemes?: Record<string, RnvCommonBuildSchemeSchema>;
+export type ConfigCommonSchema = Partial<ConfigCommonSchemaFragment> & {
+    buildSchemes?: Record<string, ConfigCommonBuildSchemeSchema>;
 };
 
 // Platform -----------------------
 //
-export type RnvPlatformAndroidFragment = z.infer<typeof zodPlatformAndroidFragment>;
-export type RnvPlatformBaseFragment = z.infer<typeof zodPlatformBaseFragment>;
-export type RnvPlatformElectronFragment = z.infer<typeof zodPlatformElectronFragment>;
-export type RnvPlatformiOSFragment = z.infer<typeof zodPlatformiOSFragment>;
-export type RnvPlatformLightningFragment = z.infer<typeof zodPlatformLightningFragment>;
-export type RnvPlatformNextJsFragment = z.infer<typeof zodPlatformNextJsFragment>;
-export type RnvPlatformReactNativeFragment = z.infer<typeof zodPlatformReactNativeFragment>;
+export type ConfigPlatformAndroidFragment = z.infer<typeof zodPlatformAndroidFragment>;
+export type ConfigPlatformBaseFragment = z.infer<typeof zodPlatformBaseFragment>;
+export type ConfigPlatformElectronFragment = z.infer<typeof zodPlatformElectronFragment>;
+export type ConfigPlatformiOSFragment = z.infer<typeof zodPlatformiOSFragment>;
+export type ConfigPlatformLightningFragment = z.infer<typeof zodPlatformLightningFragment>;
+export type ConfigPlatformNextJsFragment = z.infer<typeof zodPlatformNextJsFragment>;
+export type ConfigPlatformReactNativeFragment = z.infer<typeof zodPlatformReactNativeFragment>;
 
-export type AndroidManifestNode = z.infer<typeof zodManifestChildWithChildren>;
+export type ConfigAndroidManifestNode = z.infer<typeof zodManifestChildWithChildren>;
 export type ConfigAndroidManifestChildType = z.infer<typeof zodManifestChildBase> & {
     children?: ConfigAndroidManifestChildType[];
 };
-export type AndroidManifest = z.infer<typeof zodAndroidManifest>;
-export type RnvTemplateAndroidFragment = z.infer<typeof zodTemplateAndroidFragment>;
+export type ConfigAndroidManifest = z.infer<typeof zodAndroidManifest>;
+export type ConfigTemplateAndroidFragment = z.infer<typeof zodTemplateAndroidFragment>;
 
-export type AndroidResources = z.infer<typeof zodAndroidResources>;
-export type AndroidResourcesNode = z.infer<typeof zodResourcesChildWithChildren>;
+export type ConfigAndroidResources = z.infer<typeof zodAndroidResources>;
+export type ConfigAndroidResourcesNode = z.infer<typeof zodResourcesChildWithChildren>;
 export type ConfigAndroidResourcesChildType = z.infer<typeof zodResourcesChildBase> & {
     children?: ConfigAndroidResourcesChildType[];
 };
-export type RnvTemplateXcodeFragment = z.infer<typeof zodTemplateXcodeFragment>;
+export type ConfigTemplateXcodeFragment = z.infer<typeof zodTemplateXcodeFragment>;
 export type ConfigAppDelegateMethod = ConfigTemplateXcodeAppDelegateMethod[number];
-export type RnvPlatformTizenFragment = z.infer<typeof zodPlatformTizenFragment>;
-export type RnvPlatformWebFragment = z.infer<typeof zodPlatformWebFragment>;
-export type RnvPlatformWebOSFragment = z.infer<typeof zodPlatformWebOSFragment>;
-export type RnvPlatformWebpackFragment = z.infer<typeof zodPlatformWebpackFragment>;
-export type RnvPlatformWindowsFragment = z.infer<typeof zodPlatformWindowsFragment>;
+export type ConfigPlatformTizenFragment = z.infer<typeof zodPlatformTizenFragment>;
+export type ConfigPlatformWebFragment = z.infer<typeof zodPlatformWebFragment>;
+export type ConfigPlatformWebOSFragment = z.infer<typeof zodPlatformWebOSFragment>;
+export type ConfigPlatformWebpackFragment = z.infer<typeof zodPlatformWebpackFragment>;
+export type ConfigPlatformWindowsFragment = z.infer<typeof zodPlatformWindowsFragment>;
 
-export type RnvPlatformSchemaFragment = RnvCommonSchemaFragment &
-    RnvPlatformBaseFragment &
-    RnvPlatformiOSFragment &
-    RnvPlatformAndroidFragment &
-    RnvPlatformWebFragment &
-    RnvPlatformTizenFragment &
-    RnvPlatformWindowsFragment &
-    RnvPlatformWebOSFragment &
-    RnvPlatformLightningFragment &
-    RnvPlatformReactNativeFragment &
-    RnvPlatformWebpackFragment &
-    RnvPlatformElectronFragment &
-    RnvPlatformNextJsFragment &
-    RnvTemplateAndroidFragment &
-    RnvTemplateXcodeFragment;
-export type PlatPropKey = keyof RnvPlatformSchemaFragment; // We Request keys excluding buildScheme (not RnvPlatformSchema)
+export type ConfigPlatformSchemaFragment = ConfigCommonSchemaFragment &
+    ConfigPlatformBaseFragment &
+    ConfigPlatformiOSFragment &
+    ConfigPlatformAndroidFragment &
+    ConfigPlatformWebFragment &
+    ConfigPlatformTizenFragment &
+    ConfigPlatformWindowsFragment &
+    ConfigPlatformWebOSFragment &
+    ConfigPlatformLightningFragment &
+    ConfigPlatformReactNativeFragment &
+    ConfigPlatformWebpackFragment &
+    ConfigPlatformElectronFragment &
+    ConfigPlatformNextJsFragment &
+    ConfigTemplateAndroidFragment &
+    ConfigTemplateXcodeFragment;
+export type PlatPropKey = keyof ConfigPlatformSchemaFragment; // We Request keys excluding buildScheme (not ConfigPlatformSchema)
 
-// export type RnvPlatformsSchema = z.infer<typeof zodPlatformsSchema>;
-export type RnvPlatformBuildSchemeSchema = RnvCommonSchemaFragment & RnvBuildSchemeFragment & RnvPlatformSchemaFragment;
-export type PlatformBuildSchemeKey = keyof RnvPlatformBuildSchemeSchema;
+// export type ConfigPlatformsSchema = z.infer<typeof zodPlatformsSchema>;
+export type ConfigPlatformBuildSchemeSchema = ConfigCommonSchemaFragment &
+    ConfigBuildSchemeFragment &
+    ConfigPlatformSchemaFragment;
+export type PlatformBuildSchemeKey = keyof ConfigPlatformBuildSchemeSchema;
 
-export type RnvPlatformSchema = RnvPlatformSchemaFragment & {
-    buildSchemes?: Record<string, RnvPlatformBuildSchemeSchema>;
+export type ConfigPlatformSchema = ConfigPlatformSchemaFragment & {
+    buildSchemes?: Record<string, ConfigPlatformBuildSchemeSchema>;
 };
-export type RnvPlatformsSchema = Partial<Record<RnvPlatformKey, RnvPlatformSchema>>;
+export type ConfigPlatformsSchema = Partial<Record<RnvPlatformKey, ConfigPlatformSchema>>;
 
 // App -----------------------
 //
-export type RnvRootAppBaseFragment = z.infer<typeof zodRootAppBaseFragment>;
+export type ConfigRootAppBaseFragment = z.infer<typeof zodRootAppBaseFragment>;
 
-export type ConfigFileApp = RnvRootAppBaseFragment & {
-    common?: RnvCommonSchema;
-    platforms?: RnvPlatformsSchema;
-    plugins?: RnvPluginsSchema;
+export type ConfigFileApp = ConfigRootAppBaseFragment & {
+    common?: ConfigCommonSchema;
+    platforms?: ConfigPlatformsSchema;
+    plugins?: ConfigPluginsSchema;
 };
 // appConfigs/**/renative.json
 
@@ -143,7 +145,7 @@ export type ConfigFileBuildConfig = ConfigFileTemplates &
     RootPluginsMerged &
     ConfigFileProject &
     ConfigFileLocal &
-    RnvRootAppBaseFragment;
+    ConfigRootAppBaseFragment;
 
 export type BuildConfigKey = keyof ConfigFileBuildConfig;
 
@@ -173,18 +175,18 @@ export type ConfigFileOverrides = z.infer<typeof zodConfigFileOverrides>;
 
 // Plugin -----------------------
 //
-export type RnvPluginBaseFragment = z.infer<typeof zodPluginBaseFragment>;
-export type RnvPluginPlatformAndroidFragment = Partial<z.infer<typeof zodPluginPlatformAndroidFragment>>;
-export type RnvPluginPlatformBaseFragment = Partial<z.infer<typeof zodPluginPlatformBaseFragment>>;
-export type RnvPluginPlatformiOSFragment = Partial<z.infer<typeof zodPluginPlatformiOSFragment>>;
-export type RnvPluginPlatformSchema = RnvPluginPlatformBaseFragment &
-    RnvPluginPlatformAndroidFragment &
-    RnvPluginPlatformiOSFragment;
-export type RnvPluginPlatformsSchema = Record<RnvPlatformKey, RnvPluginPlatformSchema>;
-export type RnvPluginSchema = RnvPluginBaseFragment & Partial<RnvPluginPlatformsSchema>;
-export type RnvPluginsSchema = Record<string, RnvPluginSchema | string>;
+export type ConfigPluginBaseFragment = z.infer<typeof zodPluginBaseFragment>;
+export type ConfigPluginPlatformAndroidFragment = Partial<z.infer<typeof zodPluginPlatformAndroidFragment>>;
+export type ConfigPluginPlatformBaseFragment = Partial<z.infer<typeof zodPluginPlatformBaseFragment>>;
+export type ConfigPluginPlatformiOSFragment = Partial<z.infer<typeof zodPluginPlatformiOSFragment>>;
+export type ConfigPluginPlatformSchema = ConfigPluginPlatformBaseFragment &
+    ConfigPluginPlatformAndroidFragment &
+    ConfigPluginPlatformiOSFragment;
+export type ConfigPluginPlatformsSchema = Record<RnvPlatformKey, ConfigPluginPlatformSchema>;
+export type ConfigPluginSchema = ConfigPluginBaseFragment & Partial<ConfigPluginPlatformsSchema>;
+export type ConfigPluginsSchema = Record<string, ConfigPluginSchema | string>;
 // renative.plugin.json
-export type ConfigFilePlugin = RnvPluginSchema & z.infer<typeof zodPluginFragment>;
+export type ConfigFilePlugin = ConfigPluginSchema & z.infer<typeof zodPluginFragment>;
 
 // Private -----------------------
 //
@@ -194,15 +196,15 @@ export type ConfigFilePrivate = z.infer<typeof zodConfigFilePrivate>;
 
 // Project -----------------------
 //
-export type RnvRootProjectBaseFragment = z.infer<typeof zodRootProjectBaseFragment> & {
-    templateConfig?: RnvTemplateConfigFragment;
+export type ConfigRootProjectBaseFragment = z.infer<typeof zodRootProjectBaseFragment> & {
+    templateConfig?: ConfigTemplateConfigFragment;
 };
-export type ConfigProjectPaths = Required<RnvRootProjectBaseFragment>['paths'];
+export type ConfigProjectPaths = Required<ConfigRootProjectBaseFragment>['paths'];
 // renative.json
-export type ConfigFileProject = RnvRootProjectBaseFragment & {
-    common?: RnvCommonSchema;
-    platforms?: RnvPlatformsSchema;
-    plugins?: RnvPluginsSchema;
+export type ConfigFileProject = ConfigRootProjectBaseFragment & {
+    common?: ConfigCommonSchema;
+    platforms?: ConfigPlatformsSchema;
+    plugins?: ConfigPluginsSchema;
 };
 
 // Template -----------------------
@@ -210,9 +212,9 @@ export type ConfigFileProject = RnvRootProjectBaseFragment & {
 type ConfigTemplateBootstrapConfig = z.infer<typeof zodConfigTemplateBootstrapConfig>;
 // renative.template.json
 export type ConfigFileTemplate = {
-    // defaults: RnvDefault,
+    // defaults: ConfigDefault,
     // engines: z.optional(EnginesSchema),
-    templateConfig?: RnvTemplateConfigFragment;
+    templateConfig?: ConfigTemplateConfigFragment;
     bootstrapConfig?: ConfigTemplateBootstrapConfig;
 };
 
@@ -255,7 +257,7 @@ export type ConfigFileRuntime = z.infer<typeof zodConfigFileRuntime>;
 
 // ConfigProp -----------------------
 //
-export type ConfigProp = RnvPlatformSchemaFragment;
+export type ConfigProp = ConfigPlatformSchemaFragment;
 export type ConfigPropKey = keyof ConfigProp;
 export type ConfigPropMerged<T> = ConfigProp & T;
 export type ConfigPropKeyMerged<T> = keyof ConfigPropMerged<T>;

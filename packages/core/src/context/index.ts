@@ -137,16 +137,11 @@ export const populateContextPaths = (c: RnvContext, RNV_HOME_DIR: string | undef
     c.paths.buildHooks.src.indexTs = path.join(c.paths.buildHooks.src.dir, 'index.ts');
     c.paths.buildHooks.dist.index = path.join(c.paths.buildHooks.dist.dir, 'index.js');
     c.paths.buildHooks.tsconfig = path.join(c.paths.buildHooks.dir, 'tsconfig.json');
-    // c.paths.buildHooks.tsconfig = path.join(__dirname, '../../templateFiles/tsconfig.hooks.json');
     c.paths.project.nodeModulesDir = path.join(c.paths.project.dir, 'node_modules');
     c.paths.project.srcDir = path.join(c.paths.project.dir, 'src');
     c.paths.project.appConfigsDir = path.join(c.paths.project.dir, 'appConfigs');
     c.paths.project.package = path.join(c.paths.project.dir, RnvFileName.package);
     c.paths.project.dotRnvDir = path.join(c.paths.project.dir, '.rnv');
-    // c.paths.project.npmLinkPolyfill = path.join(
-    //     c.paths.project.dir,
-    //     'npm_link_polyfill.json'
-    // );
     c.paths.project.appConfigBase.dir = path.join(c.paths.project.dir, 'appConfigs', 'base');
     c.paths.project.appConfigBase.pluginsDir = path.join(c.paths.project.appConfigBase.dir, 'plugins');
     c.paths.project.appConfigBase.fontsDir = path.join(c.paths.project.appConfigBase.dir, 'fonts');
@@ -155,14 +150,6 @@ export const populateContextPaths = (c: RnvContext, RNV_HOME_DIR: string | undef
     c.paths.project.assets.runtimeDir = path.join(c.paths.project.assets.dir, 'runtime');
     c.paths.project.assets.config = path.join(c.paths.project.assets.dir, RnvFileName.renativeRuntime);
     c.paths.project.builds.dir = path.join(c.paths.project.dir, 'platformBuilds');
-
-    // @rnv/config-templates ------------------
-    // NOTE: this is generated after @rnv/config-templates  is loaded dynamically
-    // c.paths.rnvConfigTemplates.pluginTemplatesDir = '????';
-    // c.paths.rnvConfigTemplates.config = path.join(
-    //     c.paths.rnvConfigTemplates.pluginTemplatesDir,
-    //     RnvFileName.renativeTemplates
-    // );
 
     // runtime
     c.platform = c.program.opts().platform;

@@ -3,7 +3,7 @@ import {
     getAppFolder,
     getConfigProp,
     writeCleanFile,
-    AndroidResources,
+    ConfigAndroidResources,
     getContext,
     logDefault,
     readObjectSync,
@@ -24,8 +24,13 @@ export const parseValuesXml = (targetRes: TargetResourceFile, injectValue?: bool
     if (!platform) return;
 
     try {
-        const baseResoutcesFilePath = path.join(__dirname, '..', RnvFolderName.templateFiles, `${targetRes}.json`);
-        const baseResourcesFile = readObjectSync<AndroidResources>(baseResoutcesFilePath);
+        const baseResoutcesFilePath = path.join(
+            __dirname,
+            RnvFolderName.UP,
+            RnvFolderName.templateFiles,
+            `${targetRes}.json`
+        );
+        const baseResourcesFile = readObjectSync<ConfigAndroidResources>(baseResoutcesFilePath);
         const resourceFile = `app/src/main/res/values/${targetRes.replace('_', '.')}`;
 
         if (!baseResourcesFile) {
@@ -94,13 +99,3 @@ const _overrideDynamicValue = (stringsPath: string) => {
 
     writeCleanFile(stringsPath, stringsPath, injects, undefined, c);
 };
-
-// export const injectPluginXmlValuesSync = (plugin: RenativeConfigPluginPlatform) => {
-//     const rStrings = plugin.templateAndroid?.strings_xml?.children;
-//     if (rStrings) {
-//         const c = getContext();
-//         rStrings.forEach((obj) => {
-//             c.payload.pluginConfigAndroid.resourceStrings.push(obj);
-//         });
-//     }
-// };

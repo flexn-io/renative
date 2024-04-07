@@ -3,7 +3,7 @@ import { z } from 'zod';
 const T = <T>(schema: z.ZodType<T>) => {
     return schema;
 };
-const _zodAppDelegateMethod = z.array(
+const zodAppDelegateMethod = z.array(
     z.union([
         z.string(),
         z.object({
@@ -13,26 +13,27 @@ const _zodAppDelegateMethod = z.array(
         }),
     ])
 );
-export interface ConfigTemplateXcodeAppDelegateMethod extends z.infer<typeof _zodAppDelegateMethod> {}
-export const zodAppDelegateMethod = T<ConfigTemplateXcodeAppDelegateMethod>(_zodAppDelegateMethod);
+// We using interfaces to reduce the size of d.ts files (zod + types in d.ts files are huge)
+export interface ConfigTemplateXcodeAppDelegateMethod extends z.infer<typeof zodAppDelegateMethod> {}
 
-const _application = z
+const zodXcodeApplication_mm = z
     .object({
-        didFinishLaunchingWithOptions: zodAppDelegateMethod,
-        applicationDidBecomeActive: zodAppDelegateMethod,
-        open: zodAppDelegateMethod,
-        supportedInterfaceOrientationsFor: zodAppDelegateMethod,
-        didReceiveRemoteNotification: zodAppDelegateMethod,
-        didFailToRegisterForRemoteNotificationsWithError: zodAppDelegateMethod,
-        didReceive: zodAppDelegateMethod,
-        didRegister: zodAppDelegateMethod,
-        didRegisterForRemoteNotificationsWithDeviceToken: zodAppDelegateMethod,
-        continue: zodAppDelegateMethod,
-        didConnectCarInterfaceController: zodAppDelegateMethod,
-        didDisconnectCarInterfaceController: zodAppDelegateMethod,
+        didFinishLaunchingWithOptions: T<ConfigTemplateXcodeAppDelegateMethod>(zodAppDelegateMethod),
+        applicationDidBecomeActive: T<ConfigTemplateXcodeAppDelegateMethod>(zodAppDelegateMethod),
+        open: T<ConfigTemplateXcodeAppDelegateMethod>(zodAppDelegateMethod),
+        supportedInterfaceOrientationsFor: T<ConfigTemplateXcodeAppDelegateMethod>(zodAppDelegateMethod),
+        didReceiveRemoteNotification: T<ConfigTemplateXcodeAppDelegateMethod>(zodAppDelegateMethod),
+        didFailToRegisterForRemoteNotificationsWithError: T<ConfigTemplateXcodeAppDelegateMethod>(zodAppDelegateMethod),
+        didReceive: T<ConfigTemplateXcodeAppDelegateMethod>(zodAppDelegateMethod),
+        didRegister: T<ConfigTemplateXcodeAppDelegateMethod>(zodAppDelegateMethod),
+        didRegisterForRemoteNotificationsWithDeviceToken: T<ConfigTemplateXcodeAppDelegateMethod>(zodAppDelegateMethod),
+        continue: T<ConfigTemplateXcodeAppDelegateMethod>(zodAppDelegateMethod),
+        didConnectCarInterfaceController: T<ConfigTemplateXcodeAppDelegateMethod>(zodAppDelegateMethod),
+        didDisconnectCarInterfaceController: T<ConfigTemplateXcodeAppDelegateMethod>(zodAppDelegateMethod),
     })
     .partial();
-export interface ConfigTemplateXcodeApplication extends z.infer<typeof _application> {}
+// We using interfaces to reduce the size of d.ts files (zod + types in d.ts files are huge)
+export interface ConfigTemplateXcodeApplication extends z.infer<typeof zodXcodeApplication_mm> {}
 
 const project_pbxproj = z
     .object({
@@ -50,6 +51,7 @@ const project_pbxproj = z
         buildSettings: z.record(z.string(), z.string()),
     })
     .partial();
+// We using interfaces to reduce the size of d.ts files (zod + types in d.ts files are huge)
 export interface ConfigTemplateXcodeProjectPbxproj extends z.infer<typeof project_pbxproj> {}
 
 export const zodTemplateXcodeFragment = z
@@ -76,7 +78,7 @@ export const zodTemplateXcodeFragment = z
                     .object({
                         appDelegateMethods: z
                             .object({
-                                application: T<ConfigTemplateXcodeApplication>(_application),
+                                application: T<ConfigTemplateXcodeApplication>(zodXcodeApplication_mm),
                                 userNotificationCenter: z
                                     .object({
                                         willPresent: zodAppDelegateMethod,

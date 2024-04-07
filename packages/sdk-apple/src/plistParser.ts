@@ -13,6 +13,7 @@ import {
     fsWriteFileSync,
     getContext,
     chalk,
+    RnvFolderName,
 } from '@rnv/core';
 import { getAppFolderName } from './common';
 import { Context, FilePlistJSON } from './types';
@@ -71,7 +72,9 @@ export const parseEntitlementsPlist = () =>
         let pluginsEntitlementsObj = getConfigProp('entitlements');
         if (!pluginsEntitlementsObj) {
             pluginsEntitlementsObj =
-                readObjectSync(path.join(__dirname, '../templateFiles/entitlements.json')) || undefined;
+                readObjectSync(
+                    path.join(__dirname, RnvFolderName.UP, RnvFolderName.templateFiles, 'entitlements.json')
+                ) || undefined;
         }
 
         saveObjToPlistSync(c, entitlementsPath, pluginsEntitlementsObj);
@@ -94,7 +97,9 @@ export const parseInfoPlist = () =>
 
         // PLIST
         let plistObj =
-            readObjectSync<FilePlistJSON>(path.join(__dirname, `../templateFiles/info.plist.${platform}.json`)) || {};
+            readObjectSync<FilePlistJSON>(
+                path.join(__dirname, RnvFolderName.UP, RnvFolderName.templateFiles, `info.plist.${platform}.json`)
+            ) || {};
         plistObj.CFBundleDisplayName = getAppTitle();
 
         if (!plistObj.CFBundleDisplayName) {

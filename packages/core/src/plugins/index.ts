@@ -30,11 +30,11 @@ import type {
     ConfigFilePlugin,
     ConfigFileTemplates,
     ConfigProjectPaths,
-    RnvPluginPlatformSchema,
-    RnvPluginSchema,
+    ConfigPluginPlatformSchema,
+    ConfigPluginSchema,
 } from '../schema/types';
 
-const _getPluginScope = (plugin: RnvPluginSchema | string): RnvPluginScope => {
+const _getPluginScope = (plugin: ConfigPluginSchema | string): RnvPluginScope => {
     if (typeof plugin === 'string') {
         if (plugin.startsWith('source:')) {
             return { scope: plugin.split(':').pop() || 'rnv' };
@@ -65,7 +65,7 @@ export const getMergedPlugin = (c: RnvContext, key: string) => {
 
 const _getMergedPlugin = (
     c: RnvContext,
-    plugin: RnvPluginSchema | string | undefined,
+    plugin: ConfigPluginSchema | string | undefined,
     pluginKey: string,
     parentScope?: string,
     scopes?: Array<string>,
@@ -116,7 +116,7 @@ const _getMergedPlugin = (
         scopes,
         true
     );
-    let currentPlugin: RnvPluginSchema;
+    let currentPlugin: ConfigPluginSchema;
     if (typeof plugin === 'string' || plugin instanceof String) {
         currentPlugin = {};
     } else {
@@ -394,7 +394,7 @@ export const resolvePluginDependants = async () => {
 const _resolvePluginDependencies = async (
     c: RnvContext,
     key: string,
-    keyScope: RnvPluginSchema | string,
+    keyScope: ConfigPluginSchema | string,
     parentKey?: string
 ) => {
     // IMPORTANT: Do not cache this valuse as they need to be refreshed every
@@ -463,7 +463,7 @@ export const parsePlugins = (
 
         const excludedPlugins = getConfigProp('excludedPlugins') || [];
 
-        const handleActivePlugin = (plugin: RnvPlugin, pluginPlat: RnvPluginPlatformSchema, key: string) => {
+        const handleActivePlugin = (plugin: RnvPlugin, pluginPlat: ConfigPluginPlatformSchema, key: string) => {
             // log deprecated if present
             if (plugin.deprecated) {
                 logWarning(plugin.deprecated);
@@ -490,7 +490,7 @@ export const parsePlugins = (
                         (includedPlugins.includes('*') || includedPlugins.includes(key)) &&
                         !excludedPlugins.includes(key)
                     ) {
-                        const pluginPlat: RnvPluginPlatformSchema = plugin[platform] || {};
+                        const pluginPlat: ConfigPluginPlatformSchema = plugin[platform] || {};
 
                         // NOTE: we do not want to disable plugin just because object is missing. instead we will let people to do it explicitly
                         // {

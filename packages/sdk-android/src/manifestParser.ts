@@ -10,15 +10,16 @@ import {
     readObjectSync,
     writeCleanFile,
     parsePlugins,
-    AndroidManifestNode,
-    AndroidManifest,
-    ConfigPropKey,
     RnvContext,
     RnvPlatform,
+    getContext,
     ConfigProp,
     ConfigFileBuildConfig,
-    getContext,
-    AndroidResourcesNode,
+    ConfigAndroidManifestNode,
+    ConfigAndroidManifest,
+    ConfigPropKey,
+    ConfigAndroidResourcesNode,
+    RnvFolderName,
 } from '@rnv/core';
 import { Context } from './types';
 import { getBuildFilePath, getAppId, addSystemInjects } from '@rnv/sdk-utils';
@@ -26,7 +27,7 @@ import { getBuildFilePath, getAppId, addSystemInjects } from '@rnv/sdk-utils';
 const PROHIBITED_DUPLICATE_TAGS = ['intent-filter'];
 const SYSTEM_TAGS = ['tag', 'children'];
 
-const _findChildNode = (tag: string, name: string, node: AndroidManifestNode | AndroidResourcesNode) => {
+const _findChildNode = (tag: string, name: string, node: ConfigAndroidManifestNode | ConfigAndroidResourcesNode) => {
     if (!node) {
         logWarning('_findChildNode: Node is undefined');
         return;
@@ -50,11 +51,12 @@ const _findChildNode = (tag: string, name: string, node: AndroidManifestNode | A
     return null;
 };
 
-export const _convertToXML = (manifestObj: AndroidManifestNode | AndroidResourcesNode) => _parseNode(manifestObj, 0);
+export const _convertToXML = (manifestObj: ConfigAndroidManifestNode | ConfigAndroidResourcesNode) =>
+    _parseNode(manifestObj, 0);
 
-type NodeKeyChildren = keyof AndroidManifestNode['children'] | keyof AndroidResourcesNode['children'];
+type NodeKeyChildren = keyof ConfigAndroidManifestNode['children'] | keyof ConfigAndroidResourcesNode['children'];
 
-const _parseNode = <T extends AndroidManifestNode | AndroidResourcesNode>(n: T, level: number) => {
+const _parseNode = <T extends ConfigAndroidManifestNode | ConfigAndroidResourcesNode>(n: T, level: number) => {
     let output = '';
     let space = '';
     for (let i = 0; i < level; i++) {
@@ -75,7 +77,7 @@ const _parseNode = <T extends AndroidManifestNode | AndroidResourcesNode>(n: T, 
     if (n) {
         if ('value' in n) {
             closedTag = true;
-            output += `${space}  <${n.tag} name="${(n as AndroidResourcesNode).name}">${n.value}`;
+            output += `${space}  <${n.tag} name="${(n as ConfigAndroidResourcesNode).name}">${n.value}`;
         } else {
             closedTag = false;
             const endLine = isSingleLine ? ' ' : '\n';
@@ -112,7 +114,7 @@ const _parseNode = <T extends AndroidManifestNode | AndroidResourcesNode>(n: T, 
     return output;
 };
 
-export const _mergeNodeParameters = <T extends AndroidManifestNode | AndroidResourcesNode>(
+export const _mergeNodeParameters = <T extends ConfigAndroidManifestNode | ConfigAndroidResourcesNode>(
     node: T | undefined,
     nodeParamsExt: T | undefined
 ) => {
@@ -136,7 +138,7 @@ export const _mergeNodeParameters = <T extends AndroidManifestNode | AndroidReso
     });
 };
 
-export const _mergeNodeChildren = <T extends AndroidManifestNode | AndroidResourcesNode>(
+export const _mergeNodeChildren = <T extends ConfigAndroidManifestNode | ConfigAndroidResourcesNode>(
     node: T,
     nodeChildrenExt: Array<T> = []
 ) => {
@@ -175,14 +177,14 @@ export const _mergeNodeChildren = <T extends AndroidManifestNode | AndroidResour
 
 const _mergeFeatures = (
     c: Context,
-    baseManifestFile: AndroidManifest,
+    baseManifestFile: ConfigAndroidManifest,
     configKey: 'includedFeatures' | 'excludedFeatures',
     value: boolean
 ) => {
     const features = getConfigProp(configKey);
 
     if (features) {
-        const featuresObj: Array<AndroidManifestNode> = [];
+        const featuresObj: Array<ConfigAndroidManifestNode> = [];
         features.forEach((key) => {
             featuresObj.push({
                 tag: 'uses-feature',
@@ -238,8 +240,13 @@ export const parseAndroidManifestSync = () => {
     if (!platform) return;
 
     try {
-        const baseManifestFilePath = path.join(__dirname, `../templateFiles/AndroidManifest_${platform}.json`);
-        const baseManifestFile = readObjectSync<AndroidManifest>(baseManifestFilePath);
+        const baseManifestFilePath = path.join(
+            __dirname,
+            RnvFolderName.UP,
+            RnvFolderName.templateFiles,
+            `AndroidManifest_${platform}.json`
+        );
+        const baseManifestFile = readObjectSync<ConfigAndroidManifest>(baseManifestFilePath);
 
         if (!baseManifestFile) {
             return;
@@ -262,11 +269,11 @@ export const parseAndroidManifestSync = () => {
 
         // appConfigs/base/plugins.json PLUGIN CONFIG OVERRIDES
         parsePlugins((_plugin, pluginPlat) => {
-            const androidManifestPlugin = getFlavouredProp(pluginPlat, 'templateAndroid')?.AndroidManifest_xml;
-            if (androidManifestPlugin) {
-                _mergeNodeChildren(baseManifestFile, androidManifestPlugin.children);
-                if (androidManifestPlugin.children) {
-                    _mergeNodeChildren(baseManifestFile, androidManifestPlugin.children);
+            const ConfigAndroidManifestPlugin = getFlavouredProp(pluginPlat, 'templateAndroid')?.AndroidManifest_xml;
+            if (ConfigAndroidManifestPlugin) {
+                _mergeNodeChildren(baseManifestFile, ConfigAndroidManifestPlugin.children);
+                if (ConfigAndroidManifestPlugin.children) {
+                    _mergeNodeChildren(baseManifestFile, ConfigAndroidManifestPlugin.children);
                 }
             }
         });

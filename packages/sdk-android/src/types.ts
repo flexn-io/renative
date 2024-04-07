@@ -1,4 +1,4 @@
-import { RnvPluginPlatformSchema, RnvContext } from '@rnv/core';
+import { ConfigPluginPlatformSchema, RnvContext } from '@rnv/core';
 
 export type Payload = {
     pluginConfigAndroid: {
@@ -88,7 +88,7 @@ export type AndroidDevice = {
     isRunning?: boolean;
 };
 
-export type TemplateAndroid = Required<Required<RnvPluginPlatformSchema>['templateAndroid']>;
+export type TemplateAndroid = Required<Required<ConfigPluginPlatformSchema>['templateAndroid']>;
 
 // export type AndroidManifestJSONNode = {
 //     tag: string;

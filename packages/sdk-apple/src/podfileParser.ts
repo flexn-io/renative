@@ -10,7 +10,7 @@ import {
     writeCleanFile,
     DEFAULTS,
     getContext,
-    type RnvPluginPlatformSchema,
+    type ConfigPluginPlatformSchema,
 } from '@rnv/core';
 import { addSystemInjects, getAppTemplateFolder } from '@rnv/sdk-utils';
 
@@ -162,7 +162,7 @@ export const parsePodFile = async () => {
 
 const _injectPod = (
     podName: string,
-    pluginPlat: RnvPluginPlatformSchema | undefined,
+    pluginPlat: ConfigPluginPlatformSchema | undefined,
     _plugin: RnvPlugin,
     _key: string
 ) => {

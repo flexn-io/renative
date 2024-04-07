@@ -2,7 +2,7 @@
 
 <!--
 Generate by ReNative (https://renative.org)
-BASE: packages/sdk-android/supportFiles/styles_xml.json
+BASE: packages/sdk-android/templateFiles/styles_xml.json
 -->
 
 {{PLUGIN_STYLES_XML_FILE}}

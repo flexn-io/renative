@@ -1,6 +1,6 @@
 import path from 'path';
 import {
-    type RnvPluginPlatformSchema,
+    type ConfigPluginPlatformSchema,
     getConfigProp,
     getFlavouredProp,
     chalk,
@@ -282,7 +282,7 @@ export const parseAppDelegate = (
         resolve();
     });
 
-export const injectPluginObjectiveCSync = (c: Context, plugin: RnvPluginPlatformSchema, key: string) => {
+export const injectPluginObjectiveCSync = (c: Context, plugin: ConfigPluginPlatformSchema, key: string) => {
     logDebug(`injectPluginObjectiveCSync:${c.platform}:${key}`);
     const templateXcode = getFlavouredProp(plugin, 'templateXcode');
     const appDelegateMmImports = templateXcode?.AppDelegate_mm?.appDelegateImports;

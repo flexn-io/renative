@@ -1,6 +1,6 @@
-import type { ConfigFilePlugin, RnvPluginPlatformSchema, RnvPluginSchema } from '../schema/types';
+import type { ConfigFilePlugin, ConfigPluginPlatformSchema, ConfigPluginSchema } from '../schema/types';
 
-export type PluginCallback = (plugin: RnvPlugin, pluginPlat: RnvPluginPlatformSchema, key: string) => void;
+export type PluginCallback = (plugin: RnvPlugin, pluginPlat: ConfigPluginPlatformSchema, key: string) => void;
 
 export type PluginListResponse = {
     asString: string;
@@ -22,7 +22,7 @@ export type RnvPluginScope = {
     scope: string;
 };
 
-export type RnvPlugin = RnvPluginSchema & {
+export type RnvPlugin = ConfigPluginSchema & {
     packageName?: string;
     scope?: string;
     _scopes?: Array<string>;
