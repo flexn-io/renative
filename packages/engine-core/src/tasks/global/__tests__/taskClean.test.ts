@@ -28,9 +28,17 @@ test('Execute task.rnv.clean', async () => {
     );
     jest.mocked(fsExistsSync).mockReturnValue(true);
     jest.mocked(fsReaddirSync).mockReturnValue([]);
-    ctx.program.ci = false;
+    ctx.program.opts().ci = false;
     //WHEN
-    await expect(taskClean.fn?.(ctx)).resolves.toEqual(true);
+    await expect(
+        taskClean.fn?.({
+            ctx,
+            taskName: 'MOCK_taskName',
+            originTaskName: 'MOCK_originTaskName',
+            parentTaskName: 'MOCK_parentTaskName',
+            shouldSkip: false,
+        })
+    ).resolves.toEqual(true);
     //THEN
     expect(removeDirs).toHaveBeenCalledTimes(3);
     expect(executeAsync).toHaveBeenCalledWith('watchman watch-del-all');

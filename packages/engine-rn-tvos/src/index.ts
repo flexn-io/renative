@@ -1,36 +1,15 @@
-import { generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
-import taskRun from './tasks/taskRun';
-import taskPackage from './tasks/taskPackage';
-import taskBuild from './tasks/taskBuild';
-import taskConfigure from './tasks/taskConfigure';
-import taskStart from './tasks/taskStart';
-import taskExport from './tasks/taskExport';
-import taskCryptoInstallCerts from './tasks/taskCryptoInstallCerts';
-import taskCryptoUpdateProfile from './tasks/taskCryptoUpdateProfile';
-import taskCryptoUpdateProfiles from './tasks/taskCryptoUpdateProfiles';
-import taskCryptoInstallProfiles from './tasks/taskCryptoInstallProfiles';
-import taskLog from './tasks/taskLog';
-//@ts-ignore
-import CNF from '../renative.engine.json';
+import { createRnvEngine, GetContextType } from '@rnv/core';
+import { Tasks as TasksSdkAndroid } from '@rnv/sdk-android';
+import { Tasks as TasksSdkApple } from '@rnv/sdk-apple';
+import { Tasks as TasksSdkReactNative } from '@rnv/sdk-react-native';
 import { withRNVBabel } from './adapters/babelAdapter';
 import { withRNVMetro } from './adapters/metroAdapter';
 import { withRNVRNConfig } from '@rnv/sdk-react-native';
+import { Config } from './config';
 
-const Engine: RnvEngine = {
-    tasks: generateEngineTasks([
-        taskRun,
-        taskPackage,
-        taskBuild,
-        taskConfigure,
-        taskStart,
-        taskExport,
-        taskCryptoInstallCerts,
-        taskCryptoUpdateProfile,
-        taskCryptoUpdateProfiles,
-        taskCryptoInstallProfiles,
-        taskLog,
-    ]),
-    config: CNF,
+const Engine = createRnvEngine({
+    tasks: [...TasksSdkAndroid, ...TasksSdkApple, ...TasksSdkReactNative],
+    config: Config,
     runtimeExtraProps: {
         reactNativePackageName: 'react-native-tvos',
         reactNativeMetroConfigName: 'metro.config.js',
@@ -41,24 +20,20 @@ const Engine: RnvEngine = {
     platforms: {
         tvos: {
             defaultPort: 8089,
-            extensions: generateEngineExtensions(['tvos.tv', 'tv', 'tvos', 'tv.native', 'native'], CNF),
+            extensions: ['tvos.tv', 'tv', 'tvos', 'tv.native', 'native'],
         },
         androidtv: {
             defaultPort: 8084,
-            extensions: generateEngineExtensions(
-                ['androidtv.tv', 'tv', 'androidtv', 'android', 'tv.native', 'native'],
-                CNF
-            ),
+            extensions: ['androidtv.tv', 'tv', 'androidtv', 'android', 'tv.native', 'native'],
         },
         firetv: {
             defaultPort: 8098,
-            extensions: generateEngineExtensions(
-                ['firetv.tv', 'androidtv.tv', 'tv', 'firetv', 'androidtv', 'android', 'tv.native', 'native'],
-                CNF
-            ),
+            extensions: ['firetv.tv', 'androidtv.tv', 'tv', 'firetv', 'androidtv', 'android', 'tv.native', 'native'],
         },
     },
-};
+});
+
+export type GetContext = GetContextType<typeof Engine.getContext>;
 
 export { withRNVMetro, withRNVBabel, withRNVRNConfig };
 

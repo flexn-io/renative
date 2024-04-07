@@ -4,6 +4,33 @@
     "rnv.plugin": {
       "type": "object",
       "properties": {
+        "supportedPlatforms": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "web",
+              "ios",
+              "android",
+              "androidtv",
+              "firetv",
+              "tvos",
+              "macos",
+              "linux",
+              "windows",
+              "tizen",
+              "webos",
+              "chromecast",
+              "kaios",
+              "webtv",
+              "androidwear",
+              "tizenwatch",
+              "tizenmobile",
+              "xbox"
+            ]
+          },
+          "description": "Array list of all supported platforms in current project"
+        },
         "disabled": {
           "type": "boolean",
           "default": false,
@@ -135,21 +162,6 @@
               "type": "string",
               "description": "Enables you to pass custom path to plugin. If undefined, the default `node_modules/[plugin-name]` will be used."
             },
-            "projectName": {
-              "type": "string"
-            },
-            "skipLinking": {
-              "type": "boolean"
-            },
-            "skipImplementation": {
-              "type": "boolean"
-            },
-            "implementation": {
-              "type": "string"
-            },
-            "package": {
-              "type": "string"
-            },
             "templateAndroid": {
               "type": "object",
               "properties": {
@@ -224,13 +236,6 @@
                       }
                     }
                   },
-                  "required": [
-                    "allprojects",
-                    "plugins",
-                    "buildscript",
-                    "dexOptions",
-                    "injectAfterAll"
-                  ],
                   "additionalProperties": false,
                   "description": "Overrides values in `build.gradle` file of generated android based project"
                 },
@@ -283,10 +288,6 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "apply",
-                    "defaultConfig"
-                  ],
                   "additionalProperties": false,
                   "description": "Overrides values in `app/build.gradle` file of generated android based project"
                 },
@@ -337,8 +338,7 @@
                   },
                   "required": [
                     "tag",
-                    "android:name",
-                    "children"
+                    "android:name"
                   ],
                   "additionalProperties": false,
                   "description": "Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism\nInjects / Overrides values in AndroidManifest.xml file of generated android based project\n> IMPORTANT: always ensure that your object contains `tag` and `android:name` to target correct tag to merge into\n "
@@ -362,14 +362,15 @@
                           }
                         },
                         "required": [
-                          "tag",
-                          "name",
-                          "child_value"
+                          "tag"
                         ],
                         "additionalProperties": false
                       }
                     }
                   },
+                  "required": [
+                    "children"
+                  ],
                   "additionalProperties": false
                 },
                 "MainActivity_kt": {
@@ -443,9 +444,54 @@
                   },
                   "additionalProperties": false,
                   "description": "Allows you to configure behaviour of MainActivity"
+                },
+                "settings_gradle": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": false
+                },
+                "gradle_wrapper_properties": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": false
+                },
+                "SplashActivity_java": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": false
+                },
+                "styles_xml": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": false
+                },
+                "colors_xml": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": false
+                },
+                "proguard_rules_pro": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": false
                 }
               },
               "additionalProperties": false
+            },
+            "projectName": {
+              "type": "string"
+            },
+            "skipLinking": {
+              "type": "boolean"
+            },
+            "skipImplementation": {
+              "type": "boolean"
+            },
+            "implementation": {
+              "type": "string"
+            },
+            "package": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -470,33 +516,6 @@
             },
             "path": {
               "$ref": "#/definitions/rnv.plugin/properties/android/properties/path"
-            },
-            "git": {
-              "type": "string",
-              "description": "Alternative git url for pod instead of version"
-            },
-            "commit": {
-              "type": "string",
-              "description": "Alternative git commit reference string"
-            },
-            "version": {
-              "type": "string",
-              "description": "Version of pod"
-            },
-            "podNames": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "podName": {
-              "type": "string"
-            },
-            "staticFrameworks": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
             },
             "templateXcode": {
               "type": "object",
@@ -648,70 +667,37 @@
                               }
                             },
                             "applicationDidBecomeActive": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
-                              }
+                              "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
                             },
                             "open": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
-                              }
+                              "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
                             },
                             "supportedInterfaceOrientationsFor": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
-                              }
+                              "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
                             },
                             "didReceiveRemoteNotification": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
-                              }
+                              "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
                             },
                             "didFailToRegisterForRemoteNotificationsWithError": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
-                              }
+                              "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
                             },
                             "didReceive": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
-                              }
+                              "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
                             },
                             "didRegister": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
-                              }
+                              "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
                             },
                             "didRegisterForRemoteNotificationsWithDeviceToken": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
-                              }
+                              "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
                             },
                             "continue": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
-                              }
+                              "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
                             },
                             "didConnectCarInterfaceController": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
-                              }
+                              "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
                             },
                             "didDisconnectCarInterfaceController": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
-                              }
+                              "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
                             }
                           },
                           "additionalProperties": false
@@ -720,16 +706,10 @@
                           "type": "object",
                           "properties": {
                             "willPresent": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
-                              }
+                              "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
                             },
                             "didReceiveNotificationResponse": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
-                              }
+                              "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
                             }
                           },
                           "additionalProperties": false
@@ -772,6 +752,33 @@
               },
               "additionalProperties": false
             },
+            "git": {
+              "type": "string",
+              "description": "Alternative git url for pod instead of version"
+            },
+            "commit": {
+              "type": "string",
+              "description": "Alternative git commit reference string"
+            },
+            "version": {
+              "type": "string",
+              "description": "Version of pod"
+            },
+            "podNames": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "podName": {
+              "type": "string"
+            },
+            "staticFrameworks": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
             "isStatic": {
               "type": "boolean"
             },
@@ -784,6 +791,16 @@
               "description": "Build type of the pod"
             }
           },
+          "required": [
+            "git",
+            "commit",
+            "version",
+            "podNames",
+            "podName",
+            "staticFrameworks",
+            "isStatic",
+            "buildType"
+          ],
           "additionalProperties": false
         },
         "tvos": {

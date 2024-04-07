@@ -5,5 +5,40 @@
         "rootDir": "./src",
         "resolveJsonModule": false
     },
-    "exclude": ["./src/**/*.test.ts", "./lib/**/*"]
+    "exclude": ["./src/**/*.test.ts", "./lib/**/*", "./templateFiles/**/*"]
 }
+
+// {
+//     "compilerOptions": {
+//       "incremental": true,
+//       "removeComments": true,
+//       "preserveConstEnums": true,
+//       "sourceMap": true,
+//       "strict": true,
+//       "noImplicitReturns": true,
+//       "moduleResolution": "node",
+//       "stripInternal": true,
+//       "noEmit": true,
+//       "lib": ["esnext", "dom"],
+//       "target": "esnext",
+//       "baseUrl": ".",
+//       "paths": {
+//         "@rxjs/observable": ["../observable/src/index"],
+//         "rxjs": ["./src/index"],
+//         "rxjs/operators": ["./src/operators/index"],
+//         "rxjs/testing": ["./src/testing/index"],
+//         "rxjs/ajax": ["./src/ajax/index"],
+//         "rxjs/webSocket": ["./src/webSocket/index"],
+//         "rxjs/fetch": ["./src/fetch/index"],
+//         "rxjs/internal/*": ["./src/internal/*"]
+//       }
+//     }
+//   }
+
+// interface EnvironmentVars {
+//     NAME: string;
+//     OS: string;
+
+//     // Unknown properties are covered by this index signature.
+//     [propName: string]: string;
+//   }

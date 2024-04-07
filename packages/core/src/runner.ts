@@ -1,52 +1,91 @@
 import { getContext } from './context/provider';
-import { loadEngines, registerMissingPlatformEngines } from './engines';
+import { installEngines, registerMissingPlatformEngines } from './engines';
 import { loadIntegrations } from './integrations';
 import { checkAndMigrateProject } from './migrator';
-import { checkAndBootstrapIfRequired } from './projects';
 import { configureRuntimeDefaults } from './context/runtime';
-import { findSuitableGlobalTask, findSuitableTask, initializeTask } from './tasks';
+import { findSuitableTask } from './tasks/taskFinder';
 import { updateRenativeConfigs } from './plugins';
+import { loadDefaultConfigTemplates } from './configs';
+import { getApi } from './api/provider';
+import { RnvTask } from './tasks/types';
+import { runInteractiveWizard, runInteractiveWizardForSubTasks } from './tasks/wizard';
+import { initializeTask } from './tasks/taskExecutors';
+import { getTaskNameFromCommand, selectPlatformIfRequired } from './tasks/taskHelpers';
+import { logInfo } from './logger';
 
-export const executeRnvCore = async () => {
-    const c = getContext();
+export const exitRnvCore = async (code: number) => {
+    const ctx = getContext();
+    const api = getApi();
 
-    await configureRuntimeDefaults();
-    await checkAndMigrateProject();
-    await updateRenativeConfigs();
-    await checkAndBootstrapIfRequired();
-
-    // TODO: rename to something more meaningful or DEPRECATE entirely
-    if (c.program.npxMode) {
-        return;
+    if (ctx.process) {
+        api.analytics.teardown().then(() => {
+            ctx.process.exit(code);
+        });
     }
+};
 
-    // Special Case for engine-core tasks
-    // they don't require other engines to be loaded if isGlobalScope = true
-    // ie rnv link
-    const initTask = await findSuitableGlobalTask();
-    if (initTask?.task && initTask.isGlobalScope) {
-        return initializeTask(initTask?.task);
-    }
-
-    await loadIntegrations();
-    const result = await loadEngines();
+const _installAndRegisterAllEngines = async () => {
+    const result = await installEngines();
     // If false make sure we reload configs as it means it's freshly installed
     if (!result) {
         await updateRenativeConfigs();
     }
+    await registerMissingPlatformEngines();
+};
 
-    // for root rnv we simply load all engines upfront
+export const executeRnvCore = async () => {
+    const c = getContext();
+
+    await loadDefaultConfigTemplates();
+    await configureRuntimeDefaults();
+    await checkAndMigrateProject();
+    await updateRenativeConfigs();
+    // await checkAndBootstrapIfRequired();
+
+    // TODO: rename to something more meaningful or DEPRECATE entirely
+    if (c.program.opts().npxMode) {
+        return;
+    }
+
+    // for "rnv" we simply load all engines upfront
     const { configExists } = c.paths.project;
     if (!c.command && configExists) {
-        await registerMissingPlatformEngines();
+        await _installAndRegisterAllEngines();
+        await loadIntegrations();
+        return runInteractiveWizard();
     }
 
-    // Some tasks might require all engines to be present (ie rnv platform list)
-    const taskInstance = await findSuitableTask();
+    let initTask: RnvTask | undefined;
 
-    if (c.command && !taskInstance?.ignoreEngines) {
-        await registerMissingPlatformEngines(taskInstance);
+    // Special Case for engine-core tasks
+    // they don't require other engines to be loaded if isGlobalScope = true
+    // ie rnv link
+    initTask = await findSuitableTask();
+    if (initTask) {
+        return initializeTask(initTask);
     }
 
-    if (taskInstance?.task) await initializeTask(taskInstance?.task);
+    // Next we load all integrations and see if there is a task that matches
+    await loadIntegrations();
+    initTask = await findSuitableTask();
+    if (initTask) {
+        if (initTask.platforms) {
+            // If integration task requires platform selection
+            // we do it here so correct engine is registered properly
+            await selectPlatformIfRequired(initTask, true);
+        }
+
+        return initializeTask(initTask);
+    }
+
+    // Still no task found. time to load all engines to see if anything matches
+    await _installAndRegisterAllEngines();
+    initTask = await findSuitableTask();
+    if (initTask) {
+        return initializeTask(initTask);
+    }
+
+    // Still no task found. time to check sub tasks options via wizard
+    logInfo(`Did not find exact match for ${getTaskNameFromCommand()}. Running interactive wizard for sub-tasks`);
+    return runInteractiveWizardForSubTasks();
 };

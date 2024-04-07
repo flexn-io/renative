@@ -68,7 +68,7 @@ const _isSdkInstalled = (c: RnvContext) => {
 const _attemptAutoFix = async (c: RnvContext) => {
     logDefault('_attemptAutoFix');
 
-    if (c.program.hosted) {
+    if (c.program.opts().hosted) {
         logInfo('HOSTED Mode. Skipping SDK checks');
         return true;
     }
@@ -78,7 +78,7 @@ const _attemptAutoFix = async (c: RnvContext) => {
     if (result) {
         logSuccess(`Found existing ${c.platform} SDK location at ${chalk().bold(result)}`);
         let confirmSdk = true;
-        if (!c.program.ci) {
+        if (!c.program.opts().ci) {
             const { confirm } = await inquirerPrompt({
                 type: 'confirm',
                 name: 'confirm',
@@ -104,7 +104,7 @@ const _attemptAutoFix = async (c: RnvContext) => {
         }
     }
 
-    logDefault(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOCATIONS.join(', ')}`);
+    logError(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOCATIONS.join(', ')}`);
 
     // const setupInstance = PlatformSetup(c);
     // await setupInstance.askToInstallSDK(sdkPlatform);
@@ -118,17 +118,11 @@ export const checkWebosSdk = async () => {
     logDefault('checkWebosSdk');
     if (!_isSdkInstalled(c)) {
         logWarning(
-            `${c.platform} requires SDK to be installed. Your SDK path in ${chalk().bold(
+            `${c.platform} platform requires WebOS SDK to be installed. Your SDK path in ${chalk().bold(
                 c.paths.workspace.config
             )} does not exist: ${chalk().bold(_getCurrentSdkPath(c))}`
         );
-
-        switch (c.platform) {
-            case 'webos':
-                return _attemptAutoFix(c);
-            default:
-                return true;
-        }
+        return _attemptAutoFix(c);
     }
     return true;
 };

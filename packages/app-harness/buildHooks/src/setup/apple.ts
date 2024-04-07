@@ -1,5 +1,5 @@
 import path from 'path';
-import { executeAsync, logInfo, logError, RnvContext } from '@rnv/core';
+import { executeAsync, logInfo, RnvContext } from '@rnv/core';
 
 export default async (c: RnvContext) => {
     // TODO: This is a temporary solution. We need to find a better way to handle untyped values
@@ -7,7 +7,7 @@ export default async (c: RnvContext) => {
     const certRelativePath = cfPrivate?.apple?.p12?.path;
 
     if (!certRelativePath) {
-        return logError('No configPrivate found. You sure you decrypted?', true);
+        return Promise.reject('No configPrivate found. You sure you decrypted?');
     }
     const certPass = cfPrivate?.apple?.p12?.password;
     const certPath = path.resolve(c.paths.workspace.project.dir, certRelativePath);

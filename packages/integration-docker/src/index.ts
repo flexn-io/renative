@@ -1,16 +1,11 @@
 import taskDockerDeploy from './tasks/taskDockerDeploy';
 import taskDockerExport from './tasks/taskDockerExport';
-//@ts-ignore
-import config from '../renative.integration.json';
-import { RnvIntegration } from '@rnv/core';
+import { createRnvIntegration } from '@rnv/core';
+import { Config } from './config';
 
-const TASKS = [taskDockerExport, taskDockerDeploy];
-
-const getTasks = () => TASKS;
-
-const Integration: RnvIntegration = {
-    getTasks,
-    config,
-};
+const Integration = createRnvIntegration({
+    tasks: [taskDockerExport, taskDockerDeploy],
+    config: Config,
+});
 
 export default Integration;

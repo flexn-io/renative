@@ -43,11 +43,7 @@
             "firetv": {
               "$ref": "#/definitions/rnv.private/properties/platforms/properties/android"
             },
-            "ios": {
-              "type": "object",
-              "properties": {},
-              "additionalProperties": false
-            },
+            "ios": {},
             "tvos": {
               "$ref": "#/definitions/rnv.private/properties/platforms/properties/ios"
             },

@@ -1,4 +1,4 @@
-import { RenativeConfigPluginPlatform, RnvContext } from '@rnv/core';
+import { RnvPluginPlatformSchema, RnvContext } from '@rnv/core';
 
 export type AppleDevice = {
     udid?: string;
@@ -154,7 +154,7 @@ export type ObjectiveCAppDelegateSubKey = keyof ObjectiveCAppDelegate['applicati
 
 export type ObjectiveCAppDelegateKey = keyof ObjectiveCAppDelegate;
 
-export type TemplateXcode = Required<Required<RenativeConfigPluginPlatform>['templateXcode']>;
+export type TemplateXcode = Required<Required<RnvPluginPlatformSchema>['templateXcode']>;
 
 export type FilePlistJSON = {
     CFBundleDisplayName?: string;

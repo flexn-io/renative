@@ -13,7 +13,7 @@ import {
 export const inquirerPrompt = async (params: PromptParams): Promise<Record<string, any>> => {
     const c = getContext();
 
-    if (c.program?.yes) {
+    if (c.program?.opts()?.yes) {
         const key = params.name || params.type;
 
         if (params.type === 'confirm') {
@@ -28,7 +28,7 @@ export const inquirerPrompt = async (params: PromptParams): Promise<Record<strin
     }
 
     const msg = params.logMessage || params.warningMessage || params.message;
-    if (c.program?.ci) {
+    if (c.program?.opts()?.ci) {
         if (
             Array.isArray(params.choices) &&
             typeof params.default !== 'undefined' &&
@@ -53,15 +53,6 @@ export const inquirerPrompt = async (params: PromptParams): Promise<Record<strin
 
 export const inquirerSeparator = (text?: string) => {
     return new inquirer.Separator(text);
-};
-
-export const pressAnyKeyToContinue = () => {
-    const params = {
-        type: 'input',
-        name: 'confirm',
-        message: 'Press any key to continue',
-    };
-    return inquirer.prompt(params as any);
 };
 
 export const generateOptions = (
@@ -148,6 +139,5 @@ const _generateOptionString = (i: number, _obj: any, mapping: any, defaultVal: s
 export default {
     inquirerPrompt,
     generateOptions,
-    pressAnyKeyToContinue,
     inquirerSeparator,
 };

@@ -1,11 +1,10 @@
 import { z } from 'zod';
-import { TemplateAndroidBaseFragment } from '../../platforms/fragments/templateAndroidBase';
+import { zodTemplateAndroidFragment } from '../../platforms/fragments/templateAndroid';
 
-export const PluginPlatformAndroidFragment = {
+export const zodPluginPlatformAndroidFragment = zodTemplateAndroidFragment.extend({
     projectName: z.optional(z.string()),
     skipLinking: z.optional(z.boolean()),
     skipImplementation: z.optional(z.boolean()),
     implementation: z.optional(z.string()),
     package: z.optional(z.string()),
-    templateAndroid: z.optional(z.object(TemplateAndroidBaseFragment)),
-};
+});

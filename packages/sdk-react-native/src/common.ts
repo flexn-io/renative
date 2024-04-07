@@ -1,5 +1,4 @@
 import path from 'path';
-import axios from 'axios';
 import {
     logDefault,
     executeTask,
@@ -12,11 +11,11 @@ import {
     RnvTaskName,
     getContext,
 } from '@rnv/core';
-import { confirmActiveBundler } from '@rnv/sdk-utils';
+import { confirmActiveBundler, axios } from '@rnv/sdk-utils';
 
 let keepRNVRunning = false;
 
-export const startBundlerIfRequired = async (parentTask: string, originTask?: string) => {
+export const startBundlerIfRequired = async (parentTaskName: string, originTaskName?: string) => {
     logDefault('startBundlerIfRequired');
     const bundleAssets = getConfigProp('bundleAssets');
     if (bundleAssets === true) return;
@@ -24,14 +23,14 @@ export const startBundlerIfRequired = async (parentTask: string, originTask?: st
     const isRunning = await isBundlerActive();
     if (!isRunning) {
         // _taskStart(c, parentTask, originTask);
-        await executeTask(RnvTaskName.start, parentTask, originTask);
+        await executeTask({ taskName: RnvTaskName.start, parentTaskName, originTaskName });
 
         keepRNVRunning = true;
         await waitForBundler();
     } else {
         const resetCompleted = await confirmActiveBundler();
         if (resetCompleted) {
-            await executeTask(RnvTaskName.start, parentTask, originTask);
+            await executeTask({ taskName: RnvTaskName.start, parentTaskName, originTaskName });
 
             keepRNVRunning = true;
             await waitForBundler();
@@ -111,7 +110,7 @@ const poll = (fn: () => Promise<boolean>, timeout = 30000, interval = 1000) => {
     return new Promise<void>(checkCondition);
 };
 
-export const configureFonts = async () => {
+export const configureFontSources = async () => {
     const c = getContext();
     const fontFolders = new Set<string>();
     parseFonts((font, dir) => {

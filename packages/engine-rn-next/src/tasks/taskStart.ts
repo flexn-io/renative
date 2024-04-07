@@ -1,55 +1,19 @@
-import {
-    RnvTaskFn,
-    logErrorPlatform,
-    logTask,
-    logError,
-    RnvTaskOptionPresets,
-    executeTask,
-    shouldSkipTask,
-    RnvTask,
-    RnvTaskName,
-} from '@rnv/core';
-import { runWebNext } from '../sdk';
+import { logError, RnvTaskOptionPresets, createTask, RnvTaskName } from '@rnv/core';
+import { runWebNext } from '../sdk/runner';
 import { openBrowser, waitForHost } from '@rnv/sdk-utils';
+import { SdkPlatforms } from '../sdk/constants';
 
-const taskStart: RnvTaskFn = async (c, parentTask, originTask) => {
-    const { platform } = c;
-    const { port } = c.runtime;
-    const { hosted } = c.program;
-
-    logTask('taskStart', `parent:${parentTask} port:${c.runtime.port} hosted:${!!hosted}`);
-
-    if (hosted) {
-        waitForHost()
-            .then(() => openBrowser(`http://${c.runtime.localhost}:${port}/`))
-            .catch(logError);
-    }
-
-    if (!parentTask) {
-        await executeTask(RnvTaskName.configure, RnvTaskName.start, originTask);
-    }
-
-    if (shouldSkipTask(RnvTaskName.start, originTask)) return true;
-
-    if (hosted) {
-        return logError('This platform does not support hosted mode', true);
-    }
-    switch (platform) {
-        case 'web':
-        case 'chromecast':
-            c.runtime.shouldOpenBrowser = false;
-            return runWebNext();
-        default:
-            return logErrorPlatform();
-    }
-};
-
-const Task: RnvTask = {
+export default createTask({
     description: 'Starts bundler / server',
-    fn: taskStart,
+    dependsOn: [RnvTaskName.configure],
+    fn: async ({ ctx }) => {
+        const { localhost, port } = ctx.runtime;
+        waitForHost()
+            .then(() => openBrowser(`http://${localhost}:${port}/`))
+            .catch(logError);
+        return runWebNext();
+    },
     task: RnvTaskName.start,
-    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure()),
-    platforms: ['web', 'chromecast'],
-};
-
-export default Task;
+    options: RnvTaskOptionPresets.withConfigure(),
+    platforms: SdkPlatforms,
+});

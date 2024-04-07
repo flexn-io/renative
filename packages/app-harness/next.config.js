@@ -1,4 +1,4 @@
-const { withRNVNext } = require('@rnv/engine-rn-next');
+const { withRNVNext } = require('@rnv/adapter');
 
 const config = {
     compress: false,

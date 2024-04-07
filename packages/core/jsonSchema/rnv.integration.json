@@ -4,6 +4,9 @@
     "rnv.integration": {
       "type": "object",
       "properties": {
+        "packageName": {
+          "type": "string"
+        },
         "$schema": {
           "type": "string",
           "description": "schema definition"

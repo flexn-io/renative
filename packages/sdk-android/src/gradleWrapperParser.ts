@@ -11,7 +11,7 @@ import {
 } from '@rnv/core';
 import { addSystemInjects, getBuildFilePath } from '@rnv/sdk-utils';
 
-const GRADLE_SOURCE_PATH = path.join(__dirname, '../templates/gradleProject');
+const GRADLE_SOURCE_PATH = path.join(__dirname, '../templateFiles/gradleProject');
 
 const copyGradleProjectTemplate = async () => {
     logDefault('copyGradleProjectTemplate');

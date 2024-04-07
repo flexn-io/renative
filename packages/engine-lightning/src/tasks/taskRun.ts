@@ -1,50 +1,15 @@
-import {
-    RnvTaskFn,
-    logErrorPlatform,
-    logTask,
-    logRaw,
-    executeOrSkipTask,
-    RnvTask,
-    RnvTaskName,
-    RnvTaskOptionPresets,
-} from '@rnv/core';
-import { runLightningProject } from '../sdks/sdk-lightning';
+import { RnvTaskName, RnvTaskOptionPresets, createTask } from '@rnv/core';
+import { runLightningProject } from '../sdk/runner';
+import { SdkPlatforms } from '../sdk/constants';
 
-const taskRun: RnvTaskFn = async (c, parentTask, originTask) => {
-    const { platform } = c;
-    const { port } = c.runtime;
-    const { target } = c.runtime;
-    const { hosted } = c.program;
-    logTask('taskRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
-
-    await executeOrSkipTask(RnvTaskName.configure, RnvTaskName.run, originTask);
-
-    switch (platform) {
-        case 'tizen':
-        case 'webos':
-            return runLightningProject();
-        default:
-            return logErrorPlatform();
-    }
-};
-
-const taskRunHelp = async () => {
-    logRaw(`
-More info at: https://renative.org/docs/api-cli
-`);
-};
-
-const Task: RnvTask = {
+export default createTask({
+    dependsOn: [RnvTaskName.configure],
     description: 'Run your lightning app on target device or emulator',
-    fn: taskRun,
-    fnHelp: taskRunHelp,
+    fn: async () => {
+        return runLightningProject();
+    },
     task: RnvTaskName.run,
     isPriorityOrder: true,
-    // dependencies: {
-    //     before: RnvTaskName.configure,
-    // },
-    options: RnvTaskOptionPresets.withBase(RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun())),
-    platforms: ['tizen', 'webos'],
-};
-
-export default Task;
+    options: RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun()),
+    platforms: SdkPlatforms,
+});

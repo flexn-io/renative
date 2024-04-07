@@ -2,22 +2,9 @@ import path from 'path';
 import { chalk, logDefault, logError, logWarning, logDebug } from '../logger';
 import { cleanFolder, copyFolderContentsRecursiveSync } from '../system/fs';
 import { getTimestampPathsConfig, getAppFolder } from '../context/contextProps';
-import { SUPPORTED_PLATFORMS } from '../constants';
-import { generateOptions, inquirerPrompt } from '../api';
-import type { RnvPlatform, RnvPlatformWithAll } from '../types';
-import { updateProjectPlatforms } from '../configs/configProject';
+import type { RnvPlatform } from '../types';
 import { doResolve } from '../system/resolve';
 import { getContext } from '../context/provider';
-
-export const logErrorPlatform = () => {
-    const c = getContext();
-
-    logError(
-        `Platform: ${chalk().bold(c.platform)} doesn't support command: ${chalk().bold(c.command)}`,
-        true // kill it if we're not supporting this
-    );
-    return false;
-};
 
 export const generatePlatformChoices = () => {
     const c = getContext();
@@ -32,21 +19,21 @@ export const generatePlatformChoices = () => {
     return options;
 };
 
-export const cleanPlatformBuild = async (platform: RnvPlatform) => {
+export const cleanPlatformBuild = async (platform: RnvPlatform, cleanAllPlatforms?: boolean) => {
     logDebug('cleanPlatformBuild');
 
     const c = getContext();
 
     const cleanTasks = [];
 
-    if ((platform as RnvPlatformWithAll) === 'all' && c.buildConfig.platforms) {
+    if (cleanAllPlatforms && c.buildConfig.platforms) {
         Object.keys(c.buildConfig.platforms).forEach((k) => {
-            if (isPlatformSupportedSync(k as RnvPlatform)) {
+            if (_isPlatformSupportedSync(k as RnvPlatform)) {
                 const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${k}`);
                 cleanTasks.push(cleanFolder(pPath));
             }
         });
-    } else if (isPlatformSupportedSync(platform)) {
+    } else if (_isPlatformSupportedSync(platform)) {
         const pPath = getAppFolder();
         cleanTasks.push(cleanFolder(pPath));
     }
@@ -59,7 +46,7 @@ export const createPlatformBuild = (platform: RnvPlatform) =>
         logDefault('createPlatformBuild');
         const c = getContext();
 
-        if (!platform || !isPlatformSupportedSync(platform, undefined, reject)) return;
+        if (!platform || !_isPlatformSupportedSync(platform, undefined, reject)) return;
 
         const ptDir = c.paths.project.platformTemplatesDirs[platform];
         if (!ptDir) {
@@ -92,58 +79,7 @@ export const createPlatformBuild = (platform: RnvPlatform) =>
         resolve();
     });
 
-export const isPlatformSupported = async (isGlobalScope = false) => {
-    const c = getContext();
-
-    if (c.platform && c.program.platform !== true && isGlobalScope) {
-        return c.platform;
-    }
-
-    let platformsAsObj;
-    if (isGlobalScope) {
-        platformsAsObj = SUPPORTED_PLATFORMS;
-    } else {
-        platformsAsObj = c.buildConfig ? c.buildConfig.platforms : c.supportedPlatforms;
-    }
-
-    if (!platformsAsObj) platformsAsObj = c.runtime.availablePlatforms;
-    const opts = generateOptions(platformsAsObj);
-
-    if (!c.platform || c.program.platform === true || !c.runtime.availablePlatforms?.includes?.(c.platform)) {
-        const { platform } = await inquirerPrompt({
-            name: 'platform',
-            type: 'list',
-            message: 'Pick one of available platforms',
-            choices: opts.keysAsArray,
-            logMessage: 'You need to specify platform',
-        });
-
-        c.platform = platform;
-    }
-
-    const configuredPlatforms = c.files.project.config?.defaults?.supportedPlatforms;
-
-    if (c.platform && Array.isArray(configuredPlatforms) && !configuredPlatforms.includes(c.platform)) {
-        const { confirm } = await inquirerPrompt({
-            type: 'confirm',
-            message: `Platform ${c.platform} is not supported by your project. Would you like to enable it?`,
-        });
-
-        if (confirm) {
-            const newPlatforms = [...configuredPlatforms, c.platform];
-            updateProjectPlatforms(newPlatforms);
-            c.buildConfig.defaults = c.buildConfig.defaults || {};
-            c.buildConfig.defaults.supportedPlatforms = newPlatforms;
-            // await configureEntryPoints(c);
-        } else {
-            throw new Error('User canceled');
-        }
-    }
-
-    return c.platform;
-};
-
-export const isPlatformSupportedSync = (platform: RnvPlatform, resolve?: () => void, reject?: (e: string) => void) => {
+const _isPlatformSupportedSync = (platform: RnvPlatform, resolve?: () => void, reject?: (e: string) => void) => {
     if (!platform) {
         if (reject) {
             reject(

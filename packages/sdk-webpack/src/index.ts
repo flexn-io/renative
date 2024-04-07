@@ -1,4 +1,3 @@
-import axios from 'axios';
 import path from 'path';
 import commandExists from 'command-exists';
 import {
@@ -23,7 +22,14 @@ import {
     Env,
     getContext,
 } from '@rnv/core';
-import { checkPortInUse, getDevServerHost, openBrowser, waitForHost, confirmActiveBundler } from '@rnv/sdk-utils';
+import {
+    checkPortInUse,
+    getDevServerHost,
+    openBrowser,
+    waitForHost,
+    confirmActiveBundler,
+    axios,
+} from '@rnv/sdk-utils';
 import { EnvVars } from './env';
 import { withRNVWebpack } from './adapter';
 export { withRNVWebpack };
@@ -69,7 +75,7 @@ const _runWebBrowser = (devServerHost: string, port: number, alreadyStarted: boo
     });
 
 const _runRemoteDebuggerChii = async (c: RnvContext, obj: { remoteDebuggerActive: boolean }) => {
-    const { debugIp } = c.program;
+    const { debugIp } = c.program.opts();
     try {
         await commandExists('chii');
 
@@ -106,7 +112,7 @@ Debugger running at: ${debugUrl}`);
 };
 
 const _runRemoteDebuggerWeinre = async (c: RnvContext, obj: { remoteDebuggerActive: boolean }) => {
-    const { debugIp } = c.program;
+    const { debugIp } = c.program.opts();
     try {
         await commandExists('weinre');
 
@@ -142,7 +148,7 @@ Debugger running at: ${debugUrl}`);
 
 export const _runWebDevServer = async (c: RnvContext, enableRemoteDebugger?: boolean) => {
     logDefault('_runWebDevServer');
-    const { debug } = c.program;
+    const { debug } = c.program.opts();
 
     const env: Env = {
         ...CoreEnvVars.BASE(),
@@ -187,7 +193,7 @@ export const _runWebDevServer = async (c: RnvContext, enableRemoteDebugger?: boo
 
 export const buildCoreWebpackProject = async () => {
     const c = getContext();
-    const { debug, debugIp } = c.program;
+    const { debug, debugIp } = c.program.opts();
     logDefault('buildCoreWebpackProject');
     const env: Record<string, any> = {
         ...CoreEnvVars.BASE(),
@@ -247,7 +253,7 @@ export const runWebpackServer = async (enableRemoteDebugger?: boolean) => {
         );
         await _runWebBrowser(devServerHost, port, false);
         if (!bundleAssets) {
-            logSummary('BUNDLER STARTED');
+            logSummary({ header: 'BUNDLER STARTED' });
         }
         await _runWebDevServer(c, enableRemoteDebugger);
     } else {
@@ -256,7 +262,7 @@ export const runWebpackServer = async (enableRemoteDebugger?: boolean) => {
         if (resetCompleted) {
             await _runWebBrowser(devServerHost, port, false);
             if (!bundleAssets) {
-                logSummary('BUNDLER STARTED');
+                logSummary({ header: 'BUNDLER STARTED' });
             }
             await _runWebDevServer(c, enableRemoteDebugger);
         } else {
