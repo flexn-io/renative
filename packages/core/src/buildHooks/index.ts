@@ -3,7 +3,7 @@ import { build } from 'esbuild';
 import { logDebug, logError, logHook, logInfo } from '../logger';
 import { fsExistsSync, copyFolderContentsRecursiveSync } from '../system/fs';
 import { inquirerPrompt } from '../api';
-import { getConfigProp } from '../context/contextProps';
+import { getConfigRootProp } from '../context/contextProps';
 import { getContext } from '../context/provider';
 import { RnvFolderName } from '../enums/folderName';
 
@@ -28,7 +28,7 @@ export const executePipe = async (key: string) => {
 export const buildHooks = async () => {
     logDebug('buildHooks');
     const c = getContext();
-    const enableHookRebuild = getConfigProp('enableHookRebuild');
+    const enableHookRebuild = getConfigRootProp('enableHookRebuild');
 
     let shouldBuildHook =
         c.program.opts().reset ||

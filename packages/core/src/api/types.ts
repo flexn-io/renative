@@ -1,6 +1,6 @@
 import path from 'path';
 import type { RnvContext } from '../context/types';
-import type { ConfigProp, ConfigPropKey } from '../schema/types';
+import type { ConfigFileBuildConfig, ConfigProp, ConfigPropKey } from '../schema/types';
 import type { DoResolveFn } from '../system/types';
 import type { RnvPlatform } from '../types';
 import fs from 'fs';
@@ -113,7 +113,10 @@ export type PromptParams = {
 
 export type PromptRenderFn = (i: number, obj: any, mapping: any, defaultVal: string) => string;
 
-export type GetConfigPropFn = <T extends ConfigPropKey>(
-    key: T,
-    defaultVal?: ConfigProp[T]
-) => ConfigProp[T] | undefined;
+export type GetConfigPropFn<T = ConfigPropKey> = T extends ConfigPropKey
+    ? <T extends ConfigPropKey>(
+          key: T,
+          defaultVal?: ConfigProp[T],
+          obj?: Partial<ConfigFileBuildConfig>
+      ) => ConfigProp[T] | undefined
+    : <T>(key: string, defaultVal?: T, obj?: Partial<ConfigFileBuildConfig>) => T | undefined;

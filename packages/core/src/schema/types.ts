@@ -126,12 +126,7 @@ export type ConfigFileApp = RnvRootAppBaseFragment & {
 type RootPluginsMerged = {
     scopedPluginTemplates: Record<string, ConfigFileTemplates['pluginTemplates']>;
 };
-export type ConfigProp = Required<RnvRootProjectBaseFragment> &
-    Required<RnvRootAppBaseFragment> &
-    Required<ConfigPrivatePlatformAndroid> &
-    Required<RnvPlatformSchemaFragment>;
-export type ConfigPropKey = keyof ConfigProp;
-export type BuildConfigKey = keyof ConfigFileBuildConfig;
+
 // renative.build.json
 export type ConfigFileBuildConfig = ConfigFileTemplates &
     ConfigFileWorkspace &
@@ -139,6 +134,12 @@ export type ConfigFileBuildConfig = ConfigFileTemplates &
     ConfigFileProject &
     ConfigFileLocal &
     RnvRootAppBaseFragment;
+
+export type BuildConfigKey = keyof ConfigFileBuildConfig;
+
+export type ConfigPropRootMerged<T> = ConfigFileBuildConfig & T;
+export type ConfigPropRootKeyMerged<T> = keyof ConfigPropRootMerged<T>;
+export type GetConfigRootPropVal<T, K extends ConfigPropRootKeyMerged<T>> = ConfigPropRootMerged<T>[K] | undefined;
 
 // Engine -----------------------
 //
@@ -241,3 +242,11 @@ export type ConfigFileRenative = {
 //
 // renative.runtime.json
 export type ConfigFileRuntime = z.infer<typeof zodConfigFileRuntime>;
+
+// ConfigProp -----------------------
+//
+export type ConfigProp = RnvPlatformSchemaFragment;
+export type ConfigPropKey = keyof ConfigProp;
+export type ConfigPropMerged<T> = ConfigProp & T;
+export type ConfigPropKeyMerged<T> = keyof ConfigPropMerged<T>;
+export type GetConfigPropVal<T, K extends ConfigPropKeyMerged<T>> = ConfigPropMerged<T>[K] | undefined;
