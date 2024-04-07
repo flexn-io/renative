@@ -14,24 +14,26 @@ afterEach(() => {
     jest.resetAllMocks();
 });
 
-test('Execute task.rnv.run', async () => {
-    // GIVEN
-    const ctx = getContext();
-    ctx.platform = 'ios';
-    const mockedDevice = {
-        name: 'MOCK_DEVICE_NAME',
-        udid: 'MOCK_DEVICE_UDID',
-        isActive: true,
-    };
-    jest.mocked(getAndroidDeviceToRunOn).mockResolvedValueOnce(mockedDevice);
-    // WHEN
-    await taskRun.fn?.({
-        ctx,
-        taskName: 'MOCK_taskName',
-        originTaskName: 'MOCK_originTaskName',
-        parentTaskName: 'MOCK_parentTaskName',
-        shouldSkip: false,
+describe('taskRun tests', () => {
+    it('Execute task.rnv.run', async () => {
+        // GIVEN
+        const ctx = getContext();
+        ctx.platform = 'ios';
+        const mockedDevice = {
+            name: 'MOCK_DEVICE_NAME',
+            udid: 'MOCK_DEVICE_UDID',
+            isActive: true,
+        };
+        jest.mocked(getAndroidDeviceToRunOn).mockResolvedValueOnce(mockedDevice);
+        // WHEN
+        await taskRun.fn?.({
+            ctx,
+            taskName: 'MOCK_taskName',
+            originTaskName: 'MOCK_originTaskName',
+            parentTaskName: 'MOCK_parentTaskName',
+            shouldSkip: false,
+        });
+        // THEN
+        expect(runAndroid).toHaveBeenCalledWith(mockedDevice);
     });
-    // THEN
-    expect(runAndroid).toHaveBeenCalledWith(mockedDevice);
 });
