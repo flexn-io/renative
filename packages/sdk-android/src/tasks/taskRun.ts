@@ -7,7 +7,7 @@ export default createTask({
     description: 'Run your rn app on target device or emulator',
     dependsOn: [RnvTaskName.configure],
     fn: async ({ ctx, originTaskName }) => {
-        const bundleAssets = getConfigProp('bundleAssets', false);
+        const bundleAssets = getConfigProp('bundleAssets');
 
         const runDevice = await getAndroidDeviceToRunOn();
         if (runDevice) {

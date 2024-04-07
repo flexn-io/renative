@@ -156,7 +156,7 @@ export const parseSplashActivitySync = () => {
     const splashTemplatePath = 'app/src/main/java/rnv_template/SplashActivity.kt';
 
     // TODO This is temporary ANDROIDX support. whole kotlin parser will be refactored in the near future
-    const enableAndroidX = getConfigProp('enableAndroidX', true);
+    const enableAndroidX = getConfigProp('enableAndroidX') || true;
     if (enableAndroidX === true) {
         c.payload.pluginConfigAndroid.pluginSplashActivityImports +=
             'import androidx.appcompat.app.AppCompatActivity;\n';

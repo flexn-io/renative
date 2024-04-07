@@ -13,7 +13,7 @@ import { getContext } from '../context/provider';
 import { writeRenativeConfigFile } from '../configs/utils';
 import { checkAndCreateProjectPackage } from '../projects/package';
 import { getEngineTemplateByPlatform } from '../configs/engines';
-import { getConfigProp } from '../context/contextProps';
+import { getConfigRootProp } from '../context/contextProps';
 import { registerRnvTasks } from '../tasks/taskRegistry';
 import { createDependencyMutation } from '../projects/mutations';
 import type { ConfigFileEngine } from '../schema/types';
@@ -241,7 +241,7 @@ export const loadEnginePackageDeps = async (engineConfigs: Array<RnvEngineInstal
                         const deps = c.files.project.package.devDependencies || {};
                         Object.keys(npm.devDependencies).forEach((k) => {
                             if (!deps[k]) {
-                                const isMonorepo = getConfigProp('isMonorepo');
+                                const isMonorepo = getConfigRootProp('isMonorepo');
                                 if (isMonorepo) {
                                     logInfo(
                                         `Engine ${ecf.key} requires npm devDependency ${k} for platform ${platform}. project marked as monorepo. SKIPPING`
@@ -493,7 +493,7 @@ const _resolvePkgPath = (c: RnvContext, packageName: string) => {
     if (fsExistsSync(pkgPath)) {
         return pkgPath;
     }
-    const monoRoot = getConfigProp('monoRoot');
+    const monoRoot = getConfigRootProp('monoRoot');
     pkgPath = path.join(c.paths.project.dir, monoRoot || '../..', 'node_modules', packageName);
     if (fsExistsSync(pkgPath)) {
         return pkgPath;

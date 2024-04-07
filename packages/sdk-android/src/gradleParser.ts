@@ -18,6 +18,7 @@ import {
     logWarning,
     sanitizePluginPath,
     writeCleanFile,
+    getConfigRootProp,
 } from '@rnv/core';
 import path from 'path';
 import { Context } from './types';
@@ -239,9 +240,9 @@ export const parseAppBuildGradleSync = () => {
 
     const storeFile = getConfigProp('storeFile');
     const keyAlias = getConfigProp('keyAlias');
-    const storePassword = getConfigProp('storePassword');
-    const keyPassword = getConfigProp('keyPassword');
-    const minifyEnabled = getConfigProp('minifyEnabled', false);
+    const storePassword = getConfigRootProp('storePassword');
+    const keyPassword = getConfigRootProp('keyPassword');
+    const minifyEnabled = getConfigProp('minifyEnabled');
 
     c.payload.pluginConfigAndroid.store = {
         storeFile: storeFile,
@@ -327,7 +328,7 @@ ${chalk().bold(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
 
     // MULTI APK
     // const versionCodeOffset = getConfigProp('versionCodeOffset', 0);
-    const isMultiApk = getConfigProp('multipleAPKs', false) === true;
+    const isMultiApk = getConfigProp('multipleAPKs') === true;
     c.payload.pluginConfigAndroid.multiAPKs = '';
     if (isMultiApk) {
         // TODO migrate this to gradle.properties + it's enabled by default
@@ -552,8 +553,10 @@ export const parseGradlePropertiesSync = () => {
 
     const gradleProperties = 'gradle.properties';
 
-    const newArchEnabled = getConfigProp('newArchEnabled', false);
+    const newArchEnabled = getConfigProp('newArchEnabled');
     const reactNativeEngine = getConfigProp('reactNativeEngine') || 'hermes';
+    const enableJetifier = getConfigProp('enableJetifier') || true;
+    const enableAndroidX = getConfigProp('enableAndroidX') || true;
 
     const injects = [
         {
@@ -570,11 +573,11 @@ export const parseGradlePropertiesSync = () => {
         },
         {
             pattern: '{{ENABLE_JETIFIER}}',
-            override: getConfigProp('enableJetifier', true) ? 'true' : 'false',
+            override: enableJetifier ? 'true' : 'false',
         },
         {
             pattern: '{{ENABLE_ANDROID_X}}',
-            override: getConfigProp('enableAndroidX', true) ? 'true' : 'false',
+            override: enableAndroidX ? 'true' : 'false',
         },
     ];
 

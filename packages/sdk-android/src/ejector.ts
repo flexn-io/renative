@@ -6,17 +6,17 @@ import {
     fsReadFileSync,
     copyFolderContentsRecursiveSync,
     getAppFolder,
-    getConfigProp,
     doResolvePath,
     parsePlugins,
     getContext,
     RnvFileName,
+    getConfigRootProp,
 } from '@rnv/core';
 
 export const ejectGradleProject = async () => {
     const c = getContext();
-    const isMonorepo = getConfigProp('isMonorepo');
-    const monoRoot = getConfigProp('monoRoot');
+    const isMonorepo = getConfigRootProp('isMonorepo');
+    const monoRoot = getConfigRootProp('monoRoot');
 
     const rootMonoProjectPath = isMonorepo ? path.join(c.paths.project.dir, monoRoot || '../..') : c.paths.project.dir;
     // const rootProjectPath = c.paths.project.dir;

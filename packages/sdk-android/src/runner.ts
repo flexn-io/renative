@@ -193,7 +193,7 @@ export const runAndroid = async (device: AndroidDevice) => {
 
 const _checkSigningCerts = async (c: Context) => {
     logDefault('_checkSigningCerts');
-    const signingConfig = getConfigProp('signingConfig', 'Debug');
+    const signingConfig = getConfigProp('signingConfig') || 'Debug';
     const isRelease = signingConfig === 'Release';
 
     if (!c.platform) return;

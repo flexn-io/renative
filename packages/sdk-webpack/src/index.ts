@@ -237,7 +237,7 @@ export const runWebpackServer = async (enableRemoteDebugger?: boolean) => {
     devServerHost = getDevServerHost();
 
     const isPortActive = await checkPortInUse(port);
-    const bundleAssets = getConfigProp('bundleAssets', false);
+    const bundleAssets = getConfigProp('bundleAssets');
 
     if (bundleAssets) {
         logSuccess('bundleAssets set to true. webpack dev server will not run');
