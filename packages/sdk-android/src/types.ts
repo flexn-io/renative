@@ -43,7 +43,6 @@ export type Payload = {
         pluginActivityResultMethods: string;
         pluginApplicationCreateMethods: string;
         pluginSplashActivityImports: string;
-        resourceStrings: Required<TemplateAndroid['strings_xml']>['children'];
         store?: {
             storeFile?: string;
             // keyAlias: string;
@@ -99,3 +98,4 @@ export type TemplateAndroid = Required<Required<RnvPluginPlatformSchema>['templa
 // export type AndroidManifestJSON = AndroidManifestJSONNode & {
 //     package?: string;
 // };
+export type TargetResourceFile = 'styles_xml' | 'strings_xml' | 'colors_xml';

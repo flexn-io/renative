@@ -10,8 +10,11 @@ import { zodPlatformNextJsFragment } from './platforms/fragments/nextjs';
 import { zodPlatformReactNativeFragment } from './platforms/fragments/reactNative';
 import {
     zodAndroidManifest,
+    zodAndroidResources,
     zodManifestChildBase,
     zodManifestChildWithChildren,
+    zodResourcesChildBase,
+    zodResourcesChildWithChildren,
     zodTemplateAndroidFragment,
 } from './platforms/fragments/templateAndroid';
 import {
@@ -70,12 +73,19 @@ export type RnvPlatformiOSFragment = z.infer<typeof zodPlatformiOSFragment>;
 export type RnvPlatformLightningFragment = z.infer<typeof zodPlatformLightningFragment>;
 export type RnvPlatformNextJsFragment = z.infer<typeof zodPlatformNextJsFragment>;
 export type RnvPlatformReactNativeFragment = z.infer<typeof zodPlatformReactNativeFragment>;
+
 export type AndroidManifestNode = z.infer<typeof zodManifestChildWithChildren>;
 export type ConfigAndroidManifestChildType = z.infer<typeof zodManifestChildBase> & {
     children?: ConfigAndroidManifestChildType[];
 };
 export type AndroidManifest = z.infer<typeof zodAndroidManifest>;
 export type RnvTemplateAndroidFragment = z.infer<typeof zodTemplateAndroidFragment>;
+
+export type AndroidResources = z.infer<typeof zodAndroidResources>;
+export type AndroidResourcesNode = z.infer<typeof zodResourcesChildWithChildren>;
+export type ConfigAndroidResourcesChildType = z.infer<typeof zodResourcesChildBase> & {
+    children?: ConfigAndroidResourcesChildType[];
+};
 export type RnvTemplateXcodeFragment = z.infer<typeof zodTemplateXcodeFragment>;
 export type ConfigAppDelegateMethod = ConfigTemplateXcodeAppDelegateMethod[number];
 export type RnvPlatformTizenFragment = z.infer<typeof zodPlatformTizenFragment>;

@@ -6,6 +6,7 @@ import { mkdirSync } from 'fs';
 import { isSystemWin } from '../system/is';
 import { RnvFileName } from '../enums/fileName';
 import { homedir } from 'os';
+import { RnvFolderName } from '../enums/folderName';
 
 export const generateContextPaths = (pathObj: RnvContextPathObj, dir: string, configName?: string) => {
     pathObj.dir = dir;
@@ -100,7 +101,7 @@ export const populateContextPaths = (c: RnvContext, RNV_HOME_DIR: string | undef
 
     // @rnv/core ------------------
     c.paths.rnvCore.dir = path.join(__dirname, '../..');
-    c.paths.rnvCore.templateFilesDir = path.join(c.paths.rnvCore.dir, 'templateFiles');
+    c.paths.rnvCore.templateFilesDir = path.join(c.paths.rnvCore.dir, RnvFolderName.templateFiles);
     c.paths.rnvCore.package = path.join(c.paths.rnvCore.dir, RnvFileName.package);
     //TODO: move out. this is only for paths
     c.files.rnvCore.package = JSON.parse(fsReadFileSync(c.paths.rnvCore.package).toString());
