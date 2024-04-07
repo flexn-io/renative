@@ -85,7 +85,9 @@ ${msg}
     c.process = ctxOpts?.process || c.process;
     c.command = ctxOpts?.cmd || c.command;
     c.subCommand = ctxOpts?.subCmd || c.subCommand;
-    c.isSystemWin = isSystemWin;
+    c.isSystemWin = process.platform === 'win32';
+    c.isSystemLinux = process.platform === 'linux';
+    c.isSystemMac = process.platform === 'darwin';
 
     global.RNV_CONTEXT = c;
 

@@ -200,6 +200,7 @@ const generateContextDefaults = (ctx?: Context) => {
                 assets: {},
                 platformTemplates: {},
             },
+            dotRnv: {},
         },
         files: {
             rnv: {
