@@ -90,7 +90,21 @@
                 "release": {
                     "runScheme": "Release",
                     "bundleAssets": true,
-                    "bundleIsDev": false
+                    "bundleIsDev": false,
+                    "id": "com.renative.harness.ios",
+                    "provisionProfileSpecifier": "renative harness adhoc ios",
+                    "provisioningStyle": "Manual",
+                    "codeSignIdentity": "Apple Distribution",
+                    "exportOptions": {
+                        "method": "ad-hoc",
+                        "uploadBitcode": true,
+                        "compileBitcode": false,
+                        "uploadSymbols": true,
+                        "signingStyle": "manual",
+                        "provisioningProfiles": {
+                            "com.renative.harness.ios": "renative harness adhoc ios"
+                        }
+                    }
                 }
             }
         },
@@ -113,7 +127,21 @@
                 "release": {
                     "runScheme": "Release",
                     "bundleAssets": true,
-                    "bundleIsDev": false
+                    "bundleIsDev": false,
+                    "id": "com.renative.harness.tvos",
+                    "provisionProfileSpecifier": "renative harness adhoc tvos",
+                    "provisioningStyle": "Manual",
+                    "codeSignIdentity": "Apple Distribution",
+                    "exportOptions": {
+                        "method": "ad-hoc",
+                        "uploadBitcode": true,
+                        "compileBitcode": false,
+                        "uploadSymbols": true,
+                        "signingStyle": "manual",
+                        "provisioningProfiles": {
+                            "com.renative.harness.tvos": "renative harness adhoc tvos"
+                        }
+                    }
                 }
             }
         },

@@ -36,7 +36,7 @@ import { zodPluginPlatformAndroidFragment } from './plugins/fragments/platformAn
 import { zodPluginPlatformBaseFragment } from './plugins/fragments/platformBase';
 import { zodPluginPlatformiOSFragment } from './plugins/fragments/platformIos';
 import { zodPluginFragment } from './configFiles/plugin';
-import { zodPrivatePlatformAndroid, zodConfigFilePrivate } from './configFiles/private';
+import { zodConfigFilePrivate } from './configFiles/private';
 import { zodConfigFileRuntime } from './configFiles/runtime';
 import { zodConfigTemplateBootstrapConfig } from './configFiles/template';
 import { zodRootProjectBaseFragment } from './configFiles/project';
@@ -44,6 +44,7 @@ import { zodConfigFileTemplates } from './configFiles/templates';
 import { zodConfigFileWorkspace } from './configFiles/workspace';
 import { zodConfigFileWorkspaces } from './configFiles/workspaces';
 import type { RnvPlatformKey } from '../types';
+import { zodPrivatePlatformAndroid } from './platforms/fragments/androidPrivate';
 
 // Shared -----------------------
 //
@@ -98,6 +99,7 @@ export type ConfigPlatformSchemaFragment = ConfigCommonSchemaFragment &
     ConfigPlatformBaseFragment &
     ConfigPlatformiOSFragment &
     ConfigPlatformAndroidFragment &
+    ConfigPrivatePlatformAndroid &
     ConfigPlatformWebFragment &
     ConfigPlatformTizenFragment &
     ConfigPlatformWindowsFragment &

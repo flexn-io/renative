@@ -18,7 +18,6 @@ import {
     logWarning,
     sanitizePluginPath,
     writeCleanFile,
-    getConfigRootProp,
 } from '@rnv/core';
 import path from 'path';
 import { Context } from './types';
@@ -240,8 +239,8 @@ export const parseAppBuildGradleSync = () => {
 
     const storeFile = getConfigProp('storeFile');
     const keyAlias = getConfigProp('keyAlias');
-    const storePassword = getConfigRootProp('storePassword');
-    const keyPassword = getConfigRootProp('keyPassword');
+    const storePassword = getConfigProp('storePassword');
+    const keyPassword = getConfigProp('keyPassword');
     const minifyEnabled = getConfigProp('minifyEnabled');
 
     c.payload.pluginConfigAndroid.store = {
