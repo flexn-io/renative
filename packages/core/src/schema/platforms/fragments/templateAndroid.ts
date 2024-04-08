@@ -32,6 +32,8 @@ export interface ConfigTemplateAndroidResources extends z.infer<typeof zodAndroi
 export const zodManifestChildBase = z.object({
     //Shared
     tag: z.string(),
+    // TODO: to be removed once manifest and resource parsers are separated
+    name: z.string().optional(),
     'android:name': z.string().optional(),
     'android:theme': z.string().optional(),
     'android:value': z.any().optional(),

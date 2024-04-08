@@ -149,7 +149,7 @@ export const _mergeNodeChildren = <T extends ConfigAndroidManifestNode | ConfigA
     }
     if (!node.children) node.children = [];
     nodeChildrenExt.forEach((v) => {
-        const nameExt = 'android:name' in v ? v['android:name'] : undefined;
+        const nameExt = 'android:name' in v ? v['android:name'] : v.name;
         if (v.tag) {
             const childNode = _findChildNode(v.tag, nameExt!, node);
             if (childNode) {
