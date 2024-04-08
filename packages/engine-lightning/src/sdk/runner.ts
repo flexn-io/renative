@@ -39,6 +39,7 @@ export const runLightningProject = async () => {
             silent: false,
             env: {
                 ...CoreEnvVars.BASE(),
+                ...CoreEnvVars.RNV_EXTENSIONS(),
                 ...EnvVars.LNG_BUILD_FOLDER(),
                 ...EnvVars.LNG_ENTRY_FILE(),
                 ...EnvVars.LNG_SERVE_PORT(),
@@ -68,13 +69,14 @@ export const buildLightningProject = async () => {
     const target = getConfigProp('target') || 'es6';
     const tBuild = getPlatformProjectDir();
 
-    const tOut = path.join(tBuild || '', 'output');
+    const tOut = path.join(tBuild!, 'output');
 
     await executeAsync(`lng dist --${target}`, {
         stdio: 'inherit',
         silent: false,
         env: {
             ...CoreEnvVars.BASE(),
+            ...CoreEnvVars.RNV_EXTENSIONS(),
             ...EnvVars.LNG_DIST_FOLDER(),
             ...EnvVars.LNG_ENTRY_FILE(),
         },

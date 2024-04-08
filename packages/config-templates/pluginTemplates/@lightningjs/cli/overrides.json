@@ -8,7 +8,8 @@
           "if (!fs.existsSync(distDir)) {": "if (true) { // need this to always run, since this dir is created by rnv"
       },
       "src/helpers/build.js": {
-          "path.join(process.cwd(), enterFile),": "path.join(process.cwd(), process.env.LNG_ENTRY_FILE),"
+          "path.join(process.cwd(), enterFile),": "path.join(process.cwd(), process.env.LNG_ENTRY_FILE),",
+          "fs.appendFileSync(filename, os.EOL + missingEntries.join(os.EOL) + os.EOL)": "// fs.appendFileSync(filename, /* changed by RNV */ os.EOL + missingEntries.join(os.EOL) + os.EOL)"
       },
       "src/configs/rollup.es6.config.js": {
           "resolve({ extensions, mainFields: buildHelpers.getResolveConfigForBundlers() }),": "resolve({ extensions: process.env.RNV_EXTENSIONS.split(',').map(extension => `.${extension}`), mainFields: buildHelpers.getResolveConfigForBundlers() }),",
