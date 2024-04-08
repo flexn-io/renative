@@ -1,0 +1,416 @@
+{
+    "$schema": "../../../.rnv/schema/rnv.project.json",
+    "platforms": {
+        "android": {
+            "templateAndroid": {
+                "AndroidManifest_xml": {
+                    "tag": "manifest",
+                    "xmlns:android": "http://schemas.android.com/apk/res/android",
+                    "xmlns:tools": "http://schemas.android.com/tools",
+                    "children": [
+                        {
+                            "tag": "application",
+                            "android:allowBackup": true,
+                            "android:largeHeap": true,
+                            "android:name": ".MainApplication",
+                            "android:label": "@string/app_name",
+                            "android:icon": "@mipmap/ic_launcher",
+                            "tools:replace": "android:appComponentFactory",
+                            "android:appComponentFactory": "appComponentFactoryFix",
+                            "android:supportsRtl": true,
+                            "tools:targetApi": 30,
+                            "android:usesCleartextTraffic": true,
+                            "android:theme": "@style/AppTheme",
+                            "children": [
+                                {
+                                    "tag": "activity",
+                                    "android:name": ".SplashActivity",
+                                    "android:screenOrientation": "portrait",
+                                    "android:noHistory": true,
+                                    "android:launchMode": "singleTask",
+                                    "android:theme": "@style/SplashTheme",
+                                    "android:exported": true,
+                                    "children": [
+                                        {
+                                            "tag": "intent-filter",
+                                            "children": [
+                                                {
+                                                    "tag": "action",
+                                                    "android:name": "android.intent.action.MAIN"
+                                                },
+                                                {
+                                                    "tag": "category",
+                                                    "android:name": "android.intent.category.LAUNCHER"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "tag": "activity",
+                                    "android:name": ".MainActivity",
+                                    "android:label": "@string/app_name",
+                                    "android:screenOrientation": "portrait",
+                                    "android:launchMode": "singleTask",
+                                    "android:exported": true,
+                                    "android:configChanges": "keyboard|keyboardHidden|orientation|screenSize",
+                                    "android:windowSoftInputMode": "adjustResize",
+                                    "children": [
+                                        {
+                                            "tag": "intent-filter",
+                                            "children": [
+                                                {
+                                                    "tag": "action",
+                                                    "android:name": "android.intent.action.VIEW"
+                                                },
+                                                {
+                                                    "tag": "category",
+                                                    "android:name": "android.intent.category.DEFAULT"
+                                                },
+                                                {
+                                                    "tag": "category",
+                                                    "android:name": "android.intent.category.BROWSABLE"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "tag": "activity",
+                                    "android:name": "com.facebook.react.devsupport.DevSettingsActivity"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "resources": {
+                    "values": {
+                        "colors_xml": {
+                            "tag": "resources",
+                            "children": [
+                                {
+                                    "tag": "color",
+                                    "name": "bg",
+                                    "value": "{{PLUGIN_COLORS_BG}}"
+                                }
+                            ]
+                        },
+                        "strings_xml": {
+                            "tag": "resources",
+                            "children": [
+                                {
+                                    "tag": "string",
+                                    "name": "app_name",
+                                    "value": "{{APP_TITLE}}"
+                                }
+                            ]
+                        },
+                        "styles_xml": {
+                            "tag": "resources",
+                            "children": [
+                                {
+                                    "tag": "style",
+                                    "name": "AppTheme",
+                                    "parent": "Theme.AppCompat.DayNight.NoActionBar",
+                                    "children": [
+                                        {
+                                            "tag": "item",
+                                            "name": "android:editTextBackground",
+                                            "value": "@drawable/rn_edit_text_material"
+                                        },
+                                        {
+                                            "tag": "item",
+                                            "name": "android:windowBackground",
+                                            "value": "@color/bg"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "tag": "style",
+                                    "name": "SplashTheme",
+                                    "parent": "Theme.AppCompat.NoActionBar",
+                                    "children": [
+                                        {
+                                            "tag": "item",
+                                            "name": "android:windowBackground",
+                                            "value": "@color/bg"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    "values-v28": {
+                        "styles_xml": {
+                            "tag": "resources",
+                            "children": [
+                                {
+                                    "tag": "style",
+                                    "name": "AppTheme",
+                                    "parent": "Theme.AppCompat.DayNight.NoActionBar",
+                                    "children": [
+                                        {
+                                            "tag": "item",
+                                            "name": "android:editTextBackground",
+                                            "value": "@drawable/rn_edit_text_material"
+                                        },
+                                        {
+                                            "tag": "item",
+                                            "name": "android:windowBackground",
+                                            "value": "@color/bg"
+                                        },
+                                        {
+                                            "tag": "item",
+                                            "name": "android:windowLayoutInDisplayCutoutMode",
+                                            "value": "shortEdges"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "tag": "style",
+                                    "name": "SplashTheme",
+                                    "parent": "Theme.AppCompat.NoActionBar",
+                                    "children": [
+                                        {
+                                            "tag": "item",
+                                            "name": "android:windowBackground",
+                                            "value": "@color/bg"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "androidtv": {
+            "templateAndroid": {
+                "AndroidManifest_xml": {
+                    "tag": "manifest",
+                    "xmlns:android": "http://schemas.android.com/apk/res/android",
+                    "children": [
+                        {
+                            "tag": "uses-feature",
+                            "android:name": "android.hardware.touchscreen",
+                            "android:required": false
+                        },
+                        {
+                            "tag": "uses-feature",
+                            "android:name": "android.software.leanback",
+                            "android:required": true
+                        },
+                        {
+                            "tag": "application",
+                            "android:name": ".MainApplication",
+                            "android:label": "@string/app_name",
+                            "android:icon": "@mipmap/ic_launcher",
+                            "android:roundIcon": "@mipmap/ic_launcher",
+                            "android:banner": "@drawable/banner",
+                            "android:allowBackup": true,
+                            "android:theme": "@style/AppTheme",
+                            "children": [
+                                {
+                                    "tag": "activity",
+                                    "android:name": ".SplashActivity",
+                                    "android:screenOrientation": "landscape",
+                                    "android:noHistory": true,
+                                    "android:launchMode": "singleTask",
+                                    "android:theme": "@style/SplashTheme",
+                                    "android:exported": true,
+                                    "children": [
+                                        {
+                                            "tag": "intent-filter",
+                                            "children": [
+                                                {
+                                                    "tag": "action",
+                                                    "android:name": "android.intent.action.MAIN"
+                                                },
+                                                {
+                                                    "tag": "category",
+                                                    "android:name": "android.intent.category.LEANBACK_LAUNCHER"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "tag": "activity",
+                                    "android:name": ".MainActivity",
+                                    "android:label": "@string/app_name",
+                                    "android:configChanges": "keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode",
+                                    "android:launchMode": "singleTask",
+                                    "android:windowSoftInputMode": "adjustResize",
+                                    "android:exported": true,
+                                    "children": [
+                                        {
+                                            "tag": "intent-filter",
+                                            "children": [
+                                                {
+                                                    "tag": "action",
+                                                    "android:name": "android.intent.action.VIEW"
+                                                },
+                                                {
+                                                    "tag": "category",
+                                                    "android:name": "android.intent.category.DEFAULT"
+                                                },
+                                                {
+                                                    "tag": "category",
+                                                    "android:name": "android.intent.category.BROWSABLE"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
+        "androidwear": {
+            "templateAndroid": {
+                "AndroidManifest_xml": {
+                    "tag": "manifest",
+                    "xmlns:android": "http://schemas.android.com/apk/res/android",
+                    "xmlns:tools": "http://schemas.android.com/tools",
+                    "children": [
+                        {
+                            "tag": "uses-feature",
+                            "android:name": "android.hardware.type.watch",
+                            "android:required": false
+                        },
+                        {
+                            "tag": "application",
+                            "android:name": ".MainApplication",
+                            "android:label": "@string/app_name",
+                            "android:icon": "@mipmap/ic_launcher",
+                            "android:supportsRtl": true,
+                            "tools:targetApi": 30,
+                            "tools:replace": "android:appComponentFactory",
+                            "android:appComponentFactory": "appComponentFactoryFix",
+                            "android:theme": "@style/AppTheme",
+                            "children": [
+                                {
+                                    "tag": "activity",
+                                    "android:name": ".MainActivity",
+                                    "android:label": "@string/app_name",
+                                    "android:launchMode": "singleTask",
+                                    "android:exported": true,
+                                    "children": [
+                                        {
+                                            "tag": "intent-filter",
+                                            "children": [
+                                                {
+                                                    "tag": "action",
+                                                    "android:name": "android.intent.action.MAIN"
+                                                },
+                                                {
+                                                    "tag": "category",
+                                                    "android:name": "android.intent.category.LAUNCHER"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "tag": "meta-data",
+                                    "android:name": "com.google.android.wearable.standalone",
+                                    "android:value": true
+                                },
+                                {
+                                    "tag": "activity",
+                                    "android:name": "com.facebook.react.devsupport.DevSettingsActivity"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
+        "firetv": {
+            "templateAndroid": {
+                "AndroidManifest_xml": {
+                    "tag": "manifest",
+                    "xmlns:android": "http://schemas.android.com/apk/res/android",
+                    "children": [
+                        {
+                            "tag": "uses-feature",
+                            "android:name": "android.hardware.touchscreen",
+                            "android:required": false
+                        },
+                        {
+                            "tag": "uses-feature",
+                            "android:name": "android.software.leanback",
+                            "android:required": true
+                        },
+                        {
+                            "tag": "application",
+                            "android:name": ".MainApplication",
+                            "android:label": "@string/app_name",
+                            "android:icon": "@mipmap/ic_launcher",
+                            "android:roundIcon": "@mipmap/ic_launcher",
+                            "android:banner": "@drawable/banner",
+                            "android:allowBackup": true,
+                            "android:theme": "@style/AppTheme",
+                            "children": [
+                                {
+                                    "tag": "activity",
+                                    "android:name": ".SplashActivity",
+                                    "android:screenOrientation": "landscape",
+                                    "android:noHistory": true,
+                                    "android:launchMode": "singleTask",
+                                    "android:theme": "@style/SplashTheme",
+                                    "android:exported": true,
+                                    "children": [
+                                        {
+                                            "tag": "intent-filter",
+                                            "children": [
+                                                {
+                                                    "tag": "action",
+                                                    "android:name": "android.intent.action.MAIN"
+                                                },
+                                                {
+                                                    "tag": "category",
+                                                    "android:name": "android.intent.category.LEANBACK_LAUNCHER"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "tag": "activity",
+                                    "android:name": ".MainActivity",
+                                    "android:label": "@string/app_name",
+                                    "android:configChanges": "keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode",
+                                    "android:launchMode": "singleTask",
+                                    "android:windowSoftInputMode": "adjustResize",
+                                    "android:exported": true,
+                                    "children": [
+                                        {
+                                            "tag": "intent-filter",
+                                            "children": [
+                                                {
+                                                    "tag": "action",
+                                                    "android:name": "android.intent.action.VIEW"
+                                                },
+                                                {
+                                                    "tag": "category",
+                                                    "android:name": "android.intent.category.DEFAULT"
+                                                },
+                                                {
+                                                    "tag": "category",
+                                                    "android:name": "android.intent.category.BROWSABLE"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

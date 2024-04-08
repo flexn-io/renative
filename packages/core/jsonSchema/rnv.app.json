@@ -631,13 +631,13 @@
                               "tag": {
                                 "type": "string"
                               },
-                              "android:name": {
+                              "package": {
                                 "type": "string"
                               },
-                              "android:required": {
-                                "type": "boolean"
+                              "xmlns:android": {
+                                "type": "string"
                               },
-                              "package": {
+                              "xmlns:tools": {
                                 "type": "string"
                               },
                               "children": {
@@ -646,53 +646,74 @@
                                   "type": "object",
                                   "properties": {
                                     "tag": {
-                                      "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/buildSchemes/additionalProperties/properties/templateAndroid/properties/AndroidManifest_xml/properties/tag"
+                                      "type": "string"
                                     },
                                     "android:name": {
-                                      "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/buildSchemes/additionalProperties/properties/templateAndroid/properties/AndroidManifest_xml/properties/android:name"
+                                      "type": "string"
                                     },
+                                    "android:theme": {
+                                      "type": "string"
+                                    },
+                                    "android:value": {},
                                     "android:required": {
-                                      "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/buildSchemes/additionalProperties/properties/templateAndroid/properties/AndroidManifest_xml/properties/android:required"
+                                      "type": "boolean"
+                                    },
+                                    "android:allowBackup": {
+                                      "type": "boolean"
+                                    },
+                                    "android:largeHeap": {
+                                      "type": "boolean"
+                                    },
+                                    "android:label": {
+                                      "type": "string"
+                                    },
+                                    "android:icon": {
+                                      "type": "string"
+                                    },
+                                    "android:roundIcon": {
+                                      "type": "string"
+                                    },
+                                    "android:banner": {
+                                      "type": "string"
+                                    },
+                                    "tools:replace": {
+                                      "type": "string"
+                                    },
+                                    "android:supportsRtl": {
+                                      "type": "boolean"
+                                    },
+                                    "tools:targetApi": {
+                                      "type": "number"
+                                    },
+                                    "android:usesCleartextTraffic": {
+                                      "type": "boolean"
+                                    },
+                                    "android:appComponentFactory": {
+                                      "type": "string"
+                                    },
+                                    "android:screenOrientation": {
+                                      "type": "string"
+                                    },
+                                    "android:noHistory": {
+                                      "type": "boolean"
+                                    },
+                                    "android:launchMode": {
+                                      "type": "string"
+                                    },
+                                    "android:exported": {
+                                      "type": "boolean"
+                                    },
+                                    "android:configChanges": {
+                                      "type": "string"
+                                    },
+                                    "android:windowSoftInputMode": {
+                                      "type": "string"
                                     },
                                     "children": {
                                       "type": "array",
                                       "items": {
                                         "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/buildSchemes/additionalProperties/properties/templateAndroid/properties/AndroidManifest_xml/properties/children/items"
                                       }
-                                    }
-                                  },
-                                  "required": [
-                                    "tag",
-                                    "android:name",
-                                    "children"
-                                  ],
-                                  "additionalProperties": false
-                                }
-                              }
-                            },
-                            "required": [
-                              "tag",
-                              "android:name"
-                            ],
-                            "additionalProperties": false,
-                            "description": "Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism\nInjects / Overrides values in AndroidManifest.xml file of generated android based project\n> IMPORTANT: always ensure that your object contains `tag` and `android:name` to target correct tag to merge into\n "
-                          },
-                          "strings_xml": {
-                            "type": "object",
-                            "properties": {
-                              "children": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object",
-                                  "properties": {
-                                    "tag": {
-                                      "type": "string"
-                                    },
-                                    "name": {
-                                      "type": "string"
-                                    },
-                                    "child_value": {
-                                      "type": "string"
                                     }
                                   },
                                   "required": [
@@ -703,44 +724,70 @@
                               }
                             },
                             "required": [
-                              "children"
+                              "tag"
                             ],
-                            "additionalProperties": false
+                            "additionalProperties": false,
+                            "description": "Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism\nInjects / Overrides values in AndroidManifest.xml file of generated android based project\n> IMPORTANT: always ensure that your object contains `tag` and `android:name` to target correct tag to merge into\n "
                           },
-                          "MainActivity_kt": {
+                          "strings_xml": {
                             "type": "object",
                             "properties": {
-                              "onCreate": {
-                                "type": "string",
-                                "default": "super.onCreate(savedInstanceState)",
-                                "description": "Overrides super.onCreate method handler of MainActivity.java"
+                              "tag": {
+                                "type": "string"
                               },
-                              "imports": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "parent": {
+                                "type": "string"
+                              },
+                              "value": {
+                                "type": "string"
+                              },
+                              "children": {
                                 "type": "array",
                                 "items": {
-                                  "type": "string"
-                                }
-                              },
-                              "methods": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              },
-                              "createMethods": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              },
-                              "resultMethods": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
+                                  "type": "object",
+                                  "properties": {
+                                    "tag": {
+                                      "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/buildSchemes/additionalProperties/properties/templateAndroid/properties/strings_xml/properties/tag"
+                                    },
+                                    "name": {
+                                      "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/buildSchemes/additionalProperties/properties/templateAndroid/properties/strings_xml/properties/name"
+                                    },
+                                    "parent": {
+                                      "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/buildSchemes/additionalProperties/properties/templateAndroid/properties/strings_xml/properties/parent"
+                                    },
+                                    "value": {
+                                      "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/buildSchemes/additionalProperties/properties/templateAndroid/properties/strings_xml/properties/value"
+                                    },
+                                    "children": {
+                                      "type": "array",
+                                      "items": {
+                                        "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/buildSchemes/additionalProperties/properties/templateAndroid/properties/strings_xml/properties/children/items"
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "tag"
+                                  ],
+                                  "additionalProperties": false
                                 }
                               }
                             },
-                            "additionalProperties": false
+                            "required": [
+                              "tag"
+                            ],
+                            "additionalProperties": false,
+                            "description": "Allows you to directly manipulate `res/values files` via json override mechanism\nInjects / Overrides values in res/values files of generated android based project\n> IMPORTANT: always ensure that your object contains `tag` and `name` to target correct tag to merge into\n "
+                          },
+                          "styles_xml": {
+                            "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/buildSchemes/additionalProperties/properties/templateAndroid/properties/strings_xml",
+                            "description": "Allows you to directly manipulate `res/values files` via json override mechanism\nInjects / Overrides values in res/values files of generated android based project\n> IMPORTANT: always ensure that your object contains `tag` and `name` to target correct tag to merge into\n "
+                          },
+                          "colors_xml": {
+                            "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/buildSchemes/additionalProperties/properties/templateAndroid/properties/strings_xml",
+                            "description": "Allows you to directly manipulate `res/values files` via json override mechanism\nInjects / Overrides values in res/values files of generated android based project\n> IMPORTANT: always ensure that your object contains `tag` and `name` to target correct tag to merge into\n "
                           },
                           "MainApplication_kt": {
                             "type": "object",
@@ -779,27 +826,52 @@
                             "additionalProperties": false,
                             "description": "Allows you to configure behaviour of MainActivity"
                           },
+                          "MainActivity_kt": {
+                            "type": "object",
+                            "properties": {
+                              "onCreate": {
+                                "type": "string",
+                                "default": "super.onCreate(savedInstanceState)",
+                                "description": "Overrides super.onCreate method handler of MainActivity.kt"
+                              },
+                              "imports": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "methods": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "createMethods": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "resultMethods": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          "SplashActivity_kt": {
+                            "type": "object",
+                            "properties": {},
+                            "additionalProperties": false
+                          },
                           "settings_gradle": {
                             "type": "object",
                             "properties": {},
                             "additionalProperties": false
                           },
                           "gradle_wrapper_properties": {
-                            "type": "object",
-                            "properties": {},
-                            "additionalProperties": false
-                          },
-                          "SplashActivity_java": {
-                            "type": "object",
-                            "properties": {},
-                            "additionalProperties": false
-                          },
-                          "styles_xml": {
-                            "type": "object",
-                            "properties": {},
-                            "additionalProperties": false
-                          },
-                          "colors_xml": {
                             "type": "object",
                             "properties": {},
                             "additionalProperties": false
@@ -3446,13 +3518,20 @@
                         "description": "Object of npm dependencies of this plugin. These will be injected into package.json"
                       },
                       "pluginDependencies": {
-                        "type": "object",
-                        "additionalProperties": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
-                        },
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "additionalProperties": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            }
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
                         "description": "List of other Renative plugins this plugin depends on"
                       },
                       "webpackConfig": {
@@ -3621,16 +3700,6 @@
                             "description": "Build type of the pod"
                           }
                         },
-                        "required": [
-                          "git",
-                          "commit",
-                          "version",
-                          "podNames",
-                          "podName",
-                          "staticFrameworks",
-                          "isStatic",
-                          "buildType"
-                        ],
                         "additionalProperties": false
                       },
                       "tvos": {

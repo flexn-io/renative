@@ -15,11 +15,11 @@ export const zodResourcesChildBase = z.object({
 });
 
 export const zodResourcesChildWithChildren: z.ZodType<ConfigAndroidResourcesChildType> = zodResourcesChildBase.extend({
-    children: z.lazy(() => zodResourcesChildWithChildren.array()),
+    children: z.lazy(() => zodResourcesChildWithChildren.array()).optional(),
 });
 
 export const zodAndroidResources = zodResourcesChildBase.extend({
-    children: z.array(zodResourcesChildWithChildren),
+    children: z.array(zodResourcesChildWithChildren).optional(),
 }).describe(`Allows you to directly manipulate \`res/values files\` via json override mechanism
 Injects / Overrides values in res/values files of generated android based project
 > IMPORTANT: always ensure that your object contains \`tag\` and \`name\` to target correct tag to merge into
@@ -30,22 +30,42 @@ export interface ConfigTemplateAndroidResources extends z.infer<typeof zodAndroi
 // AndroidManifest.xml
 // ==============================================================
 export const zodManifestChildBase = z.object({
+    //Shared
     tag: z.string(),
-    'android:name': z.string(),
+    'android:name': z.string().optional(),
+    'android:theme': z.string().optional(),
+    'android:value': z.any().optional(),
+    //Application
     'android:required': z.boolean().optional(),
-    // 'android:name': '.MainApplication',
-    // 'android:allowBackup': true,
-    // 'android:largeHeap': true,
-    // 'android:usesCleartextTraffic': true,
-    // 'tools:targetApi': 28,
+    'android:allowBackup': z.boolean().optional(),
+    'android:largeHeap': z.boolean().optional(),
+    'android:label': z.string().optional(),
+    'android:icon': z.string().optional(),
+    'android:roundIcon': z.string().optional(),
+    'android:banner': z.string().optional(),
+    'tools:replace': z.string().optional(),
+    'android:supportsRtl': z.boolean().optional(),
+    'tools:targetApi': z.number().optional(),
+    'android:usesCleartextTraffic': z.boolean().optional(),
+    'android:appComponentFactory': z.string().optional(),
+    //Activity
+    'android:screenOrientation': z.string().optional(),
+    'android:noHistory': z.boolean().optional(),
+    'android:launchMode': z.string().optional(),
+    'android:exported': z.boolean().optional(),
+    'android:configChanges': z.string().optional(),
+    'android:windowSoftInputMode': z.string().optional(),
 });
 
 export const zodManifestChildWithChildren: z.ZodType<ConfigAndroidManifestChildType> = zodManifestChildBase.extend({
-    children: z.lazy(() => zodManifestChildWithChildren.array()),
+    children: z.lazy(() => zodManifestChildWithChildren.array()).optional(),
 });
 
-export const zodAndroidManifest = zodManifestChildBase.extend({
+export const zodAndroidManifest = z.object({
+    tag: z.string(),
     package: z.string().optional(),
+    'xmlns:android': z.string().optional(),
+    'xmlns:tools': z.string().optional(),
     children: z.array(zodManifestChildWithChildren).optional(),
 }).describe(`Allows you to directly manipulate \`AndroidManifest.xml\` via json override mechanism
 Injects / Overrides values in AndroidManifest.xml file of generated android based project
