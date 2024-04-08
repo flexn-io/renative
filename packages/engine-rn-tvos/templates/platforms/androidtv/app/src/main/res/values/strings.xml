@@ -1,4 +1,6 @@
-<!-- HARDCODED -->
-<resources>
-    <string name="app_name">ReNative</string>
-</resources>
+<!--
+Generate by ReNative (https://renative.org)
+BASE: packages/sdk-android/templateFiles/strings_xml.json
+-->
+
+{{PLUGIN_STRINGS_XML_FILE}}

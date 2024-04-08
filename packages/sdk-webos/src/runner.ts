@@ -182,7 +182,7 @@ const _configureProject = async (c: RnvContext) => {
         },
         {
             pattern: '{{APP_ICON_COLOR}}',
-            override: getConfigProp('iconColor', '#000'),
+            override: getConfigProp('iconColor') || '#000',
         },
         {
             pattern: '{{APP_VENDOR}}',

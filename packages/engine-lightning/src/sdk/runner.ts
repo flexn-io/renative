@@ -66,7 +66,7 @@ export const buildLightningProject = async () => {
 
     const certProfile = getConfigProp('certificateProfile') || DEFAULTS.certificateProfile;
 
-    const target = getConfigProp('target', 'es6');
+    const target = getConfigProp('target') || 'es6';
     const tBuild = getPlatformProjectDir();
 
     const tOut = path.join(tBuild!, 'output');
@@ -137,8 +137,8 @@ const _configureProject = (c: RnvContext) =>
                       { pattern: '{{APP_TITLE}}', override: getAppTitle() },
                       { pattern: '{{APP_VERSION}}', override: semver.coerce(getAppVersion())?.format() },
                       { pattern: '{{APP_DESCRIPTION}}', override: getAppDescription() },
-                      { pattern: '{{APP_BG_COLOR}}', override: getConfigProp('backgroundColor', '#fff') },
-                      { pattern: '{{APP_ICON_COLOR}}', override: getConfigProp('iconColor', '#000') },
+                      { pattern: '{{APP_BG_COLOR}}', override: getConfigProp('backgroundColor') || '#fff' },
+                      { pattern: '{{APP_ICON_COLOR}}', override: getConfigProp('iconColor') || '#000' },
                       { pattern: '{{APP_VENDOR}}', override: getConfigProp('author') || DEFAULTS.author },
                   ];
 

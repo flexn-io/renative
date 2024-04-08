@@ -12,6 +12,28 @@
     "defaults": {
         "portOffset": 10
     },
+    "platforms": {
+        "android": {
+            "templateAndroid": {
+                "styles_xml": {
+                    "tag": "resources",
+                    "children": [
+                        {
+                            "tag": "style",
+                            "name": "AppTheme",
+                            "children": [
+                                {
+                                    "tag": "item",
+                                    "name": "android:windowIsTranslucent",
+                                    "value": "true"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    },
     "plugins": {
         "react-native-safe-area-context": "4.9.0",
         "react-native-splash-screen": {
@@ -20,6 +42,16 @@
                     "MainActivity_kt": {
                         "createMethods": ["SplashScreen.show(this)"],
                         "imports": ["org.devio.rn.splashscreen.SplashScreen"]
+                    },
+                    "colors_xml": {
+                        "tag": "resources",
+                        "children": [
+                            {
+                                "tag": "color",
+                                "name": "bg_line",
+                                "value": "#E7E7E7"
+                            }
+                        ]
                     }
                 },
                 "package": "org.devio.rn.splashscreen.SplashScreenReactPackage"
@@ -104,7 +136,6 @@
                 "templateAndroid": {
                     "AndroidManifest_xml": {
                         "tag": "manifest",
-                        "android:name": "",
                         "children": [
                             {
                                 "tag": "uses-permission ",
@@ -230,7 +261,6 @@
             }
         }
     },
-
     "permissions": {
         "ios": {
             "NSCalendarsUsageDescription": {

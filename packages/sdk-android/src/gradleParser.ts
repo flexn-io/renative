@@ -1,6 +1,6 @@
 import {
     OverridesOptions,
-    RnvPluginPlatformSchema,
+    ConfigPluginPlatformSchema,
     RnvContext,
     RnvPlugin,
     chalk,
@@ -241,7 +241,7 @@ export const parseAppBuildGradleSync = () => {
     const keyAlias = getConfigProp('keyAlias');
     const storePassword = getConfigProp('storePassword');
     const keyPassword = getConfigProp('keyPassword');
-    const minifyEnabled = getConfigProp('minifyEnabled', false);
+    const minifyEnabled = getConfigProp('minifyEnabled');
 
     c.payload.pluginConfigAndroid.store = {
         storeFile: storeFile,
@@ -327,7 +327,7 @@ ${chalk().bold(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
 
     // MULTI APK
     // const versionCodeOffset = getConfigProp('versionCodeOffset', 0);
-    const isMultiApk = getConfigProp('multipleAPKs', false) === true;
+    const isMultiApk = getConfigProp('multipleAPKs') === true;
     c.payload.pluginConfigAndroid.multiAPKs = '';
     if (isMultiApk) {
         // TODO migrate this to gradle.properties + it's enabled by default
@@ -552,8 +552,10 @@ export const parseGradlePropertiesSync = () => {
 
     const gradleProperties = 'gradle.properties';
 
-    const newArchEnabled = getConfigProp('newArchEnabled', false);
+    const newArchEnabled = getConfigProp('newArchEnabled');
     const reactNativeEngine = getConfigProp('reactNativeEngine') || 'hermes';
+    const enableJetifier = getConfigProp('enableJetifier') || true;
+    const enableAndroidX = getConfigProp('enableAndroidX') || true;
 
     const injects = [
         {
@@ -570,11 +572,11 @@ export const parseGradlePropertiesSync = () => {
         },
         {
             pattern: '{{ENABLE_JETIFIER}}',
-            override: getConfigProp('enableJetifier', true) ? 'true' : 'false',
+            override: enableJetifier ? 'true' : 'false',
         },
         {
             pattern: '{{ENABLE_ANDROID_X}}',
-            override: getConfigProp('enableAndroidX', true) ? 'true' : 'false',
+            override: enableAndroidX ? 'true' : 'false',
         },
     ];
 
@@ -583,7 +585,7 @@ export const parseGradlePropertiesSync = () => {
     writeCleanFile(getBuildFilePath(gradleProperties), path.join(appFolder, gradleProperties), injects, undefined, c);
 };
 
-export const injectPluginGradleSync = (pluginRoot: RnvPlugin, plugin: RnvPluginPlatformSchema, key: string) => {
+export const injectPluginGradleSync = (pluginRoot: RnvPlugin, plugin: ConfigPluginPlatformSchema, key: string) => {
     // const keyFixed = key.replace(/\//g, '-').replace(/@/g, '');
     // const packagePath = plugin.path ?? `${key}/android`;
     // let pathAbsolute;
@@ -628,7 +630,7 @@ export const injectPluginGradleSync = (pluginRoot: RnvPlugin, plugin: RnvPluginP
     }
 };
 
-export const parseAndroidConfigObject = (plugin?: RnvPluginPlatformSchema, key = '') => {
+export const parseAndroidConfigObject = (plugin?: ConfigPluginPlatformSchema, key = '') => {
     // APP/BUILD.GRADLE
     const c = getContext();
     const templateAndroid = plugin?.templateAndroid;

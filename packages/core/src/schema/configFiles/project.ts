@@ -103,6 +103,7 @@ export const zodRootProjectBaseFragment = z
                     )
                     .describe('iOS SDK specific permissions'),
             })
+            .partial()
             .describe(
                 'Permission definititions which can be used by app configs via `includedPermissions` and `excludedPermissions` to customize permissions for each app'
             ),

@@ -1,4 +1,5 @@
-<!-- HARDCODED -->
-<resources>
-    <color name="bg">#FFFFFF</color>
-</resources>
+<!--
+Generate by ReNative (https://renative.org)
+BASE: packages/sdk-android/templateFiles/colors_xml.json
+-->
+{{PLUGIN_COLORS_XML_FILE}}

@@ -19,4 +19,6 @@ export const RnvFolderName = {
     secrets: 'secrets',
     // Special folder for storing all build hooks in your project
     buildHooks: 'buildHooks',
+    // Any parent folder (used with path.join())
+    UP: '..',
 } as const;

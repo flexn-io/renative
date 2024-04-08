@@ -12,7 +12,7 @@ jest.mock('../../system/resolve');
 jest.mock('../../context/contextProps');
 
 beforeEach(() => {
-    // NOTE: do not call createRnvContext() in core library itself
+    // NOTE: do not call createRnvContext() in core library itself. It is not a mock
 });
 
 afterEach(() => {

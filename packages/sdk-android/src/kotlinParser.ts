@@ -1,6 +1,6 @@
 import {
     OverridesOptions,
-    RnvPluginPlatformSchema,
+    ConfigPluginPlatformSchema,
     RnvContext,
     getAppFolder,
     getConfigProp,
@@ -156,7 +156,7 @@ export const parseSplashActivitySync = () => {
     const splashTemplatePath = 'app/src/main/java/rnv_template/SplashActivity.kt';
 
     // TODO This is temporary ANDROIDX support. whole kotlin parser will be refactored in the near future
-    const enableAndroidX = getConfigProp('enableAndroidX', true);
+    const enableAndroidX = getConfigProp('enableAndroidX') || true;
     if (enableAndroidX === true) {
         c.payload.pluginConfigAndroid.pluginSplashActivityImports +=
             'import androidx.appcompat.app.AppCompatActivity;\n';
@@ -184,7 +184,7 @@ export const parseSplashActivitySync = () => {
     );
 };
 
-export const injectPluginKotlinSync = (plugin: RnvPluginPlatformSchema, key: string, pkg: string | undefined) => {
+export const injectPluginKotlinSync = (plugin: ConfigPluginPlatformSchema, key: string, pkg: string | undefined) => {
     const c = getContext();
     const templ = plugin.templateAndroid;
     const mainActivity = templ?.MainActivity_kt;
@@ -243,7 +243,7 @@ export const injectPluginKotlinSync = (plugin: RnvPluginPlatformSchema, key: str
     }
 };
 
-const _injectPackage = (c: RnvContext, plugin: RnvPluginPlatformSchema, pkg: string | undefined) => {
+const _injectPackage = (c: RnvContext, plugin: ConfigPluginPlatformSchema, pkg: string | undefined) => {
     if (pkg && !plugin?.forceLinking) {
         c.payload.pluginConfigAndroid.pluginApplicationImports += `import ${pkg}\n`;
     }

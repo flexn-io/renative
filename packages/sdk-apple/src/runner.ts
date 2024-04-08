@@ -462,7 +462,7 @@ export const buildXcodeProject = async () => {
     const { platform } = c;
 
     const appFolderName = getAppFolderName();
-    const runScheme = getConfigProp('runScheme', 'Debug');
+    const runScheme = getConfigProp('runScheme') || 'Debug';
     const schemeTarget = getConfigProp('schemeTarget') || _getDefaultSchemeTarget(c.platform!);
 
     let destinationPlatform = '';
@@ -567,9 +567,9 @@ const archiveXcodeProject = () => {
     const { platform } = c;
 
     const appFolderName = getAppFolderName();
-    const schemeTarget = getConfigProp('schemeTarget', _getDefaultSchemeTarget(c.platform!));
+    const schemeTarget = getConfigProp('schemeTarget') || _getDefaultSchemeTarget(c.platform!);
 
-    const runScheme = getConfigProp('runScheme', 'Debug');
+    const runScheme = getConfigProp('runScheme') || 'Debug';
     let sdk = getConfigProp('sdk');
     if (!sdk) {
         if (platform === 'ios') sdk = 'iphoneos';
@@ -584,7 +584,7 @@ const archiveXcodeProject = () => {
     const appPath = getAppFolder();
     const exportPath = path.join(appPath, 'release');
 
-    const allowProvisioningUpdates = getConfigProp('allowProvisioningUpdates', true);
+    const allowProvisioningUpdates = getConfigProp('allowProvisioningUpdates') || true;
     const ignoreLogs = getConfigProp('ignoreLogs');
     const exportPathArchive = `${exportPath}/${appFolderName}.xcarchive`;
     let ps = '';
@@ -654,7 +654,7 @@ export const exportXcodeProject = async () => {
     const exportPath = path.join(appPath, 'release');
 
     const appFolderName = getAppFolderName();
-    const allowProvisioningUpdates = getConfigProp('allowProvisioningUpdates', true);
+    const allowProvisioningUpdates = getConfigProp('allowProvisioningUpdates') || true;
     const ignoreLogs = getConfigProp('ignoreLogs');
 
     let ps = '';

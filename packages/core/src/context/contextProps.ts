@@ -1,15 +1,15 @@
-import type { GetConfigPropFn } from '../api/types';
-import type { RnvContext } from './types';
 import { chalk, logError, logWarning } from '../logger';
 import type {
     BuildConfigKey,
     CommonBuildSchemeKey,
     CommonPropKey,
     ConfigFileBuildConfig,
-    ConfigProp,
-    ConfigPropKey,
+    ConfigPropKeyMerged,
+    ConfigPropRootKeyMerged,
+    GetConfigPropVal,
+    GetConfigRootPropVal,
     PlatformBuildSchemeKey,
-    RnvCommonBuildSchemeSchema,
+    ConfigCommonBuildSchemeSchema,
 } from '../schema/types';
 import type { TimestampPathsConfig } from '../system/types';
 import path from 'path';
@@ -34,22 +34,27 @@ const _getValueOrMergedObject = (resultScheme: object, resultPlatforms: object, 
     return resultCommon;
 };
 
-export const getConfigProp: GetConfigPropFn = <T extends ConfigPropKey>(key: T, defaultVal?: ConfigProp[T]) => {
+export const getConfigRootProp = <T, K extends ConfigPropRootKeyMerged<T>>(key: K): GetConfigRootPropVal<T, K> => {
     const c = getContext();
     if (!c.buildConfig) {
         logError('getConfigProp: c.buildConfig is undefined!');
         return undefined;
     }
-    return _getConfigProp<T>(c, key, defaultVal, c.buildConfig);
+    return c.buildConfig[key];
 };
 
-export const _getConfigProp = <T extends ConfigPropKey>(
-    c: RnvContext,
-    key: T,
-    defaultVal?: ConfigProp[T],
-    sourceObj?: Partial<ConfigFileBuildConfig>
-): ConfigProp[T] | undefined => {
+export const getConfigProp = <T, K extends ConfigPropKeyMerged<T>>(
+    key: K,
+    obj?: Partial<ConfigFileBuildConfig>
+): GetConfigPropVal<T, K> => {
+    const c = getContext();
+    if (!c.buildConfig) {
+        logError('getConfigProp: c.buildConfig is undefined!');
+        return undefined;
+    }
+
     const { platform } = c;
+    const sourceObj = obj || c.buildConfig;
     if (!sourceObj || !platform) return undefined;
 
     const platformObj = sourceObj.platforms?.[platform];
@@ -67,7 +72,7 @@ export const _getConfigProp = <T extends ConfigPropKey>(
 
     const resultCommonRoot = getFlavouredProp(sourceObj.common || {}, key as CommonPropKey);
 
-    const bs: RnvCommonBuildSchemeSchema =
+    const bs: ConfigCommonBuildSchemeSchema =
         (!!c.runtime.scheme && sourceObj.common?.buildSchemes?.[c.runtime.scheme]) || {};
 
     const resultCommonScheme = c.runtime.scheme && getFlavouredProp(bs, key as CommonBuildSchemeKey);
@@ -75,14 +80,16 @@ export const _getConfigProp = <T extends ConfigPropKey>(
     const resultCommon = resultCommonScheme || resultCommonRoot;
 
     const resultScheme = key && scheme[key as PlatformBuildSchemeKey];
-    let result = _getValueOrMergedObject(resultScheme, resultPlatforms, resultCommon);
+    let result: GetConfigPropVal<T, K> = _getValueOrMergedObject(
+        resultScheme,
+        resultPlatforms,
+        resultCommon
+    ) as GetConfigPropVal<T, K>;
     if (result === undefined) {
         result = getFlavouredProp(sourceObj, key as BuildConfigKey);
     }
 
-    if (result === undefined) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
-
-    return result as ConfigProp[T];
+    return result as GetConfigPropVal<T, K>;
 };
 
 export const getFlavouredProp = <T, K extends keyof T>(obj: T, key: K): T[K] | undefined => {

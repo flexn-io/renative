@@ -14,7 +14,7 @@ jest.mock('../../context/contextProps');
 jest.mock('../../platforms/index');
 
 beforeEach(() => {
-    // NOTE: do not call createRnvContext() in core library itself
+    // NOTE: do not call createRnvContext() in core library itself. It is not a mock
 });
 
 afterEach(() => {

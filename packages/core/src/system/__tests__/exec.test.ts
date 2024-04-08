@@ -9,7 +9,7 @@ jest.mock('../../context/provider');
 jest.mock('../../api/provider');
 
 beforeEach(() => {
-    // NOTE: do not call createRnvContext() in core library itself
+    // NOTE: do not call createRnvContext() in core library itself. It is not a mock
     jest.mocked(getApi).mockReturnValue(generateApiDefaults());
 });
 

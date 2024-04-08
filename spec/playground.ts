@@ -69,3 +69,67 @@ const koko = createObjFromArr(payloadArr);
 // const loko: Shite;
 // const koo: MyTyp
 console.log('JFJFJFJ', koko.getMagic());
+
+// declare function getConfigProp2<T extends ConfigPropKey>(key: T, defaultVal?: ConfigProp[T]): ConfigProp[T];
+
+// export type GetConfigPropFn<T> = T extends ConfigPropKey
+//     ? <T extends ConfigPropKey>(
+//           key: T,
+//           defaultVal?: ConfigProp[T],
+//           obj?: Partial<ConfigFileBuildConfig>
+//       ) => ConfigProp[T] | undefined
+//     : <T>(key: string, defaultVal?: T, obj?: Partial<ConfigFileBuildConfig>) => T | undefined;
+
+// type Boo<T> = T extends ConfigPropKey ? ConfigProp[T] : T;
+
+// function isCatish<T, K extends ConfigPropKey = ConfigPropKey>(value: K): T extends never ? T : ConfigProp[K] {
+//     return 'booo' as any;
+// }
+
+// function isCatish<T = never, K extends ConfigPropKey = ConfigPropKey>(value: K): T extends never ? 'T is never' : 'T is something' {
+//     return 'booo' as any;
+// }
+
+// const isCatish = (x: any) => (x.meows ? x : undefined);
+
+// export const booya = () => {
+//     const xxxxxx = isCatish('appName');
+// };
+
+// mods
+// addons
+// plugins
+// extensions
+// integrations
+// modules
+// packages
+// plugins
+// services
+// tools
+// utilities
+
+// const getVal = <T, TM = T, K extends keyof TM = keyof TM>(key: K): TM[K] => {};
+
+// const getVal3 = <T, K extends keyof Merged<T> = keyof Merged<T>>(key: K): Merged<T>[K] => {};
+
+// const KKK = getVal2('foo');
+
+// export const getVal2 = <K extends keyof Merged<BBB2>>(key: K) => {
+//     return getVal3<BBB2, K>(key);
+// };
+
+// type BBB2 = {
+//     hello2: boolean;
+//     foo: string;
+// };
+
+// type BBB1 = {
+//     hello1: number;
+//     foo3: number;
+// };
+
+// type BBB2 = Pick<RnvCommonSchemaFragment, 'author'>;
+
+// export const getConfigProp2 = <T, TM extends BBB2 & T = BBB2 & T, K extends keyof TM = keyof TM>(key: K): TM[K] => {
+//     return 'booo' as any;
+// };

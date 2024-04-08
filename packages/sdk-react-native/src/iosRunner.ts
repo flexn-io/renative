@@ -44,7 +44,7 @@ export const packageReactNativeIOS = (isDev = false) => {
         `${getAppFolder()}/main.jsbundle`,
     ];
 
-    if (getConfigProp('enableSourceMaps', false)) {
+    if (getConfigProp('enableSourceMaps')) {
         args.push('--sourcemap-output');
         args.push(`${getAppFolder()}/main.jsbundle.map`);
     }
