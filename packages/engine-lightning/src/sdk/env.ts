@@ -11,7 +11,7 @@ export const EnvVars = {
     LNG_SERVE_PORT: () => {
         const ctx = getContext();
         return {
-            LNG_SERVE_PORT: ctx.runtime.currentPlatform?.defaultPort,
+            LNG_SERVE_PORT: ctx.runtime.port,
         };
     },
     LNG_DIST_FOLDER: () => {
