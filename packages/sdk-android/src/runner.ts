@@ -61,7 +61,7 @@ import {
     composeDevicesArray,
 } from './deviceManager';
 import { ANDROID_COLORS, ANDROID_STRINGS, ANDROID_STYLES, CLI_ANDROID_ADB } from './constants';
-import { runReactNativeAndroid, packageReactNativeAndroid } from '@rnv/sdk-react-native';
+import { runReactNativeAndroid, packageReactNativeAndroid, generateEnvVarsFile } from '@rnv/sdk-react-native';
 import { getEntryFile } from '@rnv/sdk-utils';
 
 export const packageAndroid = async () => {
@@ -361,6 +361,7 @@ export const configureGradleProject = async () => {
     await configureAndroidProperties();
     await configureProject();
     await copyBuildsFolder();
+    await generateEnvVarsFile();
     return true;
 };
 
