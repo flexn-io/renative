@@ -5,16 +5,53 @@
     "crypto": {
         "path": "./secrets/privateConfigs.enc"
     },
+    "isMonorepo": true,
     "integrations": {
         "@rnv/integration-starter": {}
     },
+    "defaults": {
+        "portOffset": 10
+    },
+    "platforms": {
+        "android": {
+            "templateAndroid": {
+                "styles_xml": {
+                    "tag": "resources",
+                    "children": [
+                        {
+                            "tag": "style",
+                            "name": "AppTheme",
+                            "children": [
+                                {
+                                    "tag": "item",
+                                    "name": "android:windowIsTranslucent",
+                                    "value": "true"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    },
     "plugins": {
+        "react-native-safe-area-context": "4.9.0",
         "react-native-splash-screen": {
             "android": {
                 "templateAndroid": {
-                    "MainActivity_java": {
+                    "MainActivity_kt": {
                         "createMethods": ["SplashScreen.show(this)"],
                         "imports": ["org.devio.rn.splashscreen.SplashScreen"]
+                    },
+                    "colors_xml": {
+                        "tag": "resources",
+                        "children": [
+                            {
+                                "tag": "color",
+                                "name": "bg_line",
+                                "value": "#E7E7E7"
+                            }
+                        ]
                     }
                 },
                 "package": "org.devio.rn.splashscreen.SplashScreenReactPackage"
@@ -40,13 +77,14 @@
         "TestNativeModule": {
             "android": {
                 "templateAndroid": {
-                    "MainApplication_java": {
+                    "MainApplication_kt": {
                         "packages": ["MyAppPackage"]
                     }
                 },
                 "forceLinking": true
             }
         },
+        "rn-fetch-blob": { "tvos": { "disabled": true }, "version": "0.12.0" },
         "react-native-carplay": {
             "ios": {
                 "templateXcode": {
@@ -98,8 +136,12 @@
                 "templateAndroid": {
                     "AndroidManifest_xml": {
                         "tag": "manifest",
-                        "android:name": "",
                         "children": [
+                            {
+                                "tag": "uses-permission ",
+                                "android:name": "android.permission.WRITE_EXTERNAL_STORAGE",
+                                "children": []
+                            },
                             {
                                 "tag": "application",
                                 "android:name": ".MainApplication",
@@ -126,10 +168,29 @@
                 "podName": "iOSPhotoEditor",
                 "git": "https://github.com/prscX/photo-editor",
                 "commit": "4924e9ec984d25d03644e58aa148282642171de9",
-                "buildType": "dynamic"
+                "buildType": "dynamic",
+                "templateXcode": {
+                    "Podfile": {
+                        "header": ["plugin 'cocoapods-user-defined-build-types'", "enable_user_defined_build_types!"]
+                    },
+                    "project_pbxproj": {
+                        "resourceFiles": [
+                            "Resources/arrow1.png",
+                            "Resources/arrow2.png",
+                            "Resources/arrow3.png",
+                            "Resources/arrow4.png",
+                            "Resources/arrow5.png"
+                        ],
+                        "sourceFiles": ["RNPhotoEditor/RNPhotoEditor.m"],
+                        "headerFiles": ["RNPhotoEditor/RNPhotoEditor.h"]
+                    }
+                }
+            },
+            "tvos": {
+                "disabled": true
             },
             "pluginDependencies": null,
-            "version": "1.0.13"
+            "version": "github:AppGyver/react-native-photo-editor#v0.1.2"
         },
         "react-native-permissions": {
             "ios": {
@@ -231,7 +292,6 @@
             }
         }
     },
-
     "permissions": {
         "ios": {
             "NSCalendarsUsageDescription": {
@@ -242,6 +302,12 @@
             },
             "NSLocalNetworkUsageDescription": {
                 "desc": "${PRODUCT_NAME} uses the local network to discover Cast-enabled devices on your WiFi network."
+            },
+            "NSPhotoLibraryAddUsageDescription": {
+                "desc": "Application needs permission to write photos..."
+            },
+            "NSPhotoLibraryUsageDescription": {
+                "desc": "iOS 10 needs permission to write photos..."
             }
         }
     }

@@ -5,8 +5,8 @@ import { Context } from './types';
 
 export const parseProvisioningProfiles = async (c: Context) => {
     // PROJECT
-    const teamID = getConfigProp(c, c.platform, 'teamID');
-    const id = getConfigProp(c, c.platform, 'id');
+    const teamID = getConfigProp('teamID');
+    const id = getConfigProp('id');
     const certificates = cert.read();
     try {
         const provisionProfiles = provision.read();
@@ -20,7 +20,7 @@ export const parseProvisioningProfiles = async (c: Context) => {
     } catch (e) {
         logWarning(
             `You have no provisioning files available. Check your ${chalk().bold(
-                path.join(c.paths.home.dir, 'Library/MobileDevice/Provisioning Profiles')
+                path.join(c.paths.user.homeDir, 'Library/MobileDevice/Provisioning Profiles')
             )} folder`
         );
     }

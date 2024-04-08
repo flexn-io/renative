@@ -5,19 +5,25 @@ jest.mock('fs');
 jest.mock('process');
 jest.mock('../../logger');
 
+beforeEach(() => {
+    // NOTE: do not call createRnvContext() in core library itself. It is not a mock
+});
+
 describe('Context tests', () => {
-    beforeAll(() => {
+    it('test getContext returns object with keys', async () => {
+        // GIVEN
         createRnvContext({
-            program: {},
+            program: {
+                opts: () => ({}),
+            } as any, //Not important for this test
             process: process,
             cmd: 'command',
             subCmd: 'subcommand',
             RNV_HOME_DIR: '',
         });
-    });
-
-    it('test getContext returns object with keys', async () => {
+        // WHEN
         const cKeys = Object.keys(getContext()).sort();
+        // THEN
         const expectKeys = [
             '_renativePluginCache',
             'assetConfig',
@@ -27,12 +33,16 @@ describe('Context tests', () => {
             'cli',
             'command',
             'configPropsInjects',
+            'engineConfigs',
             'files',
             'injectableConfigProps',
             'isBuildHooksReady',
             'isDefault',
+            'isSystemLinux',
+            'isSystemMac',
             'isSystemWin',
-            'logMessages',
+            'logging',
+            'mutations',
             'paths',
             'payload',
             'platform',

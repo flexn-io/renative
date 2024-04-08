@@ -1,7 +1,6 @@
 import path from 'path';
 import {
     RnvPlugin,
-    RenativeConfigPluginPlatform,
     OverridesOptions,
     getAppFolder,
     getConfigProp,
@@ -9,31 +8,30 @@ import {
     logDefault,
     parsePlugins,
     writeCleanFile,
-    RnvPlatform,
     DEFAULTS,
+    getContext,
+    type ConfigPluginPlatformSchema,
 } from '@rnv/core';
-import { Context } from './types';
 import { addSystemInjects, getAppTemplateFolder } from '@rnv/sdk-utils';
 
-export const parsePodFile = async (c: Context, platform: RnvPlatform) => {
+export const parsePodFile = async () => {
     logDefault('parsePodFile');
-
-    const appFolder = getAppFolder(c);
-    const useHermes = getConfigProp(c, c.platform, 'reactNativeEngine') === 'hermes';
-
+    const c = getContext();
+    const appFolder = getAppFolder();
+    const useHermes = getConfigProp('reactNativeEngine') === 'hermes';
     let pluginInject = '';
 
     // PLUGINS
     c.payload.pluginConfigiOS.podfileInject = '';
-    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
-        const templateXcode = getFlavouredProp(c, pluginPlat, 'templateXcode');
+    parsePlugins((plugin, pluginPlat, key) => {
+        const templateXcode = getFlavouredProp(pluginPlat, 'templateXcode');
 
-        const podName = getFlavouredProp(c, pluginPlat, 'podName');
+        const podName = getFlavouredProp(pluginPlat, 'podName');
         if (podName && (pluginPlat.git || pluginPlat.commit || pluginPlat.buildType || pluginPlat.version)) {
             pluginInject += _injectPod(podName, pluginPlat, plugin, key);
         }
 
-        const podNames = getFlavouredProp(c, pluginPlat, 'podNames');
+        const podNames = getFlavouredProp(pluginPlat, 'podNames');
         if (podNames) {
             podNames.forEach((v) => {
                 pluginInject += `${v}\n`;
@@ -74,10 +72,10 @@ export const parsePodFile = async (c: Context, platform: RnvPlatform) => {
     });
 
     // WARNINGS
-    const ignoreWarnings = getConfigProp(c, platform, 'ignoreWarnings');
+    const ignoreWarnings = getConfigProp('ignoreWarnings');
     const podWarnings = ignoreWarnings ? 'inhibit_all_warnings!' : '';
 
-    const templateXcode = getConfigProp(c, c.platform, 'templateXcode');
+    const templateXcode = getConfigProp('templateXcode');
     const podfile = templateXcode?.Podfile;
     if (podfile) {
         const { injectLines, post_install, header, sources } = podfile;
@@ -110,7 +108,7 @@ export const parsePodFile = async (c: Context, platform: RnvPlatform) => {
     }
 
     // DEPLOYMENT TARGET
-    const deploymentTarget = getConfigProp(c, platform, 'deploymentTarget') || DEFAULTS.deploymentTarget;
+    const deploymentTarget = getConfigProp('deploymentTarget') || DEFAULTS.deploymentTarget;
     c.payload.pluginConfigiOS.deploymentTarget = deploymentTarget;
 
     const injects: OverridesOptions = [
@@ -150,10 +148,10 @@ export const parsePodFile = async (c: Context, platform: RnvPlatform) => {
         },
     ];
 
-    addSystemInjects(c, injects);
+    addSystemInjects(injects);
 
     writeCleanFile(
-        path.join(getAppTemplateFolder(c, platform)!, 'Podfile'),
+        path.join(getAppTemplateFolder()!, 'Podfile'),
         path.join(appFolder, 'Podfile'),
         injects,
         undefined,
@@ -164,7 +162,7 @@ export const parsePodFile = async (c: Context, platform: RnvPlatform) => {
 
 const _injectPod = (
     podName: string,
-    pluginPlat: RenativeConfigPluginPlatform | undefined,
+    pluginPlat: ConfigPluginPlatformSchema | undefined,
     _plugin: RnvPlugin,
     _key: string
 ) => {

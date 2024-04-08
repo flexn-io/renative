@@ -1,5 +1,5 @@
-import { RootProjectSchema } from './configFiles/project';
+import { zodConfigFileProject } from './configFiles/project';
 
 export const validateRenativeProjectSchema = (inputJson: unknown) => {
-    return RootProjectSchema.safeParse(inputJson);
+    return zodConfigFileProject.safeParse(inputJson);
 };

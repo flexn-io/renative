@@ -1,4 +1,4 @@
-import { getAppFolder, getConfigProp } from '../context/contextProps';
+import { getAppFolder, getConfigRootProp } from '../context/contextProps';
 import { getContext } from '../context/provider';
 import { RnvContext } from '../context/types';
 import { getRelativePath } from '../system/fs';
@@ -17,13 +17,13 @@ export const CoreEnvVars = {
 };
 
 const _generateEnvVars = (c: RnvContext) => {
-    const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');
-    const monoRoot = getConfigProp(c, c.platform, 'monoRoot') || '../..';
+    const isMonorepo = getConfigRootProp('isMonorepo');
+    const monoRoot = getConfigRootProp('monoRoot') || '../..';
 
     const envConfig: RnvEnvContext = {
         RNV_ENGINE_PATH: c.runtime.engine?.rootPath,
         RNV_PROJECT_ROOT: c.paths.project.dir,
-        RNV_APP_BUILD_DIR: getRelativePath(c.paths.project.dir, getAppFolder(c)),
+        RNV_APP_BUILD_DIR: getRelativePath(c.paths.project.dir, getAppFolder()),
         RNV_IS_MONOREPO: isMonorepo,
         RNV_MONO_ROOT: isMonorepo ? path.join(c.paths.project.dir, monoRoot) : c.paths.project.dir,
         RNV_ENGINE: c.runtime.engine?.config.id,

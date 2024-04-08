@@ -1,11 +1,23 @@
 import path from 'path';
+import merge from 'deepmerge';
 import { fsExistsSync, fsWriteFileSync, loadFile, readObjectSync } from '../system/fs';
 import { logDefault, logWarning, logInfo } from '../logger';
-import { RnvContext } from '../context/types';
-import { ConfigFileTemplate } from '../schema/configFiles/types';
-import { ConfigName } from '../enums/configName';
+import { RnvFileName } from '../enums/fileName';
+import { getContext } from '../context/provider';
+import { type NpmPackageFile } from '../configs/types';
+import { writeRenativeConfigFile } from '../configs/utils';
+import type { ConfigFileTemplate } from '../schema/types';
 
-const packageJsonIsValid = (c: RnvContext) => {
+export const updatePackage = (override: Partial<NpmPackageFile>) => {
+    const c = getContext();
+    const newPackage: NpmPackageFile = merge(c.files.project.package, override);
+    writeRenativeConfigFile(c.paths.project.package, newPackage);
+    c.files.project.package = newPackage;
+    c._requiresNpmInstall = true;
+};
+
+const packageJsonIsValid = () => {
+    const c = getContext();
     if (!fsExistsSync(c.paths.project.package)) return false;
     const pkg = readObjectSync(c.paths.project.package);
     if (!pkg) return false;
@@ -14,32 +26,34 @@ const packageJsonIsValid = (c: RnvContext) => {
     return true;
 };
 
-export const checkAndCreateProjectPackage = async (c: RnvContext) => {
+export const checkAndCreateProjectPackage = async () => {
     logDefault('checkAndCreateProjectPackage');
 
-    if (!packageJsonIsValid(c)) {
+    const c = getContext();
+
+    if (!packageJsonIsValid()) {
         logInfo(`Your ${c.paths.project.package} is missing. CREATING...DONE`);
 
         const packageName = c.files.project.config?.projectName || c.paths.project.dir.split('/').pop();
         const packageVersion = c.files.project.config?.projectVersion || '0.1.0';
-        const templateName = c.files.project.config?.currentTemplate;
+        const templateName = c.files.project.config?.templateConfig?.name;
         if (!templateName) {
             logWarning('You are missing currentTemplate in your renative.json');
         }
-        const rnvVersion = c.files.rnv.package.version;
+        const rnvVersion = c.files.rnvCore.package.version;
 
         if (templateName) {
             c.paths.template.configTemplate = path.join(
                 c.paths.project.dir,
                 'node_modules',
                 templateName,
-                ConfigName.renativeTemplate
+                RnvFileName.renativeTemplate
             );
         }
 
         const templateObj = readObjectSync<ConfigFileTemplate>(c.paths.template.configTemplate);
 
-        const pkgJson = templateObj?.templateConfig?.packageTemplate || {};
+        const pkgJson = templateObj?.templateConfig?.package_json || {};
         pkgJson.name = packageName;
         pkgJson.version = packageVersion;
         pkgJson.dependencies = pkgJson.dependencies || {};
@@ -51,8 +65,7 @@ export const checkAndCreateProjectPackage = async (c: RnvContext) => {
         }
 
         if (templateName) {
-            pkgJson.devDependencies[templateName] =
-                c.files.project.config?.templates[templateName]?.version || 'latest';
+            pkgJson.devDependencies[templateName] = c.files.project.config?.templateConfig?.version || 'latest';
         }
         const pkgJsonStringClean = JSON.stringify(pkgJson, null, 2);
         fsWriteFileSync(c.paths.project.package, pkgJsonStringClean);

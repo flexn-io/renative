@@ -1,31 +1,12 @@
-import {
-    chalk,
-    logToSummary,
-    logTask,
-    generatePlatformChoices,
-    executeTask,
-    RnvTaskOptionPresets,
-    RnvTaskFn,
-    RnvTask,
-    RnvTaskName,
-} from '@rnv/core';
+import { chalk, logToSummary, generatePlatformChoices, createTask, RnvTaskName } from '@rnv/core';
 
-const taskPlatformList: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskPlatformList');
-
-    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.platformList, originTask);
-
-    const opts = generatePlatformChoices(c).map((v, i) => ` [${chalk().bold(i + 1)}]> ${v.name}`);
-    logToSummary(`Platforms:\n\n${opts.join('\n')}`);
-    return true;
-};
-
-const Task: RnvTask = {
+export default createTask({
     description: 'List all available platforms',
-    fn: taskPlatformList,
+    dependsOn: [RnvTaskName.projectConfigure],
+    fn: async () => {
+        const opts = generatePlatformChoices().map((v, i) => ` [${chalk().bold(i + 1)}]> ${v.name}`);
+        logToSummary(`Platforms:\n\n${opts.join('\n')}`);
+        return true;
+    },
     task: RnvTaskName.platformList,
-    options: RnvTaskOptionPresets.withBase(),
-    platforms: [],
-};
-
-export default Task;
+});

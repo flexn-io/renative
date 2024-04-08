@@ -1,42 +1,21 @@
-import {
-    generateOptions,
-    chalk,
-    logTask,
-    logToSummary,
-    executeTask,
-    RnvTaskOptionPresets,
-    RnvTaskFn,
-    RnvTask,
-    RnvTaskName,
-} from '@rnv/core';
+import { generateOptions, chalk, logToSummary, createTask, RnvTaskName } from '@rnv/core';
 
-const taskWorkspaceList: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskWorkspaceList');
-
-    if (c.paths.project.configExists) {
-        await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.workspaceList, originTask);
-    }
-
-    const opts = generateOptions(
-        c.files.rnv.configWorkspaces?.workspaces,
-        true,
-        null,
-        (i, obj, mapping, defaultVal) => {
-            const isConnected = '';
-            return ` [${chalk().grey(i + 1)}]> ${chalk().bold(defaultVal)}${isConnected} \n`;
-        }
-    );
-
-    logToSummary(`Workspaces:\n\n${opts.asString}`);
-};
-
-const Task: RnvTask = {
+export default createTask({
     description: 'Show list of all available workspaces',
-    fn: taskWorkspaceList,
-    task: RnvTaskName.workspaceList,
-    options: RnvTaskOptionPresets.withBase(),
-    platforms: [],
-    isGlobalScope: true,
-};
+    dependsOn: [RnvTaskName.projectConfigure],
+    fn: async ({ ctx }) => {
+        const opts = generateOptions(
+            ctx.files.dotRnv.configWorkspaces?.workspaces,
+            true,
+            null,
+            (i, obj, mapping, defaultVal) => {
+                const isConnected = '';
+                return ` [${chalk().grey(i + 1)}]> ${chalk().bold(defaultVal)}${isConnected} \n`;
+            }
+        );
 
-export default Task;
+        logToSummary(`Workspaces:\n\n${opts.asString}`);
+    },
+    task: RnvTaskName.workspaceList,
+    isGlobalScope: true,
+});

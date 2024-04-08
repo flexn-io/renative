@@ -8,39 +8,15 @@
         "@rnv/engine-rn-web": "source:rnv"
     },
     "$schema": ".rnv/schema/rnv.project.json",
-    "isTemplate": true,
     "projectName": "@rnv/template-starter",
     "enableHookRebuild": false,
     "workspaceID": "rnv",
-    "isMonorepo": true,
     "paths": {
         "appConfigsDir": "./appConfigs",
         "platformAssetsDir": "./platformAssets",
         "platformBuildsDir": "./platformBuilds"
     },
-    "tasks": {
-        "install": {
-            "script": "yarn bootstrap"
-        }
-    },
     "defaults": {
-        "ports": {
-            "ios": 8082,
-            "android": 8083,
-            "androidtv": 8084,
-            "firetv": 8098,
-            "tvos": 8085,
-            "macos": 8086,
-            "web": 8080,
-            "tizen": 8087,
-            "webos": 8088,
-            "androidwear": 8089,
-            "tizenwatch": 8090,
-            "tizenmobile": 8091,
-            "windows": 8092,
-            "xbox": 8099,
-            "kaios": 8093
-        },
         "supportedPlatforms": [
             "ios",
             "android",
@@ -48,14 +24,11 @@
             "firetv",
             "androidwear",
             "web",
-            "webtv",
             "tizen",
             "tvos",
             "webos",
             "macos",
-            "windows",
             "tizenwatch",
-            "tizenmobile",
             "kaios",
             "chromecast",
             "linux"
@@ -67,12 +40,10 @@
         },
         "targets": {}
     },
-    "templates": {
-        "@rnv/template-starter": {
-            "version": "1.0.0-rc.12"
-        }
+    "templateConfig": {
+        "name": "@rnv/template-starter",
+        "version": "1.0.0-rc.13"
     },
-    "currentTemplate": "@rnv/template-starter",
     "platforms": {
         "android": {
             "minSdkVersion": 26,
@@ -95,7 +66,7 @@
                     "org.gradle.parallel": true,
                     "org.gradle.configureondemand": true
                 },
-                "MainActivity_java": {
+                "MainActivity_kt": {
                     "onCreate": "super.onCreate(null)"
                 }
             }
@@ -111,7 +82,9 @@
             "minSdkVersion": 21,
             "extendPlatform": "android",
             "engine": "engine-rn-tvos",
-            "includedPermissions": ["INTERNET"]
+            "includedPermissions": [
+                "INTERNET"
+            ]
         },
         "web": {
             "engine": "engine-rn-next"
@@ -135,39 +108,37 @@
         }
     },
     "plugins": {
-        "@rnv/renative": {
-            "source": "rnv",
-            "webpackConfig": {
-                "modulePaths": true
-            }
-        },
+        "@rnv/renative": "source:rnv",
         "react": "source:rnv",
         "react-art": "source:rnv",
         "react-dom": "source:rnv",
-        "react-native-gesture-handler": {
-            "version": "2.14.1",
-            "disablePluginTemplateOverrides": true
-        },
+        "react-native-gesture-handler": "source:rnv",
         "@react-native-community/cli-platform-ios": {
-            "version": "11.3.7",
-            "disablePluginTemplateOverrides": false,
-            "disableNpm": true
+            "supportedPlatforms": [
+                "tvos",
+                "ios"
+            ]
         },
-        "react-native": {
-            "version": "0.73.4"
-        },
+        "react-native": "source:rnv",
         "next": {
-            "version": "14.1.0",
-            "disablePluginTemplateOverrides": true
+            "supportedPlatforms": [
+                "web"
+            ]
         },
         "react-native-web": {
-            "version": "0.19.9",
-            "webpackConfig": {
-                "modulePaths": true
-            }
+            "supportedPlatforms": [
+                "web",
+                "tizen",
+                "webos",
+                "macos"
+            ]
         },
         "react-native-tvos": {
-            "version": "0.73.1-3"
+            "supportedPlatforms": [
+                "tvos",
+                "firetv",
+                "androidtv"
+            ]
         }
     },
     "permissions": {

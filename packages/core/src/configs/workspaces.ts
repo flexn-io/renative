@@ -1,15 +1,14 @@
 import { fsExistsSync, writeFileSync, readObjectSync, mkdirSync } from '../system/fs';
-
 import { getContext } from '../context/provider';
-
 import path from 'path';
 import { chalk, logDefault, logDebug, logInfo, logWarning } from '../logger';
-import { RnvContext } from '../context/types';
+import type { RnvContext } from '../context/types';
 import { generateOptions, inquirerPrompt } from '../api';
-import { ConfigFileWorkspace, ConfigFileWorkspaces } from '../schema/configFiles/types';
+import type { ConfigFileWorkspace, ConfigFileWorkspaces } from '../schema/types';
 
-export const createWorkspace = async (c: RnvContext, workspaceID: string, workspacePath: string) => {
-    const cnf = c.files.rnv.configWorkspaces;
+export const createWorkspace = async (workspaceID: string, workspacePath: string) => {
+    const c = getContext();
+    const cnf = c.files.dotRnv.configWorkspaces;
 
     if (!cnf) return;
 
@@ -18,37 +17,40 @@ export const createWorkspace = async (c: RnvContext, workspaceID: string, worksp
     };
 
     const workspaceConfig = {
-        sdks: c.files.defaultWorkspace?.config?.sdks,
-        defaultTargets: c.files.defaultWorkspace?.config?.defaultTargets,
+        // sdks: c.files.defaultWorkspace?.config?.sdks,
+        // defaultTargets: c.files.defaultWorkspace?.config?.defaultTargets,
+        // TODO: use empty default?
+        sdks: {},
+        defaultTargets: {},
     };
 
     mkdirSync(workspacePath);
     writeFileSync(path.join(workspacePath, 'renative.json'), workspaceConfig);
 
-    writeFileSync(c.paths.rnv.configWorkspaces, cnf);
+    writeFileSync(c.paths.dotRnv.configWorkspaces, cnf);
     return true;
 };
 
 export const getWorkspaceDirPath = async (c: RnvContext) => {
     logDefault('getWorkspaceDirPath');
-    const wss = c.files.rnv.configWorkspaces;
+    const wss = c.files.dotRnv.configWorkspaces;
     const ws = c.runtime.selectedWorkspace || c.buildConfig?.workspaceID;
     let dirPath;
     if (wss?.workspaces && ws) {
         dirPath = wss.workspaces[ws]?.path;
         if (!dirPath) {
-            const wsDir = path.join(c.paths.home.dir, `.${ws}`);
+            const wsDir = path.join(c.paths.user.homeDir, `.${ws}`);
             if (fsExistsSync(wsDir)) {
                 wss.workspaces[ws] = {
                     path: wsDir,
                 };
-                writeFileSync(c.paths.rnv.configWorkspaces, wss);
+                writeFileSync(c.paths.dotRnv.configWorkspaces, wss);
                 logInfo(
-                    `Found workspace id ${ws} and compatible directory ${wsDir}. Your ${c.paths.rnv.configWorkspaces} has been updated.`
+                    `Found workspace id ${ws} and compatible directory ${wsDir}. Your ${c.paths.dotRnv.configWorkspaces} has been updated.`
                 );
-            } else if (!c.runtime.isWSConfirmed || c.program.ci === true) {
+            } else if (!c.runtime.isWSConfirmed || c.program.opts().ci === true) {
                 let confirm = true;
-                if (c.program.ci !== true) {
+                if (c.program.opts().ci !== true) {
                     const { conf } = await inquirerPrompt({
                         name: 'conf',
                         type: 'confirm',
@@ -63,14 +65,14 @@ export const getWorkspaceDirPath = async (c: RnvContext) => {
                     c.runtime.isWSConfirmed = true;
                 }
                 if (confirm) {
-                    await createWorkspace(c, ws, wsDir);
+                    await createWorkspace(ws, wsDir);
                 }
             }
         }
     }
 
     if (!dirPath) {
-        return c.paths.GLOBAL_RNV_DIR;
+        return c.paths.dotRnv.dir;
     }
     return dirPath;
 };
@@ -81,52 +83,54 @@ export const getWorkspaceConnectionString = (obj?: ConfigFileWorkspaces['workspa
     return connectMsg;
 };
 
-export const getWorkspaceOptions = (c: RnvContext) =>
-    generateOptions(c.files.rnv.configWorkspaces?.workspaces, false, null, (i, obj, mapping, defaultVal) => {
+export const getWorkspaceOptions = () => {
+    const c = getContext();
+    return generateOptions(c.files.dotRnv.configWorkspaces?.workspaces, false, null, (i, obj, mapping, defaultVal) => {
         logDebug('getWorkspaceOptions');
 
         return ` [${chalk().grey(i + 1)}]> ${chalk().bold(defaultVal)} ${getWorkspaceConnectionString(obj)}\n`;
     });
+};
 
 export const loadWorkspacesConfigSync = () => {
     const c = getContext();
     // CHECK WORKSPACES
-    if (fsExistsSync(c.paths.rnv.configWorkspaces)) {
-        logDebug(`${c.paths.rnv.configWorkspaces} file exists!`);
+    if (fsExistsSync(c.paths.dotRnv.configWorkspaces)) {
+        logDebug(`${c.paths.dotRnv.configWorkspaces} file exists!`);
 
-        const cnf = readObjectSync<ConfigFileWorkspaces>(c.paths.rnv.configWorkspaces);
+        const cnf = readObjectSync<ConfigFileWorkspaces>(c.paths.dotRnv.configWorkspaces);
 
         if (!cnf) return;
 
-        c.files.rnv.configWorkspaces = cnf;
+        c.files.dotRnv.configWorkspaces = cnf;
 
         if (!cnf.workspaces) {
             cnf.workspaces = {};
         }
         if (Object.keys(cnf.workspaces).length === 0) {
-            logWarning(`No workspace found in ${c.paths.rnv.configWorkspaces}. Creating default rnv one for you`);
+            logWarning(`No workspace found in ${c.paths.dotRnv.configWorkspaces}. Creating default rnv one for you`);
             cnf.workspaces = {
                 rnv: {
                     path: c.paths.workspace.dir,
                 },
             };
-            writeFileSync(c.paths.rnv.configWorkspaces, cnf);
+            writeFileSync(c.paths.dotRnv.configWorkspaces, cnf);
         }
     } else {
-        logWarning(`Cannot find ${c.paths.rnv.configWorkspaces}. creating one..`);
-        c.files.rnv.configWorkspaces = {
+        logWarning(`Cannot find ${c.paths.dotRnv.configWorkspaces}. creating one..`);
+        c.files.dotRnv.configWorkspaces = {
             workspaces: {
                 rnv: {
                     path: c.paths.workspace.dir,
                 },
             },
         };
-        writeFileSync(c.paths.rnv.configWorkspaces, c.files.rnv.configWorkspaces);
+        writeFileSync(c.paths.dotRnv.configWorkspaces, c.files.dotRnv.configWorkspaces);
     }
 
-    const defWsPath = c.paths.GLOBAL_RNV_CONFIG;
+    const defWsPath = c.paths.dotRnv.config;
 
     if (defWsPath && fsExistsSync(defWsPath)) {
-        c.files.defaultWorkspace.config = readObjectSync<ConfigFileWorkspace>(defWsPath) || {};
+        c.files.dotRnv.config = readObjectSync<ConfigFileWorkspace>(defWsPath) || {};
     }
 };

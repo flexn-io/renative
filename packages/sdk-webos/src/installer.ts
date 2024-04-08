@@ -13,6 +13,7 @@ import {
     generateBuildConfig,
     RnvContext,
     inquirerPrompt,
+    getContext,
 } from '@rnv/core';
 
 import {
@@ -31,35 +32,22 @@ const _logSdkWarning = (c: RnvContext) => {
     logWarning(`Your ${c.paths.workspace.config} is missing SDK configuration object`);
 };
 
-export const checkAndConfigureWebosSdks = async (c: RnvContext) => {
+export const checkAndConfigureWebosSdks = async () => {
+    const c = getContext();
     logDefault(`checkAndConfigureWebosSdks:${c.platform}`);
     const sdk = c.buildConfig?.sdks?.WEBOS_SDK;
     if (sdk) {
-        c.cli[CLI_WEBOS_ARES] = getRealPath(c, path.join(sdk, `CLI/bin/ares${isSystemWin ? '.cmd' : ''}`));
-        c.cli[CLI_WEBOS_ARES_PACKAGE] = getRealPath(
-            c,
-            path.join(sdk, `CLI/bin/ares-package${isSystemWin ? '.cmd' : ''}`)
-        );
-        c.cli[CLI_WEBOS_ARES_INSTALL] = getRealPath(
-            c,
-            path.join(sdk, `CLI/bin/ares-install${isSystemWin ? '.cmd' : ''}`)
-        );
-        c.cli[CLI_WEBOS_ARES_LAUNCH] = getRealPath(
-            c,
-            path.join(sdk, `CLI/bin/ares-launch${isSystemWin ? '.cmd' : ''}`)
-        );
+        c.cli[CLI_WEBOS_ARES] = getRealPath(path.join(sdk, `CLI/bin/ares${isSystemWin ? '.cmd' : ''}`));
+        c.cli[CLI_WEBOS_ARES_PACKAGE] = getRealPath(path.join(sdk, `CLI/bin/ares-package${isSystemWin ? '.cmd' : ''}`));
+        c.cli[CLI_WEBOS_ARES_INSTALL] = getRealPath(path.join(sdk, `CLI/bin/ares-install${isSystemWin ? '.cmd' : ''}`));
+        c.cli[CLI_WEBOS_ARES_LAUNCH] = getRealPath(path.join(sdk, `CLI/bin/ares-launch${isSystemWin ? '.cmd' : ''}`));
         c.cli[CLI_WEBOS_ARES_SETUP_DEVICE] = getRealPath(
-            c,
             path.join(sdk, `CLI/bin/ares-setup-device${isSystemWin ? '.cmd' : ''}`)
         );
         c.cli[CLI_WEBOS_ARES_DEVICE_INFO] = getRealPath(
-            c,
             path.join(sdk, `CLI/bin/ares-device-info${isSystemWin ? '.cmd' : ''}`)
         );
-        c.cli[CLI_WEBOS_ARES_NOVACOM] = getRealPath(
-            c,
-            path.join(sdk, `CLI/bin/ares-novacom${isSystemWin ? '.cmd' : ''}`)
-        );
+        c.cli[CLI_WEBOS_ARES_NOVACOM] = getRealPath(path.join(sdk, `CLI/bin/ares-novacom${isSystemWin ? '.cmd' : ''}`));
     } else {
         _logSdkWarning(c);
     }
@@ -74,13 +62,13 @@ const _isSdkInstalled = (c: RnvContext) => {
 
     const sdkPath = _getCurrentSdkPath(c);
 
-    return fsExistsSync(getRealPath(c, sdkPath));
+    return fsExistsSync(getRealPath(sdkPath));
 };
 
 const _attemptAutoFix = async (c: RnvContext) => {
     logDefault('_attemptAutoFix');
 
-    if (c.program.hosted) {
+    if (c.program.opts().hosted) {
         logInfo('HOSTED Mode. Skipping SDK checks');
         return true;
     }
@@ -90,7 +78,7 @@ const _attemptAutoFix = async (c: RnvContext) => {
     if (result) {
         logSuccess(`Found existing ${c.platform} SDK location at ${chalk().bold(result)}`);
         let confirmSdk = true;
-        if (!c.program.ci) {
+        if (!c.program.opts().ci) {
             const { confirm } = await inquirerPrompt({
                 type: 'confirm',
                 name: 'confirm',
@@ -106,8 +94,8 @@ const _attemptAutoFix = async (c: RnvContext) => {
                 if (!cnf.sdks) cnf.sdks = {};
                 cnf.sdks.WEBOS_SDK = result;
                 writeFileSync(c.paths.workspace.config, cnf);
-                generateBuildConfig(c);
-                await checkAndConfigureWebosSdks(c);
+                generateBuildConfig();
+                await checkAndConfigureWebosSdks();
             } catch (e) {
                 logError(e);
             }
@@ -116,29 +104,25 @@ const _attemptAutoFix = async (c: RnvContext) => {
         }
     }
 
-    logDefault(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOCATIONS.join(', ')}`);
+    logError(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOCATIONS.join(', ')}`);
 
     // const setupInstance = PlatformSetup(c);
     // await setupInstance.askToInstallSDK(sdkPlatform);
-    generateBuildConfig(c);
+    generateBuildConfig();
     return true;
 };
 
-export const checkWebosSdk = async (c: RnvContext) => {
+export const checkWebosSdk = async () => {
+    const c = getContext();
+
     logDefault('checkWebosSdk');
     if (!_isSdkInstalled(c)) {
         logWarning(
-            `${c.platform} requires SDK to be installed. Your SDK path in ${chalk().bold(
+            `${c.platform} platform requires WebOS SDK to be installed. Your SDK path in ${chalk().bold(
                 c.paths.workspace.config
             )} does not exist: ${chalk().bold(_getCurrentSdkPath(c))}`
         );
-
-        switch (c.platform) {
-            case 'webos':
-                return _attemptAutoFix(c);
-            default:
-                return true;
-        }
+        return _attemptAutoFix(c);
     }
     return true;
 };

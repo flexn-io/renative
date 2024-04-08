@@ -1,12 +1,20 @@
-import { GetConfigPropFn } from '../api/types';
-import { RnvContext } from './types';
 import { chalk, logError, logWarning } from '../logger';
-import { ConfigFileBuildConfig } from '../schema';
-import { ConfigProp, ConfigPropKey } from '../schema/types';
-import { BuildConfigPropKey, BuildSchemePropKey, CommonPropKey, PlatPropKey, RnvPlatform } from '../types';
-import { TimestampPathsConfig } from '../system/types';
+import type {
+    BuildConfigKey,
+    CommonBuildSchemeKey,
+    CommonPropKey,
+    ConfigFileBuildConfig,
+    ConfigPropKeyMerged,
+    ConfigPropRootKeyMerged,
+    GetConfigPropVal,
+    GetConfigRootPropVal,
+    PlatformBuildSchemeKey,
+    ConfigCommonBuildSchemeSchema,
+} from '../schema/types';
+import type { TimestampPathsConfig } from '../system/types';
 import path from 'path';
 import { fsExistsSync } from '../system/fs';
+import { getContext } from './provider';
 
 const _getValueOrMergedObject = (resultScheme: object, resultPlatforms: object, resultCommon: object) => {
     if (resultScheme !== undefined) {
@@ -26,26 +34,27 @@ const _getValueOrMergedObject = (resultScheme: object, resultPlatforms: object, 
     return resultCommon;
 };
 
-export const getConfigProp: GetConfigPropFn = <T extends ConfigPropKey>(
-    c: RnvContext,
-    platform: RnvPlatform,
-    key: T,
-    defaultVal?: ConfigProp[T]
-): ConfigProp[T] => {
+export const getConfigRootProp = <T, K extends ConfigPropRootKeyMerged<T>>(key: K): GetConfigRootPropVal<T, K> => {
+    const c = getContext();
     if (!c.buildConfig) {
         logError('getConfigProp: c.buildConfig is undefined!');
         return undefined;
     }
-    return _getConfigProp<T>(c, platform, key, defaultVal, c.buildConfig);
+    return c.buildConfig[key];
 };
 
-export const _getConfigProp = <T extends ConfigPropKey>(
-    c: RnvContext,
-    platform: RnvPlatform,
-    key: T,
-    defaultVal?: ConfigProp[T],
-    sourceObj?: Partial<ConfigFileBuildConfig>
-): ConfigProp[T] => {
+export const getConfigProp = <T, K extends ConfigPropKeyMerged<T>>(
+    key: K,
+    obj?: Partial<ConfigFileBuildConfig>
+): GetConfigPropVal<T, K> => {
+    const c = getContext();
+    if (!c.buildConfig) {
+        logError('getConfigProp: c.buildConfig is undefined!');
+        return undefined;
+    }
+
+    const { platform } = c;
+    const sourceObj = obj || c.buildConfig;
     if (!sourceObj || !platform) return undefined;
 
     const platformObj = sourceObj.platforms?.[platform];
@@ -56,30 +65,35 @@ export const _getConfigProp = <T extends ConfigPropKey>(
     let scheme;
     if (platformObj && ps) {
         scheme = platformObj.buildSchemes?.[ps] || {};
-        resultPlatforms = getFlavouredProp(c, platformObj, key as PlatPropKey);
+        resultPlatforms = getFlavouredProp(platformObj, key as any);
     } else {
         scheme = {};
     }
 
-    const resultScheme = key && scheme[key as BuildSchemePropKey];
-    const resultCommonRoot = getFlavouredProp(c, sourceObj.common || {}, key as CommonPropKey);
-    const resultCommonScheme =
-        c.runtime.scheme &&
-        getFlavouredProp(c, sourceObj.common?.buildSchemes?.[c.runtime.scheme] || {}, key as BuildSchemePropKey);
+    const resultCommonRoot = getFlavouredProp(sourceObj.common || {}, key as CommonPropKey);
+
+    const bs: ConfigCommonBuildSchemeSchema =
+        (!!c.runtime.scheme && sourceObj.common?.buildSchemes?.[c.runtime.scheme]) || {};
+
+    const resultCommonScheme = c.runtime.scheme && getFlavouredProp(bs, key as CommonBuildSchemeKey);
 
     const resultCommon = resultCommonScheme || resultCommonRoot;
 
-    let result = _getValueOrMergedObject(resultScheme, resultPlatforms, resultCommon);
+    const resultScheme = key && scheme[key as PlatformBuildSchemeKey];
+    let result: GetConfigPropVal<T, K> = _getValueOrMergedObject(
+        resultScheme,
+        resultPlatforms,
+        resultCommon
+    ) as GetConfigPropVal<T, K>;
     if (result === undefined) {
-        result = getFlavouredProp(c, sourceObj, key as BuildConfigPropKey);
+        result = getFlavouredProp(sourceObj, key as BuildConfigKey);
     }
 
-    if (result === undefined) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
-
-    return result as ConfigProp[T];
+    return result as GetConfigPropVal<T, K>;
 };
 
-export const getFlavouredProp = <T, K extends keyof T>(c: RnvContext, obj: T, key: K): T[K] | undefined => {
+export const getFlavouredProp = <T, K extends keyof T>(obj: T, key: K): T[K] | undefined => {
+    const c = getContext();
     if (!key || !obj || typeof key !== 'string') return undefined;
     const keyScoped = `${key}@${c.runtime.scheme}` as K;
     const val1 = obj[keyScoped];
@@ -87,11 +101,13 @@ export const getFlavouredProp = <T, K extends keyof T>(c: RnvContext, obj: T, ke
     return obj[key];
 };
 
-export const getTimestampPathsConfig = (c: RnvContext, platform: RnvPlatform): TimestampPathsConfig | undefined => {
+export const getTimestampPathsConfig = (): TimestampPathsConfig | undefined => {
+    const c = getContext();
+    const { platform } = c;
     let timestampBuildFiles: Array<string> = [];
     const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
     if (platform === 'web') {
-        timestampBuildFiles = (getConfigProp(c, platform, 'timestampBuildFiles') || []).map((v) => path.join(pPath, v));
+        timestampBuildFiles = (getConfigProp('timestampBuildFiles') || []).map((v) => path.join(pPath, v));
     }
     if (timestampBuildFiles?.length && c.runtime.timestamp) {
         return { paths: timestampBuildFiles, timestamp: c.runtime.timestamp };
@@ -100,7 +116,8 @@ export const getTimestampPathsConfig = (c: RnvContext, platform: RnvPlatform): T
 };
 
 //TODO: rename to getPlatformBuildAppDir ???
-export const getAppFolder = (c: RnvContext, isRelativePath?: boolean) => {
+export const getAppFolder = (isRelativePath?: boolean) => {
+    const c = getContext();
     if (isRelativePath) {
         return `platformBuilds/${c.runtime.appId}_${c.platform}${c.runtime._platformBuildsSuffix || ''}`;
     }
@@ -110,15 +127,18 @@ export const getAppFolder = (c: RnvContext, isRelativePath?: boolean) => {
     );
 };
 
-export const getPlatformProjectDir = (c: RnvContext) => {
+export const getPlatformProjectDir = () => {
+    const c = getContext();
     if (!c.runtime.engine) {
         logError('getPlatformProjectDir not available without specific engine');
         return null;
     }
-    return path.join(getAppFolder(c), c.runtime.engine.projectDirName || '');
+    return path.join(getAppFolder(), c.runtime.engine.projectDirName || '');
 };
 
-export const getAppConfigBuildsFolder = (c: RnvContext, platform: RnvPlatform, customPath?: string) => {
+export const getAppConfigBuildsFolder = (customPath?: string) => {
+    const c = getContext();
+    const { platform } = c;
     const pp = customPath || c.paths.appConfig.dir;
     if (!pp) {
         logWarning(

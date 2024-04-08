@@ -11,13 +11,12 @@
           "type": "string",
           "description": "ID of engine"
         },
+        "packageName": {
+          "type": "string"
+        },
         "engineExtension": {
           "type": "string",
           "description": "Engine extension ised by rnv during compilation"
-        },
-        "extends": {
-          "type": "string",
-          "description": "ID of engine to extend. Not being used yet"
         },
         "overview": {
           "type": "string",
@@ -68,23 +67,23 @@
           },
           "propertyNames": {
             "enum": [
+              "web",
               "ios",
               "android",
               "androidtv",
-              "androidwear",
               "firetv",
-              "web",
-              "webtv",
-              "tizen",
-              "tizenmobile",
               "tvos",
-              "webos",
               "macos",
-              "windows",
               "linux",
-              "tizenwatch",
-              "kaios",
+              "windows",
+              "tizen",
+              "webos",
               "chromecast",
+              "kaios",
+              "webtv",
+              "androidwear",
+              "tizenwatch",
+              "tizenmobile",
               "xbox"
             ]
           }
@@ -94,11 +93,6 @@
           "description": "schema definition"
         }
       },
-      "required": [
-        "id",
-        "engineExtension",
-        "overview"
-      ],
       "additionalProperties": false
     }
   },

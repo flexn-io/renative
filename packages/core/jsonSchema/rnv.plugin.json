@@ -4,6 +4,33 @@
     "rnv.plugin": {
       "type": "object",
       "properties": {
+        "supportedPlatforms": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "web",
+              "ios",
+              "android",
+              "androidtv",
+              "firetv",
+              "tvos",
+              "macos",
+              "linux",
+              "windows",
+              "tizen",
+              "webos",
+              "chromecast",
+              "kaios",
+              "webtv",
+              "androidwear",
+              "tizenwatch",
+              "tizenmobile",
+              "xbox"
+            ]
+          },
+          "description": "Array list of all supported platforms in current project"
+        },
         "disabled": {
           "type": "boolean",
           "default": false,
@@ -44,13 +71,20 @@
           "description": "Object of npm dependencies of this plugin. These will be injected into package.json"
         },
         "pluginDependencies": {
-          "type": "object",
-          "additionalProperties": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            {
+              "type": "null"
+            }
+          ],
           "description": "List of other Renative plugins this plugin depends on"
         },
         "webpackConfig": {
@@ -135,21 +169,6 @@
               "type": "string",
               "description": "Enables you to pass custom path to plugin. If undefined, the default `node_modules/[plugin-name]` will be used."
             },
-            "projectName": {
-              "type": "string"
-            },
-            "skipLinking": {
-              "type": "boolean"
-            },
-            "skipImplementation": {
-              "type": "boolean"
-            },
-            "implementation": {
-              "type": "string"
-            },
-            "package": {
-              "type": "string"
-            },
             "templateAndroid": {
               "type": "object",
               "properties": {
@@ -224,13 +243,6 @@
                       }
                     }
                   },
-                  "required": [
-                    "allprojects",
-                    "plugins",
-                    "buildscript",
-                    "dexOptions",
-                    "injectAfterAll"
-                  ],
                   "additionalProperties": false,
                   "description": "Overrides values in `build.gradle` file of generated android based project"
                 },
@@ -283,10 +295,6 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "apply",
-                    "defaultConfig"
-                  ],
                   "additionalProperties": false,
                   "description": "Overrides values in `app/build.gradle` file of generated android based project"
                 },
@@ -296,13 +304,13 @@
                     "tag": {
                       "type": "string"
                     },
-                    "android:name": {
+                    "package": {
                       "type": "string"
                     },
-                    "android:required": {
-                      "type": "boolean"
+                    "xmlns:android": {
+                      "type": "string"
                     },
-                    "package": {
+                    "xmlns:tools": {
                       "type": "string"
                     },
                     "children": {
@@ -311,13 +319,68 @@
                         "type": "object",
                         "properties": {
                           "tag": {
-                            "$ref": "#/definitions/rnv.plugin/properties/android/properties/templateAndroid/properties/AndroidManifest_xml/properties/tag"
+                            "type": "string"
                           },
                           "android:name": {
-                            "$ref": "#/definitions/rnv.plugin/properties/android/properties/templateAndroid/properties/AndroidManifest_xml/properties/android:name"
+                            "type": "string"
                           },
+                          "android:theme": {
+                            "type": "string"
+                          },
+                          "android:value": {},
                           "android:required": {
-                            "$ref": "#/definitions/rnv.plugin/properties/android/properties/templateAndroid/properties/AndroidManifest_xml/properties/android:required"
+                            "type": "boolean"
+                          },
+                          "android:allowBackup": {
+                            "type": "boolean"
+                          },
+                          "android:largeHeap": {
+                            "type": "boolean"
+                          },
+                          "android:label": {
+                            "type": "string"
+                          },
+                          "android:icon": {
+                            "type": "string"
+                          },
+                          "android:roundIcon": {
+                            "type": "string"
+                          },
+                          "android:banner": {
+                            "type": "string"
+                          },
+                          "tools:replace": {
+                            "type": "string"
+                          },
+                          "android:supportsRtl": {
+                            "type": "boolean"
+                          },
+                          "tools:targetApi": {
+                            "type": "number"
+                          },
+                          "android:usesCleartextTraffic": {
+                            "type": "boolean"
+                          },
+                          "android:appComponentFactory": {
+                            "type": "string"
+                          },
+                          "android:screenOrientation": {
+                            "type": "string"
+                          },
+                          "android:noHistory": {
+                            "type": "boolean"
+                          },
+                          "android:launchMode": {
+                            "type": "string"
+                          },
+                          "android:exported": {
+                            "type": "boolean"
+                          },
+                          "android:configChanges": {
+                            "type": "string"
+                          },
+                          "android:windowSoftInputMode": {
+                            "type": "string"
                           },
                           "children": {
                             "type": "array",
@@ -327,18 +390,14 @@
                           }
                         },
                         "required": [
-                          "tag",
-                          "android:name",
-                          "children"
+                          "tag"
                         ],
                         "additionalProperties": false
                       }
                     }
                   },
                   "required": [
-                    "tag",
-                    "android:name",
-                    "children"
+                    "tag"
                   ],
                   "additionalProperties": false,
                   "description": "Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism\nInjects / Overrides values in AndroidManifest.xml file of generated android based project\n> IMPORTANT: always ensure that your object contains `tag` and `android:name` to target correct tag to merge into\n "
@@ -346,68 +405,64 @@
                 "strings_xml": {
                   "type": "object",
                   "properties": {
+                    "tag": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "parent": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "string"
+                    },
                     "children": {
                       "type": "array",
                       "items": {
                         "type": "object",
                         "properties": {
                           "tag": {
-                            "type": "string"
+                            "$ref": "#/definitions/rnv.plugin/properties/android/properties/templateAndroid/properties/strings_xml/properties/tag"
                           },
                           "name": {
-                            "type": "string"
+                            "$ref": "#/definitions/rnv.plugin/properties/android/properties/templateAndroid/properties/strings_xml/properties/name"
                           },
-                          "child_value": {
-                            "type": "string"
+                          "parent": {
+                            "$ref": "#/definitions/rnv.plugin/properties/android/properties/templateAndroid/properties/strings_xml/properties/parent"
+                          },
+                          "value": {
+                            "$ref": "#/definitions/rnv.plugin/properties/android/properties/templateAndroid/properties/strings_xml/properties/value"
+                          },
+                          "children": {
+                            "type": "array",
+                            "items": {
+                              "$ref": "#/definitions/rnv.plugin/properties/android/properties/templateAndroid/properties/strings_xml/properties/children/items"
+                            }
                           }
                         },
                         "required": [
-                          "tag",
-                          "name",
-                          "child_value"
+                          "tag"
                         ],
                         "additionalProperties": false
                       }
                     }
                   },
-                  "additionalProperties": false
+                  "required": [
+                    "tag"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Allows you to directly manipulate `res/values files` via json override mechanism\nInjects / Overrides values in res/values files of generated android based project\n> IMPORTANT: always ensure that your object contains `tag` and `name` to target correct tag to merge into\n "
                 },
-                "MainActivity_java": {
-                  "type": "object",
-                  "properties": {
-                    "onCreate": {
-                      "type": "string",
-                      "default": "super.onCreate(savedInstanceState)",
-                      "description": "Overrides super.onCreate method handler of MainActivity.java"
-                    },
-                    "imports": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "methods": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "createMethods": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "resultMethods": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    }
-                  },
-                  "additionalProperties": false
+                "styles_xml": {
+                  "$ref": "#/definitions/rnv.plugin/properties/android/properties/templateAndroid/properties/strings_xml",
+                  "description": "Allows you to directly manipulate `res/values files` via json override mechanism\nInjects / Overrides values in res/values files of generated android based project\n> IMPORTANT: always ensure that your object contains `tag` and `name` to target correct tag to merge into\n "
                 },
-                "MainApplication_java": {
+                "colors_xml": {
+                  "$ref": "#/definitions/rnv.plugin/properties/android/properties/templateAndroid/properties/strings_xml",
+                  "description": "Allows you to directly manipulate `res/values files` via json override mechanism\nInjects / Overrides values in res/values files of generated android based project\n> IMPORTANT: always ensure that your object contains `tag` and `name` to target correct tag to merge into\n "
+                },
+                "MainApplication_kt": {
                   "type": "object",
                   "properties": {
                     "imports": {
@@ -443,9 +498,79 @@
                   },
                   "additionalProperties": false,
                   "description": "Allows you to configure behaviour of MainActivity"
+                },
+                "MainActivity_kt": {
+                  "type": "object",
+                  "properties": {
+                    "onCreate": {
+                      "type": "string",
+                      "default": "super.onCreate(savedInstanceState)",
+                      "description": "Overrides super.onCreate method handler of MainActivity.kt"
+                    },
+                    "imports": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "methods": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "createMethods": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "resultMethods": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "SplashActivity_kt": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": false
+                },
+                "settings_gradle": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": false
+                },
+                "gradle_wrapper_properties": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": false
+                },
+                "proguard_rules_pro": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": false
                 }
               },
               "additionalProperties": false
+            },
+            "projectName": {
+              "type": "string"
+            },
+            "skipLinking": {
+              "type": "boolean"
+            },
+            "skipImplementation": {
+              "type": "boolean"
+            },
+            "implementation": {
+              "type": "string"
+            },
+            "package": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -470,33 +595,6 @@
             },
             "path": {
               "$ref": "#/definitions/rnv.plugin/properties/android/properties/path"
-            },
-            "git": {
-              "type": "string",
-              "description": "Alternative git url for pod instead of version"
-            },
-            "commit": {
-              "type": "string",
-              "description": "Alternative git commit reference string"
-            },
-            "version": {
-              "type": "string",
-              "description": "Version of pod"
-            },
-            "podNames": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "podName": {
-              "type": "string"
-            },
-            "staticFrameworks": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
             },
             "templateXcode": {
               "type": "object",
@@ -648,115 +746,54 @@
                               }
                             },
                             "applicationDidBecomeActive": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
-                              }
+                              "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
                             },
                             "open": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
-                              }
+                              "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
                             },
                             "supportedInterfaceOrientationsFor": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
-                              }
+                              "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
                             },
                             "didReceiveRemoteNotification": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
-                              }
+                              "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
                             },
                             "didFailToRegisterForRemoteNotificationsWithError": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
-                              }
+                              "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
                             },
                             "didReceive": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
-                              }
+                              "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
                             },
                             "didRegister": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
-                              }
+                              "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
                             },
                             "didRegisterForRemoteNotificationsWithDeviceToken": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
-                              }
+                              "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
                             },
                             "continue": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
-                              }
+                              "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
                             },
                             "didConnectCarInterfaceController": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
-                              }
+                              "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
                             },
                             "didDisconnectCarInterfaceController": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
-                              }
+                              "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
                             }
                           },
-                          "required": [
-                            "didFinishLaunchingWithOptions",
-                            "applicationDidBecomeActive",
-                            "open",
-                            "supportedInterfaceOrientationsFor",
-                            "didReceiveRemoteNotification",
-                            "didFailToRegisterForRemoteNotificationsWithError",
-                            "didReceive",
-                            "didRegister",
-                            "didRegisterForRemoteNotificationsWithDeviceToken",
-                            "continue",
-                            "didConnectCarInterfaceController",
-                            "didDisconnectCarInterfaceController"
-                          ],
                           "additionalProperties": false
                         },
                         "userNotificationCenter": {
                           "type": "object",
                           "properties": {
                             "willPresent": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
-                              }
+                              "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
                             },
                             "didReceiveNotificationResponse": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
-                              }
+                              "$ref": "#/definitions/rnv.plugin/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
                             }
                           },
-                          "required": [
-                            "willPresent",
-                            "didReceiveNotificationResponse"
-                          ],
                           "additionalProperties": false
                         }
                       },
-                      "required": [
-                        "application",
-                        "userNotificationCenter"
-                      ],
                       "additionalProperties": false
                     },
                     "appDelegateImports": {
@@ -793,6 +830,33 @@
                 }
               },
               "additionalProperties": false
+            },
+            "git": {
+              "type": "string",
+              "description": "Alternative git url for pod instead of version"
+            },
+            "commit": {
+              "type": "string",
+              "description": "Alternative git commit reference string"
+            },
+            "version": {
+              "type": "string",
+              "description": "Version of pod"
+            },
+            "podNames": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "podName": {
+              "type": "string"
+            },
+            "staticFrameworks": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             },
             "isStatic": {
               "type": "boolean"

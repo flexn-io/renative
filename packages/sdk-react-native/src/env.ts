@@ -1,7 +1,6 @@
 import { doResolve, getConfigProp, getContext, getRelativePath, parsePlugins } from '@rnv/core';
 import { getAppId } from '@rnv/sdk-utils';
 
-
 export const EnvVars = {
     RCT_METRO_PORT: () => {
         const ctx = getContext();
@@ -21,28 +20,27 @@ export const EnvVars = {
         return { RCT_NO_LAUNCH_PACKAGER: 1 };
     },
     RNV_APP_ID: () => {
-        const ctx = getContext();
-
-        return { RNV_APP_ID: getAppId(ctx, ctx.platform) };
+        return { RNV_APP_ID: getAppId() };
     },
     RCT_NEW_ARCH_ENABLED: () => {
-        const ctx = getContext();
-
         // new arch support
-        const newArchEnabled = getConfigProp(ctx, ctx.platform, 'newArchEnabled', false);
+        const newArchEnabled = getConfigProp('newArchEnabled');
 
         if (newArchEnabled) {
             return { RCT_NEW_ARCH_ENABLED: 1 };
         }
         return {};
     },
+    RNV_FLIPPER_ENABLED: () => {
+        const enableFlipper = getConfigProp('flipperEnabled') || true;
+        if (!enableFlipper) {
+            return { NO_FLIPPER: '1' };
+        }
+        return {};
+    },
     RNV_SKIP_LINKING: () => {
-        const ctx = getContext();
-
         const skipPlugins: string[] = [];
         parsePlugins(
-            ctx,
-            ctx.platform,
             (plugin, pluginPlat, key) => {
                 if (pluginPlat.disabled || plugin.disabled) {
                     skipPlugins.push(key);

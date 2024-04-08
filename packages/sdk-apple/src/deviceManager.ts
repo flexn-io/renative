@@ -12,6 +12,7 @@ import {
     ExecOptionsPresets,
     logInfo,
     logSuccess,
+    getContext,
 } from '@rnv/core';
 import { AppiumAppleDevice, AppleDevice } from './types';
 import { execFileSync } from 'child_process';
@@ -25,9 +26,7 @@ export const getAppleDevices = async (c: RnvContext, ignoreDevices?: boolean, ig
 
     logDefault('getAppleDevices', `ignoreDevices:${ignoreDevices} ignoreSimulators:${ignoreSimulators}`);
 
-    const {
-        program: { skipTargetCheck },
-    } = c;
+    const { skipTargetCheck } = c.program.opts();
 
     const connectedDevicesIds = await utilities.getConnectedDevices();
     const connectedDevicesArray = await Promise.all(
@@ -181,7 +180,8 @@ const _parseIOSDevicesList = (
     return devices;
 };
 
-export const launchAppleSimulator = async (c: RnvContext, target: string | boolean) => {
+export const launchAppleSimulator = async (target: string | boolean) => {
+    const c = getContext();
     logDefault('launchAppleSimulator', `${target}`);
 
     const devicesArr = await getAppleDevices(c, true);
@@ -258,8 +258,9 @@ const _launchSimulator = async (selectedDevice: AppleDevice) => {
     return true;
 };
 
-export const listAppleDevices = async (c: RnvContext) => {
+export const listAppleDevices = async () => {
     logDefault('listAppleDevices');
+    const c = getContext();
     const { platform } = c;
     const devicesArr = await getAppleDevices(c);
     let devicesString = '';

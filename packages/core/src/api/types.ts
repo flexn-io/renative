@@ -1,6 +1,6 @@
 import path from 'path';
 import type { RnvContext } from '../context/types';
-import type { ConfigProp, ConfigPropKey } from '../schema/types';
+import type { ConfigFileBuildConfig, ConfigProp, ConfigPropKey } from '../schema/types';
 import type { DoResolveFn } from '../system/types';
 import type { RnvPlatform } from '../types';
 import fs from 'fs';
@@ -36,7 +36,6 @@ export type RnvApiPrompt = {
         mapping?: any,
         renderMethod?: PromptRenderFn
     ) => PromptOptions;
-    pressAnyKeyToContinue: () => Promise<any>;
     inquirerSeparator: (text?: string) => any;
 };
 
@@ -69,7 +68,7 @@ export type RnvApiLogger = {
     getCurrentCommand: (excludeDollar: boolean) => void;
     logToSummary: (v: string, sanitizePaths?: () => string) => void;
     logRaw: (...args: Array<string>) => void;
-    logSummary: (header: string) => void;
+    logSummary: (opts?: { header: string }) => void;
     logTask: (task: string, customChalk?: any) => void;
     logInitTask: (task: string, customChalk?: string | ((s: string) => string)) => void;
     logExitTask: (task: string, customChalk?: (s: string) => string) => void;
@@ -79,10 +78,8 @@ export type RnvApiLogger = {
     logDefault: (task: string, customChalk?: any) => void;
     logDebug: (...args: Array<any>) => void;
     isInfoEnabled: () => boolean;
-    logComplete: (isEnd?: boolean) => void;
     logSuccess: (msg: string) => void;
-    logError: (e: Error | string | unknown, isEnd?: boolean, skipAnalytics?: boolean) => void;
-    logEnd: (code: number) => void;
+    logError: (e: Error | string | unknown, opts?: { skipAnalytics: boolean }) => void;
     logInitialize: () => void;
     logAppInfo: (c: RnvContext) => void;
     printIntoBox: (str: string) => string;
@@ -116,9 +113,10 @@ export type PromptParams = {
 
 export type PromptRenderFn = (i: number, obj: any, mapping: any, defaultVal: string) => string;
 
-export type GetConfigPropFn = <T extends ConfigPropKey>(
-    c: RnvContext,
-    platform: RnvPlatform,
-    key: T,
-    defaultVal?: ConfigProp[T]
-) => ConfigProp[T];
+export type GetConfigPropFn<T = ConfigPropKey> = T extends ConfigPropKey
+    ? <T extends ConfigPropKey>(
+          key: T,
+          defaultVal?: ConfigProp[T],
+          obj?: Partial<ConfigFileBuildConfig>
+      ) => ConfigProp[T] | undefined
+    : <T>(key: string, defaultVal?: T, obj?: Partial<ConfigFileBuildConfig>) => T | undefined;

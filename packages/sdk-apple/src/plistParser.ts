@@ -11,7 +11,9 @@ import {
     mergeObjects,
     writeCleanFile,
     fsWriteFileSync,
-    RnvPlatform,
+    getContext,
+    chalk,
+    RnvFolderName,
 } from '@rnv/core';
 import { getAppFolderName } from './common';
 import { Context, FilePlistJSON } from './types';
@@ -23,13 +25,14 @@ const isString = (value: unknown) => typeof value === 'string' || value instance
 const isArray = (value: unknown) => value && typeof value === 'object' && value.constructor === Array;
 const isObject = (value: unknown) => value && typeof value === 'object' && value.constructor === Object;
 
-export const parseExportOptionsPlist = (c: Context, platform: RnvPlatform) =>
+export const parseExportOptionsPlist = () =>
     new Promise<void>((resolve) => {
         // EXPORT OPTIONS
-        const tId = getConfigProp(c, platform, 'teamID');
-        const appFolder = getAppFolder(c);
-        const exportOptions = getConfigProp(c, platform, 'exportOptions') || {};
-        const id = getConfigProp(c, platform, 'id');
+        const c = getContext();
+        const tId = getConfigProp('teamID');
+        const appFolder = getAppFolder();
+        const exportOptions = getConfigProp('exportOptions') || {};
+        const id = getConfigProp('id');
 
         c.payload.pluginConfigiOS.exportOptions = objToPlist(exportOptions);
 
@@ -42,7 +45,7 @@ export const parseExportOptionsPlist = (c: Context, platform: RnvPlatform) =>
             }
         }
 
-        const bPath = getBuildFilePath(c, platform, 'exportOptions.plist');
+        const bPath = getBuildFilePath('exportOptions.plist');
 
         const injects = [
             { pattern: '{{TEAM_ID}}', override: tId },
@@ -52,55 +55,68 @@ export const parseExportOptionsPlist = (c: Context, platform: RnvPlatform) =>
             },
         ];
 
-        addSystemInjects(c, injects);
+        addSystemInjects(injects);
 
         writeCleanFile(bPath, path.join(appFolder, 'exportOptions.plist'), injects, undefined, c);
         resolve();
     });
 
-export const parseEntitlementsPlist = (c: Context, platform: RnvPlatform) =>
+export const parseEntitlementsPlist = () =>
     new Promise<void>((resolve) => {
         logDefault('parseEntitlementsPlist');
-
-        const appFolder = getAppFolder(c);
-        const appFolderName = getAppFolderName(c, platform);
+        const c = getContext();
+        const appFolder = getAppFolder();
+        const appFolderName = getAppFolderName();
         const entitlementsPath = path.join(appFolder, `${appFolderName}/${appFolderName}.entitlements`);
         // PLUGIN ENTITLEMENTS
-        let pluginsEntitlementsObj = getConfigProp(c, platform, 'entitlements');
+        let pluginsEntitlementsObj = getConfigProp('entitlements');
         if (!pluginsEntitlementsObj) {
             pluginsEntitlementsObj =
-                readObjectSync(path.join(__dirname, '../supportFiles/entitlements.json')) || undefined;
+                readObjectSync(
+                    path.join(__dirname, RnvFolderName.UP, RnvFolderName.templateFiles, 'entitlements.json')
+                ) || undefined;
         }
 
         saveObjToPlistSync(c, entitlementsPath, pluginsEntitlementsObj);
         resolve();
     });
 
-export const parseInfoPlist = (c: Context, platform: RnvPlatform) =>
+export const parseInfoPlist = () =>
     new Promise<void>((resolve) => {
+        const c = getContext();
         logDefault('parseInfoPlist');
-
+        const { platform } = c;
         if (!platform) return;
 
-        const appFolder = getAppFolder(c);
-        const appFolderName = getAppFolderName(c, platform);
-        const orientationSupport = getConfigProp(c, c.platform, 'orientationSupport');
-        const urlScheme = getConfigProp(c, c.platform, 'urlScheme');
+        const appFolder = getAppFolder();
+        const appFolderName = getAppFolderName();
+        const orientationSupport = getConfigProp('orientationSupport');
+        const urlScheme = getConfigProp('urlScheme');
 
         const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
 
         // PLIST
         let plistObj =
-            readObjectSync<FilePlistJSON>(path.join(__dirname, `../supportFiles/info.plist.${platform}.json`)) || {};
-        plistObj.CFBundleDisplayName = getAppTitle(c, platform);
-        plistObj.CFBundleShortVersionString = getAppVersion(c, platform);
-        plistObj.CFBundleVersion = getAppVersionCode(c, platform);
+            readObjectSync<FilePlistJSON>(
+                path.join(__dirname, RnvFolderName.UP, RnvFolderName.templateFiles, `info.plist.${platform}.json`)
+            ) || {};
+        plistObj.CFBundleDisplayName = getAppTitle();
+
+        if (!plistObj.CFBundleDisplayName) {
+            throw new Error(
+                `CFBundleDisplayName is required!. set it by adding ${chalk().bold(
+                    '"common": { "title": "<ADD_TITLE>" }'
+                )} prop in ${chalk().bold(c.paths.appConfig.config)}`
+            );
+        }
+        plistObj.CFBundleShortVersionString = getAppVersion();
+        plistObj.CFBundleVersion = getAppVersionCode();
         // FONTS
         if (c.payload.pluginConfigiOS.embeddedFonts.length) {
             plistObj.UIAppFonts = c.payload.pluginConfigiOS.embeddedFonts;
         }
         // PERMISSIONS
-        const includedPermissions = getConfigProp(c, platform, 'includedPermissions');
+        const includedPermissions = getConfigProp('includedPermissions');
         if (includedPermissions && c.buildConfig.permissions) {
             const platPrem = 'ios'; // c.buildConfig.permissions[platform] ? platform : 'ios';
             const pc = c.buildConfig.permissions[platPrem] || {};
@@ -143,14 +159,14 @@ export const parseInfoPlist = (c: Context, platform: RnvPlatform) =>
 
         // PLIST
 
-        const plist = getConfigProp(c, platform, 'templateXcode')?.Info_plist;
+        const plist = getConfigProp('templateXcode')?.Info_plist;
         if (plist) {
             plistObj = mergeObjects(c, plistObj, plist, true, true);
         }
 
         // PLUGINS
-        parsePlugins(c, platform, (plugin, pluginPlat) => {
-            const plistPlug = getFlavouredProp(c, pluginPlat, 'templateXcode')?.Info_plist;
+        parsePlugins((plugin, pluginPlat) => {
+            const plistPlug = getFlavouredProp(pluginPlat, 'templateXcode')?.Info_plist;
             if (plistPlug) {
                 plistObj = mergeObjects(c, plistObj, plistPlug, true, false);
             }

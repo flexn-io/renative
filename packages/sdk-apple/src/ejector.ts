@@ -11,19 +11,22 @@ import {
     doResolvePath,
     parseFonts,
     parsePlugins,
+    getContext,
+    RnvFileName,
+    getConfigRootProp,
 } from '@rnv/core';
 import { getAppFolderName } from './common';
-import { Context } from './types';
 
-export const ejectXcodeProject = async (c: Context) => {
-    const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');
-    const monoRoot = getConfigProp(c, c.platform, 'monoRoot');
+export const ejectXcodeProject = async () => {
+    const c = getContext();
+    const isMonorepo = getConfigRootProp('isMonorepo');
+    const monoRoot = getConfigRootProp('monoRoot');
 
     const rootMonoProjectPath = isMonorepo ? path.join(c.paths.project.dir, monoRoot || '../..') : c.paths.project.dir;
     const rootProjectPath = c.paths.project.dir;
 
-    const appFolder = getAppFolder(c);
-    const appFolderName = getAppFolderName(c, c.platform);
+    const appFolder = getAppFolder();
+    const appFolderName = getAppFolderName();
 
     //= ==========
     // xcodeproj
@@ -79,7 +82,7 @@ export const ejectXcodeProject = async (c: Context) => {
     // Plugins
     //= ==========
 
-    parsePlugins(c, c.platform, (_plugin, pluginPlat, key) => {
+    parsePlugins((_plugin, pluginPlat, key) => {
         const podPath = doResolvePath(key);
         const extensionsFilter = ['.h', '.m', '.swift', '.c', '.podspec', '.rb', '.mm'];
         // const excludeFolders = ['node_modules', 'android'];
@@ -97,7 +100,7 @@ export const ejectXcodeProject = async (c: Context) => {
                 c,
                 extensionsFilter
             );
-            copyFileSync(path.join(podPath, 'package.json'), path.join(destPath, 'package.json'));
+            copyFileSync(path.join(podPath, RnvFileName.package), path.join(destPath, RnvFileName.package));
         }
     });
 
@@ -111,10 +114,10 @@ export const ejectXcodeProject = async (c: Context) => {
     // Fonts
     //= ==========
 
-    parseFonts(c, (font, dir) => {
+    parseFonts((font, dir) => {
         if (font.includes('.ttf') || font.includes('.otf')) {
             const key = font.split('.')[0];
-            const includedFonts = getConfigProp(c, c.platform, 'includedFonts');
+            const includedFonts = getConfigProp('includedFonts');
             if (includedFonts && (includedFonts.includes('*') || includedFonts.includes(key))) {
                 const fontSource = path.join(dir, font);
                 if (fsExistsSync(fontSource)) {

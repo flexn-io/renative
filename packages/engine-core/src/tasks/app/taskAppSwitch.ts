@@ -1,35 +1,16 @@
-import {
-    logTask,
-    configureFonts,
-    copyRuntimeAssets,
-    executeTask,
-    RnvTaskOptionPresets,
-    RnvTaskFn,
-    generatePlatformAssetsRuntimeConfig,
-    RnvTask,
-    RnvTaskName,
-} from '@rnv/core';
+import { copyRuntimeAssets, createTask, generatePlatformAssetsRuntimeConfig, RnvTaskName } from '@rnv/core';
+import { configureFonts } from '@rnv/sdk-utils';
 
-const taskSwitch: RnvTaskFn = async (c, _parentTask, originTask) => {
-    logTask('taskSwitch');
-
-    c.program.appConfigID = true;
-
-    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.appSwitch, originTask);
-
-    await copyRuntimeAssets(c);
-    await generatePlatformAssetsRuntimeConfig(c);
-    await configureFonts(c);
-
-    return true;
-};
-
-const Task: RnvTask = {
+export default createTask({
     description: 'Switch between different app configs in current project',
-    fn: taskSwitch,
+    beforeDependsOn: async ({ ctx }) => {
+        ctx.program.opts().appConfigID = true;
+    },
+    dependsOn: [RnvTaskName.projectConfigure],
+    fn: async () => {
+        await copyRuntimeAssets();
+        await generatePlatformAssetsRuntimeConfig();
+        await configureFonts();
+    },
     task: RnvTaskName.appSwitch,
-    options: RnvTaskOptionPresets.withBase(),
-    platforms: [],
-};
-
-export default Task;
+});

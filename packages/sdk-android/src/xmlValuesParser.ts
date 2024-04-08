@@ -1,47 +1,101 @@
 import path from 'path';
-import { RenativeConfigPluginPlatform, getAppFolder, getConfigProp, writeFileSync, writeCleanFile } from '@rnv/core';
-import { Context } from './types';
+import {
+    getAppFolder,
+    getConfigProp,
+    writeCleanFile,
+    ConfigAndroidResources,
+    getContext,
+    logDefault,
+    readObjectSync,
+    logError,
+    parsePlugins,
+    getFlavouredProp,
+    RnvFolderName,
+} from '@rnv/core';
 import { getBuildFilePath, getAppTitle, sanitizeColor, addSystemInjects } from '@rnv/sdk-utils';
+import { _convertToXML, _mergeNodeChildren, _mergeNodeParameters, getConfigPropArray } from './manifestParser';
+import { TargetResourceFile } from './types';
 
-export const parseValuesStringsSync = (c: Context) => {
-    const appFolder = getAppFolder(c);
-    const stringsPath = 'app/src/main/res/values/strings.xml';
-    let strings = '<resources>\n';
-    strings += `  <string name="app_name">${getAppTitle(c, c.platform)}</string>\n`;
-    c.payload.pluginConfigAndroid.resourceStrings.forEach((v) => {
-        strings += `  <${v.tag} name="${v.name}">${v.child_value}</${v.tag}>\n`;
-    });
-    strings += '</resources>';
-    writeFileSync(path.join(appFolder, stringsPath), strings);
+export const parseValuesXml = (targetRes: TargetResourceFile, injectValue?: boolean) => {
+    const c = getContext();
+    logDefault(`parseValuesXml: ${targetRes}`);
+    const { platform } = c;
+    const appFolder = getAppFolder();
+    if (!platform) return;
+
+    try {
+        const baseResoutcesFilePath = path.join(
+            __dirname,
+            RnvFolderName.UP,
+            RnvFolderName.templateFiles,
+            `${targetRes}.json`
+        );
+        const baseResourcesFile = readObjectSync<ConfigAndroidResources>(baseResoutcesFilePath);
+        const resourceFile = `app/src/main/res/values/${targetRes.replace('_', '.')}`;
+
+        if (!baseResourcesFile) {
+            return;
+        }
+        const objArr = getConfigPropArray(c, c.platform, 'templateAndroid');
+
+        // PARSE all standard renative.*.json files in correct mergeOrder
+        objArr.forEach((tpl) => {
+            const resourceObj = tpl?.[targetRes];
+            if (resourceObj) {
+                _mergeNodeParameters(baseResourcesFile, resourceObj);
+            }
+            if (resourceObj?.children) {
+                _mergeNodeChildren(baseResourcesFile, resourceObj.children);
+            }
+        });
+
+        // appConfigs/base/plugins.json PLUGIN CONFIG OVERRIDES
+        parsePlugins((_plugin, pluginPlat) => {
+            const resourcesPlugin = getFlavouredProp(pluginPlat, 'templateAndroid')?.[targetRes];
+            if (resourcesPlugin) {
+                _mergeNodeChildren(baseResourcesFile, resourcesPlugin.children);
+                if (resourcesPlugin.children) {
+                    _mergeNodeChildren(baseResourcesFile, resourcesPlugin.children);
+                }
+            }
+        });
+
+        const resourceXml = _convertToXML(baseResourcesFile);
+
+        const injects = [{ pattern: _getPattern(targetRes), override: resourceXml || '' }];
+
+        addSystemInjects(injects);
+        const buildFilePath = getBuildFilePath(resourceFile);
+        const projectFilePath = path.join(appFolder, resourceFile);
+
+        if (!injectValue) {
+            writeCleanFile(buildFilePath, projectFilePath, injects, undefined, c);
+        } else {
+            writeCleanFile(buildFilePath, projectFilePath, injects, undefined, c);
+            _overrideDynamicValue(projectFilePath);
+        }
+
+        return;
+    } catch (e) {
+        logError(e);
+    }
 };
 
-export const parseValuesColorsSync = (c: Context) => {
-    const appFolder = getAppFolder(c);
-    const stringsPath = 'app/src/main/res/values/colors.xml';
+const _getPattern = (targetRes: TargetResourceFile): string => {
+    return `{{PLUGIN_${targetRes.toUpperCase()}_FILE}}`;
+};
+const _overrideDynamicValue = (stringsPath: string) => {
+    const c = getContext();
 
     const injects = [
         {
             pattern: '{{PLUGIN_COLORS_BG}}',
-            override: sanitizeColor(getConfigProp(c, c.platform, 'backgroundColor'), 'backgroundColor').hex,
+            override: sanitizeColor(getConfigProp('backgroundColor'), 'backgroundColor').hex || '#FFFFFF',
         },
+        { pattern: '{{APP_TITLE}}', override: getAppTitle() || '' },
     ];
 
-    addSystemInjects(c, injects);
+    addSystemInjects(injects);
 
-    writeCleanFile(
-        getBuildFilePath(c, c.platform, stringsPath),
-        path.join(appFolder, stringsPath),
-        injects,
-        undefined,
-        c
-    );
-};
-
-export const injectPluginXmlValuesSync = (c: Context, plugin: RenativeConfigPluginPlatform) => {
-    const rStrings = plugin.templateAndroid?.strings_xml?.children;
-    if (rStrings) {
-        rStrings.forEach((obj) => {
-            c.payload.pluginConfigAndroid.resourceStrings.push(obj);
-        });
-    }
+    writeCleanFile(stringsPath, stringsPath, injects, undefined, c);
 };

@@ -1,8 +1,7 @@
+// import path from 'path';
 import type { RnvContext, RnvContextPathObj } from './types';
 
-import { homedir } from 'os';
-
-export const USER_HOME_DIR = homedir();
+// export const USER_HOME_DIR = homedir();
 
 export const generateRnvConfigPathObj = (): RnvContextPathObj => {
     return {
@@ -30,6 +29,7 @@ export const generateRnvConfigFileObj = () => {
 };
 
 const runtime: RnvContext['runtime'] = {
+    integrationsByIndex: [],
     plugins: {},
     pluginVersions: {},
     enginesByPlatform: {},
@@ -50,9 +50,7 @@ const runtime: RnvContext['runtime'] = {
     skipBuildHooks: false,
     skipActiveServerCheck: false,
     versionCheckCompleted: false,
-    requiresForcedTemplateApply: false,
     forceBuildHookRebuild: false,
-    keepSessionActive: false,
     requiresBootstrap: false,
     port: 3000,
     runtimeExtraProps: {},
@@ -61,7 +59,17 @@ const runtime: RnvContext['runtime'] = {
 export const generateContextDefaults = (): RnvContext => ({
     isDefault: true,
     isSystemWin: false,
-    logMessages: [],
+    isSystemLinux: false,
+    isSystemMac: false,
+    engineConfigs: [],
+    mutations: {
+        pendingMutations: [],
+    },
+    logging: {
+        logMessages: [],
+        containsError: false,
+        containsWarning: false,
+    },
     timeEnd: new Date(),
     timeStart: new Date(),
     payload: {},
@@ -79,7 +87,19 @@ export const generateContextDefaults = (): RnvContext => ({
         option: () => {
             //NOOP
         },
+        opts: () => {
+            return {};
+        },
         parse: () => {
+            //NOOP
+        },
+        outputHelp: () => {
+            //NOOP
+        },
+        allowUnknownOption() {
+            //NOOP
+        },
+        showHelpAfterError() {
             //NOOP
         },
     },
@@ -96,28 +116,31 @@ export const generateContextDefaults = (): RnvContext => ({
     injectableConfigProps: {},
     runtime,
     paths: {
-        CURRENT_DIR: '',
         IS_LINKED: false,
         IS_NPX_MODE: false,
-        RNV_HOME_DIR: '',
-        RNV_NODE_MODULES_DIR: '',
         appConfigBase: '',
-        GLOBAL_RNV_CONFIG: '',
+        user: {
+            currentDir: '',
+            homeDir: '',
+        },
         rnv: {
-            configWorkspaces: '',
             dir: '',
             package: '',
-            pluginTemplates: {
-                dirs: {},
-            },
-            projectTemplates: {
-                config: '',
-                dir: '',
-            },
-            engines: {
-                dir: '',
-            },
-            projectTemplate: { dir: '' },
+        },
+        scopedConfigTemplates: {
+            configs: {},
+            pluginTemplatesDirs: {},
+        },
+        rnvCore: {
+            dir: '',
+            templateFilesDir: '',
+            package: '',
+        },
+        rnvConfigTemplates: {
+            config: '',
+            dir: '',
+            package: '',
+            pluginTemplatesDir: '',
         },
         workspace: {
             ...generateRnvConfigPathObj(),
@@ -133,24 +156,10 @@ export const generateContextDefaults = (): RnvContext => ({
                 ...generateRnvConfigPathObj(),
             },
         },
-        defaultWorkspace: {
-            ...generateRnvConfigPathObj(),
-            project: {
-                appConfigBase: {
-                    dir: '',
-                },
-                builds: {
-                    dir: '',
-                },
-                assets: {
-                    dir: '',
-                },
-            },
-            appConfig: {
-                configs: [],
-                configsPrivate: [],
-                configsLocal: [],
-            },
+        dotRnv: {
+            dir: '',
+            config: '',
+            configWorkspaces: '',
         },
         project: {
             ...generateRnvConfigPathObj(),
@@ -180,7 +189,6 @@ export const generateContextDefaults = (): RnvContext => ({
         appConfig: {
             ...generateRnvConfigPathObj(),
         },
-        GLOBAL_RNV_DIR: '',
         buildHooks: {
             dist: {
                 dir: '',
@@ -194,9 +202,7 @@ export const generateContextDefaults = (): RnvContext => ({
             tsconfig: '',
             dir: '',
         },
-        home: {
-            dir: '',
-        },
+
         template: {
             configTemplate: '',
             appConfigBase: {
@@ -215,12 +221,22 @@ export const generateContextDefaults = (): RnvContext => ({
     },
     files: {
         rnv: {
-            pluginTemplates: {
-                configs: {},
-            },
-            projectTemplates: {},
             package: {},
         },
+        dotRnv: {
+            configWorkspaces: {
+                workspaces: {},
+            },
+            config: {},
+        },
+        rnvCore: {
+            package: {},
+        },
+        rnvConfigTemplates: {
+            config: {},
+            package: {},
+        },
+        scopedConfigTemplates: {},
         workspace: {
             ...generateRnvConfigFileObj(),
             project: {
@@ -228,17 +244,6 @@ export const generateContextDefaults = (): RnvContext => ({
             },
             appConfig: {
                 ...generateRnvConfigFileObj(),
-            },
-        },
-        defaultWorkspace: {
-            ...generateRnvConfigFileObj(),
-            project: {
-                ...generateRnvConfigFileObj(),
-            },
-            appConfig: {
-                configs: [],
-                configsPrivate: [],
-                configsLocal: [],
             },
         },
         project: {

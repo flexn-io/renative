@@ -1,10 +1,10 @@
 import merge from 'deepmerge';
-import { RnvContext, chalk, inquirerPrompt, logDefault, logError, logInfo, logWarning } from '@rnv/core';
+import { chalk, getContext, inquirerPrompt, logDefault, logError, logInfo, logWarning } from '@rnv/core';
 
-export const isBuildSchemeSupported = async (c: RnvContext) => {
+export const isBuildSchemeSupported = async () => {
     logDefault('isBuildSchemeSupported');
-
-    const { scheme } = c.program;
+    const c = getContext();
+    const { scheme } = c.program.opts();
 
     if (!c.platform) return;
 
@@ -52,9 +52,9 @@ export const isBuildSchemeSupported = async (c: RnvContext) => {
             logMessage: 'You need to specify scheme',
         });
 
-        c.program.scheme = schemeVals[selectedScheme];
-        c.runtime.scheme = c.program.scheme;
+        c.program.opts().scheme = schemeVals[selectedScheme];
+        c.runtime.scheme = c.program.opts().scheme;
     }
-    logInfo(`Current Build Scheme: ${chalk().bold.white(c.runtime.scheme)}`);
+    logInfo(`Current Build Scheme: ${chalk().bold(c.runtime.scheme)}`);
     return true;
 };

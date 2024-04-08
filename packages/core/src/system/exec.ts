@@ -87,8 +87,8 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
         localDir: path.resolve('./node_modules/.bin'),
         preferLocal: true,
         all: true,
-        maxErrorLength: c.program?.maxErrorLength,
-        mono: c.program?.mono || c.program?.json,
+        maxErrorLength: c.program?.opts().maxErrorLength,
+        mono: c.program?.opts().mono || c.program?.opts().json,
     };
 
     const blue2 = chalk().rgb(50, 50, 255).bold;
@@ -96,7 +96,7 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
     const mergedOpts = { ...defaultOpts, ...opts };
 
     const printableEnv =
-        opts.env && (c.program.info || c.program.printExec)
+        opts.env && (c.program.opts().info || c.program.opts().printExec)
             ? Object.keys(opts.env)
                   .map((k) => `${k}=${opts?.env?.[k]}`)
                   .join(' ')
@@ -121,7 +121,7 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
         logMessage = replaceOverridesInString(commandAsString, privateParams, privateMask);
     }
 
-    if (c.program.printExec) {
+    if (c.program.opts().printExec) {
         let logMsg = printableEnv ? `${chalk().grey(printableEnv)} ${logMessage}` : logMessage;
         if (opts.cwd) {
             logMsg = `cd ${opts.cwd} ${chalk().cyan('&&')} ${logMsg}`;
@@ -177,7 +177,7 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
         }
     };
 
-    if (c.program?.info && child?.stdout?.pipe) {
+    if (c.program?.opts().info && child?.stdout?.pipe) {
         child.stdout.pipe(process.stdout);
     } else if (spinner && child?.stdout?.on) {
         child.stdout.on('data', printLastLine);
@@ -259,7 +259,9 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
  * @returns {Promise}
  *
  */
-const execCLI = (c: RnvContext, cli: string, command: string, opts: ExecOptions = {}) => {
+const execCLI = (cli: string, command: string, opts: ExecOptions = {}) => {
+    const c = getContext();
+
     if (!c.program) {
         return Promise.reject('You need to pass c object as first parameter to execCLI()');
     }
@@ -292,29 +294,8 @@ const execCLI = (c: RnvContext, cli: string, command: string, opts: ExecOptions 
  *
  */
 
-const executeAsync = async (
-    _c: RnvContext | string | Array<string>,
-    _cmd?: string | Array<string> | ExecOptions,
-    _opts?: ExecOptions
-): Promise<string> => {
-    // swap values if c is not specified and get it from it's rightful place, config :)
-    let c: RnvContext;
-    let cmd: string | Array<string> = '';
-    let opts: ExecOptions = _opts || {};
-    const isArg1Command = typeof _c === 'string' || Array.isArray(_c);
-    if (isArg1Command) {
-        cmd = _c;
-        c = getContext();
-    } else {
-        c = _c;
-    }
-
-    const isArg2Command = typeof _cmd === 'string' || Array.isArray(_cmd);
-    if (isArg2Command) {
-        cmd = _cmd;
-    } else if (_cmd) {
-        opts = _cmd;
-    }
+const executeAsync = async (cmd: string | Array<string>, opts?: ExecOptions): Promise<string> => {
+    const c = getContext();
 
     if (cmd.includes('npm') && process.platform === 'win32') {
         if (typeof cmd === 'string') {
@@ -324,26 +305,7 @@ const executeAsync = async (
             cmd = cmd.split(' ');
         }
     }
-    // let cmdArr;
-    // if (typeof cmd === 'string') {
-    //     cmdArr = cmd.split('&&');
-    // } else {
-    //     cmdArr = cmd;
-    // }
 
-    // let result;
-    // if (cmdArr.length) {
-    //     for (let i = 0; i < cmdArr.length; i++) {
-    //         // if (cmdArr[i].startsWith('cd ')) {
-    //         //     // TODO: flaky. will need to improve
-    //         //     const newCwd = path.join(CURRENT_DIR, cmdArr[i].replace('cd ', ''));
-    //         //     opts.cwd = newCwd;
-    //         // } else {
-    //         //     await _execute(c, cmdArr[i], opts);
-    //         // }
-    //         result = await _execute(c, cmdArr[i], opts);
-    //     }
-    // }
     const result = await _execute(c, cmd, opts);
     return result;
 };
@@ -361,9 +323,11 @@ export const execaCommand = (cmd: string, options?: execa.Options) => {
  * @returns {Promise}
  *
  */
-const executeTelnet = (c: RnvContext, port: string, command: string) =>
+const executeTelnet = (port: string, command: string) =>
     new Promise<string>((resolve) => {
         logDebug(`execTelnet: ${port} ${command}`);
+        const c = getContext();
+
         try {
             let output = '';
             const nc2 = new NClient();
@@ -612,20 +576,20 @@ const commandExistsSync = (commandName: string) => {
 const openCommand = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'start' : 'xdg-open';
 
 export const waitForExecCLI = async (
-    c: RnvContext,
     cli: string,
     command: string,
     callback: (resp: string | true) => boolean
 ): Promise<boolean> => {
+    const c = getContext();
     let attempts = 0;
     const maxAttempts = 30;
     const CHECK_INTEVAL = 2000;
-    const { maxErrorLength } = c.program;
+    const { maxErrorLength } = c.program.opts();
     const spinner = getApi().spinner('Waiting for emulator to boot...').start('');
 
     return new Promise((resolve, reject) => {
         const interval = setInterval(() => {
-            execCLI(c, cli, command, {
+            execCLI(cli, command, {
                 silent: true,
                 timeout: 10000,
                 maxErrorLength,

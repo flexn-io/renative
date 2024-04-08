@@ -1,5 +1,13 @@
 import path from 'path';
-import { RnvContext, copyFileSync, fixPackageObject, fsExistsSync, readObjectSync, writeFileSync } from '@rnv/core';
+import {
+    RnvContext,
+    RnvFileName,
+    copyFileSync,
+    fixPackageObject,
+    fsExistsSync,
+    readObjectSync,
+    writeFileSync,
+} from '@rnv/core';
 import fs from 'fs';
 
 const merge = require('deepmerge');
@@ -26,10 +34,14 @@ const VERSIONED_PACKAGES = [
     'sdk-react-native',
     'sdk-kaios',
     'sdk-tizen',
+    'sdk-telemetry',
     'sdk-webos',
     'sdk-utils',
     'renative',
+    'config-templates',
     'integration-docker',
+    'integration-starter',
+    'adapter',
 ];
 
 type PackageConfig = {
@@ -38,6 +50,8 @@ type PackageConfig = {
     pkgPath?: string;
     pkgFile?: any;
     rnvFile?: any;
+    rnvTempPath?: string;
+    rnvTempFile?: any;
 };
 
 type PackageConfigs = Record<string, PackageConfig>;
@@ -49,7 +63,7 @@ const setPackageVersions = (c: RnvContext, version: string | undefined, versione
     const pkgFolder = path.join(c.paths.project.dir, 'packages');
     _updateJson(c.paths.project.package, v);
     versionedPackages.forEach(function (pkgName) {
-        _updateJson(path.join(pkgFolder, pkgName, 'package.json'), v);
+        _updateJson(path.join(pkgFolder, pkgName, RnvFileName.package), v);
     });
 };
 
@@ -82,22 +96,34 @@ const updatePkgDeps = (
 };
 
 const updateRenativeDeps = (pkgConfig: PackageConfig, packageName: string, packageConfigs: PackageConfigs) => {
-    const { rnvFile } = pkgConfig;
+    const { rnvFile, rnvTempFile } = pkgConfig;
+    const newVer = packageConfigs[packageName].pkgFile?.version;
+    let hasRnvChanges = false;
 
-    if (rnvFile) {
-        let hasRnvChanges = false;
-        const templateVer = rnvFile?.templates?.[packageName]?.version;
+    const doUpdate = (obj: any, key: string) => {
+        const templateVer = obj?.[key];
         if (templateVer) {
-            const newVer = `${packageConfigs[packageName].pkgFile?.version}`;
             if (templateVer !== newVer) {
                 console.log('Found linked plugin dependency to update:', packageName, templateVer, newVer);
                 hasRnvChanges = true;
-                rnvFile.templates[packageName].version = newVer;
+                obj[key] = newVer;
             }
         }
+    };
+
+    if (rnvFile) {
+        doUpdate(rnvFile?.templates?.[packageName], 'version');
+        doUpdate(rnvFile?.templateConfig, 'version');
         if (hasRnvChanges) {
             const output = fixPackageObject(rnvFile);
             writeFileSync(pkgConfig.rnvPath, output, 4, true);
+        }
+    }
+    if (rnvTempFile) {
+        doUpdate(rnvTempFile?.templateConfig?.package_json?.devDependencies, packageName);
+        if (hasRnvChanges) {
+            const output = fixPackageObject(rnvTempFile);
+            writeFileSync(pkgConfig.rnvTempPath, output, 4, true);
         }
     }
 };
@@ -110,13 +136,7 @@ export const prePublish = async (c: RnvContext) => {
 
     const pkgDirPath = path.join(c.paths.project.dir, 'packages');
 
-    _updateJson(path.join(pkgDirPath, 'rnv/pluginTemplates/renative.plugins.json'), {
-        pluginTemplates: {
-            '@rnv/renative': v,
-        },
-    });
-
-    _updateJson(path.join(pkgDirPath, 'rnv/coreTemplateFiles/renative.templates.json'), {
+    _updateJson(path.join(pkgDirPath, 'config-templates/renative.templates.json'), {
         engineTemplates: {
             '@rnv/engine-rn': v,
             '@rnv/engine-rn-tvos': v,
@@ -127,6 +147,9 @@ export const prePublish = async (c: RnvContext) => {
             '@rnv/engine-rn-macos': v,
             '@rnv/engine-rn-windows': v,
         },
+        pluginTemplates: {
+            '@rnv/renative': v,
+        },
     });
 
     const dirs = fs.readdirSync(pkgDirPath);
@@ -136,13 +159,15 @@ export const prePublish = async (c: RnvContext) => {
 
     const parsePackages = (dirPath: string) => {
         let pkgName: string | undefined;
-        let rnvPath;
         let _pkgPath;
-        let rnvFile;
         let pkgFile;
+        let rnvPath;
+        let rnvFile;
+        let rnvTempPath;
+        let rnvTempFile;
 
         if (fs.statSync(dirPath).isDirectory()) {
-            _pkgPath = path.join(dirPath, 'package.json');
+            _pkgPath = path.join(dirPath, RnvFileName.package);
             if (fsExistsSync(_pkgPath)) {
                 pkgFile = readObjectSync<any>(_pkgPath);
                 pkgName = pkgFile?.name;
@@ -152,6 +177,11 @@ export const prePublish = async (c: RnvContext) => {
                 rnvPath = _rnvPath;
                 rnvFile = readObjectSync(rnvPath);
             }
+            const _rnvTempPath = path.join(dirPath, 'renative.template.json');
+            if (fsExistsSync(_rnvTempPath)) {
+                rnvTempPath = _rnvTempPath;
+                rnvTempFile = readObjectSync(rnvTempPath);
+            }
         }
         if (pkgName) {
             packageConfigs[pkgName] = {
@@ -160,6 +190,8 @@ export const prePublish = async (c: RnvContext) => {
                 pkgPath: _pkgPath,
                 pkgFile,
                 rnvFile,
+                rnvTempPath,
+                rnvTempFile,
             };
             packageNamesAll.push(pkgName);
         }

@@ -1,10 +1,11 @@
 import { sanitizeDynamicProps, mergeObjects, fsExistsSync, writeFileSync } from '../system/fs';
-import { RnvContext } from '../context/types';
 import { getConfigProp } from '../context/contextProps';
 import { logDefault } from '../logger';
+import { getContext } from '../context/provider';
 
-export const generatePlatformAssetsRuntimeConfig = async (c: RnvContext) => {
+export const generatePlatformAssetsRuntimeConfig = async () => {
     logDefault('generateRuntimeConfig');
+    const c = getContext();
     // c.assetConfig = {
     //     common: c.buildConfig.common,
     //     runtime: c.buildConfig.runtime
@@ -16,7 +17,7 @@ export const generatePlatformAssetsRuntimeConfig = async (c: RnvContext) => {
         c.assetConfig,
         c.platform ? c.buildConfig.platforms?.[c.platform]?.runtime || {} : {}
     );
-    c.assetConfig = mergeObjects(c, c.assetConfig, getConfigProp(c, c.platform, 'runtime') || {});
+    c.assetConfig = mergeObjects(c, c.assetConfig, getConfigProp('runtime') || {});
 
     if (fsExistsSync(c.paths.project.assets.dir)) {
         const sanitizedConfig = sanitizeDynamicProps(c.assetConfig, {

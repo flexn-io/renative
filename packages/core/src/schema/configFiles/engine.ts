@@ -1,45 +1,32 @@
 import { z } from 'zod';
-import { Ext, PlatformsKeys } from '../shared';
+import { zodExt, zodPlatformsKeys } from '../shared';
 
-const NpmDep = z.record(z.string(), z.string());
+const zodNpmDep = z.record(z.string(), z.string());
 
-const Npm = z
+const zodEngineNpm = z
     .object({
-        dependencies: z.optional(NpmDep),
-        devDependencies: z.optional(NpmDep),
-        peerDependencies: z.optional(NpmDep),
-        optionalDependencies: z.optional(NpmDep),
+        dependencies: z.optional(zodNpmDep),
+        devDependencies: z.optional(zodNpmDep),
+        peerDependencies: z.optional(zodNpmDep),
+        optionalDependencies: z.optional(zodNpmDep),
     })
     .describe('Npm dependencies required for this plugin to work');
 
-const EnginePlatform = z.object({
+const zodEnginePlatform = z.object({
     engine: z.optional(z.string()),
-    npm: z.optional(Npm),
+    npm: z.optional(zodEngineNpm),
 });
 
-//LEVEl 0 (ROOT)
-
-const Id = z.string().describe('ID of engine');
-
-const EngineExtension = z.string().describe('Engine extension ised by rnv during compilation');
-
-const Plugins = z.record(z.string(), z.string()).describe('List of required plugins for this engine to work properly');
-
-const Overview = z.string().describe('Overview description of engine');
-
-const Platforms = z.record(PlatformsKeys, EnginePlatform);
-
-const Extends = z.string().describe('ID of engine to extend. Not being used yet');
-
-export const RootEngineSchema = z.object({
-    custom: z.optional(Ext),
-    id: Id,
-    engineExtension: EngineExtension,
-    extends: z.optional(Extends),
-    overview: Overview,
-    plugins: z.optional(Plugins),
-    npm: z.optional(Npm),
-    platforms: z.optional(Platforms),
-});
-
-export type _ConfigRootEngineType = z.infer<typeof RootEngineSchema>;
+export const zodConfigFileEngine = z
+    .object({
+        custom: z.optional(zodExt),
+        id: z.string().describe('ID of engine'),
+        packageName: z.string(),
+        engineExtension: z.string().describe('Engine extension ised by rnv during compilation'),
+        // extends: z.string().describe('ID of engine to extend. Not being used yet'),
+        overview: z.string().describe('Overview description of engine'),
+        plugins: z.record(z.string(), z.string()).describe('List of required plugins for this engine to work properly'),
+        npm: zodEngineNpm,
+        platforms: z.record(zodPlatformsKeys, zodEnginePlatform),
+    })
+    .partial();

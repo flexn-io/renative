@@ -20,6 +20,7 @@ import {
     OverridesOptions,
     DEFAULTS,
     copyFileSync,
+    getContext,
 } from '@rnv/core';
 import semver from 'semver';
 import { CLI_TIZEN } from './constants';
@@ -41,24 +42,25 @@ import {
 
 const DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION = `${DEFAULT_CERTIFICATE_NAME}.p12`;
 
-export const checkTizenStudioCert = async (c: RnvContext): Promise<boolean> => {
+export const checkTizenStudioCert = async (): Promise<boolean> => {
     try {
-        await execCLI(c, CLI_TIZEN, `security-profiles list -n ${DEFAULTS.certificateProfile}`);
+        await execCLI(CLI_TIZEN, `security-profiles list -n ${DEFAULTS.certificateProfile}`);
         return true;
     } catch (e) {
         return false;
     }
 };
 
-export const configureTizenGlobal = (c: RnvContext) =>
+export const configureTizenGlobal = () =>
     new Promise<void>((resolve, reject) => {
+        const c = getContext();
         logDefault('configureTizenGlobal');
         // Check Tizen Cert
         // if (isPlatformActive(c, TIZEN) || isPlatformActive(c, TIZEN_WATCH)) {
         const tizenAuthorCert = path.join(c.paths.workspace.dir, DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION);
 
         if (fsExistsSync(tizenAuthorCert)) {
-            checkTizenStudioCert(c)
+            checkTizenStudioCert()
                 .then((certificateExists) => {
                     if (certificateExists) {
                         logDebug(`${DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION} file exists in Tizen Studio!`);
@@ -94,43 +96,44 @@ export const configureTizenGlobal = (c: RnvContext) =>
         // }
     });
 
-const _runTizenSimOrDevice = async (c: RnvContext) => {
-    try {
-        await runTizenSimOrDevice(c, buildCoreWebpackProject);
-    } catch (e) {
-        // TODO: Capture different errors and react accordingly
-        return Promise.reject(e);
-    }
-    return true;
+const _copyRequiredFiles = () => {
+    const tDir = getPlatformProjectDir()!;
+    const tBuild = path.join(tDir, 'build');
+
+    const requiredFiles = ['.project', '.tproject', 'config.xml', 'icon.png'];
+
+    requiredFiles.map((requiredFile) => {
+        const requiredFilePath = path.join(tDir, requiredFile);
+        copyFileSync(requiredFilePath, path.join(tBuild, requiredFile));
+    });
 };
 
 export const runTizen = async (c: RnvContext, target?: string) => {
     logDefault('runTizen', `target:${target}`);
     const { platform } = c;
-    const { hosted } = c.program;
+    const { hosted } = c.program.opts();
 
     if (!platform) return;
 
-    const isHosted = hosted && !getConfigProp(c, platform, 'bundleAssets');
+    const bundleAssets = getConfigProp('bundleAssets') === true;
+    const isHosted = hosted && !bundleAssets;
 
     if (isHosted) {
-        const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
+        const isPortActive = await checkPortInUse(c.runtime.port);
         if (isPortActive) {
-            const resetCompleted = await confirmActiveBundler(c);
+            const resetCompleted = await confirmActiveBundler();
             c.runtime.skipActiveServerCheck = !resetCompleted;
         }
+        logDefault('runTizen', `target:${target} hosted:${!!isHosted}`);
+        return;
     }
 
-    logDefault('runTizen', `target:${target} hosted:${!!isHosted}`);
-    if (isHosted) return;
-
-    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
-
     if (bundleAssets) {
-        await buildCoreWebpackProject(c);
-        await _runTizenSimOrDevice(c);
+        await buildCoreWebpackProject();
+        _copyRequiredFiles();
+        await runTizenSimOrDevice();
     } else {
-        const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
+        const isPortActive = await checkPortInUse(c.runtime.port);
         const isWeinreEnabled = REMOTE_DEBUGGER_ENABLED_PLATFORMS.includes(platform) && !bundleAssets && !hosted;
 
         if (!isPortActive) {
@@ -139,50 +142,46 @@ export const runTizen = async (c: RnvContext, target?: string) => {
                     c.runtime.port
                 )} is not running. Starting it up for you...`
             );
-            waitForHost(c, '')
-                .then(() => _runTizenSimOrDevice(c))
+            waitForHost('')
+                .then(() => runTizenSimOrDevice())
                 .catch(logError);
-            await runWebpackServer(c, isWeinreEnabled);
+            await runWebpackServer(isWeinreEnabled);
         } else {
-            const resetCompleted = await confirmActiveBundler(c);
+            const resetCompleted = await confirmActiveBundler();
 
             if (resetCompleted) {
-                waitForHost(c, '')
-                    .then(() => _runTizenSimOrDevice(c))
+                waitForHost('')
+                    .then(() => runTizenSimOrDevice())
                     .catch(logError);
-                await runWebpackServer(c, isWeinreEnabled);
+                await runWebpackServer(isWeinreEnabled);
             } else {
-                await _runTizenSimOrDevice(c);
+                await runTizenSimOrDevice();
             }
         }
     }
 };
 
-export const buildTizenProject = async (c: RnvContext) => {
+export const buildTizenProject = async () => {
+    const c = getContext();
     logDefault('buildTizenProject');
 
     const { platform } = c;
 
     if (!platform) return;
 
-    const certProfile = getConfigProp(c, c.platform, 'certificateProfile') || DEFAULTS.certificateProfile;
-    const tDir = getPlatformProjectDir(c)!;
+    const certProfile = getConfigProp('certificateProfile') || DEFAULTS.certificateProfile;
+    const tDir = getPlatformProjectDir()!;
 
-    await buildCoreWebpackProject(c);
-    if (!c.program.hosted) {
+    await buildCoreWebpackProject();
+
+    if (!c.program.opts().hosted) {
+        _copyRequiredFiles();
         const tOut = path.join(tDir, 'output');
         const tIntermediate = path.join(tDir, 'intermediate');
         const tBuild = path.join(tDir, 'build');
 
-        const requiredFiles = ['.project', '.tproject', 'config.xml', 'icon.png'];
-
-        requiredFiles.map((requiredFile) => {
-            const requiredFilePath = path.join(tDir, requiredFile);
-            copyFileSync(requiredFilePath, path.join(tBuild, requiredFile));
-        });
-
-        await execCLI(c, CLI_TIZEN, `build-web -- ${tBuild} -out ${tIntermediate}`);
-        await execCLI(c, CLI_TIZEN, `package -- ${tIntermediate} -s ${certProfile} -t wgt -o ${tOut}`);
+        await execCLI(CLI_TIZEN, `build-web -- ${tBuild} -out ${tIntermediate}`);
+        await execCLI(CLI_TIZEN, `package -- ${tIntermediate} -s ${certProfile} -t wgt -o ${tOut}`);
 
         logSuccess(`Your WGT package is located in ${chalk().cyan(tOut)} .`);
     }
@@ -192,26 +191,25 @@ export const buildTizenProject = async (c: RnvContext) => {
 
 let _isGlobalConfigured = false;
 
-export const configureTizenProject = async (c: RnvContext) => {
+export const configureTizenProject = async () => {
+    const c = getContext();
     logDefault('configureTizenProject');
 
-    const { platform } = c;
+    c.runtime.platformBuildsProjectPath = `${getPlatformProjectDir()}`;
 
-    c.runtime.platformBuildsProjectPath = `${getPlatformProjectDir(c)}`;
-
-    if (!isPlatformActive(c, platform)) {
+    if (!isPlatformActive()) {
         return;
     }
 
-    if (!_isGlobalConfigured && !c.program.hosted) {
+    if (!_isGlobalConfigured && !c.program.opts().hosted) {
         _isGlobalConfigured = true;
-        await configureTizenGlobal(c);
+        await configureTizenGlobal();
     }
 
-    await copyAssetsFolder(c, platform);
+    await copyAssetsFolder();
     await configureCoreWebProject();
     await _configureProject(c);
-    return copyBuildsFolder(c, platform);
+    return copyBuildsFolder();
 };
 
 const _configureProject = (c: RnvContext) =>
@@ -224,20 +222,20 @@ const _configureProject = (c: RnvContext) =>
         const configFile = 'config.xml';
         // const p = c.buildConfig.platforms?.[platform];
 
-        const pkg = getConfigProp(c, c.platform, 'package') || '';
-        const id = getConfigProp(c, c.platform, 'id') || '';
-        const appName = getConfigProp(c, c.platform, 'appName') || '';
+        const pkg = getConfigProp('package') || '';
+        const id = getConfigProp('id') || '';
+        const appName = getConfigProp('appName') || '';
 
         const injects: OverridesOptions = [
             { pattern: '{{PACKAGE}}', override: pkg },
             { pattern: '{{ID}}', override: id },
             { pattern: '{{APP_NAME}}', override: appName },
-            { pattern: '{{APP_VERSION}}', override: semver.valid(semver.coerce(getAppVersion(c, platform))) || '' },
+            { pattern: '{{APP_VERSION}}', override: semver.valid(semver.coerce(getAppVersion())) || '' },
         ];
 
-        addSystemInjects(c, injects);
+        addSystemInjects(injects);
 
-        const file = path.join(getPlatformProjectDir(c)!, configFile);
+        const file = path.join(getPlatformProjectDir()!, configFile);
         writeCleanFile(file, file, injects, undefined, c);
 
         resolve();

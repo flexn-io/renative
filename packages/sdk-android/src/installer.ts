@@ -1,6 +1,5 @@
 import path from 'path';
 import {
-    USER_HOME_DIR,
     isSystemWin,
     getRealPath,
     writeFileSync,
@@ -17,64 +16,65 @@ import {
     RnvContext,
     inquirerPrompt,
     ConfigFileWorkspace,
+    getContext,
 } from '@rnv/core';
 
 import { CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from './constants';
 
 type SDKKey = keyof Required<ConfigFileWorkspace>['sdks'];
 
-const SDK_LOCATIONS: Record<string, Array<string>> = {
-    android: [
-        path.join('/usr/local/android-sdk'),
-        path.join(USER_HOME_DIR, 'Library/Android/sdk'),
-        path.join(USER_HOME_DIR, 'AppData/Local/Android/android-sdk'),
-        path.join(USER_HOME_DIR, 'AppData/Local/Android/sdk'),
-        path.join('Program Files (x86)/Android/android-sdk'),
-    ],
-    'android-ndk': [
-        path.join('/usr/local/android-sdk/ndk'),
-        path.join(USER_HOME_DIR, 'Library/Android/sdk/ndk'),
-        path.join(USER_HOME_DIR, 'AppData/Local/Android/android-sdk/ndk'),
-        path.join(USER_HOME_DIR, 'AppData/Local/Android/sdk/ndk'),
-        path.join('Program Files (x86)/Android/android-sdk/ndk'),
-        path.join('/usr/local/android-sdk/ndk-bundle'),
-        path.join(USER_HOME_DIR, 'Library/Android/sdk/ndk-bundle'),
-        path.join(USER_HOME_DIR, 'AppData/Local/Android/android-sdk/ndk-bundle'),
-        path.join(USER_HOME_DIR, 'AppData/Local/Android/sdk/ndk-bundle'),
-        path.join('Program Files (x86)/Android/android-sdk/ndk-bundle'),
-    ],
+const getSdkLocations = () => {
+    const ctx = getContext();
+    const { homeDir } = ctx.paths.user;
+    const SDK_LOCATIONS: Record<string, Array<string>> = {
+        android: [
+            path.join('/usr/local/android-sdk'),
+            path.join(homeDir, 'Library/Android/sdk'),
+            path.join(homeDir, 'AppData/Local/Android/android-sdk'),
+            path.join(homeDir, 'AppData/Local/Android/sdk'),
+            path.join('Program Files (x86)/Android/android-sdk'),
+        ],
+        'android-ndk': [
+            path.join('/usr/local/android-sdk/ndk'),
+            path.join(homeDir, 'Library/Android/sdk/ndk'),
+            path.join(homeDir, 'AppData/Local/Android/android-sdk/ndk'),
+            path.join(homeDir, 'AppData/Local/Android/sdk/ndk'),
+            path.join('Program Files (x86)/Android/android-sdk/ndk'),
+            path.join('/usr/local/android-sdk/ndk-bundle'),
+            path.join(homeDir, 'Library/Android/sdk/ndk-bundle'),
+            path.join(homeDir, 'AppData/Local/Android/android-sdk/ndk-bundle'),
+            path.join(homeDir, 'AppData/Local/Android/sdk/ndk-bundle'),
+            path.join('Program Files (x86)/Android/android-sdk/ndk-bundle'),
+        ],
+    };
+    return SDK_LOCATIONS;
 };
 
 const _logSdkWarning = (c: RnvContext) => {
     logWarning(`Your ${c.paths.workspace.config} is missing SDK configuration object`);
 };
 
-export const checkAndConfigureAndroidSdks = async (c: RnvContext) => {
+export const checkAndConfigureAndroidSdks = async () => {
+    const c = getContext();
     const sdk = c.buildConfig?.sdks?.ANDROID_SDK;
     logDefault('checkAndConfigureAndroidSdks', `(${sdk})`);
 
     if (!sdk) return _logSdkWarning(c);
 
-    let sdkManagerPath = getRealPath(
-        c,
-        path.join(sdk, `cmdline-tools/latest/bin/sdkmanager${isSystemWin ? '.bat' : ''}`)
-    );
+    let sdkManagerPath = getRealPath(path.join(sdk, `cmdline-tools/latest/bin/sdkmanager${isSystemWin ? '.bat' : ''}`));
 
     if (!fsExistsSync(sdkManagerPath)) {
-        sdkManagerPath = getRealPath(c, path.join(sdk, `tools/bin/sdkmanager${isSystemWin ? '.bat' : ''}`));
+        sdkManagerPath = getRealPath(path.join(sdk, `tools/bin/sdkmanager${isSystemWin ? '.bat' : ''}`));
     }
 
-    let avdManagerPath = getRealPath(
-        c,
-        path.join(sdk, `cmdline-tools/latest/bin/avdmanager${isSystemWin ? '.bat' : ''}`)
-    );
+    let avdManagerPath = getRealPath(path.join(sdk, `cmdline-tools/latest/bin/avdmanager${isSystemWin ? '.bat' : ''}`));
 
     if (!fsExistsSync(avdManagerPath)) {
-        avdManagerPath = getRealPath(c, path.join(sdk, `tools/bin/avdmanager${isSystemWin ? '.bat' : ''}`));
+        avdManagerPath = getRealPath(path.join(sdk, `tools/bin/avdmanager${isSystemWin ? '.bat' : ''}`));
     }
 
-    c.cli[CLI_ANDROID_EMULATOR] = getRealPath(c, path.join(sdk, `emulator/emulator${isSystemWin ? '.exe' : ''}`));
-    c.cli[CLI_ANDROID_ADB] = getRealPath(c, path.join(sdk, `platform-tools/adb${isSystemWin ? '.exe' : ''}`));
+    c.cli[CLI_ANDROID_EMULATOR] = getRealPath(path.join(sdk, `emulator/emulator${isSystemWin ? '.exe' : ''}`));
+    c.cli[CLI_ANDROID_ADB] = getRealPath(path.join(sdk, `platform-tools/adb${isSystemWin ? '.exe' : ''}`));
     c.cli[CLI_ANDROID_AVDMANAGER] = avdManagerPath;
     c.cli[CLI_ANDROID_SDKMANAGER] = sdkManagerPath;
 };
@@ -88,7 +88,7 @@ const _isSdkInstalled = (c: RnvContext) => {
 
     const sdkPath = _getCurrentSdkPath(c);
 
-    return fsExistsSync(getRealPath(c, sdkPath));
+    return fsExistsSync(getRealPath(sdkPath));
 };
 
 const _findFolderWithFile = (dir: string, fileToFind: string) => {
@@ -112,12 +112,12 @@ const _findFolderWithFile = (dir: string, fileToFind: string) => {
 const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: SDKKey, traverseUntilFoundFile?: string) => {
     logDefault('_attemptAutoFix');
 
-    if (c.program.hosted) {
+    if (c.program.opts().hosted) {
         logInfo('HOSTED Mode. Skipping SDK checks');
         return true;
     }
 
-    let locations: Array<string | undefined> = SDK_LOCATIONS[sdkPlatform];
+    let locations: Array<string | undefined> = getSdkLocations()[sdkPlatform];
 
     // try common Android SDK env variables
     if (sdkKey === 'ANDROID_SDK') {
@@ -144,7 +144,7 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: SDKKe
     if (result) {
         logSuccess(`Found existing ${chalk().bold(sdkKey)} location at ${chalk().bold(result)}`);
         let confirmSdk = true;
-        if (!c.program.ci) {
+        if (!c.program.opts().ci) {
             const { confirm } = await inquirerPrompt({
                 type: 'confirm',
                 name: 'confirm',
@@ -158,8 +158,8 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: SDKKe
                 if (!c.files.workspace.config?.sdks) c.files.workspace.config.sdks = {};
                 c.files.workspace.config.sdks[sdkKey] = result;
                 writeFileSync(c.paths.workspace.config, c.files.workspace.config);
-                generateBuildConfig(c);
-                await checkAndConfigureAndroidSdks(c);
+                generateBuildConfig();
+                await checkAndConfigureAndroidSdks();
             } catch (e) {
                 logError(e);
             }
@@ -168,35 +168,29 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: SDKKe
         }
     }
 
-    logDefault(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOCATIONS[sdkPlatform].join(', ')}`);
+    logDefault(`_attemptAutoFix: no sdks found. searched at: ${getSdkLocations()[sdkPlatform].join(', ')}`);
 
     // const setupInstance = PlatformSetup(c);
     // await setupInstance.askToInstallSDK(sdkPlatform);
-    generateBuildConfig(c);
+    generateBuildConfig();
     return true;
 };
 
-export const checkAndroidSdk = async (c: RnvContext) => {
+export const checkAndroidSdk = async () => {
+    const c = getContext();
     logDefault('checkAndroidSdk');
+
     if (!_isSdkInstalled(c)) {
         logWarning(
-            `${c.platform} requires SDK to be installed. Your SDK path in ${chalk().bold(
+            `${c.platform} platform requires Android SDK to be installed. Your SDK path in ${chalk().bold(
                 c.paths.workspace.config
             )} does not exist: ${chalk().bold(_getCurrentSdkPath(c))}`
         );
 
-        switch (c.platform) {
-            case 'android':
-            case 'androidtv':
-            case 'firetv':
-            case 'androidwear':
-                await _attemptAutoFix(c, 'android', 'ANDROID_SDK');
-                return _attemptAutoFix(c, 'android-ndk', 'ANDROID_NDK', 'source.properties');
-            default:
-                return true;
-        }
+        await _attemptAutoFix(c, 'android', 'ANDROID_SDK');
+        return _attemptAutoFix(c, 'android-ndk', 'ANDROID_NDK', 'source.properties');
     } else {
-        await checkAndConfigureAndroidSdks(c);
+        await checkAndConfigureAndroidSdks();
     }
     return true;
 };

@@ -4,62 +4,89 @@ import {
     logInfo,
     fsExistsSync,
     getAppFolder,
-    isPlatformSupported,
     cleanPlatformBuild,
     createPlatformBuild,
-    injectPlatformDependencies,
     configureRuntimeDefaults,
     executeTask,
-    shouldSkipTask,
-    RnvTaskOptionPresets,
-    RnvTaskFn,
-    RnvTask,
+    createTask,
     RnvTaskName,
+    // installPackageDependencies,
+    // overrideTemplatePlugins,
+    resolveEngineDependencies,
+    logWarning,
+    getConfigProp,
 } from '@rnv/core';
-import { checkAndConfigureSdks, checkSdk } from '../../common';
 import { isBuildSchemeSupported } from '../../buildSchemes';
+import path from 'path';
+import { checkAndInstallIfRequired } from '../../taskHelpers';
+// import { configureFonts } from '@rnv/sdk-utils';
 
-const taskPlatformConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
-    logTask('taskPlatformConfigure', '');
-
-    await executeTask(c, RnvTaskName.projectConfigure, RnvTaskName.platformConfigure, originTask);
-
-    if (shouldSkipTask(c, RnvTaskName.platformConfigure, originTask)) return true;
-
-    await isPlatformSupported(c);
-    await isBuildSchemeSupported(c);
-    await checkAndConfigureSdks(c);
-    await checkSdk(c);
-    await configureRuntimeDefaults(c);
-
-    if (c.program.only && !!parentTask) return true;
-
-    await executeTask(c, RnvTaskName.install, RnvTaskName.platformConfigure, originTask);
-
-    const hasBuild = fsExistsSync(c.paths.project.builds.dir);
-    logTask('', `taskPlatformConfigure hasBuildFolderPresent:${hasBuild}`);
-
-    if ((c.program.reset || c.program.resetHard) && !c.runtime.disableReset) {
-        logInfo(
-            `You passed ${chalk().bold(c.program.reset ? '-r' : '-R')} argument. "${chalk().bold(
-                getAppFolder(c)
-            )}" CLEANING...DONE`
-        );
-        await cleanPlatformBuild(c, c.platform);
-    }
-
-    await createPlatformBuild(c, c.platform);
-    await injectPlatformDependencies(c);
-    // await _runCopyPlatforms(c);
-    return true;
-};
-
-const Task: RnvTask = {
+export default createTask({
     description: 'Low-level task used by engines to prepare platformBuilds folder',
-    fn: taskPlatformConfigure,
-    task: RnvTaskName.platformConfigure,
-    options: RnvTaskOptionPresets.withBase(),
-    platforms: [],
-};
+    isPrivate: true,
+    dependsOn: [RnvTaskName.projectConfigure],
+    fn: async ({ ctx, taskName, originTaskName }) => {
+        const { program } = ctx;
+        await isBuildSchemeSupported();
 
-export default Task;
+        const entryFile = getConfigProp('entryFile');
+
+        const dest = path.join(ctx.paths.project.dir, `${entryFile}.js`);
+        if (!fsExistsSync(dest)) {
+            if (!entryFile) {
+                logWarning(
+                    `Missing ${chalk().red(entryFile)} key for ${chalk().bold(
+                        ctx.platform
+                    )} platform in your ${chalk().bold(ctx.paths.appConfig.config)}.`
+                );
+            }
+        }
+
+        await executeTask({
+            taskName: RnvTaskName.sdkConfigure,
+            parentTaskName: taskName,
+            originTaskName,
+            isOptional: true,
+        });
+
+        await configureRuntimeDefaults();
+        await checkAndInstallIfRequired();
+
+        const hasBuild = fsExistsSync(ctx.paths.project.builds.dir);
+        logTask('', `taskPlatformConfigure hasBuildFolderPresent:${hasBuild}`);
+
+        if ((program.opts().reset || program.opts().resetHard) && !ctx.runtime.disableReset) {
+            logInfo(
+                `You passed ${chalk().bold(program.opts().reset ? '-r' : '-R')} argument. "${chalk().bold(
+                    getAppFolder()
+                )}" CLEANING...DONE`
+            );
+            await cleanPlatformBuild(ctx.platform);
+        }
+
+        await createPlatformBuild(ctx.platform);
+        await resolveEngineDependencies();
+        // TODO: check if this is needed or can be handled down the line
+        // if not monorepo && mutations were found
+        // await installPackageDependencies();
+        // await overrideTemplatePlugins();
+        // await configureFonts();
+
+        // OLD STUFFF
+        // await injectPlatformDependencies(
+        //     async () => {
+        //         await installPackageDependencies();
+        //         await overrideTemplatePlugins();
+        //         await configureFonts();
+        //     },
+        //     async () => {
+        //         await installPackageDependencies();
+        //         await overrideTemplatePlugins();
+        //         await configureFonts();
+        //     }
+        // );
+        // await _runCopyPlatforms(c);
+        return true;
+    },
+    task: RnvTaskName.platformConfigure,
+});

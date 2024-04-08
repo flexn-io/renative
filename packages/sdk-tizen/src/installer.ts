@@ -1,6 +1,5 @@
 import path from 'path';
 import {
-    USER_HOME_DIR,
     isSystemWin,
     getRealPath,
     writeFileSync,
@@ -14,29 +13,34 @@ import {
     generateBuildConfig,
     RnvContext,
     inquirerPrompt,
+    getContext,
 } from '@rnv/core';
 import { CLI_SDB_TIZEN, CLI_TIZEN, CLI_TIZEN_EMULATOR } from './constants';
 
-const SDK_LOCATIONS = [
-    path.join('usr/local/tizen-studio'),
-    path.join(USER_HOME_DIR, 'tizen-studio'),
-    path.join('C:\\tizen-studio'),
-];
+const getSdkLocations = () => {
+    const ctx = getContext();
+    const sdkLocations = [
+        path.join('usr/local/tizen-studio'),
+        path.join(ctx.paths.user.homeDir, 'tizen-studio'),
+        path.join('C:\\tizen-studio'),
+    ];
+    return sdkLocations;
+};
 
 const _logSdkWarning = (c: RnvContext) => {
     logWarning(`Your ${c.paths.workspace.config} is missing SDK configuration object`);
 };
 
-export const checkAndConfigureTizenSdks = async (c: RnvContext) => {
+export const checkAndConfigureTizenSdks = async () => {
+    const c = getContext();
     logDefault(`checkAndConfigureTizenSdks:${c.platform}`);
     const sdk = c.buildConfig?.sdks?.TIZEN_SDK;
     if (sdk) {
         c.cli[CLI_TIZEN_EMULATOR] = getRealPath(
-            c,
             path.join(sdk, `tools/emulator/bin/em-cli${isSystemWin ? '.bat' : ''}`)
         );
-        c.cli[CLI_TIZEN] = getRealPath(c, path.join(sdk, `tools/ide/bin/tizen${isSystemWin ? '.bat' : ''}`));
-        c.cli[CLI_SDB_TIZEN] = getRealPath(c, path.join(sdk, `tools/sdb${isSystemWin ? '.exe' : ''}`));
+        c.cli[CLI_TIZEN] = getRealPath(path.join(sdk, `tools/ide/bin/tizen${isSystemWin ? '.bat' : ''}`));
+        c.cli[CLI_SDB_TIZEN] = getRealPath(path.join(sdk, `tools/sdb${isSystemWin ? '.exe' : ''}`));
     } else {
         _logSdkWarning(c);
     }
@@ -51,7 +55,7 @@ const _isSdkInstalled = (c: RnvContext) => {
 
     const sdkPath = _getCurrentSdkPath(c);
 
-    return fsExistsSync(getRealPath(c, sdkPath));
+    return fsExistsSync(getRealPath(sdkPath));
 };
 
 const _attemptAutoFix = async (c: RnvContext) => {
@@ -59,17 +63,17 @@ const _attemptAutoFix = async (c: RnvContext) => {
 
     if (!c.files.workspace.config) return;
 
-    if (c.program.hosted) {
+    if (c.program.opts().hosted) {
         logInfo('HOSTED Mode. Skipping SDK checks');
         return true;
     }
 
-    const result = SDK_LOCATIONS.find((v) => fsExistsSync(v));
+    const result = getSdkLocations().find((v) => fsExistsSync(v));
 
     if (result) {
         logSuccess(`Found existing ${c.platform} SDK location at ${chalk().bold(result)}`);
         let confirmSdk = true;
-        if (!c.program.ci) {
+        if (!c.program.opts().ci) {
             const { confirm } = await inquirerPrompt({
                 type: 'confirm',
                 name: 'confirm',
@@ -84,8 +88,8 @@ const _attemptAutoFix = async (c: RnvContext) => {
                 c.files.workspace.config.sdks.TIZEN_SDK = result;
                 //TODO: use config_original here?
                 writeFileSync(c.paths.workspace.config, c.files.workspace.config);
-                generateBuildConfig(c);
-                await checkAndConfigureTizenSdks(c);
+                generateBuildConfig();
+                await checkAndConfigureTizenSdks();
             } catch (e) {
                 logError(e);
             }
@@ -94,31 +98,25 @@ const _attemptAutoFix = async (c: RnvContext) => {
         }
     }
 
-    logDefault(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOCATIONS.join(', ')}`);
+    logDefault(`_attemptAutoFix: no sdks found. searched at: ${getSdkLocations().join(', ')}`);
 
     // const setupInstance = PlatformSetup(c);
     // await setupInstance.askToInstallSDK(sdkPlatform);
-    generateBuildConfig(c);
+    generateBuildConfig();
     return true;
 };
 
-export const checkTizenSdk = async (c: RnvContext) => {
+export const checkTizenSdk = async () => {
+    const c = getContext();
+
     logDefault('checkTizenSdk');
     if (!_isSdkInstalled(c)) {
         logWarning(
-            `${c.platform} requires SDK to be installed. Your SDK path in ${chalk().bold(
+            `${c.platform} platform requires Tizen SDK to be installed. Your SDK path in ${chalk().bold(
                 c.paths.workspace.config
             )} does not exist: ${chalk().bold(_getCurrentSdkPath(c))}`
         );
-
-        switch (c.platform) {
-            case 'tizen':
-            case 'tizenmobile':
-            case 'tizenwatch':
-                return _attemptAutoFix(c);
-            default:
-                return true;
-        }
+        return _attemptAutoFix(c);
     }
     return true;
 };

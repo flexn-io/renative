@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
-export const PlatformWebOSFragment = {
-    iconColor: z.string().optional(),
-};
+export const zodPlatformWebOSFragment = z
+    .object({
+        iconColor: z.string(),
+    })
+    .partial();

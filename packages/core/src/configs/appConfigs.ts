@@ -2,14 +2,15 @@ import path from 'path';
 
 import { fsExistsSync, fsReaddirSync, fsLstatSync, readObjectSync } from '../system/fs';
 import { logDefault, logWarning } from '../logger';
-import { RnvContext } from '../context/types';
-import { ConfigFileApp } from '../schema/configFiles/types';
-import { ConfigName } from '../enums/configName';
+import { RnvFileName } from '../enums/fileName';
+import { getContext } from '../context/provider';
+import { ConfigFileApp } from '../schema/types';
 
 const IGNORE_FOLDERS = ['.git'];
 
-export const listAppConfigsFoldersSync = (c: RnvContext, ignoreHiddenConfigs: boolean, appConfigsDirPath?: string) => {
+export const listAppConfigsFoldersSync = (ignoreHiddenConfigs: boolean, appConfigsDirPath?: string) => {
     logDefault('listAppConfigsFoldersSync', `ignoreHiddenConfigs:${!!ignoreHiddenConfigs}`);
+    const c = getContext();
 
     if (!c.paths?.project) return [];
 
@@ -21,7 +22,7 @@ export const listAppConfigsFoldersSync = (c: RnvContext, ignoreHiddenConfigs: bo
         const appConfigDir = path.join(dirPath, dir);
         if (!IGNORE_FOLDERS.includes(dir) && fsLstatSync(appConfigDir).isDirectory()) {
             if (ignoreHiddenConfigs) {
-                const appConfig = path.join(appConfigDir, ConfigName.renative);
+                const appConfig = path.join(appConfigDir, RnvFileName.renative);
                 if (fsExistsSync(appConfig)) {
                     try {
                         const config = readObjectSync<ConfigFileApp>(appConfig);

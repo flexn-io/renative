@@ -1,13 +1,12 @@
 import { parsePlugins } from '..';
-import { createRnvApi } from '../../api';
-import { createRnvContext } from '../../context';
 import { generateContextDefaults } from '../../context/defaults';
+import { getContext } from '../../context/provider';
 
 jest.mock('../../logger');
+jest.mock('../../context/provider');
 
 beforeEach(() => {
-    createRnvContext();
-    createRnvApi();
+    // NOTE: do not call createRnvContext() in core library itself. It is not a mock
 });
 
 afterEach(() => {
@@ -17,7 +16,8 @@ afterEach(() => {
 describe('parsePlugins', () => {
     it('should parse plugins correctly', () => {
         // GIVEN
-        const c = generateContextDefaults();
+        jest.mocked(getContext).mockReturnValue(generateContextDefaults());
+        const c = getContext();
         c.buildConfig.plugins = {
             react: 'source:rnv',
             'react-art': 'source:rnv',
@@ -28,13 +28,12 @@ describe('parsePlugins', () => {
                 version: '3.10.1',
             },
         };
-        const platform = 'ios';
+        c.platform = 'ios';
+
         const pluginCallback = jest.fn();
-        const ignorePlatformObjectCheck = true;
-        const includeDisabledPlugins = true;
 
         // WHEN
-        parsePlugins(c, platform, pluginCallback, ignorePlatformObjectCheck, includeDisabledPlugins);
+        parsePlugins(pluginCallback, true, true);
 
         // THEN
         expect(pluginCallback).toHaveBeenCalledTimes(3);
@@ -51,7 +50,8 @@ describe('parsePlugins', () => {
 
     it('should exclude disabled plugins per platform', () => {
         // GIVEN
-        const c = generateContextDefaults();
+        jest.mocked(getContext).mockReturnValue(generateContextDefaults());
+        const c = getContext();
         c.buildConfig.plugins = {
             react: 'source:rnv',
             'react-art': 'source:rnv',
@@ -62,13 +62,12 @@ describe('parsePlugins', () => {
                 version: '3.10.1',
             },
         };
-        const platform = 'tvos';
+        c.platform = 'tvos';
+
         const pluginCallback = jest.fn();
-        const ignorePlatformObjectCheck = false;
-        const includeDisabledPlugins = false;
 
         // WHEN
-        parsePlugins(c, platform, pluginCallback, ignorePlatformObjectCheck, includeDisabledPlugins);
+        parsePlugins(pluginCallback, false, false);
 
         // THEN
         expect(pluginCallback).toHaveBeenCalledTimes(2);
@@ -80,7 +79,8 @@ describe('parsePlugins', () => {
 
     it('should ignorePlatformObjectCheck', () => {
         // GIVEN
-        const c = generateContextDefaults();
+        jest.mocked(getContext).mockReturnValue(generateContextDefaults());
+        const c = getContext();
         c.buildConfig.plugins = {
             react: 'source:rnv',
             'react-art': 'source:rnv',
@@ -91,13 +91,11 @@ describe('parsePlugins', () => {
                 version: '3.10.1',
             },
         };
-        const platform = 'tvos';
+        c.platform = 'tvos';
         const pluginCallback = jest.fn();
-        const ignorePlatformObjectCheck = true;
-        const includeDisabledPlugins = false;
 
         // WHEN
-        parsePlugins(c, platform, pluginCallback, ignorePlatformObjectCheck, includeDisabledPlugins);
+        parsePlugins(pluginCallback, true, false);
 
         // THEN
         expect(pluginCallback).toHaveBeenCalledTimes(3);
@@ -114,7 +112,8 @@ describe('parsePlugins', () => {
 
     it('should includeDisabledPlugins and not cause duplicates', () => {
         // GIVEN
-        const c = generateContextDefaults();
+        jest.mocked(getContext).mockReturnValue(generateContextDefaults());
+        const c = getContext();
         c.buildConfig.plugins = {
             react: 'source:rnv',
             'react-art': 'source:rnv',
@@ -128,15 +127,11 @@ describe('parsePlugins', () => {
                 disabled: true,
             },
         };
-        const platform = 'tvos';
-        const pluginCallback = jest.fn(() => {
-            // console.log('callback called', rest)
-        });
-        const ignorePlatformObjectCheck = true;
-        const includeDisabledPlugins = true;
+        c.platform = 'tvos';
+        const pluginCallback = jest.fn();
 
         // WHEN
-        parsePlugins(c, platform, pluginCallback, ignorePlatformObjectCheck, includeDisabledPlugins);
+        parsePlugins(pluginCallback, true, true);
 
         // THEN
         expect(pluginCallback).toHaveBeenCalledTimes(4);

@@ -1,62 +1,80 @@
-import {
-    RootAppSchema,
-    RootEngineSchema,
-    RootGlobalSchema,
-    RootIntegrationSchema,
-    RootLocalSchema,
-    RootPluginSchema,
-    RootPluginsSchema,
-    RootPrivateSchema,
-    RootProjectSchema,
-    RootTemplateSchema,
-    RootTemplatesSchema,
-    getContext,
-    logSuccess,
-} from '@rnv/core';
+import { ZodFileSchema, ZodSharedSchema, getContext, logSuccess } from '@rnv/core';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { z } from 'zod';
 import path from 'path';
 import fs from 'fs';
 
 export const generateSchema = async () => {
-    _generateSchemaFile({ schema: RootProjectSchema, schemaId: 'rnv.project' });
-    _generateSchemaFile({ schema: RootAppSchema, schemaId: 'rnv.app' });
-    _generateSchemaFile({ schema: RootLocalSchema, schemaId: 'rnv.local' });
-    _generateSchemaFile({ schema: RootEngineSchema, schemaId: 'rnv.engine' });
-    _generateSchemaFile({ schema: RootGlobalSchema, schemaId: 'rnv.global' });
-    _generateSchemaFile({ schema: RootPluginsSchema, schemaId: 'rnv.plugins' });
-    _generateSchemaFile({ schema: RootTemplateSchema, schemaId: 'rnv.template' });
-    _generateSchemaFile({ schema: RootPrivateSchema, schemaId: 'rnv.private' });
-    _generateSchemaFile({ schema: RootPluginSchema, schemaId: 'rnv.plugin' });
-    _generateSchemaFile({ schema: RootTemplatesSchema, schemaId: 'rnv.templates' });
-    _generateSchemaFile({ schema: RootIntegrationSchema, schemaId: 'rnv.integration' });
+    const {
+        zodConfigFilePlugin,
+        zodConfigFilePrivate,
+        zodConfigFileProject,
+        zodConfigFileTemplate,
+        zodConfigFileTemplates,
+        zodConfigFileWorkspace,
+        zodConfigFileIntegration,
+        zodConfigFileApp,
+        zodConfigFileLocal,
+        zodConfigFileEngine,
+        zodConfigFileRoot,
+    } = ZodFileSchema;
+    // LEGACY
+    _generateSchemaFile({ schema: zodConfigFileProject, schemaId: 'rnv.project' });
+    _generateSchemaFile({ schema: zodConfigFileApp, schemaId: 'rnv.app' });
+    _generateSchemaFile({ schema: zodConfigFileLocal, schemaId: 'rnv.local' });
+    _generateSchemaFile({ schema: zodConfigFileEngine, schemaId: 'rnv.engine' });
+    _generateSchemaFile({ schema: zodConfigFileWorkspace, schemaId: 'rnv.workspace' });
+    _generateSchemaFile({ schema: zodConfigFileTemplate, schemaId: 'rnv.template' });
+    _generateSchemaFile({ schema: zodConfigFilePrivate, schemaId: 'rnv.private' });
+    _generateSchemaFile({ schema: zodConfigFilePlugin, schemaId: 'rnv.plugin' });
+    _generateSchemaFile({ schema: zodConfigFileTemplates, schemaId: 'rnv.templates' });
+    _generateSchemaFile({ schema: zodConfigFileIntegration, schemaId: 'rnv.integration' });
+    // CURRENT
+    const definitions: Record<string, any> = {};
+    Object.values(ZodSharedSchema).forEach((val) => {
+        const v: any = val;
+        Object.keys(val).forEach((key) => {
+            definitions[key] = v[key];
+        });
+    });
+    _generateSchemaFile({ schema: zodConfigFileRoot, schemaId: 'renative-1.0.schema', definitions });
 
     logSuccess('Sucessfully exported renative.project.json schema');
 };
 
-const _generateSchemaFile = (opts: { schema: z.ZodObject<any>; schemaId: string }) => {
-    const { schema, schemaId } = opts;
+// This is just to speed up the process of generating schema files as rnv does this on every run per project
+const SCHEMA_DEST_DIRS = [
+    '.rnv/schema',
+    'packages/core/jsonSchema',
+    'packages/app-harness/.rnv/schema',
+    'packages/template-starter/.rnv/schema',
+];
+
+const _generateSchemaFile = (opts: {
+    schema: z.ZodObject<any>;
+    schemaId: string;
+    definitions?: Record<string, any>;
+}) => {
+    const { schema, schemaId, definitions } = opts;
     const ctx = getContext();
-    const jsonSchema: any = zodToJsonSchema(schema, schemaId);
+
+    const jsonSchema: any = zodToJsonSchema(schema, {
+        name: schemaId,
+        definitions: definitions || {},
+    });
     jsonSchema['$schema'] = 'http://json-schema.org/draft-04/schema#';
 
     jsonSchema.definitions[schemaId].properties['$schema'] = {
         type: 'string',
-        description: 'schema definition', 
+        description: 'schema definition',
     };
 
-    const destFolder = path.join(ctx.paths.project.dir, `packages/core/jsonSchema`);
-    if (!fs.existsSync(destFolder)) {
-        fs.mkdirSync(destFolder, { recursive: true });
-    }
-    const destPath = path.join(destFolder, `${schemaId}.json`);
-    fs.writeFileSync(destPath, JSON.stringify(jsonSchema, null, 2));
-
-    const destFolder2 = path.join(ctx.paths.project.dir, `.rnv/schema`);
-    if (!fs.existsSync(destFolder2)) {
-        fs.mkdirSync(destFolder2, { recursive: true });
-    }
-    const destPath2 = path.join(destFolder2, `${schemaId}.json`);
-
-    fs.writeFileSync(destPath2, JSON.stringify(jsonSchema, null, 2));
+    SCHEMA_DEST_DIRS.forEach((destDir) => {
+        const destFolder = path.join(ctx.paths.project.dir, destDir);
+        if (!fs.existsSync(destFolder)) {
+            fs.mkdirSync(destFolder, { recursive: true });
+        }
+        const destPath = path.join(destFolder, `${schemaId}.json`);
+        fs.writeFileSync(destPath, JSON.stringify(jsonSchema, null, 2));
+    });
 };

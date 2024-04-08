@@ -10,14 +10,16 @@ import {
     readObjectSync,
     writeCleanFile,
     parsePlugins,
-    AndroidManifestNode,
-    AndroidManifest,
-    ConfigPropKey,
     RnvContext,
     RnvPlatform,
+    getContext,
     ConfigProp,
-    _getConfigProp,
     ConfigFileBuildConfig,
+    ConfigAndroidManifestNode,
+    ConfigAndroidManifest,
+    ConfigPropKey,
+    ConfigAndroidResourcesNode,
+    RnvFolderName,
 } from '@rnv/core';
 import { Context } from './types';
 import { getBuildFilePath, getAppId, addSystemInjects } from '@rnv/sdk-utils';
@@ -25,7 +27,7 @@ import { getBuildFilePath, getAppId, addSystemInjects } from '@rnv/sdk-utils';
 const PROHIBITED_DUPLICATE_TAGS = ['intent-filter'];
 const SYSTEM_TAGS = ['tag', 'children'];
 
-const _findChildNode = (tag: string, name: string, node: AndroidManifestNode) => {
+const _findChildNode = (tag: string, name: string, node: ConfigAndroidManifestNode | ConfigAndroidResourcesNode) => {
     if (!node) {
         logWarning('_findChildNode: Node is undefined');
         return;
@@ -35,7 +37,11 @@ const _findChildNode = (tag: string, name: string, node: AndroidManifestNode) =>
         for (let i = 0; i < node.children.length; i++) {
             const ch = node.children?.[i];
             if (ch && ch.tag === tag) {
-                if (ch['android:name'] === name || PROHIBITED_DUPLICATE_TAGS.includes(tag)) {
+                if (
+                    ('android:name' in ch && ch['android:name'] === name) ||
+                    ('name' in ch && ch['name'] === name) ||
+                    PROHIBITED_DUPLICATE_TAGS.includes(tag)
+                ) {
                     return ch;
                 }
             }
@@ -45,11 +51,12 @@ const _findChildNode = (tag: string, name: string, node: AndroidManifestNode) =>
     return null;
 };
 
-const _convertToXML = (manifestObj: AndroidManifestNode) => _parseNode(manifestObj, 0);
+export const _convertToXML = (manifestObj: ConfigAndroidManifestNode | ConfigAndroidResourcesNode) =>
+    _parseNode(manifestObj, 0);
 
-type NodeKey = keyof AndroidManifestNode;
+type NodeKeyChildren = keyof ConfigAndroidManifestNode['children'] | keyof ConfigAndroidResourcesNode['children'];
 
-const _parseNode = (n: AndroidManifestNode, level: number) => {
+const _parseNode = <T extends ConfigAndroidManifestNode | ConfigAndroidResourcesNode>(n: T, level: number) => {
     let output = '';
     let space = '';
     for (let i = 0; i < level; i++) {
@@ -61,20 +68,26 @@ const _parseNode = (n: AndroidManifestNode, level: number) => {
         if (!SYSTEM_TAGS.includes(v)) nodeKeysCount++;
     });
     const isSingleLine = nodeKeysCount < 2;
-
+    let closedTag = false;
     if (!n.tag) {
         logWarning('Each node must have tag key!');
         return;
     }
 
     if (n) {
-        const endLine = isSingleLine ? ' ' : '\n';
-        output += `${space}<${n.tag}${endLine}`;
-        Object.keys(n).forEach((k) => {
-            if (!SYSTEM_TAGS.includes(k)) {
-                output += `${isSingleLine ? '' : `${space}  `}${k}="${n[k as NodeKey]}"${endLine}`;
-            }
-        });
+        if ('value' in n) {
+            closedTag = true;
+            output += `${space}  <${n.tag} name="${(n as ConfigAndroidResourcesNode).name}">${n.value}`;
+        } else {
+            closedTag = false;
+            const endLine = isSingleLine ? ' ' : '\n';
+            output += `${space}<${n.tag}${endLine}`;
+            Object.keys(n).forEach((k) => {
+                if (!SYSTEM_TAGS.includes(k)) {
+                    output += `${isSingleLine ? '' : `${space}  `}${k}="${n[k as keyof T]}"${endLine}`;
+                }
+            });
+        }
     }
     // else {
     //     output += `${space}<${n.tag}`;
@@ -92,14 +105,18 @@ const _parseNode = (n: AndroidManifestNode, level: number) => {
         });
         output += `${space}</${n.tag}>\n`;
     } else {
-        output += `${isSingleLine ? '' : space}/>\n`;
+        if (isSingleLine) {
+            output += '/>\n';
+        } else {
+            output += !closedTag ? `${space}/>\n` : `</${n.tag}>\n`;
+        }
     }
     return output;
 };
 
-const _mergeNodeParameters = (
-    node: AndroidManifestNode | undefined,
-    nodeParamsExt: AndroidManifestNode | undefined
+export const _mergeNodeParameters = <T extends ConfigAndroidManifestNode | ConfigAndroidResourcesNode>(
+    node: T | undefined,
+    nodeParamsExt: T | undefined
 ) => {
     if (!nodeParamsExt) {
         logWarning('_mergeNodeParameters: nodeParamsExt value is null');
@@ -111,17 +128,20 @@ const _mergeNodeParameters = (
     }
 
     Object.keys(nodeParamsExt).forEach((k) => {
-        const key = k as NodeKey;
-        const val = nodeParamsExt[key];
+        const key = k as keyof T;
+        const val = (nodeParamsExt as T)[key];
 
-        if (val && !SYSTEM_TAGS.includes(k)) {
+        if (val !== 'undefined' && !SYSTEM_TAGS.includes(k)) {
             //TODO: fix this
-            (node as Record<string, any>)[key] = val;
+            (node as T)[key] = val;
         }
     });
 };
 
-const _mergeNodeChildren = (node: AndroidManifestNode, nodeChildrenExt: Array<AndroidManifestNode> = []) => {
+export const _mergeNodeChildren = <T extends ConfigAndroidManifestNode | ConfigAndroidResourcesNode>(
+    node: T,
+    nodeChildrenExt: Array<T> = []
+) => {
     // console.log('_mergeNodeChildren', node, 'OVERRIDE', nodeChildrenExt);
     if (!node) {
         logWarning('_mergeNodeChildren: Node is undefined');
@@ -129,42 +149,31 @@ const _mergeNodeChildren = (node: AndroidManifestNode, nodeChildrenExt: Array<An
     }
     if (!node.children) node.children = [];
     nodeChildrenExt.forEach((v) => {
-        const nameExt = v['android:name'];
+        const nameExt = 'android:name' in v ? v['android:name'] : v.name;
         if (v.tag) {
-            const childNode = _findChildNode(v.tag, nameExt, node);
+            const childNode = _findChildNode(v.tag, nameExt!, node);
             if (childNode) {
                 logDebug(`_mergeNodeChildren: FOUND EXISTING NODE TO MERGE ${nameExt} ${v.tag}`);
                 _mergeNodeParameters(childNode, v);
                 _mergeNodeChildren(childNode, v.children);
             } else {
                 logDebug(`_mergeNodeChildren: NO android:name found. adding to children ${nameExt} ${v.tag}`);
-                if (node.children) node.children.push(v);
+                if (node.children) node.children.push(v as NodeKeyChildren);
             }
         }
     });
 };
 
-// type ManifestFeature = {
-//     tag: string;
-//     'android:name': string;
-//     'android:required': boolean;
-//     children?: Array<ManifestFeature>;
-// };
-
-// type ManufestNode = {
-//     children:
-// }
-
 const _mergeFeatures = (
     c: Context,
-    baseManifestFile: AndroidManifest,
+    baseManifestFile: ConfigAndroidManifest,
     configKey: 'includedFeatures' | 'excludedFeatures',
     value: boolean
 ) => {
-    const features = getConfigProp(c, c.platform, configKey);
+    const features = getConfigProp(configKey);
 
     if (features) {
-        const featuresObj: Array<AndroidManifestNode> = [];
+        const featuresObj: Array<ConfigAndroidManifestNode> = [];
         features.forEach((key) => {
             featuresObj.push({
                 tag: 'uses-feature',
@@ -176,11 +185,11 @@ const _mergeFeatures = (
     }
 };
 
-const getConfigPropArray = <T extends ConfigPropKey>(c: RnvContext, platform: RnvPlatform, key: T) => {
+export const getConfigPropArray = <T extends ConfigPropKey>(c: RnvContext, platform: RnvPlatform, key: T) => {
     const result: Array<ConfigProp[T]> = [];
     const configArr = [
-        c.files.defaultWorkspace.config,
-        c.files.rnv.projectTemplates.config,
+        c.files.dotRnv.config,
+        c.files.rnvConfigTemplates.config,
         // { plugins: extraPlugins },
         // { pluginTemplates },
         c.files.workspace.config,
@@ -202,7 +211,7 @@ const getConfigPropArray = <T extends ConfigPropKey>(c: RnvContext, platform: Rn
     configArr.forEach((config) => {
         if (config) {
             //TODO: this is bit of a hack. _getConfigProp expectes already merged obj needs to be redone
-            const val = _getConfigProp(c, platform, key, null, config as ConfigFileBuildConfig);
+            const val = getConfigProp(key, config as ConfigFileBuildConfig);
             if (val) {
                 result.push(val);
             }
@@ -212,21 +221,27 @@ const getConfigPropArray = <T extends ConfigPropKey>(c: RnvContext, platform: Rn
     return result;
 };
 
-export const parseAndroidManifestSync = (c: Context) => {
+export const parseAndroidManifestSync = () => {
+    const c = getContext();
     logDefault('parseAndroidManifestSync');
     const { platform } = c;
 
     if (!platform) return;
 
     try {
-        const baseManifestFilePath = path.join(__dirname, `../supportFiles/AndroidManifest_${platform}.json`);
-        const baseManifestFile = readObjectSync<AndroidManifest>(baseManifestFilePath);
+        const baseManifestFilePath = path.join(
+            __dirname,
+            RnvFolderName.UP,
+            RnvFolderName.templateFiles,
+            `AndroidManifest_${platform}.json`
+        );
+        const baseManifestFile = readObjectSync<ConfigAndroidManifest>(baseManifestFilePath);
 
         if (!baseManifestFile) {
             return;
         }
 
-        baseManifestFile.package = getAppId(c, platform);
+        baseManifestFile.package = getAppId();
 
         const objArr = getConfigPropArray(c, c.platform, 'templateAndroid');
 
@@ -240,15 +255,14 @@ export const parseAndroidManifestSync = (c: Context) => {
                 _mergeNodeChildren(baseManifestFile, manifestObj.children);
             }
         });
-        //TODO: Should be mark as deprecated
 
         // appConfigs/base/plugins.json PLUGIN CONFIG OVERRIDES
-        parsePlugins(c, platform, (_plugin, pluginPlat) => {
-            const androidManifestPlugin = getFlavouredProp(c, pluginPlat, 'templateAndroid')?.AndroidManifest_xml;
-            if (androidManifestPlugin) {
-                _mergeNodeChildren(baseManifestFile, androidManifestPlugin.children);
-                if (androidManifestPlugin.children) {
-                    _mergeNodeChildren(baseManifestFile, androidManifestPlugin.children);
+        parsePlugins((_plugin, pluginPlat) => {
+            const ConfigAndroidManifestPlugin = getFlavouredProp(pluginPlat, 'templateAndroid')?.AndroidManifest_xml;
+            if (ConfigAndroidManifestPlugin) {
+                _mergeNodeChildren(baseManifestFile, ConfigAndroidManifestPlugin.children);
+                if (ConfigAndroidManifestPlugin.children) {
+                    _mergeNodeChildren(baseManifestFile, ConfigAndroidManifestPlugin.children);
                 }
             }
         });
@@ -256,8 +270,8 @@ export const parseAndroidManifestSync = (c: Context) => {
         // appConfig PERMISSIONS OVERRIDES
         const configPermissions = c.buildConfig?.permissions;
 
-        const includedPermissions = getConfigProp(c, platform, 'includedPermissions');
-        const excludedPermissions = getConfigProp(c, platform, 'excludedPermissions');
+        const includedPermissions = getConfigProp('includedPermissions');
+        const excludedPermissions = getConfigProp('excludedPermissions');
         if (includedPermissions?.forEach && configPermissions) {
             const platPerm = 'android'; //configPermissions[platform] ? platform : 'android';
             const pc = configPermissions[platPerm];
@@ -299,33 +313,14 @@ export const parseAndroidManifestSync = (c: Context) => {
         const manifestFile = 'app/src/main/AndroidManifest.xml';
 
         const injects = [{ pattern: '{{PLUGIN_MANIFEST_FILE}}', override: manifestXml || '' }];
-        addSystemInjects(c, injects);
+        addSystemInjects(injects);
 
-        const appFolder = getAppFolder(c);
+        const appFolder = getAppFolder();
 
-        writeCleanFile(
-            getBuildFilePath(c, platform, manifestFile),
-            path.join(appFolder, manifestFile),
-            injects,
-            undefined,
-            c
-        );
+        writeCleanFile(getBuildFilePath(manifestFile), path.join(appFolder, manifestFile), injects, undefined, c);
 
         return;
     } catch (e) {
         logError(e);
     }
-};
-
-export const injectPluginManifestSync = () => {
-    // const className = pkg ? pkg.split('.').pop() : null;
-    // let packageParams = '';
-    // if (plugin.packageParams) {
-    //     packageParams = plugin.packageParams.join(',');
-    // }
-    //
-    // const pathFixed = plugin.path
-    //     ? `${plugin.path}`
-    //     : `node_modules/${key}/android`;
-    // const modulePath = `../../${pathFixed}`;
 };

@@ -23,7 +23,7 @@ export function testProps(testId: string | undefined) {
     }
     return { accessibilityLabel: testId, accessible: true };
 }
-const getFlexPropertyValue = () => {
+const getFlexShrinkPropertyValue = () => {
     return isPlatformAndroidwear ? 0 : 1;
 };
 if (!global.performance) {
@@ -70,15 +70,20 @@ const createStyleSheet = (currentTheme) =>
             bottom: 0,
             right: 0,
             backgroundColor: currentTheme.colorBgPrimary,
-        },
-
-        container: {
             justifyContent: 'center',
+            display: 'flex',
+            alignItems: 'center',
+        },
+        scrollView: {
+            flexGrow: 0,
+            width: '100%',
+        },
+        container: {
+            flexShrink: getFlexShrinkPropertyValue(),
             alignItems: 'center',
             paddingVertical: getScaledValue(10),
-            minHeight: getScaledValue(300),
+            minHeight: 'auto',
             alignSelf: 'stretch',
-            flex: getFlexPropertyValue(),
             backgroundColor: currentTheme.colorBgPrimary,
         },
         textH2: {
@@ -149,6 +154,7 @@ export type ThemeInterface = {
             image: ImageStyle;
             button: ViewStyle;
             buttonText: TextStyle;
+            scrollView: ViewStyle;
         };
     };
     dark: boolean;

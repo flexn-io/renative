@@ -53,7 +53,7 @@ describe('Test getDevServerHost', () => {
         c.runtime.localhost = '0.0.0.0 ';
         jest.mocked(getConfigProp).mockReturnValue(undefined);
         // WHEN
-        const result = getDevServerHost(c);
+        const result = getDevServerHost();
         // THEN
         expect(result).toBe(DEFAULTS.devServerHost);
     });
@@ -63,7 +63,7 @@ describe('Test getDevServerHost', () => {
         c.runtime.localhost = '0.0.0.0';
         jest.mocked(getConfigProp).mockReturnValue('localhost');
         // WHEN
-        const result = getDevServerHost(c);
+        const result = getDevServerHost();
         // THEN
         expect(result).toBe('0.0.0.0');
     });
@@ -72,158 +72,188 @@ describe('Test getDevServerHost', () => {
 describe('Test getAppVersionCode', () => {
     it('should evaluate 1.2.3', async () => {
         // GIVEN
+        const c = getContext();
+        c.platform = 'ios';
         jest.mocked(getConfigProp).mockReturnValueOnce(undefined); //versionCode
         jest.mocked(getConfigProp).mockReturnValueOnce('1.2.3'); //version
         // WHEN
-        const result = getAppVersionCode(getContext(), 'ios');
+        const result = getAppVersionCode();
         // THEN
         expect(result).toEqual('10203');
     });
 
     it('should evaluate 1.2.3 with 00.00.00.00.00', async () => {
         // GIVEN
+        const c = getContext();
+        c.platform = 'ios';
         jest.mocked(getConfigProp).mockReturnValueOnce(undefined); //versionCode
         jest.mocked(getConfigProp).mockReturnValueOnce('1.2.3'); //version
         jest.mocked(getConfigProp).mockReturnValueOnce('00.00.00.00.00'); //versionCodeFormat
         // WHEN
-        const result = getAppVersionCode(getContext(), 'ios');
+        const result = getAppVersionCode();
         // THEN
         expect(result).toEqual('102030000');
     });
 
     it('should evaluate 2.0.0+build.1848', async () => {
         // GIVEN
+        const c = getContext();
+        c.platform = 'ios';
         jest.mocked(getConfigProp).mockReturnValueOnce(undefined); //versionCode
         jest.mocked(getConfigProp).mockReturnValueOnce('2.0.0+build.1848'); //version
         // WHEN
-        const result = getAppVersionCode(getContext(), 'ios');
+        const result = getAppVersionCode();
         // THEN
         expect(result).toEqual('2000018');
     });
 
     it('should evaluate 2.0.0+build.1848 with 00.00.0000', async () => {
         // GIVEN
+        const c = getContext();
+        c.platform = 'ios';
         jest.mocked(getConfigProp).mockReturnValueOnce(undefined); //versionCode
         jest.mocked(getConfigProp).mockReturnValueOnce('2.0.0+build.1848'); //version
         jest.mocked(getConfigProp).mockReturnValueOnce('00.00.00.0000'); //versionCodeFormat
         // WHEN
-        const result = getAppVersionCode(getContext(), 'ios');
+        const result = getAppVersionCode();
         // THEN
         expect(result).toEqual('200001848');
     });
 
     it('should evaluate 1.0.0-alpha+beta', async () => {
         // GIVEN
+        const c = getContext();
+        c.platform = 'ios';
         jest.mocked(getConfigProp).mockReturnValueOnce(undefined); //versionCode
         jest.mocked(getConfigProp).mockReturnValueOnce('1.0.0-alpha+beta'); //version
         // WHEN
-        const result = getAppVersionCode(getContext(), 'ios');
+        const result = getAppVersionCode();
         // THEN
         expect(result).toEqual('10000');
     });
 
     it('should evaluate 999999999999.99999999999.9999999', async () => {
         // GIVEN
+        const c = getContext();
+        c.platform = 'ios';
         jest.mocked(getConfigProp).mockReturnValueOnce(undefined); //versionCode
         jest.mocked(getConfigProp).mockReturnValueOnce('999999999999.99999999999.9999999'); //version
         jest.mocked(getConfigProp).mockReturnValueOnce(undefined); //versionCodeFormat
         // WHEN
-        const result = getAppVersionCode(getContext(), 'ios');
+        const result = getAppVersionCode();
         // THEN
         expect(result).toEqual('999999');
     });
 
     it('should evaluate 2.0.1-alpha.1227', async () => {
         // GIVEN
+        const c = getContext();
+        c.platform = 'ios';
         jest.mocked(getConfigProp).mockReturnValueOnce(undefined); //versionCode
         jest.mocked(getConfigProp).mockReturnValueOnce('2.0.1-alpha.1227'); //version
         // WHEN
-        const result = getAppVersionCode(getContext(), 'ios');
+        const result = getAppVersionCode();
         // THEN
         expect(result).toEqual('2000112');
     });
 
     it('should evaluate 2.0.1-alpha.1227', async () => {
         // GIVEN
+        const c = getContext();
+        c.platform = 'ios';
         jest.mocked(getConfigProp).mockReturnValueOnce(undefined); //versionCode
         jest.mocked(getConfigProp).mockReturnValueOnce('2.0.1-alpha.1227'); //version
         jest.mocked(getConfigProp).mockReturnValueOnce('00.00.00.0000'); //versionCodeFormat
         // WHEN
-        const result = getAppVersionCode(getContext(), 'ios');
+        const result = getAppVersionCode();
         // THEN
         expect(result).toEqual('200011227');
     });
 
     it('should evaluate 1.0.0-alpha-a.b-c-somethinglong+build.1-aef.1-its-okay', async () => {
         // GIVEN
+        const c = getContext();
+        c.platform = 'ios';
         jest.mocked(getConfigProp).mockReturnValueOnce(undefined); //versionCode
         jest.mocked(getConfigProp).mockReturnValueOnce('1.0.0-alpha-a.b-c-somethinglong+build.1-aef.1-its-okay'); //version
         // WHEN
-        const result = getAppVersionCode(getContext(), 'ios');
+        const result = getAppVersionCode();
         // THEN
         expect(result).toEqual('100000101');
     });
 
     it('should evaluate 1.0.1-beta+exp.sha.5114f85', async () => {
         // GIVEN
+        const c = getContext();
+        c.platform = 'ios';
         jest.mocked(getConfigProp).mockReturnValueOnce(undefined); //versionCode
         jest.mocked(getConfigProp).mockReturnValueOnce('1.0.1-beta+exp.sha.5114f85'); //version
         // WHEN
-        const result = getAppVersionCode(getContext(), 'ios');
+        const result = getAppVersionCode();
         // THEN
         expect(result).toEqual('10001');
     });
 
     it('should evaluate 1.0.1-beta+exp.sha.5114f85 with 00.00.00.00.00.00', async () => {
         // GIVEN
+        const c = getContext();
+        c.platform = 'ios';
         jest.mocked(getConfigProp).mockReturnValueOnce(undefined); //versionCode
         jest.mocked(getConfigProp).mockReturnValueOnce('1.0.1-beta+exp.sha.5114f85'); //version
         jest.mocked(getConfigProp).mockReturnValueOnce('00.00.00.00.00.00'); //versionCodeFormat
         // WHEN
-        const result = getAppVersionCode(getContext(), 'ios');
+        const result = getAppVersionCode();
         // THEN
         expect(result).toEqual('10001000000');
     });
 
     it('should evaluate 1.0.1-beta+exp.sha.5114f85 with 00.00.00.000000', async () => {
         // GIVEN
+        const c = getContext();
+        c.platform = 'ios';
         jest.mocked(getConfigProp).mockReturnValueOnce(undefined); //versionCode
         jest.mocked(getConfigProp).mockReturnValueOnce('1.0.1-beta+exp.sha.5114f85'); //version
         jest.mocked(getConfigProp).mockReturnValueOnce('00.00.00.000000'); //versionCodeFormat
         // WHEN
-        const result = getAppVersionCode(getContext(), 'ios');
+        const result = getAppVersionCode();
         // THEN
         expect(result).toEqual('10001000000');
     });
 
     it('should evaluate 1', async () => {
         // GIVEN
+        const c = getContext();
+        c.platform = 'ios';
         jest.mocked(getConfigProp).mockReturnValueOnce(undefined); //versionCode
         jest.mocked(getConfigProp).mockReturnValueOnce('1'); //version
         jest.mocked(getConfigProp).mockReturnValueOnce(undefined); //versionCodeFormat
         // WHEN
-        const result = getAppVersionCode(getContext(), 'ios');
+        const result = getAppVersionCode();
         // THEN
         expect(result).toEqual('10000');
     });
 
     it('should evaluate given versionCode 1 with 1 on android', async () => {
         // GIVEN
+        const c = getContext();
+        c.platform = 'android';
         jest.mocked(getConfigProp).mockReturnValueOnce('1'); //versionCode
         jest.mocked(getConfigProp).mockReturnValueOnce('1'); //version
         // WHEN
-        const result = getAppVersionCode(getContext(), 'android');
+        const result = getAppVersionCode();
         // THEN
         expect(result).toEqual('1');
     });
 
     it('should throw on given versionCode `string` on android', async () => {
         // GIVEN
+        const c = getContext();
+        c.platform = 'android';
         jest.mocked(getConfigProp).mockReturnValueOnce('something as a string'); //versionCode
         expect.assertions(1);
         try {
             // WHEN
-            getAppVersionCode(getContext(), 'android');
+            getAppVersionCode();
         } catch (e) {
             // THEN
             expect(e).toEqual(Error(`'versionCode' should be a positive integer. Check your config`));
@@ -232,11 +262,13 @@ describe('Test getAppVersionCode', () => {
 
     it('should throw on given versionCode negative on android', async () => {
         // GIVEN
+        const c = getContext();
+        c.platform = 'android';
         jest.mocked(getConfigProp).mockReturnValueOnce('-1'); //versionCode
         expect.assertions(1);
         try {
             // WHEN
-            getAppVersionCode(getContext(), 'android');
+            getAppVersionCode();
         } catch (e) {
             // THEN
             expect(e).toEqual(Error(`'versionCode' should be a positive integer. Check your config`));
@@ -245,9 +277,11 @@ describe('Test getAppVersionCode', () => {
 
     it('should evaluate given versionCode 4.4.4 with 4.4.4 on ios', async () => {
         // GIVEN
+        const c = getContext();
+        c.platform = 'ios';
         jest.mocked(getConfigProp).mockReturnValueOnce('4.4.4'); //versionCode
         // WHEN
-        const result = getAppVersionCode(getContext(), 'ios');
+        const result = getAppVersionCode();
         // THEN
         expect(result).toEqual('4.4.4');
     });

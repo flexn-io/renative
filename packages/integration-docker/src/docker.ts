@@ -15,26 +15,27 @@ import {
     chalk,
     ExecOptionsPresets,
     getAppFolder,
+    getContext,
 } from '@rnv/core';
 
 const rootPath = path.join(__dirname, './');
 
 class Docker {
     c: RnvContext;
-    constructor(c: RnvContext) {
-        this.c = c;
+    constructor() {
+        this.c = getContext();
     }
 
     async buildImage() {
         const { c } = this;
-        const { runtime, platform, files } = c;
+        const { runtime, files } = c;
         let outputDir = 'output';
-        let projectBuildWeb = path.join(getAppFolder(c)!, outputDir);
+        let projectBuildWeb = path.join(getAppFolder()!, outputDir);
         if (!fsExistsSync(projectBuildWeb)) {
             outputDir = 'project';
-            projectBuildWeb = path.join(getAppFolder(c)!, outputDir);
+            projectBuildWeb = path.join(getAppFolder()!, outputDir);
         }
-        const dockerDestination = path.join(getAppFolder(c)!, 'export', 'docker');
+        const dockerDestination = path.join(getAppFolder()!, 'export', 'docker');
 
         const dockerFile = path.join(rootPath, '../Dockerfile');
         const nginxConfFile = path.join(rootPath, '../nginx/default.conf');
@@ -54,7 +55,7 @@ class Docker {
 
         // save the docker files
         logDefault('docker:Dockerfile:create');
-        const deployOptions = getConfigProp(c, platform, 'custom').deploy;
+        const deployOptions = getConfigProp('custom').deploy;
         const healthCheck = deployOptions?.docker?.healthcheckProbe;
 
         let additionalCommands = '';
@@ -82,17 +83,13 @@ class Docker {
 
     async saveImage() {
         const { c } = this;
-        const {
-            runtime,
-            files,
-            platform,
-            program: { scheme = 'debug' },
-        } = c;
+        const { runtime, files, program } = c;
+        const scheme = program?.opts()?.scheme || 'debug';
 
         const imageName = runtime.appId?.toLowerCase();
         const appVersion = files.project.package.version;
 
-        const dockerDestination = path.join(getAppFolder(c)!, 'export', 'docker');
+        const dockerDestination = path.join(getAppFolder()!, 'export', 'docker');
         const dockerSaveFile = path.join(dockerDestination, `${imageName}_${appVersion}.tar`);
 
         logDefault('docker:Dockerfile:build');
@@ -110,7 +107,7 @@ class Docker {
             )} and then opening ${chalk().bold('http://localhost:8081')}`
         );
 
-        const deployOptions = getConfigProp(c, platform, 'custom').deploy;
+        const deployOptions = getConfigProp('custom').deploy;
         const zipImage = deployOptions?.docker?.zipImage;
 
         if (zipImage) {

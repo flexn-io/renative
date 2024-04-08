@@ -29,9 +29,10 @@ import {
     DEFAULTS,
     RnvPlatform,
     logInfo,
-    PlatformKey,
+    RnvPlatformKey,
+    getContext,
 } from '@rnv/core';
-import { parseAndroidManifestSync, injectPluginManifestSync } from './manifestParser';
+import { parseAndroidManifestSync } from './manifestParser';
 import {
     parseMainActivitySync,
     parseSplashActivitySync,
@@ -47,9 +48,9 @@ import {
     parseAndroidConfigObject,
 } from './gradleParser';
 import { parseGradleWrapperSync } from './gradleWrapperParser';
-import { parseValuesStringsSync, injectPluginXmlValuesSync, parseValuesColorsSync } from './xmlValuesParser';
+import { parseValuesXml } from './xmlValuesParser';
 import { ejectGradleProject } from './ejector';
-import { AndroidDevice, Context } from './types';
+import { AndroidDevice, Context, Payload } from './types';
 import {
     resetAdb,
     getAndroidTargets,
@@ -59,33 +60,34 @@ import {
     connectToWifiDevice,
     composeDevicesArray,
 } from './deviceManager';
-import { CLI_ANDROID_ADB } from './constants';
+import { ANDROID_COLORS, ANDROID_STRINGS, ANDROID_STYLES, CLI_ANDROID_ADB } from './constants';
 import { runReactNativeAndroid, packageReactNativeAndroid } from '@rnv/sdk-react-native';
 import { getEntryFile } from '@rnv/sdk-utils';
 
-export const packageAndroid = async (c: Context) => {
+export const packageAndroid = async () => {
     logDefault('packageAndroid');
 
-    return packageReactNativeAndroid(c);
+    return packageReactNativeAndroid();
 };
 
-export const getAndroidDeviceToRunOn = async (c: Context) => {
+export const getAndroidDeviceToRunOn = async () => {
+    const c = getContext();
+
     const defaultTarget = c.runtime.target;
     logDefault('getAndroidDeviceToRunOn', `default:${defaultTarget}`);
 
     if (!c.platform) return;
 
-    const { target, device } = c.program;
-    const { platform } = c;
+    const { target, device } = c.program.opts();
 
-    await resetAdb(c);
+    await resetAdb();
     const targetToConnectWiFi = _isString(target) ? target : device;
 
     if (_isString(targetToConnectWiFi) && net.isIP(targetToConnectWiFi.split(':')[0])) {
-        await connectToWifiDevice(c, targetToConnectWiFi);
+        await connectToWifiDevice(targetToConnectWiFi);
     }
 
-    const devicesAndEmulators = await getAndroidTargets(c, false, false, !!device);
+    const devicesAndEmulators = await getAndroidTargets(false, false, !!device);
 
     const activeDevices = devicesAndEmulators.filter((d) => d.isActive);
     const inactiveDevices = devicesAndEmulators.filter((d) => !d.isActive);
@@ -96,8 +98,8 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
     const askWhereToRun = async () => {
         if (activeDevices.length || inactiveDevices.length) {
             // No device active and device param is passed, exiting
-            if (c.program.device && !activeDevices.length) {
-                return logError('No active devices found, please connect one or remove the device argument', true);
+            if (c.program.opts().device && !activeDevices.length) {
+                return Promise.reject('No active devices found, please connect one or remove the device argument');
             }
             if (!foundDevice && (_isString(target) || _isString(device))) {
                 logInfo(
@@ -134,16 +136,16 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
                 const dev = activeDevices.find((d) => d.name === chosenTarget);
                 if (dev) return dev;
 
-                await launchAndroidSimulator(c, chosenTarget, true);
-                const device = await checkForActiveEmulator(c, chosenTarget);
+                await launchAndroidSimulator(chosenTarget, true);
+                const device = await checkForActiveEmulator(chosenTarget);
                 return device;
             }
         } else {
-            if (c.program.device) {
-                return logError('No active devices found, please connect one or remove the device argument', true);
+            if (c.program.opts().device) {
+                return Promise.reject('No active devices found, please connect one or remove the device argument');
             }
-            await askForNewEmulator(c, platform);
-            const device = await checkForActiveEmulator(c);
+            await askForNewEmulator();
+            const device = await checkForActiveEmulator();
             return device;
         }
     };
@@ -154,8 +156,8 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
             if (foundDevice.isActive) {
                 return foundDevice;
             }
-            await launchAndroidSimulator(c, foundDevice, true);
-            const device = await checkForActiveEmulator(c, foundDevice.name);
+            await launchAndroidSimulator(foundDevice, true);
+            const device = await checkForActiveEmulator(foundDevice.name);
             return device;
         }
         logDebug('Target not found, asking where to run');
@@ -171,8 +173,8 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
             logDebug('Target not provided, asking where to run');
             return askWhereToRun();
         } else if (!foundDevice.isActive) {
-            await launchAndroidSimulator(c, foundDevice, true);
-            const device = await checkForActiveEmulator(c, foundDevice.name);
+            await launchAndroidSimulator(foundDevice, true);
+            const device = await checkForActiveEmulator(foundDevice.name);
             return device;
         }
         return foundDevice;
@@ -183,18 +185,15 @@ export const getAndroidDeviceToRunOn = async (c: Context) => {
     }
 };
 
-export const runAndroid = async (c: Context, device: AndroidDevice) => {
+export const runAndroid = async (device: AndroidDevice) => {
     logDefault('runAndroid', `target:${device.udid}`);
-    const { platform } = c;
 
-    if (!platform) return;
-
-    await runReactNativeAndroid(c, platform, device);
+    await runReactNativeAndroid(device);
 };
 
 const _checkSigningCerts = async (c: Context) => {
     logDefault('_checkSigningCerts');
-    const signingConfig = getConfigProp(c, c.platform, 'signingConfig', 'Debug');
+    const signingConfig = getConfigProp('signingConfig') || 'Debug';
     const isRelease = signingConfig === 'Release';
 
     if (!c.platform) return;
@@ -206,7 +205,7 @@ const _checkSigningCerts = async (c: Context) => {
         } app in release mode but you have't configured your ${chalk().bold(
             c.paths.workspace.appConfig.configPrivate
         )} for ${chalk().bold(c.platform)} platform yet.`;
-        if (c.program.ci === true) {
+        if (c.program.opts().ci === true) {
             return Promise.reject(msg);
         }
         logWarning(msg);
@@ -229,7 +228,7 @@ const _checkSigningCerts = async (c: Context) => {
             const platforms = c.files.workspace.appConfig.configPrivate?.platforms || {};
 
             if (c.files.workspace.appConfig.configPrivate) {
-                const platCandidates: PlatformKey[] = ['androidwear', 'androidtv', 'android', 'firetv'];
+                const platCandidates: RnvPlatformKey[] = ['androidwear', 'androidtv', 'android', 'firetv'];
 
                 platCandidates.forEach((v) => {
                     if (c.files.workspace.appConfig.configPrivate?.platforms?.[v]) {
@@ -285,7 +284,7 @@ const _checkSigningCerts = async (c: Context) => {
                     const keystorePath = path.join(c.paths.workspace.appConfig.dir, 'release.keystore');
                     mkdirSync(c.paths.workspace.appConfig.dir);
                     const keytoolCmd = `keytool -genkey -v -keystore ${keystorePath} -alias ${keyAlias} -keypass ${keyPassword} -storepass ${storePassword} -keyalg RSA -keysize 2048 -validity 10000`;
-                    await executeAsync(c, keytoolCmd, {
+                    await executeAsync(keytoolCmd, {
                         shell: true,
                         stdio: 'inherit',
                         silent: true,
@@ -312,8 +311,8 @@ const _checkSigningCerts = async (c: Context) => {
             updateObjectSync(c.paths.workspace.appConfig.configPrivate, c.files.workspace.appConfig.configPrivate);
             logSuccess(`Successfully updated private config file at ${chalk().bold(c.paths.workspace.appConfig.dir)}.`);
             // await configureProject(c);
-            await updateRenativeConfigs(c);
-            await parseAppBuildGradleSync(c);
+            await updateRenativeConfigs();
+            await parseAppBuildGradleSync();
             // await configureGradleProject(c);
         } else {
             return Promise.reject("You selected no. Can't proceed");
@@ -321,16 +320,18 @@ const _checkSigningCerts = async (c: Context) => {
     }
 };
 
-export const configureAndroidProperties = async (c: Context) => {
+export const configureAndroidProperties = async () => {
     logDefault('configureAndroidProperties');
 
-    const appFolder = getAppFolder(c);
+    const c = getContext();
+
+    const appFolder = getAppFolder();
 
     c.runtime.platformBuildsProjectPath = appFolder;
 
     const addNDK = c.buildConfig?.sdks?.ANDROID_NDK && !c.buildConfig.sdks.ANDROID_NDK.includes('<USER>');
-    let ndkString = `ndk.dir=${getRealPath(c, c.buildConfig?.sdks?.ANDROID_NDK)}`;
-    let sdkDir = getRealPath(c, c.buildConfig?.sdks?.ANDROID_SDK);
+    let ndkString = `ndk.dir=${getRealPath(c.buildConfig?.sdks?.ANDROID_NDK)}`;
+    let sdkDir = getRealPath(c.buildConfig?.sdks?.ANDROID_SDK);
 
     if (!sdkDir) {
         logError(`Cannot resolve c.buildConfig?.sdks?.ANDROID_SDK: ${c.buildConfig?.sdks?.ANDROID_SDK}`);
@@ -352,49 +353,24 @@ sdk.dir=${sdkDir}`
     return true;
 };
 
-export const configureGradleProject = async (c: Context) => {
-    const { platform } = c;
+export const configureGradleProject = async () => {
     logDefault('configureGradleProject');
 
-    if (!isPlatformActive(c, platform)) return;
-    await copyAssetsFolder(c, platform, 'app/src/main');
-    await configureAndroidProperties(c);
-    await configureProject(c);
-    await copyBuildsFolder(c, platform);
+    if (!isPlatformActive()) return;
+    await copyAssetsFolder('app/src/main');
+    await configureAndroidProperties();
+    await configureProject();
+    await copyBuildsFolder();
     return true;
 };
 
-// const createJavaPackageFolders = async (c: Context, appFolder: string) => {
-//     console.log('createJavaPackageFolders', appFolder);
-//     const appId = getAppId(c, c.platform);
-//     console.log('appId', appId);
-//     const javaPackageArray = appId.split('.');
-//     const javaPackagePath = path.join(appFolder, 'app/src/main/java', ...javaPackageArray);
-//     console.log('javaPackagePath', javaPackagePath);
-
-//     if (!fsExistsSync(javaPackagePath)) {
-//         await mkdir(javaPackagePath, { recursive: true });
-//     }
-//     throw new Error('createJavaPackageFolders not implemented');
-// }
-
-export const configureProject = async (c: Context) => {
+export const configureProject = async () => {
     logDefault('configureProject');
-    const { platform } = c;
+    const c = getContext<Payload>();
 
-    const appFolder = getAppFolder(c);
+    const appFolder = getAppFolder();
+    const outputFile = getEntryFile();
 
-    // if (!fsExistsSync(gradlew)) {
-    //     logWarning(`Your ${chalk().bold(platform)} platformBuild is misconfigured!. let's repair it.`);
-    //     await createPlatformBuild(c, platform);
-    //     await configureGradleProject(c);
-
-    //     return true;
-    // }
-
-    const outputFile = getEntryFile(c, platform);
-
-    // await createJavaPackageFolders(c, appFolder);
     mkdirSync(path.join(appFolder, 'app/src/main/assets'));
     fsWriteFileSync(path.join(appFolder, `app/src/main/assets/${outputFile}.bundle`), '{}');
 
@@ -425,7 +401,6 @@ export const configureProject = async (c: Context) => {
         appBuildGradleSigningConfigs: '',
         packagingOptions: '',
         appBuildGradleImplementations: '',
-        resourceStrings: [],
         appBuildGradleAfterEvaluate: '',
         kotlinVersion: '',
         googleServicesVersion: '',
@@ -445,11 +420,9 @@ export const configureProject = async (c: Context) => {
     };
 
     // PLUGINS
-    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
-        injectPluginGradleSync(c, plugin, pluginPlat, key);
-        injectPluginKotlinSync(c, pluginPlat, key, pluginPlat.package);
-        injectPluginManifestSync();
-        injectPluginXmlValuesSync(c, pluginPlat);
+    parsePlugins((plugin, pluginPlat, key) => {
+        injectPluginGradleSync(plugin, pluginPlat, key);
+        injectPluginKotlinSync(pluginPlat, key, pluginPlat.package);
     });
 
     c.payload.pluginConfigAndroid.pluginPackages = c.payload.pluginConfigAndroid.pluginPackages.substring(
@@ -458,8 +431,8 @@ export const configureProject = async (c: Context) => {
     );
 
     // FONTS
-    const includedFonts = getConfigProp(c, c.platform, 'includedFonts') || [];
-    parseFonts(c, (font: string, dir: string) => {
+    const includedFonts = getConfigProp('includedFonts') || [];
+    parseFonts((font: string, dir: string) => {
         if (font.includes('.ttf') || font.includes('.otf')) {
             const key = font.split('.')[0];
 
@@ -481,18 +454,19 @@ export const configureProject = async (c: Context) => {
             }
         }
     });
-    parseAndroidConfigObject(c);
-    parseSettingsGradleSync(c);
-    parseAppBuildGradleSync(c);
-    parseBuildGradleSync(c);
-    parseGradleWrapperSync(c);
-    parseMainActivitySync(c);
-    parseMainApplicationSync(c);
-    parseSplashActivitySync(c);
-    parseValuesStringsSync(c);
-    parseValuesColorsSync(c);
-    parseAndroidManifestSync(c);
-    parseGradlePropertiesSync(c);
+    parseAndroidConfigObject();
+    parseSettingsGradleSync();
+    parseAppBuildGradleSync();
+    parseBuildGradleSync();
+    parseGradleWrapperSync();
+    parseMainActivitySync();
+    parseMainApplicationSync();
+    parseSplashActivitySync();
+    parseValuesXml(ANDROID_STRINGS, true);
+    parseValuesXml(ANDROID_STYLES);
+    parseValuesXml(ANDROID_COLORS, true);
+    parseAndroidManifestSync();
+    parseGradlePropertiesSync();
     // parseFlipperSync(c, 'debug');
     // parseFlipperSync(c, 'release');
     await _checkSigningCerts(c);
@@ -501,9 +475,10 @@ export const configureProject = async (c: Context) => {
 };
 
 // Resolve or reject will not be called so this will keep running
-export const runAndroidLog = async (c: Context) => {
+export const runAndroidLog = async () => {
+    const c = getContext();
     logDefault('runAndroidLog');
-    const filter = c.program.filter || '';
+    const filter = c.program.opts().filter || '';
     const child = execaCommand(`${c.cli[CLI_ANDROID_ADB]} logcat`);
     // use event hooks to provide a callback to execute when data are available:
     child.stdout?.on('data', (data: Buffer) => {

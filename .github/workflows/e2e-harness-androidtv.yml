@@ -5,24 +5,24 @@ defaults:
         shell: zsh -l {0}
 on:
     workflow_dispatch:
-    # push:
-    #     branches:
-    #         - main
-    #         - 'release/**'
-    #     paths-ignore:
-    #         - 'docs/**'
-    #         - '**/README.md'
-    #         - '**/lerna.json'
-    #         - '**/metadata.json'
-    #         - '**/renative.json'
-    #         - '**/package.json'
-    # pull_request:
-    #     types: [labeled]
+    push:
+        branches:
+            - main
+            - 'release/**'
+        paths-ignore:
+            - 'docs/**'
+            - '**/README.md'
+            - '**/lerna.json'
+            - '**/metadata.json'
+            - '**/renative.json'
+            - '**/package.json'
+    pull_request:
+        types: [labeled]
 
 jobs:
     e2e-harness-androidtv:
         if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.label.name == 'e2e-harness-androidtv' || github.event.label.name == 'e2e' }}
-        runs-on: [self-hosted, macos, intel]
+        runs-on: [self-hosted, macos]
         steps:
             - uses: actions/checkout@v2
             - name: Setup
@@ -36,7 +36,7 @@ jobs:
                   cd packages/app-harness && yarn run:androidtv-test & sleep 180
             - name: E2E
               run: |
-                  cd packages/app-harness && yarn e2e:androidtv && kill $(lsof -t -i:8084)
+                  cd packages/app-harness && yarn e2e:androidtv && kill $(lsof -t -i:8094)
             # Commented because e2e tests would fail due to minion issues
             # - name: Post message to Slack via Webhook
             #   if: ${{ github.event_name == 'push' && failure() }}

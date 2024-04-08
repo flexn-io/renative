@@ -1,46 +1,45 @@
 import path from 'path';
-import axios from 'axios';
 import {
     logDefault,
     executeTask,
     chalk,
     getConfigProp,
-    RnvContext,
     fsExistsSync,
     logWarning,
     parseFonts,
     getApi,
     RnvTaskName,
+    getContext,
 } from '@rnv/core';
-import { confirmActiveBundler } from '@rnv/sdk-utils';
+import { confirmActiveBundler, axios } from '@rnv/sdk-utils';
 
 let keepRNVRunning = false;
 
-export const startBundlerIfRequired = async (c: RnvContext, parentTask: string, originTask?: string) => {
+export const startBundlerIfRequired = async (parentTaskName: string, originTaskName?: string) => {
     logDefault('startBundlerIfRequired');
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
+    const bundleAssets = getConfigProp('bundleAssets');
     if (bundleAssets === true) return;
 
-    const isRunning = await isBundlerActive(c);
+    const isRunning = await isBundlerActive();
     if (!isRunning) {
         // _taskStart(c, parentTask, originTask);
-        await executeTask(c, RnvTaskName.start, parentTask, originTask);
+        await executeTask({ taskName: RnvTaskName.start, parentTaskName, originTaskName });
 
         keepRNVRunning = true;
-        await waitForBundler(c);
+        await waitForBundler();
     } else {
-        const resetCompleted = await confirmActiveBundler(c);
+        const resetCompleted = await confirmActiveBundler();
         if (resetCompleted) {
-            await executeTask(c, RnvTaskName.start, parentTask, originTask);
+            await executeTask({ taskName: RnvTaskName.start, parentTaskName, originTaskName });
 
             keepRNVRunning = true;
-            await waitForBundler(c);
+            await waitForBundler();
         }
     }
 };
 
-export const waitForBundlerIfRequired = async (c: RnvContext) => {
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
+export const waitForBundlerIfRequired = async () => {
+    const bundleAssets = getConfigProp('bundleAssets');
     if (bundleAssets === true) return;
     // return a new promise that does...nothing, just to keep RNV running while the bundler is running
     if (keepRNVRunning)
@@ -50,11 +49,13 @@ export const waitForBundlerIfRequired = async (c: RnvContext) => {
     return true;
 };
 
-const _isBundlerRunning = async (c: RnvContext) => {
+const _isBundlerRunning = async () => {
+    const c = getContext();
+
     logDefault('_isBundlerRunning');
     try {
         const { data } = await axios.get(
-            `http://${c.runtime.localhost}:${c.runtime.port}/${getConfigProp(c, c.platform, 'entryFile')}.js`
+            `http://${c.runtime.localhost}:${c.runtime.port}/${getConfigProp('entryFile')}.js`
         );
         if (data.includes('import')) {
             logDefault('_isBundlerRunning', '(YES)');
@@ -68,7 +69,9 @@ const _isBundlerRunning = async (c: RnvContext) => {
     }
 };
 
-export const isBundlerActive = async (c: RnvContext) => {
+export const isBundlerActive = async () => {
+    const c = getContext();
+
     logDefault('isBundlerActive', `(http://${c.runtime.localhost}:${c.runtime.port})`);
     try {
         await axios.get(`http://${c.runtime.localhost}:${c.runtime.port}`);
@@ -107,12 +110,13 @@ const poll = (fn: () => Promise<boolean>, timeout = 30000, interval = 1000) => {
     return new Promise<void>(checkCondition);
 };
 
-export const configureFonts = async (c: RnvContext) => {
+export const configureFontSources = async () => {
+    const c = getContext();
     const fontFolders = new Set<string>();
-    parseFonts(c, (font, dir) => {
+    parseFonts((font, dir) => {
         if (font.includes('.ttf') || font.includes('.otf')) {
             const key = font.split('.')[0];
-            const includedFonts = getConfigProp(c, c.platform, 'includedFonts');
+            const includedFonts = getConfigProp('includedFonts');
             if (includedFonts && (includedFonts.includes('*') || includedFonts.includes(key))) {
                 const fontSource = path.join(dir, font);
                 if (fsExistsSync(fontSource)) {
@@ -130,4 +134,4 @@ export const configureFonts = async (c: RnvContext) => {
     c.paths.project.fontSourceDirs = Array.from(fontFolders);
 };
 
-export const waitForBundler = async (c: RnvContext) => poll(() => _isBundlerRunning(c));
+export const waitForBundler = async () => poll(() => _isBundlerRunning());

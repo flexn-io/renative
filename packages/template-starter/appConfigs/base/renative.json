@@ -1,7 +1,6 @@
 {
     "$schema": "../../.rnv/schema/rnv.app.json",
     "id": "base",
-    "skipBootstrapCopy": true,
     "hidden": true,
     "common": {
         "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
@@ -26,7 +25,7 @@
                 "description": "Hello ReNative - Use for production deployments"
             }
         },
-        "backgroundColor": "#111111",
+        "backgroundColor": "#FFFFFF",
         "fontSources": [
             "{{resolvePackage(react-native-vector-icons)}}/Fonts"
         ],

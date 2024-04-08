@@ -150,7 +150,7 @@ export const writeCleanFile = (
                 if (occurences) {
                     occurences.forEach((occ) => {
                         const val = occ.replace('{{configProps.', '').replace('}}', '') as ConfigPropKey;
-                        const configVal = api.getConfigProp(c, c.platform, val) || '';
+                        const configVal = api.getConfigProp(val) || '';
                         pFileClean = pFileClean.replace(occ, configVal);
                     });
                 }
@@ -221,13 +221,14 @@ export const copyFileWithInjectSync = (
     }
 };
 
-export const invalidatePodsChecksum = (c: RnvContext) => {
-    const appFolder = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}`);
-    const podChecksumPath = path.join(appFolder, 'Podfile.checksum');
-    if (fs.existsSync(podChecksumPath)) {
-        fs.unlinkSync(podChecksumPath);
-    }
-};
+// export const invalidatePodsChecksum = () => {
+//     const c = getContext();
+//     const appFolder = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}`);
+//     const podChecksumPath = path.join(appFolder, 'Podfile.checksum');
+//     if (fs.existsSync(podChecksumPath)) {
+//         fs.unlinkSync(podChecksumPath);
+//     }
+// };
 
 export const copyFolderRecursiveSync = (
     source: string,
@@ -537,33 +538,36 @@ export const updateObjectSync = (filePath: string, updateObj: object) => {
     return output;
 };
 
-export const getRealPath = (c: RnvContext, p: string | undefined, key = 'undefined', original?: string) => {
+export const getRealPath = (p: string | undefined, key = 'undefined', original?: string) => {
     if (!p) {
         if (original) {
             logDebug(`Path ${chalk().bold(key)} is not defined. using default: ${chalk().bold(original)}`);
         }
         return original;
     }
+    const c = getContext();
     if (p.startsWith('./')) {
         return path.join(c.paths.project.dir, p);
     }
     const output = p
+        // TODO: deprecate this path
         .replace(/\$RNV_HOME/g, c.paths.rnv.dir)
-        .replace(/~/g, c.paths.home.dir)
-        .replace(/\$USER_HOME/g, c.paths.home.dir)
+        .replace(/~/g, c.paths.user.homeDir)
+        .replace(/\$USER_HOME/g, c.paths.user.homeDir)
         .replace(/\$PROJECT_HOME/g, c.paths.project.dir)
         .replace(/\$WORKSPACE_HOME/g, c.paths.workspace.dir)
+        // TODO: deprecate this path
         .replace(/RNV_HOME/g, c.paths.rnv.dir)
-        .replace(/USER_HOME/g, c.paths.home.dir)
+        .replace(/USER_HOME/g, c.paths.user.homeDir)
         .replace(/PROJECT_HOME/g, c.paths.project.dir);
     return output;
 };
 
-const _refToValue = (c: RnvContext, ref: string, key: string) => {
+const _refToValue = (ref: string, key: string) => {
     // ref=> '$REF$:./my/path/to/file.json$...prop.subProp'
     const val = ref.replace('$REF$:', '').split('$...');
     // val=> ['./my/path/to/file.json', 'prop.subProp']
-    const realPath = getRealPath(c, val[0], key);
+    const realPath = getRealPath(val[0], key);
 
     if (realPath && realPath.includes('.json') && val.length === 2) {
         if (fs.existsSync(realPath)) {
@@ -600,7 +604,7 @@ export const sanitizeDynamicRefs = <T = unknown>(c: RnvContext, obj: T) => {
             if (val) {
                 if (typeof val === 'string') {
                     if (val.startsWith('$REF$:')) {
-                        obj[key as keyof T] = _refToValue(c, val, key);
+                        obj[key as keyof T] = _refToValue(val, key);
                     }
                 } else if (Array.isArray(val) || typeof val === 'object') {
                     sanitizeDynamicRefs(c, val as DynaObj);
@@ -773,8 +777,7 @@ export const loadFile = <T, K extends Extract<keyof T, string>>(
 
         return fileObj[key];
     } catch (e) {
-        logError(`loadFile: ${pathObj[key]} :: ${e}`, true); // crash if there's an error in the config file
-        return false;
+        throw new Error(`loadFile: ${pathObj[key]} :: ${e}`); // crash if there's an error in the config file
     }
 };
 

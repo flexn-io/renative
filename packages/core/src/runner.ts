@@ -1,42 +1,91 @@
 import { getContext } from './context/provider';
-import { loadEngines, registerMissingPlatformEngines } from './engines';
+import { installEngines, registerMissingPlatformEngines } from './engines';
 import { loadIntegrations } from './integrations';
 import { checkAndMigrateProject } from './migrator';
-import { checkAndBootstrapIfRequired } from './projects';
 import { configureRuntimeDefaults } from './context/runtime';
-import { findSuitableTask, initializeTask } from './tasks';
+import { findSuitableTask } from './tasks/taskFinder';
 import { updateRenativeConfigs } from './plugins';
+import { loadDefaultConfigTemplates } from './configs';
+import { getApi } from './api/provider';
+import { RnvTask } from './tasks/types';
+import { runInteractiveWizard, runInteractiveWizardForSubTasks } from './tasks/wizard';
+import { initializeTask } from './tasks/taskExecutors';
+import { getTaskNameFromCommand, selectPlatformIfRequired } from './tasks/taskHelpers';
+import { logInfo } from './logger';
+
+export const exitRnvCore = async (code: number) => {
+    const ctx = getContext();
+    const api = getApi();
+
+    if (ctx.process) {
+        api.analytics.teardown().then(() => {
+            ctx.process.exit(code);
+        });
+    }
+};
+
+const _installAndRegisterAllEngines = async () => {
+    const result = await installEngines();
+    // If false make sure we reload configs as it means it's freshly installed
+    if (!result) {
+        await updateRenativeConfigs();
+    }
+    await registerMissingPlatformEngines();
+};
 
 export const executeRnvCore = async () => {
     const c = getContext();
 
-    await configureRuntimeDefaults(c);
+    await loadDefaultConfigTemplates();
+    await configureRuntimeDefaults();
     await checkAndMigrateProject();
-    await updateRenativeConfigs(c);
-    await checkAndBootstrapIfRequired(c);
+    await updateRenativeConfigs();
+    // await checkAndBootstrapIfRequired();
 
-    if (c.program.npxMode) {
+    // TODO: rename to something more meaningful or DEPRECATE entirely
+    if (c.program.opts().npxMode) {
         return;
     }
-    await loadIntegrations(c);
-    const result = await loadEngines(c);
 
-    // If false make sure we reload configs as it means it's freshly installed
-    if (!result) {
-        await updateRenativeConfigs(c);
-    }
-
-    // for root rnv we simply load all engines upfront
+    // for "rnv" we simply load all engines upfront
     const { configExists } = c.paths.project;
     if (!c.command && configExists) {
-        await registerMissingPlatformEngines(c);
+        await _installAndRegisterAllEngines();
+        await loadIntegrations();
+        return runInteractiveWizard();
     }
 
-    // Some tasks might require all engines to be present (ie rnv platform list)
-    const taskInstance = await findSuitableTask(c);
-    if (c.command && !taskInstance?.ignoreEngines) {
-        await registerMissingPlatformEngines(c, taskInstance);
+    let initTask: RnvTask | undefined;
+
+    // Special Case for engine-core tasks
+    // they don't require other engines to be loaded if isGlobalScope = true
+    // ie rnv link
+    initTask = await findSuitableTask();
+    if (initTask) {
+        return initializeTask(initTask);
     }
 
-    if (taskInstance?.task) await initializeTask(c, taskInstance?.task);
+    // Next we load all integrations and see if there is a task that matches
+    await loadIntegrations();
+    initTask = await findSuitableTask();
+    if (initTask) {
+        if (initTask.platforms) {
+            // If integration task requires platform selection
+            // we do it here so correct engine is registered properly
+            await selectPlatformIfRequired(initTask, true);
+        }
+
+        return initializeTask(initTask);
+    }
+
+    // Still no task found. time to load all engines to see if anything matches
+    await _installAndRegisterAllEngines();
+    initTask = await findSuitableTask();
+    if (initTask) {
+        return initializeTask(initTask);
+    }
+
+    // Still no task found. time to check sub tasks options via wizard
+    logInfo(`Did not find exact match for ${getTaskNameFromCommand()}. Running interactive wizard for sub-tasks`);
+    return runInteractiveWizardForSubTasks();
 };

@@ -1,7 +1,6 @@
-import { ConfigFilePlugin } from '../schema/configFiles/types';
-import { RenativeConfigPlugin, RenativeConfigPluginPlatform } from '../schema/types';
+import type { ConfigFilePlugin, ConfigPluginPlatformSchema, ConfigPluginSchema } from '../schema/types';
 
-export type PluginCallback = (plugin: RnvPlugin, pluginPlat: RenativeConfigPluginPlatform, key: string) => void;
+export type PluginCallback = (plugin: RnvPlugin, pluginPlat: ConfigPluginPlatformSchema, key: string) => void;
 
 export type PluginListResponse = {
     asString: string;
@@ -23,7 +22,7 @@ export type RnvPluginScope = {
     scope: string;
 };
 
-export type RnvPlugin = RenativeConfigPlugin & {
+export type RnvPlugin = ConfigPluginSchema & {
     packageName?: string;
     scope?: string;
     _scopes?: Array<string>;

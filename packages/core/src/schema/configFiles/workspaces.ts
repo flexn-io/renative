@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const RootWorkspacesSchema = z.object({
+export const zodConfigFileWorkspaces = z.object({
     workspaces: z.record(
         z.string(),
         z.object({
@@ -14,5 +14,3 @@ export const RootWorkspacesSchema = z.object({
         })
     ),
 });
-
-export type _RootWorkspacesSchemaType = z.infer<typeof RootWorkspacesSchema>;

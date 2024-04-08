@@ -1,29 +1,11 @@
-import {
-    logTask,
-    RnvTaskOptionPresets,
-    RnvTaskFn,
-    executeTask,
-    SUPPORTED_PLATFORMS,
-    RnvTask,
-    RnvTaskName,
-} from '@rnv/core';
+import { RnvTaskName, createTask } from '@rnv/core';
 
-const taskConfig: RnvTaskFn = async (c, _, originTask) => {
-    logTask('taskConfig');
-
-    await executeTask(c, RnvTaskName.configureSoft, RnvTaskName.config, originTask);
-
-    console.log(JSON.stringify(c.buildConfig, null, 2));
-
-    return true;
-};
-
-const Task: RnvTask = {
+export default createTask({
     description: 'Display RNV config',
-    fn: taskConfig,
+    dependsOn: [RnvTaskName.configureSoft],
+    fn: async ({ ctx }) => {
+        console.log(JSON.stringify(ctx.buildConfig, null, 2));
+        return true;
+    },
     task: RnvTaskName.config,
-    options: RnvTaskOptionPresets.withBase(),
-    platforms: [...SUPPORTED_PLATFORMS],
-};
-
-export default Task;
+});

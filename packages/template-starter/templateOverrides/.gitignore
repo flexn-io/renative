@@ -1,0 +1,94 @@
+# OSX
+#
+.DS_Store
+
+# Xcode
+#
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+*.xccheckout
+*.moved-aside
+DerivedData
+*.hmap
+*.ipa
+*.xcuserstate
+project.xcworkspace
+
+# Android Studio
+#
+*.iml
+
+# node.js
+#
+node_modules/
+dist
+lib
+
+# NPM
+#
+npm-debug.log
+
+# Yarn
+#
+yarn-error.log
+
+# Lerna
+#
+lerna-debug.log
+
+# BUCK
+#
+buck-out/
+\.buckd/
+
+# Visual Studio
+#
+.vscode/*
+.vscode
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+
+# Testing
+#
+coverage
+reporting
+coverage-ts
+
+# Expo
+#
+.expo
+
+# Next
+#
+.next
+
+# ReNative
+#
+.rnv
+renative.private.json
+renative.local.json
+renative.local.json
+renative.build.json
+renative.runtime.json
+rnv-config.local.json
+metro.config.local.js
+platformBuilds
+platformAssets
+
+# Other 
+#
+.binlog
+*.binlog
+.bundle
+vendor
+.watchman-cookie-*

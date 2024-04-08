@@ -1,10 +1,24 @@
 import path from 'path';
 import { executeAsync, commandExistsSync } from '../system/exec';
-import { fsExistsSync, invalidatePodsChecksum, removeDirs, writeFileSync } from '../system/fs';
+import { fsExistsSync, removeDirs, writeFileSync } from '../system/fs';
 import { logDefault, logWarning, logError, logInfo, logDebug, logSuccess } from '../logger';
 import { doResolve } from '../system/resolve';
 import { RnvContext } from '../context/types';
 import { inquirerPrompt } from '../api';
+import { getContext } from '../context/provider';
+import { handleMutations } from './mutations';
+
+export const checkIfProjectAndNodeModulesExists = async () => {
+    logDefault('checkIfProjectAndNodeModulesExists');
+
+    const c = getContext();
+
+    if (c.paths.project.configExists && !fsExistsSync(c.paths.project.nodeModulesDir)) {
+        c._requiresNpmInstall = false;
+        logInfo('node_modules folder is missing. INSTALLING...');
+        await installPackageDependencies();
+    }
+};
 
 export const checkNpxIsInstalled = async () => {
     logDefault('checkNpxIsInstalled');
@@ -29,11 +43,11 @@ export const areNodeModulesInstalled = () => !!doResolve('resolve', false);
 
 type NpmVersion = { name: string; value: string };
 
-export const listAndSelectNpmVersion = async (c: RnvContext, npmPackage: string) => {
-    const templateVersionsStr = await executeAsync(c, `npm view ${npmPackage} versions`);
+export const listAndSelectNpmVersion = async (npmPackage: string) => {
+    const templateVersionsStr = await executeAsync(`npm view ${npmPackage} versions`);
     const versionArr = templateVersionsStr.replace(/\r?\n|\r|\s|'|\[|\]/g, '').split(',');
 
-    const templateTagsStr = await executeAsync(c, `npm dist-tag ls ${npmPackage}`);
+    const templateTagsStr = await executeAsync(`npm dist-tag ls ${npmPackage}`);
     const tagArr: Array<{
         name: string;
         version: string;
@@ -105,7 +119,15 @@ const _getInstallScript = (c: RnvContext) => {
 
 export const isYarnInstalled = () => commandExistsSync('yarn') || doResolve('yarn', false);
 
-export const installPackageDependencies = async (c: RnvContext, failOnError = false) => {
+export const installPackageDependencies = async (failOnError = false) => {
+    const c = getContext();
+    const result = await handleMutations();
+
+    if (!result) {
+        c._requiresNpmInstall = false;
+        return;
+    }
+
     c.runtime.forceBuildHookRebuild = true;
     const customScript = _getInstallScript(c);
 
@@ -139,15 +161,17 @@ export const installPackageDependencies = async (c: RnvContext, failOnError = fa
                 "You have a yarn.lock file but you don't have yarn installed. Install it or delete yarn.lock"
             );
         command = yarnLockExists ? 'yarn' : 'npm install';
-    } else if (c.program.packageManager) {
+    } else if (c.program.opts().packageManager) {
         // no lock file check cli option
-        if (['yarn', 'npm'].includes(c.program.packageManager)) {
-            command = c.program.packageManager === 'yarn' ? 'yarn' : 'npm install';
+        if (['yarn', 'npm'].includes(c.program.opts().packageManager)) {
+            command = c.program.opts().packageManager === 'yarn' ? 'yarn' : 'npm install';
             if (command === 'yarn' && !isYarnInstalled())
                 throw new Error("You specified yarn as packageManager but it's not installed");
         } else {
             throw new Error(
-                `Unsupported package manager ${c.program.packageManager}. Only yarn and npm are supported at the moment.`
+                `Unsupported package manager ${
+                    c.program.opts().packageManager
+                }. Only yarn and npm are supported at the moment.`
             );
         }
     } else {
@@ -166,7 +190,9 @@ export const installPackageDependencies = async (c: RnvContext, failOnError = fa
 
     try {
         await executeAsync(command);
-        await invalidatePodsChecksum(c);
+        // This it too much of brute force.
+        // We should find a way to detect if node_modules was actually updated with relevant pod deps
+        // await invalidatePodsChecksum();
     } catch (e) {
         if (failOnError) {
             logError(e);
@@ -176,8 +202,9 @@ export const installPackageDependencies = async (c: RnvContext, failOnError = fa
             `${e}\n Seems like your node_modules is corrupted by other libs. ReNative will try to fix it for you`
         );
         try {
+            // TODO: evalauate if this is still needed
             await cleanNodeModules();
-            await installPackageDependencies(c, true);
+            await installPackageDependencies(true);
         } catch (npmErr) {
             logError(npmErr);
             throw npmErr;
@@ -209,18 +236,6 @@ export const installPackageDependencies = async (c: RnvContext, failOnError = fa
     }
 };
 
-export const jetifyIfRequired = async (c: RnvContext) => {
-    logDefault('jetifyIfRequired');
-    if (c.files.project.configLocal?._meta?.requiresJetify) {
-        if (doResolve('jetifier')) {
-            await executeAsync('npx jetify');
-            c.files.project.configLocal._meta.requiresJetify = false;
-            writeFileSync(c.paths.project.configLocal, c.files.project.configLocal);
-        }
-    }
-    return true;
-};
-
 export const cleanNodeModules = () =>
     new Promise<void>((resolve, reject) => {
         logDefault('cleanNodeModules');
@@ -247,12 +262,4 @@ export const cleanNodeModules = () =>
         removeDirs(dirs)
             .then(() => resolve())
             .catch((e) => reject(e));
-        // removeDirs([
-        //     path.join(c.paths.project.nodeModulesDir, 'react-native-safe-area-view/.git'),
-        //     path.join(c.paths.project.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
-        //     path.join(c.paths.project.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git'),
-        //     path.join(c.paths.rnv.nodeModulesDir, 'react-native-safe-area-view/.git'),
-        //     path.join(c.paths.rnv.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
-        //     path.join(c.paths.rnv.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git')
-        // ]).then(() => resolve()).catch(e => reject(e));
     });
