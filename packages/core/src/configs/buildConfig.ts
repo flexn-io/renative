@@ -50,27 +50,67 @@ export const generateBuildConfig = () => {
 
     const c = getContext();
 
-    const mergeOrder = [
+    const extraPlugins = getEnginesPluginDelta();
+
+    const mergePathsPublic = [
         // TODO: do we need to merge .rnv/renative.json with .customWorkspace/reantive.json ?
         // c.paths.dotRnv.config,
         c.paths.rnvConfigTemplates.config,
         c.paths.workspace.config,
-        c.paths.workspace.configPrivate,
         c.paths.workspace.configLocal,
         c.paths.workspace.project.config,
-        c.paths.workspace.project.configPrivate,
         c.paths.workspace.project.configLocal,
         ...c.paths.workspace.appConfig.configs,
-        ...c.paths.workspace.appConfig.configsPrivate,
         ...c.paths.workspace.appConfig.configsLocal,
         c.paths.project.config,
-        c.paths.project.configPrivate,
         c.paths.project.configLocal,
         ...c.paths.appConfig.configs,
-        ...c.paths.appConfig.configsPrivate,
         ...c.paths.appConfig.configsLocal,
     ];
-    const cleanPaths = mergeOrder.filter((v) => v);
+    //TODO: move this into private buildConfig
+    const mergePathsPrivate = [
+        c.paths.workspace.configPrivate,
+        c.paths.workspace.project.configPrivate,
+        ...c.paths.workspace.appConfig.configsPrivate,
+        c.paths.project.configPrivate,
+        ...c.paths.appConfig.configsPrivate,
+    ];
+    const mergePaths = [...mergePathsPublic, ...mergePathsPrivate];
+
+    const mergeFilesPublic = [
+        // TODO: do we need to merge .rnv/renative.json with .customWorkspace/reantive.json ?
+        // c.files.dotRnv.config,
+        c.files.rnvConfigTemplates.config,
+        { plugins: extraPlugins },
+        // { pluginTemplates },
+        c.files.workspace.config,
+        c.files.workspace.configLocal,
+        c.files.workspace.project.config,
+        c.files.workspace.project.configLocal,
+        ...c.files.workspace.appConfig.configs,
+        ...c.files.workspace.appConfig.configsLocal,
+        c.files.project.config,
+        c.files.project.configLocal,
+        ...c.files.appConfig.configs,
+        ...c.files.appConfig.configsLocal,
+    ];
+    //TODO: move this into private buildConfig
+    const mergeFilesPrivate = [
+        c.files.workspace.configPrivate,
+        c.files.workspace.project.configPrivate,
+        ...c.files.workspace.appConfig.configsPrivate,
+        c.files.project.configPrivate,
+        ...c.files.appConfig.configsPrivate,
+    ];
+    const mergeFiles = [...mergeFilesPublic, ...mergeFilesPrivate];
+
+    _generateBuildConfig(mergePaths, mergeFiles);
+};
+
+const _generateBuildConfig = (mergePaths: string[], mergeFiles: Array<object | undefined>) => {
+    const c = getContext();
+
+    const cleanPaths = mergePaths.filter((v) => v);
     const existsPaths = cleanPaths.filter((v) => {
         const exists = fsExistsSync(v);
         if (exists) {
@@ -89,35 +129,6 @@ export const generateBuildConfig = () => {
         });
     }
 
-    const extraPlugins = getEnginesPluginDelta();
-
-    const mergeFiles = [
-        // TODO: do we need to merge .rnv/renative.json with .customWorkspace/reantive.json ?
-        // c.files.dotRnv.config,
-        c.files.rnvConfigTemplates.config,
-        { plugins: extraPlugins },
-        // { pluginTemplates },
-        c.files.workspace.config,
-        c.files.workspace.configPrivate,
-        c.files.workspace.configLocal,
-        c.files.workspace.project.config,
-        c.files.workspace.project.configPrivate,
-        c.files.workspace.project.configLocal,
-        ...c.files.workspace.appConfig.configs,
-        ...c.files.workspace.appConfig.configsPrivate,
-        ...c.files.workspace.appConfig.configsLocal,
-        c.files.project.config,
-        c.files.project.configPrivate,
-        c.files.project.configLocal,
-        ...c.files.appConfig.configs,
-        ...c.files.appConfig.configsPrivate,
-        ...c.files.appConfig.configsLocal,
-    ];
-
-    // mergeFiles.forEach((mergeFile, i) => {
-    //     console.log(`MERGEDIAGNOSTICS ${i}`, Object.keys(mergeFile?.plugins || {}));
-    // });
-
     const meta = [
         {
             _meta: {
@@ -134,7 +145,7 @@ export const generateBuildConfig = () => {
     });
 
     logDebug(
-        `generateBuildConfig:mergeOrder.length:${mergeOrder.length},cleanPaths.length:${cleanPaths.length},existsPaths.length:${existsPaths.length},existsFiles.length:${existsFiles.length}`
+        `generateBuildConfig:mergeOrder.length:${mergePaths.length},cleanPaths.length:${cleanPaths.length},existsPaths.length:${existsPaths.length},existsFiles.length:${existsFiles.length}`
     );
 
     let out: RnvContextBuildConfig = merge.all<RnvContextBuildConfig>([...meta, ...existsFiles], {

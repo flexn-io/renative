@@ -6,7 +6,7 @@ jest.mock('../../logger');
 jest.mock('../../context/provider');
 
 beforeEach(() => {
-    // NOTE: do not call createRnvContext() in core library itself
+    // NOTE: do not call createRnvContext() in core library itself. It is not a mock
 });
 
 afterEach(() => {

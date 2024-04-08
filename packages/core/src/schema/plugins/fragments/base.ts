@@ -28,6 +28,7 @@ export const zodPluginBaseFragment = z
             .describe('Object of npm dependencies of this plugin. These will be injected into package.json'), //=> npmDependencies
         pluginDependencies: z
             .record(z.string(), z.string().nullable())
+            .nullable()
             .describe('List of other Renative plugins this plugin depends on'),
         webpackConfig: z
             .object({

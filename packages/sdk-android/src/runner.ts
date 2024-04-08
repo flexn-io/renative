@@ -32,7 +32,7 @@ import {
     RnvPlatformKey,
     getContext,
 } from '@rnv/core';
-import { parseAndroidManifestSync, injectPluginManifestSync } from './manifestParser';
+import { parseAndroidManifestSync } from './manifestParser';
 import {
     parseMainActivitySync,
     parseSplashActivitySync,
@@ -48,7 +48,7 @@ import {
     parseAndroidConfigObject,
 } from './gradleParser';
 import { parseGradleWrapperSync } from './gradleWrapperParser';
-import { parseValuesStringsSync, injectPluginXmlValuesSync, parseValuesColorsSync } from './xmlValuesParser';
+import { parseValuesXml } from './xmlValuesParser';
 import { ejectGradleProject } from './ejector';
 import { AndroidDevice, Context, Payload } from './types';
 import {
@@ -60,7 +60,7 @@ import {
     connectToWifiDevice,
     composeDevicesArray,
 } from './deviceManager';
-import { CLI_ANDROID_ADB } from './constants';
+import { ANDROID_COLORS, ANDROID_STRINGS, ANDROID_STYLES, CLI_ANDROID_ADB } from './constants';
 import { runReactNativeAndroid, packageReactNativeAndroid } from '@rnv/sdk-react-native';
 import { getEntryFile } from '@rnv/sdk-utils';
 
@@ -193,7 +193,7 @@ export const runAndroid = async (device: AndroidDevice) => {
 
 const _checkSigningCerts = async (c: Context) => {
     logDefault('_checkSigningCerts');
-    const signingConfig = getConfigProp('signingConfig', 'Debug');
+    const signingConfig = getConfigProp('signingConfig') || 'Debug';
     const isRelease = signingConfig === 'Release';
 
     if (!c.platform) return;
@@ -364,37 +364,13 @@ export const configureGradleProject = async () => {
     return true;
 };
 
-// const createJavaPackageFolders = async (c: Context, appFolder: string) => {
-//     console.log('createJavaPackageFolders', appFolder);
-//     const appId = getAppId(c, c.platform);
-//     console.log('appId', appId);
-//     const javaPackageArray = appId.split('.');
-//     const javaPackagePath = path.join(appFolder, 'app/src/main/java', ...javaPackageArray);
-//     console.log('javaPackagePath', javaPackagePath);
-
-//     if (!fsExistsSync(javaPackagePath)) {
-//         await mkdir(javaPackagePath, { recursive: true });
-//     }
-//     throw new Error('createJavaPackageFolders not implemented');
-// }
-
 export const configureProject = async () => {
     logDefault('configureProject');
     const c = getContext<Payload>();
 
     const appFolder = getAppFolder();
-
-    // if (!fsExistsSync(gradlew)) {
-    //     logWarning(`Your ${chalk().bold(platform)} platformBuild is misconfigured!. let's repair it.`);
-    //     await createPlatformBuild(c, platform);
-    //     await configureGradleProject(c);
-
-    //     return true;
-    // }
-
     const outputFile = getEntryFile();
 
-    // await createJavaPackageFolders(c, appFolder);
     mkdirSync(path.join(appFolder, 'app/src/main/assets'));
     fsWriteFileSync(path.join(appFolder, `app/src/main/assets/${outputFile}.bundle`), '{}');
 
@@ -425,7 +401,6 @@ export const configureProject = async () => {
         appBuildGradleSigningConfigs: '',
         packagingOptions: '',
         appBuildGradleImplementations: '',
-        resourceStrings: [],
         appBuildGradleAfterEvaluate: '',
         kotlinVersion: '',
         googleServicesVersion: '',
@@ -448,8 +423,6 @@ export const configureProject = async () => {
     parsePlugins((plugin, pluginPlat, key) => {
         injectPluginGradleSync(plugin, pluginPlat, key);
         injectPluginKotlinSync(pluginPlat, key, pluginPlat.package);
-        injectPluginManifestSync();
-        injectPluginXmlValuesSync(pluginPlat);
     });
 
     c.payload.pluginConfigAndroid.pluginPackages = c.payload.pluginConfigAndroid.pluginPackages.substring(
@@ -489,8 +462,9 @@ export const configureProject = async () => {
     parseMainActivitySync();
     parseMainApplicationSync();
     parseSplashActivitySync();
-    parseValuesStringsSync();
-    parseValuesColorsSync();
+    parseValuesXml(ANDROID_STRINGS, true);
+    parseValuesXml(ANDROID_STYLES);
+    parseValuesXml(ANDROID_COLORS, true);
     parseAndroidManifestSync();
     parseGradlePropertiesSync();
     // parseFlipperSync(c, 'debug');

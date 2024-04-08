@@ -8,10 +8,11 @@ import {
     fsChmodSync,
     DEFAULTS,
     getContext,
+    RnvFolderName,
 } from '@rnv/core';
 import { addSystemInjects, getBuildFilePath } from '@rnv/sdk-utils';
 
-const GRADLE_SOURCE_PATH = path.join(__dirname, '../templateFiles/gradleProject');
+const GRADLE_SOURCE_PATH = path.join(__dirname, RnvFolderName.UP, RnvFolderName.templateFiles, 'gradleProject');
 
 const copyGradleProjectTemplate = async () => {
     logDefault('copyGradleProjectTemplate');

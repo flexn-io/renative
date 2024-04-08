@@ -24,7 +24,7 @@ export const EnvVars = {
     },
     RCT_NEW_ARCH_ENABLED: () => {
         // new arch support
-        const newArchEnabled = getConfigProp('newArchEnabled', false);
+        const newArchEnabled = getConfigProp('newArchEnabled');
 
         if (newArchEnabled) {
             return { RCT_NEW_ARCH_ENABLED: 1 };
@@ -32,7 +32,7 @@ export const EnvVars = {
         return {};
     },
     RNV_FLIPPER_ENABLED: () => {
-        const enableFlipper = getConfigProp('flipperEnabled', true);
+        const enableFlipper = getConfigProp('flipperEnabled') || true;
         if (!enableFlipper) {
             return { NO_FLIPPER: '1' };
         }

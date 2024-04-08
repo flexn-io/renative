@@ -41,65 +41,6 @@ export const copyRuntimeAssets = async () => {
     return true;
 };
 
-// const _requiresAssetOverride = async (c: RnvConfig) => {
-//     const requiredAssets = c.runtime.engine?.platforms?.[c.platform]?.requiredAssets || [];
-
-//     const assetsToCopy = [];
-//     const assetsDir = path.join(c.paths.project.appConfigBase.dir, 'assets', c.platform);
-
-//     requiredAssets.forEach((v) => {
-//         const sourcePath = path.join(c.runtime.engine.originalTemplateAssetsDir, c.platform, v);
-
-//         const destPath = path.join(assetsDir, v);
-
-//         if (fsExistsSync(sourcePath)) {
-//             if (!fsExistsSync(destPath)) {
-//                 assetsToCopy.push({
-//                     sourcePath,
-//                     destPath,
-//                     value: v,
-//                 });
-//             }
-//         }
-//     });
-
-//     const actionOverride = 'Override exisitng folder';
-//     const actionMerge = 'Merge with existing folder';
-//     const actionSkip = 'Skip. Warning: this might fail your build';
-
-//     if (assetsToCopy.length > 0) {
-//         if (!fsExistsSync(assetsDir)) {
-//             logInfo(
-//                 `Required assets: ${chalk().bold(
-//                     JSON.stringify(assetsToCopy.map((v) => v.value))
-//                 )} will be copied to ${chalk().bold('appConfigs/assets')} folder`
-//             );
-//             return true;
-//         }
-
-//         const { chosenAction } = await inquirerPrompt({
-//             message: 'What to do next?',
-//             type: 'list',
-//             name: 'chosenAction',
-//             choices: [actionOverride, actionMerge, actionSkip],
-//             warningMessage: `Your appConfig/base/assets/${c.platform} exists but engine ${
-//                 c.runtime.engine.config.id
-//             } requires some additional assets:
-// ${chalk().red(requiredAssets.join(','))}`,
-//         });
-
-//         if (chosenAction === actionOverride) {
-//             await removeDirs([assetsDir]);
-//         }
-
-//         if (chosenAction === actionOverride || chosenAction === actionMerge) {
-//             return true;
-//         }
-//     }
-
-//     return false;
-// };
-
 export const copyAssetsFolder = async (subPath?: string, customFn?: (c: RnvContext, platform: RnvPlatform) => void) => {
     logDefault('copyAssetsFolder');
 
@@ -139,9 +80,10 @@ export const copyAssetsFolder = async (subPath?: string, customFn?: (c: RnvConte
     }
 
     const destPath = path.join(getPlatformProjectDir()!, subPath || '');
+    const hasExternalAssets = validAssetSources.length > 0;
 
     // FOLDER MERGERS FROM EXTERNAL SOURCES
-    if (validAssetSources.length > 0) {
+    if (hasExternalAssets) {
         logInfo(
             `Found custom assetSources at ${chalk().gray(
                 validAssetSources.join('/n')
@@ -150,7 +92,6 @@ export const copyAssetsFolder = async (subPath?: string, customFn?: (c: RnvConte
         validAssetSources.forEach((sourcePath) => {
             copyFolderContentsRecursiveSync(sourcePath, destPath, true, undefined, false, undefined, tsPathsConfig, c);
         });
-        return;
     }
 
     // FOLDER MERGERS FROM APP CONFIG + EXTEND
@@ -158,21 +99,13 @@ export const copyAssetsFolder = async (subPath?: string, customFn?: (c: RnvConte
         const hasAssetFolder = c.paths.appConfig.dirs.filter((v) =>
             fsExistsSync(path.join(v, `assets/${assetFolderPlatform}`))
         ).length;
-        // const requireOverride = await _requiresAssetOverride(c);
-        if (!hasAssetFolder) {
+        if (!hasAssetFolder && !hasExternalAssets) {
             logWarning(`Your app is missing assets at ${chalk().red(c.paths.appConfig.dirs.join(','))}.`);
-            // await generateDefaultAssets(
-            //     c,
-            //     platform,
-            //     path.join(c.paths.appConfig.dirs[0], `assets/${assetFolderPlatform}`)
-            //     // requireOverride
-            // );
         }
     } else {
         const sourcePath = path.join(c.paths.appConfig.dir, `assets/${assetFolderPlatform}`);
-        if (!fsExistsSync(sourcePath)) {
+        if (!fsExistsSync(sourcePath) && !hasExternalAssets) {
             logWarning(`Your app is missing assets at ${chalk().red(sourcePath)}.`);
-            // await generateDefaultAssets(c, platform, sourcePath);
         }
     }
 

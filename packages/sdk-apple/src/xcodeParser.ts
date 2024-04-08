@@ -30,13 +30,13 @@ export const parseXcodeProject = async () => {
     // PROJECT
     c.payload.xcodeProj = {};
     c.payload.xcodeProj.provisioningStyle =
-        c.program.opts().provisioningStyle || getConfigProp('provisioningStyle', 'Automatic');
-    c.payload.xcodeProj.deploymentTarget = getConfigProp('deploymentTarget', '14.0');
+        c.program.opts().provisioningStyle || getConfigProp('provisioningStyle') || 'Automatic';
+    c.payload.xcodeProj.deploymentTarget = getConfigProp('deploymentTarget') || '14.0';
     c.payload.xcodeProj.provisionProfileSpecifier =
         c.program.opts().provisionProfileSpecifier || getConfigProp('provisionProfileSpecifier');
     c.payload.xcodeProj.provisionProfileSpecifiers = getConfigProp('provisionProfileSpecifiers') || {};
     c.payload.xcodeProj.codeSignIdentity =
-        c.program.opts().codeSignIdentity || getConfigProp('codeSignIdentity', 'iPhone Developer');
+        c.program.opts().codeSignIdentity || getConfigProp('codeSignIdentity') || 'iPhone Developer';
 
     c.payload.xcodeProj.codeSignIdentities = getConfigProp('codeSignIdentities');
 

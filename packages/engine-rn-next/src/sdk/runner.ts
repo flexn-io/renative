@@ -54,7 +54,7 @@ export const runWebNext = async () => {
     const devServerHost = getDevServerHost();
 
     const isPortActive = await checkPortInUse(port);
-    const bundleAssets = getConfigProp('bundleAssets', false);
+    const bundleAssets = getConfigProp('bundleAssets');
 
     if (!isPortActive) {
         logInfo(
@@ -138,7 +138,7 @@ export const runWebDevServer = async (c: RnvContext) => {
 Dev server running at: ${url}
 `);
 
-    const bundleAssets = getConfigProp('bundleAssets', false);
+    const bundleAssets = getConfigProp('bundleAssets');
     const opts = !c.program?.opts()?.json
         ? ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER
         : ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY;

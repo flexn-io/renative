@@ -21,5 +21,6 @@ build
 
 allure-results
 pluginTemplates
-templateFiles
+templateFiles/**/*
+!/**/*/*.json
 *.d.ts
