@@ -164,17 +164,6 @@ export const _mergeNodeChildren = <T extends ConfigAndroidManifestNode | ConfigA
     });
 };
 
-// type ManifestFeature = {
-//     tag: string;
-//     'android:name': string;
-//     'android:required': boolean;
-//     children?: Array<ManifestFeature>;
-// };
-
-// type ManufestNode = {
-//     children:
-// }
-
 const _mergeFeatures = (
     c: Context,
     baseManifestFile: ConfigAndroidManifest,
@@ -334,17 +323,4 @@ export const parseAndroidManifestSync = () => {
     } catch (e) {
         logError(e);
     }
-};
-
-export const injectPluginManifestSync = () => {
-    // const className = pkg ? pkg.split('.').pop() : null;
-    // let packageParams = '';
-    // if (plugin.packageParams) {
-    //     packageParams = plugin.packageParams.join(',');
-    // }
-    //
-    // const pathFixed = plugin.path
-    //     ? `${plugin.path}`
-    //     : `node_modules/${key}/android`;
-    // const modulePath = `../../${pathFixed}`;
 };

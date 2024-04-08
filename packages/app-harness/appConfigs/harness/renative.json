@@ -5,15 +5,10 @@
     "common": {
         "id": "renative.harness",
         "title": "Harness",
-        "description": "Cross-platform application project based on ReNative",
+        "description": "Test Harness for ReNative",
         "runtime": {
-            "welcomeMessage": "Hello ReNative!"
+            "welcomeMessage": "Hello ReNative Harness!"
         },
-        "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
-        "license": "MIT",
-        "includedPlugins": ["*"],
-        "includedFonts": ["*"],
-        "includedPermissions": ["INTERNET"],
         "buildSchemes": {
             "debug": {
                 "id": "renative.harness.debug",
@@ -24,50 +19,15 @@
                 "title": "Test Harness"
             }
         },
-        "backgroundColor": "#FFFFFF",
         "fontSources": ["{{resolvePackage(react-native-vector-icons)}}/Fonts"],
         "excludedPlugins": ["@react-native-firebase/app"]
     },
     "platforms": {
         "ios": {
-            "entryFile": "index",
-            "provisioningStyle": "Automatic",
-            "systemCapabilities": {
-                "com.apple.AccessWiFi": false,
-                "com.apple.ApplePay": false,
-                "com.apple.ApplicationGroups.iOS": false,
-                "com.apple.AutoFillCredentialProvider": false,
-                "com.apple.BackgroundModes": false,
-                "com.apple.ClassKit": false,
-                "com.apple.DataProtection": false,
-                "com.apple.GameCenter.iOS": false,
-                "com.apple.HealthKit": false,
-                "com.apple.HomeKit": false,
-                "com.apple.HotspotConfiguration": false,
-                "com.apple.InAppPurchase": false,
-                "com.apple.InterAppAudio": false,
-                "com.apple.Keychain": false,
-                "com.apple.Maps.iOS": false,
-                "com.apple.Multipath": false,
-                "com.apple.NearFieldCommunicationTagReading": false,
-                "com.apple.NetworkExtensions.iOS": false,
-                "com.apple.Push": false,
-                "com.apple.SafariKeychain": false,
-                "com.apple.Siri": false,
-                "com.apple.VPNLite": false,
-                "com.apple.WAC": false,
-                "com.apple.Wallet": false,
-                "com.apple.iCloud": false
-            },
             "entitlements": {
                 "aps-environment": "development"
             },
-            "includedPermissions": ["*"],
             "buildSchemes": {
-                "debug": {
-                    "runScheme": "Debug",
-                    "bundleAssets": false
-                },
                 "debug-static-pods": {
                     "runScheme": "Debug",
                     "bundleAssets": false,
@@ -82,15 +42,7 @@
                     },
                     "excludedPlugins": []
                 },
-                "test": {
-                    "runScheme": "Debug",
-                    "bundleAssets": false,
-                    "sdk": "iphonesimulator"
-                },
                 "release": {
-                    "runScheme": "Release",
-                    "bundleAssets": true,
-                    "bundleIsDev": false,
                     "id": "com.renative.harness.ios",
                     "provisionProfileSpecifier": "renative harness adhoc ios",
                     "provisioningStyle": "Manual",
@@ -109,25 +61,8 @@
             }
         },
         "tvos": {
-            "entryFile": "index",
-            "provisioningStyle": "Automatic",
-            "entitlements": {},
-            "includedPermissions": ["*"],
-            "assetSources": ["{{resolvePackage(@flexn/assets-renative-outline)}}/assets"],
             "buildSchemes": {
-                "debug": {
-                    "runScheme": "Debug",
-                    "bundleAssets": false
-                },
-                "test": {
-                    "runScheme": "Debug",
-                    "bundleAssets": false,
-                    "sdk": "appletvsimulator"
-                },
                 "release": {
-                    "runScheme": "Release",
-                    "bundleAssets": true,
-                    "bundleIsDev": false,
                     "id": "com.renative.harness.tvos",
                     "provisionProfileSpecifier": "renative harness adhoc tvos",
                     "provisioningStyle": "Manual",
@@ -145,311 +80,35 @@
                 }
             }
         },
-        "macos": {
-            "entryFile": "index",
-            "provisioningStyle": "Automatic",
-            "includedPermissions": ["*"],
-            "assetSources": ["{{resolvePackage(@flexn/assets-renative-outline)}}/assets"],
-            "buildSchemes": {
-                "debug": {
-                    "runScheme": "Debug",
-                    "bundleAssets": false
-                },
-                "test": {
-                    "runScheme": "Debug",
-                    "bundleAssets": true
-                },
-                "release": {
-                    "runScheme": "Release",
-                    "bundleAssets": true,
-                    "bundleIsDev": false
-                }
-            }
-        },
         "android": {
-            "entryFile": "index",
             "reactNativeEngine": "hermes",
-            "includedPermissions": ["INTERNET"],
             "buildSchemes": {
-                "debug": {
-                    "signingConfig": "Debug",
-                    "bundleAssets": false
-                },
                 "debug-jsc": {
                     "signingConfig": "Debug",
                     "bundleAssets": false,
                     "reactNativeEngine": "jsc"
-                },
-                "test": {
-                    "signingConfig": "Debug",
-                    "bundleAssets": false
-                },
-                "canary": {
-                    "signingConfig": "Release",
-                    "bundleAssets": true,
-                    "bundleIsDev": false,
-                    "multipleAPKs": false
-                },
-                "release": {
-                    "signingConfig": "Release",
-                    "multipleAPKs": true,
-                    "bundleAssets": true,
-                    "bundleIsDev": false
-                }
-            }
-        },
-        "androidtv": {
-            "entryFile": "index",
-            "multipleAPKs": false,
-            "assetFolderPlatform": "android",
-            "includedPermissions": ["*"],
-            "assetSources": ["{{resolvePackage(@flexn/assets-renative-outline)}}/assets"],
-            "buildSchemes": {
-                "debug": {
-                    "signingConfig": "Debug",
-                    "bundleAssets": false
-                },
-                "test": {
-                    "signingConfig": "Debug",
-                    "bundleAssets": false
-                },
-                "release": {
-                    "signingConfig": "Release",
-                    "multipleAPKs": true,
-                    "bundleAssets": true,
-                    "bundleIsDev": false
-                }
-            }
-        },
-        "firetv": {
-            "entryFile": "index",
-            "multipleAPKs": false,
-            "assetFolderPlatform": "android",
-            "includedPermissions": ["*"],
-            "assetSources": ["{{resolvePackage(@flexn/assets-renative-outline)}}/assets"],
-            "buildSchemes": {
-                "debug": {
-                    "signingConfig": "Debug",
-                    "bundleAssets": false
-                },
-                "test": {
-                    "signingConfig": "Debug",
-                    "bundleAssets": false
-                },
-                "release": {
-                    "signingConfig": "Release",
-                    "multipleAPKs": true,
-                    "bundleAssets": true,
-                    "bundleIsDev": false
-                }
-            }
-        },
-        "androidwear": {
-            "entryFile": "index",
-            "multipleAPKs": false,
-            "assetFolderPlatform": "android",
-            "includedPermissions": ["*"],
-            "assetSources": ["{{resolvePackage(@flexn/assets-renative-outline)}}/assets"],
-            "buildSchemes": {
-                "debug": {
-                    "signingConfig": "Debug",
-                    "bundleAssets": false
-                },
-                "test": {
-                    "signingConfig": "Debug",
-                    "bundleAssets": false
-                },
-                "release": {
-                    "signingConfig": "Release",
-                    "bundleAssets": true,
-                    "bundleIsDev": false
                 }
             }
         },
         "tizen": {
-            "appName": "RNVanillaTV",
-            "entryFile": "index",
-            "certificateProfile": "RNVanillaCert",
             "package": "NkVRhWHJST",
-            "id": "NkVRhWHJST.RNVanillaTV",
-            "assetSources": ["{{resolvePackage(@flexn/assets-renative-outline)}}/assets"],
-            "buildSchemes": {
-                "debug": {
-                    "bundleAssets": false
-                },
-                "release": {
-                    "bundleAssets": true,
-                    "bundleIsDev": false
-                }
-            }
+            "id": "NkVRhWHJST.RNVanillaTV"
         },
         "tizenwatch": {
-            "appName": "RNVanillaWatch",
-            "entryFile": "index",
-            "certificateProfile": "RNVanillaCert",
             "package": "cHIP2fIRQZ",
-            "id": "cHIP2fIRQZ.RNVanillaWatch",
-            "assetSources": ["{{resolvePackage(@flexn/assets-renative-outline)}}/assets"],
-            "buildSchemes": {
-                "debug": {
-                    "bundleAssets": false
-                },
-                "release": {
-                    "bundleAssets": true,
-                    "bundleIsDev": false
-                }
-            }
+            "id": "cHIP2fIRQZ.RNVanillaWatch"
         },
         "tizenmobile": {
-            "appName": "RNVanillaMobile",
-            "entryFile": "index",
-            "certificateProfile": "RNVanillaCert",
             "package": "PauodvCU2r",
-            "id": "PauodvCU2r.RNVanillaMobile",
-            "assetSources": ["{{resolvePackage(@flexn/assets-renative-outline)}}/assets"],
-            "buildSchemes": {
-                "debug": {
-                    "bundleAssets": false
-                },
-                "release": {
-                    "bundleAssets": true,
-                    "bundleIsDev": false
-                }
-            }
+            "id": "PauodvCU2r.RNVanillaMobile"
         },
         "web": {
-            "entryFile": "index",
-            "pagesDir": "src/pages",
-            "devServerHost": "0.0.0.0",
-            "assetSources": ["{{resolvePackage(@flexn/assets-renative-outline)}}/assets"],
             "buildSchemes": {
-                "debug": {
-                    "bundleAssets": false,
-                    "environment": "development"
-                },
                 "debug-engine-rn-web": {
                     "bundleAssets": false,
                     "environment": "development",
                     "engine": "engine-rn-web"
-                },
-                "test": {
-                    "bundleAssets": false,
-                    "environment": "development"
-                },
-                "release": {
-                    "bundleAssets": true,
-                    "bundleIsDev": false,
-                    "environment": "production"
                 }
-            },
-            "custom": {
-                "deploy": {
-                    "type": "none"
-                }
-            }
-        },
-        "webtv": {
-            "entryFile": "index",
-            "pagesDir": "src/pages",
-            "devServerHost": "0.0.0.0",
-            "assetSources": ["{{resolvePackage(@flexn/assets-renative-outline)}}/assets"],
-            "buildSchemes": {
-                "debug": {
-                    "bundleAssets": false,
-                    "environment": "development"
-                },
-                "release": {
-                    "bundleAssets": true,
-                    "bundleIsDev": false,
-                    "environment": "production"
-                }
-            },
-            "custom": {
-                "deploy": {
-                    "type": "none"
-                }
-            }
-        },
-        "webos": {
-            "entryFile": "index",
-            "assetSources": ["{{resolvePackage(@flexn/assets-renative-outline)}}/assets"],
-            "buildSchemes": {
-                "debug": {
-                    "bundleAssets": false
-                },
-                "release": {
-                    "bundleAssets": true,
-                    "bundleIsDev": false
-                }
-            }
-        },
-        "windows": {
-            "entryFile": "index",
-            "templateVSProject": {
-                "language": "cpp"
-            },
-            "assetSources": ["{{resolvePackage(@flexn/assets-renative-outline)}}/assets"],
-            "buildSchemes": {
-                "debug": {
-                    "bundleAssets": false
-                },
-                "release": {
-                    "bundleAssets": true,
-                    "bundleIsDev": false,
-                    "enableSourceMaps": true
-                }
-            }
-        },
-        "linux": {
-            "entryFile": "index",
-            "assetSources": ["{{resolvePackage(@flexn/assets-renative-outline)}}/assets"],
-            "buildSchemes": {
-                "debug": {
-                    "bundleAssets": false
-                },
-                "release": {
-                    "bundleAssets": true,
-                    "bundleIsDev": false,
-                    "enableSourceMaps": true
-                }
-            }
-        },
-        "xbox": {
-            "entryFile": "index",
-            "templateVSProject": {
-                "language": "cpp",
-                "arch": "x64"
-            },
-            "buildSchemes": {
-                "debug": {
-                    "bundleAssets": false
-                },
-                "release": {
-                    "bundleAssets": true,
-                    "bundleIsDev": false,
-                    "enableSourceMaps": true
-                }
-            }
-        },
-        "kaios": {
-            "entryFile": "index",
-            "buildSchemes": {
-                "debug": {
-                    "bundleAssets": false
-                },
-                "release": {
-                    "bundleAssets": true,
-                    "bundleIsDev": false
-                }
-            }
-        },
-        "chromecast": {
-            "entryFile": "index",
-            "webpackConfig": {
-                "customScripts": [
-                    "www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js",
-                    "www.gstatic.com/cast/sdk/libs/devtools/debug_layer/caf_receiver_logger.js"
-                ]
             }
         }
     }
