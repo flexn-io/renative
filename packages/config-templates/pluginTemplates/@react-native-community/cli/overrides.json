@@ -1,0 +1,7 @@
+{
+    "overrides": {
+        "build/bin.js": {
+            "require(\"./tools/gracefulifyFs\");": "require(\"./tools/gracefulifyFs\"/*RNV*/); var dotenv = require('dotenv'); if(dotenv) dotenv.config();"
+        }
+    }
+}
