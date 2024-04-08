@@ -2602,7 +2602,7 @@
             },
             "version": "1.0.0"
         },
-        "react-native-google-cast_old": {
+        "react-native-google-cast": {
             "android": {
                 "AndroidManifest": {
                     "children": [
@@ -2677,11 +2677,8 @@
             },
             "version": "4.6.0"
         },
-        "react-native-google-cast": {
+        "react-native-google-cast2": {
             "version": "4.6.0",
-            "props": {
-                "applicationID": "CC1AD845"
-            },
             "ios": {
                 "isStatic": true,
                 "podName": "react-native-google-cast",

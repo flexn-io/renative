@@ -908,7 +908,7 @@ export const copyTemplatePluginsSync = (c: RnvContext) => {
     logDefault('copyTemplatePluginsSync', `(${destPath})`);
 
     parsePlugins((plugin, pluginPlat, key) => {
-        const objectInject: OverridesOptions = []; // = { ...c.configPropsInjects };
+        const objectInject: OverridesOptions = [...c.configPropsInjects];
         if (plugin.props) {
             Object.keys(plugin.props).forEach((v) => {
                 objectInject.push({

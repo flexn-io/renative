@@ -1,6 +1,5 @@
 package {{configProps.id}}
 
-
 import android.content.Context
 import com.google.android.gms.cast.framework.CastOptions
 
