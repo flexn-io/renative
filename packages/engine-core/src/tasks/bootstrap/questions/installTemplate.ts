@@ -100,7 +100,7 @@ const Question = async (data: NewProjectData) => {
         }
     }
 
-    const nmDir = path.join(c.paths.project.dir, RnvFolderName.dotRnv, RnvFolderName.npmCache);
+    const npmCacheDir = path.join(c.paths.project.dir, RnvFolderName.dotRnv, RnvFolderName.npmCache);
 
     if (localTemplatePath) {
         if (!fsExistsSync(localTemplatePath)) {
@@ -112,7 +112,7 @@ const Question = async (data: NewProjectData) => {
         }
         const pkg = readObjectSync<NpmPackageFile>(localTemplatePkgPath);
 
-        mkdirSync(nmDir);
+        mkdirSync(npmCacheDir);
         if (!pkg?.name) {
             return Promise.reject(`Invalid package ${localTemplatePkgPath} missing name field`);
         }
@@ -123,7 +123,7 @@ const Question = async (data: NewProjectData) => {
 
         if (!inputs.template) return;
 
-        const nmTemplatePath = path.join(nmDir, pkg?.name);
+        const nmTemplatePath = path.join(npmCacheDir, pkg?.name);
 
         logInfo(`Found local template: ${pkg.name}@${pkg.version}`);
 
@@ -189,6 +189,7 @@ const Question = async (data: NewProjectData) => {
             }
         );
         // Check if node_modules folder exists
+        const nmDir = path.join(c.paths.project.dir, 'node_modules');
         if (!fsExistsSync(nmDir)) {
             return Promise.reject(
                 `${isYarnInstalled() ? 'yarn' : 'npm'} add ${inputs.template.packageName}@${
