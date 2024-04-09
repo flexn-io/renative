@@ -99,7 +99,10 @@ export default createTask({
                 }
                 return runWebOS(ctx);
             case 'kaios':
-                return runKaiOSProject();
+                if (!ctx.program.opts().only) {
+                    await _configureHostedIfRequired(ctx);
+                }
+                return runKaiOSProject(ctx);
             case 'chromecast':
                 if (!ctx.program.opts().only) {
                     await _configureHostedIfRequired(ctx);

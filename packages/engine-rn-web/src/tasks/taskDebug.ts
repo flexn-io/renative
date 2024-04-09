@@ -6,5 +6,5 @@ export default createTask({
         return executeAsync('npx weinre --boundHost -all-');
     },
     task: RnvTaskName.debug,
-    platforms: ['web', 'webtv', 'tizen'],
+    platforms: ['web', 'webtv', 'tizen', 'kaios'],
 });
