@@ -35,45 +35,11 @@
         }
     },
     "plugins": {
-        "react-native-safe-area-context": "4.9.0",
-        "react-native-splash-screen": {
-            "android": {
-                "templateAndroid": {
-                    "MainActivity_kt": {
-                        "createMethods": ["SplashScreen.show(this)"],
-                        "imports": ["org.devio.rn.splashscreen.SplashScreen"]
-                    },
-                    "colors_xml": {
-                        "tag": "resources",
-                        "children": [
-                            {
-                                "tag": "color",
-                                "name": "bg_line",
-                                "value": "#E7E7E7"
-                            }
-                        ]
-                    }
-                },
-                "package": "org.devio.rn.splashscreen.SplashScreenReactPackage"
-            },
-            "ios": {
-                "templateXcode": {
-                    "AppDelegate_mm": {
-                        "appDelegateImports": ["RNSplashScreen.h"],
-                        "appDelegateMethods": {
-                            "application": {
-                                "didFinishLaunchingWithOptions": ["[RNSplashScreen show]"]
-                            }
-                        }
-                    }
-                },
-                "podName": "react-native-splash-screen"
-            },
-            "tvos": {
-                "disabled": true
-            },
-            "version": "3.3.0"
-        },
+        "react-native-safe-area-context": "source:rnv",
+        "react-native-splash-screen": "source:rnv",
+        "rn-fetch-blob": "source:rnv",
+        "react-native-carplay": "source:rnv",
+        "@react-native-community/push-notification-ios": "source:rnv",
         "TestNativeModule": {
             "android": {
                 "templateAndroid": {
@@ -83,33 +49,6 @@
                 },
                 "forceLinking": true
             }
-        },
-        "rn-fetch-blob": { "tvos": { "disabled": true }, "version": "0.12.0" },
-        "react-native-carplay": {
-            "ios": {
-                "templateXcode": {
-                    "AppDelegate_h": {
-                        "appDelegateImports": ["CarPlay/CarPlay.h"],
-                        "appDelegateExtensions": ["UIApplicationDelegate", "CPApplicationDelegate"]
-                    },
-                    "AppDelegate_mm": {
-                        "appDelegateImports": ["RNCarPlay.h"],
-                        "appDelegateMethods": {
-                            "application": {
-                                "didConnectCarInterfaceController": [
-                                    "[RNCarPlay connectWithInterfaceController:interfaceController window:window]"
-                                ],
-                                "didDisconnectCarInterfaceController": ["[RNCarPlay disconnect]"]
-                            }
-                        }
-                    }
-                },
-                "podName": "react-native-carplay"
-            },
-            "tvos": {
-                "disabled": true
-            },
-            "version": "2.3.0"
         },
         "@react-native-firebase/app": {
             "disablePluginTemplateOverrides": true,
@@ -201,59 +140,23 @@
                     }
                 }
             },
-            "tvos": {
-                "disabled": true
-            },
-            "version": "4.1.4",
-            "props": {
-                "PERMISSIONS": "'Calendars', 'Contacts'"
-            },
-            "disablePluginTemplateOverrides": true
-        },
-        "@react-native-community/push-notification-ios": {
-            "ios": {
-                "templateXcode": {
-                    "AppDelegate_h": {
-                        "appDelegateExtensions": ["UNUserNotificationCenterDelegate"],
-                        "appDelegateImports": [
-                            "<UserNotifications/UNUserNotificationCenter.h>",
-                            "<UserNotifications/UserNotifications.h>"
-                        ]
-                    },
-                    "AppDelegate_mm": {
-                        "appDelegateImports": ["<RNCPushNotificationIOS.h>"],
-                        "appDelegateMethods": {
-                            "application": {
-                                "didRegisterForRemoteNotificationsWithDeviceToken": [
-                                    "[RNCPushNotificationIOS didRegisterForRemoteNotificationsWithDeviceToken:deviceToken]"
-                                ],
-                                "didReceiveRemoteNotification": [
-                                    "[RNCPushNotificationIOS didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler]"
-                                ],
-                                "didFailToRegisterForRemoteNotificationsWithError": [
-                                    "[RNCPushNotificationIOS didFailToRegisterForRemoteNotificationsWithError:error]"
-                                ],
-                                "didFinishLaunchingWithOptions": [
-                                    "UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter]",
-                                    "center.delegate = self"
-                                ]
-                            },
-                            "userNotificationCenter": {
-                                "willPresent": [
-                                    "completionHandler(UNNotificationPresentationOptionSound | UNNotificationPresentationOptionAlert | UNNotificationPresentationOptionBadge)"
-                                ],
-                                "didReceiveNotificationResponse": [
-                                    "[RNCPushNotificationIOS didReceiveNotificationResponse:response]"
-                                ]
+            "android": {
+                "templateAndroid": {
+                    "AndroidManifest_xml": {
+                        "tag": "manifest",
+                        "children": [
+                            {
+                                "tag": "uses-permission ",
+                                "android:name": "android.permission.WRITE_CONTACTS",
+                                "children": []
                             }
-                        }
+                        ]
                     }
                 }
             },
-            "tvos": {
-                "disabled": true
-            },
-            "version": "1.11.0"
+            "props": {
+                "PERMISSIONS": "'Calendars', 'Contacts'"
+            }
         },
         "react-native": {
             "android": {

@@ -39,10 +39,15 @@ export const EnvVars = {
         return {};
     },
     RNV_SKIP_LINKING: () => {
+        const { platform } = getContext();
         const skipPlugins: string[] = [];
         parsePlugins(
             (plugin, pluginPlat, key) => {
-                if (pluginPlat.disabled || plugin.disabled) {
+                if (
+                    pluginPlat.disabled ||
+                    plugin.disabled ||
+                    (plugin.supportedPlatforms && !plugin.supportedPlatforms.includes(platform!))
+                ) {
                     skipPlugins.push(key);
                 }
             },
