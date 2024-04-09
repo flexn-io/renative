@@ -6,7 +6,7 @@ import { createRnvModule } from '@rnv/core';
 const Integration = createRnvModule({
     tasks: [taskStarterHello, taskSingleCommand],
     name: Config.name,
-    type: 'generic',
+    type: 'public',
 });
 
 export default Integration;

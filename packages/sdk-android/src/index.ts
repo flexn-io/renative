@@ -13,21 +13,21 @@ import taskRun from './tasks/taskRun';
 import taskBuild from './tasks/taskBuild';
 import { GetContextType, createRnvModule } from '@rnv/core';
 
-export const Tasks = [
-    taskTargetLaunch,
-    taskTargetList,
-    taskSdkConfigure,
-    taskLog,
-    taskPackage,
-    taskConfigure,
-    taskRun,
-    taskBuild,
-];
-
-const Sdk = createRnvModule({
-    tasks: Tasks,
+const RnvModule = createRnvModule({
+    tasks: [
+        taskTargetLaunch,
+        taskTargetList,
+        taskSdkConfigure,
+        taskLog,
+        taskPackage,
+        taskConfigure,
+        taskRun,
+        taskBuild,
+    ] as const,
     name: '@rnv/sdk-android',
     type: 'internal',
 });
 
-export type GetContext = GetContextType<typeof Sdk.getContext>;
+export default RnvModule;
+
+export type GetContext = GetContextType<typeof RnvModule.getContext>;

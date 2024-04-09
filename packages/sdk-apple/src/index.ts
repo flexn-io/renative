@@ -31,10 +31,12 @@ export const Tasks = [
     taskBuild,
 ];
 
-const Sdk = createRnvModule({
+const RnvModule = createRnvModule({
     tasks: Tasks,
     name: '@rnv/sdk-apple',
     type: 'internal',
 });
 
-export type GetContext = GetContextType<typeof Sdk.getContext>;
+export default RnvModule;
+
+export type GetContext = GetContextType<typeof RnvModule.getContext>;

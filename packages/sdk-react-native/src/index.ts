@@ -9,10 +9,12 @@ import taskStart from './tasks/taskStart';
 
 export const Tasks = [taskStart];
 
-const Sdk = createRnvModule({
+const RnvModule = createRnvModule({
     tasks: Tasks,
     name: '@rnv/sdk-react-native',
     type: 'internal',
 });
 
-export type GetContext = GetContextType<typeof Sdk.getContext>;
+export default RnvModule;
+
+export type GetContext = GetContextType<typeof RnvModule.getContext>;

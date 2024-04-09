@@ -9,6 +9,7 @@ export const createRnvModule = <OKey extends string>(opts: CreateRnvModuleOpts<O
 
     const module: RnvModule<OKey> = {
         ...opts,
+        originalTasks: opts.tasks,
         name: opts.name,
         tasks: createTaskMap<OKey>({ tasks: opts.tasks, ownerID: opts.name, ownerType: opts.type }),
         getContext: () => getContext<any, OKey>(),

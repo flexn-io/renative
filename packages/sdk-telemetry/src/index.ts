@@ -4,12 +4,12 @@ import taskTelemetryEnable from './tasks/taskTelemetryEnable';
 import taskTelemetryDisable from './tasks/taskTelemetryDisable';
 export * from './runner';
 
-const Sdk = createRnvModule({
+const RnvModule = createRnvModule({
     tasks: [taskTelemetryStatus, taskTelemetryEnable, taskTelemetryDisable],
     name: '@rnv/sdk-telemetry',
     type: 'internal',
 });
 
-export type GetContext = GetContextType<typeof Sdk.getContext>;
+export default RnvModule;
 
-export default Sdk;
+export type GetContext = GetContextType<typeof RnvModule.getContext>;

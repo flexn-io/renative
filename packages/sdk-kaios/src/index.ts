@@ -7,10 +7,12 @@ import taskTargetLaunch from './tasks/taskTargetLaunch';
 
 export const Tasks = [taskTargetLaunch];
 
-const Sdk = createRnvModule({
+const RnvModule = createRnvModule({
     tasks: Tasks,
     name: '@rnv/sdk-kaios',
     type: 'internal',
 });
 
-export type GetContext = GetContextType<typeof Sdk.getContext>;
+export default RnvModule;
+
+export type GetContext = GetContextType<typeof RnvModule.getContext>;

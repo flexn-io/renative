@@ -1,4 +1,5 @@
 import type { RnvContext } from '../context/types';
+import type { RnvModule } from '../modules/types';
 import type { ConfigFileEngine } from '../schema/types';
 import type { RnvTask, RnvTaskMap } from '../tasks/types';
 import type { RnvPlatformKey } from '../types';
@@ -10,6 +11,7 @@ export type CreateRnvEngineOpts<OKey extends string> = {
     platforms: RnvEnginePlatforms;
     config: ConfigFileEngine;
     tasks: ReadonlyArray<RnvTask<OKey>>;
+    extendModules: ReadonlyArray<RnvModule<OKey>>;
     rootPath?: string;
     originalTemplatePlatformProjectDir?: string;
     projectDirName?: string;

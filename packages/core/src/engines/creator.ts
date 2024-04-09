@@ -1,6 +1,7 @@
 import { generateEngineExtensions } from '.';
 import { getContext } from '../context/provider';
 import { createTaskMap } from '../tasks/creators';
+import { RnvTask } from '../tasks/types';
 import { RnvPlatformKey } from '../types';
 import { extractEngineId } from './nameExtractor';
 import type { CreateRnvEngineOpts, RnvEngine, RnvEnginePlatforms } from './types';
@@ -21,6 +22,33 @@ export const createRnvEngine = <OKey extends string>(opts: CreateRnvEngineOpts<O
         }
     });
 
+    // const em = opts.extendModules || [];
+    // const t = (index: number) => {
+    //     return em[index]?.originalTasks || [];
+    // };
+    //     let total = [0, 1, 2, 3].reduce((accumulator, currentValue) => accumulator + currentValue);
+    // console.log(total);
+    // const extraTasks: ReadonlyArray<RnvTask<OKey>> = [
+    //     ...t(0),
+    //     ...t(1),
+    //     ...t(2),
+    //     ...t(3),
+    //     ...t(4),
+    //     ...t(5),
+    //     ...t(6),
+    //     ...t(7),
+    //     ...t(8),
+    //     ...t(9),
+    //     ...t(10),
+    //     ...t(11),
+    //     ...t(12),
+    //     ...t(13),
+    // ];
+
+    const extraTasks = opts.extendModules.reduce<ReadonlyArray<RnvTask<OKey>>>((accumulator, currentValue) => {
+        return [...accumulator, ...currentValue.originalTasks];
+    }, []);
+
     const engine: RnvEngine<OKey> = {
         ...opts,
         platforms,
@@ -28,7 +56,11 @@ export const createRnvEngine = <OKey extends string>(opts: CreateRnvEngineOpts<O
         serverDirName: opts.serverDirName || '',
         projectDirName: opts.projectDirName || '',
         runtimeExtraProps: opts.runtimeExtraProps || {},
-        tasks: createTaskMap<OKey>({ tasks: opts.tasks, ownerID: opts.config.name, ownerType: 'engine' }),
+        tasks: createTaskMap<OKey>({
+            tasks: [...opts.tasks, ...extraTasks],
+            ownerID: opts.config.name,
+            ownerType: 'engine',
+        }),
         getContext: () => getContext<any, OKey>(),
     };
 
