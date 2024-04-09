@@ -1,51 +1,37 @@
-import { findSuitableTask } from './taskFinder';
 import { inquirerPrompt } from '../api';
 import { getContext } from '../context/provider';
 import { chalk, logInfo } from '../logger';
 import { getRegisteredTasks } from './taskRegistry';
 import { initializeTask } from './taskExecutors.js';
-import { getTaskNameFromCommand } from './taskHelpers';
+import { getTaskNameFromCommand, selectPlatformIfRequired } from './taskHelpers';
+import { RnvTask } from './types';
 
 type TaskOpt = {
     name: string;
-    value: string;
+    value: RnvTask;
 };
 
 const generateOptionPrompt = async (options: TaskOpt[]) => {
     const ctx = getContext();
 
-    // const { selectedTask } = await inquirerPrompt({
-    //     type: 'list',
-    //     // default: defaultCmd,
-    //     name: 'selectedTask',
-    //     message: `Pick a command`,
-    //     choices: options,
-    //     pageSize: 15,
-    //     logMessage: 'Welcome to the brave new world...',
-    // });
-    // const taskArr = selectedTask.split(' ');
-    // ctx.command = taskArr[0];
-    // ctx.subCommand = taskArr[1] || null;
-
-    // const initTask = await findSuitableTask();
-    // return initializeTask(initTask);
-
     const { selectedTask } = await inquirerPrompt({
-        type: 'list',
-        // default: defaultCmd,
+        type: 'autocomplete',
+        source: async (_, input) => options.filter((o) => o.name.toLowerCase().includes(input?.toLowerCase() ?? '')),
+        initialValue: ctx.program.args?.join(' '),
         name: 'selectedTask',
         message: `Pick a command`,
+        loop: false,
         choices: options,
         pageSize: 15,
         logMessage: 'Welcome to the brave new world...',
     });
 
-    const taskArr = selectedTask.split(' ');
+    const taskArr = selectedTask.task.split(' ');
     ctx.command = taskArr[0];
     ctx.subCommand = taskArr[1] || null;
 
-    const initTask = await findSuitableTask();
-    return initializeTask(initTask);
+    await selectPlatformIfRequired(selectedTask);
+    return initializeTask(selectedTask);
 };
 
 export const runInteractiveWizardForSubTasks = async () => {
@@ -75,7 +61,7 @@ export const runInteractiveWizardForSubTasks = async () => {
             if (!optionsMap[taskInstance.task]) {
                 optionsMap[taskInstance.task] = {
                     name: `${taskInstance.task} ${chalk().gray(taskInstance.description)}`,
-                    value: taskInstance.task,
+                    value: taskInstance,
                 };
             } else {
                 // If multiple tasks with same name we append ... to indicate there are more options coming
@@ -85,7 +71,7 @@ export const runInteractiveWizardForSubTasks = async () => {
             if (!alternativeOptionsMap[taskInstance.task]) {
                 alternativeOptionsMap[taskInstance.task] = {
                     name: `${taskInstance.task} ${chalk().gray(taskInstance.description)}`,
-                    value: taskInstance.task,
+                    value: taskInstance,
                 };
             } else {
                 // If multiple tasks with same name we append ... to indicate there are more options coming
@@ -127,7 +113,7 @@ export const runInteractiveWizard = async () => {
     Object.values(tasks).forEach((taskInstance) => {
         options.push({
             name: `${taskInstance.task} ${chalk().gray(taskInstance.description)}`,
-            value: taskInstance.task,
+            value: taskInstance,
         });
     });
 
