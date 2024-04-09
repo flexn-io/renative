@@ -32,6 +32,7 @@ export type RnvTask<OKey extends string = string> = {
     isPriorityOrder?: boolean;
     ignoreEngines?: boolean;
     ownerID?: string;
+    ownerType?: string;
     key: string;
 };
 

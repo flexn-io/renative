@@ -1,7 +1,6 @@
 {
     "$schema": "../../.rnv/schema/rnv.engine.json",
-    "id": "engine-lightning",
-    "packageName": "@rnv/engine-lightning",
+    "name": "@rnv/engine-lightning",
     "overview": "ReNative Engine to build lightning based apps.",
     "plugins": {
         "@lightningjs/sdk": "source:rnv",

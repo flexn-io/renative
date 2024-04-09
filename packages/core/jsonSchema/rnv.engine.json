@@ -7,16 +7,13 @@
         "custom": {
           "description": "Object used to extend your renative with custom props. This allows renative json schema to be validated"
         },
-        "id": {
+        "name": {
           "type": "string",
-          "description": "ID of engine"
-        },
-        "packageName": {
-          "type": "string"
+          "description": "Name of the engine (best to use name of the actual package)"
         },
         "engineExtension": {
           "type": "string",
-          "description": "Engine extension ised by rnv during compilation"
+          "description": "Engine extension used by rnv during compilation"
         },
         "overview": {
           "type": "string",

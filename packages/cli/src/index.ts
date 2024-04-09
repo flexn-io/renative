@@ -20,7 +20,7 @@ import {
     doResolve,
     exitRnvCore,
     registerRnvTasks,
-    generateRnvTaskMap,
+    createTaskMap,
 } from '@rnv/core';
 import TelemetrySDK from '@rnv/sdk-telemetry';
 import { Telemetry } from '@rnv/sdk-telemetry';
@@ -140,7 +140,7 @@ export const executeRnv = async ({
 
     Telemetry.initialize();
     // Example of how to register set of tasks manually
-    registerRnvTasks(generateRnvTaskMap(TelemetrySDK.tasks, { packageName: '@rnv/sdk-telemetry' }));
+    registerRnvTasks(createTaskMap({ ownerID: '@rnv/sdk-telemetry', ownerType: 'sdk', tasks: TelemetrySDK.tasks }));
     await registerEngine(EngineCore);
 
     await executeRnvCore();

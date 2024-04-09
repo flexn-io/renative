@@ -16,7 +16,7 @@ const isTaskSupportedOnPlatform = (task: RnvTask, platform: RnvPlatform) => {
     // `isEngine` hackily prevents that
     const isEngine = task.ownerID !== '@rnv/engine-core' && task.ownerID?.includes('/engine');
 
-    const selectedEngineID = getEngineRunnerByPlatform(platform)?.config.packageName;
+    const selectedEngineID = getEngineRunnerByPlatform(platform)?.config.name;
     if (isEngine && selectedEngineID && task.ownerID && task.ownerID !== selectedEngineID) {
         // If we already specified platform we can skip tasks registered to unsupported engines
         return false;

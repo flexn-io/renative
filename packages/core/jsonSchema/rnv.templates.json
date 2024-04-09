@@ -22,12 +22,6 @@
             "additionalProperties": false
           }
         },
-        "engineIdMap": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          }
-        },
         "engineTemplates": {
           "type": "object",
           "additionalProperties": {
@@ -423,6 +417,9 @@
                               "type": "object",
                               "properties": {
                                 "tag": {
+                                  "type": "string"
+                                },
+                                "name": {
                                   "type": "string"
                                 },
                                 "android:name": {

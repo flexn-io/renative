@@ -1,11 +1,14 @@
 import { getContext } from '../context/provider';
-import { generateRnvTaskMap } from '../tasks/taskHelpers';
+import { createTaskMap } from '../tasks/creators';
 import type { RnvIntegration, CreateRnvIntegrationOpts } from './types';
 
 export const createRnvIntegration = <OKey extends string>(opts: CreateRnvIntegrationOpts<OKey>) => {
+    if (!opts.config.name) {
+        throw new Error('Integration name is required. check your renative.integration.json file');
+    }
     const intg: RnvIntegration<OKey> = {
         ...opts,
-        tasks: generateRnvTaskMap<OKey>(opts.tasks, opts.config),
+        tasks: createTaskMap<OKey>({ tasks: opts.tasks, ownerID: opts.config.name, ownerType: 'integration' }),
         getContext: () => getContext<any, OKey>(),
     };
 

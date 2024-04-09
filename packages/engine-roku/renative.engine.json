@@ -1,14 +1,11 @@
 {
     "$schema": "../../.rnv/schema/rnv.engine.json",
-    "id": "engine-roku",
-    "packageName": "@rnv/engine-roku",
+    "name": "@rnv/engine-roku",
     "engineExtension": "rk",
     "overview": "ReNative Roku Engine",
     "plugins": {},
     "npm": {
         "devDependencies": {}
     },
-    "platforms": {
-        "roku": {}
-    }
+    "platforms": {}
 }

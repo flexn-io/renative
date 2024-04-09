@@ -5,7 +5,6 @@ import { zodPluginSchema } from '../plugins';
 export const zodConfigFileTemplates: AnyZodObject = z
     .object({
         projectTemplates: zodProjectTemplates,
-        engineIdMap: z.record(z.string(), z.string()),
         engineTemplates: z.record(
             z.string(),
             z.object({

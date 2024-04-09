@@ -993,6 +993,9 @@
                                     "tag": {
                                       "type": "string"
                                     },
+                                    "name": {
+                                      "type": "string"
+                                    },
                                     "android:name": {
                                       "type": "string"
                                     },

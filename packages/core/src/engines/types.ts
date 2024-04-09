@@ -21,6 +21,7 @@ export type CreateRnvEngineOpts<OKey extends string> = {
 export type RnvEngine<OKey extends string = string> = {
     originalTemplatePlatformsDir?: string;
     platforms: RnvEnginePlatforms;
+    id: string;
     config: ConfigFileEngine;
     tasks: RnvTaskMap<OKey>;
     rootPath?: string;

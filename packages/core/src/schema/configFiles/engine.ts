@@ -20,10 +20,8 @@ const zodEnginePlatform = z.object({
 export const zodConfigFileEngine = z
     .object({
         custom: z.optional(zodExt),
-        id: z.string().describe('ID of engine'),
-        packageName: z.string(),
-        engineExtension: z.string().describe('Engine extension ised by rnv during compilation'),
-        // extends: z.string().describe('ID of engine to extend. Not being used yet'),
+        name: z.string().describe('Name of the engine (best to use name of the actual package)'),
+        engineExtension: z.string().describe('Engine extension used by rnv during compilation'),
         overview: z.string().describe('Overview description of engine'),
         plugins: z.record(z.string(), z.string()).describe('List of required plugins for this engine to work properly'),
         npm: zodEngineNpm,

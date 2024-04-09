@@ -70,9 +70,7 @@ export const initializeTask = async (taskInstance: RnvTask | undefined) => {
 
     if (c.runtime.engine?.config) {
         logInfo(
-            `Current engine: ${chalk().bold(c.runtime.engine?.config?.id)} ${chalk().grey(
-                `(${c.runtime.engine?.rootPath})`
-            )}`
+            `Current engine: ${chalk().bold(c.runtime.engine?.id)} ${chalk().grey(`(${c.runtime.engine?.rootPath})`)}`
         );
     } else {
         logInfo(`Current engine: n/a`);
