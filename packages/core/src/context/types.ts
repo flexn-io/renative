@@ -20,9 +20,9 @@ import type { NpmPackageFile } from '../configs/types';
 import { type ParamKeys, type ProgramOptionsKey } from '../tasks/constants';
 import { type ExecaChildProcess } from 'execa';
 import { type RnvPlugin } from '../plugins/types';
-import type { RnvIntegration } from '../integrations/types';
 import type { DependencyMutation } from '../projects/types';
 import { CamelCasedProperties } from 'type-fest';
+import { RnvModule } from '../modules/types';
 
 export type CreateContextOptions = {
     program: RnvContextProgram;
@@ -108,7 +108,7 @@ export type RnvContextBuildConfig = Partial<ConfigFileBuildConfig> & {
 };
 
 export type RnvContextRuntime = {
-    integrationsByIndex: Array<RnvIntegration>;
+    modulesByIndex: Array<RnvModule>;
     enginesByPlatform: Record<string, RnvEngine>;
     enginesByIndex: Array<RnvEngine>;
     enginesById: Record<string, RnvEngine>;

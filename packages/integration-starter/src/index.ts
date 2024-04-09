@@ -1,11 +1,12 @@
 import taskStarterHello from './tasks/taskStarterHello';
 import taskSingleCommand from './tasks/taskSingleCommand';
-import { createRnvIntegration } from '@rnv/core';
 import { Config } from './config';
+import { createRnvModule } from '@rnv/core';
 
-const Integration = createRnvIntegration({
+const Integration = createRnvModule({
     tasks: [taskStarterHello, taskSingleCommand],
-    config: Config,
+    name: Config.name,
+    type: 'generic',
 });
 
 export default Integration;

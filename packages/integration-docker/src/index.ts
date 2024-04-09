@@ -1,11 +1,12 @@
 import taskDockerDeploy from './tasks/taskDockerDeploy';
 import taskDockerExport from './tasks/taskDockerExport';
-import { createRnvIntegration } from '@rnv/core';
 import { Config } from './config';
+import { createRnvModule } from '@rnv/core';
 
-const Integration = createRnvIntegration({
+const Integration = createRnvModule({
     tasks: [taskDockerExport, taskDockerDeploy],
-    config: Config,
+    name: Config.name,
+    type: 'generic',
 });
 
 export default Integration;

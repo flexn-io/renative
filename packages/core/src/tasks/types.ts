@@ -1,4 +1,5 @@
 import type { RnvContext } from '../context/types';
+import { RnvModuleType } from '../modules/types';
 import type { RnvPlatformKey } from '../types';
 
 export type CreateRnvTaskOpt<OKey extends string = string> = {
@@ -32,7 +33,7 @@ export type RnvTask<OKey extends string = string> = {
     isPriorityOrder?: boolean;
     ignoreEngines?: boolean;
     ownerID?: string;
-    ownerType?: string;
+    ownerType?: RnvModuleType;
     key: string;
 };
 

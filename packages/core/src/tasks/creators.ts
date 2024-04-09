@@ -1,3 +1,4 @@
+import { RnvModuleType } from '../modules/types';
 import type { CreateRnvTaskOpt, RnvTask, RnvTaskMap } from './types';
 
 export const createTask = <OKey extends string>(task: CreateRnvTaskOpt<OKey>) => {
@@ -13,7 +14,7 @@ export const createTaskOptionsMap = () => {
 export const createTaskMap = <OKey extends string>(opts: {
     tasks: ReadonlyArray<RnvTask<OKey>>;
     ownerID: string;
-    ownerType: 'engine' | 'integration' | 'sdk'; //| 'build-hook' | 'plugin' | 'template' |
+    ownerType: RnvModuleType;
 }) => {
     const output: RnvTaskMap<OKey> = {};
 

@@ -14,7 +14,7 @@ import taskPackage from './tasks/taskPackage';
 import taskConfigure from './tasks/taskConfigure';
 import taskRun from './tasks/taskRun';
 import taskBuild from './tasks/taskBuild';
-import { GetContextType, createRnvSDK } from '@rnv/core';
+import { GetContextType, createRnvModule } from '@rnv/core';
 
 export const Tasks = [
     taskTargetLaunch,
@@ -31,8 +31,10 @@ export const Tasks = [
     taskBuild,
 ];
 
-const Sdk = createRnvSDK({
+const Sdk = createRnvModule({
     tasks: Tasks,
+    name: '@rnv/sdk-apple',
+    type: 'internal',
 });
 
 export type GetContext = GetContextType<typeof Sdk.getContext>;

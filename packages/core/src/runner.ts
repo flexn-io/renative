@@ -1,6 +1,6 @@
 import { getContext } from './context/provider';
 import { installEngines, registerMissingPlatformEngines } from './engines';
-import { loadIntegrations } from './integrations';
+import { loadRnvModulesFromProject } from './modules';
 import { checkAndMigrateProject } from './migrator';
 import { configureRuntimeDefaults } from './context/runtime';
 import { findSuitableTask } from './tasks/taskFinder';
@@ -51,7 +51,7 @@ export const executeRnvCore = async () => {
     const { configExists } = c.paths.project;
     if (!c.command && configExists) {
         await _installAndRegisterAllEngines();
-        await loadIntegrations();
+        await loadRnvModulesFromProject();
         return runInteractiveWizard();
     }
 
@@ -66,7 +66,7 @@ export const executeRnvCore = async () => {
     }
 
     // Next we load all integrations and see if there is a task that matches
-    await loadIntegrations();
+    await loadRnvModulesFromProject();
     initTask = await findSuitableTask();
     if (initTask) {
         if (initTask.platforms) {

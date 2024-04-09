@@ -43,10 +43,10 @@ export * from './engines';
 export * from './engines/creator';
 export * from './engines/dependencyResolver';
 
-export * from './sdks/creator';
+export * from './modules/creator';
 
-export * from './integrations/creator';
-export * from './integrations';
+export * from './modules/creator';
+export * from './modules';
 
 export * from './system/exec';
 export * from './system/fs';
@@ -76,7 +76,7 @@ export * from './enums/platformName';
 //TYPES
 export * from './types';
 export * from './engines/types';
-export * from './sdks/types';
+export * from './modules/types';
 export * from './context/types';
 export * from './plugins/types';
 export * from './projects/types';
@@ -86,4 +86,4 @@ export * from './system/types';
 export * from './configs/types';
 export * from './env/types';
 export * from './api/types';
-export * from './integrations/types';
+export * from './modules/types';
