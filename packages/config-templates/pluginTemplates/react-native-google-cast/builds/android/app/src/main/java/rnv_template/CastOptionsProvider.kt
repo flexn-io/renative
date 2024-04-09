@@ -2,14 +2,18 @@ package {{configProps.id}}
 
 import android.content.Context
 import com.google.android.gms.cast.framework.CastOptions
-
-
+import com.google.android.gms.cast.framework.OptionsProvider
+import com.google.android.gms.cast.framework.SessionProvider
 import com.reactnative.googlecast.GoogleCastOptionsProvider
 
-class CastOptionsProvider : OptionsProvider {
+
+internal class CastOptionsProvider : OptionsProvider {
+
     override fun getCastOptions(context: Context): CastOptions {
-        return Builder()
-            .setReceiverApplicationId(context.getString(R.string.app_id))
+        val receiverId = context.getString(R.string.app_id)
+        
+        return CastOptions.Builder()
+            .setReceiverApplicationId(receiverId)
             .build()
     }
 

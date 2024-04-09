@@ -2646,6 +2646,16 @@
                     },
                     "MainApplication_kt": {
                         "packages": ["com.reactnative.googlecast.GoogleCastPackage"]
+                    },
+                    "strings_xml": {
+                        "tag": "resources",
+                        "children": [
+                            {
+                                "tag": "string",
+                                "name": "app_id",
+                                "value": "{{props.APPLICATION_ID}}"
+                            }
+                        ]
                     }
                 }
             },
