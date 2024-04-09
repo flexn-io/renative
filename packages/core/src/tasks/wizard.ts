@@ -35,7 +35,7 @@ const groupingWizard = async (tasks: RnvTask[]) => {
     const optionsMap: Record<string, { name: string; value: RnvTask[] }> = {};
     filteredTasks.forEach((taskInstance) => {
         const prefix = taskInstance.task.split(' ')[0];
-        const sharesPrefix = filteredTasks.filter((t) => t.task.split(' ')[0] === prefix).length > 2;
+        const sharesPrefix = filteredTasks.filter((t) => t.task.split(' ')[0] === prefix).length > 1;
         if (sharesPrefix) {
             optionsMap[prefix] = {
                 name: `${prefix}${chalk().gray('...')}`,
@@ -121,7 +121,7 @@ const disambiguatingWizard = async (tasks: RnvTask[]) => {
             source: async (_, input) =>
                 options.filter((o) => o.name.toLowerCase().includes(input?.toLowerCase() ?? '')),
             name: 'selected',
-            message: `Pick a subcommand`,
+            message: `Pick a command`,
             loop: false,
             choices: options,
             pageSize: 15,
