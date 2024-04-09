@@ -2605,45 +2605,48 @@
         },
         "react-native-google-cast": {
             "android": {
-                "AndroidManifest": {
-                    "children": [
-                        {
-                            "android:name": ".MainApplication",
-                            "children": [
-                                {
-                                    "android:name": "com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME",
-                                    "android:value": "{{configProps.id}}.CastOptionsProvider",
-                                    "tag": "meta-data"
-                                },
-                                {
-                                    "android:name": "com.reactnative.googlecast.RECEIVER_APPLICATION_ID",
-                                    "android:value": "{{props.APPLICATION_ID}}",
-                                    "tag": "meta-data"
-                                },
-                                {
-                                    "android:name": "com.reactnative.googlecast.RNGCExpandedControllerActivity",
-                                    "tag": "activity"
-                                }
-                            ],
-                            "tag": "application"
+                "templateAndroid": {
+                    "AndroidManifest_xml": {
+                        "tag": "application",
+                        "children": [
+                            {
+                                "android:name": ".MainApplication",
+                                "children": [
+                                    {
+                                        "android:name": "com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME",
+                                        "android:value": "{{configProps.id}}.CastOptionsProvider",
+                                        "tag": "meta-data"
+                                    },
+                                    {
+                                        "android:name": "com.reactnative.googlecast.RECEIVER_APPLICATION_ID",
+                                        "android:value": "{{props.APPLICATION_ID}}",
+                                        "tag": "meta-data"
+                                    },
+                                    {
+                                        "android:name": "com.reactnative.googlecast.RNGCExpandedControllerActivity",
+                                        "tag": "activity"
+                                    }
+                                ],
+                                "tag": "application"
+                            }
+                        ]
+                    },
+                    "app_build_gradle": {
+                        "implementations": [
+                            "'com.google.android.gms:play-services-cast-framework:21.0.0'",
+                            "'com.google.guava:guava:28.0-android'"
+                        ],
+                        "configurations": {
+                            "all*.exclude group: 'com.google.guava', module: 'listenablefuture'": true
                         }
-                    ]
-                },
-                "app/build.gradle": {
-                    "configurations": {
-                        "all*.exclude group: 'com.google.guava', module: 'listenablefuture'": true
+                    },
+                    "MainActivity_kt": {
+                        "createMethods": ["CastContext.getSharedInstance(this)"],
+                        "imports": ["com.google.android.gms.cast.framework.CastContext"]
+                    },
+                    "MainApplication_kt": {
+                        "packages": ["com.reactnative.googlecast.GoogleCastPackage"]
                     }
-                },
-                "implementations": [
-                    "'com.google.android.gms:play-services-cast-framework:21.0.0'",
-                    "'com.google.guava:guava:28.0-android'"
-                ],
-                "mainActivity": {
-                    "createMethods": ["CastContext.getSharedInstance(this)"],
-                    "imports": ["com.google.android.gms.cast.framework.CastContext"]
-                },
-                "MainApplication": {
-                    "packages": ["com.reactnative.googlecast.GoogleCastPackage"]
                 }
             },
             "ios": {
