@@ -1,121 +1,139 @@
 import { inquirerPrompt } from '../api';
 import { getContext } from '../context/provider';
-import { chalk, logInfo } from '../logger';
+import { getEngineRunnerByPlatform } from '../engines';
+import { chalk } from '../logger';
+import { RnvPlatform } from '../types';
+import { initializeTask } from './taskExecutors';
 import { getRegisteredTasks } from './taskRegistry';
-import { initializeTask } from './taskExecutors.js';
-import { getTaskNameFromCommand, selectPlatformIfRequired } from './taskHelpers';
 import { RnvTask } from './types';
 
-type TaskOpt = {
-    name: string;
-    value: RnvTask;
+const isTaskSupportedOnPlatform = (task: RnvTask, platform: RnvPlatform) => {
+    if (!task.platforms) return true;
+
+    // TODO
+    // Filtering only by platform leaves more tasks than nescessary
+    // But also filtering by `task.ownerID !== selectedEngineID` filters out _all_ integration tasks
+    // `isEngine` hackily prevents that
+    const isEngine = task.ownerID !== '@rnv/engine-core' && task.ownerID?.includes('/engine');
+
+    const selectedEngineID = getEngineRunnerByPlatform(platform)?.config.packageName;
+    if (isEngine && selectedEngineID && task.ownerID && task.ownerID !== selectedEngineID) {
+        // If we already specified platform we can skip tasks registered to unsupported engines
+        return false;
+    }
+    if (platform && !task.platforms.includes(platform)) {
+        // We can also filter out tasks that are not supported on current platform
+        return false;
+    }
+    return true;
 };
 
-const generateOptionPrompt = async (options: TaskOpt[]) => {
+const groupingWizard = async (tasks: RnvTask[]) => {
     const ctx = getContext();
-
-    const { selectedTask } = await inquirerPrompt({
-        type: 'autocomplete',
-        source: async (_, input) => options.filter((o) => o.name.toLowerCase().includes(input?.toLowerCase() ?? '')),
-        initialValue: ctx.program.args?.join(' '),
-        name: 'selectedTask',
-        message: `Pick a command`,
-        loop: false,
-        choices: options,
-        pageSize: 15,
-        logMessage: 'Welcome to the brave new world...',
-    });
-
-    const taskArr = selectedTask.task.split(' ');
-    ctx.command = taskArr[0];
-    ctx.subCommand = taskArr[1] || null;
-
-    await selectPlatformIfRequired(selectedTask);
-    return initializeTask(selectedTask);
-};
-
-export const runInteractiveWizardForSubTasks = async () => {
-    const ctx = getContext();
-
-    const tasks = getRegisteredTasks();
-    const optionsMap: Record<string, TaskOpt> = {};
-    const alternativeOptionsMap: Record<string, TaskOpt> = {};
-
-    const selectedEngineID = ctx.platform && ctx.runtime.enginesByPlatform[ctx.platform]?.config?.packageName;
-
-    Object.values(tasks).forEach((taskInstance) => {
-        if (ctx.platform) {
-            if (selectedEngineID && taskInstance.ownerID !== selectedEngineID) {
-                // If we already specified platform we can skip tasks registered to unsupported engines
-                return;
-            }
-            if (taskInstance.platforms && !taskInstance.platforms.includes(ctx.platform)) {
-                // We can also filter out tasks that are not supported on current platform
-                return;
-            }
-        }
-
-        const taskCmdName = taskInstance.task.split(' ')[0];
-
-        if (taskCmdName === ctx.command) {
-            if (!optionsMap[taskInstance.task]) {
-                optionsMap[taskInstance.task] = {
-                    name: `${taskInstance.task} ${chalk().gray(taskInstance.description)}`,
-                    value: taskInstance,
-                };
-            } else {
-                // If multiple tasks with same name we append ... to indicate there are more options coming
-                optionsMap[taskInstance.task].name = `${taskInstance.task}${chalk().gray('...')}`;
-            }
+    const initialValue = ctx.program.args?.join(' ');
+    const filteredTasks = tasks.filter((task) => isTaskSupportedOnPlatform(task, ctx.platform));
+    const optionsMap: Record<string, { name: string; value: RnvTask[] }> = {};
+    filteredTasks.forEach((taskInstance) => {
+        const prefix = taskInstance.task.split(' ')[0];
+        const sharesPrefix = filteredTasks.filter((t) => t.task.split(' ')[0] === prefix).length > 2;
+        if (sharesPrefix) {
+            optionsMap[prefix] = {
+                name: `${prefix}${chalk().gray('...')}`,
+                value: [...(optionsMap[prefix]?.value ?? []), taskInstance],
+            };
         } else {
-            if (!alternativeOptionsMap[taskInstance.task]) {
-                alternativeOptionsMap[taskInstance.task] = {
-                    name: `${taskInstance.task} ${chalk().gray(taskInstance.description)}`,
-                    value: taskInstance,
-                };
-            } else {
-                // If multiple tasks with same name we append ... to indicate there are more options coming
-                alternativeOptionsMap[taskInstance.task].name = `${taskInstance.task}${chalk().gray('...')}`;
-            }
+            optionsMap[taskInstance.task] = {
+                name: `${taskInstance.task} ${chalk().gray(taskInstance.description)}`,
+                value: [taskInstance],
+            };
         }
     });
+    const options = Object.values(optionsMap).sort((a, b) =>
+        a.value[0].isPriorityOrder ? -1 : b.value.length - a.value.length
+    );
+    const initialValueMatch = Object.entries(optionsMap).filter(([k]) => k === initialValue)?.[0]?.[1]?.value;
+    const selected =
+        initialValueMatch ??
+        ((
+            await inquirerPrompt({
+                type: 'autocomplete',
+                source: async (_, input) =>
+                    options.filter((o) => o.name.toLowerCase().includes(input?.toLowerCase() ?? '')),
+                initialValue,
+                name: 'selected',
+                message: `Pick a command`,
+                loop: false,
+                choices: options,
+                pageSize: 15,
+            })
+        ).selected as RnvTask[]);
+    return selected.length === 1 ? selected[0] : await disambiguatingWizard(selected);
+};
 
-    const options: TaskOpt[] = Object.values(optionsMap);
-
-    if (options.length > 0) {
-        if (ctx.subCommand) {
-            logInfo(`No sub task named "${chalk().red(ctx.subCommand)}" found. Will look for available ones instead.`);
-            ctx.subCommand = null;
+const disambiguatingWizard = async (tasks: RnvTask[]) => {
+    const ctx = getContext();
+    if (!ctx.platform) {
+        const uniquePlatforms = Array.from(
+            new Set(
+                tasks
+                    .flatMap((t) => t.platforms ?? [])
+                    .filter((p) => ctx.buildConfig.defaults?.supportedPlatforms?.includes(p))
+            )
+        );
+        const isPlatformDisambiguating = uniquePlatforms.some((platform) =>
+            tasks.some((task) => !isTaskSupportedOnPlatform(task, platform))
+        );
+        if (isPlatformDisambiguating) {
+            ctx.platform = (
+                await inquirerPrompt({
+                    type: 'autocomplete',
+                    source: async (_, input) =>
+                        uniquePlatforms.filter((p) => p.toLowerCase().includes(input?.toLowerCase() ?? '')),
+                    name: 'selected',
+                    message: `Pick a platform`,
+                    loop: false,
+                    choices: uniquePlatforms,
+                    pageSize: 15,
+                })
+            ).selected;
+            // TODO reuse with selectPlatformIfRequired ?
+            // await registerPlatformEngine(c.platform);
+            // c.runtime.engine = getEngineRunnerByPlatform(c.platform);
+            // c.runtime.runtimeExtraProps = c.runtime.engine?.runtimeExtraProps || {};
         }
-        return generateOptionPrompt(options);
     }
-
-    const alternativeOptions: TaskOpt[] = Object.values(alternativeOptionsMap);
-    // No subtasks found but we found closest matches
-    if (alternativeOptions.length > 0) {
-        return generateOptionPrompt(alternativeOptions);
-    }
-
-    if (ctx.subCommand) {
-        logInfo(`No tasks found for "${chalk().red(getTaskNameFromCommand())}". Launching wizard...`);
-        ctx.subCommand = null;
-    }
-
-    // If nothing could be found we resort to default wizard
-    return runInteractiveWizard();
+    const filteredTasks = tasks.filter((task) => isTaskSupportedOnPlatform(task, ctx.platform));
+    const options = filteredTasks
+        .map((taskInstance) => {
+            const isAmbiguous = filteredTasks.filter((t) => t.task === taskInstance.task).length > 1;
+            return {
+                name: `${taskInstance.task} ${
+                    isAmbiguous ? chalk().gray(`(${taskInstance.ownerID}) `) : ''
+                }${chalk().gray(taskInstance.description)}`,
+                value: taskInstance,
+            };
+        })
+        .sort((a, b) => a.name.localeCompare(b.name));
+    if (options.length === 1) return options[0].value;
+    return (
+        await inquirerPrompt({
+            type: 'autocomplete',
+            source: async (_, input) =>
+                options.filter((o) => o.name.toLowerCase().includes(input?.toLowerCase() ?? '')),
+            name: 'selected',
+            message: `Pick a subcommand`,
+            loop: false,
+            choices: options,
+            pageSize: 15,
+        })
+    ).selected as RnvTask;
 };
 
 export const runInteractiveWizard = async () => {
-    const tasks = getRegisteredTasks();
-
-    const options: TaskOpt[] = [];
-
-    Object.values(tasks).forEach((taskInstance) => {
-        options.push({
-            name: `${taskInstance.task} ${chalk().gray(taskInstance.description)}`,
-            value: taskInstance,
-        });
-    });
-
-    return generateOptionPrompt(options);
+    const ctx = getContext();
+    const selected = await groupingWizard(Object.values(getRegisteredTasks()));
+    const taskArr = selected.task.split(' ');
+    ctx.command = taskArr[0];
+    ctx.subCommand = taskArr[1] || null;
+    return initializeTask(selected);
 };
