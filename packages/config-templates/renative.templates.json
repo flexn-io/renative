@@ -604,36 +604,46 @@
             }
         },
         "@react-native-community/push-notification-ios": {
+            "supportedPlatforms": ["ios"],
             "ios": {
-                "appDelegateImports": [
-                    "RNCPushNotificationIOS"
-                ],
-                "appDelegateMethods": {
-                    "application": {
-                        "didFailToRegisterForRemoteNotificationsWithError": [
-                            "RNCPushNotificationIOS.didFailToRegisterForRemoteNotificationsWithError(error)"
-                        ],
-                        "didReceive": [
-                            "RNCPushNotificationIOS.didReceive(notification)"
-                        ],
-                        "didReceiveRemoteNotification": [
-                            "RNCPushNotificationIOS.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)"
-                        ],
-                        "didRegister": [
-                            "RNCPushNotificationIOS.didRegister(notificationSettings)"
-                        ],
-                        "didRegisterForRemoteNotificationsWithDeviceToken": [
-                            "RNCPushNotificationIOS.didRegisterForRemoteNotifications(withDeviceToken: deviceToken)"
+                "podName": "RNCPushNotificationIOS",
+                "templateXcode": {
+                    "AppDelegate_h": {
+                        "appDelegateExtensions": ["UNUserNotificationCenterDelegate"],
+                        "appDelegateImports": [
+                            "<UserNotifications/UNUserNotificationCenter.h>",
+                            "<UserNotifications/UserNotifications.h>"
                         ]
                     },
-                    "userNotificationCenter": {
-                        "willPresent": [
-                            "completionHandler([.alert, .badge, .sound])"
-                        ]
+                    "AppDelegate_mm": {
+                        "appDelegateImports": ["<RNCPushNotificationIOS.h>"],
+                        "appDelegateMethods": {
+                            "application": {
+                                "didRegisterForRemoteNotificationsWithDeviceToken": [
+                                    "[RNCPushNotificationIOS didRegisterForRemoteNotificationsWithDeviceToken:deviceToken]"
+                                ],
+                                "didReceiveRemoteNotification": [
+                                    "[RNCPushNotificationIOS didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler]"
+                                ],
+                                "didFailToRegisterForRemoteNotificationsWithError": [
+                                    "[RNCPushNotificationIOS didFailToRegisterForRemoteNotificationsWithError:error]"
+                                ],
+                                "didFinishLaunchingWithOptions": [
+                                    "UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter]",
+                                    "center.delegate = self"
+                                ]
+                            },
+                            "userNotificationCenter": {
+                                "willPresent": [
+                                    "completionHandler(UNNotificationPresentationOptionSound | UNNotificationPresentationOptionAlert | UNNotificationPresentationOptionBadge)"
+                                ],
+                                "didReceiveNotificationResponse": [
+                                    "[RNCPushNotificationIOS didReceiveNotificationResponse:response]"
+                                ]
+                            }
+                        }
                     }
-                },
-                "path": "{{PLUGIN_ROOT}}",
-                "podName": "RNCPushNotificationIOS"
+                }
             },
             "version": "1.11.0"
         },
@@ -1999,28 +2009,28 @@
             }
         },
         "react-native-carplay": {
+            "supportedPlatforms": ["ios"],
             "ios": {
-                "appDelegateExtensions": [
-                    "CPApplicationDelegate"
-                ],
-                "appDelegateImports": [
-                    "CarPlay",
-                    "react_native_carplay"
-                ],
-                "appDelegateMethods": {
-                    "application": {
-                        "didConnectCarInterfaceController": [
-                            "RNCarPlay.connect(with: interfaceController, window: window)"
-                        ],
-                        "didDisconnectCarInterfaceController": [
-                            "RNCarPlay.disconnect()"
-                        ]
+                "templateXcode": {
+                    "AppDelegate_h": {
+                        "appDelegateImports": ["CarPlay/CarPlay.h"],
+                        "appDelegateExtensions": ["UIApplicationDelegate", "CPApplicationDelegate"]
+                    },
+                    "AppDelegate_mm": {
+                        "appDelegateImports": ["RNCarPlay.h"],
+                        "appDelegateMethods": {
+                            "application": {
+                                "didConnectCarInterfaceController": [
+                                    "[RNCarPlay connectWithInterfaceController:interfaceController window:window]"
+                                ],
+                                "didDisconnectCarInterfaceController": ["[RNCarPlay disconnect]"]
+                            }
+                        }
                     }
                 },
-                "path": "{{PLUGIN_ROOT}}",
                 "podName": "react-native-carplay"
             },
-            "version": "2.0.0"
+            "version": "2.3.0"
         },
         "react-native-circular-progress": {
             "version": "1.3.0",
@@ -3350,27 +3360,15 @@
                 "package": "com.zoontek.rnpermissions.RNPermissionsPackage"
             },
             "ios": {
-                "isStatic": true,
-                "podName": "RNPermissions",
-                "staticPods": [
-                    "::startsWith::Permission-"
-                ]
+                "podName": "RNPermissions"
             },
             "macos": {
-                "isStatic": true,
-                "podName": "RNPermissions",
-                "staticPods": [
-                    "::startsWith::Permission-"
-                ]
+                "podName": "RNPermissions"
             },
             "tvos": {
-                "isStatic": true,
-                "podName": "RNPermissions",
-                "staticPods": [
-                    "::startsWith::Permission-"
-                ]
+                "podName": "RNPermissions"
             },
-            "version": "3.6.1"
+            "version": "4.1.4"
         },
         "react-native-permissions-pods": {
             "ios": {
@@ -3548,7 +3546,7 @@
             "tvos": {
                 "podName": "react-native-safe-area-context"
             },
-            "version": "4.3.4"
+            "version": "4.9.0"
         },
         "react-native-safe-area-view": {
             "version": "0.14.5",
@@ -3680,48 +3678,43 @@
             "version": "0.11.2"
         },
         "react-native-splash-screen": {
+            "supportedPlatforms": ["android", "androidtv", "firetv", "ios"],
             "android": {
-                "mainActivity": {
-                    "createMethods": [
-                        "SplashScreen.show(this)"
-                    ],
-                    "imports": [
-                        "org.devio.rn.splashscreen.SplashScreen"
-                    ]
+                "templateAndroid": {
+                    "MainActivity_kt": {
+                        "createMethods": ["SplashScreen.show(this)"],
+                        "imports": ["org.devio.rn.splashscreen.SplashScreen"]
+                    }
                 },
                 "package": "org.devio.rn.splashscreen.SplashScreenReactPackage"
             },
             "androidtv": {
-                "mainActivity": {
-                    "createMethods": [
-                        "SplashScreen.show(this)"
-                    ],
-                    "imports": [
-                        "org.devio.rn.splashscreen.SplashScreen"
-                    ]
+                "templateAndroid": {
+                    "MainActivity_kt": {
+                        "createMethods": ["SplashScreen.show(this)"],
+                        "imports": ["org.devio.rn.splashscreen.SplashScreen"]
+                    }
                 },
                 "package": "org.devio.rn.splashscreen.SplashScreenReactPackage"
             },
             "firetv": {
-                "mainActivity": {
-                    "createMethods": [
-                        "SplashScreen.show(this)"
-                    ],
-                    "imports": [
-                        "org.devio.rn.splashscreen.SplashScreen"
-                    ]
+                "templateAndroid": {
+                    "MainActivity_kt": {
+                        "createMethods": ["SplashScreen.show(this)"],
+                        "imports": ["org.devio.rn.splashscreen.SplashScreen"]
+                    }
                 },
                 "package": "org.devio.rn.splashscreen.SplashScreenReactPackage"
             },
             "ios": {
-                "appDelegateImports": [
-                    "react_native_splash_screen"
-                ],
-                "appDelegateMethods": {
-                    "application": {
-                        "didFinishLaunchingWithOptions": [
-                            "RNSplashScreen.show()"
-                        ]
+                "templateXcode": {
+                    "AppDelegate_mm": {
+                        "appDelegateImports": ["RNSplashScreen.h"],
+                        "appDelegateMethods": {
+                            "application": {
+                                "didFinishLaunchingWithOptions": ["[RNSplashScreen show]"]
+                            }
+                        }
                     }
                 },
                 "podName": "react-native-splash-screen"
@@ -4122,6 +4115,7 @@
             }
         },
         "rn-fetch-blob": {
+            "tvos": { "disabled": true },
             "android": {
                 "package": "com.RNFetchBlob.RNFetchBlobPackage"
             },
@@ -4134,7 +4128,7 @@
             "ios": {
                 "podName": "rn-fetch-blob"
             },
-            "version": "0.11.2",
+            "version": "0.12.0",
             "webpack": {
                 "modulePaths": true
             }
