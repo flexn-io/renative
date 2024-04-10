@@ -42,7 +42,7 @@
     },
     "templateConfig": {
         "name": "@rnv/template-starter",
-        "version": "1.0.0-rc.13"
+        "version": "1.0.0-rc.14"
     },
     "platforms": {
         "android": {
@@ -114,6 +114,12 @@
         "react-dom": "source:rnv",
         "react-native-gesture-handler": "source:rnv",
         "@react-native-community/cli-platform-ios": {
+            "supportedPlatforms": [
+                "tvos",
+                "ios"
+            ]
+        },
+        "@react-native-community/cli": {
             "supportedPlatforms": [
                 "tvos",
                 "ios"

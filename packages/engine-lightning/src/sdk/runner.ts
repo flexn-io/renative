@@ -23,7 +23,15 @@ import semver from 'semver';
 
 import { runTizenSimOrDevice, CLI_TIZEN } from '@rnv/sdk-tizen';
 import { CLI_WEBOS_ARES_PACKAGE, runWebosSimOrDevice } from '@rnv/sdk-webos';
-import { getAppVersion, getAppTitle, getAppId, getAppDescription, addSystemInjects } from '@rnv/sdk-utils';
+import {
+    getAppVersion,
+    getAppTitle,
+    getAppId,
+    getAppDescription,
+    addSystemInjects,
+    checkPortInUse,
+    confirmActiveBundler,
+} from '@rnv/sdk-utils';
 import { EnvVars } from './env';
 
 export const runLightningProject = async () => {
@@ -34,17 +42,35 @@ export const runLightningProject = async () => {
     const isHosted = hosted && !getConfigProp('bundleAssets');
 
     if (isHosted) {
-        await executeAsync('lng dev', {
-            stdio: 'inherit',
-            silent: false,
-            env: {
-                ...CoreEnvVars.BASE(),
-                ...CoreEnvVars.RNV_EXTENSIONS(),
-                ...EnvVars.LNG_BUILD_FOLDER(),
-                ...EnvVars.LNG_ENTRY_FILE(),
-                ...EnvVars.LNG_SERVE_PORT(),
-            },
-        });
+        const isPortActive = await checkPortInUse(c.runtime.port);
+        if (isPortActive) {
+            const resetCompleted = await confirmActiveBundler();
+            if (resetCompleted) {
+                await executeAsync('lng dev', {
+                    stdio: 'inherit',
+                    silent: false,
+                    env: {
+                        ...CoreEnvVars.BASE(),
+                        ...CoreEnvVars.RNV_EXTENSIONS(),
+                        ...EnvVars.LNG_BUILD_FOLDER(),
+                        ...EnvVars.LNG_ENTRY_FILE(),
+                        ...EnvVars.LNG_SERVE_PORT(),
+                    },
+                });
+            }
+        } else {
+            await executeAsync('lng dev', {
+                stdio: 'inherit',
+                silent: false,
+                env: {
+                    ...CoreEnvVars.BASE(),
+                    ...CoreEnvVars.RNV_EXTENSIONS(),
+                    ...EnvVars.LNG_BUILD_FOLDER(),
+                    ...EnvVars.LNG_ENTRY_FILE(),
+                    ...EnvVars.LNG_SERVE_PORT(),
+                },
+            });
+        }
     } else {
         await buildLightningProject();
         if (platform === 'tizen') {

@@ -1,5 +1,15 @@
-import { doResolve, getConfigProp, getContext, getRelativePath, parsePlugins } from '@rnv/core';
+import {
+    CoreEnvVars,
+    doResolve,
+    fsWriteFileSync,
+    getAppFolder,
+    getConfigProp,
+    getContext,
+    getRelativePath,
+    parsePlugins,
+} from '@rnv/core';
 import { getAppId } from '@rnv/sdk-utils';
+import path from 'path';
 
 export const EnvVars = {
     RCT_METRO_PORT: () => {
@@ -62,4 +72,26 @@ export const EnvVars = {
 
         return {};
     },
+};
+
+export const generateEnvVarsFile = async () => {
+    const destDir = getAppFolder();
+    const destPath = path.join(destDir, '.env');
+    const envVars: Record<string, any> = {
+        ...CoreEnvVars.BASE(),
+        RNV_EXTENSIONS: CoreEnvVars.RNV_EXTENSIONS().RNV_EXTENSIONS.join(', '),
+        ...EnvVars.RCT_METRO_PORT(),
+        ...EnvVars.RNV_REACT_NATIVE_PATH(),
+        ...EnvVars.RCT_NO_LAUNCH_PACKAGER(),
+        ...EnvVars.RNV_APP_ID(),
+        ...EnvVars.RCT_NEW_ARCH_ENABLED(),
+        ...EnvVars.RNV_FLIPPER_ENABLED(),
+        ...EnvVars.RNV_SKIP_LINKING(),
+    };
+    let env = '';
+    Object.keys(envVars).forEach((key) => {
+        env += `${key}=${envVars[key]}\n`;
+    });
+
+    fsWriteFileSync(destPath, env);
 };
