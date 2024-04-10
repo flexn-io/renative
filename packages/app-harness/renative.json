@@ -156,6 +156,9 @@
             },
             "props": {
                 "PERMISSIONS": "'Calendars', 'Contacts'"
+            },
+            "tvos": {
+                "disabled": true
             }
         },
         "react-native": {
