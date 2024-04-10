@@ -70,7 +70,7 @@
         "postinstall": "npx lerna link --force-local && npx jetify",
         "pre-publish": "yarn build && yarn link:rnv && yarn lint && yarn test && rnv hooks run -x prePublish && rnv hooks run -x gitCommitAndTag",
         "prettier-write-all": "npx prettier '**/*.{js,jsx,ts,tsx,mjs,cjs,json,md}' --write --config .prettierrc.js",
-        "prettier-write-json": "npx prettier '**/{package.json,renative.plugins.json,renative.json, renative.templates.json, renative.template.json, renative.plugin.json, renative.engine.json}' --write --config .prettierrc.js",
+        "prettier-write-json": "npx prettier '**/{package.json,renative.plugins.json,renative.json,renative.templates.json,renative.template.json,renative.plugin.json,renative.engine.json}' --write --config .prettierrc.js",
         "report-circular": "npx madge --circular --extensions ts --exclude '\\.(d.ts)$' ./packages",
         "report-jest": "jest --coverage",
         "report-ts-coverage": "typescript-coverage-report -p ./packages/core/tsconfig.json  -t 99",
