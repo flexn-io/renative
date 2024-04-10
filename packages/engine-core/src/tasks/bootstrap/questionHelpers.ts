@@ -103,7 +103,7 @@ export const configureConfigOverrides = async (data: NewProjectData) => {
     const { inputs, files } = data;
     const { renativeConfig } = files.project;
 
-    const c = getContext();
+    // const c = getContext();
 
     const supPlats = inputs.supportedPlatforms || [];
 
@@ -120,35 +120,35 @@ export const configureConfigOverrides = async (data: NewProjectData) => {
     // This is project config override only
     renativeConfig.defaults = renativeConfig.defaults || {};
     renativeConfig.defaults.supportedPlatforms = supPlats;
-    renativeConfig.engines = renativeConfig.engines || {};
+    // renativeConfig.engines = renativeConfig.engines || {};
 
     // This is merged config result
-    const loadedConf = c.files.project.config;
+    // const loadedConf = c.files.project.config;
 
     // Configure only required engines based on supportedPlatforms
-    const engines = files.project.renativeConfig?.engines;
+    const engines = renativeConfig?.engines;
     if (engines) {
         // Remove unused engines based on selected platforms
-        supPlats.forEach((k) => {
-            const selectedEngineId =
-                loadedConf?.platforms?.[k]?.engine || c.files.rnvConfigTemplates.config?.platformTemplates?.[k]?.engine;
-
-            if (selectedEngineId) {
-                const selectedEngine = findEngineKeyById(selectedEngineId);
-                if (selectedEngine?.key && renativeConfig.engines) {
-                    renativeConfig.engines[selectedEngine.key] = engines[selectedEngine.key];
-                }
-            }
-        });
+        // TODO: old logic, this need to be reworked.
+        // supPlats.forEach((k) => {
+        //     const selectedEngineId =
+        //         loadedConf?.platforms?.[k]?.engine || c.files.rnvConfigTemplates.config?.platformTemplates?.[k]?.engine;
+        //     if (selectedEngineId) {
+        //         const selectedEngine = findEngineKeyById(selectedEngineId);
+        //         if (selectedEngine?.key) {
+        //             engines[selectedEngine.key] = engines[selectedEngine.key];
+        //         }
+        //     }
+        // });
+        // Object.keys(engines).forEach((engKey) => {
+        //     const engVersion = files.configTemplates.config?.engineTemplates?.[engKey]?.version;
+        //     if (engVersion) {
+        //         if (files.project.packageJson.devDependencies) {
+        //             files.project.packageJson.devDependencies[engKey] = engVersion;
+        //         }
+        //     }
+        // });
     }
-    Object.keys(renativeConfig.engines).forEach((engKey) => {
-        const engVersion = files.configTemplates.config?.engineTemplates?.[engKey]?.version;
-        if (engVersion) {
-            if (files.project.packageJson.devDependencies) {
-                files.project.packageJson.devDependencies[engKey] = engVersion;
-            }
-        }
-    });
 };
 
 export const telemetryNewProject = async (data: NewProjectData) => {
@@ -196,19 +196,19 @@ ${chalk().bold(`
     return str;
 };
 
-const findEngineKeyById = (id: string) => {
-    const c = getContext();
-    const engineTemplates = c.files.rnvConfigTemplates.config?.engineTemplates;
-    if (engineTemplates) {
-        const etk = Object.keys(engineTemplates);
-        for (let i = 0; i < etk.length; i++) {
-            const engine = engineTemplates[etk[i]];
-            if (engine) {
-                if (engine.id === id) {
-                    engine.key = etk[i];
-                    return engine;
-                }
-            }
-        }
-    }
-};
+// const findEngineKeyById = (id: string) => {
+//     const c = getContext();
+//     const engineTemplates = c.files.rnvConfigTemplates.config?.engineTemplates;
+//     if (engineTemplates) {
+//         const etk = Object.keys(engineTemplates);
+//         for (let i = 0; i < etk.length; i++) {
+//             const engine = engineTemplates[etk[i]];
+//             if (engine) {
+//                 if (engine.id === id) {
+//                     engine.key = etk[i];
+//                     return engine;
+//                 }
+//             }
+//         }
+//     }
+// };

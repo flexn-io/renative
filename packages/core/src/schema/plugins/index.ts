@@ -4,9 +4,10 @@ import { zodPluginPlatformiOSFragment } from './fragments/platformIos';
 import { zodPluginPlatformBaseFragment } from './fragments/platformBase';
 import { zodPluginBaseFragment } from './fragments/base';
 
-const zodAndroidSchema = zodPluginPlatformBaseFragment.merge(zodPluginPlatformAndroidFragment);
-
-const zodIOSSchema = zodPluginPlatformBaseFragment.merge(zodPluginPlatformiOSFragment);
+const zodAndroidSchema = zodPluginPlatformBaseFragment.merge(zodPluginPlatformAndroidFragment).nullable();
+const zodIOSSchema = zodPluginPlatformBaseFragment.merge(zodPluginPlatformiOSFragment).nullable();
+const zodMacosSchema = zodPluginPlatformBaseFragment.merge(zodPluginPlatformiOSFragment).nullable();
+const baseSchema = zodPluginPlatformBaseFragment.nullable();
 
 export const zodPluginSchema: AnyZodObject = zodPluginBaseFragment.merge(
     z
@@ -17,18 +18,18 @@ export const zodPluginSchema: AnyZodObject = zodPluginBaseFragment.merge(
             firetv: zodAndroidSchema,
             ios: zodIOSSchema,
             tvos: zodIOSSchema,
-            tizen: zodPluginPlatformBaseFragment,
-            tizenmobile: zodPluginPlatformBaseFragment,
-            tizenwatch: zodPluginPlatformBaseFragment,
-            webos: zodPluginPlatformBaseFragment,
-            web: zodPluginPlatformBaseFragment,
-            webtv: zodPluginPlatformBaseFragment,
-            chromecast: zodPluginPlatformBaseFragment,
-            kaios: zodPluginPlatformBaseFragment,
-            macos: zodPluginPlatformBaseFragment,
-            linux: zodPluginPlatformBaseFragment,
-            windows: zodPluginPlatformBaseFragment,
-            xbox: zodPluginPlatformBaseFragment,
+            tizen: baseSchema,
+            tizenmobile: baseSchema,
+            tizenwatch: baseSchema,
+            webos: baseSchema,
+            web: baseSchema,
+            webtv: baseSchema,
+            chromecast: baseSchema,
+            kaios: baseSchema,
+            macos: zodMacosSchema,
+            linux: baseSchema,
+            windows: baseSchema,
+            xbox: baseSchema,
         })
         .partial()
 );
