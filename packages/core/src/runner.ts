@@ -8,7 +8,7 @@ import { updateRenativeConfigs } from './plugins';
 import { loadDefaultConfigTemplates } from './configs';
 import { getApi } from './api/provider';
 import { RnvTask } from './tasks/types';
-import { runInteractiveWizard, runInteractiveWizardForSubTasks } from './tasks/wizard';
+import { runInteractiveWizard } from './tasks/wizard';
 import { initializeTask } from './tasks/taskExecutors';
 import { getTaskNameFromCommand, selectPlatformIfRequired } from './tasks/taskHelpers';
 import { logInfo } from './logger';
@@ -87,5 +87,5 @@ export const executeRnvCore = async () => {
 
     // Still no task found. time to check sub tasks options via wizard
     logInfo(`Did not find exact match for ${getTaskNameFromCommand()}. Running interactive wizard for sub-tasks`);
-    return runInteractiveWizardForSubTasks();
+    return runInteractiveWizard();
 };
