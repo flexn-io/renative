@@ -111,22 +111,12 @@
         "react-art": "source:rnv",
         "react-dom": "source:rnv",
         "react-native-gesture-handler": "source:rnv",
-        "@react-native-community/cli-platform-ios": {
-            "supportedPlatforms": ["tvos", "ios"]
-        },
-        "@react-native-community/cli": {
-            "supportedPlatforms": ["tvos", "ios"]
-        },
+        "@react-native-community/cli-platform-ios": "source:rnv",
+        "@react-native-community/cli": "source:rnv",
         "react-native": "source:rnv",
-        "next": {
-            "supportedPlatforms": ["web"]
-        },
-        "react-native-web": {
-            "supportedPlatforms": ["web", "tizen", "webos", "macos"]
-        },
-        "react-native-tvos": {
-            "supportedPlatforms": ["tvos", "firetv", "androidtv"]
-        }
+        "next": "source:rnv",
+        "react-native-web": "source:rnv",
+        "react-native-tvos": "source:rnv"
     },
     "permissions": {
         "ios": {},
