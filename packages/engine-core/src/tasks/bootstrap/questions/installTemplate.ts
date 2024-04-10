@@ -26,6 +26,16 @@ import { saveProgressIntoProjectConfig } from '../questionHelpers';
 import { merge } from 'lodash';
 import { getContext } from '../../../getContext';
 
+const mergeIntoProjectConfig = (data: NewProjectData, updateObj: ConfigFileProject) => {
+    const { files } = data;
+    files.project.renativeConfig = merge(files.project.renativeConfig, updateObj);
+};
+
+const mergeIntoProjectPackage = (data: NewProjectData, updateObj: NpmPackageFile) => {
+    const { files } = data;
+    files.project.packageJson = merge(files.project.packageJson, updateObj);
+};
+
 const Question = async (data: NewProjectData) => {
     const { inputs, defaults, files } = data;
 
@@ -157,16 +167,15 @@ const Question = async (data: NewProjectData) => {
         }
         // NOTE: this is a workaround for npm/yarn bug where manually added packages are overriden on next install
         const filePath = `file:${RnvFolderName.dotRnv}/${RnvFolderName.npmCache}/${inputs.template.packageName}`;
-        files.project.packageJson = merge(files.project.packageJson, {
+        mergeIntoProjectPackage(data, {
             devDependencies: {
                 [inputs.template?.packageName]: filePath,
             },
         });
-        files.project.renativeConfig = merge(files.project.renativeConfig, {
-            templates: {
-                [inputs.template.packageName]: {
-                    version: filePath,
-                },
+        mergeIntoProjectConfig(data, {
+            templateConfig: {
+                name: inputs.template.packageName,
+                version: filePath,
             },
         });
         await saveProgressIntoProjectConfig(data);
@@ -188,6 +197,13 @@ const Question = async (data: NewProjectData) => {
                 cwd: c.paths.project.dir,
             }
         );
+        mergeIntoProjectConfig(data, {
+            templateConfig: {
+                name: inputs.template.packageName,
+                version: inputs.template.version,
+            },
+        });
+        await saveProgressIntoProjectConfig(data);
         // Check if node_modules folder exists
         const nmDir = path.join(c.paths.project.dir, 'node_modules');
         if (!fsExistsSync(nmDir)) {
