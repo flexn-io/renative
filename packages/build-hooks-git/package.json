@@ -1,6 +1,6 @@
 {
     "name": "@rnv/build-hooks-git",
-    "version": "1.0.0-rc.14",
+    "version": "1.0.0-rc.15",
     "description": "Build Hooks for Git",
     "keywords": [],
     "homepage": "https://github.com/flexn-io/renative#readme",
@@ -30,7 +30,7 @@
         "simple-git": "^3.16.0"
     },
     "peerDependencies": {
-        "@rnv/core": "^1.0.0-rc.14"
+        "@rnv/core": "^1.0.0-rc.15"
     },
     "publishConfig": {
         "access": "public"

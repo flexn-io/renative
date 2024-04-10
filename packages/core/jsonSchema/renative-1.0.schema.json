@@ -1181,8 +1181,9 @@
                     },
                     "Info_plist": {
                       "type": "object",
-                      "properties": {},
-                      "additionalProperties": false
+                      "additionalProperties": {
+                        "type": "string"
+                      }
                     }
                   },
                   "additionalProperties": false
