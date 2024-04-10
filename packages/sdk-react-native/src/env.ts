@@ -41,20 +41,21 @@ export const EnvVars = {
     RNV_SKIP_LINKING: () => {
         const { platform } = getContext();
         const skipPlugins: string[] = [];
-        parsePlugins(
-            (plugin, pluginPlat, key) => {
-                if (
-                    pluginPlat.disabled ||
-                    plugin.disabled ||
-                    (plugin.supportedPlatforms && !plugin.supportedPlatforms.includes(platform!))
-                ) {
-                    skipPlugins.push(key);
-                }
-            },
-            false,
-            true
-        );
-
+        if (platform) {
+            parsePlugins(
+                (plugin, pluginPlat, key) => {
+                    if (
+                        pluginPlat.disabled ||
+                        plugin.disabled ||
+                        (plugin.supportedPlatforms && !plugin.supportedPlatforms.includes(platform))
+                    ) {
+                        skipPlugins.push(key);
+                    }
+                },
+                false,
+                true
+            );
+        }
         if (skipPlugins.length > 0) {
             return { RNV_SKIP_LINKING: skipPlugins.join(',') };
         }
