@@ -45,9 +45,10 @@ export const createRnvEngine = <OKey extends string>(opts: CreateRnvEngineOpts<O
     //     ...t(13),
     // ];
 
-    const extraTasks = opts.extendModules.reduce<ReadonlyArray<RnvTask<OKey>>>((accumulator, currentValue) => {
-        return [...accumulator, ...currentValue.originalTasks];
-    }, []);
+    const extraTasks =
+        opts.extendModules?.reduce<ReadonlyArray<RnvTask<OKey>>>((accumulator, currentValue) => {
+            return [...accumulator, ...currentValue.originalTasks];
+        }, []) || [];
 
     const engine: RnvEngine<OKey> = {
         ...opts,

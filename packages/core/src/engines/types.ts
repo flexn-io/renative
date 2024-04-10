@@ -11,7 +11,7 @@ export type CreateRnvEngineOpts<OKey extends string> = {
     platforms: RnvEnginePlatforms;
     config: ConfigFileEngine;
     tasks: ReadonlyArray<RnvTask<OKey>>;
-    extendModules: ReadonlyArray<RnvModule<OKey>>;
+    extendModules?: ReadonlyArray<RnvModule<OKey>>;
     rootPath?: string;
     originalTemplatePlatformProjectDir?: string;
     projectDirName?: string;
