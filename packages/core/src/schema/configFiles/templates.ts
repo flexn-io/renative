@@ -1,6 +1,6 @@
 import { AnyZodObject, z } from 'zod';
 import { zodPlatformsKeys, zodProjectTemplates } from '../shared';
-import { zodPluginSchema } from '../plugins';
+import { zodPluginsSchema } from '../plugins';
 
 export const zodConfigFileTemplates: AnyZodObject = z
     .object({
@@ -26,9 +26,7 @@ export const zodConfigFileTemplates: AnyZodObject = z
                 engine: z.string(),
             })
         ),
-        pluginTemplates: z
-            .record(z.string(), zodPluginSchema)
-            .describe('Define all plugins available to be merged with project plugins'),
+        pluginTemplates: zodPluginsSchema,
         disableRnvDefaultOverrides: z
             .boolean()
             .describe(

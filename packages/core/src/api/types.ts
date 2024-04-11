@@ -103,9 +103,11 @@ export type PromptParams = {
     type: string;
     message?: string;
     choices?: Array<{ name: string; value: any } | string>;
+    source?: (answersSoFar: any, input: string | undefined) => Promise<any>;
     validate?: (i: string) => string | boolean;
     logMessage?: string;
     warningMessage?: string;
+    initialValue?: string;
     default?: any; // string | boolean | (() => string) | string[] | number | { name: string; value: any };
     pageSize?: number;
     loop?: boolean;

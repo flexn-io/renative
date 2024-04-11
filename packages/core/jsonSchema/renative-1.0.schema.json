@@ -493,8 +493,11 @@
       "type": "object",
       "properties": {
         "supportedPlatforms": {
-          "$ref": "#/definitions/zodSupportedPlatforms",
-          "description": "Array list of all supported platforms in current project"
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/zodPlatformsKeys"
+          },
+          "description": "Array list of platforms for which the current plugin is supported"
         },
         "disabled": {
           "type": "boolean",
@@ -618,124 +621,257 @@
           }
         },
         "android": {
-          "type": "object",
-          "properties": {
-            "disabled": {
-              "type": "boolean",
-              "default": false,
-              "description": "Marks plugin platform disabled"
-            },
-            "forceLinking": {
-              "type": "boolean",
-              "default": false,
-              "description": "Packages that cannot be autolinked yet can still be added to MainApplication PackageList dynamically by setting this to true"
-            },
-            "path": {
-              "type": "string",
-              "description": "Enables you to pass custom path to plugin. If undefined, the default `node_modules/[plugin-name]` will be used."
-            },
-            "templateAndroid": {
+          "anyOf": [
+            {
               "type": "object",
               "properties": {
-                "gradle_properties": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": [
-                      "string",
-                      "boolean",
-                      "number"
-                    ]
-                  },
-                  "description": "Overrides values in `gradle.properties` file of generated android based project"
+                "extendPlatform": {
+                  "type": "string",
+                  "enum": [
+                    "web",
+                    "ios",
+                    "android",
+                    "androidtv",
+                    "firetv",
+                    "tvos",
+                    "macos",
+                    "linux",
+                    "windows",
+                    "tizen",
+                    "webos",
+                    "chromecast",
+                    "kaios",
+                    "webtv",
+                    "androidwear",
+                    "tizenwatch",
+                    "tizenmobile",
+                    "xbox"
+                  ],
+                  "description": "Extends platform configuration from another platform"
                 },
-                "build_gradle": {
+                "disabled": {
+                  "type": "boolean",
+                  "default": false,
+                  "description": "Marks plugin platform disabled"
+                },
+                "forceLinking": {
+                  "type": "boolean",
+                  "default": false,
+                  "description": "Packages that cannot be autolinked yet can still be added to MainApplication PackageList dynamically by setting this to true"
+                },
+                "path": {
+                  "type": "string",
+                  "description": "Enables you to pass custom path to plugin. If undefined, the default `node_modules/[plugin-name]` will be used."
+                },
+                "templateAndroid": {
                   "type": "object",
                   "properties": {
-                    "allprojects": {
-                      "type": "object",
-                      "properties": {
-                        "repositories": {
-                          "type": "object",
-                          "additionalProperties": {
-                            "type": "boolean"
-                          },
-                          "description": "Customize repositories section of build.gradle"
-                        }
-                      },
-                      "required": [
-                        "repositories"
-                      ],
-                      "additionalProperties": false
-                    },
-                    "plugins": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "buildscript": {
-                      "type": "object",
-                      "properties": {
-                        "repositories": {
-                          "type": "object",
-                          "additionalProperties": {
-                            "type": "boolean"
-                          }
-                        },
-                        "dependencies": {
-                          "type": "object",
-                          "additionalProperties": {
-                            "type": "boolean"
-                          }
-                        }
-                      },
-                      "required": [
-                        "repositories",
-                        "dependencies"
-                      ],
-                      "additionalProperties": false
-                    },
-                    "dexOptions": {
+                    "gradle_properties": {
                       "type": "object",
                       "additionalProperties": {
-                        "type": "boolean"
-                      }
+                        "type": [
+                          "string",
+                          "boolean",
+                          "number"
+                        ]
+                      },
+                      "description": "Overrides values in `gradle.properties` file of generated android based project"
                     },
-                    "injectAfterAll": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    }
-                  },
-                  "additionalProperties": false,
-                  "description": "Overrides values in `build.gradle` file of generated android based project"
-                },
-                "app_build_gradle": {
-                  "type": "object",
-                  "properties": {
-                    "apply": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "defaultConfig": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "buildTypes": {
+                    "build_gradle": {
                       "type": "object",
                       "properties": {
-                        "debug": {
+                        "allprojects": {
+                          "type": "object",
+                          "properties": {
+                            "repositories": {
+                              "type": "object",
+                              "additionalProperties": {
+                                "type": "boolean"
+                              },
+                              "description": "Customize repositories section of build.gradle"
+                            }
+                          },
+                          "required": [
+                            "repositories"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "plugins": {
                           "type": "array",
                           "items": {
                             "type": "string"
                           }
                         },
-                        "release": {
+                        "buildscript": {
+                          "type": "object",
+                          "properties": {
+                            "repositories": {
+                              "type": "object",
+                              "additionalProperties": {
+                                "type": "boolean"
+                              }
+                            },
+                            "dependencies": {
+                              "type": "object",
+                              "additionalProperties": {
+                                "type": "boolean"
+                              }
+                            }
+                          },
+                          "required": [
+                            "repositories",
+                            "dependencies"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "dexOptions": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "boolean"
+                          }
+                        },
+                        "injectAfterAll": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "additionalProperties": false,
+                      "description": "Overrides values in `build.gradle` file of generated android based project"
+                    },
+                    "app_build_gradle": {
+                      "type": "object",
+                      "properties": {
+                        "apply": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "defaultConfig": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "buildTypes": {
+                          "type": "object",
+                          "properties": {
+                            "debug": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "release": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "afterEvaluate": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "implementations": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "implementation": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "description": "Overrides values in `app/build.gradle` file of generated android based project"
+                    },
+                    "AndroidManifest_xml": {
+                      "$ref": "#/definitions/zodAndroidManifest",
+                      "description": "Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism\nInjects / Overrides values in AndroidManifest.xml file of generated android based project\n> IMPORTANT: always ensure that your object contains `tag` and `android:name` to target correct tag to merge into\n "
+                    },
+                    "strings_xml": {
+                      "$ref": "#/definitions/zodAndroidResources",
+                      "description": "Allows you to directly manipulate `res/values files` via json override mechanism\nInjects / Overrides values in res/values files of generated android based project\n> IMPORTANT: always ensure that your object contains `tag` and `name` to target correct tag to merge into\n "
+                    },
+                    "styles_xml": {
+                      "$ref": "#/definitions/zodAndroidResources",
+                      "description": "Allows you to directly manipulate `res/values files` via json override mechanism\nInjects / Overrides values in res/values files of generated android based project\n> IMPORTANT: always ensure that your object contains `tag` and `name` to target correct tag to merge into\n "
+                    },
+                    "colors_xml": {
+                      "$ref": "#/definitions/zodAndroidResources",
+                      "description": "Allows you to directly manipulate `res/values files` via json override mechanism\nInjects / Overrides values in res/values files of generated android based project\n> IMPORTANT: always ensure that your object contains `tag` and `name` to target correct tag to merge into\n "
+                    },
+                    "MainApplication_kt": {
+                      "type": "object",
+                      "properties": {
+                        "imports": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "methods": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "createMethods": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "packages": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "packageParams": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "additionalProperties": false,
+                      "description": "Allows you to configure behaviour of MainActivity"
+                    },
+                    "MainActivity_kt": {
+                      "type": "object",
+                      "properties": {
+                        "onCreate": {
+                          "type": "string",
+                          "default": "super.onCreate(savedInstanceState)",
+                          "description": "Overrides super.onCreate method handler of MainActivity.kt"
+                        },
+                        "imports": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "methods": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "createMethods": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "resultMethods": {
                           "type": "array",
                           "items": {
                             "type": "string"
@@ -744,153 +880,51 @@
                       },
                       "additionalProperties": false
                     },
-                    "afterEvaluate": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
+                    "SplashActivity_kt": {
+                      "type": "object",
+                      "properties": {},
+                      "additionalProperties": false
                     },
-                    "implementations": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
+                    "settings_gradle": {
+                      "type": "object",
+                      "properties": {},
+                      "additionalProperties": false
                     },
-                    "implementation": {
-                      "type": "string"
-                    }
-                  },
-                  "additionalProperties": false,
-                  "description": "Overrides values in `app/build.gradle` file of generated android based project"
-                },
-                "AndroidManifest_xml": {
-                  "$ref": "#/definitions/zodAndroidManifest",
-                  "description": "Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism\nInjects / Overrides values in AndroidManifest.xml file of generated android based project\n> IMPORTANT: always ensure that your object contains `tag` and `android:name` to target correct tag to merge into\n "
-                },
-                "strings_xml": {
-                  "$ref": "#/definitions/zodAndroidResources",
-                  "description": "Allows you to directly manipulate `res/values files` via json override mechanism\nInjects / Overrides values in res/values files of generated android based project\n> IMPORTANT: always ensure that your object contains `tag` and `name` to target correct tag to merge into\n "
-                },
-                "styles_xml": {
-                  "$ref": "#/definitions/zodAndroidResources",
-                  "description": "Allows you to directly manipulate `res/values files` via json override mechanism\nInjects / Overrides values in res/values files of generated android based project\n> IMPORTANT: always ensure that your object contains `tag` and `name` to target correct tag to merge into\n "
-                },
-                "colors_xml": {
-                  "$ref": "#/definitions/zodAndroidResources",
-                  "description": "Allows you to directly manipulate `res/values files` via json override mechanism\nInjects / Overrides values in res/values files of generated android based project\n> IMPORTANT: always ensure that your object contains `tag` and `name` to target correct tag to merge into\n "
-                },
-                "MainApplication_kt": {
-                  "type": "object",
-                  "properties": {
-                    "imports": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
+                    "gradle_wrapper_properties": {
+                      "type": "object",
+                      "properties": {},
+                      "additionalProperties": false
                     },
-                    "methods": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "createMethods": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "packages": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "packageParams": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    }
-                  },
-                  "additionalProperties": false,
-                  "description": "Allows you to configure behaviour of MainActivity"
-                },
-                "MainActivity_kt": {
-                  "type": "object",
-                  "properties": {
-                    "onCreate": {
-                      "type": "string",
-                      "default": "super.onCreate(savedInstanceState)",
-                      "description": "Overrides super.onCreate method handler of MainActivity.kt"
-                    },
-                    "imports": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "methods": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "createMethods": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "resultMethods": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
+                    "proguard_rules_pro": {
+                      "type": "object",
+                      "properties": {},
+                      "additionalProperties": false
                     }
                   },
                   "additionalProperties": false
                 },
-                "SplashActivity_kt": {
-                  "type": "object",
-                  "properties": {},
-                  "additionalProperties": false
+                "projectName": {
+                  "type": "string"
                 },
-                "settings_gradle": {
-                  "type": "object",
-                  "properties": {},
-                  "additionalProperties": false
+                "skipLinking": {
+                  "type": "boolean"
                 },
-                "gradle_wrapper_properties": {
-                  "type": "object",
-                  "properties": {},
-                  "additionalProperties": false
+                "skipImplementation": {
+                  "type": "boolean"
                 },
-                "proguard_rules_pro": {
-                  "type": "object",
-                  "properties": {},
-                  "additionalProperties": false
+                "implementation": {
+                  "type": "string"
+                },
+                "package": {
+                  "type": "string"
                 }
               },
               "additionalProperties": false
             },
-            "projectName": {
-              "type": "string"
-            },
-            "skipLinking": {
-              "type": "boolean"
-            },
-            "skipImplementation": {
-              "type": "boolean"
-            },
-            "implementation": {
-              "type": "string"
-            },
-            "package": {
-              "type": "string"
+            {
+              "type": "null"
             }
-          },
-          "additionalProperties": false
+          ]
         },
         "androidtv": {
           "$ref": "#/definitions/zodPluginSchema/properties/android"
@@ -902,119 +936,250 @@
           "$ref": "#/definitions/zodPluginSchema/properties/android"
         },
         "ios": {
-          "type": "object",
-          "properties": {
-            "disabled": {
-              "$ref": "#/definitions/zodPluginSchema/properties/android/properties/disabled"
-            },
-            "forceLinking": {
-              "$ref": "#/definitions/zodPluginSchema/properties/android/properties/forceLinking"
-            },
-            "path": {
-              "$ref": "#/definitions/zodPluginSchema/properties/android/properties/path"
-            },
-            "templateXcode": {
+          "anyOf": [
+            {
               "type": "object",
               "properties": {
-                "Podfile": {
-                  "type": "object",
-                  "properties": {
-                    "injectLines": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "post_install": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "sources": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      },
-                      "description": "Array of URLs that will be injected on top of the Podfile as sources"
-                    },
-                    "podDependencies": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "staticPods": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "header": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      },
-                      "description": "Array of strings that will be injected on top of the Podfile"
-                    }
-                  },
-                  "additionalProperties": false,
-                  "description": "Allows to manipulate Podfile"
+                "extendPlatform": {
+                  "$ref": "#/definitions/zodPluginSchema/properties/android/anyOf/0/properties/extendPlatform"
                 },
-                "project_pbxproj": {
+                "disabled": {
+                  "$ref": "#/definitions/zodPluginSchema/properties/android/anyOf/0/properties/disabled"
+                },
+                "forceLinking": {
+                  "$ref": "#/definitions/zodPluginSchema/properties/android/anyOf/0/properties/forceLinking"
+                },
+                "path": {
+                  "$ref": "#/definitions/zodPluginSchema/properties/android/anyOf/0/properties/path"
+                },
+                "templateXcode": {
                   "type": "object",
                   "properties": {
-                    "sourceFiles": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "resourceFiles": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "headerFiles": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "buildPhases": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "shellPath": {
+                    "Podfile": {
+                      "type": "object",
+                      "properties": {
+                        "injectLines": {
+                          "type": "array",
+                          "items": {
                             "type": "string"
-                          },
-                          "shellScript": {
-                            "type": "string"
-                          },
-                          "inputPaths": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            }
                           }
                         },
-                        "required": [
-                          "shellPath",
-                          "shellScript",
-                          "inputPaths"
-                        ],
-                        "additionalProperties": false
-                      }
+                        "post_install": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "sources": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "description": "Array of URLs that will be injected on top of the Podfile as sources"
+                        },
+                        "podDependencies": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "staticPods": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "header": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "description": "Array of strings that will be injected on top of the Podfile"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "description": "Allows to manipulate Podfile"
                     },
-                    "frameworks": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
+                    "project_pbxproj": {
+                      "type": "object",
+                      "properties": {
+                        "sourceFiles": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "resourceFiles": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "headerFiles": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "buildPhases": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "shellPath": {
+                                "type": "string"
+                              },
+                              "shellScript": {
+                                "type": "string"
+                              },
+                              "inputPaths": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "required": [
+                              "shellPath",
+                              "shellScript",
+                              "inputPaths"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "frameworks": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "buildSettings": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "additionalProperties": false
                     },
-                    "buildSettings": {
+                    "AppDelegate_mm": {
+                      "type": "object",
+                      "properties": {
+                        "appDelegateMethods": {
+                          "type": "object",
+                          "properties": {
+                            "application": {
+                              "type": "object",
+                              "properties": {
+                                "didFinishLaunchingWithOptions": {
+                                  "type": "array",
+                                  "items": {
+                                    "anyOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "object",
+                                        "properties": {
+                                          "order": {
+                                            "type": "number"
+                                          },
+                                          "value": {
+                                            "type": "string"
+                                          },
+                                          "weight": {
+                                            "type": "number"
+                                          }
+                                        },
+                                        "required": [
+                                          "order",
+                                          "value",
+                                          "weight"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    ]
+                                  }
+                                },
+                                "applicationDidBecomeActive": {
+                                  "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
+                                },
+                                "open": {
+                                  "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
+                                },
+                                "supportedInterfaceOrientationsFor": {
+                                  "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
+                                },
+                                "didReceiveRemoteNotification": {
+                                  "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
+                                },
+                                "didFailToRegisterForRemoteNotificationsWithError": {
+                                  "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
+                                },
+                                "didReceive": {
+                                  "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
+                                },
+                                "didRegister": {
+                                  "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
+                                },
+                                "didRegisterForRemoteNotificationsWithDeviceToken": {
+                                  "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
+                                },
+                                "continue": {
+                                  "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
+                                },
+                                "didConnectCarInterfaceController": {
+                                  "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
+                                },
+                                "didDisconnectCarInterfaceController": {
+                                  "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "userNotificationCenter": {
+                              "type": "object",
+                              "properties": {
+                                "willPresent": {
+                                  "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
+                                },
+                                "didReceiveNotificationResponse": {
+                                  "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
+                                }
+                              },
+                              "additionalProperties": false
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "appDelegateImports": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "AppDelegate_h": {
+                      "type": "object",
+                      "properties": {
+                        "appDelegateImports": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "appDelegateExtensions": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "Info_plist": {
                       "type": "object",
                       "additionalProperties": {
                         "type": "string"
@@ -1023,210 +1188,146 @@
                   },
                   "additionalProperties": false
                 },
-                "AppDelegate_mm": {
-                  "type": "object",
-                  "properties": {
-                    "appDelegateMethods": {
-                      "type": "object",
-                      "properties": {
-                        "application": {
-                          "type": "object",
-                          "properties": {
-                            "didFinishLaunchingWithOptions": {
-                              "type": "array",
-                              "items": {
-                                "anyOf": [
-                                  {
-                                    "type": "string"
-                                  },
-                                  {
-                                    "type": "object",
-                                    "properties": {
-                                      "order": {
-                                        "type": "number"
-                                      },
-                                      "value": {
-                                        "type": "string"
-                                      },
-                                      "weight": {
-                                        "type": "number"
-                                      }
-                                    },
-                                    "required": [
-                                      "order",
-                                      "value",
-                                      "weight"
-                                    ],
-                                    "additionalProperties": false
-                                  }
-                                ]
-                              }
-                            },
-                            "applicationDidBecomeActive": {
-                              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
-                            },
-                            "open": {
-                              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
-                            },
-                            "supportedInterfaceOrientationsFor": {
-                              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
-                            },
-                            "didReceiveRemoteNotification": {
-                              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
-                            },
-                            "didFailToRegisterForRemoteNotificationsWithError": {
-                              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
-                            },
-                            "didReceive": {
-                              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
-                            },
-                            "didRegister": {
-                              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
-                            },
-                            "didRegisterForRemoteNotificationsWithDeviceToken": {
-                              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
-                            },
-                            "continue": {
-                              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
-                            },
-                            "didConnectCarInterfaceController": {
-                              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
-                            },
-                            "didDisconnectCarInterfaceController": {
-                              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
-                            }
-                          },
-                          "additionalProperties": false
-                        },
-                        "userNotificationCenter": {
-                          "type": "object",
-                          "properties": {
-                            "willPresent": {
-                              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
-                            },
-                            "didReceiveNotificationResponse": {
-                              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions"
-                            }
-                          },
-                          "additionalProperties": false
-                        }
-                      },
-                      "additionalProperties": false
-                    },
-                    "appDelegateImports": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    }
-                  },
-                  "additionalProperties": false
+                "git": {
+                  "type": "string",
+                  "description": "Alternative git url for pod instead of version"
                 },
-                "AppDelegate_h": {
-                  "type": "object",
-                  "properties": {
-                    "appDelegateImports": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "appDelegateExtensions": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    }
-                  },
-                  "additionalProperties": false
+                "commit": {
+                  "type": "string",
+                  "description": "Alternative git commit reference string"
                 },
-                "Info_plist": {
-                  "type": "object",
-                  "properties": {},
-                  "additionalProperties": false
+                "version": {
+                  "type": "string",
+                  "description": "Version of pod"
+                },
+                "podNames": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "podName": {
+                  "type": "string"
+                },
+                "staticFrameworks": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "isStatic": {
+                  "type": "boolean"
+                },
+                "buildType": {
+                  "type": "string",
+                  "enum": [
+                    "dynamic",
+                    "static"
+                  ],
+                  "description": "Build type of the pod"
                 }
               },
               "additionalProperties": false
             },
-            "git": {
-              "type": "string",
-              "description": "Alternative git url for pod instead of version"
-            },
-            "commit": {
-              "type": "string",
-              "description": "Alternative git commit reference string"
-            },
-            "version": {
-              "type": "string",
-              "description": "Version of pod"
-            },
-            "podNames": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "podName": {
-              "type": "string"
-            },
-            "staticFrameworks": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "isStatic": {
-              "type": "boolean"
-            },
-            "buildType": {
-              "type": "string",
-              "enum": [
-                "dynamic",
-                "static"
-              ],
-              "description": "Build type of the pod"
+            {
+              "type": "null"
             }
-          },
-          "additionalProperties": false
+          ]
         },
         "tvos": {
           "$ref": "#/definitions/zodPluginSchema/properties/ios"
         },
         "tizen": {
-          "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "tizenmobile": {
-          "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+          "$ref": "#/definitions/zodPluginSchema/properties/tizen"
         },
         "tizenwatch": {
-          "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+          "$ref": "#/definitions/zodPluginSchema/properties/tizen"
         },
         "webos": {
-          "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+          "$ref": "#/definitions/zodPluginSchema/properties/tizen"
         },
         "web": {
-          "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+          "$ref": "#/definitions/zodPluginSchema/properties/tizen"
         },
         "webtv": {
-          "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+          "$ref": "#/definitions/zodPluginSchema/properties/tizen"
         },
         "chromecast": {
-          "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+          "$ref": "#/definitions/zodPluginSchema/properties/tizen"
         },
         "kaios": {
-          "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+          "$ref": "#/definitions/zodPluginSchema/properties/tizen"
         },
         "macos": {
-          "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "extendPlatform": {
+                  "$ref": "#/definitions/zodPluginSchema/properties/android/anyOf/0/properties/extendPlatform"
+                },
+                "disabled": {
+                  "$ref": "#/definitions/zodPluginSchema/properties/android/anyOf/0/properties/disabled"
+                },
+                "forceLinking": {
+                  "$ref": "#/definitions/zodPluginSchema/properties/android/anyOf/0/properties/forceLinking"
+                },
+                "path": {
+                  "$ref": "#/definitions/zodPluginSchema/properties/android/anyOf/0/properties/path"
+                },
+                "templateXcode": {
+                  "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/templateXcode"
+                },
+                "git": {
+                  "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/git"
+                },
+                "commit": {
+                  "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/commit"
+                },
+                "version": {
+                  "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/version"
+                },
+                "podNames": {
+                  "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/podNames"
+                },
+                "podName": {
+                  "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/podName"
+                },
+                "staticFrameworks": {
+                  "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/staticFrameworks"
+                },
+                "isStatic": {
+                  "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/isStatic"
+                },
+                "buildType": {
+                  "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/buildType"
+                }
+              },
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "linux": {
-          "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+          "$ref": "#/definitions/zodPluginSchema/properties/tizen"
         },
         "windows": {
-          "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+          "$ref": "#/definitions/zodPluginSchema/properties/tizen"
         },
         "xbox": {
-          "$ref": "#/definitions/zodPluginPlatformBaseFragment"
+          "$ref": "#/definitions/zodPluginSchema/properties/tizen"
         }
       },
       "additionalProperties": false
@@ -1301,22 +1402,22 @@
       "type": "object",
       "properties": {
         "templateAndroid": {
-          "$ref": "#/definitions/zodPluginSchema/properties/android/properties/templateAndroid"
+          "$ref": "#/definitions/zodPluginSchema/properties/android/anyOf/0/properties/templateAndroid"
         },
         "projectName": {
-          "$ref": "#/definitions/zodPluginSchema/properties/android/properties/projectName"
+          "$ref": "#/definitions/zodPluginSchema/properties/android/anyOf/0/properties/projectName"
         },
         "skipLinking": {
-          "$ref": "#/definitions/zodPluginSchema/properties/android/properties/skipLinking"
+          "$ref": "#/definitions/zodPluginSchema/properties/android/anyOf/0/properties/skipLinking"
         },
         "skipImplementation": {
-          "$ref": "#/definitions/zodPluginSchema/properties/android/properties/skipImplementation"
+          "$ref": "#/definitions/zodPluginSchema/properties/android/anyOf/0/properties/skipImplementation"
         },
         "implementation": {
-          "$ref": "#/definitions/zodPluginSchema/properties/android/properties/implementation"
+          "$ref": "#/definitions/zodPluginSchema/properties/android/anyOf/0/properties/implementation"
         },
         "package": {
-          "$ref": "#/definitions/zodPluginSchema/properties/android/properties/package"
+          "$ref": "#/definitions/zodPluginSchema/properties/android/anyOf/0/properties/package"
         }
       },
       "additionalProperties": false,
@@ -1326,31 +1427,31 @@
       "type": "object",
       "properties": {
         "templateXcode": {
-          "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode"
+          "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/templateXcode"
         },
         "git": {
-          "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/git"
+          "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/git"
         },
         "commit": {
-          "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/commit"
+          "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/commit"
         },
         "version": {
-          "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/version"
+          "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/version"
         },
         "podNames": {
-          "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/podNames"
+          "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/podNames"
         },
         "podName": {
-          "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/podName"
+          "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/podName"
         },
         "staticFrameworks": {
-          "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/staticFrameworks"
+          "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/staticFrameworks"
         },
         "isStatic": {
-          "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/isStatic"
+          "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/isStatic"
         },
         "buildType": {
-          "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/buildType"
+          "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/buildType"
         }
       },
       "additionalProperties": false
@@ -1358,14 +1459,17 @@
     "zodPluginPlatformBaseFragment": {
       "type": "object",
       "properties": {
+        "extendPlatform": {
+          "$ref": "#/definitions/zodPluginSchema/properties/android/anyOf/0/properties/extendPlatform"
+        },
         "disabled": {
-          "$ref": "#/definitions/zodPluginSchema/properties/android/properties/disabled"
+          "$ref": "#/definitions/zodPluginSchema/properties/android/anyOf/0/properties/disabled"
         },
         "forceLinking": {
-          "$ref": "#/definitions/zodPluginSchema/properties/android/properties/forceLinking"
+          "$ref": "#/definitions/zodPluginSchema/properties/android/anyOf/0/properties/forceLinking"
         },
         "path": {
-          "$ref": "#/definitions/zodPluginSchema/properties/android/properties/path"
+          "$ref": "#/definitions/zodPluginSchema/properties/android/anyOf/0/properties/path"
         }
       },
       "additionalProperties": false
@@ -1598,7 +1702,7 @@
                     "description": "Allows you to define specific native render engine to be used"
                   },
                   "templateAndroid": {
-                    "$ref": "#/definitions/zodPluginSchema/properties/android/properties/templateAndroid"
+                    "$ref": "#/definitions/zodPluginSchema/properties/android/anyOf/0/properties/templateAndroid"
                   }
                 },
                 "additionalProperties": false
@@ -1818,7 +1922,7 @@
               "description": "Allows you to define specific native render engine to be used"
             },
             "templateAndroid": {
-              "$ref": "#/definitions/zodPluginSchema/properties/android/properties/templateAndroid"
+              "$ref": "#/definitions/zodPluginSchema/properties/android/anyOf/0/properties/templateAndroid"
             }
           },
           "additionalProperties": false
@@ -2091,7 +2195,7 @@
                     "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/reactNativeEngine"
                   },
                   "templateXcode": {
-                    "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode"
+                    "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/templateXcode"
                   }
                 },
                 "additionalProperties": false
@@ -2307,7 +2411,7 @@
               "description": "Allows you to define specific native render engine to be used"
             },
             "templateXcode": {
-              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode"
+              "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/templateXcode"
             }
           },
           "additionalProperties": false
@@ -3315,7 +3419,7 @@
                     "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/reactNativeEngine"
                   },
                   "templateXcode": {
-                    "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode"
+                    "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/templateXcode"
                   },
                   "electronConfig": {
                     "description": "Allows you to configure electron app as per https://www.electron.build/"
@@ -3560,7 +3664,7 @@
               "description": "Allows you to define specific native render engine to be used"
             },
             "templateXcode": {
-              "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode"
+              "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/templateXcode"
             },
             "electronConfig": {
               "$ref": "#/definitions/zodPlatformsSchema/properties/macos/properties/buildSchemes/additionalProperties/properties/electronConfig",
@@ -4298,6 +4402,9 @@
         "tag": {
           "type": "string"
         },
+        "name": {
+          "type": "string"
+        },
         "android:name": {
           "type": "string"
         },
@@ -4370,6 +4477,9 @@
       "properties": {
         "tag": {
           "$ref": "#/definitions/zodManifestChildBase/properties/tag"
+        },
+        "name": {
+          "$ref": "#/definitions/zodManifestChildBase/properties/name"
         },
         "android:name": {
           "$ref": "#/definitions/zodManifestChildBase/properties/android:name"
@@ -4478,7 +4588,7 @@
       "type": "object",
       "properties": {
         "templateAndroid": {
-          "$ref": "#/definitions/zodPluginSchema/properties/android/properties/templateAndroid"
+          "$ref": "#/definitions/zodPluginSchema/properties/android/anyOf/0/properties/templateAndroid"
         }
       },
       "additionalProperties": false,
@@ -4488,7 +4598,7 @@
       "type": "object",
       "properties": {
         "templateXcode": {
-          "$ref": "#/definitions/zodPluginSchema/properties/ios/properties/templateXcode"
+          "$ref": "#/definitions/zodPluginSchema/properties/ios/anyOf/0/properties/templateXcode"
         }
       },
       "additionalProperties": false
@@ -5069,7 +5179,7 @@
           "properties": {
             "supportedPlatforms": {
               "$ref": "#/definitions/zodPluginSchema/properties/supportedPlatforms",
-              "description": "Array list of all supported platforms in current project"
+              "description": "Array list of platforms for which the current plugin is supported"
             },
             "disabled": {
               "$ref": "#/definitions/zodPluginSchema/properties/disabled",
@@ -5500,11 +5610,8 @@
               }
             },
             "pluginTemplates": {
-              "type": "object",
-              "additionalProperties": {
-                "$ref": "#/definitions/zodPluginSchema"
-              },
-              "description": "Define all plugins available to be merged with project plugins"
+              "$ref": "#/definitions/zodPluginsSchema",
+              "description": "Define all plugins available in your project. you can then use `includedPlugins` and `excludedPlugins` props to define active and inactive plugins per each app config"
             },
             "disableRnvDefaultOverrides": {
               "type": "boolean",

@@ -1,7 +1,9 @@
 import { z } from 'zod';
+import { zodPlatformsKeys } from '../../shared';
 
 export const zodPluginPlatformBaseFragment = z
     .object({
+        extendPlatform: zodPlatformsKeys.describe('Extends platform configuration from another platform'),
         disabled: z.boolean().default(false).describe('Marks plugin platform disabled'),
         forceLinking: z
             .boolean()

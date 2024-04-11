@@ -19,7 +19,9 @@ export const selectPlatformIfRequired = async (
     c.runtime.availablePlatforms = c.buildConfig.defaults?.supportedPlatforms || [];
     if (typeof c.platform !== 'string') {
         const taskName = getTaskNameFromCommand();
-        const platforms = knownTaskInstance?.platforms || c.runtime.availablePlatforms;
+        const platforms =
+            knownTaskInstance?.platforms?.filter((p) => c.runtime.availablePlatforms.includes(p)) ||
+            c.runtime.availablePlatforms;
         if (platforms) {
             if (platforms.length === 1) {
                 logInfo(

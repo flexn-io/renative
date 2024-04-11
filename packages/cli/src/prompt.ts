@@ -1,4 +1,5 @@
 import inquirer from 'inquirer';
+import inquirerAutocompletePrompt from 'inquirer-autocomplete-prompt';
 import {
     chalk,
     logWarning,
@@ -9,6 +10,8 @@ import {
     PromptRenderFn,
     getContext,
 } from '@rnv/core';
+
+inquirer.registerPrompt('autocomplete', inquirerAutocompletePrompt);
 
 export const inquirerPrompt = async (params: PromptParams): Promise<Record<string, any>> => {
     const c = getContext();
@@ -48,6 +51,7 @@ export const inquirerPrompt = async (params: PromptParams): Promise<Record<strin
     if (type === 'confirm' && !name) params.name = 'confirm';
 
     const resp = inquirer.prompt(params);
+    if (params.initialValue) resp.ui.rl.input.push(params.initialValue);
     return resp;
 };
 
