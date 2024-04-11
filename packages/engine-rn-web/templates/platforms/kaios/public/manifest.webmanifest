@@ -1,0 +1,31 @@
+{
+    "name": "{{APP_TITLE}}",
+    "description": "{{APP_DESCRIPTION}}",
+    "start_url": "/index.html",
+    "icons": [
+        {
+            "src": "/icons/icon16x16.png",
+            "type": "image/png",
+            "sizes": "56x56"
+        },
+        {
+            "src": "/icons/icon48x48.png",
+            "type": "image/png",
+            "sizes": "56x56"
+        },
+        {
+            "src": "/icons/icon60x60.png",
+            "type": "image/png",
+            "sizes": "56x56"
+        },
+        {
+            "src": "/icons/icon128x128.png",
+            "type": "image/png",
+            "sizes": "56x56"
+        }
+    ],
+    "developer": {
+        "name": "{{AUTHOR_NAME}}",
+        "url": "{{AUTHOR_URL}}"
+    }
+}
