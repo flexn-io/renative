@@ -1,6 +1,6 @@
 {
     "name": "@rnv/core",
-    "version": "1.0.0-rc.15",
+    "version": "1.0.0-rc.16",
     "description": "RNV Core SDK",
     "keywords": [],
     "homepage": "https://github.com/flexn-io/renative#readme",
@@ -48,7 +48,7 @@
         "zod": "3.22.4"
     },
     "peerDependencies": {
-        "@rnv/config-templates": "^1.0.0-rc.15"
+        "@rnv/config-templates": "^1.0.0-rc.16"
     },
     "private": false,
     "publishConfig": {
