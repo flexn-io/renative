@@ -197,6 +197,14 @@ const Question = async (data: NewProjectData) => {
                 cwd: c.paths.project.dir,
             }
         );
+        if (inputs.template.packageName && inputs.template.version) {
+            // We update our in-memory package.json with the new template
+            mergeIntoProjectPackage(data, {
+                devDependencies: {
+                    [inputs.template.packageName]: inputs.template.version,
+                },
+            });
+        }
         mergeIntoProjectConfig(data, {
             templateConfig: {
                 name: inputs.template.packageName,
