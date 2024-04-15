@@ -1,6 +1,6 @@
 import {
     OverridesOptions,
-    RenativeConfigPluginPlatform,
+    ConfigPluginPlatformSchema,
     RnvContext,
     getAppFolder,
     getConfigProp,
@@ -10,7 +10,7 @@ import {
 import path from 'path';
 import { getBuildFilePath, getEntryFile, getAppId, addSystemInjects } from '@rnv/sdk-utils';
 
-// const JS_BUNDLE_DEFAULTS: Partial<Record<PlatformKey, string>> = {
+// const JS_BUNDLE_DEFAULTS: Partial<Record<RnvPlatformKey, string>> = {
 //     // Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
 //     androidwear: '"assets://index.androidwear.bundle"',
 // };
@@ -156,7 +156,7 @@ export const parseSplashActivitySync = () => {
     const splashTemplatePath = 'app/src/main/java/rnv_template/SplashActivity.kt';
 
     // TODO This is temporary ANDROIDX support. whole kotlin parser will be refactored in the near future
-    const enableAndroidX = getConfigProp('enableAndroidX', true);
+    const enableAndroidX = getConfigProp('enableAndroidX') || true;
     if (enableAndroidX === true) {
         c.payload.pluginConfigAndroid.pluginSplashActivityImports +=
             'import androidx.appcompat.app.AppCompatActivity;\n';
@@ -184,7 +184,7 @@ export const parseSplashActivitySync = () => {
     );
 };
 
-export const injectPluginKotlinSync = (plugin: RenativeConfigPluginPlatform, key: string, pkg: string | undefined) => {
+export const injectPluginKotlinSync = (plugin: ConfigPluginPlatformSchema, key: string, pkg: string | undefined) => {
     const c = getContext();
     const templ = plugin.templateAndroid;
     const mainActivity = templ?.MainActivity_kt;
@@ -243,7 +243,7 @@ export const injectPluginKotlinSync = (plugin: RenativeConfigPluginPlatform, key
     }
 };
 
-const _injectPackage = (c: RnvContext, plugin: RenativeConfigPluginPlatform, pkg: string | undefined) => {
+const _injectPackage = (c: RnvContext, plugin: ConfigPluginPlatformSchema, pkg: string | undefined) => {
     if (pkg && !plugin?.forceLinking) {
         c.payload.pluginConfigAndroid.pluginApplicationImports += `import ${pkg}\n`;
     }

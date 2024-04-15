@@ -1,6 +1,6 @@
 {
     "name": "@flexn/renative-monorepo",
-    "version": "1.0.0-rc.12",
+    "version": "1.0.0-rc.16",
     "description": "🚀🚀🚀 Unified Development Platform. Bootstrap, Develop & Deploy `iOS`, `tvOS`, `Android`, `Android TV`, `Fire TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `Linux` and `Chromecast` platforms",
     "keywords": [
         "android tv",
@@ -56,8 +56,8 @@
         "url": "git://github.com/flexn-io/renative.git"
     },
     "scripts": {
-        "bootstrap": "yarn run link:rnv && npx lerna bootstrap && yarn build",
-        "bootstrap-clean": "rimraf -I ./node_modules; npx lerna clean --yes && yarn bootstrap",
+        "bootstrap": "npx lerna@6 bootstrap && yarn build && yarn link:rnv",
+        "bootstrap-clean": "rimraf -I ./node_modules; npx lerna@6 clean --yes && yarn bootstrap",
         "build": "lerna run build",
         "compile": "npx lerna run compile",
         "deploy:canary": "yarn pre-publish && npx lerna publish from-package --dist-tag canary && git push --tags origin HEAD",
@@ -68,9 +68,9 @@
         "link:rnv": "npm r rnv -g && cd packages/rnv && npm link",
         "lint": "npx eslint ./packages",
         "postinstall": "npx lerna link --force-local && npx jetify",
-        "pre-publish": "yarn build && yarn lint && yarn test && rnv hooks run -x prePublish -r && rnv hooks run -x gitCommitAndTag",
+        "pre-publish": "yarn build && yarn link:rnv && yarn lint && yarn test && rnv hooks run -x prePublish && rnv hooks run -x gitCommitAndTag",
         "prettier-write-all": "npx prettier '**/*.{js,jsx,ts,tsx,mjs,cjs,json,md}' --write --config .prettierrc.js",
-        "prettier-write-json": "npx prettier '**/{package.json,renative.plugins.json,renative.json}' --write --config .prettierrc.js",
+        "prettier-write-json": "npx prettier '**/{package.json,renative.plugins.json,renative.json,renative.templates.json,renative.template.json,renative.plugin.json,renative.engine.json}' --write --config .prettierrc.js",
         "report-circular": "npx madge --circular --extensions ts --exclude '\\.(d.ts)$' ./packages",
         "report-jest": "jest --coverage",
         "report-ts-coverage": "typescript-coverage-report -p ./packages/core/tsconfig.json  -t 99",
@@ -84,8 +84,8 @@
         "@flexn/eslint-config": "1.0.0",
         "@flexn/prettier-config": "1.0.0",
         "@flexn/typescript-config": "1.0.0",
-        "@rnv/build-hooks-git": "1.0.0-rc.12",
-        "@rnv/core": "1.0.0-rc.12",
+        "@rnv/build-hooks-git": "1.0.0-rc.16",
+        "@rnv/core": "1.0.0-rc.16",
         "@types/jest": "^29.5.12",
         "@types/kill-port": "2.0.0",
         "@types/lodash.get": "4.4.7",
@@ -99,7 +99,6 @@
         "@typescript-eslint/eslint-plugin": "^5.4.0",
         "@typescript-eslint/parser": "^5.4.0",
         "babel-jest": "29.6.3",
-        "babel-plugin-module-resolver": "^5.0.0",
         "deepmerge": "3.2.0",
         "eslint": "8.19.0",
         "eslint-config-prettier": "8.8.0",
@@ -143,12 +142,10 @@
             "webpack",
             "mini-css-extract-plugin",
             "execa",
-            "**/@flexn/plugins",
             "**/@flexn/graybox",
             "**/appium-*",
             "**/@wdio/*",
             "**/@react-native/metro-babel-transformer"
         ]
-    },
-    "resolutions": {}
+    }
 }

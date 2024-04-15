@@ -14,8 +14,8 @@ import {
     getContext,
     getCurrentCommand,
     inquirerPrompt,
+    RnvEnvContext,
 } from '@rnv/core';
-import { RnvEnvContext } from '@rnv/core/lib/env/types';
 import { EnvVars } from './env';
 import shellQuote from 'shell-quote';
 import path from 'path';
@@ -28,7 +28,7 @@ export const packageReactNativeIOS = (isDev = false) => {
     const entryFile = getConfigProp('entryFile');
 
     if (!c.platform) return;
-    // const { maxErrorLength } = c.program;
+    // const { maxErrorLength } = c.program.opts();
     const args = [
         'bundle',
         '--platform',
@@ -44,12 +44,12 @@ export const packageReactNativeIOS = (isDev = false) => {
         `${getAppFolder()}/main.jsbundle`,
     ];
 
-    if (getConfigProp('enableSourceMaps', false)) {
+    if (getConfigProp('enableSourceMaps')) {
         args.push('--sourcemap-output');
         args.push(`${getAppFolder()}/main.jsbundle.map`);
     }
 
-    if (c.program.info) {
+    if (c.program.opts().info) {
         args.push('--verbose');
     }
 
@@ -65,6 +65,7 @@ export const packageReactNativeIOS = (isDev = false) => {
                 ...CoreEnvVars.RNV_EXTENSIONS(),
                 ...EnvVars.RNV_REACT_NATIVE_PATH(),
                 ...EnvVars.RNV_APP_ID(),
+                ...EnvVars.RNV_SKIP_LINKING(),
             },
         }
     );
@@ -88,6 +89,7 @@ export const runReactNativeIOS = async (
         ...EnvVars.RCT_METRO_PORT(),
         ...EnvVars.RNV_REACT_NATIVE_PATH(),
         ...EnvVars.RNV_APP_ID(),
+        ...EnvVars.RNV_SKIP_LINKING(),
     };
 
     try {
@@ -121,11 +123,14 @@ const generateCombinedChecksum = () => {
     return combinedChecksum;
 };
 
-const checkIfPodsIsRequired = (c: RnvContext): { result: boolean; reason: string; code: number } => {
+const checkIfPodsIsRequired = (
+    c: RnvContext,
+    forceUpdatePods: boolean
+): { result: boolean; reason: string; code: number } => {
     if (c.runtime._skipNativeDepResolutions) {
         return { result: false, reason: `Command ${getCurrentCommand(true)} explicitly skips pod checks`, code: 1 };
     }
-    if (c.program.updatePods) {
+    if (forceUpdatePods) {
         return { result: true, reason: 'You passed --updatePods option', code: 2 };
     }
     const appFolder = getAppFolder();
@@ -167,11 +172,11 @@ const updatePodsChecksum = () => {
     return fsWriteFileSync(podChecksumPath, combinedChecksum);
 };
 
-export const runCocoaPods = async () => {
+export const runCocoaPods = async (forceUpdatePods: boolean) => {
     const c = getContext();
-    logDefault('runCocoaPods', `forceUpdate:${!!c.program.updatePods}`);
+    logDefault('runCocoaPods', `forceUpdate:${!!forceUpdatePods}`);
 
-    const checkResult = await checkIfPodsIsRequired(c);
+    const checkResult = await checkIfPodsIsRequired(c, forceUpdatePods);
 
     if (!checkResult.result) {
         logInfo(`Skipping pod action. Reason: ${checkResult.reason}`);
@@ -201,7 +206,7 @@ export const runCocoaPods = async () => {
             ...EnvVars.RNV_FLIPPER_ENABLED(),
         };
 
-        if (c.program.updatePods) {
+        if (forceUpdatePods) {
             await executeAsync('bundle exec pod update', {
                 cwd: appFolder,
                 env,

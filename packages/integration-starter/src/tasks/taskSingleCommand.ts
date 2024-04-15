@@ -1,16 +1,16 @@
-import { RnvContext, RnvTaskOptionPresets, logSuccess, RnvTask, RnvTaskFn } from '@rnv/core';
+import { RnvTaskName, createTask, logSuccess } from '@rnv/core';
 
-const task: RnvTaskFn = async (c: RnvContext) => {
-    logSuccess(`Hello from Integration Starter single command! 
---my-opt: "${c.program.myOpt}"`);
-};
-
-const Task: RnvTask = {
+export default createTask({
     description: 'Prints hello message',
-    fn: task,
+    dependsOn: [RnvTaskName.package],
+    beforeDependsOn: async () => {
+        console.log('>>> beforeDependsOn called!!!');
+    },
+    fn: async ({ ctx }) => {
+        logSuccess(`Hello from Integration Starter single command! 
+        --my-opt value: ${ctx.program.opts().myOpt}`);
+    },
     task: 'starter-single-command',
-    options: RnvTaskOptionPresets.withBase([{ key: 'my-opt', description: 'Hello', isValueType: true }]),
-    platforms: [],
-};
-
-export default Task;
+    platforms: ['ios', 'android'],
+    options: [{ key: 'my-opt', description: 'Hello', isValueType: true }],
+});

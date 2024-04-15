@@ -1,0 +1,93 @@
+{
+  "$ref": "#/definitions/rnv.workspace",
+  "definitions": {
+    "rnv.workspace": {
+      "type": "object",
+      "properties": {
+        "defaultTargets": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "propertyNames": {
+            "enum": [
+              "web",
+              "ios",
+              "android",
+              "androidtv",
+              "firetv",
+              "tvos",
+              "macos",
+              "linux",
+              "windows",
+              "tizen",
+              "webos",
+              "chromecast",
+              "kaios",
+              "webtv",
+              "androidwear",
+              "tizenwatch",
+              "tizenmobile",
+              "xbox"
+            ]
+          },
+          "description": "Define targets to be used when -t is not set on any project run"
+        },
+        "sdks": {
+          "type": "object",
+          "properties": {
+            "ANDROID_SDK": {
+              "type": "string"
+            },
+            "ANDROID_NDK": {
+              "type": "string"
+            },
+            "TIZEN_SDK": {
+              "type": "string"
+            },
+            "WEBOS_SDK": {
+              "type": "string"
+            },
+            "KAIOS_SDK": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "description": "Define your sdk configurations"
+        },
+        "projectTemplates": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "packageName": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "localPath": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "disableTelemetry": {
+          "type": "boolean",
+          "description": "Opt-out from renative telemetry program. More info at https://renative.org/telemetry"
+        },
+        "appConfigsPath": {
+          "type": "string",
+          "description": "Enables you to define custom global appConfigs location that every project will automatically use"
+        },
+        "$schema": {
+          "type": "string",
+          "description": "schema definition"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-04/schema#"
+}

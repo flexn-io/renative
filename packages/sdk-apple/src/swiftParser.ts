@@ -1,6 +1,6 @@
 // import path from 'path';
 // import {
-//     RenativeConfigPluginPlatform,
+//     ConfigPluginPlatformSchema,
 //     getEntryFile,
 //     getAppTemplateFolder,
 //     getConfigProp,
@@ -256,7 +256,7 @@
 //         resolve();
 //     });
 
-// export const injectPluginSwiftSync = (c: Context, plugin: RenativeConfigPluginPlatform, key: string) => {
+// export const injectPluginSwiftSync = (c: Context, plugin: ConfigPluginPlatformSchema, key: string) => {
 //     logDebug(`injectPluginSwiftSync:${c.platform}:${key}`);
 //     const templateXcode = getFlavouredProp(plugin, 'templateXcode');
 //     const appDelegateImports = templateXcode?.AppDelegate_mm?.appDelegateImports;

@@ -22,7 +22,6 @@ import {
     logRaw,
     inquirerPrompt,
     CoreEnvVars,
-    getContext,
 } from '@rnv/core';
 import { getAppleDevices } from './deviceManager';
 
@@ -36,6 +35,7 @@ import { AppleDevice, Context } from './types';
 import { ObjectEncodingOptions } from 'fs';
 import { packageReactNativeIOS, runCocoaPods, runReactNativeIOS, EnvVars } from '@rnv/sdk-react-native';
 import { registerDevice } from './fastlane';
+import { getContext } from './getContext';
 
 export const packageBundleForXcode = () => {
     return packageReactNativeIOS();
@@ -61,7 +61,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
 
     if (!c.platform) return;
 
-    const { device } = c.program;
+    const { device } = c.program.opts();
     let devicesArr: AppleDevice[] = [];
     if (device === true) {
         devicesArr = await getAppleDevices(c, false, true);
@@ -303,14 +303,13 @@ const _checkLockAndExec = async (
             );
             if (isAutomaticSigningDisabled) {
                 return _handleProvisioningIssues(
-                    c,
                     e,
                     "Your iOS App Development provisioning profiles don't match. under manual signing mode"
                 );
             }
             const isProvisioningMissing = e.includes('requires a provisioning profile');
             if (isProvisioningMissing) {
-                return _handleProvisioningIssues(c, e, 'Your iOS App requires a provisioning profile');
+                return _handleProvisioningIssues(e, 'Your iOS App requires a provisioning profile');
             }
         }
 
@@ -361,8 +360,9 @@ Type in your Apple Team ID to be used (will be saved to ${c.paths.appConfig?.con
     }
 };
 
-const _handleProvisioningIssues = async (c: Context, e: unknown, msg: string) => {
-    const provisioningStyle = c.program.provisioningStyle || getConfigProp('provisioningStyle');
+const _handleProvisioningIssues = async (e: unknown, msg: string) => {
+    const c = getContext();
+    const provisioningStyle = c.program.opts().provisioningStyle || getConfigProp('provisioningStyle');
     const appFolderName = getAppFolderName(); // Sometimes xcodebuild reports Automatic signing is disabled but it could be keychain not accepted by user
     const isProvAutomatic = provisioningStyle === 'Automatic';
     const proAutoText = isProvAutomatic
@@ -462,13 +462,13 @@ export const buildXcodeProject = async () => {
     const { platform } = c;
 
     const appFolderName = getAppFolderName();
-    const runScheme = getConfigProp('runScheme', 'Debug');
+    const runScheme = getConfigProp('runScheme') || 'Debug';
     const schemeTarget = getConfigProp('schemeTarget') || _getDefaultSchemeTarget(c.platform!);
 
     let destinationPlatform = '';
     switch (c.platform) {
         case 'ios': {
-            if (c.program.device) {
+            if (c.program.opts().device) {
                 destinationPlatform = 'iOS';
             } else {
                 destinationPlatform = 'iOS Simulator';
@@ -476,7 +476,7 @@ export const buildXcodeProject = async () => {
             break;
         }
         case 'tvos': {
-            if (c.program.device) {
+            if (c.program.opts().device) {
                 destinationPlatform = 'tvOS';
             } else {
                 destinationPlatform = 'tvOS Simulator';
@@ -496,8 +496,8 @@ export const buildXcodeProject = async () => {
     const allowProvisioningUpdates = getConfigProp('allowProvisioningUpdates') || true;
     const ignoreLogs = getConfigProp('ignoreLogs');
     let ps = '';
-    if (c.program.xcodebuildArgs) {
-        ps = c.program.xcodebuildArgs;
+    if (c.program.opts().xcodebuildArgs) {
+        ps = c.program.opts().xcodebuildArgs;
     }
     const p: string[] = [];
 
@@ -567,9 +567,9 @@ const archiveXcodeProject = () => {
     const { platform } = c;
 
     const appFolderName = getAppFolderName();
-    const schemeTarget = getConfigProp('schemeTarget', _getDefaultSchemeTarget(c.platform!));
+    const schemeTarget = getConfigProp('schemeTarget') || _getDefaultSchemeTarget(c.platform!);
 
-    const runScheme = getConfigProp('runScheme', 'Debug');
+    const runScheme = getConfigProp('runScheme') || 'Debug';
     let sdk = getConfigProp('sdk');
     if (!sdk) {
         if (platform === 'ios') sdk = 'iphoneos';
@@ -584,12 +584,12 @@ const archiveXcodeProject = () => {
     const appPath = getAppFolder();
     const exportPath = path.join(appPath, 'release');
 
-    const allowProvisioningUpdates = getConfigProp('allowProvisioningUpdates', true);
+    const allowProvisioningUpdates = getConfigProp('allowProvisioningUpdates') || true;
     const ignoreLogs = getConfigProp('ignoreLogs');
     const exportPathArchive = `${exportPath}/${appFolderName}.xcarchive`;
     let ps = '';
-    if (c.program.xcodebuildArchiveArgs) {
-        ps = c.program.xcodebuildArchiveArgs;
+    if (c.program.opts().xcodebuildArchiveArgs) {
+        ps = c.program.opts().xcodebuildArchiveArgs;
     }
     const p: string[] = [];
 
@@ -654,12 +654,12 @@ export const exportXcodeProject = async () => {
     const exportPath = path.join(appPath, 'release');
 
     const appFolderName = getAppFolderName();
-    const allowProvisioningUpdates = getConfigProp('allowProvisioningUpdates', true);
+    const allowProvisioningUpdates = getConfigProp('allowProvisioningUpdates') || true;
     const ignoreLogs = getConfigProp('ignoreLogs');
 
     let ps = '';
-    if (c.program.xcodebuildExportArgs) {
-        ps = c.program.xcodebuildExportArgs;
+    if (c.program.opts().xcodebuildExportArgs) {
+        ps = c.program.opts().xcodebuildExportArgs;
     }
     const p = ['-exportArchive'];
 
@@ -692,7 +692,7 @@ export const runAppleLog = () =>
     new Promise(() => {
         const c = getContext();
         logDefault('runAppleLog');
-        const filter = c.program.filter || 'RNV';
+        const filter = c.program.opts().filter || 'RNV';
         const opts: ObjectEncodingOptions & ExecFileOptions = {}; //{ stdio: 'inherit', customFds: [0, 1, 2] };
         const child = child_process.execFile(
             'xcrun',
@@ -718,7 +718,7 @@ export const configureXcodeProject = async () => {
     const c = getContext();
     logDefault('configureXcodeProject');
 
-    const { device } = c.program;
+    const { device } = c.program.opts();
     const { platform } = c;
     // const bundlerIp = device ? getIP() : 'localhost';
     const appFolder = getAppFolder();
@@ -833,7 +833,7 @@ export const configureXcodeProject = async () => {
     await parseEntitlementsPlist();
     await parseInfoPlist();
     await copyBuildsFolder();
-    await runCocoaPods();
+    await runCocoaPods(c.program.opts().updatePods);
     await parseXcodeProject();
     return true;
 };

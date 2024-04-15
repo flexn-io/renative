@@ -14,4 +14,9 @@ export type NpmPackageFile = {
 
 export type NpmPackageFileKey = keyof NpmPackageFile;
 
-export type NpmDepKey = 'dependencies' | 'devDependencies' | 'peerDependencies';
+export type NpmDepKey =
+    | 'dependencies'
+    | 'devDependencies'
+    | 'peerDependencies'
+    | 'optionalDependencies'
+    | 'resolutions';

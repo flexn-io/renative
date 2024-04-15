@@ -221,14 +221,14 @@ export const copyFileWithInjectSync = (
     }
 };
 
-export const invalidatePodsChecksum = () => {
-    const c = getContext();
-    const appFolder = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}`);
-    const podChecksumPath = path.join(appFolder, 'Podfile.checksum');
-    if (fs.existsSync(podChecksumPath)) {
-        fs.unlinkSync(podChecksumPath);
-    }
-};
+// export const invalidatePodsChecksum = () => {
+//     const c = getContext();
+//     const appFolder = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}`);
+//     const podChecksumPath = path.join(appFolder, 'Podfile.checksum');
+//     if (fs.existsSync(podChecksumPath)) {
+//         fs.unlinkSync(podChecksumPath);
+//     }
+// };
 
 export const copyFolderRecursiveSync = (
     source: string,
@@ -550,13 +550,15 @@ export const getRealPath = (p: string | undefined, key = 'undefined', original?:
         return path.join(c.paths.project.dir, p);
     }
     const output = p
+        // TODO: deprecate this path
         .replace(/\$RNV_HOME/g, c.paths.rnv.dir)
-        .replace(/~/g, c.paths.home.dir)
-        .replace(/\$USER_HOME/g, c.paths.home.dir)
+        .replace(/~/g, c.paths.user.homeDir)
+        .replace(/\$USER_HOME/g, c.paths.user.homeDir)
         .replace(/\$PROJECT_HOME/g, c.paths.project.dir)
         .replace(/\$WORKSPACE_HOME/g, c.paths.workspace.dir)
+        // TODO: deprecate this path
         .replace(/RNV_HOME/g, c.paths.rnv.dir)
-        .replace(/USER_HOME/g, c.paths.home.dir)
+        .replace(/USER_HOME/g, c.paths.user.homeDir)
         .replace(/PROJECT_HOME/g, c.paths.project.dir);
     return output;
 };
@@ -775,8 +777,7 @@ export const loadFile = <T, K extends Extract<keyof T, string>>(
 
         return fileObj[key];
     } catch (e) {
-        logError(`loadFile: ${pathObj[key]} :: ${e}`, true); // crash if there's an error in the config file
-        return false;
+        throw new Error(`loadFile: ${pathObj[key]} :: ${e}`); // crash if there's an error in the config file
     }
 };
 

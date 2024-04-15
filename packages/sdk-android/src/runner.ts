@@ -29,10 +29,10 @@ import {
     DEFAULTS,
     RnvPlatform,
     logInfo,
-    PlatformKey,
+    RnvPlatformKey,
     getContext,
 } from '@rnv/core';
-import { parseAndroidManifestSync, injectPluginManifestSync } from './manifestParser';
+import { parseAndroidManifestSync } from './manifestParser';
 import {
     parseMainActivitySync,
     parseSplashActivitySync,
@@ -48,7 +48,7 @@ import {
     parseAndroidConfigObject,
 } from './gradleParser';
 import { parseGradleWrapperSync } from './gradleWrapperParser';
-import { parseValuesStringsSync, injectPluginXmlValuesSync, parseValuesColorsSync } from './xmlValuesParser';
+import { parseValuesXml } from './xmlValuesParser';
 import { ejectGradleProject } from './ejector';
 import { AndroidDevice, Context, Payload } from './types';
 import {
@@ -60,8 +60,8 @@ import {
     connectToWifiDevice,
     composeDevicesArray,
 } from './deviceManager';
-import { CLI_ANDROID_ADB } from './constants';
-import { runReactNativeAndroid, packageReactNativeAndroid } from '@rnv/sdk-react-native';
+import { ANDROID_COLORS, ANDROID_STRINGS, ANDROID_STYLES, CLI_ANDROID_ADB } from './constants';
+import { runReactNativeAndroid, packageReactNativeAndroid, generateEnvVarsFile } from '@rnv/sdk-react-native';
 import { getEntryFile } from '@rnv/sdk-utils';
 
 export const packageAndroid = async () => {
@@ -78,7 +78,7 @@ export const getAndroidDeviceToRunOn = async () => {
 
     if (!c.platform) return;
 
-    const { target, device } = c.program;
+    const { target, device } = c.program.opts();
 
     await resetAdb();
     const targetToConnectWiFi = _isString(target) ? target : device;
@@ -98,8 +98,8 @@ export const getAndroidDeviceToRunOn = async () => {
     const askWhereToRun = async () => {
         if (activeDevices.length || inactiveDevices.length) {
             // No device active and device param is passed, exiting
-            if (c.program.device && !activeDevices.length) {
-                return logError('No active devices found, please connect one or remove the device argument', true);
+            if (c.program.opts().device && !activeDevices.length) {
+                return Promise.reject('No active devices found, please connect one or remove the device argument');
             }
             if (!foundDevice && (_isString(target) || _isString(device))) {
                 logInfo(
@@ -141,8 +141,8 @@ export const getAndroidDeviceToRunOn = async () => {
                 return device;
             }
         } else {
-            if (c.program.device) {
-                return logError('No active devices found, please connect one or remove the device argument', true);
+            if (c.program.opts().device) {
+                return Promise.reject('No active devices found, please connect one or remove the device argument');
             }
             await askForNewEmulator();
             const device = await checkForActiveEmulator();
@@ -193,7 +193,7 @@ export const runAndroid = async (device: AndroidDevice) => {
 
 const _checkSigningCerts = async (c: Context) => {
     logDefault('_checkSigningCerts');
-    const signingConfig = getConfigProp('signingConfig', 'Debug');
+    const signingConfig = getConfigProp('signingConfig') || 'Debug';
     const isRelease = signingConfig === 'Release';
 
     if (!c.platform) return;
@@ -205,7 +205,7 @@ const _checkSigningCerts = async (c: Context) => {
         } app in release mode but you have't configured your ${chalk().bold(
             c.paths.workspace.appConfig.configPrivate
         )} for ${chalk().bold(c.platform)} platform yet.`;
-        if (c.program.ci === true) {
+        if (c.program.opts().ci === true) {
             return Promise.reject(msg);
         }
         logWarning(msg);
@@ -228,7 +228,7 @@ const _checkSigningCerts = async (c: Context) => {
             const platforms = c.files.workspace.appConfig.configPrivate?.platforms || {};
 
             if (c.files.workspace.appConfig.configPrivate) {
-                const platCandidates: PlatformKey[] = ['androidwear', 'androidtv', 'android', 'firetv'];
+                const platCandidates: RnvPlatformKey[] = ['androidwear', 'androidtv', 'android', 'firetv'];
 
                 platCandidates.forEach((v) => {
                     if (c.files.workspace.appConfig.configPrivate?.platforms?.[v]) {
@@ -361,40 +361,17 @@ export const configureGradleProject = async () => {
     await configureAndroidProperties();
     await configureProject();
     await copyBuildsFolder();
+    await generateEnvVarsFile();
     return true;
 };
-
-// const createJavaPackageFolders = async (c: Context, appFolder: string) => {
-//     console.log('createJavaPackageFolders', appFolder);
-//     const appId = getAppId(c, c.platform);
-//     console.log('appId', appId);
-//     const javaPackageArray = appId.split('.');
-//     const javaPackagePath = path.join(appFolder, 'app/src/main/java', ...javaPackageArray);
-//     console.log('javaPackagePath', javaPackagePath);
-
-//     if (!fsExistsSync(javaPackagePath)) {
-//         await mkdir(javaPackagePath, { recursive: true });
-//     }
-//     throw new Error('createJavaPackageFolders not implemented');
-// }
 
 export const configureProject = async () => {
     logDefault('configureProject');
     const c = getContext<Payload>();
 
     const appFolder = getAppFolder();
-
-    // if (!fsExistsSync(gradlew)) {
-    //     logWarning(`Your ${chalk().bold(platform)} platformBuild is misconfigured!. let's repair it.`);
-    //     await createPlatformBuild(c, platform);
-    //     await configureGradleProject(c);
-
-    //     return true;
-    // }
-
     const outputFile = getEntryFile();
 
-    // await createJavaPackageFolders(c, appFolder);
     mkdirSync(path.join(appFolder, 'app/src/main/assets'));
     fsWriteFileSync(path.join(appFolder, `app/src/main/assets/${outputFile}.bundle`), '{}');
 
@@ -425,7 +402,6 @@ export const configureProject = async () => {
         appBuildGradleSigningConfigs: '',
         packagingOptions: '',
         appBuildGradleImplementations: '',
-        resourceStrings: [],
         appBuildGradleAfterEvaluate: '',
         kotlinVersion: '',
         googleServicesVersion: '',
@@ -448,8 +424,6 @@ export const configureProject = async () => {
     parsePlugins((plugin, pluginPlat, key) => {
         injectPluginGradleSync(plugin, pluginPlat, key);
         injectPluginKotlinSync(pluginPlat, key, pluginPlat.package);
-        injectPluginManifestSync();
-        injectPluginXmlValuesSync(pluginPlat);
     });
 
     c.payload.pluginConfigAndroid.pluginPackages = c.payload.pluginConfigAndroid.pluginPackages.substring(
@@ -489,8 +463,9 @@ export const configureProject = async () => {
     parseMainActivitySync();
     parseMainApplicationSync();
     parseSplashActivitySync();
-    parseValuesStringsSync();
-    parseValuesColorsSync();
+    parseValuesXml(ANDROID_STRINGS, true);
+    parseValuesXml(ANDROID_STYLES);
+    parseValuesXml(ANDROID_COLORS, true);
     parseAndroidManifestSync();
     parseGradlePropertiesSync();
     // parseFlipperSync(c, 'debug');
@@ -504,7 +479,7 @@ export const configureProject = async () => {
 export const runAndroidLog = async () => {
     const c = getContext();
     logDefault('runAndroidLog');
-    const filter = c.program.filter || '';
+    const filter = c.program.opts().filter || '';
     const child = execaCommand(`${c.cli[CLI_ANDROID_ADB]} logcat`);
     // use event hooks to provide a callback to execute when data are available:
     child.stdout?.on('data', (data: Buffer) => {

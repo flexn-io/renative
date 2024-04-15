@@ -1,10 +1,17 @@
-import { GetConfigPropFn } from '../api/types';
-import { RnvContext } from './types';
 import { chalk, logError, logWarning } from '../logger';
-import { ConfigFileBuildConfig } from '../schema';
-import { ConfigProp, ConfigPropKey } from '../schema/types';
-import { BuildConfigPropKey, BuildSchemePropKey, CommonPropKey, PlatPropKey } from '../types';
-import { TimestampPathsConfig } from '../system/types';
+import type {
+    BuildConfigKey,
+    CommonBuildSchemeKey,
+    CommonPropKey,
+    ConfigFileBuildConfig,
+    ConfigPropKeyMerged,
+    ConfigPropRootKeyMerged,
+    GetConfigPropVal,
+    GetConfigRootPropVal,
+    PlatformBuildSchemeKey,
+    ConfigCommonBuildSchemeSchema,
+} from '../schema/types';
+import type { TimestampPathsConfig } from '../system/types';
 import path from 'path';
 import { fsExistsSync } from '../system/fs';
 import { getContext } from './provider';
@@ -27,25 +34,27 @@ const _getValueOrMergedObject = (resultScheme: object, resultPlatforms: object, 
     return resultCommon;
 };
 
-export const getConfigProp: GetConfigPropFn = <T extends ConfigPropKey>(
-    key: T,
-    defaultVal?: ConfigProp[T]
-): ConfigProp[T] => {
+export const getConfigRootProp = <T, K extends ConfigPropRootKeyMerged<T>>(key: K): GetConfigRootPropVal<T, K> => {
     const c = getContext();
     if (!c.buildConfig) {
         logError('getConfigProp: c.buildConfig is undefined!');
         return undefined;
     }
-    return _getConfigProp<T>(c, key, defaultVal, c.buildConfig);
+    return c.buildConfig[key];
 };
 
-export const _getConfigProp = <T extends ConfigPropKey>(
-    c: RnvContext,
-    key: T,
-    defaultVal?: ConfigProp[T],
-    sourceObj?: Partial<ConfigFileBuildConfig>
-): ConfigProp[T] => {
+export const getConfigProp = <T, K extends ConfigPropKeyMerged<T>>(
+    key: K,
+    obj?: Partial<ConfigFileBuildConfig>
+): GetConfigPropVal<T, K> => {
+    const c = getContext();
+    if (!c.buildConfig) {
+        logError('getConfigProp: c.buildConfig is undefined!');
+        return undefined;
+    }
+
     const { platform } = c;
+    const sourceObj = obj || c.buildConfig;
     if (!sourceObj || !platform) return undefined;
 
     const platformObj = sourceObj.platforms?.[platform];
@@ -56,27 +65,31 @@ export const _getConfigProp = <T extends ConfigPropKey>(
     let scheme;
     if (platformObj && ps) {
         scheme = platformObj.buildSchemes?.[ps] || {};
-        resultPlatforms = getFlavouredProp(platformObj, key as PlatPropKey);
+        resultPlatforms = getFlavouredProp(platformObj, key as any);
     } else {
         scheme = {};
     }
 
-    const resultScheme = key && scheme[key as BuildSchemePropKey];
     const resultCommonRoot = getFlavouredProp(sourceObj.common || {}, key as CommonPropKey);
-    const resultCommonScheme =
-        c.runtime.scheme &&
-        getFlavouredProp(sourceObj.common?.buildSchemes?.[c.runtime.scheme] || {}, key as BuildSchemePropKey);
+
+    const bs: ConfigCommonBuildSchemeSchema =
+        (!!c.runtime.scheme && sourceObj.common?.buildSchemes?.[c.runtime.scheme]) || {};
+
+    const resultCommonScheme = c.runtime.scheme && getFlavouredProp(bs, key as CommonBuildSchemeKey);
 
     const resultCommon = resultCommonScheme || resultCommonRoot;
 
-    let result = _getValueOrMergedObject(resultScheme, resultPlatforms, resultCommon);
+    const resultScheme = key && scheme[key as PlatformBuildSchemeKey];
+    let result: GetConfigPropVal<T, K> = _getValueOrMergedObject(
+        resultScheme,
+        resultPlatforms,
+        resultCommon
+    ) as GetConfigPropVal<T, K>;
     if (result === undefined) {
-        result = getFlavouredProp(sourceObj, key as BuildConfigPropKey);
+        result = getFlavouredProp(sourceObj, key as BuildConfigKey);
     }
 
-    if (result === undefined) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
-
-    return result as ConfigProp[T];
+    return result as GetConfigPropVal<T, K>;
 };
 
 export const getFlavouredProp = <T, K extends keyof T>(obj: T, key: K): T[K] | undefined => {

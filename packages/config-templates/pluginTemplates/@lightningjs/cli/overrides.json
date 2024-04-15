@@ -1,0 +1,29 @@
+{
+  "overrides": {
+      "src/actions/serve.js": {
+          "'./build',": "process.env.LNG_BUILD_FOLDER,"
+      },
+      "src/actions/dist.js": {
+          "distDir = path.join(baseDistDir, type)": "distDir = path.join(baseDistDir, 'project')",
+          "if (!fs.existsSync(distDir)) {": "if (true) { // need this to always run, since this dir is created by rnv"
+      },
+      "src/helpers/build.js": {
+          "path.join(process.cwd(), enterFile),": "path.join(process.cwd(), process.env.LNG_ENTRY_FILE),",
+          "fs.appendFileSync(filename, os.EOL + missingEntries.join(os.EOL) + os.EOL)": "// fs.appendFileSync(filename, /* changed by RNV */ os.EOL + missingEntries.join(os.EOL) + os.EOL)"
+      },
+      "src/configs/rollup.es6.config.js": {
+          "resolve({ extensions, mainFields: buildHelpers.getResolveConfigForBundlers() }),": "resolve({ extensions: process.env.RNV_EXTENSIONS.split(',').map(extension => `.${extension}`), mainFields: buildHelpers.getResolveConfigForBundlers() }),",
+          "typescript()": "typescript({ include: '{,**/}*.(cts|mts|lng.ts|lng.tsx)' })"
+        },
+      "src/configs/esbuild.es6.config.js": {
+          "/src/index.js`],": "/${process.env.LNG_ENTRY_FILE}`],"
+      },
+      "src/configs/rollup.es5.config.js": {
+          "resolve({ extensions, mainFields: buildHelpers.getResolveConfigForBundlers() }),": "resolve({ extensions: process.env.RNV_EXTENSIONS.split(',').map(extension => `.${extension}`), mainFields: buildHelpers.getResolveConfigForBundlers() }),",
+          "typescript()": "typescript({ include: '{,**/}*.(cts|mts|lng.ts|lng.tsx)' })"
+        },
+      "src/configs/esbuild.es5.config.js": {
+          "/src/index.js`],": "/${process.env.LNG_ENTRY_FILE}`],"
+      }
+  }
+}

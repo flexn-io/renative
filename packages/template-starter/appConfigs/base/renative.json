@@ -1,20 +1,13 @@
 {
     "$schema": "../../.rnv/schema/rnv.app.json",
     "id": "base",
-    "skipBootstrapCopy": true,
     "hidden": true,
     "common": {
         "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
         "license": "MIT",
-        "includedPlugins": [
-            "*"
-        ],
-        "includedFonts": [
-            "*"
-        ],
-        "includedPermissions": [
-            "INTERNET"
-        ],
+        "includedPlugins": ["*"],
+        "includedFonts": ["*"],
+        "includedPermissions": ["INTERNET"],
         "buildSchemes": {
             "debug": {
                 "description": "Hello ReNative - Use for local development"
@@ -26,13 +19,9 @@
                 "description": "Hello ReNative - Use for production deployments"
             }
         },
-        "backgroundColor": "#111111",
-        "fontSources": [
-            "{{resolvePackage(react-native-vector-icons)}}/Fonts"
-        ],
-        "assetSources": [
-            "{{resolvePackage(@flexn/assets-renative-outline)}}/assets"
-        ]
+        "backgroundColor": "#FFFFFF",
+        "fontSources": ["{{resolvePackage(react-native-vector-icons)}}/Fonts"],
+        "assetSources": ["{{resolvePackage(@flexn/assets-renative-outline)}}/assets"]
     },
     "platforms": {
         "ios": {
@@ -66,9 +55,7 @@
                 "com.apple.iCloud": false
             },
             "entitlements": {},
-            "includedPermissions": [
-                "*"
-            ],
+            "includedPermissions": ["*"],
             "buildSchemes": {
                 "debug": {
                     "runScheme": "Debug",
@@ -90,9 +77,7 @@
             "entryFile": "index",
             "provisioningStyle": "Automatic",
             "entitlements": {},
-            "includedPermissions": [
-                "*"
-            ],
+            "includedPermissions": ["*"],
             "buildSchemes": {
                 "debug": {
                     "runScheme": "Debug",
@@ -113,9 +98,7 @@
         "macos": {
             "entryFile": "index",
             "provisioningStyle": "Automatic",
-            "includedPermissions": [
-                "*"
-            ],
+            "includedPermissions": ["*"],
             "buildSchemes": {
                 "debug": {
                     "runScheme": "Debug",
@@ -134,9 +117,7 @@
         },
         "android": {
             "entryFile": "index",
-            "includedPermissions": [
-                "INTERNET"
-            ],
+            "includedPermissions": ["INTERNET"],
             "buildSchemes": {
                 "debug": {
                     "signingConfig": "Debug",
@@ -164,9 +145,7 @@
             "entryFile": "index",
             "multipleAPKs": false,
             "assetFolderPlatform": "android",
-            "includedPermissions": [
-                "*"
-            ],
+            "includedPermissions": ["*"],
             "buildSchemes": {
                 "debug": {
                     "signingConfig": "Debug",
@@ -188,9 +167,7 @@
             "entryFile": "index",
             "multipleAPKs": false,
             "assetFolderPlatform": "android",
-            "includedPermissions": [
-                "*"
-            ],
+            "includedPermissions": ["*"],
             "buildSchemes": {
                 "debug": {
                     "signingConfig": "Debug",
@@ -212,9 +189,7 @@
             "entryFile": "index",
             "multipleAPKs": false,
             "assetFolderPlatform": "android",
-            "includedPermissions": [
-                "*"
-            ],
+            "includedPermissions": ["*"],
             "buildSchemes": {
                 "debug": {
                     "signingConfig": "Debug",

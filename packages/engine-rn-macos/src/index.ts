@@ -1,19 +1,14 @@
-import { generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
+import { createRnvEngine, GetContextType } from '@rnv/core';
 import { withRNVMetro } from './adapters/metroAdapter';
 import { withRNVBabel } from './adapters/babelAdapter';
-//@ts-ignore
-import CNF from '../renative.engine.json';
-import taskRun from './tasks/taskRun';
-import taskPackage from './tasks/taskPackage';
-import taskBuild from './tasks/taskBuild';
-import taskConfigure from './tasks/taskConfigure';
-import taskStart from './tasks/taskStart';
-import taskExport from './tasks/taskExport';
+import { Tasks as TasksSdkApple } from '@rnv/sdk-apple';
+import { Tasks as TasksSdkReactNative } from '@rnv/sdk-react-native';
 import { withRNVRNConfig } from '@rnv/sdk-react-native';
+import { Config } from './config';
 
-const Engine: RnvEngine = {
-    tasks: generateEngineTasks([taskRun, taskPackage, taskBuild, taskConfigure, taskStart, taskExport]),
-    config: CNF,
+const Engine = createRnvEngine({
+    tasks: [...TasksSdkApple, ...TasksSdkReactNative],
+    config: Config,
     runtimeExtraProps: {
         reactNativePackageName: 'react-native',
         reactNativeMetroConfigName: 'metro.config.js',
@@ -24,13 +19,12 @@ const Engine: RnvEngine = {
     platforms: {
         macos: {
             defaultPort: 8086,
-            extensions: generateEngineExtensions(
-                ['macos.desktop', 'desktop', 'macos', 'desktop.native', 'native'],
-                CNF
-            ),
+            extensions: ['macos.desktop', 'desktop', 'macos', 'desktop.native', 'native'],
         },
     },
-};
+});
+
+export type GetContext = GetContextType<typeof Engine.getContext>;
 
 export { withRNVMetro, withRNVBabel, withRNVRNConfig };
 

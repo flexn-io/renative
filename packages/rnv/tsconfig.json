@@ -5,5 +5,5 @@
         "rootDir": "./src",
         "resolveJsonModule": false
     },
-    "exclude": ["./src/**/*.test.ts", "./lib/**/*", "./coreTemplateFiles/**/*"]
+    "exclude": ["./src/**/*.test.ts", "./lib/**/*", "./templateFiles/**/*"]
 }

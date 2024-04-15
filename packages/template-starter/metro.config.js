@@ -1,3 +1,3 @@
-const { withRNVMetro } = require('rnv');
+const { withRNVMetro } = require('@rnv/adapter');
 
 module.exports = withRNVMetro({});

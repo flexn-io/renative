@@ -17,13 +17,12 @@ import {
     logDebug,
     logSuccess,
     logRaw,
-    USER_HOME_DIR,
     RnvContext,
     waitForExecCLI,
     inquirerPrompt,
     executeAsync,
     ExecOptionsPresets,
-    PlatformKey,
+    RnvPlatformKey,
     getContext,
 } from '@rnv/core';
 import { CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from './constants';
@@ -66,9 +65,7 @@ export const launchAndroidSimulator = async (
     let newTarget: { name: string } | string;
 
     if (target === true) {
-        const {
-            program: { device },
-        } = c;
+        const { device } = c.program.opts();
         const list = await getAndroidTargets(false, device, device);
 
         const devicesString = composeDevicesArray(list);
@@ -95,8 +92,7 @@ export const launchAndroidSimulator = async (
                 if (err.includes && err.includes('WHPX')) {
                     logWarning(err);
                     logError(
-                        'It seems you do not have the Windows Hypervisor Platform virtualization enabled. Enter windows features in the Windows search box and select Turn Windows features on or off in the search results. In the Windows Features dialog, enable both Hyper-V and Windows Hypervisor Platform.',
-                        true
+                        'It seems you do not have the Windows Hypervisor Platform virtualization enabled. Enter windows features in the Windows search box and select Turn Windows features on or off in the search results. In the Windows Features dialog, enable both Hyper-V and Windows Hypervisor Platform.'
                     );
                     return false;
                 }
@@ -117,7 +113,7 @@ export const launchAndroidSimulator = async (
                     logWarning(
                         `Target with name ${chalk().red(
                             newTarget
-                        )} does not exist. You can update it here: ${chalk().cyan(c.paths.GLOBAL_RNV_CONFIG)}`
+                        )} does not exist. You can update it here: ${chalk().cyan(c.paths.dotRnv.config)}`
                     );
                     await launchAndroidSimulator(true, false);
                     return true;
@@ -132,11 +128,10 @@ export const launchAndroidSimulator = async (
     return Promise.reject('No simulator -t target name specified!');
 };
 
-export const listAndroidTargets = async (c: RnvContext) => {
+export const listAndroidTargets = async () => {
+    const c = getContext();
     logDefault('listAndroidTargets');
-    const {
-        program: { device },
-    } = c;
+    const { device } = c.program.opts();
 
     await resetAdb();
     const list = await getAndroidTargets(false, device, device);
@@ -188,7 +183,7 @@ const _getDeviceAsObject = (device: AndroidDevice): DeviceInfo => {
 
 export const resetAdb = async (forceRun?: boolean, ranBefore?: boolean) => {
     const c = getContext();
-    if (!c.program.resetAdb && !forceRun) return;
+    if (!c.program.opts().resetAdb && !forceRun) return;
     try {
         if (!ranBefore) await execCLI(CLI_ANDROID_ADB, 'kill-server');
     } catch (e) {
@@ -390,7 +385,11 @@ const getAvdDetails = (c: RnvContext, deviceName: string) => {
     const { ANDROID_SDK_HOME, ANDROID_AVD_HOME } = process.env;
 
     // .avd dir might be in other place than homedir. (https://developer.android.com/studio/command-line/variables)
-    const avdConfigPaths = [`${ANDROID_AVD_HOME}`, `${ANDROID_SDK_HOME}/.android/avd`, `${USER_HOME_DIR}/.android/avd`];
+    const avdConfigPaths = [
+        `${ANDROID_AVD_HOME}`,
+        `${ANDROID_SDK_HOME}/.android/avd`,
+        `${c.paths.user.homeDir}/.android/avd`,
+    ];
 
     const results: { avdConfig?: Record<string, string> } = {};
 
@@ -445,7 +444,7 @@ export const connectToWifiDevice = async (target: string) => {
 
     const deviceResponse = await execCLI(CLI_ANDROID_ADB, connect_str);
     if (deviceResponse.includes('connected')) return true;
-    logError(`Failed to ${connect_str}`, false, true);
+    logError(`Failed to ${connect_str}`, { skipAnalytics: true });
     return false;
 };
 
@@ -457,7 +456,7 @@ const _parseDevicesResult = async (
 ) => {
     logDebug(`_parseDevicesResult:${devicesString}:${avdsString}:${deviceOnly}`);
     const devices: Array<AndroidDevice> = [];
-    const { skipTargetCheck } = c.program;
+    const { skipTargetCheck } = c.program.opts();
 
     if (devicesString) {
         const lines = devicesString.trim().split(/\r?\n/);
@@ -644,7 +643,7 @@ const _createEmulator = (c: RnvContext, apiVersion: string, emuPlatform: string,
                 ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER
             )
         )
-        .catch((e) => logError(e, true));
+        .catch((e) => logError(e));
 };
 
 const waitForEmulatorToBeReady = (emulator: string) =>
@@ -689,7 +688,7 @@ export const checkForActiveEmulator = (emulatorName?: string) =>
                         } else {
                             logRaw(`looking for active emulators: attempt ${attempts}/${maxAttempts}`);
                             attempts++;
-                            const check: PlatformKey[] = ['androidtv', 'firetv', 'androidwear'];
+                            const check: RnvPlatformKey[] = ['androidtv', 'firetv', 'androidwear'];
                             if (check.includes(platform) && attempts === 2) {
                                 await resetAdb(true); // from time to time adb reports a recently started atv emu as being offline. Restarting adb fixes it
                             }

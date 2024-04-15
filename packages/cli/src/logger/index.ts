@@ -26,7 +26,6 @@ let chalkBlue: any = _chalk.rgb(colorBlue.r, colorBlue.g, colorBlue.b);
 
 // const RNV = 'ReNative';
 const PRIVATE_PARAMS = ['-k', '--key'];
-let _currentProcess: NodeJS.Process;
 let _isInfoEnabled = false;
 let _infoFilter: Array<string> = [];
 // let _c: RnvContext;
@@ -42,13 +41,12 @@ export const logInitialize = () => {
     // cnf();
     const ctx = getContext();
 
-    _currentProcess = ctx.process;
-    _isInfoEnabled = !!ctx.program.info;
-    _jsonOnly = !!ctx.program.json;
-    _infoFilter = ctx.program.info?.split?.(',');
+    _isInfoEnabled = !!ctx.program.opts().info;
+    _jsonOnly = !!ctx.program.opts().json;
+    _infoFilter = ctx.program.opts().info?.split?.(',');
     // _analytics = analytics;
 
-    if (ctx.program.mono) {
+    if (ctx.program.opts().mono) {
         currentChalk = _chalkMono;
         chalkBlue = _chalkMono;
     }
@@ -59,6 +57,7 @@ export const logInitialize = () => {
 
 export const logWelcome = () => {
     const ctx = getContext();
+    if (ctx.program?.opts().help) return;
     const shortLen = 64;
     // prettier-ignore
     let str = _defaultColor(`
@@ -127,15 +126,15 @@ export function stripAnsi(string: string) {
 // };
 
 // const _configureLogger = (c: RnvContext, analytics: AnalyticsApi) => {
-//     // ctx.logMessages = [];
+//     // ctx.logging.logMessages = [];
 
 //     // _c = c;
 //     // if (!ctx.timeStart) ctx.timeStart = new Date();
 //     _currentProcess = c.process;
-//     _isInfoEnabled = !!c.program.info;
-//     _jsonOnly = !!c.program.json;
-//     _infoFilter = c.program.info?.split?.(',');
-//     // _isMono = c.program.mono;
+//     _isInfoEnabled = !!c.program.opts().info;
+//     _jsonOnly = !!c.program.opts().json;
+//     _infoFilter = c.program.opts().info?.split?.(',');
+//     // _isMono = c.program.opts().mono;
 //     _analytics = analytics;
 //     // if (_isMono) {
 //     //     currentChalk = _chalkMono;
@@ -152,7 +151,7 @@ _updateDefaultColors();
 
 export const logAndSave = (msg: string, skipLog?: boolean) => {
     const ctx = getContext();
-    if (ctx.logMessages && !ctx.logMessages.includes(msg)) ctx.logMessages.push(msg);
+    if (ctx.logging?.logMessages && !ctx.logging?.logMessages.includes(msg)) ctx.logging?.logMessages.push(msg);
     if (!skipLog) console.log(`${msg}`);
 };
 
@@ -187,10 +186,11 @@ export const getCurrentCommand = (excludeDollar = false) => {
     return `${dollar}${npx}rnv ${output}`;
 };
 
-export const logToSummary = (v: string, sanitizePaths?: () => string) => {
+export const logToSummary = (v: string) => {
     const ctx = getContext();
-    const _v = sanitizePaths ? _sanitizePaths(v) : v;
-    ctx.logMessages.push(`\n${_v}`);
+    if (ctx.program?.opts().help) return;
+    const _v = _sanitizePaths(v);
+    ctx.logging.logMessages.push(`\n${_v}`);
 };
 
 export const logRaw = (...args: Array<string>) => {
@@ -204,8 +204,9 @@ export const logRaw = (...args: Array<string>) => {
     console.log.apply(null, args);
 };
 
-export const logSummary = (header = '✔ SUMMARY') => {
+export const logSummary = (opts?: { header?: string; headerStyle?: 'success' | 'warning' | 'error' | 'none' }) => {
     const ctx = getContext();
+    if (ctx.program?.opts().help) return;
 
     if (_jsonOnly) return;
 
@@ -217,9 +218,9 @@ export const logSummary = (header = '✔ SUMMARY') => {
     }
 
     let logContent = ''; //= printIntoBox(`All good as ${ICN_UNICORN} `);
-    if (ctx.logMessages && ctx.logMessages.length) {
+    if (ctx.logging.logMessages && ctx.logging.logMessages.length) {
         logContent = '';
-        ctx.logMessages.forEach((m) => {
+        ctx.logging.logMessages.forEach((m) => {
             logContent += `│ ${m}\n`;
         });
     }
@@ -232,9 +233,26 @@ export const logSummary = (header = '✔ SUMMARY') => {
     // if (ctx.process) {
     //     envString = `${ctx.process.platform} | ${ctx.process.arch} | node v${ctx.process.versions?.node}`;
     // }
+    const defaultHeaderStyle = ctx.logging.containsError
+        ? 'error'
+        : ctx.logging.containsWarning
+        ? 'warning'
+        : 'success';
+    const headerStyle = opts?.headerStyle || defaultHeaderStyle;
 
+    const headerPrefix =
+        headerStyle === 'success' ? '✔ ' : headerStyle === 'warning' ? '⚠ ' : headerStyle === 'error' ? '⨯ ' : '';
+    const headerTextPlain = `${headerPrefix}${opts?.header || 'SUMMARY'}`;
+    const headerChalk =
+        headerStyle === 'success'
+            ? currentChalk.green.bold
+            : headerStyle === 'warning'
+            ? currentChalk.yellow.bold
+            : headerStyle === 'error'
+            ? currentChalk.green.red
+            : (v: string) => v;
     let str = printBoxStart(
-        `${currentChalk.green.bold(header)} ${timeString} | rnv@${ctx.rnvVersion}`,
+        `${headerChalk(headerTextPlain)} ${timeString} | rnv@${ctx.rnvVersion}`,
         getCurrentCommand()
     );
 
@@ -259,8 +277,8 @@ export const logSummary = (header = '✔ SUMMARY') => {
         // }
         str += printIntoBox(`Engine: ${currentChalk.gray(ctx.runtime?.engine?.config?.id || '')}`);
     }
-    if (ctx.runtime?.activeTemplate) {
-        str += printIntoBox(`Template: ${currentChalk.gray(ctx.runtime?.activeTemplate)}`);
+    if (ctx.runtime?.currentTemplate) {
+        str += printIntoBox(`Template: ${currentChalk.gray(ctx.runtime?.currentTemplate)}`);
     }
     if (ctx.buildConfig?._meta?.currentAppConfigId) {
         str += printIntoBox(`App Config (-c): ${_highlightColor(ctx.buildConfig._meta?.currentAppConfigId)}`);
@@ -276,17 +294,17 @@ export const logSummary = (header = '✔ SUMMARY') => {
     if (ctx.runtime?.target) {
         str += printIntoBox(`Target (-t): ${_highlightColor(ctx.runtime?.target)}`);
     }
-    if (ctx.program?.reset) {
-        str += printIntoBox(`Reset Project (-r): ${_highlightColor(!!ctx.program?.reset)}`);
+    if (ctx.program?.opts()?.reset) {
+        str += printIntoBox(`Reset Project (-r): ${_highlightColor(!!ctx.program?.opts()?.reset)}`);
     }
-    if (ctx.program?.resetHard) {
-        str += printIntoBox(`Reset Project and Assets (-R): ${_highlightColor(!!ctx.program?.resetHard)}`);
+    if (ctx.program?.opts()?.resetHard) {
+        str += printIntoBox(`Reset Project and Assets (-R): ${_highlightColor(!!ctx.program?.opts()?.resetHard)}`);
     }
-    if (ctx.runtime?.supportedPlatforms?.length) {
-        const plats = ctx.runtime.supportedPlatforms.map(
-            (v) => `${currentChalk.gray(v.platform)}${v.isConnected ? '' : '(ejected)'}`
-        );
-        str += printArrIntoBox(plats, 'Supported Platforms: ');
+    if (ctx.runtime?.availablePlatforms?.length) {
+        // const plats = ctx.runtime.availablePlatforms.map((v) => `${currentChalk.gray(v)}`);
+        // str += printArrIntoBox(plats, 'Supported Platforms: ');
+
+        str += printIntoBox(`Supported Platforms: ${currentChalk.gray(ctx.runtime.availablePlatforms.join(', '))}`);
     }
 
     if (ctx.process) {
@@ -370,6 +388,8 @@ const _sanitizePaths = (msg: string) => {
 const TASK_COUNTER: Record<string, number> = {};
 
 export const logTask = (task: string, customChalk?: string | RnvApiChalkFn) => {
+    const ctx = getContext();
+    if (ctx.program?.opts().help) return;
     if (!TASK_COUNTER[task]) TASK_COUNTER[task] = 0;
     TASK_COUNTER[task] += 1;
     const taskCount = currentChalk.grey(`[${TASK_COUNTER[task]}]`);
@@ -400,6 +420,8 @@ export const logTask = (task: string, customChalk?: string | RnvApiChalkFn) => {
 };
 
 export const logDefault = (task: string, customChalk?: string | RnvApiChalkFn) => {
+    const ctx = getContext();
+    if (ctx.program?.opts().help) return;
     const taskCount = getLogCounter(task);
 
     if (_jsonOnly) {
@@ -431,11 +453,13 @@ const getLogCounter = (task: string, skipAddition = false) => {
         TASK_COUNTER[task] += 1;
     }
 
-    const taskCount = currentChalk.grey(`[${TASK_COUNTER[task]}]`);
+    const taskCount = currentChalk.grey(`↺${TASK_COUNTER[task]}`);
     return taskCount;
 };
 
 export const logInitTask = (task: string) => {
+    const ctx = getContext();
+    if (ctx.program?.opts().help) return;
     const taskCount = getLogCounter(task);
 
     if (_jsonOnly) {
@@ -460,6 +484,8 @@ type PrintJsonPayload = {
 };
 
 export const logExitTask = (task: string) => {
+    const ctx = getContext();
+    if (ctx.program?.opts().help) return;
     if (_jsonOnly) {
         return _printJson({
             type: 'taskExit',
@@ -467,13 +493,15 @@ export const logExitTask = (task: string) => {
             message: stripAnsi(_sanitizePaths(task)),
         });
     }
-    const taskCount = getLogCounter(task, true);
-    const msg = `${currentChalk.green('task:')} ${currentChalk.green('✔')} ${task} ${taskCount}`;
+    // const taskCount = getLogCounter(task, true);
+    const msg = `${currentChalk.green('task:')} ${currentChalk.green('✔')} ${task}`;
 
     console.log(msg);
 };
 
 export const logHook = (hook = '', msg = '') => {
+    const ctx = getContext();
+    if (ctx.program?.opts().help) return;
     if (_jsonOnly) {
         const payload: PrintJsonPayload = { type: 'hook', hook, message: stripAnsi(_sanitizePaths(msg)) };
         if (_getCurrentTask()) payload.task = stripAnsi(_getCurrentTask());
@@ -483,6 +511,7 @@ export const logHook = (hook = '', msg = '') => {
 };
 
 export const logWarning = (msg: string | boolean | unknown) => {
+    const ctx = getContext();
     const msgSn = typeof msg === 'string' ? _sanitizePaths(msg) : String(msg);
     if (_jsonOnly) {
         return _printJson({
@@ -492,10 +521,13 @@ export const logWarning = (msg: string | boolean | unknown) => {
             message: stripAnsi(msgSn),
         });
     }
-    logAndSave(currentChalk.yellow(`warn:${_getCurrentTask()} ${msgSn}`));
+    ctx.logging.containsWarning = true;
+    logAndSave(currentChalk.yellow(`warn: ${_getCurrentTask()} ${msgSn}`));
 };
 
 export const logInfo = (msg: string) => {
+    const ctx = getContext();
+    if (ctx.program?.opts().help) return;
     if (_jsonOnly) {
         return _printJson({
             type: 'log',
@@ -531,12 +563,6 @@ export const logDebug = (...args: Array<string>) => {
 
 export const isInfoEnabled = () => _isInfoEnabled;
 
-export const logComplete = (isEnd = false) => {
-    if (_jsonOnly) return;
-    // console.log(currentChalk.green.bold(`✔ Done`));
-    if (isEnd) logEnd(0);
-};
-
 export const logSuccess = (msg: string) => {
     if (_jsonOnly) {
         return _printJson({
@@ -548,7 +574,7 @@ export const logSuccess = (msg: string) => {
     logAndSave(`${currentChalk.magenta(`info: ✔`)} ${_sanitizePaths(msg)}`);
 };
 
-export const logError = (e: Error | string | unknown, isEnd = false, skipAnalytics = false) => {
+export const logError = (e: Error | string | unknown, opts?: { skipAnalytics: boolean }) => {
     let err = '';
     if (typeof e === 'string') {
         err = e;
@@ -557,7 +583,7 @@ export const logError = (e: Error | string | unknown, isEnd = false, skipAnalyti
     }
     const ctx = getContext();
     const api = getApi();
-    if (!skipAnalytics) {
+    if (!opts?.skipAnalytics) {
         const extra = {
             command: getCurrentCommand(),
             version: ctx.rnvVersion,
@@ -570,6 +596,9 @@ export const logError = (e: Error | string | unknown, isEnd = false, skipAnalyti
         };
         api.analytics.captureException(err, { extra });
     }
+    if (ctx.logging) {
+        ctx.logging.containsError = true;
+    }
 
     if (_jsonOnly) {
         _printJson({
@@ -578,26 +607,10 @@ export const logError = (e: Error | string | unknown, isEnd = false, skipAnalyti
             task: stripAnsi(_getCurrentTask()),
             message: stripAnsi(_sanitizePaths(err)),
         });
-    } else if (e && e instanceof Error && e.message) {
-        logAndSave(currentChalk.red(`error: ⨯ ${_getCurrentTask()} ${e.message}\n${e.stack}`), isEnd);
+    } else if (e && e instanceof Error) {
+        logAndSave(currentChalk.red(`error: ⨯ ${_getCurrentTask()} ${e.stack || e}\n`));
     } else {
-        logAndSave(currentChalk.red(`error: ⨯ ${_getCurrentTask()} ${e}`), isEnd);
-    }
-
-    ctx.runtime.keepSessionActive = false;
-    if (isEnd) logEnd(1);
-};
-
-export const logEnd = (code: number) => {
-    const api = getApi();
-    if (!_jsonOnly) {
-        logSummary();
-    }
-
-    if (_currentProcess) {
-        api.analytics.teardown().then(() => {
-            _currentProcess.exit(code);
-        });
+        logAndSave(currentChalk.red(`error: ⨯ ${_getCurrentTask()} ${e}`));
     }
 };
 
@@ -667,7 +680,6 @@ export const printBoxEnd = () => _defaultColor('└─────────�
 
 const Logger: RnvApiLogger = {
     logHook,
-    logEnd,
     logInfo,
     logTask,
     logError,
@@ -677,7 +689,6 @@ const Logger: RnvApiLogger = {
     logWarning,
     logSuccess,
     logWelcome,
-    logComplete,
     logInitialize,
     logAndSave,
     getCurrentCommand,

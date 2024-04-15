@@ -4,127 +4,15 @@
     "rnv.template": {
       "type": "object",
       "properties": {
-        "defaults": {
-          "type": "object",
-          "properties": {
-            "ports": {
-              "type": "object",
-              "additionalProperties": {
-                "type": "number"
-              },
-              "propertyNames": {
-                "enum": [
-                  "ios",
-                  "android",
-                  "androidtv",
-                  "androidwear",
-                  "firetv",
-                  "web",
-                  "webtv",
-                  "tizen",
-                  "tizenmobile",
-                  "tvos",
-                  "webos",
-                  "macos",
-                  "windows",
-                  "linux",
-                  "tizenwatch",
-                  "kaios",
-                  "chromecast",
-                  "xbox"
-                ]
-              },
-              "description": "Allows you to assign custom port per each supported platform specific to this project. this is useful if you foten switch between multiple projects and do not want to experience constant port conflicts"
-            },
-            "supportedPlatforms": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "ios",
-                  "android",
-                  "androidtv",
-                  "androidwear",
-                  "firetv",
-                  "web",
-                  "webtv",
-                  "tizen",
-                  "tizenmobile",
-                  "tvos",
-                  "webos",
-                  "macos",
-                  "windows",
-                  "linux",
-                  "tizenwatch",
-                  "kaios",
-                  "chromecast",
-                  "xbox"
-                ]
-              },
-              "description": "Array list of all supported platforms in current project"
-            },
-            "portOffset": {
-              "type": "number",
-              "description": "Offset each port default value by increment"
-            },
-            "defaultCommandSchemes": {
-              "type": "object",
-              "additionalProperties": {
-                "type": "string"
-              },
-              "propertyNames": {
-                "enum": [
-                  "run",
-                  "export",
-                  "build"
-                ]
-              },
-              "description": "List of default schemes for each rnv command. This is useful if you want to avoid specifying `-s ...` every time your run rnv command. bu default rnv uses `-s debug`. NOTE: you can only use schemes you defined in `buildSchemes`"
-            },
-            "targets": {
-              "type": "object",
-              "additionalProperties": {
-                "type": "string"
-              },
-              "propertyNames": {
-                "enum": [
-                  "ios",
-                  "android",
-                  "androidtv",
-                  "androidwear",
-                  "firetv",
-                  "web",
-                  "webtv",
-                  "tizen",
-                  "tizenmobile",
-                  "tvos",
-                  "webos",
-                  "macos",
-                  "windows",
-                  "linux",
-                  "tizenwatch",
-                  "kaios",
-                  "chromecast",
-                  "xbox"
-                ]
-              },
-              "description": "Override of default targets specific to this project"
-            }
-          },
-          "additionalProperties": false,
-          "description": "Default system config for this project"
-        },
-        "engines": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string",
-            "const": "source:rnv"
-          },
-          "description": "List of engines available in this project"
-        },
         "templateConfig": {
           "type": "object",
           "properties": {
+            "name": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            },
             "disabled": {
               "type": "boolean"
             },
@@ -149,6 +37,33 @@
                         "items": {
                           "type": "string"
                         }
+                      },
+                      "platforms": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "enum": [
+                            "web",
+                            "ios",
+                            "android",
+                            "androidtv",
+                            "firetv",
+                            "tvos",
+                            "macos",
+                            "linux",
+                            "windows",
+                            "tizen",
+                            "webos",
+                            "chromecast",
+                            "kaios",
+                            "webtv",
+                            "androidwear",
+                            "tizenwatch",
+                            "tizenmobile",
+                            "xbox"
+                          ]
+                        },
+                        "description": "Array list of all supported platforms in current project"
                       }
                     },
                     "required": [
@@ -170,7 +85,7 @@
                   "type": "string"
                 }
               },
-              "additionalProperties": true
+              "additionalProperties": false
             },
             "package_json": {
               "type": "object",
@@ -195,9 +110,10 @@
                 },
                 "version": {
                   "type": "string"
-                }
+                },
+                "browserslist": {}
               },
-              "additionalProperties": true
+              "additionalProperties": false
             }
           },
           "additionalProperties": false,
@@ -313,10 +229,7 @@
                         "type": "string"
                       },
                       "supportedPlatforms": {
-                        "type": "array",
-                        "items": {
-                          "type": "string"
-                        }
+                        "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/includedPaths/items/anyOf/1/properties/platforms"
                       },
                       "nullifyIfFalse": {
                         "type": "boolean"
@@ -334,6 +247,10 @@
                 "engines"
               ],
               "additionalProperties": false
+            },
+            "defaultSelectedPlatforms": {
+              "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/includedPaths/items/anyOf/1/properties/platforms",
+              "description": "Array list of all supported platforms in current project"
             }
           },
           "additionalProperties": false

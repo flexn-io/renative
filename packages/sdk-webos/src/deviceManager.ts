@@ -1,6 +1,5 @@
 import path from 'path';
 import {
-    fsExistsSync,
     getRealPath,
     fsReadFileSync,
     getDirectories,
@@ -14,13 +13,9 @@ import {
     logInfo,
     logTask,
     logWarning,
-    isSystemWin,
     RnvContext,
     inquirerPrompt,
     ExecOptionsPresets,
-    isSystemLinux,
-    isSystemMac,
-    logError,
     logSuccess,
     getConfigProp,
     getAppFolder,
@@ -59,7 +54,7 @@ export const launchWebOSimulator = async (target: string | boolean) => {
     } else if (typeof target === 'string' && !availableSimulatorVersions.includes(target)) {
         logWarning(
             `Target with name ${chalk().red(target)} does not exist. You can update it here: ${chalk().cyan(
-                c.paths.GLOBAL_RNV_CONFIG
+                c.paths.dotRnv.config
             )}`
         );
         await launchWebOSimulator(true);
@@ -68,14 +63,13 @@ export const launchWebOSimulator = async (target: string | boolean) => {
 
     const ePath = path.join(
         webosSdkPath,
-        `Simulator/${target}/${target}${isSystemWin ? '.exe' : isSystemLinux ? '.appimage' : '.app'}`
+        `Simulator/${target}/${target}${c.isSystemWin ? '.exe' : c.isSystemLinux ? '.appimage' : '.app'}`
     );
 
-    if (!fsExistsSync(ePath)) {
-        return Promise.reject(`Can't find simulator at path: ${ePath}`);
-    }
-    if (isSystemWin || isSystemLinux) {
-        return executeAsync(ePath, ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY);
+    if (c.isSystemWin || c.isSystemLinux) {
+        await executeAsync(ePath, ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY);
+        logSuccess(`Succesfully launched ${target}`);
+        return true;
     }
 
     await executeAsync(`${openCommand} ${ePath}`, ExecOptionsPresets.FIRE_AND_FORGET);
@@ -138,11 +132,10 @@ const launchAppOnSimulator = async (c: RnvContext, appPath: string) => {
     const webOS_cli_version_number = semver.coerce(webOS_cli_version);
 
     if (!webOS_cli_version_number) {
-        return logError(`Couldn't find webOS TV CLI. WebOS TV simulator requires webOS TV CLI 1.12 or higher.`, true);
+        return Promise.reject(`Couldn't find webOS TV CLI. WebOS TV simulator requires webOS TV CLI 1.12 or higher.`);
     } else if (semver.lt(webOS_cli_version_number, '1.12.0')) {
-        return logError(
-            `WebOS TV simulator requires webOS TV CLI 1.12 or higher. You are using webOS TV CLI ${webOS_cli_version_number}.`,
-            true
+        return Promise.reject(
+            `WebOS TV simulator requires webOS TV CLI 1.12 or higher. You are using webOS TV CLI ${webOS_cli_version_number}.`
         );
     }
 
@@ -167,7 +160,7 @@ const launchAppOnSimulator = async (c: RnvContext, appPath: string) => {
 
     const regex = /\d+(\.\d+)?/g;
     const version = selectedOption.match(regex)[0];
-    if (isSystemMac) {
+    if (c.isSystemMac) {
         logInfo(
             `If you encounter damaged simulator error, run this command line: xattr -c ${simulatorDirPath}/${selectedOption}/${selectedOption}.app`
         );
@@ -188,7 +181,7 @@ const installAndLaunchApp = async (target: string, appPath: string, tId: string)
         // the device from time to time. Running it again works.
         await execCLI(CLI_WEBOS_ARES_INSTALL, `--device ${target} ${appPath}`);
     }
-    // const { hosted } = c.program;
+    // const { hosted } = c.program.opts();
     // const { platform } = c;
     // const isHosted = hosted || !getConfigProp('bundleAssets');
     const toReturn = true;
@@ -207,7 +200,8 @@ const buildDeviceChoices = (devices: Array<WebosDevice>) =>
         value: device.name,
     }));
 
-export const listWebOSTargets = async (c: RnvContext) => {
+export const listWebOSTargets = async () => {
+    const c = getContext();
     const devicesResponse = await execCLI(CLI_WEBOS_ARES_DEVICE_INFO, '-D');
     const devices = await parseDevices(c, devicesResponse);
 
@@ -229,7 +223,7 @@ export const listWebOSTargets = async (c: RnvContext) => {
 
 export const runWebosSimOrDevice = async () => {
     const c = getContext();
-    const { device } = c.program;
+    const { device } = c.program.opts();
 
     const platDir = getAppFolder();
     if (!platDir) {
@@ -302,7 +296,7 @@ export const runWebosSimOrDevice = async () => {
             const tv = actualDevices[0];
             return installAndLaunchApp(tv.name, appPath, tId);
         }
-    } else if (!c.program.target) {
+    } else if (!c.program.opts().target) {
         // No target specified
         if (activeDevices.length === 1) {
             // One device present
@@ -325,6 +319,6 @@ export const runWebosSimOrDevice = async () => {
         }
     } else {
         // Target specified, using that
-        return installAndLaunchApp(c.program.target, appPath, tId);
+        return installAndLaunchApp(c.program.opts().target, appPath, tId);
     }
 };

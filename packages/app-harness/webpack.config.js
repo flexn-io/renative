@@ -1,6 +1,6 @@
 const webpack = require('webpack'); //to access built-in plugins
 
-const { withRNVWebpack } = require('@rnv/engine-rn-web');
+const { withRNVWebpack } = require('@rnv/adapter');
 
 module.exports = withRNVWebpack({
     resolve: {

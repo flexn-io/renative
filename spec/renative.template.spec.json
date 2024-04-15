@@ -1,0 +1,61 @@
+{
+    "bootstrapConfig": {
+        "rnvNewPatchDependencies": {
+            "pkg-dir": "7.0.0",
+            "xmlbuilder": "^15.1.1"
+        },
+        "bootstrapQuestions": [
+            {
+                "type": "textInput",
+                "title": "App name?",
+                "onConfirm": [
+                    {
+                        "action": "writeToFile",
+                        "path": "./appConfig/hello/renative.json",
+                        "prop": "common.id"
+                    }
+                ]
+            },
+            {
+                "type": "confirm",
+                "title": "Need git?",
+                "onConfirm": [
+                    {
+                        "action": "deleteFile",
+                        "path": "./gitignore"
+                    }
+                ]
+            },
+            {
+                "type": "list",
+                "title": "Pick provider",
+                "options": [
+                    {
+                        "value": "aws",
+                        "title": "AWS"
+                    },
+                    {
+                        "value": "firebase",
+                        "title": "Firebase"
+                    }
+                ],
+                "onConfirm": [
+                    {
+                        "action": "writeToFile",
+                        "path": "./renative.json",
+                        "prop": "runtime.provider"
+                    }
+                ]
+            }
+        ],
+        "configModifiers": {
+            "engines": [
+                {
+                    "name": "@rnv/engine-lightning",
+                    "supportedPlatforms": ["tizen", "webos"],
+                    "nullifyIfFalse": true
+                }
+            ]
+        }
+    }
+}

@@ -1,13 +1,11 @@
 import taskStarterHello from './tasks/taskStarterHello';
 import taskSingleCommand from './tasks/taskSingleCommand';
+import { createRnvIntegration } from '@rnv/core';
+import { Config } from './config';
 
-//@ts-ignore
-import config from '../renative.integration.json';
-import { RnvIntegration } from '@rnv/core';
-
-const Integration: RnvIntegration = {
-    getTasks: () => [taskStarterHello, taskSingleCommand],
-    config,
-};
+const Integration = createRnvIntegration({
+    tasks: [taskStarterHello, taskSingleCommand],
+    config: Config,
+});
 
 export default Integration;

@@ -13,7 +13,6 @@ import {
     logWarning,
     parsePlugins,
     writeFileSync,
-    getContext,
 } from '@rnv/core';
 import { provision } from 'ios-mobileprovision-finder';
 import path from 'path';
@@ -21,6 +20,7 @@ import { getAppFolderName } from './common';
 import { parseProvisioningProfiles } from './provisionParser';
 import { Context } from './types';
 import { getAppId } from '@rnv/sdk-utils';
+import { getContext } from './getContext';
 
 export const parseXcodeProject = async () => {
     const c = getContext();
@@ -30,13 +30,13 @@ export const parseXcodeProject = async () => {
     // PROJECT
     c.payload.xcodeProj = {};
     c.payload.xcodeProj.provisioningStyle =
-        c.program.provisioningStyle || getConfigProp('provisioningStyle', 'Automatic');
-    c.payload.xcodeProj.deploymentTarget = getConfigProp('deploymentTarget', '14.0');
+        c.program.opts().provisioningStyle || getConfigProp('provisioningStyle') || 'Automatic';
+    c.payload.xcodeProj.deploymentTarget = getConfigProp('deploymentTarget') || '14.0';
     c.payload.xcodeProj.provisionProfileSpecifier =
-        c.program.provisionProfileSpecifier || getConfigProp('provisionProfileSpecifier');
+        c.program.opts().provisionProfileSpecifier || getConfigProp('provisionProfileSpecifier');
     c.payload.xcodeProj.provisionProfileSpecifiers = getConfigProp('provisionProfileSpecifiers') || {};
     c.payload.xcodeProj.codeSignIdentity =
-        c.program.codeSignIdentity || getConfigProp('codeSignIdentity', 'iPhone Developer');
+        c.program.opts().codeSignIdentity || getConfigProp('codeSignIdentity') || 'iPhone Developer';
 
     c.payload.xcodeProj.codeSignIdentities = getConfigProp('codeSignIdentities');
 
@@ -70,7 +70,8 @@ export const parseXcodeProject = async () => {
                 warningMessage:
                     'No provisionProfileSpecifier configured in appConfig despite setting provisioningStyle to manual',
             });
-            const schemeToUpdate = c.files.appConfig.config?.platforms?.[platform]?.buildSchemes?.[c.program.scheme];
+            const schemeToUpdate =
+                c.files.appConfig.config?.platforms?.[platform]?.buildSchemes?.[c.program.opts().scheme];
             if (autoFix && schemeToUpdate && c.files.appConfig.config) {
                 c.payload.xcodeProj.provisionProfileSpecifier = eligibleProfile.Name;
                 if ('provisionProfileSpecifier' in schemeToUpdate) {

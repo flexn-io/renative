@@ -1,6 +1,6 @@
 import path from 'path';
 import {
-    RenativeConfigPluginPlatform,
+    type ConfigPluginPlatformSchema,
     getConfigProp,
     getFlavouredProp,
     chalk,
@@ -9,7 +9,7 @@ import {
     logWarning,
     parsePlugins,
     writeCleanFile,
-    RenativeConfigAppDelegateMethod,
+    type ConfigAppDelegateMethod,
     getContext,
 } from '@rnv/core';
 import {
@@ -282,7 +282,7 @@ export const parseAppDelegate = (
         resolve();
     });
 
-export const injectPluginObjectiveCSync = (c: Context, plugin: RenativeConfigPluginPlatform, key: string) => {
+export const injectPluginObjectiveCSync = (c: Context, plugin: ConfigPluginPlatformSchema, key: string) => {
     logDebug(`injectPluginObjectiveCSync:${c.platform}:${key}`);
     const templateXcode = getFlavouredProp(plugin, 'templateXcode');
     const appDelegateMmImports = templateXcode?.AppDelegate_mm?.appDelegateImports;
@@ -319,12 +319,12 @@ export const injectPluginObjectiveCSync = (c: Context, plugin: RenativeConfigPlu
             if (apDelMet) {
                 const amdk2 = Object.keys(apDelMet) as Array<PayloadAppDelegateSubKey>;
                 amdk2.forEach((key2) => {
-                    const plugArr: Array<RenativeConfigAppDelegateMethod> =
+                    const plugArr: Array<ConfigAppDelegateMethod> =
                         c.payload.pluginConfigiOS.appDelegateMmMethods[delKey][key2];
                     if (!plugArr) {
                         logWarning(`appDelegateMethods.${delKey}.${chalk().red(key2)} not supported. SKIPPING.`);
                     } else {
-                        const plugVal: Array<RenativeConfigAppDelegateMethod> = apDelMet[key2];
+                        const plugVal: Array<ConfigAppDelegateMethod> = apDelMet[key2];
                         if (plugVal) {
                             plugVal.forEach((v) => {
                                 const isString = typeof v === 'string';

@@ -1,0 +1,33 @@
+{
+    "name": "@rnv/config-templates",
+    "version": "1.0.0-rc.16",
+    "description": "ReNative configuration templates for plugins, platforms, engines and project template endpoints",
+    "keywords": [],
+    "homepage": "https://github.com/flexn-io/renative#readme",
+    "bugs": {
+        "url": "https://github.com/flexn-io/renative/issues"
+    },
+    "license": "MIT",
+    "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
+    "files": [
+        "LICENSE",
+        "pluginTemplates",
+        "renative.templates.json"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/flexn-io/renative.git"
+    },
+    "scripts": {
+        "bootstrap": "echo skip",
+        "build": "echo skip",
+        "clean": "echo skip",
+        "compile": "echo skip",
+        "lint": "echo skip",
+        "watch": "echo skip"
+    },
+    "private": false,
+    "publishConfig": {
+        "access": "public"
+    }
+}

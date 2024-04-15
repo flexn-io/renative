@@ -111,7 +111,7 @@ const _copyRequiredFiles = () => {
 export const runTizen = async (c: RnvContext, target?: string) => {
     logDefault('runTizen', `target:${target}`);
     const { platform } = c;
-    const { hosted } = c.program;
+    const { hosted } = c.program.opts();
 
     if (!platform) return;
 
@@ -174,7 +174,7 @@ export const buildTizenProject = async () => {
 
     await buildCoreWebpackProject();
 
-    if (!c.program.hosted) {
+    if (!c.program.opts().hosted) {
         _copyRequiredFiles();
         const tOut = path.join(tDir, 'output');
         const tIntermediate = path.join(tDir, 'intermediate');
@@ -201,7 +201,7 @@ export const configureTizenProject = async () => {
         return;
     }
 
-    if (!_isGlobalConfigured && !c.program.hosted) {
+    if (!_isGlobalConfigured && !c.program.opts().hosted) {
         _isGlobalConfigured = true;
         await configureTizenGlobal();
     }

@@ -1,10 +1,9 @@
 import {
     CoreEnvVars,
-    PlatformKey,
+    RnvPlatformKey,
     chalk,
     executeAsync,
     logError,
-    logErrorPlatform,
     logInfo,
     logRaw,
     logDefault,
@@ -14,9 +13,10 @@ import { isBundlerActive } from './common';
 import { EnvVars } from './env';
 import { confirmActiveBundler, getEntryFile } from '@rnv/sdk-utils';
 
-const BUNDLER_PLATFORMS: Partial<Record<PlatformKey, PlatformKey>> = {};
+const BUNDLER_PLATFORMS: Partial<Record<RnvPlatformKey, RnvPlatformKey>> = {};
 
 BUNDLER_PLATFORMS['ios'] = 'ios';
+BUNDLER_PLATFORMS['tvos'] = 'ios';
 BUNDLER_PLATFORMS['macos'] = 'ios';
 BUNDLER_PLATFORMS['android'] = 'android';
 BUNDLER_PLATFORMS['androidtv'] = 'android';
@@ -32,7 +32,6 @@ export const startReactNative = async (opts: {
     logDefault('startReactNative');
 
     if (!c.platform) {
-        logErrorPlatform();
         return false;
     }
 
@@ -54,14 +53,15 @@ export const startReactNative = async (opts: {
         startCmd += ` --config=${metroConfigName}`;
     }
 
-    if (c.program.resetHard || c.program.reset) {
+    if (c.program.opts().resetHard || c.program.opts().reset) {
         startCmd += ' --reset-cache';
     }
 
-    if (c.program.resetHard || c.program.reset) {
+    if (c.program.opts().resetHard || c.program.opts().reset) {
         logInfo(`You passed ${chalk().bold('-r')} argument. --reset-cache will be applied to react-native`);
     }
     // logSummary('BUNDLER STARTED');
+
     const url = chalk().cyan(
         `http://${c.runtime.localhost}:${c.runtime.port}/${getEntryFile()}.bundle?platform=${
             BUNDLER_PLATFORMS[c.platform]
@@ -114,6 +114,6 @@ Dev server running at: ${url}
             ...EnvVars.RNV_APP_ID(),
             ...CoreEnvVars.RNV_EXTENSIONS(),
         },
-    }).catch((e) => logError(e, true));
+    }).catch((e) => logError(e));
     return true;
 };

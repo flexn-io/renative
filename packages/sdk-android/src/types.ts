@@ -1,4 +1,4 @@
-import { RenativeConfigPluginPlatform, RnvContext } from '@rnv/core';
+import { ConfigPluginPlatformSchema, RnvContext } from '@rnv/core';
 
 export type Payload = {
     pluginConfigAndroid: {
@@ -43,7 +43,6 @@ export type Payload = {
         pluginActivityResultMethods: string;
         pluginApplicationCreateMethods: string;
         pluginSplashActivityImports: string;
-        resourceStrings: Required<TemplateAndroid['strings_xml']>['children'];
         store?: {
             storeFile?: string;
             // keyAlias: string;
@@ -89,7 +88,7 @@ export type AndroidDevice = {
     isRunning?: boolean;
 };
 
-export type TemplateAndroid = Required<Required<RenativeConfigPluginPlatform>['templateAndroid']>;
+export type TemplateAndroid = Required<Required<ConfigPluginPlatformSchema>['templateAndroid']>;
 
 // export type AndroidManifestJSONNode = {
 //     tag: string;
@@ -99,3 +98,4 @@ export type TemplateAndroid = Required<Required<RenativeConfigPluginPlatform>['t
 // export type AndroidManifestJSON = AndroidManifestJSONNode & {
 //     package?: string;
 // };
+export type TargetResourceFile = 'styles_xml' | 'strings_xml' | 'colors_xml';

@@ -37,7 +37,7 @@ jobs:
                   cd packages/app-harness && yarn run:ios-test & sleep 1200
             - name: E2E
               run: |
-                  cd packages/app-harness && yarn e2e:ios && kill $(lsof -t -i:8082)
+                  cd packages/app-harness && yarn e2e:ios && kill $(lsof -t -i:8092)
             # Commented because e2e tests would fail due to minion issues
             # - name: Post message to Slack via Webhook
             #   if: ${{ github.event_name == 'push' && failure() }}

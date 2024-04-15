@@ -23,7 +23,7 @@ export const packageReactNativeAndroid = async () => {
 
     if (!c.platform) return;
 
-    const bundleAssets = getConfigProp('bundleAssets', false) === true;
+    const bundleAssets = getConfigProp('bundleAssets') === true;
 
     if (!bundleAssets && platform !== 'androidwear') {
         logInfo(`bundleAssets in scheme ${chalk().bold(c.runtime.scheme)} marked false. SKIPPING PACKAGING...`);
@@ -57,7 +57,7 @@ export const packageReactNativeAndroid = async () => {
             `${outputFile}.bundle`
         )} --config=metro.config.js`;
 
-        if (getConfigProp('enableSourceMaps', false)) {
+        if (getConfigProp('enableSourceMaps')) {
             cmd += ` --sourcemap-output ${path.join(
                 appFolder,
                 'app',
@@ -91,7 +91,7 @@ export const runReactNativeAndroid = async (device: { udid?: string } | undefine
     const { platform } = c;
     logDefault('_runGradleApp');
 
-    const signingConfig = getConfigProp('signingConfig', 'Debug');
+    const signingConfig = getConfigProp('signingConfig') || 'Debug';
     const appFolder = getAppFolder();
 
     const udid = device?.udid;
@@ -124,8 +124,8 @@ export const buildReactNativeAndroid = async () => {
 
     const appFolder = getAppFolder();
     const signingConfig = getConfigProp('signingConfig') || DEFAULTS.signingConfig;
-    const outputAab = getConfigProp('aab', false);
-    const extraGradleParams = getConfigProp('extraGradleParams', '');
+    const outputAab = getConfigProp('aab');
+    const extraGradleParams = getConfigProp('extraGradleParams') || '';
 
     let command = `npx react-native build-android --mode=${signingConfig} --tasks ${
         outputAab ? 'bundle' : 'assemble'

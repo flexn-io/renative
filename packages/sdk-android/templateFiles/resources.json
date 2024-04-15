@@ -1,0 +1,100 @@
+{
+    "values": {
+        "colors_xml": {
+            "tag": "resources",
+            "children": [
+                {
+                    "tag": "color",
+                    "name": "bg",
+                    "value": "{{PLUGIN_COLORS_BG}}"
+                }
+            ]
+        },
+        "strings_xml": {
+            "tag": "resources",
+            "children": [
+                {
+                    "tag": "string",
+                    "name": "app_name",
+                    "value": "{{APP_TITLE}}"
+                }
+            ]
+        },
+        "styles_xml": {
+            "tag": "resources",
+            "children": [
+                {
+                    "tag": "style",
+                    "name": "AppTheme",
+                    "parent": "Theme.AppCompat.DayNight.NoActionBar",
+                    "children": [
+                        {
+                            "tag": "item",
+                            "name": "android:editTextBackground",
+                            "value": "@drawable/rn_edit_text_material"
+                        },
+                        {
+                            "tag": "item",
+                            "name": "android:windowBackground",
+                            "value": "@color/bg"
+                        }
+                    ]
+                },
+                {
+                    "tag": "style",
+                    "name": "SplashTheme",
+                    "parent": "Theme.AppCompat.NoActionBar",
+                    "children": [
+                        {
+                            "tag": "item",
+                            "name": "android:windowBackground",
+                            "value": "@color/bg"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "values-v28": {
+        "styles_xml": {
+            "tag": "resources",
+            "children": [
+                {
+                    "tag": "style",
+                    "name": "AppTheme",
+                    "parent": "Theme.AppCompat.DayNight.NoActionBar",
+                    "children": [
+                        {
+                            "tag": "item",
+                            "name": "android:editTextBackground",
+                            "value": "@drawable/rn_edit_text_material"
+                        },
+                        {
+                            "tag": "item",
+                            "name": "android:windowBackground",
+                            "value": "@color/bg"
+                        },
+                        {
+                            "tag": "item",
+                            "name": "android:windowLayoutInDisplayCutoutMode",
+                            "value": "shortEdges"
+                        }
+                    ]
+                },
+                {
+                    "tag": "style",
+                    "name": "SplashTheme",
+                    "parent": "Theme.AppCompat.NoActionBar",
+                    "children": [
+                        {
+                            "tag": "item",
+                            "name": "android:windowBackground",
+                            "value": "@color/bg"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+    
+}

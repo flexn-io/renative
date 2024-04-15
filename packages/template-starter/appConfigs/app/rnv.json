@@ -1,0 +1,8 @@
+{
+    "$schema": "../../.rnv/schema/renative-1.0.schema.json",
+    "app": {
+        "extendsTemplate": "@rnv/template-starter/appConfigs/base/rnv.json",
+        "id": "app"
+    },
+    "project": {}
+}

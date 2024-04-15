@@ -12,6 +12,8 @@ import {
     writeCleanFile,
     fsWriteFileSync,
     getContext,
+    chalk,
+    RnvFolderName,
 } from '@rnv/core';
 import { getAppFolderName } from './common';
 import { Context, FilePlistJSON } from './types';
@@ -70,7 +72,9 @@ export const parseEntitlementsPlist = () =>
         let pluginsEntitlementsObj = getConfigProp('entitlements');
         if (!pluginsEntitlementsObj) {
             pluginsEntitlementsObj =
-                readObjectSync(path.join(__dirname, '../supportFiles/entitlements.json')) || undefined;
+                readObjectSync(
+                    path.join(__dirname, RnvFolderName.UP, RnvFolderName.templateFiles, 'entitlements.json')
+                ) || undefined;
         }
 
         saveObjToPlistSync(c, entitlementsPath, pluginsEntitlementsObj);
@@ -93,8 +97,18 @@ export const parseInfoPlist = () =>
 
         // PLIST
         let plistObj =
-            readObjectSync<FilePlistJSON>(path.join(__dirname, `../supportFiles/info.plist.${platform}.json`)) || {};
+            readObjectSync<FilePlistJSON>(
+                path.join(__dirname, RnvFolderName.UP, RnvFolderName.templateFiles, `info.plist.${platform}.json`)
+            ) || {};
         plistObj.CFBundleDisplayName = getAppTitle();
+
+        if (!plistObj.CFBundleDisplayName) {
+            throw new Error(
+                `CFBundleDisplayName is required!. set it by adding ${chalk().bold(
+                    '"common": { "title": "<ADD_TITLE>" }'
+                )} prop in ${chalk().bold(c.paths.appConfig.config)}`
+            );
+        }
         plistObj.CFBundleShortVersionString = getAppVersion();
         plistObj.CFBundleVersion = getAppVersionCode();
         // FONTS
