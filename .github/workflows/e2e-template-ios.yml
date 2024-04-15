@@ -29,12 +29,9 @@ jobs:
               run: |
                   security unlock-keychain -p ${{ secrets.FLEXN_KEYCHAIN_PASSWORD }} Flexn.keychain
                   yarn config set network-timeout 300000
-            - name: printenv
+            - name: Bootstrap
               run: |
-                  printenv
-            - name: ruby -v
-              run: |
-                  ruby -v
+                  yarn bootstrap-clean
             - name: Run
               run: |
                   cd packages/template-starter && yarn run:ios-test & sleep 1200
