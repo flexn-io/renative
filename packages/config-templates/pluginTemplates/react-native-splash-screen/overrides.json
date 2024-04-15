@@ -1,0 +1,7 @@
+{
+    "overrides": {
+        "react-native-splash-screen.podspec": {
+            "s.platform     = :ios, \"7.0\"": "s.platforms = { :ios => \"7.0\", :tvos => \"9.0\" }"
+        }
+    }
+}

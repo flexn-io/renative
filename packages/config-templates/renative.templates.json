@@ -3192,7 +3192,7 @@
             "version": "0.11.2"
         },
         "react-native-splash-screen": {
-            "supportedPlatforms": ["android", "androidtv", "firetv", "ios", "androidwear"],
+            "supportedPlatforms": ["android", "androidtv", "firetv", "ios", "androidwear", "tvos"],
             "android": {
                 "templateAndroid": {
                     "MainActivity_kt": {
@@ -3230,6 +3230,19 @@
                 "package": "org.devio.rn.splashscreen.SplashScreenReactPackage"
             },
             "ios": {
+                "templateXcode": {
+                    "AppDelegate_mm": {
+                        "appDelegateImports": ["RNSplashScreen.h"],
+                        "appDelegateMethods": {
+                            "application": {
+                                "didFinishLaunchingWithOptions": ["[RNSplashScreen show]"]
+                            }
+                        }
+                    }
+                },
+                "podName": "react-native-splash-screen"
+            },
+            "tvos": {
                 "templateXcode": {
                     "AppDelegate_mm": {
                         "appDelegateImports": ["RNSplashScreen.h"],
