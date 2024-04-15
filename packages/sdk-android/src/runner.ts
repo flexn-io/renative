@@ -398,6 +398,7 @@ export const configureProject = async () => {
         buildGradleAfterAll: '',
         buildGradleBuildScriptDependencies: '',
         injectReactNativeEngine: '',
+        injectActivityOnCreate: '',
         buildGradleBuildScriptDexOptions: '',
         appBuildGradleSigningConfigs: '',
         packagingOptions: '',

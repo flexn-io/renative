@@ -12,8 +12,9 @@ import taskConfigure from './tasks/taskConfigure';
 import taskRun from './tasks/taskRun';
 import taskBuild from './tasks/taskBuild';
 import { GetContextType, createRnvModule } from '@rnv/core';
+import { Payload } from './types';
 
-const RnvModule = createRnvModule({
+const RnvModule = createRnvModule<Payload>({
     tasks: [
         taskTargetLaunch,
         taskTargetList,

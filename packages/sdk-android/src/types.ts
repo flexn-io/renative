@@ -4,6 +4,7 @@ export type Payload = {
     pluginConfigAndroid: {
         gradleWrapperVersion: string;
         injectReactNativeEngine: string;
+        injectActivityOnCreate: string;
         appBuildGradleImplementations: string;
         pluginApplicationImports: string;
         reactNativeHostMethods: string;

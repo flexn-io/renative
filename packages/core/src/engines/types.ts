@@ -6,12 +6,16 @@ import type { RnvPlatformKey } from '../types';
 
 export type RnvEnginePlatforms = Partial<Record<RnvPlatformKey, RnvEnginePlatform>>;
 
-export type CreateRnvEngineOpts<OKey extends string> = {
+type UnionToIntersection<U> = (U extends any ? (x: U) => void : never) extends (x: infer I) => void ? I : never;
+
+type ExtractModulePayload<T extends RnvModule> = T extends RnvModule<any, infer Payload> ? Payload : never;
+
+export type CreateRnvEngineOpts<OKey extends string, Modules extends [RnvModule<OKey>, ...RnvModule<OKey>[]]> = {
     originalTemplatePlatformsDir?: string;
     platforms: RnvEnginePlatforms;
     config: ConfigFileEngine;
-    tasks: ReadonlyArray<RnvTask<OKey>>;
-    extendModules?: ReadonlyArray<RnvModule<OKey>>;
+    tasks: ReadonlyArray<RnvTask<OKey, UnionToIntersection<ExtractModulePayload<Modules[number]>>>>;
+    extendModules?: Modules;
     rootPath?: string;
     originalTemplatePlatformProjectDir?: string;
     projectDirName?: string;
@@ -20,7 +24,7 @@ export type CreateRnvEngineOpts<OKey extends string> = {
     serverDirName?: string;
 };
 
-export type RnvEngine<OKey extends string = string> = {
+export type RnvEngine<OKey extends string = string, Modules extends [RnvModule<OKey>, ...RnvModule<OKey>[]] = any> = {
     originalTemplatePlatformsDir?: string;
     platforms: RnvEnginePlatforms;
     id: string;
@@ -32,7 +36,7 @@ export type RnvEngine<OKey extends string = string> = {
     runtimeExtraProps: Record<string, string>;
     outputDirName?: string;
     serverDirName: string;
-    getContext: () => RnvContext<any, OKey>;
+    getContext: () => RnvContext<UnionToIntersection<ExtractModulePayload<Modules[number]>>, OKey>;
 };
 
 export type RnvEnginePlatform = {

@@ -18,7 +18,7 @@ export type CreateRnvTaskOpt<OKey extends string = string> = {
     ignoreEngines?: boolean;
 };
 
-export type RnvTask<OKey extends string = string> = {
+export type RnvTask<OKey extends string = string, Payload = any> = {
     task: string;
     dependsOn?: string[];
     options?: ReadonlyArray<RnvTaskOption<OKey>>;
@@ -27,7 +27,7 @@ export type RnvTask<OKey extends string = string> = {
     description: string;
     forceBuildHookRebuild?: boolean;
     beforeDependsOn?: RnvTaskFn;
-    fn?: RnvTaskFn<OKey>;
+    fn?: RnvTaskFn<OKey, Payload>;
     fnHelp?: RnvTaskHelpFn;
     isPrivate?: boolean;
     isPriorityOrder?: boolean;
@@ -69,8 +69,8 @@ export type RnvTaskOption<OKey extends string = string> = {
 export type RnvTaskMap<OKey extends string = string> = Record<string, RnvTask<OKey>>;
 
 //Too many choices of return types
-export type RnvTaskFn<OKey extends string = string> = (opts: {
-    ctx: RnvContext<any, OKey>;
+export type RnvTaskFn<OKey extends string = string, Payload = any> = (opts: {
+    ctx: RnvContext<Payload, OKey>;
     taskName: string;
     parentTaskName: string | undefined;
     originTaskName: string | undefined;

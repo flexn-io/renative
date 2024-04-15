@@ -7,11 +7,11 @@ export type CreateRnvModuleOpts<OKey extends string> = {
     type: RnvModuleType;
 };
 
-export type RnvModule<OKey extends string = string> = {
+export type RnvModule<OKey extends string = string, Payload = any> = {
     name: string;
     tasks: RnvTaskMap<OKey>;
     originalTasks: ReadonlyArray<RnvTask<OKey>>;
-    getContext: () => RnvContext<any, OKey>;
+    getContext: () => RnvContext<Payload, OKey>;
 };
 
 export type RnvModuleType = 'engine' | 'public' | 'internal';

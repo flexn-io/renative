@@ -1,12 +1,14 @@
 import { generateEngineExtensions } from '.';
 import { getContext } from '../context/provider';
+import { RnvModule } from '../modules/types';
 import { createTaskMap } from '../tasks/creators';
-import { RnvTask } from '../tasks/types';
 import { RnvPlatformKey } from '../types';
 import { extractEngineId } from './nameExtractor';
 import type { CreateRnvEngineOpts, RnvEngine, RnvEnginePlatforms } from './types';
 
-export const createRnvEngine = <OKey extends string>(opts: CreateRnvEngineOpts<OKey>) => {
+export const createRnvEngine = <OKey extends string, Modules extends [RnvModule<OKey>, ...RnvModule<OKey>[]]>(
+    opts: CreateRnvEngineOpts<OKey, Modules>
+) => {
     if (!opts.config.name) {
         throw new Error('Engine name is required. check your renative.engine.json file');
     }
@@ -45,12 +47,7 @@ export const createRnvEngine = <OKey extends string>(opts: CreateRnvEngineOpts<O
     //     ...t(13),
     // ];
 
-    const extraTasks =
-        opts.extendModules?.reduce<ReadonlyArray<RnvTask<OKey>>>((accumulator, currentValue) => {
-            return [...accumulator, ...currentValue.originalTasks];
-        }, []) || [];
-
-    const engine: RnvEngine<OKey> = {
+    const engine: RnvEngine<OKey, Modules> = {
         ...opts,
         platforms,
         id: opts.config.name,
@@ -58,11 +55,11 @@ export const createRnvEngine = <OKey extends string>(opts: CreateRnvEngineOpts<O
         projectDirName: opts.projectDirName || '',
         runtimeExtraProps: opts.runtimeExtraProps || {},
         tasks: createTaskMap<OKey>({
-            tasks: [...opts.tasks, ...extraTasks],
+            tasks: [...opts.tasks, ...(opts.extendModules?.flatMap((m) => m.originalTasks) ?? [])],
             ownerID: opts.config.name,
             ownerType: 'engine',
         }),
-        getContext: () => getContext<any, OKey>(),
+        getContext,
     };
 
     return engine;
