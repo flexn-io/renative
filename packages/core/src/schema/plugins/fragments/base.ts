@@ -1,9 +1,13 @@
 import { z } from 'zod';
-import { zodSupportedPlatforms } from '../../shared';
+import { zodPlatformsKeys } from '../../shared';
+
+const zodPluginSupportedPlatforms = z
+    .array(zodPlatformsKeys)
+    .describe('Array list of platforms for which the current plugin is supported');
 
 export const zodPluginBaseFragment = z
     .object({
-        supportedPlatforms: zodSupportedPlatforms.optional(),
+        supportedPlatforms: zodPluginSupportedPlatforms.optional(),
         disabled: z.boolean().default(false).describe('Marks plugin disabled'),
         props: z.record(z.string(), z.string()).describe('Custom props passed to plugin'),
         version: z.string().describe('Version of plugin. Typically package version'),

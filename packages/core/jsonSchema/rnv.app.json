@@ -1606,8 +1606,9 @@
                           },
                           "Info_plist": {
                             "type": "object",
-                            "properties": {},
-                            "additionalProperties": false
+                            "additionalProperties": {
+                              "type": "string"
+                            }
                           }
                         },
                         "additionalProperties": false
@@ -3479,7 +3480,7 @@
                         "items": {
                           "$ref": "#/definitions/rnv.app/properties/common/properties/buildSchemes/additionalProperties/properties/extendPlatform"
                         },
-                        "description": "Array list of all supported platforms in current project"
+                        "description": "Array list of platforms for which the current plugin is supported"
                       },
                       "disabled": {
                         "type": "boolean",
@@ -3603,42 +3604,73 @@
                         }
                       },
                       "android": {
-                        "type": "object",
-                        "properties": {
-                          "disabled": {
-                            "type": "boolean",
-                            "default": false,
-                            "description": "Marks plugin platform disabled"
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "extendPlatform": {
+                                "type": "string",
+                                "enum": [
+                                  "web",
+                                  "ios",
+                                  "android",
+                                  "androidtv",
+                                  "firetv",
+                                  "tvos",
+                                  "macos",
+                                  "linux",
+                                  "windows",
+                                  "tizen",
+                                  "webos",
+                                  "chromecast",
+                                  "kaios",
+                                  "webtv",
+                                  "androidwear",
+                                  "tizenwatch",
+                                  "tizenmobile",
+                                  "xbox"
+                                ],
+                                "description": "Extends platform configuration from another platform"
+                              },
+                              "disabled": {
+                                "type": "boolean",
+                                "default": false,
+                                "description": "Marks plugin platform disabled"
+                              },
+                              "forceLinking": {
+                                "type": "boolean",
+                                "default": false,
+                                "description": "Packages that cannot be autolinked yet can still be added to MainApplication PackageList dynamically by setting this to true"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "Enables you to pass custom path to plugin. If undefined, the default `node_modules/[plugin-name]` will be used."
+                              },
+                              "templateAndroid": {
+                                "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/buildSchemes/additionalProperties/properties/templateAndroid"
+                              },
+                              "projectName": {
+                                "type": "string"
+                              },
+                              "skipLinking": {
+                                "type": "boolean"
+                              },
+                              "skipImplementation": {
+                                "type": "boolean"
+                              },
+                              "implementation": {
+                                "type": "string"
+                              },
+                              "package": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
                           },
-                          "forceLinking": {
-                            "type": "boolean",
-                            "default": false,
-                            "description": "Packages that cannot be autolinked yet can still be added to MainApplication PackageList dynamically by setting this to true"
-                          },
-                          "path": {
-                            "type": "string",
-                            "description": "Enables you to pass custom path to plugin. If undefined, the default `node_modules/[plugin-name]` will be used."
-                          },
-                          "templateAndroid": {
-                            "$ref": "#/definitions/rnv.app/properties/platforms/properties/android/properties/buildSchemes/additionalProperties/properties/templateAndroid"
-                          },
-                          "projectName": {
-                            "type": "string"
-                          },
-                          "skipLinking": {
-                            "type": "boolean"
-                          },
-                          "skipImplementation": {
-                            "type": "boolean"
-                          },
-                          "implementation": {
-                            "type": "string"
-                          },
-                          "package": {
-                            "type": "string"
+                          {
+                            "type": "null"
                           }
-                        },
-                        "additionalProperties": false
+                        ]
                       },
                       "androidtv": {
                         "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/android"
@@ -3650,78 +3682,98 @@
                         "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/android"
                       },
                       "ios": {
-                        "type": "object",
-                        "properties": {
-                          "disabled": {
-                            "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/android/properties/disabled"
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "extendPlatform": {
+                                "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/android/anyOf/0/properties/extendPlatform"
+                              },
+                              "disabled": {
+                                "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/android/anyOf/0/properties/disabled"
+                              },
+                              "forceLinking": {
+                                "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/android/anyOf/0/properties/forceLinking"
+                              },
+                              "path": {
+                                "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/android/anyOf/0/properties/path"
+                              },
+                              "templateXcode": {
+                                "$ref": "#/definitions/rnv.app/properties/platforms/properties/ios/properties/buildSchemes/additionalProperties/properties/templateXcode"
+                              },
+                              "git": {
+                                "type": "string",
+                                "description": "Alternative git url for pod instead of version"
+                              },
+                              "commit": {
+                                "type": "string",
+                                "description": "Alternative git commit reference string"
+                              },
+                              "version": {
+                                "type": "string",
+                                "description": "Version of pod"
+                              },
+                              "podNames": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "podName": {
+                                "type": "string"
+                              },
+                              "staticFrameworks": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "isStatic": {
+                                "type": "boolean"
+                              },
+                              "buildType": {
+                                "type": "string",
+                                "enum": [
+                                  "dynamic",
+                                  "static"
+                                ],
+                                "description": "Build type of the pod"
+                              }
+                            },
+                            "additionalProperties": false
                           },
-                          "forceLinking": {
-                            "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/android/properties/forceLinking"
-                          },
-                          "path": {
-                            "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/android/properties/path"
-                          },
-                          "templateXcode": {
-                            "$ref": "#/definitions/rnv.app/properties/platforms/properties/ios/properties/buildSchemes/additionalProperties/properties/templateXcode"
-                          },
-                          "git": {
-                            "type": "string",
-                            "description": "Alternative git url for pod instead of version"
-                          },
-                          "commit": {
-                            "type": "string",
-                            "description": "Alternative git commit reference string"
-                          },
-                          "version": {
-                            "type": "string",
-                            "description": "Version of pod"
-                          },
-                          "podNames": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            }
-                          },
-                          "podName": {
-                            "type": "string"
-                          },
-                          "staticFrameworks": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            }
-                          },
-                          "isStatic": {
-                            "type": "boolean"
-                          },
-                          "buildType": {
-                            "type": "string",
-                            "enum": [
-                              "dynamic",
-                              "static"
-                            ],
-                            "description": "Build type of the pod"
+                          {
+                            "type": "null"
                           }
-                        },
-                        "additionalProperties": false
+                        ]
                       },
                       "tvos": {
                         "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/ios"
                       },
                       "tizen": {
-                        "type": "object",
-                        "properties": {
-                          "disabled": {
-                            "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/android/properties/disabled"
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "extendPlatform": {
+                                "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/android/anyOf/0/properties/extendPlatform"
+                              },
+                              "disabled": {
+                                "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/android/anyOf/0/properties/disabled"
+                              },
+                              "forceLinking": {
+                                "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/android/anyOf/0/properties/forceLinking"
+                              },
+                              "path": {
+                                "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/android/anyOf/0/properties/path"
+                              }
+                            },
+                            "additionalProperties": false
                           },
-                          "forceLinking": {
-                            "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/android/properties/forceLinking"
-                          },
-                          "path": {
-                            "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/android/properties/path"
+                          {
+                            "type": "null"
                           }
-                        },
-                        "additionalProperties": false
+                        ]
                       },
                       "tizenmobile": {
                         "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/tizen"
@@ -3745,7 +3797,56 @@
                         "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/tizen"
                       },
                       "macos": {
-                        "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/tizen"
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "extendPlatform": {
+                                "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/android/anyOf/0/properties/extendPlatform"
+                              },
+                              "disabled": {
+                                "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/android/anyOf/0/properties/disabled"
+                              },
+                              "forceLinking": {
+                                "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/android/anyOf/0/properties/forceLinking"
+                              },
+                              "path": {
+                                "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/android/anyOf/0/properties/path"
+                              },
+                              "templateXcode": {
+                                "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/ios/anyOf/0/properties/templateXcode"
+                              },
+                              "git": {
+                                "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/ios/anyOf/0/properties/git"
+                              },
+                              "commit": {
+                                "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/ios/anyOf/0/properties/commit"
+                              },
+                              "version": {
+                                "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/ios/anyOf/0/properties/version"
+                              },
+                              "podNames": {
+                                "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/ios/anyOf/0/properties/podNames"
+                              },
+                              "podName": {
+                                "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/ios/anyOf/0/properties/podName"
+                              },
+                              "staticFrameworks": {
+                                "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/ios/anyOf/0/properties/staticFrameworks"
+                              },
+                              "isStatic": {
+                                "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/ios/anyOf/0/properties/isStatic"
+                              },
+                              "buildType": {
+                                "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/ios/anyOf/0/properties/buildType"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
                       },
                       "linux": {
                         "$ref": "#/definitions/rnv.app/properties/plugins/additionalProperties/anyOf/0/anyOf/0/properties/tizen"

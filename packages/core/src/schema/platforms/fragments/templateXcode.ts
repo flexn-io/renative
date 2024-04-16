@@ -97,7 +97,7 @@ export const zodTemplateXcodeFragment = z
                         appDelegateExtensions: z.array(z.string()),
                     })
                     .partial(),
-                Info_plist: z.object({}),
+                Info_plist: z.record(z.string(), z.string()),
             })
             .partial(),
     })
