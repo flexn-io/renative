@@ -155,6 +155,7 @@ export type RnvContextRuntime = {
     target?: string;
     plugins: Record<string, RnvPlugin>;
     pluginVersions: Record<string, string>;
+    isAppConfigured?: boolean;
 };
 
 export type RuntimePropKey = keyof RnvContextRuntime;

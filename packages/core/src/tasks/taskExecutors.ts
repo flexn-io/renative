@@ -181,7 +181,8 @@ Description: ${taskInstance.description}
 };
 
 const _populateExtraParameters = (c: RnvContext, task: RnvTask) => {
-    c.program?.allowUnknownOption(false); // integration options are not known ahead of time
+    // TODO: Enable strict mode before release
+    //c.program?.allowUnknownOption(false); // integration options are not known ahead of time
     if (task.options) {
         task.options.forEach((opt) => {
             c.program.option?.(generateStringFromTaskOption(opt), opt.description);

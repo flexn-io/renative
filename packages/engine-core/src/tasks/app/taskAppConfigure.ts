@@ -20,6 +20,8 @@ import {
     inquirerSeparator,
     RnvTaskName,
     createTask,
+    checkAndInstallPackageDependenciesIfRequired,
+    getContext,
 } from '@rnv/core';
 
 const _loadAppConfigIDfromDir = (dirName: string, appConfigsDir: string) => {
@@ -146,31 +148,41 @@ const _setAppId = (ctx: RnvContext, appId: string) => {
     ctx.runtime.appDir = path.join(ctx.paths.project.builds.dir, `${ctx.runtime.appId}_${ctx.platform}`);
 };
 
-export default createTask({
-    description: 'Configure project with specific appConfig',
-    fn: async ({ ctx }) => {
-        ctx.paths.project.appConfigsDirNames = listAppConfigsFoldersSync(true);
-        ctx.paths.project.appConfigsDirNames.forEach((dirName) => {
-            ctx.paths.project.appConfigsDirs.push(path.join(ctx.paths.project.appConfigsDir, dirName));
-        });
+const appConfigure = async () => {
+    const ctx = getContext();
+    ctx.paths.project.appConfigsDirNames = listAppConfigsFoldersSync(true);
+    ctx.paths.project.appConfigsDirNames.forEach((dirName) => {
+        ctx.paths.project.appConfigsDirs.push(path.join(ctx.paths.project.appConfigsDir, dirName));
+    });
 
-        const appConfigsDirsExt = ctx.buildConfig?.paths?.appConfigsDirs;
-        if (appConfigsDirsExt) {
-            appConfigsDirsExt.forEach((apePath) => {
-                const appConfigsExt = listAppConfigsFoldersSync(true, apePath);
-                appConfigsExt.forEach((appExtName) => {
-                    ctx.paths.project.appConfigsDirNames.push(appExtName);
-                    ctx.paths.project.appConfigsDirs.push(path.join(apePath, appExtName));
-                });
+    const appConfigsDirsExt = ctx.buildConfig?.paths?.appConfigsDirs;
+    if (appConfigsDirsExt) {
+        appConfigsDirsExt.forEach((apePath) => {
+            const appConfigsExt = listAppConfigsFoldersSync(true, apePath);
+            appConfigsExt.forEach((appExtName) => {
+                ctx.paths.project.appConfigsDirNames.push(appExtName);
+                ctx.paths.project.appConfigsDirs.push(path.join(apePath, appExtName));
             });
-        }
+        });
+    }
 
-        // Reset appId if appConfig no longer exists but renative.local.json still has reference to it
-        if (ctx.runtime.appId && !ctx.paths.project.appConfigsDirNames.includes(ctx.runtime.appId)) {
-            ctx.runtime.appId = undefined;
-        }
+    // Reset appId if appConfig no longer exists but renative.local.json still has reference to it
+    if (ctx.runtime.appId && !ctx.paths.project.appConfigsDirNames.includes(ctx.runtime.appId)) {
+        ctx.runtime.appId = undefined;
+    }
 
-        if (ctx.program.opts().appConfigID === true || (!ctx.program.opts().appConfigID && !ctx.runtime.appId)) {
+    if (ctx.program.opts().appConfigID === true || (!ctx.program.opts().appConfigID && !ctx.runtime.appId)) {
+        const hasAppConfig = await _findAndSwitchAppConfigDir(ctx);
+        if (!hasAppConfig) {
+            // await executeTask(c, RnvTaskName.appCreate, RnvTaskName.appConfigure);
+            // return Promise.reject('No app configs found for this project');
+            logWarning('No app configs found for this project');
+            return true;
+        }
+    } else if (ctx.program.opts().appConfigID) {
+        const aid = await matchAppConfigID(ctx, ctx.program.opts().appConfigID);
+        if (!aid) {
+            logWarning(`Cannot find app config ${chalk().bold(ctx.program.opts().appConfigID)}`);
             const hasAppConfig = await _findAndSwitchAppConfigDir(ctx);
             if (!hasAppConfig) {
                 // await executeTask(c, RnvTaskName.appCreate, RnvTaskName.appConfigure);
@@ -178,30 +190,28 @@ export default createTask({
                 logWarning('No app configs found for this project');
                 return true;
             }
-        } else if (ctx.program.opts().appConfigID) {
-            const aid = await matchAppConfigID(ctx, ctx.program.opts().appConfigID);
-            if (!aid) {
-                logWarning(`Cannot find app config ${chalk().bold(ctx.program.opts().appConfigID)}`);
-                const hasAppConfig = await _findAndSwitchAppConfigDir(ctx);
-                if (!hasAppConfig) {
-                    // await executeTask(c, RnvTaskName.appCreate, RnvTaskName.appConfigure);
-                    // return Promise.reject('No app configs found for this project');
-                    logWarning('No app configs found for this project');
-                    return true;
-                }
-            }
-            _setAppId(ctx, aid);
         }
+        _setAppId(ctx, aid);
+    }
 
-        // Generate true path to appConfig (ensure external appConfigsDirs are included)
-        if (ctx.runtime.appId) {
-            ctx.runtime.appConfigDir =
-                ctx.paths.project.appConfigsDirs[ctx.paths.project.appConfigsDirNames.indexOf(ctx.runtime.appId)];
-        }
+    // Generate true path to appConfig (ensure external appConfigsDirs are included)
+    if (ctx.runtime.appId) {
+        ctx.runtime.appConfigDir =
+            ctx.paths.project.appConfigsDirs[ctx.paths.project.appConfigsDirNames.indexOf(ctx.runtime.appId)];
+    }
 
+    return true;
+};
+
+export default createTask({
+    description: 'Configure project with specific appConfig',
+    fn: async ({ ctx }) => {
+        await appConfigure();
         await updateRenativeConfigs();
         logAppInfo(ctx);
 
+        ctx.runtime.isAppConfigured = true;
+        await checkAndInstallPackageDependenciesIfRequired();
         return true;
     },
     task: RnvTaskName.appConfigure,
