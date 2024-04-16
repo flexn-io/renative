@@ -1,14 +1,14 @@
 import { createRnvEngine, GetContextType } from '@rnv/core';
-import ModuleAndroid from '@rnv/sdk-android';
-import ModuleApple from '@rnv/sdk-apple';
-import ModuleRN, { withRNVRNConfig } from '@rnv/sdk-react-native';
+import ModuleSDKAndroid from '@rnv/sdk-android';
+import ModuleSDKApple from '@rnv/sdk-apple';
+import ModuleSDKReactNative, { withRNVRNConfig } from '@rnv/sdk-react-native';
 import { withRNVMetro } from './adapters/metroAdapter';
 import { withRNVBabel } from './adapters/babelAdapter';
 import { Config } from './config';
 
 const Engine = createRnvEngine({
     tasks: [],
-    extendModules: [ModuleAndroid, ModuleApple, ModuleRN],
+    extendModules: [ModuleSDKAndroid, ModuleSDKApple, ModuleSDKReactNative],
     config: Config,
     runtimeExtraProps: {
         reactNativePackageName: 'react-native',
