@@ -2388,7 +2388,7 @@
                                 "children": [
                                     {
                                         "android:name": "com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME",
-                                        "android:value": "{{configProps.id}}.CastOptionsProvider",
+                                        "android:value": "com.reactnative.googlecast.GoogleCastOptionsProvider",
                                         "tag": "meta-data"
                                     },
                                     {
@@ -2406,30 +2406,20 @@
                         ]
                     },
                     "app_build_gradle": {
-                        "implementations": [
-                            "'com.google.android.gms:play-services-cast-framework:21.0.0'",
-                            "'com.google.guava:guava:28.0-android'"
-                        ],
-                        "configurations": {
-                            "all*.exclude group: 'com.google.guava', module: 'listenablefuture'": true
-                        }
+                        "implementations": ["'com.google.android.gms:play-services-cast-framework:21.0.0'"]
                     },
                     "MainActivity_kt": {
-                        "createMethods": ["CastContext.getSharedInstance(this)"],
+                        "createMethods": [
+                            " try { ",
+                            "CastContext.getSharedInstance(this)",
+                            "} catch (e: Exception) {",
+                            "// cast framework not supported",
+                            " }"
+                        ],
                         "imports": ["com.google.android.gms.cast.framework.CastContext"]
                     },
                     "MainApplication_kt": {
                         "packages": ["com.reactnative.googlecast.GoogleCastPackage"]
-                    },
-                    "strings_xml": {
-                        "tag": "resources",
-                        "children": [
-                            {
-                                "tag": "string",
-                                "name": "app_id",
-                                "value": "{{props.APPLICATION_ID}}"
-                            }
-                        ]
                     }
                 }
             },
@@ -2463,45 +2453,9 @@
                 "podName": "react-native-google-cast"
             },
             "props": {
-                "APPLICATION_ID": ""
+                "APPLICATION_ID": "01234"
             },
-            "version": "4.6.0"
-        },
-        "react-native-google-cast2": {
-            "version": "4.6.0",
-            "ios": {
-                "isStatic": true,
-                "podName": "react-native-google-cast",
-                "path": "node_modules/react-native-google-cast/ios",
-                "appDelegateImports": ["GoogleCast"],
-                "appDelegateMethods": {
-                    "application": {
-                        "didFinishLaunchingWithOptions": [
-                            "let criteria = GCKDiscoveryCriteria(applicationID:\"{{props.applicationID}}\")",
-                            "let options = GCKCastOptions(discoveryCriteria: criteria)",
-                            "options.physicalVolumeButtonsWillControlDeviceVolume = true;",
-                            "GCKCastContext.setSharedInstanceWith(options)"
-                        ]
-                    }
-                }
-            },
-            "android": {
-                "AndroidManifest": {
-                    "children": [
-                        {
-                            "tag": "application",
-                            "android:name": ".MainApplication",
-                            "children": [
-                                {
-                                    "tag": "meta-data",
-                                    "android:name": "com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME",
-                                    "android:value": "{{configProps.id}}.CastOptionsProvider"
-                                }
-                            ]
-                        }
-                    ]
-                }
-            }
+            "version": "4.8.0"
         },
         "react-native-home-indicator": {
             "ios": {
