@@ -31,7 +31,7 @@ jobs:
                   yarn config set network-timeout 300000
             - name: Bootstrap
               run: |
-                  yarn bootstrap-clean
+                  yarn bootstrap
             - name: Run
               run: |
                   cd packages/app-harness && yarn run:tvos-test & sleep 420
