@@ -36,9 +36,7 @@
     },
     "plugins": {
         "react-native-safe-area-context": "source:rnv",
-        "react-native-splash-screen": {
-            "supportedPlatforms": ["android", "ios"]
-        },
+        "react-native-splash-screen": "source:rnv",
         "rn-fetch-blob": "source:rnv",
         "react-native-carplay": "source:rnv",
         "@react-native-community/push-notification-ios": "source:rnv",
