@@ -1,0 +1,22 @@
+{
+    "images": [
+        {
+            "extent": "full-screen",
+            "filename": "launch-image.png",
+            "idiom": "universal",
+            "orientation": "landscape",
+            "scale": "1x"
+        },
+        {
+            "extent": "full-screen",
+            "filename": "launch-image@2x.png",
+            "orientation": "landscape",
+            "idiom": "universal",
+            "scale": "2x"
+        }
+    ],
+    "info": {
+        "author": "xcode",
+        "version": 1
+    }
+}
