@@ -10,7 +10,15 @@ type UnionToIntersection<U> = (U extends any ? (x: U) => void : never) extends (
 
 type ExtractModulePayload<T extends RnvModule> = T extends RnvModule<any, infer Payload> ? Payload : never;
 
-export type CreateRnvEngineOpts<OKey extends string, Modules extends [RnvModule<OKey>, ...RnvModule<OKey>[]]> = {
+// type ExtractKeyedModule<OKey> = OKey extends string ? RnvModule<OKey> : never;
+
+export type KeyAwareModule<OKey> = OKey extends string
+    ? [RnvModule<OKey>, ...RnvModule<OKey>[]]
+    : [RnvModule<any>, ...RnvModule<any>[]];
+
+// export type KeyAwareModule<OKey> = [RnvModule<OKey>, ...RnvModule<OKey>[]];
+
+export type CreateRnvEngineOpts<OKey, Modules extends KeyAwareModule<OKey>> = {
     originalTemplatePlatformsDir?: string;
     platforms: RnvEnginePlatforms;
     config: ConfigFileEngine;
@@ -24,7 +32,7 @@ export type CreateRnvEngineOpts<OKey extends string, Modules extends [RnvModule<
     serverDirName?: string;
 };
 
-export type RnvEngine<OKey extends string = string, Modules extends [RnvModule<OKey>, ...RnvModule<OKey>[]] = any> = {
+export type RnvEngine<OKey = string, Modules extends KeyAwareModule<OKey> = any> = {
     originalTemplatePlatformsDir?: string;
     platforms: RnvEnginePlatforms;
     id: string;

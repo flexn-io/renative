@@ -1,4 +1,5 @@
 import { createRnvEngine, ConfigFileEngine, GetContextType } from '@rnv/core';
+import ModuleSDKApple from '@rnv/sdk-apple';
 
 import taskCryptoDecrypt from './tasks/crypto/taskCryptoDecrypt';
 import taskCryptoEncrypt from './tasks/crypto/taskCryptoEncrypt';
@@ -43,6 +44,7 @@ const Config: ConfigFileEngine = {
 };
 
 const Engine = createRnvEngine({
+    extendModules: [ModuleSDKApple],
     serverDirName: '',
     tasks: [
         taskCryptoDecrypt,

@@ -8,6 +8,7 @@ export default createTask({
     description: 'Launch specific target',
     dependsOn: [RnvTaskName.workspaceConfigure],
     fn: async () => {
+        // ctx.program.opts().ddd = 'ddd';
         await checkAndConfigureAndroidSdks();
         const target = await getTargetWithOptionalPrompt();
         await checkAndroidSdk();

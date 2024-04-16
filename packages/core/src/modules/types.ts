@@ -1,13 +1,13 @@
 import type { RnvContext } from '../context/types';
 import type { RnvTask, RnvTaskMap } from '../tasks/types';
 
-export type CreateRnvModuleOpts<OKey extends string> = {
+export type CreateRnvModuleOpts<OKey> = {
     tasks: ReadonlyArray<RnvTask<OKey>>;
     name?: string;
     type: RnvModuleType;
 };
 
-export type RnvModule<OKey extends string = string, Payload = any> = {
+export type RnvModule<OKey = string, Payload = any> = {
     name: string;
     tasks: RnvTaskMap<OKey>;
     originalTasks: ReadonlyArray<RnvTask<OKey>>;

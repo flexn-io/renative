@@ -225,21 +225,21 @@ const _RnvTaskOptions = {
 
 export type ProgramOptionsKey = keyof typeof _RnvTaskOptions;
 
-export const RnvTaskOptions = _RnvTaskOptions as Record<ProgramOptionsKey, RnvTaskOption>;
+export const RnvTaskOptions = _RnvTaskOptions as Record<ProgramOptionsKey, RnvTaskOption<string>>;
 
 //TODO: make this properly typed. Pass integration type to getContext?
 type ParamType = any; //boolean | string | undefined
 
-export type ParamKeys<ExtraKeys extends string = ProgramOptionsKey> = Partial<
-    Record<ProgramOptionsKey | ExtraKeys, ParamType>
->;
+export type UnionKey<T> = T extends string ? ProgramOptionsKey | T : ProgramOptionsKey;
+
+export type ParamKeys<Okey> = Partial<Record<UnionKey<Okey>, ParamType>>;
 
 (Object.keys(RnvTaskOptions) as ProgramOptionsKey[]).forEach((k) => {
     RnvTaskOptions[k].key = k;
 });
 
 export const RnvTaskCoreOptionPresets = {
-    withCore: (arr?: Array<RnvTaskOption>) =>
+    withCore: (arr?: Array<RnvTaskOption<string>>) =>
         [
             RnvTaskOptions.scheme, // temporary workaround
             RnvTaskOptions.engine, // temporary workaround
@@ -256,7 +256,7 @@ export const RnvTaskCoreOptionPresets = {
 };
 
 export const RnvTaskOptionPresets = {
-    withConfigure: (arr?: Array<RnvTaskOption>) =>
+    withConfigure: (arr?: Array<RnvTaskOption<string>>) =>
         [
             RnvTaskOptions.reset,
             RnvTaskOptions.resetHard,
@@ -267,7 +267,7 @@ export const RnvTaskOptionPresets = {
             RnvTaskOptions.packageManager,
             // RnvTaskOptions.platform,
         ].concat(arr || []),
-    withRun: (arr?: Array<RnvTaskOption>) =>
+    withRun: (arr?: Array<RnvTaskOption<string>>) =>
         [
             RnvTaskOptions.target,
             RnvTaskOptions.device,
@@ -278,6 +278,6 @@ export const RnvTaskOptionPresets = {
             RnvTaskOptions.skipTargetCheck,
             RnvTaskOptions.host,
         ].concat(arr || []),
-    withAll: (arr?: Array<RnvTaskOption>) => Object.values(RnvTaskOptions).concat(arr || []),
+    withAll: (arr?: Array<RnvTaskOption<string>>) => Object.values(RnvTaskOptions).concat(arr || []),
     all: Object.keys(RnvTaskOptions),
 };

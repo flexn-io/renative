@@ -32,7 +32,7 @@ export type CreateContextOptions = {
     RNV_HOME_DIR?: string;
 };
 
-export type RnvContextProgram<ExtraKeys extends string = never> = {
+export type RnvContextProgram<ExtraKeys = string> = {
     args?: string[];
     rawArgs?: string[];
     opts: () => CamelCasedProperties<ParamKeys<ExtraKeys>>;
@@ -44,7 +44,7 @@ export type RnvContextProgram<ExtraKeys extends string = never> = {
     isHelpInvoked?: boolean;
 };
 
-export type RnvContext<Payload = any, ExtraOptionKeys extends string = ProgramOptionsKey> = {
+export type RnvContext<Payload = any, ExtraOptionKeys = ProgramOptionsKey> = {
     program: RnvContextProgram<ExtraOptionKeys>;
     /**
      * Extra payload object used by 3rd party (ie @rnv/sdk-apple) to decorate context with extra typed information
