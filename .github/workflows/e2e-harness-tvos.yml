@@ -34,7 +34,7 @@ jobs:
                   yarn bootstrap-clean
             - name: Run
               run: |
-                  cd packages/app-harness && yarn run:tvos-test & sleep 600
+                  cd packages/app-harness && yarn run:tvos-test & sleep 480
             - name: E2E
               run: |
                   cd packages/app-harness && yarn e2e:tvos && kill $(lsof -t -i:8099)
