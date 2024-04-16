@@ -30,6 +30,7 @@ project.xcworkspace
 node_modules/
 dist
 lib
+build
 
 # NPM
 #
@@ -80,7 +81,10 @@ renative.local.json
 renative.local.json
 renative.build.json
 renative.runtime.json
-rnv-config.local.json
+rnv.private.json
+rnv.local.json
+rnv.build.json
+rnv.runtime.json
 metro.config.local.js
 platformBuilds
 platformAssets
@@ -92,3 +96,4 @@ platformAssets
 .bundle
 vendor
 .watchman-cookie-*
+.rollup.cache

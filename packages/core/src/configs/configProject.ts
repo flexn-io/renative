@@ -99,7 +99,6 @@ export const generatePlatformTemplatePaths = () => {
     const c = getContext();
 
     if (!c.buildConfig.paths) {
-        logWarning(`You're missing paths object in your ${chalk().red(c.paths.project.config)}`);
         c.buildConfig.paths = {
             appConfigsDirs: [],
             platformTemplatesDirs: {},
