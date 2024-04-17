@@ -8,7 +8,7 @@ function registerFonts(fonts) {
 
 function registerFont(fontFamily, ttf) {
     if (ttf.default) ttf = ttf.default;
-    const fontStyles = `@font-face { src: url(${ttf}); font-family: ${fontFamily};}`;
+    const fontStyles = `@font-face { src: url(${ttf}); font-family: '${fontFamily}';}`;
     const id = `${fontFamily}FontFace`;
     if (!document.getElementById(id)) {
         const fStyle = document.createElement('style');
