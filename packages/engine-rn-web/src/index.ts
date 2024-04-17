@@ -11,7 +11,7 @@ import { Config } from './config';
 
 const Engine = createRnvEngine({
     extendModules: [ModuleSDKWebOS, ModuleSDKTizen],
-    tasks: [taskRun, taskBuild, taskConfigure, taskStart, taskDebug],
+    tasks: [taskRun, taskBuild, taskConfigure, taskStart, taskDebug] as const,
     config: Config,
     platforms: {
         web: {

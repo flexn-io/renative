@@ -7,10 +7,8 @@ export * from './env';
 import { GetContextType, createRnvModule } from '@rnv/core';
 import taskStart from './tasks/taskStart';
 
-export const Tasks = [taskStart];
-
 const RnvModule = createRnvModule({
-    tasks: Tasks,
+    tasks: [taskStart] as const,
     name: '@rnv/sdk-react-native',
     type: 'internal',
 });

@@ -15,25 +15,22 @@ import taskConfigure from './tasks/taskConfigure';
 import taskRun from './tasks/taskRun';
 import taskBuild from './tasks/taskBuild';
 import { GetContextType, createRnvModule } from '@rnv/core';
-// import { Payload } from './types';
-
-export const Tasks = [
-    taskTargetLaunch,
-    taskTargetList,
-    taskCryptoInstallCerts,
-    taskCryptoUpdateProfile,
-    taskCryptoUpdateProfiles,
-    taskCryptoInstallProfiles,
-    taskLog,
-    taskExport,
-    taskPackage,
-    taskConfigure,
-    taskRun,
-    taskBuild,
-];
 
 const RnvModule = createRnvModule({
-    tasks: Tasks,
+    tasks: [
+        taskTargetLaunch,
+        taskTargetList,
+        taskCryptoInstallCerts,
+        taskCryptoUpdateProfile,
+        taskCryptoUpdateProfiles,
+        taskCryptoInstallProfiles,
+        taskLog,
+        taskExport,
+        taskPackage,
+        taskConfigure,
+        taskRun,
+        taskBuild,
+    ] as const,
     name: '@rnv/sdk-apple',
     type: 'internal',
 });

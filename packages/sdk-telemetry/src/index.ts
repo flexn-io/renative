@@ -5,7 +5,7 @@ import taskTelemetryDisable from './tasks/taskTelemetryDisable';
 export * from './runner';
 
 const RnvModule = createRnvModule({
-    tasks: [taskTelemetryStatus, taskTelemetryEnable, taskTelemetryDisable],
+    tasks: [taskTelemetryStatus, taskTelemetryEnable, taskTelemetryDisable] as const,
     name: '@rnv/sdk-telemetry',
     type: 'internal',
 });

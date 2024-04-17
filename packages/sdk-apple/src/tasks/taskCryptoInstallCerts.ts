@@ -1,5 +1,6 @@
 import { logWarning, getFileListSync, executeAsync, createTask, RnvTaskName } from '@rnv/core';
 import { SdkPlatforms } from '../common';
+import { TaskOptions } from '../taskOptions';
 
 export default createTask({
     description: 'Installs certificates into keychain (mac only)',
@@ -18,5 +19,6 @@ export default createTask({
         }
     },
     task: RnvTaskName.cryptoInstallCerts,
+    options: [TaskOptions.keychain],
     platforms: SdkPlatforms,
 });

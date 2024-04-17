@@ -4,7 +4,7 @@ import { Config } from './config';
 import { createRnvModule } from '@rnv/core';
 
 const Integration = createRnvModule({
-    tasks: [taskDockerExport, taskDockerDeploy],
+    tasks: [taskDockerExport, taskDockerDeploy] as const,
     name: Config.name,
     type: 'public',
 });

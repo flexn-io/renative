@@ -16,7 +16,8 @@ import {
     RnvTaskName,
     createTask,
 } from '@rnv/core';
-import { TaskOptions, getEnvExportCmd, getEnvVar } from './common';
+import { getEnvExportCmd, getEnvVar } from './common';
+import { TaskOptions } from '../../taskOptions';
 
 const iocane = require('iocane');
 

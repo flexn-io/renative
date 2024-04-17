@@ -1,7 +1,8 @@
 import { getConfigProp, logSummary, createTask, RnvTaskName, RnvTaskOptionPresets } from '@rnv/core';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '@rnv/sdk-react-native';
 import { getIosDeviceToRunOn, runXcodeProject } from '../runner';
-import { SDKTaskOptionPresets, SdkPlatforms } from '../common';
+import { SdkPlatforms } from '../common';
+import { TaskOptionPresets } from '../taskOptions';
 
 export default createTask({
     description: 'Run your rn app on target device or emulator',
@@ -22,6 +23,6 @@ export default createTask({
     },
     task: RnvTaskName.run,
     isPriorityOrder: true,
-    options: SDKTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun()),
+    options: [...RnvTaskOptionPresets.withRun(), ...TaskOptionPresets.withConfigure()],
     platforms: SdkPlatforms,
 });

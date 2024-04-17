@@ -2,7 +2,8 @@ import { getContext } from '../context/provider';
 import { createTaskMap } from '../tasks/creators';
 import type { CreateRnvModuleOpts, RnvModule } from './types';
 
-export const createRnvModule = <Payload extends object, OKey = never>(opts: CreateRnvModuleOpts<OKey>) => {
+// TODO: replaced <Payload extends object, ...> with <Payload = any, ...> to capture relevant errors first
+export const createRnvModule = <Payload = any, OKey = never>(opts: CreateRnvModuleOpts<OKey>) => {
     if (!opts.name) {
         throw new Error('Module name is required!');
     }

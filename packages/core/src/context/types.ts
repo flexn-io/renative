@@ -32,7 +32,7 @@ export type CreateContextOptions = {
     RNV_HOME_DIR?: string;
 };
 
-export type RnvContextProgram<OKey> = {
+export type RnvContextProgram<OKey = ProgramOptionsKey> = {
     args?: string[];
     rawArgs?: string[];
     opts: () => CamelCasedProperties<ParamKeys<OKey>>;
