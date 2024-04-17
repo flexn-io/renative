@@ -10,8 +10,8 @@ import taskDebug from './tasks/taskDebug';
 import { Config } from './config';
 
 const Engine = createRnvEngine({
-    extendModules: [ModuleSDKWebOS, ModuleSDKTizen],
-    tasks: [taskRun, taskBuild, taskConfigure, taskStart, taskDebug] as const,
+    extendModules: [ModuleSDKTizen],
+    tasks: [taskRun] as const,
     config: Config,
     platforms: {
         web: {
