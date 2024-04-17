@@ -170,26 +170,6 @@
             "props": {
                 "applicationID": "CC1AD845"
             },
-            "android": {
-                "implementation": "// TEST"
-            },
-            "ios": {
-                "templateXcode": {
-                    "AppDelegate_mm": {
-                        "appDelegateImports": ["GoogleCast/GoogleCast.h"],
-                        "appDelegateMethods": {
-                            "application": {
-                                "didFinishLaunchingWithOptions": [
-                                    "NSString *receiverAppID = kGCKDefaultMediaReceiverApplicationID; // or @\"ABCD1234\"",
-                                    "GCKDiscoveryCriteria *criteria = [[GCKDiscoveryCriteria alloc] initWithApplicationID:receiverAppID];",
-                                    "GCKCastOptions* options = [[GCKCastOptions alloc] initWithDiscoveryCriteria:criteria];",
-                                    "[GCKCastContext setSharedInstanceWithOptions:options];"
-                                ]
-                            }
-                        }
-                    }
-                }
-            },
             "androidwear": {
                 "disabled": true
             },
