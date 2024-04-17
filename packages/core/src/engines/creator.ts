@@ -5,8 +5,8 @@ import { RnvPlatformKey } from '../types';
 import { extractEngineId } from './nameExtractor';
 import type { CreateRnvEngineOpts, KeyAwareModule, RnvEngine, RnvEnginePlatforms } from './types';
 
-export const createRnvEngine = <OKey, Modules extends KeyAwareModule<OKey>>(
-    opts: CreateRnvEngineOpts<OKey, Modules>
+export const createRnvEngine = <OKey, MOKey, Modules extends KeyAwareModule<MOKey>>(
+    opts: CreateRnvEngineOpts<OKey, MOKey, Modules>
 ) => {
     if (!opts.config.name) {
         throw new Error('Engine name is required. check your renative.engine.json file');
@@ -23,7 +23,7 @@ export const createRnvEngine = <OKey, Modules extends KeyAwareModule<OKey>>(
         }
     });
 
-    const engine: RnvEngine<OKey, Modules> = {
+    const engine: RnvEngine<OKey, MOKey, Modules> = {
         ...opts,
         platforms,
         id: opts.config.name,

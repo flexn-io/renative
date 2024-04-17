@@ -9,7 +9,7 @@ import taskSdkConfigure from './tasks/taskSdkConfigure';
 import { GetContextType, createRnvModule } from '@rnv/core';
 
 const RnvModule = createRnvModule({
-    tasks: [taskTargetLaunch] as const,
+    tasks: [taskTargetLaunch, taskTargetList, taskSdkConfigure] as const,
     name: '@rnv/sdk-tizen',
     type: 'internal',
 });

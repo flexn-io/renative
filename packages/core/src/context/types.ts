@@ -17,12 +17,13 @@ import type { RnvEngine, RnvEnginePlatform } from '../engines/types';
 import type { OverridesOptions } from '../system/types';
 import type { RnvPlatform, RnvPlatformKey } from '../types';
 import type { NpmPackageFile } from '../configs/types';
-import { type ParamKeys, type ProgramOptionsKey } from '../tasks/constants';
+import { type ProgramOptionsKey } from '../tasks/constants';
 import { type ExecaChildProcess } from 'execa';
 import { type RnvPlugin } from '../plugins/types';
 import type { DependencyMutation } from '../projects/types';
 import { CamelCasedProperties } from 'type-fest';
 import { RnvModule } from '../modules/types';
+import { ParamKeys } from '../tasks/types';
 
 export type CreateContextOptions = {
     program: RnvContextProgram<ProgramOptionsKey>;

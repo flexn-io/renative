@@ -1,6 +1,14 @@
 import type { RnvContext } from '../context/types';
-import { RnvModuleType } from '../modules/types';
+import type { RnvModuleType } from '../modules/types';
 import type { RnvPlatformKey } from '../types';
+import type { ProgramOptionsKey } from './constants';
+
+//TODO: make this properly typed. Pass integration type to getContext?
+type ParamType = any; //boolean | string | undefined
+
+export type UnionKey<T> = T extends string ? T : never;
+
+export type ParamKeys<Okey> = Partial<Record<ProgramOptionsKey | UnionKey<Okey>, ParamType>>;
 
 export type CreateRnvTaskOpt<OKey> = {
     task: string;

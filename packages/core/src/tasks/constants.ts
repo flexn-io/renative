@@ -241,13 +241,6 @@ export const RnvTaskOptions = createTaskOptionsMap([
 
 export type ProgramOptionsKey = keyof typeof RnvTaskOptions;
 
-//TODO: make this properly typed. Pass integration type to getContext?
-type ParamType = any; //boolean | string | undefined
-
-export type UnionKey<T> = T extends string ? T : never;
-
-export type ParamKeys<Okey> = Partial<Record<ProgramOptionsKey | UnionKey<Okey>, ParamType>>;
-
 export const RnvTaskCoreOptionPresets = createTaskOptionsPreset({
     withCore: [
         RnvTaskOptions.scheme, // temporary workaround

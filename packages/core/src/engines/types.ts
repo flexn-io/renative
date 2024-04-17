@@ -12,18 +12,23 @@ type ExtractModulePayload<T extends RnvModule> = T extends RnvModule<any, infer 
 
 // type ExtractKeyedModule<OKey> = OKey extends string ? RnvModule<OKey> : never;
 
-export type KeyAwareModule<OKey> = OKey extends string
-    ? [RnvModule<OKey>, ...RnvModule<OKey>[]]
-    : [RnvModule<any>, ...RnvModule<any>[]];
+// export type KeyAwareModule<OKey> = OKey extends string
+//     ? [RnvModule<OKey>, ...RnvModule<OKey>[]]
+//     : [RnvModule<any>, ...RnvModule<any>[]];
 
 // export type KeyAwareModule<OKey> = [RnvModule<OKey>, ...RnvModule<OKey>[]];
 
-export type CreateRnvEngineOpts<OKey, Modules extends KeyAwareModule<OKey>> = {
+export type KeyAwareModule<OKey> = ReadonlyArray<RnvModule<OKey>>;
+
+// export type KeyAwareModule<OKey> = [RnvModule<OKey>, ...RnvModule<OKey>[]];
+
+export type CreateRnvEngineOpts<OKey, MOKey, Modules extends KeyAwareModule<MOKey>> = {
     originalTemplatePlatformsDir?: string;
     platforms: RnvEnginePlatforms;
     config: ConfigFileEngine;
-    tasks: ReadonlyArray<RnvTask<OKey, UnionToIntersection<ExtractModulePayload<Modules[number]>>>>;
-    extendModules?: Modules;
+    tasks: ReadonlyArray<RnvTask<OKey, any>>;
+    // UnionToIntersection<ExtractModulePayload<Modules[number]>>>>;
+    extendModules?: ReadonlyArray<RnvModule<OKey>>;
     rootPath?: string;
     originalTemplatePlatformProjectDir?: string;
     projectDirName?: string;
@@ -32,7 +37,7 @@ export type CreateRnvEngineOpts<OKey, Modules extends KeyAwareModule<OKey>> = {
     serverDirName?: string;
 };
 
-export type RnvEngine<OKey = string, Modules extends KeyAwareModule<OKey> = any> = {
+export type RnvEngine<OKey = string, MOKey = string, Modules extends KeyAwareModule<MOKey> = any> = {
     originalTemplatePlatformsDir?: string;
     platforms: RnvEnginePlatforms;
     id: string;
