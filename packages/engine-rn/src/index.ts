@@ -5,7 +5,6 @@ import ModuleSDKReactNative, { withRNVRNConfig } from '@rnv/sdk-react-native';
 import { withRNVMetro } from './adapters/metroAdapter';
 import { withRNVBabel } from './adapters/babelAdapter';
 import { Config } from './config';
-import taskConfig from './taskConfig';
 
 const Engine = createRnvEngine({
     tasks: [],

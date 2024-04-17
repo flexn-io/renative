@@ -52,10 +52,10 @@ export type TaskPromptOption = {
     isPrivate?: boolean;
     isPriorityOrder?: boolean;
     providers: string[];
-    params?: Array<RnvTaskOption<string>>;
+    params?: Array<RnvTaskOption>;
 };
 
-export type RnvTaskOption<OKey> = {
+export type RnvTaskOption<OKey = string> = {
     shortcut?: string;
     key: OKey extends string ? OKey : never;
     isRequired?: boolean;

@@ -25,17 +25,17 @@ import { CamelCasedProperties } from 'type-fest';
 import { RnvModule } from '../modules/types';
 
 export type CreateContextOptions = {
-    program: RnvContextProgram;
+    program: RnvContextProgram<ProgramOptionsKey>;
     process: NodeJS.Process;
     cmd?: string;
     subCmd?: string;
     RNV_HOME_DIR?: string;
 };
 
-export type RnvContextProgram<ExtraKeys = string> = {
+export type RnvContextProgram<OKey> = {
     args?: string[];
     rawArgs?: string[];
-    opts: () => CamelCasedProperties<ParamKeys<ExtraKeys>>;
+    opts: () => CamelCasedProperties<ParamKeys<OKey>>;
     option?: (cmd: string, desc: string) => void;
     parse?: (arg: string[]) => void;
     allowUnknownOption: (p: boolean) => void;
@@ -44,8 +44,8 @@ export type RnvContextProgram<ExtraKeys = string> = {
     isHelpInvoked?: boolean;
 };
 
-export type RnvContext<Payload = any, ExtraOptionKeys = ProgramOptionsKey> = {
-    program: RnvContextProgram<ExtraOptionKeys>;
+export type RnvContext<Payload = any, OKey = ProgramOptionsKey> = {
+    program: RnvContextProgram<OKey>;
     /**
      * Extra payload object used by 3rd party (ie @rnv/sdk-apple) to decorate context with extra typed information
      */

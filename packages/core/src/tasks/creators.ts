@@ -1,5 +1,5 @@
 import { RnvModuleType } from '../modules/types';
-import type { CreateRnvTaskOpt, RnvTask, RnvTaskMap } from './types';
+import type { CreateRnvTaskOpt, RnvTask, RnvTaskMap, RnvTaskOption } from './types';
 
 export const createTask = <OKey = never>(task: CreateRnvTaskOpt<OKey>) => {
     const response: RnvTask<OKey> = { ...task, key: 'unknown', ownerID: 'unknown' };
@@ -7,8 +7,31 @@ export const createTask = <OKey = never>(task: CreateRnvTaskOpt<OKey>) => {
     return response;
 };
 
-export const createTaskOptionsMap = () => {
-    // TODO
+type TaskOptionsMap<OKey> = Record<Extract<OKey, string>, RnvTaskOption<OKey>>;
+export const createTaskOptionsMap = <OKey>(opts: ReadonlyArray<RnvTaskOption<OKey>>) => {
+    const map: Partial<TaskOptionsMap<OKey>> = {};
+    opts.forEach((opt) => {
+        map[opt.key] = opt;
+    });
+    return map as TaskOptionsMap<OKey>;
+};
+
+type TaskOptionsPreset<OKey, PKey> = Record<
+    Extract<PKey, string>,
+    (arr?: ReadonlyArray<RnvTaskOption<OKey>>) => ReadonlyArray<RnvTaskOption<OKey>>
+>;
+export const createTaskOptionsPreset = <OKey, PKey extends string>(
+    opts: Record<PKey, ReadonlyArray<RnvTaskOption<OKey>>>
+) => {
+    const preset: Partial<TaskOptionsPreset<OKey, PKey>> = {};
+    for (const key in opts) {
+        const oArr = opts[key];
+        if (opts[key]) {
+            preset[key] = (arr?) => oArr.concat(arr || []);
+        }
+    }
+
+    return preset as TaskOptionsPreset<OKey, PKey>;
 };
 
 export const createTaskMap = <OKey>(opts: {
