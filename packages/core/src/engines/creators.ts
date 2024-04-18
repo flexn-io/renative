@@ -33,6 +33,16 @@ export const createRnvEngine = <OKey, Payload>(opts: CreateRnvEngineOpts<OKey, P
             ownerID: opts.config.name,
             ownerType: 'engine',
         }),
+        initContextPayload: () => {
+            // TODO: add contextPayload to engines
+            // const ctx = getContext();
+            // const payload = opts.contextPayload;
+            // if (payload) {
+            //     const ctxPayload = ctx.payload;
+            //     ctx.payload = { ...ctxPayload, ...payload };
+            // }
+            opts.extendModules?.forEach((m) => m.initContextPayload());
+        },
         getContext,
     };
 

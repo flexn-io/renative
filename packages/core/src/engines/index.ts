@@ -38,6 +38,8 @@ export const registerEngine = async (engine: RnvEngine, platform?: RnvPlatform, 
     }
     _registerEnginePlatform(c, platform, engine);
     registerRnvTasks(engine.tasks);
+
+    engine.initContextPayload();
 };
 
 const _registerEnginePlatform = (c: RnvContext, platform?: RnvPlatform, engine?: RnvEngine) => {

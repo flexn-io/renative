@@ -23,6 +23,7 @@ export const loadRnvModulesFromProject = async () => {
                 if (instance) {
                     c.runtime.modulesByIndex.push(instance);
                     registerRnvTasks(instance.tasks);
+                    instance.initContextPayload();
                 }
             } catch (err) {
                 logWarning(

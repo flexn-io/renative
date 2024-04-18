@@ -48,6 +48,7 @@ export type RnvEngine<OKey = string, Payload = any> = {
     runtimeExtraProps: Record<string, string>;
     outputDirName?: string;
     serverDirName: string;
+    initContextPayload: () => void;
     getContext: () => RnvContext<UnionToIntersection<Payload>, OKey>;
 };
 
