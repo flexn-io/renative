@@ -25,14 +25,14 @@ export default createTask({
             }
             return waitForBundlerIfRequired();
         }
-        return runAndroid(runDevice!);
+        await runAndroid(runDevice!);
     },
     task: RnvTaskName.run,
     isPriorityOrder: true,
     options: [
         ...RnvTaskOptionPresets.withConfigure(),
         ...RnvTaskOptionPresets.withRun(),
-        TaskOptions.device,
+        TaskOptions.resetAdb,
         TaskOptions.skipTargetCheck,
     ],
     platforms: SdkPlatforms,

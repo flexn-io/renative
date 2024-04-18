@@ -29,7 +29,6 @@ import {
     RnvPlatform,
     logInfo,
     RnvPlatformKey,
-    getContext,
 } from '@rnv/core';
 import { parseAndroidManifestSync } from './manifestParser';
 import {
@@ -49,7 +48,7 @@ import {
 import { parseGradleWrapperSync } from './gradleWrapperParser';
 import { parseValuesXml } from './xmlValuesParser';
 import { ejectGradleProject } from './ejector';
-import { AndroidDevice, Payload } from './types';
+import { AndroidDevice } from './types';
 import {
     resetAdb,
     getAndroidTargets,
@@ -62,7 +61,7 @@ import {
 import { ANDROID_COLORS, ANDROID_STRINGS, ANDROID_STYLES, CLI_ANDROID_ADB } from './constants';
 import { runReactNativeAndroid, packageReactNativeAndroid, generateEnvVarsFile } from '@rnv/sdk-react-native';
 import { getEntryFile } from '@rnv/sdk-utils';
-import { Context } from './getContext';
+import { Context, getContext } from './getContext';
 
 export const packageAndroid = async () => {
     logDefault('packageAndroid');
@@ -367,7 +366,7 @@ export const configureGradleProject = async () => {
 
 export const configureProject = async () => {
     logDefault('configureProject');
-    const c = getContext<Payload>();
+    const c = getContext();
 
     const appFolder = getAppFolder();
     const outputFile = getEntryFile();

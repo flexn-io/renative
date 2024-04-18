@@ -23,11 +23,11 @@ import {
     executeAsync,
     ExecOptionsPresets,
     RnvPlatformKey,
-    getContext,
 } from '@rnv/core';
 import { CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from './constants';
 
 import { AndroidDevice } from './types';
+import { getContext } from './getContext';
 
 const CHECK_INTEVAL = 5000;
 export const IS_TABLET_ABOVE_INCH = 6.5;
@@ -201,7 +201,6 @@ export const resetAdb = async (forceRun?: boolean, ranBefore?: boolean) => {
 };
 
 export const getAndroidTargets = async (skipDevices: boolean, skipAvds: boolean, deviceOnly = false) => {
-    const c = getContext();
     logDefault('getAndroidTargets', `skipDevices:${!!skipDevices} skipAvds:${!!skipAvds} deviceOnly:${!!deviceOnly}`);
     // Temp workaround for race conditions receiving devices with offline status
     await new Promise((r) => setTimeout(r, 1000));
@@ -216,7 +215,7 @@ export const getAndroidTargets = async (skipDevices: boolean, skipAvds: boolean,
         if (!skipAvds) {
             avdResult = await execCLI(CLI_ANDROID_EMULATOR, '-list-avds');
         }
-        return _parseDevicesResult(c, devicesResult, avdResult, deviceOnly);
+        return _parseDevicesResult(devicesResult, avdResult, deviceOnly);
     } catch (e) {
         return Promise.reject(e);
     }
@@ -449,12 +448,12 @@ export const connectToWifiDevice = async (target: string) => {
 };
 
 const _parseDevicesResult = async (
-    c: RnvContext,
     devicesString: string | undefined,
     avdsString: string | undefined,
     deviceOnly: boolean
 ) => {
     logDebug(`_parseDevicesResult:${devicesString}:${avdsString}:${deviceOnly}`);
+    const c = getContext();
     const devices: Array<AndroidDevice> = [];
     const { skipTargetCheck } = c.program.opts();
 

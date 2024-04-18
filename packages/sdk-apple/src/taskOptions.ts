@@ -67,12 +67,6 @@ export const TaskOptions = createTaskOptionsMap([
         isRequired: true,
         description: 'Filter value',
     },
-    {
-        key: 'device',
-        shortcut: 'd',
-        isValueType: true,
-        description: 'select connected Device',
-    },
 ]);
 
 export const TaskOptionPresets = createTaskOptionsPreset({

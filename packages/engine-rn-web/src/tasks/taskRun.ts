@@ -12,7 +12,6 @@ import {
     fsExistsSync,
     getAppConfigBuildsFolder,
     RnvTaskName,
-    RnvTaskOptions,
 } from '@rnv/core';
 import path from 'path';
 import { runChromecast, runWebpackServer } from '@rnv/sdk-webpack';
@@ -115,7 +114,6 @@ export default createTask({
     },
     task: RnvTaskName.run,
     isPriorityOrder: true,
-    // options: [],
-    options: [{ key: 'foo', description: 'bar' }],
+    options: RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun()),
     platforms: EnginePlatforms,
 });

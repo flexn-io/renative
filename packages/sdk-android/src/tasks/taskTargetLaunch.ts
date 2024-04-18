@@ -3,6 +3,7 @@ import { getTargetWithOptionalPrompt } from '@rnv/sdk-utils';
 import { checkAndConfigureAndroidSdks, checkAndroidSdk } from '../installer';
 import { launchAndroidSimulator } from '../deviceManager';
 import { SdkPlatforms } from '../constants';
+import { TaskOptions } from '../taskOptions';
 
 export default createTask({
     description: 'Launch specific target',
@@ -15,7 +16,7 @@ export default createTask({
         return launchAndroidSimulator(target);
     },
     task: RnvTaskName.targetLaunch,
-    options: [RnvTaskOptions.target],
+    options: [RnvTaskOptions.target, TaskOptions.resetAdb, TaskOptions.skipTargetCheck],
     platforms: SdkPlatforms,
     isGlobalScope: true,
 });

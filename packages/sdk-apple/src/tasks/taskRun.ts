@@ -24,11 +24,6 @@ export default createTask({
     },
     task: RnvTaskName.run,
     isPriorityOrder: true,
-    options: [
-        ...RnvTaskOptionPresets.withConfigure(),
-        ...RnvTaskOptionPresets.withRun(),
-        TaskOptions.device,
-        TaskOptions.skipTargetCheck,
-    ],
+    options: [...RnvTaskOptionPresets.withConfigure(), ...RnvTaskOptionPresets.withRun(), TaskOptions.skipTargetCheck],
     platforms: SdkPlatforms,
 });

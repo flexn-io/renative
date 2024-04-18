@@ -64,9 +64,9 @@ export const getIosDeviceToRunOn = async (c: Context) => {
     const { device } = c.program.opts();
     let devicesArr: AppleDevice[] = [];
     if (device === true) {
-        devicesArr = await getAppleDevices(c, false, true);
+        devicesArr = await getAppleDevices(false, true);
     } else {
-        devicesArr = await getAppleDevices(c, true, false);
+        devicesArr = await getAppleDevices(true, false);
     }
 
     let p;

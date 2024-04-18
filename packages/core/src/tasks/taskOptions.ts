@@ -183,6 +183,12 @@ export const RnvTaskOptions = createTaskOptionsMap([
         key: 'hosted',
         description: 'Run in a hosted environment (skip budleAssets)',
     },
+    {
+        key: 'device',
+        shortcut: 'd',
+        isValueType: true,
+        description: 'select connected Device',
+    },
     // SDK-WEBPACK --------------------------------
     {
         // key: 'debug-ip',

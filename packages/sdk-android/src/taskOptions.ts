@@ -14,12 +14,6 @@ export const TaskOptions = createTaskOptionsMap([
         description: 'Filter value',
     },
     {
-        key: 'device',
-        shortcut: 'd',
-        isValueType: true,
-        description: 'select connected Device',
-    },
-    {
         // key: 'reset-adb',
         key: 'resetAdb',
         description: 'Forces to reset android adb',
