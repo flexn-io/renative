@@ -3293,6 +3293,9 @@
             "tvos": {
                 "podName": "react-native-safe-area-context"
             },
+            "webpackConfig": {
+                "modulePaths": true
+            },
             "version": "4.9.0"
         },
         "react-native-safe-area-view": {
