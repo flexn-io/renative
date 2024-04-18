@@ -4,11 +4,11 @@ import type { RnvPlatformKey } from '../types';
 import type { ProgramOptionsKey } from './constants';
 
 //TODO: make this properly typed. Pass integration type to getContext?
-type ParamType = any; //boolean | string | undefined
+export type TaskOptionValue = any; // boolean | string | undefined;
 
 export type UnionKey<T> = T extends string ? T : never;
 
-export type ParamKeys<Okey> = Partial<Record<ProgramOptionsKey | UnionKey<Okey>, ParamType>>;
+export type ParamKeys<Okey, T> = Partial<Record<ProgramOptionsKey | UnionKey<Okey>, T>>;
 
 export type CreateRnvTaskOpt<OKey> = {
     task: string;
@@ -71,7 +71,6 @@ export type RnvTaskOption<OKey = string> = {
     isVariadic?: boolean;
     description: string;
     examples?: Array<string>;
-    // options?: ReadonlyArray<RnvTaskOption<OKey>>;
 };
 
 export type RnvTaskMap<OKey = string> = Record<string, RnvTask<OKey>>;
@@ -94,9 +93,3 @@ export type TaskItemMap = Record<
         taskKey: string;
     }
 >;
-
-// export type TaskObj = {
-//     key: string;
-//     taskInstance: RnvTask;
-//     // hasMultipleSubTasks?: boolean;
-// };

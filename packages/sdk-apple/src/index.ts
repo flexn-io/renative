@@ -15,6 +15,7 @@ import taskConfigure from './tasks/taskConfigure';
 import taskRun from './tasks/taskRun';
 import taskBuild from './tasks/taskBuild';
 import { GetContextType, createRnvModule } from '@rnv/core';
+import { Payload } from './types';
 
 const RnvModule = createRnvModule({
     tasks: [
@@ -33,6 +34,45 @@ const RnvModule = createRnvModule({
     ] as const,
     name: '@rnv/sdk-apple',
     type: 'internal',
+    contextPayload: {
+        pluginConfigiOS: {
+            podfileHeader: '',
+            podfileNodeRequire: '',
+            podfileInject: '',
+            podPostInstall: '',
+            staticFrameworks: [],
+            exportOptions: '',
+            embeddedFonts: [],
+            embeddedFontSources: [],
+            ignoreProjectFonts: [],
+            pluginAppDelegateHImports: '',
+            pluginAppDelegateHExtensions: '',
+            pluginAppDelegateMmImports: '',
+            pluginAppDelegateMmMethods: '',
+            appDelegateMmMethods: {
+                application: {
+                    didFinishLaunchingWithOptions: [],
+                    applicationDidBecomeActive: [],
+                    open: [],
+                    supportedInterfaceOrientationsFor: [],
+                    didReceiveRemoteNotification: [],
+                    didFailToRegisterForRemoteNotificationsWithError: [],
+                    didReceive: [],
+                    didRegister: [],
+                    didRegisterForRemoteNotificationsWithDeviceToken: [],
+                    continue: [],
+                    didConnectCarInterfaceController: [],
+                    didDisconnectCarInterfaceController: [],
+                },
+                userNotificationCenter: {
+                    willPresent: [],
+                    didReceiveNotificationResponse: [],
+                },
+            },
+            podfileSources: '',
+            deploymentTarget: '',
+        },
+    } as Payload,
 });
 
 export default RnvModule;

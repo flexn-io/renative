@@ -11,7 +11,8 @@ import taskPackage from './tasks/taskPackage';
 import taskConfigure from './tasks/taskConfigure';
 import taskRun from './tasks/taskRun';
 import taskBuild from './tasks/taskBuild';
-import { GetContextType, createRnvModule } from '@rnv/core';
+import { DEFAULTS, GetContextType, createRnvModule } from '@rnv/core';
+import { Payload } from './types';
 
 const RnvModule = createRnvModule({
     tasks: [
@@ -26,6 +27,52 @@ const RnvModule = createRnvModule({
     ] as const,
     name: '@rnv/sdk-android',
     type: 'internal',
+    contextPayload: {
+        pluginConfigAndroid: {
+            pluginIncludes: "include ':app'",
+            pluginPaths: '',
+            pluginPackages: '',
+            pluginActivityImports: '',
+            pluginActivityMethods: '',
+            pluginApplicationImports: '',
+            pluginApplicationMethods: '',
+            reactNativeHostMethods: '',
+            pluginApplicationCreateMethods: '',
+            pluginApplicationDebugServer: '',
+            applyPlugin: '',
+            defaultConfig: '',
+            pluginActivityCreateMethods: '',
+            pluginActivityResultMethods: '',
+            pluginSplashActivityImports: '',
+            buildGradleAllProjectsRepositories: '',
+            buildGradleBuildScriptRepositories: '',
+            buildGradlePlugins: '',
+            buildGradleAfterAll: '',
+            buildGradleBuildScriptDependencies: '',
+            injectReactNativeEngine: '',
+            injectActivityOnCreate: '',
+            buildGradleBuildScriptDexOptions: '',
+            appBuildGradleSigningConfigs: '',
+            packagingOptions: '',
+            appBuildGradleImplementations: '',
+            appBuildGradleAfterEvaluate: '',
+            kotlinVersion: '',
+            googleServicesVersion: '',
+            buildToolsVersion: '',
+            buildTypes: '',
+            compileOptions: '',
+            compileSdkVersion: DEFAULTS.compileSdkVersion,
+            ndkVersion: '',
+            gradleBuildToolsVersion: '',
+            gradleWrapperVersion: '',
+            localProperties: '',
+            minSdkVersion: DEFAULTS.minSdkVersion,
+            multiAPKs: '',
+            splits: '',
+            supportLibVersion: '',
+            targetSdkVersion: DEFAULTS.targetSdkVersion,
+        },
+    } as Payload,
 });
 
 export default RnvModule;

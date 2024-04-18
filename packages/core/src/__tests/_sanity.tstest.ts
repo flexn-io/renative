@@ -235,7 +235,7 @@ type GCEngine4 = GetContextType<typeof engine4.getContext>;
 const gcEngine4 = getContext as GCEngine4;
 
 // must provide original options
-console.log(gcEngine4().program.opts().appConfigID);
+console.log(gcEngine4().program.opts<string>().appConfigID);
 
 // must not provide unknown options
 // @ts-expect-error
@@ -245,7 +245,7 @@ console.log(gcEngine4().program.opts().UNTYPED);
 console.log(gcEngine4().program.opts().key1);
 
 // must provide new options inherited from task
-console.log(gcEngine4().program.opts().task3Key1);
+console.log(gcEngine4().program.opts<boolean>().task3Key1);
 
 // must provide new options inherited from task
 console.log(gcEngine4().program.opts().options1Key1);

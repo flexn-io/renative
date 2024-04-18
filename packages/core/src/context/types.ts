@@ -23,7 +23,7 @@ import { type RnvPlugin } from '../plugins/types';
 import type { DependencyMutation } from '../projects/types';
 import { CamelCasedProperties } from 'type-fest';
 import { RnvModule } from '../modules/types';
-import { ParamKeys } from '../tasks/types';
+import { ParamKeys, TaskOptionValue } from '../tasks/types';
 
 export type CreateContextOptions = {
     program: RnvContextProgram<ProgramOptionsKey>;
@@ -36,7 +36,7 @@ export type CreateContextOptions = {
 export type RnvContextProgram<OKey = ProgramOptionsKey> = {
     args?: string[];
     rawArgs?: string[];
-    opts: () => CamelCasedProperties<ParamKeys<OKey>>;
+    opts: <T = TaskOptionValue>() => CamelCasedProperties<ParamKeys<OKey, T>>;
     option?: (cmd: string, desc: string) => void;
     parse?: (arg: string[]) => void;
     allowUnknownOption: (p: boolean) => void;

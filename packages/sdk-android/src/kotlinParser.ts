@@ -1,14 +1,7 @@
-import {
-    OverridesOptions,
-    ConfigPluginPlatformSchema,
-    RnvContext,
-    getAppFolder,
-    getConfigProp,
-    writeCleanFile,
-} from '@rnv/core';
+import { OverridesOptions, ConfigPluginPlatformSchema, getAppFolder, getConfigProp, writeCleanFile } from '@rnv/core';
 import path from 'path';
 import { getBuildFilePath, getEntryFile, getAppId, addSystemInjects } from '@rnv/sdk-utils';
-import { getContext } from './getContext';
+import { Context, getContext } from './getContext';
 
 // const JS_BUNDLE_DEFAULTS: Partial<Record<RnvPlatformKey, string>> = {
 //     // Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
@@ -243,7 +236,7 @@ export const injectPluginKotlinSync = (plugin: ConfigPluginPlatformSchema, key: 
     }
 };
 
-const _injectPackage = (c: RnvContext, plugin: ConfigPluginPlatformSchema, pkg: string | undefined) => {
+const _injectPackage = (c: Context, plugin: ConfigPluginPlatformSchema, pkg: string | undefined) => {
     if (pkg && !plugin?.forceLinking) {
         c.payload.pluginConfigAndroid.pluginApplicationImports += `import ${pkg}\n`;
     }

@@ -1,10 +1,11 @@
 import type { RnvContext } from '../context/types';
 import type { RnvTask, RnvTaskMap } from '../tasks/types';
 
-export type CreateRnvModuleOpts<OKey> = {
+export type CreateRnvModuleOpts<OKey, Payload> = {
     tasks: ReadonlyArray<RnvTask<OKey>>;
     name?: string;
     type: RnvModuleType;
+    contextPayload?: Payload extends object ? Payload : never;
 };
 
 export type RnvModule<OKey = string, Payload = any> = {
@@ -12,6 +13,7 @@ export type RnvModule<OKey = string, Payload = any> = {
     tasks: RnvTaskMap<OKey>;
     originalTasks: ReadonlyArray<RnvTask<OKey>>;
     getContext: () => RnvContext<Payload, OKey>;
+    initContextPayload: () => void;
 };
 
 export type RnvModuleType = 'engine' | 'public' | 'internal';

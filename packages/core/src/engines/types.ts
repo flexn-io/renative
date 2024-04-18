@@ -27,7 +27,6 @@ export type CreateRnvEngineOpts<OKey, Payload> = {
     platforms: RnvEnginePlatforms;
     config: ConfigFileEngine;
     tasks: ReadonlyArray<RnvTask<OKey, any>>;
-    // UnionToIntersection<ExtractModulePayload<Modules[number]>>>>;
     extendModules?: ReadonlyArray<RnvModule<OKey, Payload>>;
     rootPath?: string;
     originalTemplatePlatformProjectDir?: string;

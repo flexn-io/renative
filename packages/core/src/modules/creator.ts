@@ -2,8 +2,7 @@ import { getContext } from '../context/provider';
 import { createTaskMap } from '../tasks/creators';
 import type { CreateRnvModuleOpts, RnvModule } from './types';
 
-// TODO: replaced <Payload extends object, ...> with <Payload = any, ...> to capture relevant errors first
-export const createRnvModule = <Payload = any, OKey = never>(opts: CreateRnvModuleOpts<OKey>) => {
+export const createRnvModule = <OKey = never, Payload = never>(opts: CreateRnvModuleOpts<OKey, Payload>) => {
     if (!opts.name) {
         throw new Error('Module name is required!');
     }
@@ -14,6 +13,14 @@ export const createRnvModule = <Payload = any, OKey = never>(opts: CreateRnvModu
         name: opts.name,
         tasks: createTaskMap<OKey>({ tasks: opts.tasks, ownerID: opts.name, ownerType: opts.type }),
         getContext,
+        initContextPayload: () => {
+            const ctx = getContext();
+            const payload = opts.contextPayload;
+            if (payload) {
+                const ctxPayload = ctx.payload;
+                ctx.payload = { ...ctxPayload, ...payload };
+            }
+        },
     };
 
     return module;

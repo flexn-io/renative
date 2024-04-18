@@ -13,7 +13,6 @@ import {
     getContext,
 } from '@rnv/core';
 import {
-    Context,
     ObjectiveCAppDelegate,
     PayloadAppDelegateKey,
     PayloadAppDelegateMethod,
@@ -23,6 +22,7 @@ import {
     ObjectiveCMethod,
 } from './types';
 import { addSystemInjects, getAppTemplateFolder, sanitizeColor } from '@rnv/sdk-utils';
+import { Context } from './getContext';
 
 export const parseAppDelegate = (
     appFolder: string,

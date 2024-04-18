@@ -3,6 +3,7 @@ import { startBundlerIfRequired, waitForBundlerIfRequired } from '@rnv/sdk-react
 import { getIosDeviceToRunOn, runXcodeProject } from '../runner';
 import { SdkPlatforms } from '../common';
 import { TaskOptionPresets } from '../taskOptions';
+import { Context } from '../getContext';
 
 export default createTask({
     description: 'Run your rn app on target device or emulator',
@@ -10,7 +11,7 @@ export default createTask({
     fn: async ({ ctx, originTaskName }) => {
         const bundleAssets = getConfigProp('bundleAssets');
 
-        const runDeviceArgs = await getIosDeviceToRunOn(ctx);
+        const runDeviceArgs = await getIosDeviceToRunOn(ctx as Context);
         if (!ctx.program.opts().only) {
             await startBundlerIfRequired(RnvTaskName.run, originTaskName);
             await runXcodeProject(runDeviceArgs);
