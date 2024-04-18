@@ -10,7 +10,6 @@ import {
     parsePlugins,
     writeCleanFile,
     type ConfigAppDelegateMethod,
-    getContext,
 } from '@rnv/core';
 import {
     ObjectiveCAppDelegate,
@@ -22,7 +21,7 @@ import {
     ObjectiveCMethod,
 } from './types';
 import { addSystemInjects, getAppTemplateFolder, sanitizeColor } from '@rnv/sdk-utils';
-import { Context } from './getContext';
+import { Context, getContext } from './getContext';
 
 export const parseAppDelegate = (
     appFolder: string,

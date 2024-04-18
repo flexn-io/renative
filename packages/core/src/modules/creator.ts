@@ -2,7 +2,7 @@ import { getContext } from '../context/provider';
 import { createTaskMap } from '../tasks/creators';
 import type { CreateRnvModuleOpts, RnvModule } from './types';
 
-export const createRnvModule = <OKey = never, Payload = never>(opts: CreateRnvModuleOpts<OKey, Payload>) => {
+export const createRnvModule = <OKey = never, Payload = object>(opts: CreateRnvModuleOpts<OKey, Payload>) => {
     if (!opts.name) {
         throw new Error('Module name is required!');
     }
