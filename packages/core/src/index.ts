@@ -31,7 +31,7 @@ export * from './tasks/taskFinder';
 export * from './tasks/taskExecutors';
 export * from './tasks/taskHelpers';
 export * from './tasks/taskRegistry';
-export * from './tasks/constants';
+export * from './tasks/taskOptions';
 export * from './tasks/creators';
 
 export * from './schema/defaults';
@@ -40,12 +40,12 @@ export * from './schema/validators';
 export * from './schema';
 
 export * from './engines';
-export * from './engines/creator';
+export * from './engines/creators';
 export * from './engines/dependencyResolver';
 
-export * from './modules/creator';
+export * from './modules/creators';
 
-export * from './modules/creator';
+export * from './modules/creators';
 export * from './modules';
 
 export * from './system/exec';

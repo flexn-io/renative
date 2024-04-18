@@ -1,7 +1,7 @@
 import type { RnvContext } from '../context/types';
 import type { RnvModuleType } from '../modules/types';
 import type { RnvPlatformKey } from '../types';
-import type { ProgramOptionsKey } from './constants';
+import type { ProgramOptionsKey } from './taskOptions';
 
 //TODO: make this properly typed. Pass integration type to getContext?
 export type TaskOptionValue = any; // boolean | string | undefined;

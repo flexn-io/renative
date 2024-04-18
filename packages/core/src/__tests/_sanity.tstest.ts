@@ -3,11 +3,11 @@
 eslint-disable @typescript-eslint/no-unused-vars 
 */
 
-import { createRnvModule } from '../modules/creator';
-import { createRnvEngine } from '../engines/creator';
+import { createRnvModule } from '../modules/creators';
+import { createRnvEngine } from '../engines/creators';
 import { GetContextType } from '../context/types';
 import { createTask, createTaskOptionsPreset } from '../tasks/creators';
-import { RnvTaskOptions } from '../tasks/constants';
+import { RnvTaskOptions } from '../tasks/taskOptions';
 import { getContext } from '../context/provider';
 
 const preset1 = createTaskOptionsPreset({

@@ -17,7 +17,7 @@ import type { RnvEngine, RnvEnginePlatform } from '../engines/types';
 import type { OverridesOptions } from '../system/types';
 import type { RnvPlatform, RnvPlatformKey } from '../types';
 import type { NpmPackageFile } from '../configs/types';
-import { type ProgramOptionsKey } from '../tasks/constants';
+import { type ProgramOptionsKey } from '../tasks/taskOptions';
 import { type ExecaChildProcess } from 'execa';
 import { type RnvPlugin } from '../plugins/types';
 import type { DependencyMutation } from '../projects/types';
