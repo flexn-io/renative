@@ -8,7 +8,7 @@ export type RnvEnginePlatforms = Partial<Record<RnvPlatformKey, RnvEnginePlatfor
 
 type UnionToIntersection<U> = (U extends any ? (x: U) => void : never) extends (x: infer I) => void ? I : never;
 
-type ExtractModulePayload<T extends RnvModule> = T extends RnvModule<any, infer Payload> ? Payload : never;
+// type ExtractModulePayload<T extends RnvModule> = T extends RnvModule<any, infer Payload> ? Payload : never;
 
 // type ExtractKeyedModule<OKey> = OKey extends string ? RnvModule<OKey> : never;
 
@@ -22,13 +22,13 @@ export type KeyAwareModule<OKey> = ReadonlyArray<RnvModule<OKey>>;
 
 // export type KeyAwareModule<OKey> = [RnvModule<OKey>, ...RnvModule<OKey>[]];
 
-export type CreateRnvEngineOpts<OKey, MOKey, Modules extends KeyAwareModule<MOKey>> = {
+export type CreateRnvEngineOpts<OKey, Payload> = {
     originalTemplatePlatformsDir?: string;
     platforms: RnvEnginePlatforms;
     config: ConfigFileEngine;
     tasks: ReadonlyArray<RnvTask<OKey, any>>;
     // UnionToIntersection<ExtractModulePayload<Modules[number]>>>>;
-    extendModules?: ReadonlyArray<RnvModule<OKey>>;
+    extendModules?: ReadonlyArray<RnvModule<OKey, Payload>>;
     rootPath?: string;
     originalTemplatePlatformProjectDir?: string;
     projectDirName?: string;
@@ -37,7 +37,7 @@ export type CreateRnvEngineOpts<OKey, MOKey, Modules extends KeyAwareModule<MOKe
     serverDirName?: string;
 };
 
-export type RnvEngine<OKey = string, MOKey = string, Modules extends KeyAwareModule<MOKey> = any> = {
+export type RnvEngine<OKey = string, Payload = any> = {
     originalTemplatePlatformsDir?: string;
     platforms: RnvEnginePlatforms;
     id: string;
@@ -49,7 +49,7 @@ export type RnvEngine<OKey = string, MOKey = string, Modules extends KeyAwareMod
     runtimeExtraProps: Record<string, string>;
     outputDirName?: string;
     serverDirName: string;
-    getContext: () => RnvContext<UnionToIntersection<ExtractModulePayload<Modules[number]>>, OKey>;
+    getContext: () => RnvContext<UnionToIntersection<Payload>, OKey>;
 };
 
 export type RnvEnginePlatform = {
