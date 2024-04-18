@@ -55,6 +55,24 @@ export const TaskOptions = createTaskOptionsMap([
         isRequired: true,
         description: 'pass down custom xcodebuild arguments',
     },
+    {
+        // key: 'skip-target-check',
+        key: 'skipTargetCheck',
+        description: 'Skip ios target check, just display the raw sims to choose from',
+    },
+    {
+        key: 'filter',
+        shortcut: 'f',
+        isValueType: true,
+        isRequired: true,
+        description: 'Filter value',
+    },
+    {
+        key: 'device',
+        shortcut: 'd',
+        isValueType: true,
+        description: 'select connected Device',
+    },
 ]);
 
 export const TaskOptionPresets = createTaskOptionsPreset({

@@ -1,14 +1,4 @@
-import { RnvTaskName } from '../enums/taskName';
 import { createTaskOptionsMap, createTaskOptionsPreset } from './creators';
-
-export const DEFAULT_TASK_DESCRIPTIONS: Record<string, string> = {
-    [RnvTaskName.run]: 'Run your app on target device or emulator',
-    [RnvTaskName.package]: 'Package source files into bundle',
-    [RnvTaskName.build]: 'Build project binary',
-    [RnvTaskName.configure]: 'Configure current project',
-    [RnvTaskName.start]: 'Starts bundler / server',
-    [RnvTaskName.export]: 'Export the app into deployable binary',
-};
 
 export const RnvTaskOptions = createTaskOptionsMap([
     // CORE --------------------------------
@@ -103,7 +93,8 @@ export const RnvTaskOptions = createTaskOptionsMap([
         description: 'Use custom name for ./renative.json. (applies only at root level)',
     },
     {
-        key: 'skip-dependency-check',
+        key: 'skipDependencyCheck',
+        // key: 'skip-dependency-check',
         description: 'Skips auto update of npm dependencies if mismatch found',
     },
     {
@@ -212,31 +203,6 @@ export const RnvTaskOptions = createTaskOptionsMap([
             '--debug //run remote debug with default preference (chii)',
         ],
     },
-    // SDK-APPLE + SDK-ANDROID --------------------------------
-    {
-        // key: 'skip-target-check',
-        key: 'skipTargetCheck',
-        description: 'Skip Android target check, just display the raw adb devices to choose from',
-    },
-    {
-        key: 'filter',
-        shortcut: 'f',
-        isValueType: true,
-        isRequired: true,
-        description: 'Filter value',
-    },
-    {
-        key: 'device',
-        shortcut: 'd',
-        isValueType: true,
-        description: 'select connected Device',
-    },
-    // SDK-ANDROID --------------------------------
-    {
-        // key: 'reset-adb',
-        key: 'resetAdb',
-        description: 'Forces to reset android adb',
-    },
 ]);
 
 export type ProgramOptionsKey = keyof typeof RnvTaskOptions;
@@ -254,6 +220,7 @@ export const RnvTaskCoreOptionPresets = createTaskOptionsPreset({
         RnvTaskOptions.yes,
         RnvTaskOptions.help,
         RnvTaskOptions.printExec,
+        RnvTaskOptions.telemetryDebug,
     ],
 });
 
@@ -267,11 +234,9 @@ export const RnvTaskOptionPresets = createTaskOptionsPreset({
     ],
     withRun: [
         RnvTaskOptions.target,
-        RnvTaskOptions.device,
         RnvTaskOptions.hosted,
         RnvTaskOptions.port,
         RnvTaskOptions.debugIp,
-        RnvTaskOptions.skipTargetCheck,
         RnvTaskOptions.host,
     ],
 });
