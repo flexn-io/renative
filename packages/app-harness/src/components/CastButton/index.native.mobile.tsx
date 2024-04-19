@@ -9,6 +9,7 @@ export function CastComponent() {
             mediaInfo: {
                 contentUrl:
                     'https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/mp4/BigBuckBunny.mp4',
+                contentType: 'video/mp4',
             },
         });
     }

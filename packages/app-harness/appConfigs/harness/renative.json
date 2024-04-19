@@ -27,6 +27,10 @@
             "entitlements": {
                 "aps-environment": "development"
             },
+            "systemCapabilities": {
+                "com.apple.AccessWiFi": true,
+                "com.apple.Push": true
+            },
             "buildSchemes": {
                 "debug-static-pods": {
                     "runScheme": "Debug",
