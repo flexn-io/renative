@@ -107,6 +107,9 @@ const module1 = createRnvModule({
     tasks: [task1, task2] as const,
     name: '',
     type: 'internal',
+    contextPayload: {
+        foo1: 'bar',
+    } as { foo1: string },
 });
 type GCModule1 = GetContextType<typeof module1.getContext>;
 const gcModule1 = getContext as GCModule1;
@@ -120,6 +123,13 @@ console.log(gcModule1().program.opts().UNTYPED);
 
 // must provide new options inherited from task
 console.log(gcModule1().program.opts().preset1Key1);
+
+// must provide new payload props inherited from module
+console.log(gcModule1().payload.foo1);
+
+// must not provide unknown props in payload
+// @ts-expect-error
+console.log(gcEngine3().payload.UNTYPED);
 
 const module2 = createRnvModule({
     tasks: [],
@@ -136,10 +146,17 @@ console.log(gcModule2().program.opts().appConfigID);
 // @ts-expect-error
 console.log(gcModule2().program.opts().UNTYPED);
 
+// must not provide unknown props in payload
+// @ts-expect-error
+console.log(gcEngine2().payload.UNTYPED);
+
 const module3 = createRnvModule({
     tasks: [task3, task4, task5, task6],
     name: '',
     type: 'internal',
+    contextPayload: {
+        foo3: 'bar',
+    } as { foo3: string },
 });
 type GCModule3 = GetContextType<typeof module3.getContext>;
 const gcModule3 = getContext as GCModule3;
@@ -162,6 +179,13 @@ console.log(gcModule3().program.opts().options1Key1);
 
 // must provide new options inherited from task
 console.log(gcModule3().program.opts().resetHard);
+
+// must provide new payload props inherited from module
+console.log(gcModule3().payload.foo3);
+
+// must not provide unknown props in payload
+// @ts-expect-error
+console.log(gcEngine3().payload.UNTYPED);
 
 const engine1 = createRnvEngine({
     tasks: [task1, task2, task3, task4, task5, task6],
@@ -199,6 +223,18 @@ const engine2 = createRnvEngine({
     platforms: {},
 });
 type GCEngine2 = GetContextType<typeof engine2.getContext>;
+const gcEngine2 = getContext as GCEngine2;
+
+// must provide original options
+console.log(gcEngine2().program.opts().appConfigID);
+
+// must not provide unknown options
+// @ts-expect-error
+console.log(gcEngine2().program.opts().UNTYPED);
+
+// must not provide unknown props in payload
+// @ts-expect-error
+console.log(gcEngine2().payload.UNTYPED);
 
 const engine3 = createRnvEngine({
     extendModules: [module1, module3],
@@ -224,6 +260,16 @@ console.log(gcEngine3().program.opts().task3Key1);
 
 // must provide new options inherited from task
 console.log(gcEngine3().program.opts().preset1Key1);
+
+// must provide new payload props inherited from module
+console.log(gcEngine3().payload.foo1);
+
+// must provide new payload props inherited from module
+console.log(gcEngine3().payload.foo3);
+
+// must not provide unknown props in payload
+// @ts-expect-error
+console.log(gcEngine3().payload.UNTYPED);
 
 const engine4 = createRnvEngine({
     extendModules: [module1, module2, module3],
@@ -255,6 +301,16 @@ console.log(gcEngine4().program.opts().resetHard);
 
 // must provide new options inherited from task
 console.log(gcEngine4().program.opts().preset1Key1);
+
+// must provide new payload props inherited from module
+console.log(gcEngine4().payload.foo1);
+
+// must provide new payload props inherited from module
+console.log(gcEngine4().payload.foo3);
+
+// must not provide unknown props in payload
+// @ts-expect-error
+console.log(gcEngine4().payload.UNTYPED);
 
 // ===============================================
 
