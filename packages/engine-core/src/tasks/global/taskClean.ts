@@ -112,6 +112,10 @@ export default createTask({
             modules: false,
             builds: false,
             cache: false,
+            platformBuilds: false,
+            platformAssets: false,
+            distAndLib: false,
+            gitIgnore: false,
             nothingToClean: !skipQuestion,
             locals: false,
         };
@@ -173,6 +177,20 @@ export default createTask({
         } else {
             answers.cache = true;
         }
+
+        if (!skipQuestion) {
+            const { confirmCache } = await inquirerPrompt({
+                name: 'confirmCache',
+                type: 'confirm',
+                message: 'Do you want to clean your platformBuilds',
+            });
+            answers.cache = confirmCache;
+            if (confirmCache) answers.nothingToClean = false;
+        } else {
+            answers.cache = true;
+        }
+
+        //git clean -f -d
 
         if (answers.nothingToClean) {
             logToSummary('Nothing to clean');

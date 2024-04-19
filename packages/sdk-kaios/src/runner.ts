@@ -56,6 +56,15 @@ const _configureProject = () =>
 
         fsWriteFileSync(manifestFilePath, JSON.stringify(manifestFile, null, 2));
 
+        const manifestFilePath0 = path.join(appFolder!, 'public/manifest.webmanifest');
+        const manifestFile0 = JSON.parse(fsReadFileSync(manifestFilePath0).toString());
+
+        manifestFile0.name = getAppTitle();
+        manifestFile0.description = getAppDescription();
+        manifestFile0.developer = getAppAuthor();
+
+        fsWriteFileSync(manifestFilePath0, JSON.stringify(manifestFile0, null, 2));
+
         resolve();
     });
 
