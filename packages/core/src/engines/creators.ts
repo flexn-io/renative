@@ -6,7 +6,10 @@ import { RnvPlatformKey } from '../types';
 import { extractEngineId } from './nameExtractor';
 import type { CreateRnvEngineOpts, RnvEngine, RnvEnginePlatforms } from './types';
 
-export const createRnvEngine = <OKey extends string = never, Modules extends [RnvModule, ...RnvModule[]] = any>(
+export const createRnvEngine = <
+    OKey extends string = never,
+    Modules extends [RnvModule, ...RnvModule[]] = [RnvModule<never, object>]
+>(
     opts: CreateRnvEngineOpts<OKey, Modules>
 ) => {
     if (!opts.config.name) {
