@@ -104,7 +104,22 @@ const task6 = createTask({
 });
 
 const module1 = createRnvModule({
-    tasks: [task1, task2] as const,
+    tasks: [
+        task1,
+        task2,
+        {
+            key: 'selfReferenceTest',
+            description: '',
+            task: 'selfReferenceTest',
+            options: [{ key: 'selfOpt', description: '' }],
+            fn: async ({ ctx }) => {
+                console.log(ctx.program.opts().preset1Key1);
+                console.log(ctx.program.opts().selfOpt);
+                // @ts-expect-error
+                console.log(ctx.program.opts().UNTYPED);
+            },
+        },
+    ],
     name: '',
     type: 'internal',
     contextPayload: {
@@ -273,7 +288,7 @@ console.log(gcEngine3().payload.UNTYPED);
 
 const engine4 = createRnvEngine({
     extendModules: [module1, module2, module3],
-    tasks: [task2, task3, task4, task5, task6] as const,
+    tasks: [task2, task3, task4, task5, task6],
     config: {},
     platforms: {},
 });
