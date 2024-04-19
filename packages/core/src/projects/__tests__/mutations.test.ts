@@ -21,7 +21,7 @@ jest.mock('../../logger', () => ({
 
 describe('handleMutations', () => {
     it('should handle mutations correctly', async () => {
-        // Arrange
+        // GIVEN
         const mockContext = {
             mutations: {
                 pendingMutations: [
@@ -40,10 +40,10 @@ describe('handleMutations', () => {
         (getContext as jest.Mock).mockReturnValue(mockContext);
         (inquirerPrompt as jest.Mock).mockResolvedValue({ confirm: 'Update package and install (recommended)' });
 
-        // Act
+        // WHEN
         const result = await handleMutations();
 
-        // Assert
+        // THEN
         expect(result).toBe(true);
         expect(logWarning).toHaveBeenCalledWith('Updates to package.json are required:');
         expect(logRaw).toHaveBeenCalledWith('- test (1.0.0) => (1.1.0) test message | test source\n');
