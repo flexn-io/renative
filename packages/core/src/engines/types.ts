@@ -23,11 +23,15 @@ type ExtractModuleOKey<T extends RnvModule> = T extends RnvModule<infer OKey, an
 
 // export type KeyAwareModule<OKey> = [RnvModule<OKey>, ...RnvModule<OKey>[]];
 
-export type CreateRnvEngineOpts<OKey extends string, Modules extends [RnvModule<any>, ...RnvModule<any>[]]> = {
+export type CreateRnvEngineOpts<
+    OKey extends string,
+    Modules extends [RnvModule, ...RnvModule[]],
+    OKeys extends string = OKey | ExtractModuleOKey<Modules[number]>
+> = {
     originalTemplatePlatformsDir?: string;
     platforms: RnvEnginePlatforms;
     config: ConfigFileEngine;
-    tasks: ReadonlyArray<RnvTask<OKey, UnionToIntersection<ExtractModulePayload<Modules[number]>>>>;
+    tasks: ReadonlyArray<RnvTask<OKeys, UnionToIntersection<ExtractModulePayload<Modules[number]>>>>;
     extendModules?: Modules;
     rootPath?: string;
     originalTemplatePlatformProjectDir?: string;

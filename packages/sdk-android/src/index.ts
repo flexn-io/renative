@@ -24,7 +24,7 @@ const RnvModule = createRnvModule({
         taskConfigure,
         taskRun,
         taskBuild,
-    ] as const,
+    ],
     name: '@rnv/sdk-android',
     type: 'internal',
     contextPayload: {
