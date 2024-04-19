@@ -2,7 +2,7 @@ import { RnvTask, RnvTaskMap } from './types';
 
 const REGISTERED_TASKS: RnvTaskMap = {};
 
-export const registerRnvTasks = async (tasks: RnvTaskMap) => {
+export const registerRnvTasks = async (tasks: RnvTaskMap<any>) => {
     Object.values(tasks).forEach((task) => registerRnvTask(task));
 };
 

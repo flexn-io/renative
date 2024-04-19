@@ -137,7 +137,7 @@ console.log(gcModule2().program.opts().appConfigID);
 console.log(gcModule2().program.opts().UNTYPED);
 
 const module3 = createRnvModule({
-    tasks: [task3, task4, task5, task6] as const,
+    tasks: [task3, task4, task5, task6],
     name: '',
     type: 'internal',
 });
@@ -164,7 +164,7 @@ console.log(gcModule3().program.opts().options1Key1);
 console.log(gcModule3().program.opts().resetHard);
 
 const engine1 = createRnvEngine({
-    tasks: [task1, task2, task3, task4, task5, task6] as const,
+    tasks: [task1, task2, task3, task4, task5, task6],
     config: {},
     platforms: {},
 });
@@ -201,7 +201,7 @@ const engine2 = createRnvEngine({
 type GCEngine2 = GetContextType<typeof engine2.getContext>;
 
 const engine3 = createRnvEngine({
-    extendModules: [module1, module3] as const,
+    extendModules: [module1, module3],
     tasks: [],
     config: {},
     platforms: {},
