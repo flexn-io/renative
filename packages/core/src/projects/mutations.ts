@@ -15,8 +15,16 @@ export const createDependencyMutation = (opts: DependencyMutation) => {
 export const handleMutations = async () => {
     const ctx = getContext();
     const mutations = ctx.mutations.pendingMutations;
+
     if (!mutations.length) return true;
     const isTemplate = ctx.buildConfig?.isTemplate;
+
+    if (!ctx.runtime.isAppConfigured) {
+        // We want to wait until we have appId loaded to have all merged dependencies
+        // This is also needed to avoid multiple prompts where isTemplate is defined in appConfigs
+        return false;
+    }
+
     logWarning(
         `Updates to package.json are required:${isTemplate ? ' (only info. skipping due to template mode)' : ''}`
     );

@@ -20,35 +20,35 @@
     },
     "engineTemplates": {
         "@rnv/engine-rn": {
-            "version": "1.0.0-rc.16",
+            "version": "1.0.0-rc.17",
             "id": "engine-rn"
         },
         "@rnv/engine-rn-tvos": {
-            "version": "1.0.0-rc.16",
+            "version": "1.0.0-rc.17",
             "id": "engine-rn-tvos"
         },
         "@rnv/engine-rn-web": {
-            "version": "1.0.0-rc.16",
+            "version": "1.0.0-rc.17",
             "id": "engine-rn-web"
         },
         "@rnv/engine-rn-next": {
-            "version": "1.0.0-rc.16",
+            "version": "1.0.0-rc.17",
             "id": "engine-rn-next"
         },
         "@rnv/engine-rn-electron": {
-            "version": "1.0.0-rc.16",
+            "version": "1.0.0-rc.17",
             "id": "engine-rn-electron"
         },
         "@rnv/engine-lightning": {
-            "version": "1.0.0-rc.16",
+            "version": "1.0.0-rc.17",
             "id": "engine-lightning"
         },
         "@rnv/engine-rn-macos": {
-            "version": "1.0.0-rc.16",
+            "version": "1.0.0-rc.17",
             "id": "engine-rn-macos"
         },
         "@rnv/engine-rn-windows": {
-            "version": "1.0.0-rc.16",
+            "version": "1.0.0-rc.17",
             "id": "engine-rn-windows"
         }
     },
@@ -151,61 +151,44 @@
             "version": "3.0.5"
         },
         "@flexn/create": {
+            "version": "1.3.0-feat-rnv-update.8",
             "androidtv": {
-                "activityImports": ["io.flexn.create.TvRemoteHandlerModule", "android.view.KeyEvent;"],
-                "activityMethods": [
-                    "override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {",
-                    "TvRemoteHandlerModule.getInstance().onKeyEvent(event, \"up\");",
-                    "return super.onKeyUp(keyCode, event)",
-                    "}",
-                    "override fun onKeyLongPress(keyCode: Int, event: KeyEvent?): Boolean {",
-                    "   TvRemoteHandlerModule.getInstance().onKeyEvent(event,  \"longPress\");",
-                    "    return super.onKeyLongPress(keyCode, event)",
-                    "}",
-                    "override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {",
-                    "if(keyCode == KeyEvent.KEYCODE_DPAD_RIGHT || keyCode == KeyEvent.KEYCODE_DPAD_LEFT || keyCode == KeyEvent.KEYCODE_DPAD_UP || keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {",
-                    "event?.startTracking();",
-                    "TvRemoteHandlerModule.getInstance().onKeyEvent(event,\"down\");",
-                    "return true;",
-                    "}",
-                    "TvRemoteHandlerModule.getInstance().onKeyEvent(event, \"down\");",
-                    "return super.onKeyDown(keyCode, event)",
-                    "}"
-                ],
-                "package": "io.flexn.create.FlexnCreatePackage",
-                "projectName": "flexn-io-create"
+                "templateAndroid": {
+                    "MainActivity_kt": {
+                        "imports": [
+                            "io.flexn.create.TvRemoteHandlerModule",
+                            "android.view.KeyEvent"
+                        ],
+                        "methods": [
+                            "override fun dispatchKeyEvent(ev: KeyEvent?): Boolean {",
+                            "TvRemoteHandlerModule.getInstance().handleKeyEvent(ev)",
+                            "return super.dispatchKeyEvent(ev)",
+                            "}"
+                        ]
+                    }
+                }
             },
             "firetv": {
-                "activityImports": ["io.flexn.create.TvRemoteHandlerModule", "android.view.KeyEvent;"],
-                "activityMethods": [
-                    "override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {",
-                    "TvRemoteHandlerModule.getInstance().onKeyEvent(event, \"up\");",
-                    "return super.onKeyUp(keyCode, event)",
-                    "}",
-                    "override fun onKeyLongPress(keyCode: Int, event: KeyEvent?): Boolean {",
-                    "   TvRemoteHandlerModule.getInstance().onKeyEvent(event,  \"longPress\");",
-                    "    return super.onKeyLongPress(keyCode, event)",
-                    "}",
-                    "override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {",
-                    "if(keyCode == KeyEvent.KEYCODE_DPAD_RIGHT || keyCode == KeyEvent.KEYCODE_DPAD_LEFT || keyCode == KeyEvent.KEYCODE_DPAD_UP || keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {",
-                    "event?.startTracking();",
-                    "TvRemoteHandlerModule.getInstance().onKeyEvent(event,\"down\");",
-                    "return true;",
-                    "}",
-                    "TvRemoteHandlerModule.getInstance().onKeyEvent(event, \"down\");",
-                    "return super.onKeyDown(keyCode, event)",
-                    "}"
-                ],
-                "package": "io.flexn.create.FlexnCreatePackage",
-                "projectName": "flexn-io-create"
+                "templateAndroid": {
+                    "MainActivity_kt": {
+                        "imports": [
+                            "io.flexn.create.TvRemoteHandlerModule",
+                            "android.view.KeyEvent"
+                        ],
+                        "methods": [
+                            "override fun dispatchKeyEvent(ev: KeyEvent?): Boolean {",
+                            "TvRemoteHandlerModule.getInstance().handleKeyEvent(ev)",
+                            "return super.dispatchKeyEvent(ev)",
+                            "}"
+                        ]
+                    }
+                }
+            },
+            "webpackConfig": {
+                "modulePaths": true
             },
             "tvos": {
                 "podName": "FlexnCreate"
-            },
-            "version": "0.21.0-alpha.0",
-            "webpackConfig": {
-                "moduleAliases": true,
-                "modulePaths": true
             }
         },
         "@flexn/recyclerlistview": {
@@ -258,7 +241,7 @@
                 "moduleAliases": true,
                 "nextTranspileModules": ["@flexn/shopify-flash-list"]
             },
-            "version": "1.4.8"
+            "version": "1.4.9"
         },
         "@flexn/typescript": {
             "version": "0.2.4"
@@ -945,7 +928,8 @@
         "@react-native-windows/cli": {
             "version": "0.67.1"
         },
-        "@react-navigation": {
+        "DEPRECATED_@react-navigation": {
+            "deprecated": "Please use @react-navigation/*",
             "npm": {
                 "@react-native-community/masked-view": "0.1.11",
                 "@react-navigation/bottom-tabs": "5.1.1",
@@ -965,22 +949,77 @@
                 "react-native-screens": "source:rnv"
             }
         },
-        "@react-navigation/bottom-tabs": "5.1.1",
-        "@react-navigation/core": "6.1.0",
-        "@react-navigation/drawer": "6.1.8",
-        "@react-navigation/material-bottom-tabs": "6.0.9",
-        "@react-navigation/material-top-tabs": "5.3.10",
-        "@react-navigation/native": "6.0.6",
-        "@react-navigation/native-stack": "5.0.5",
-        "@react-navigation/routers": "5.1.0",
-        "@react-navigation/stack": "6.0.11",
-        "@react-navigation/web": "1.0.0-alpha.9",
-        "@react-navigation/elements": "1.3.17",
+        "@react-navigation/bottom-tabs": {
+            "version": "6.5.19",
+            "webpackConfig": {
+                "modulePaths": true
+            }
+        },
+        "@react-navigation/core": {
+            "version": "6.4.15",
+            "webpackConfig": {
+                "modulePaths": true
+            }
+        },
+        "@react-navigation/drawer": {
+            "version": "6.6.14",
+            "webpackConfig": {
+                "modulePaths": true
+            }
+        },
+        "@react-navigation/material-bottom-tabs": {
+            "version": "6.2.27",
+            "webpackConfig": {
+                "modulePaths": true
+            }
+        },
+        "@react-navigation/material-top-tabs": {
+            "version": "6.6.12",
+            "webpackConfig": {
+                "modulePaths": true
+            }
+        },
+        "@react-navigation/native": {
+            "version": "6.1.16",
+            "webpackConfig": {
+                "modulePaths": true
+            }
+        },
+        "@react-navigation/native-stack": {
+            "version": "6.9.25",
+            "webpackConfig": {
+                "modulePaths": true
+            }
+        },
+        "@react-navigation/routers": {
+            "version": "6.1.9",
+            "webpackConfig": {
+                "modulePaths": true
+            }
+        },
+        "@react-navigation/stack": {
+            "version": "6.3.28",
+            "webpackConfig": {
+                "modulePaths": true
+            }
+        },
+        "@react-navigation/web": {
+            "version": "1.0.0-alpha.9",
+            "webpackConfig": {
+                "modulePaths": true
+            }
+        },
+        "@react-navigation/elements": {
+            "version": "1.3.29",
+            "webpackConfig": {
+                "modulePaths": true
+            }
+        },
         "@reduxjs/toolkit": {
             "version": "^1.8.1"
         },
         "@rnv/renative": {
-            "version": "1.0.0-rc.16"
+            "version": "1.0.0-rc.17"
         },
         "@sentry/react": {
             "version": "6.13.3"
@@ -2533,7 +2572,7 @@
                 "podName": "RNImageCropPicker"
             },
             "pluginDependencies": {
-                "react-native-image-crop-picker-no-npm": "source:flexn"
+                "react-native-image-crop-picker-no-npm": "source:rnv"
             },
             "version": "0.39.0"
         },
@@ -2752,7 +2791,10 @@
             "version": "0.11.1"
         },
         "react-native-media-query": {
-            "version": "2.0.0"
+            "version": "2.0.0",
+            "webpackConfig": {
+                "modulePaths": true
+            }
         },
         "react-native-modal": {
             "version": "13.0.1",
@@ -3020,9 +3062,9 @@
             "tvos": {
                 "podName": "RNReanimated"
             },
-            "version": "1.13.3",
+            "version": "3.6.1",
+            "disablePluginTemplateOverrides": true,
             "webpackConfig": {
-                "moduleAliases": true,
                 "modulePaths": true
             }
         },
@@ -3063,7 +3105,7 @@
             "version": "4.9.0"
         },
         "react-native-safe-area-view": {
-            "version": "0.14.5",
+            "version": "4.9.0",
             "webpackConfig": {
                 "modulePaths": true
             }
@@ -3089,7 +3131,7 @@
                 "isStatic": true,
                 "podName": "RNScreens"
             },
-            "version": "3.20.0",
+            "version": "3.29.0",
             "webpackConfig": {
                 "modulePaths": true
             }
@@ -3398,7 +3440,11 @@
                 ],
                 "podName": "RNVectorIcons"
             },
+            "version": "10.0.3",
             "tvos": {
+                "podNames": [
+                    "pod 'RNVectorIcons', :path => \"#{Pod::Config.instance.installation_root}/../../node_modules/react-native-vector-icons\""
+                ],
                 "ignoreProjectFonts": [
                     "FontAwesome.ttf",
                     "FontAwesome5_Solid.ttf",
@@ -3418,7 +3464,6 @@
                 ],
                 "podName": "RNVectorIcons"
             },
-            "version": "9.2.0",
             "webpackConfig": {
                 "moduleAliases": true,
                 "modulePaths": true
@@ -3575,6 +3620,7 @@
             "version": "1.1.0"
         },
         "react-navigation": {
+            "deprecated": "This package is deprecated. Visit https://reactnavigation.org/docs/getting-started for more information.",
             "npm": {
                 "@react-navigation/core": "3.4.2",
                 "@react-navigation/native": "3.5.0",
