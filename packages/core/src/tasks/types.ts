@@ -26,7 +26,7 @@ export type CreateRnvTaskOpt<OKey> = {
     ignoreEngines?: boolean;
 };
 
-export type RnvTask<OKey = string, Payload = any> = {
+export type RnvTask<OKey = string, Payload = object> = {
     task: string;
     dependsOn?: string[];
     options?: ReadonlyArray<RnvTaskOption<OKey>>;
@@ -73,7 +73,7 @@ export type RnvTaskOption<OKey = string> = {
     examples?: Array<string>;
 };
 
-export type RnvTaskMap<OKey = string> = Record<string, RnvTask<OKey>>;
+export type RnvTaskMap<OKey = string, Payload = object> = Record<string, RnvTask<OKey, Payload>>;
 
 //Too many choices of return types
 export type RnvTaskFn<OKey, Payload = any> = (opts: {

@@ -31,7 +31,7 @@ export const createRnvEngine = <OKey extends string = never, Modules extends [Rn
         serverDirName: opts.serverDirName || '',
         projectDirName: opts.projectDirName || '',
         runtimeExtraProps: opts.runtimeExtraProps || {},
-        tasks: createTaskMap<any>({
+        tasks: createTaskMap<any, any>({
             tasks: [...opts.tasks, ...(opts.extendModules?.flatMap((m) => m.originalTasks) ?? [])],
             ownerID: opts.config.name,
             ownerType: 'engine',
