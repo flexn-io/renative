@@ -167,8 +167,8 @@
             }
         },
         "react-native-google-cast": {
-            "props": {
-                "applicationID": "CC1AD845"
+            "ios": {
+                "disabled": true
             },
             "androidwear": {
                 "disabled": true
