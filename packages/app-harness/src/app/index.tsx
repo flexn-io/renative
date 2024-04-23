@@ -136,10 +136,10 @@ const AppContent = () => {
                     <TestCase id={6} title="Cast Support">
                         <CastComponent />
                     </TestCase>
-                    <TestCase id={6} title="Splash Screen">
+                    <TestCase id={7} title="Splash Screen">
                         <Button onPress={() => SplashScreen.show()} title="Show SplashScreen" />
                     </TestCase>
-                    <TestCase id={7} title="PhotoEditor">
+                    <TestCase id={8} title="PhotoEditor">
                         <PhotoEditorButton />
                     </TestCase>
                 </ScrollView>
