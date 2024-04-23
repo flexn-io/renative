@@ -78,7 +78,6 @@ export const runReactNativeIOS = async (
     extraParamsString: string
 ) => {
     logDefault('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme}`);
-
     // const cmd = `node ${doResolve(
     //     c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'
     // )}/local-cli/cli.js run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;

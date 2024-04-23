@@ -7,19 +7,17 @@ export type AppleDevice = {
     name?: string;
     icon?: string;
     isDevice?: boolean;
+    modelUTI?: string;
 };
 
 export type AppiumAppleDevice = {
     udid: string;
-    CPUArchitecture: string;
-    DeviceName: string;
-    HardwareModel: string;
-    HumanReadableProductVersionString: string;
-    ProductName: string;
-    ProductType: string;
-    ProductVersion: string;
-    SupportedDeviceFamilies: number[];
-    DeviceClass?: string;
+    isAvailable?: boolean;
+    name: string;
+    version?: string;
+    availabilityError?: string;
+    type?: string;
+    modelUTI?: string;
 };
 
 export type Payload = {
