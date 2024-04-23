@@ -6,7 +6,6 @@ import {
     executeAsync,
     RnvContext,
     inquirerPrompt,
-    RnvPlatform,
     ExecOptionsPresets,
     logInfo,
     logSuccess,
