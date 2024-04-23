@@ -30,10 +30,6 @@ if (typeof global.performance.now !== 'function') {
 
 export { CONFIG, ICON_LOGO };
 
-const getFlexPropertyValue = () => {
-    return isPlatformAndroidwear ? 0 : 1;
-};
-
 const createStyleSheet = (currentTheme) =>
     StyleSheet.create({
         wrapper: {
@@ -51,7 +47,7 @@ const createStyleSheet = (currentTheme) =>
             paddingVertical: getScaledValue(10),
             minHeight: getScaledValue(800),
             alignSelf: 'stretch',
-            flex: getFlexPropertyValue(),
+            flex: isPlatformAndroidwear ? 0 : 1,
             backgroundColor: currentTheme.colorBgPrimary,
         },
         textH2: {
