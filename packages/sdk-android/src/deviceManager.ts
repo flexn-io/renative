@@ -445,6 +445,9 @@ export const connectToWifiDevice = async (target: string) => {
     const deviceResponse = await execCLI(CLI_ANDROID_ADB, connect_str);
     if (deviceResponse.includes('connected')) return true;
     logError(`Failed to ${connect_str}`, { skipAnalytics: true });
+    logWarning(
+        `You'll need to pair your device before launching app. \nFor more information: https://developer.android.com/studio/run/device`
+    );
     return false;
 };
 
