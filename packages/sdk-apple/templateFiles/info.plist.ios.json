@@ -21,5 +21,6 @@
     "UIRequiresFullScreen": true,
     "UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait"],
     "UISupportedInterfaceOrientations~ipad": ["UIInterfaceOrientationPortrait"],
-    "UIViewControllerBasedStatusBarAppearance": false
+    "UIViewControllerBasedStatusBarAppearance": false,
+    "NSBonjourServices": ["_googlecast._tcp", "_CC1AD845._googlecast._tcp"]
 }

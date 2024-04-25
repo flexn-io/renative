@@ -9,6 +9,7 @@ import styles from '../styles';
 import { addNotificationListeners, removeNotificationListeners } from '../components/Notifications';
 import { requestPermissions } from '../components/Permissions';
 import { TestCase } from '../components/TestCase';
+import { CastComponent } from '../components/CastButton';
 import config from '../../package.json';
 import { LoggerProvider, useLoggerContext } from '../context';
 import { NotificationCallback } from '../components/types';
@@ -132,10 +133,13 @@ const AppContent = () => {
                     <TestCase id={5} title="Image Support">
                         <Image source={ICON_LOGO} style={{ width: 100, height: 100 }} />
                     </TestCase>
-                    <TestCase id={6} title="Splash Screen">
+                    <TestCase id={6} title="Cast Support">
+                        <CastComponent />
+                    </TestCase>
+                    <TestCase id={7} title="Splash Screen">
                         <Button onPress={() => SplashScreen.show()} title="Show SplashScreen" />
                     </TestCase>
-                    <TestCase id={7} title="PhotoEditor">
+                    <TestCase id={8} title="PhotoEditor">
                         <PhotoEditorButton />
                     </TestCase>
                 </ScrollView>
