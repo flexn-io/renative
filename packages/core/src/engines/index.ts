@@ -22,9 +22,13 @@ import { extractEngineName } from './nameExtractor';
 export const registerEngine = async (engine: RnvEngine, platform?: RnvPlatform, engConfig?: RnvEngineTemplate) => {
     const c = getContext();
     logDefault(`registerEngine:${engine.id}`);
+    if (!engine.id) {
+        throw new Error('Engine id is required');
+    }
 
-    if (engine.id) {
+    if (!c.runtime.enginesById[engine.id]) {
         c.runtime.enginesById[engine.id] = engine;
+        registerRnvTasks(engine.tasks);
     }
 
     c.runtime.enginesByIndex.push(engine);
@@ -37,7 +41,6 @@ export const registerEngine = async (engine: RnvEngine, platform?: RnvPlatform, 
         );
     }
     _registerEnginePlatform(c, platform, engine);
-    registerRnvTasks(engine.tasks);
 
     engine.initContextPayload();
 };
