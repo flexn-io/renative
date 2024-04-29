@@ -31,7 +31,7 @@ const RnvModule = createRnvModule({
         taskConfigure,
         taskRun,
         taskBuild,
-    ] as const,
+    ],
     name: '@rnv/sdk-apple',
     type: 'internal',
     contextPayload: {

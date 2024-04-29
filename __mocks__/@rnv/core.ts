@@ -45,6 +45,9 @@ const _generateContextDefaults = (ctx?: Context): RnvContext => {
 
 // Manual mocks the core functions
 rnvcore.createTask = (task) => task;
+rnvcore.createTaskOptionsMap = originalCore.createTaskOptionsMap;
+rnvcore.createTaskOptionsPreset = originalCore.createTaskOptionsPreset;
+rnvcore.RnvTaskOptionPresets = originalCore.RnvTaskOptionPresets;
 rnvcore.chalk = () => _chalkCols;
 rnvcore.createRnvContext = (ctx?: Context) => {
     rnvcore.__MOCK_RNV_CONTEXT = _generateContextDefaults(ctx);

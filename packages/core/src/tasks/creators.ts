@@ -34,12 +34,12 @@ export const createTaskOptionsPreset = <OKey, PKey extends string>(
     return preset as TaskOptionsPreset<OKey, PKey>;
 };
 
-export const createTaskMap = <OKey>(opts: {
-    tasks: ReadonlyArray<RnvTask<OKey>>;
+export const createTaskMap = <OKey, Payload>(opts: {
+    tasks: ReadonlyArray<RnvTask<OKey, Payload>>;
     ownerID: string;
     ownerType: RnvModuleType;
 }) => {
-    const output: RnvTaskMap<OKey> = {};
+    const output: RnvTaskMap<OKey, Payload> = {};
 
     const { ownerID, tasks, ownerType } = opts;
     if (!ownerID) throw new Error('generateRnvTaskMap() requires config.<packageName | name> to be defined!');

@@ -8,7 +8,8 @@ export type RnvEnginePlatforms = Partial<Record<RnvPlatformKey, RnvEnginePlatfor
 
 type UnionToIntersection<U> = (U extends any ? (x: U) => void : never) extends (x: infer I) => void ? I : never;
 
-// type ExtractModulePayload<T extends RnvModule> = T extends RnvModule<any, infer Payload> ? Payload : never;
+type ExtractModulePayload<T extends RnvModule> = T extends RnvModule<any, infer Payload> ? Payload : never;
+type ExtractModuleOKey<T extends RnvModule> = T extends RnvModule<infer OKey, any> ? OKey : never;
 
 // type ExtractKeyedModule<OKey> = OKey extends string ? RnvModule<OKey> : never;
 
@@ -18,16 +19,20 @@ type UnionToIntersection<U> = (U extends any ? (x: U) => void : never) extends (
 
 // export type KeyAwareModule<OKey> = [RnvModule<OKey>, ...RnvModule<OKey>[]];
 
-export type KeyAwareModule<OKey> = ReadonlyArray<RnvModule<OKey>>;
+// export type KeyAwareModule<OKey> = ReadonlyArray<RnvModule<OKey>>;
 
 // export type KeyAwareModule<OKey> = [RnvModule<OKey>, ...RnvModule<OKey>[]];
 
-export type CreateRnvEngineOpts<OKey, Payload> = {
+export type CreateRnvEngineOpts<
+    OKey extends string,
+    Modules extends [RnvModule, ...RnvModule[]],
+    OKeys extends string = OKey | ExtractModuleOKey<Modules[number]>
+> = {
     originalTemplatePlatformsDir?: string;
     platforms: RnvEnginePlatforms;
     config: ConfigFileEngine;
-    tasks: ReadonlyArray<RnvTask<OKey, any>>;
-    extendModules?: ReadonlyArray<RnvModule<OKey, Payload>>;
+    tasks: ReadonlyArray<RnvTask<OKeys, UnionToIntersection<ExtractModulePayload<Modules[number]>>>>;
+    extendModules?: Modules;
     rootPath?: string;
     originalTemplatePlatformProjectDir?: string;
     projectDirName?: string;
@@ -36,12 +41,16 @@ export type CreateRnvEngineOpts<OKey, Payload> = {
     serverDirName?: string;
 };
 
-export type RnvEngine<OKey = string, Payload = any> = {
+export type RnvEngine<
+    OKey extends string = string,
+    Modules extends [RnvModule, ...RnvModule[]] = any,
+    OKeys extends string = OKey | ExtractModuleOKey<Modules[number]>
+> = {
     originalTemplatePlatformsDir?: string;
     platforms: RnvEnginePlatforms;
     id: string;
     config: ConfigFileEngine;
-    tasks: RnvTaskMap<OKey>;
+    tasks: RnvTaskMap<OKeys>;
     rootPath?: string;
     originalTemplatePlatformProjectDir?: string;
     projectDirName: string;
@@ -49,7 +58,7 @@ export type RnvEngine<OKey = string, Payload = any> = {
     outputDirName?: string;
     serverDirName: string;
     initContextPayload: () => void;
-    getContext: () => RnvContext<UnionToIntersection<Payload>, OKey>;
+    getContext: () => RnvContext<UnionToIntersection<ExtractModulePayload<Modules[number]>>, OKeys>;
 };
 
 export type RnvEnginePlatform = {
