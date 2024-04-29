@@ -1,0 +1,8 @@
+{
+  "overrides": {
+      "Libraries/Components/ScrollView/ScrollViewNativeComponent.js": {
+          "NativeComponentRegistry.get<Props>(\n    'RCTScrollView'": "NativeComponentRegistry.get<Props>(\n    Platform.isTV && Platform.OS === 'android' ? 'RCTScrollViewTV' : 'RCTScrollView'",
+          "Platform.OS === 'android'\n    ? {\n        uiViewClassName: 'RCTScrollView'": "Platform.OS === 'android'\n    ? {\n        uiViewClassName: Platform.isTV ? 'RCTScrollViewTV': 'RCTScrollView'"
+      }
+  }
+}
