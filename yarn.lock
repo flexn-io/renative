@@ -6286,22 +6286,6 @@ appium-idb@^1.6.13:
     source-map-support "^0.x"
     teen_process "^2.0.1"
 
-appium-ios-device@2.7.15:
-  version "2.7.15"
-  resolved "https://registry.yarnpkg.com/appium-ios-device/-/appium-ios-device-2.7.15.tgz#457f6c0033aaba55336caf9c7dabc1dfad6a828f"
-  integrity sha512-XDYPd6A8kMGUYCSLB8NdboidpXNVcMsXrTZqdIjFjAhjeaywDVcvLW5GAR9onVrNWYeQqJLG6rZ4BqF+v6fkBA==
-  dependencies:
-    "@appium/support" "^4.0.0"
-    asyncbox "^3.0.0"
-    axios "^1.6.7"
-    bluebird "^3.1.1"
-    bplist-creator "^0.x"
-    bplist-parser "^0.x"
-    lodash "^4.17.15"
-    semver "^7.0.0"
-    source-map-support "^0.x"
-    uuid "^9.0.0"
-
 appium-ios-device@^2.0.0, appium-ios-device@^2.5.0, appium-ios-device@^2.5.4:
   version "2.7.11"
   resolved "https://registry.yarnpkg.com/appium-ios-device/-/appium-ios-device-2.7.11.tgz#be294d232e0fa2f7c54a00832be15fc36c0e49c6"
@@ -6883,15 +6867,6 @@ axios@^1.0.0, axios@^1.4.0, axios@^1.6.5, axios@^1.x:
   integrity sha512-/hDJGff6/c7u0hDkvkGxR/oy6CbCs8ziCsC7SqmhjfozqiJGc8Z11wrv9z9lYfY4K8l+H9TpjcMDX0xOZmx+RA==
   dependencies:
     follow-redirects "^1.15.4"
-    form-data "^4.0.0"
-    proxy-from-env "^1.1.0"
-
-axios@^1.6.7:
-  version "1.6.8"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.8.tgz#66d294951f5d988a00e87a0ffb955316a619ea66"
-  integrity sha512-v/ZHtJDU39mDpyBoFVkETcd/uNdxrWRrg3bKpOKzXFA6Bvqopts6ALSMU3y6ijYxbw2B+wPrIv46egTzJXCLGQ==
-  dependencies:
-    follow-redirects "^1.15.6"
     form-data "^4.0.0"
     proxy-from-env "^1.1.0"
 
@@ -10758,7 +10733,7 @@ fn.name@1.x.x:
   resolved "https://registry.yarnpkg.com/fn.name/-/fn.name-1.1.0.tgz#26cad8017967aea8731bc42961d04a3d5988accc"
   integrity sha512-GRnmB5gPyJpAhTQdSZTSp9uaPSvl09KoYcMQtsB9rQoOmzs9dH6ffeccH+Z+cv6P68Hu5bC6JjRh4Ah/mHSNRw==
 
-follow-redirects@^1.0.0, follow-redirects@^1.15.0, follow-redirects@^1.15.4, follow-redirects@^1.15.6:
+follow-redirects@^1.0.0, follow-redirects@^1.15.0, follow-redirects@^1.15.4:
   version "1.15.6"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.6.tgz#7f815c0cda4249c74ff09e95ef97c23b5fd0399b"
   integrity sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==
