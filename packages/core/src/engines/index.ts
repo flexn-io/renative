@@ -17,6 +17,7 @@ import { getConfigRootProp } from '../context/contextProps';
 import { registerRnvTasks } from '../tasks/taskRegistry';
 import { createDependencyMutation } from '../projects/mutations';
 import type { ConfigFileEngine } from '../schema/types';
+import { generateLookupPaths } from '../configs';
 
 export const registerEngine = async (engine: RnvEngine, platform?: RnvPlatform, engConfig?: RnvEngineTemplate) => {
     const c = getContext();
@@ -409,10 +410,11 @@ export const installEngines = async (failOnMissingDeps?: boolean): Promise<boole
     const enginesToInstall: Array<RnvEngineInstallConfig> = [];
     const readyEngines: Array<string> = [];
     const engineConfigs: Array<RnvEngineInstallConfig> = [];
-    // if (filteredEngines) {
 
     Object.keys(filteredEngines).forEach((k) => {
-        const engineRootPath = doResolve(k);
+        const pathLookups = generateLookupPaths(k);
+        const engineRootPath = pathLookups.find((v) => fsExistsSync(v));
+
         const configPath = engineRootPath ? path.join(engineRootPath, 'renative.engine.json') : null;
         if (!configPath || !fsExistsSync(configPath)) {
             const engVer = getScopedVersion(c, k, filteredEngines[k], 'engineTemplates');

@@ -183,7 +183,7 @@ const _loadConfigFiles = (
     // return result;
 };
 
-const generateLookupPaths = (pkgName: string) => {
+export const generateLookupPaths = (pkgName: string) => {
     const pathLookups: string[] = [
         // Following ones are for monorepo
         path.join(__dirname, '../..', RnvFolderName.nodeModules, pkgName),
