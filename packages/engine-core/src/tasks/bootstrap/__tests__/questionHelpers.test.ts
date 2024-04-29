@@ -1,5 +1,5 @@
-import { validateAndAssign, configureConfigOverrides, generateProjectOverview } from '../questionHelpers';
-import { inquirerPrompt, chalk, isYarnInstalled } from '@rnv/core';
+import { validateAndAssign, configureConfigOverrides } from '../questionHelpers';
+import { inquirerPrompt } from '@rnv/core';
 
 jest.mock('@rnv/core', () => ({
     inquirerPrompt: jest.fn(),
@@ -14,7 +14,9 @@ jest.mock('@rnv/core', () => ({
 
 describe('validateAndAssign', () => {
     it('returns the value if it is valid', async () => {
-        const validFn = jest.fn(() => true);
+        const validFn = jest.fn((): string | true => {
+            return true;
+        });
         const value = 'valid value';
 
         const result = await validateAndAssign(
