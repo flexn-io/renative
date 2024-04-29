@@ -452,32 +452,17 @@ export const connectToWifiDevice = async (target: string) => {
         });
         return false;
     }
-
-    if (!deviceResponse.includes('Connection refused')) {
-        logWarning(
-            `You'll need to pair your device before installing app. \nFor more information: https://developer.android.com/studio/run/device`
-        );
-        await _pairDevices(target);
-    }
-    return false;
+    logWarning(
+        `You'll need to pair your device before installing app. \nFor more information: https://developer.android.com/studio/run/device`
+    );
+    return await _pairDevices(target);
 };
 
 const _pairDevices = async (target: string) => {
-    const readline = require('readline').createInterface({
-        input: process.stdin,
-        output: process.stdout,
-    });
-
-    const ip_address = await new Promise((resolve) =>
-        readline.question(
-            'Please go to Settings, enable debugging and enter the ip/port required for pairing:',
-            (ip_address: string) => {
-                readline.close();
-                resolve(ip_address);
-            }
-        )
-    ).then((result) => {
-        return result;
+    const { ip_address } = await inquirerPrompt({
+        name: 'ip_address',
+        type: 'input',
+        message: `Please go to Settings, enable debugging and enter the ip/port required for pairing:`,
     });
 
     await execCLI(CLI_ANDROID_ADB, `pair ${ip_address}`, ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER);
