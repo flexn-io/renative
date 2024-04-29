@@ -1064,7 +1064,7 @@
             }
         },
         "@react-navigation/elements": {
-            "version": "1.3.29",
+            "version": "^1.3.29",
             "webpackConfig": {
                 "modulePaths": true
             }
@@ -2587,7 +2587,7 @@
                                 "children": [
                                     {
                                         "android:name": "com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME",
-                                        "android:value": "{{configProps.id}}.CastOptionsProvider",
+                                        "android:value": "com.reactnative.googlecast.GoogleCastOptionsProvider",
                                         "tag": "meta-data"
                                     },
                                     {
@@ -2605,17 +2605,17 @@
                         ]
                     },
                     "app_build_gradle": {
-                        "configurations": {
-                            "all*.exclude group: 'com.google.guava', module: 'listenablefuture'": true
-                        }
+                        "implementations": [
+                            "'com.google.android.gms:play-services-cast-framework:21.0.0'"
+                        ]
                     },
-                    "implementations": [
-                        "'com.google.android.gms:play-services-cast-framework:21.0.0'",
-                        "'com.google.guava:guava:28.0-android'"
-                    ],
                     "MainActivity_kt": {
                         "createMethods": [
-                            "CastContext.getSharedInstance(this)"
+                            " try { ",
+                            "CastContext.getSharedInstance(this)",
+                            "} catch (e: Exception) {",
+                            "// cast framework not supported",
+                            " }"
                         ],
                         "imports": [
                             "com.google.android.gms.cast.framework.CastContext"
@@ -2633,39 +2633,47 @@
                     "appDelegateImports": [
                         "GoogleCast"
                     ],
+                    "AppDelegate_mm": {
+                        "appDelegateImports": [
+                            "GoogleCast/GoogleCast.h"
+                        ],
+                        "appDelegateMethods": {
+                            "application": {
+                                "didFinishLaunchingWithOptions": [
+                                    "NSString *receiverAppID = kGCKDefaultMediaReceiverApplicationID; // or @\"ABCD1234\"",
+                                    "GCKDiscoveryCriteria *criteria = [[GCKDiscoveryCriteria alloc] initWithApplicationID:receiverAppID];",
+                                    "GCKCastOptions* options = [[GCKCastOptions alloc] initWithDiscoveryCriteria:criteria];",
+                                    "[GCKCastContext setSharedInstanceWithOptions:options];"
+                                ]
+                            }
+                        }
+                    },
                     "appDelegateMethods": {
                         "application": {
                             "didFinishLaunchingWithOptions": [
-                                "let receiverAppID = \"{{props.APPLICATION_ID}}\"",
-                                "let criteria = GCKDiscoveryCriteria(APPLICATION_ID: receiverAppID)",
+                                "let receiverAppID = \"{{props.APPLICATION_ID}}\" // or \"ABCD1234\"",
+                                "let criteria = GCKDiscoveryCriteria(applicationID: receiverAppID)",
                                 "let options = GCKCastOptions(discoveryCriteria: criteria)",
-                                "options.physicalVolumeButtonsWillControlDeviceVolume = true;",
-                                "options.disableDiscoveryAutostart = false;",
-                                "options.startDiscoveryAfterFirstTapOnCastButton = true;",
-                                "GCKCastContext.setSharedInstanceWith(options)",
-                                "GCKCastContext.sharedInstance().useDefaultExpandedMediaControls = true;"
+                                "GCKCastContext.setSharedInstanceWith(options)"
                             ]
                         }
                     },
                     "Info_plist": {
-                        "NSBluetoothAlwaysUsageDescription": "${PRODUCT_NAME} uses Bluetooth to discover nearby Cast devices.",
-                        "NSBluetoothPeripheralUsageDescription": "${PRODUCT_NAME} uses Bluetooth to discover nearby Cast devices.",
                         "NSBonjourServices": [
                             "_googlecast._tcp",
-                            "_{{props.APPLICATION_ID}}._googlecast._tcp"
+                            "_CC1AD845._googlecast._tcp"
                         ],
-                        "NSLocalNetworkUsageDescription": "${PRODUCT_NAME} uses the local network to discover Cast-enabled devices on your WiFi network.",
-                        "NSMicrophoneUsageDescription": "${PRODUCT_NAME} uses microphone access to listen for ultrasonic tokens when pairing with nearby Cast devices."
+                        "NSLocalNetworkUsageDescription": "${PRODUCT_NAME} uses the local network to discover Cast-enabled devices on your WiFi network."
                     }
                 },
                 "isStatic": true,
                 "path": "{{PLUGIN_ROOT}}",
-                "podName": "react-native-google-cast"
+                "podName": "react-native-google-cast/NoBluetoothArm"
             },
             "props": {
-                "APPLICATION_ID": ""
+                "APPLICATION_ID": "01234"
             },
-            "version": "4.6.0"
+            "version": "4.8.0"
         },
         "react-native-home-indicator": {
             "ios": {
@@ -3292,6 +3300,9 @@
             },
             "tvos": {
                 "podName": "react-native-safe-area-context"
+            },
+            "webpackConfig": {
+                "modulePaths": true
             },
             "version": "4.9.0"
         },

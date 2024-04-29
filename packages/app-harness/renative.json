@@ -165,6 +165,17 @@
             "android": {
                 "implementation": "// TEST"
             }
+        },
+        "react-native-google-cast": {
+            "ios": {
+                "disabled": true
+            },
+            "androidwear": {
+                "disabled": true
+            },
+            "tvos": {
+                "disabled": true
+            }
         }
     },
     "permissions": {
@@ -174,6 +185,9 @@
             },
             "NSContactsUsageDescription": {
                 "desc": "Contacts usage description"
+            },
+            "NSLocalNetworkUsageDescription": {
+                "desc": "${PRODUCT_NAME} uses the local network to discover Cast-enabled devices on your WiFi network."
             },
             "NSPhotoLibraryAddUsageDescription": {
                 "desc": "Application needs permission to write photos..."
