@@ -64,7 +64,7 @@
         "rn-fetch-blob": "0.12.0"
     },
     "devDependencies": {
-        "@flexn/assets-renative-outline": "0.3.3",
+        "@flexn/assets-renative-outline": "0.3.4",
         "@flexn/graybox": "1.0.0-feat.12",
         "@rnv/cli": "1.0.0-rc.17",
         "@rnv/config-templates": "1.0.0-rc.17",
