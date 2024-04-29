@@ -147,5 +147,8 @@
             "**/@wdio/*",
             "**/@react-native/metro-babel-transformer"
         ]
+    },
+    "resolutions": {
+        "@react-native-community/cli-platform-ios": "12.3.6"
     }
 }
