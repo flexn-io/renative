@@ -1,4 +1,5 @@
-import { composeDevicesArray, composeDevicesString } from '../deviceManager';
+import { getContext } from '@rnv/core';
+import { composeDevicesArray, composeDevicesString, launchAndroidSimulator } from '../deviceManager';
 import { AndroidDevice } from '../types';
 
 jest.mock('@rnv/core');
@@ -61,5 +62,15 @@ describe('composeDevicesArray', () => {
 
         //THEN
         expect(result).toEqual(expectedResult);
+    });
+});
+
+describe('launchAndroidSimulator', () => {
+    it('launch sim with empty target name', async () => {
+        //GIVEN
+        const errorMessage = 'No simulator -t target name specified!';
+        //WHEN
+        //THEN
+        expect(launchAndroidSimulator('')).rejects.toBe(errorMessage);
     });
 });
