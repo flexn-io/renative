@@ -132,7 +132,7 @@ const configureProject = (exitOnFail?: boolean) =>
             height: 800,
             webPreferences: { nodeIntegration: true, enableRemoteModule: true, contextIsolation: false },
             icon:
-                (platform === 'macos' || platform === 'linux') && !fsExistsSync(pngIconPath)
+                platform === 'linux' && !fsExistsSync(pngIconPath)
                     ? path.join(platformProjectDir, 'resources', 'icon.icns')
                     : path.join(platformProjectDir, 'resources', 'icon.png'),
         };
