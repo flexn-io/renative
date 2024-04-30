@@ -462,7 +462,7 @@ const _pairDevices = async (target: string) => {
     const { ip_address } = await inquirerPrompt({
         name: 'ip_address',
         type: 'input',
-        message: `Please go to Settings, enable debugging and enter the ip/port required for pairing:`,
+        message: `Please go to Settings, enable debugging, and enter the IP address and Port required for pairing:`,
     });
 
     await execCLI(CLI_ANDROID_ADB, `pair ${ip_address}`, ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER);
