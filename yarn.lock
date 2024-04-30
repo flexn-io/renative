@@ -1909,10 +1909,10 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
-"@flexn/assets-renative-outline@0.3.4":
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/@flexn/assets-renative-outline/-/assets-renative-outline-0.3.4.tgz#cbbac2717b19f748f20aa01ec34933947aa5f7c5"
-  integrity sha512-9R5b+RpnqZB4qLrZbM3IcjUqwqTl4B6GbW+3TLfQHbUb3IQjgnY83OPSD3ksLmVwxw746sun4F3D+VlfltrEhQ==
+"@flexn/assets-renative-outline@0.3.5":
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/@flexn/assets-renative-outline/-/assets-renative-outline-0.3.5.tgz#132c6d03eb8b1e543f2127aecfe874947037c556"
+  integrity sha512-EAMl32+PnqSW3ON49JqkqcE1YlvE3d/H+e6bZ78B3lcgifaUMtywM0LdOwpMdfYZ78Cnfpwm/WW4sNcwJ+9BRw==
 
 "@flexn/eslint-config@1.0.0":
   version "1.0.0"

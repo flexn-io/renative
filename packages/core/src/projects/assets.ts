@@ -41,7 +41,13 @@ export const copyRuntimeAssets = async () => {
     return true;
 };
 
-export const copyAssetsFolder = async (subPath?: string, customFn?: (c: RnvContext, platform: RnvPlatform) => void) => {
+// Copies assets from available sources for a platform
+// destPath - can be either absolute or relative to platformBuilds/*_platform dir,
+// default is platformBuilds/*_platform dir absolute path
+export const copyAssetsFolder = async (
+    destPath?: string,
+    customFn?: (c: RnvContext, platform: RnvPlatform) => void
+) => {
     logDefault('copyAssetsFolder');
 
     const c = getContext();
@@ -79,7 +85,8 @@ export const copyAssetsFolder = async (subPath?: string, customFn?: (c: RnvConte
         });
     }
 
-    const destPath = path.join(getPlatformProjectDir()!, subPath || '');
+    const destinationPath =
+        !!destPath && path.isAbsolute(destPath) ? destPath : path.join(getPlatformProjectDir()!, destPath || '');
     const hasExternalAssets = validAssetSources.length > 0;
 
     // FOLDER MERGERS FROM EXTERNAL SOURCES
@@ -90,7 +97,16 @@ export const copyAssetsFolder = async (subPath?: string, customFn?: (c: RnvConte
             )}. Will be used to generate assets.`
         );
         validAssetSources.forEach((sourcePath) => {
-            copyFolderContentsRecursiveSync(sourcePath, destPath, true, undefined, false, undefined, tsPathsConfig, c);
+            copyFolderContentsRecursiveSync(
+                sourcePath,
+                destinationPath,
+                true,
+                undefined,
+                false,
+                undefined,
+                tsPathsConfig,
+                c
+            );
         });
     }
 
@@ -117,11 +133,29 @@ export const copyAssetsFolder = async (subPath?: string, customFn?: (c: RnvConte
     if (c.paths.appConfig.dirs) {
         c.paths.appConfig.dirs.forEach((v) => {
             const sourcePath = path.join(v, `assets/${assetFolderPlatform}`);
-            copyFolderContentsRecursiveSync(sourcePath, destPath, true, undefined, false, undefined, tsPathsConfig, c);
+            copyFolderContentsRecursiveSync(
+                sourcePath,
+                destinationPath,
+                true,
+                undefined,
+                false,
+                undefined,
+                tsPathsConfig,
+                c
+            );
         });
     } else {
         const sourcePath = path.join(c.paths.appConfig.dir, `assets/${assetFolderPlatform}`);
-        copyFolderContentsRecursiveSync(sourcePath, destPath, true, undefined, false, undefined, tsPathsConfig, c);
+        copyFolderContentsRecursiveSync(
+            sourcePath,
+            destinationPath,
+            true,
+            undefined,
+            false,
+            undefined,
+            tsPathsConfig,
+            c
+        );
     }
 };
 
