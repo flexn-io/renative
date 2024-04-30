@@ -8,7 +8,7 @@ class MyDocument extends Document {
             <Html lang="en">
                 <Head>
                     <meta name="description" content={CONFIG.welcomeMessage} />
-                    <link rel="icon" href="/favicon.ico" sizes="any" />
+                    <link rel="icon" href="/images/favicon.ico" sizes="any" />
                 </Head>
                 <body>
                     <Main />
