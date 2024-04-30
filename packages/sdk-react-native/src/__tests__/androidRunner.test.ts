@@ -101,7 +101,6 @@ describe('Test packageReactNativeAndroid', () => {
         //GIVEN
         const ctx = getContext();
         ctx.platform = 'android';
-        // jest.mock('path');
         path.join = jest.fn().mockReturnValue('mock-path');
         jest.mocked(getConfigProp).mockReturnValueOnce(true).mockReturnValueOnce(false);
         jest.mocked(executeAsync).mockRejectedValue(new Error('ERROR'));
