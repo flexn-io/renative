@@ -240,6 +240,7 @@ export const RnvTaskOptionPresets = createTaskOptionsPreset({
     ],
     withRun: [
         RnvTaskOptions.target,
+        RnvTaskOptions.device,
         RnvTaskOptions.hosted,
         RnvTaskOptions.port,
         RnvTaskOptions.debugIp,
