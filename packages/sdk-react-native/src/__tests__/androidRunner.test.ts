@@ -5,7 +5,7 @@ import { createRnvContext, getConfigProp, getContext, logInfo, chalk, getAppFold
 
 jest.mock('../env');
 jest.mock('@rnv/core');
-// jest.mock('path');
+jest.mock('path');
 
 beforeEach(() => {
     createRnvContext();
@@ -47,10 +47,10 @@ describe('Test packageReactNativeAndroid', () => {
         jest.mocked(getConfigProp).mockReturnValueOnce(true).mockReturnValueOnce(false);
         jest.mocked(getAppFolder).mockReturnValue('mock-app-folder');
         jest.mocked(getEntryFile).mockReturnValue('index');
-        // path.join = jest
-        //     .fn()
-        //     .mockReturnValueOnce('mock-app-folder/app/src/main/res')
-        //     .mockReturnValueOnce('mock-app-folder/app/src/main/assets/index.bundle');
+        path.join = jest
+            .fn()
+            .mockReturnValueOnce('mock-app-folder/app/src/main/res')
+            .mockReturnValueOnce('mock-app-folder/app/src/main/assets/index.bundle');
         const expectedCmd = expect.stringContaining(
             `react-native bundle --platform android --dev false --assets-dest mock-app-folder/app/src/main/res --entry-file index.js --bundle-output mock-app-folder/app/src/main/assets/index.bundle --config=metro.config.js`
         );
@@ -79,11 +79,11 @@ describe('Test packageReactNativeAndroid', () => {
         jest.mocked(getConfigProp).mockReturnValueOnce(true).mockReturnValueOnce(true);
         jest.mocked(getAppFolder).mockReturnValue('mock-app-folder');
         jest.mocked(getEntryFile).mockReturnValue('index');
-        // path.join = jest
-        //     .fn()
-        //     .mockReturnValueOnce('mock-app-folder/app/src/main/res')
-        //     .mockReturnValueOnce('mock-app-folder/app/src/main/assets/index.bundle')
-        //     .mockReturnValueOnce('mock-app-folder/app/src/main/assets/index.bundle.map');
+        path.join = jest
+            .fn()
+            .mockReturnValueOnce('mock-app-folder/app/src/main/res')
+            .mockReturnValueOnce('mock-app-folder/app/src/main/assets/index.bundle')
+            .mockReturnValueOnce('mock-app-folder/app/src/main/assets/index.bundle.map');
         const expectedCmd = expect.stringContaining(
             `react-native bundle --platform android --dev false --assets-dest mock-app-folder/app/src/main/res --entry-file index.js --bundle-output mock-app-folder/app/src/main/assets/index.bundle --config=metro.config.js --sourcemap-output mock-app-folder/app/src/main/assets/index.bundle.map`
         );
@@ -101,7 +101,7 @@ describe('Test packageReactNativeAndroid', () => {
         //GIVEN
         const ctx = getContext();
         ctx.platform = 'android';
-        jest.mock('path');
+        // jest.mock('path');
         path.join = jest.fn().mockReturnValue('mock-path');
         jest.mocked(getConfigProp).mockReturnValueOnce(true).mockReturnValueOnce(false);
         jest.mocked(executeAsync).mockRejectedValue(new Error('ERROR'));
