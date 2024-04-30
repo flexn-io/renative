@@ -2,7 +2,6 @@ import path from 'path';
 import { fsExistsSync, readObjectSync, writeFileSync } from '../system/fs';
 import { installPackageDependencies } from '../projects/npm';
 import { logDebug, logDefault, chalk, logInfo, logWarning, logError } from '../logger';
-import { doResolve } from '../system/resolve';
 import { configurePlugins } from '../plugins';
 import type { RnvContext } from '../context/types';
 import type { RnvTask } from '../tasks/types';
