@@ -23,16 +23,16 @@ export const zodDefaultTargets = z
     .record(zodPlatformsKeys, z.string())
     .describe('Define targets to be used when -t is not set on any project run');
 
-export const zodBuildSchemeFragment = z.object({
-    enabled: z.optional(z.boolean().describe('Defines whether build scheme shows up in options to run')),
-    description: z.optional(
-        z
+export const zodBuildSchemeFragment = z
+    .object({
+        enabled: z.boolean().describe('Defines whether build scheme shows up in options to run'),
+        description: z
             .string()
             .describe(
                 'Custom description of the buildScheme will be displayed directly in cli if you run rnv with an empty paramener `-s`'
-            )
-    ),
-});
+            ),
+    })
+    .partial();
 
 export const zodNpmDep = z.record(z.string(), z.string());
 

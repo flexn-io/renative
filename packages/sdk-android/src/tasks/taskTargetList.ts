@@ -2,6 +2,7 @@ import { createTask, RnvTaskName, RnvTaskOptions } from '@rnv/core';
 import { listAndroidTargets } from '../deviceManager';
 import { checkAndConfigureAndroidSdks, checkAndroidSdk } from '../installer';
 import { SdkPlatforms } from '../constants';
+import { TaskOptions } from '../taskOptions';
 
 export default createTask({
     description: 'List all available targets for specific platform',
@@ -12,7 +13,7 @@ export default createTask({
         return listAndroidTargets();
     },
     task: RnvTaskName.targetList,
-    options: [RnvTaskOptions.target],
+    options: [RnvTaskOptions.target, TaskOptions.resetAdb, TaskOptions.skipTargetCheck],
     platforms: SdkPlatforms,
     isGlobalScope: true,
 });

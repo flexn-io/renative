@@ -36,12 +36,10 @@ import taskUnlink from './tasks/linking/taskUnlink';
 import taskSwitch from './tasks/app/taskAppSwitch';
 
 const Config: ConfigFileEngine = {
-    id: 'engine-core',
     platforms: {},
     npm: {},
     engineExtension: 'core',
-    overview: '',
-    packageName: '@rnv/engine-core',
+    name: '@rnv/engine-core',
 };
 
 const Engine = createRnvEngine({
@@ -82,9 +80,7 @@ const Engine = createRnvEngine({
         taskSwitch,
     ],
     config: Config,
-    // package: '',
     projectDirName: '',
-    // ejectPlatform: null,
     platforms: {},
     rootPath: __dirname,
 });

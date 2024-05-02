@@ -6,12 +6,14 @@ export * from './constants';
 import taskTargetLaunch from './tasks/taskTargetLaunch';
 import taskTargetList from './tasks/taskTargetList';
 import taskSdkConfigure from './tasks/taskSdkConfigure';
-import { GetContextType, createRnvSDK } from '@rnv/core';
+import { GetContextType, createRnvModule } from '@rnv/core';
 
-export const Tasks = [taskTargetLaunch, taskTargetList, taskSdkConfigure];
-
-const Sdk = createRnvSDK({
-    tasks: Tasks,
+const RnvModule = createRnvModule({
+    tasks: [taskTargetLaunch, taskTargetList, taskSdkConfigure] as const,
+    name: '@rnv/sdk-tizen',
+    type: 'internal',
 });
 
-export type GetContext = GetContextType<typeof Sdk.getContext>;
+export default RnvModule;
+
+export type GetContext = GetContextType<typeof RnvModule.getContext>;

@@ -1,5 +1,4 @@
 {
     "$schema": "../../.rnv/schema/rnv.integration.json",
-    "id": "docker",
-    "packageName": "@rnv/integration-docker"
+    "name": "@rnv/integration-docker"
 }

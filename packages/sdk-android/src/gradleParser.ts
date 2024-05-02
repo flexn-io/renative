@@ -10,7 +10,6 @@ import {
     fsWriteFileSync,
     getAppFolder,
     getConfigProp,
-    getContext,
     includesPluginPath,
     isSystemWin,
     logDebug,
@@ -20,8 +19,8 @@ import {
     writeCleanFile,
 } from '@rnv/core';
 import path from 'path';
-import { Context } from './types';
 import { getBuildFilePath, getAppId, getAppVersion, getAppVersionCode, addSystemInjects } from '@rnv/sdk-utils';
+import { Context, getContext } from './getContext';
 
 const currentOs = process.platform === 'darwin' ? 'osx' : process.platform === 'win32' ? 'win64' : 'linux64';
 

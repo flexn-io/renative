@@ -6,11 +6,13 @@ import taskConfigure from './tasks/taskConfigure';
 import taskExport from './tasks/taskExport';
 import taskPackage from './tasks/taskPackage';
 import taskRun from './tasks/taskRun';
-import { Tasks as TasksSdkReactNative, withRNVRNConfig } from '@rnv/sdk-react-native';
+import ModuleSDKReactNative, { withRNVRNConfig } from '@rnv/sdk-react-native';
+
 import { Config } from './config';
 
 const Engine = createRnvEngine({
-    tasks: [taskRun, taskPackage, taskBuild, taskConfigure, taskExport, ...TasksSdkReactNative],
+    extendModules: [ModuleSDKReactNative],
+    tasks: [taskRun, taskPackage, taskBuild, taskConfigure, taskExport],
     config: Config,
     platforms: {
         windows: {

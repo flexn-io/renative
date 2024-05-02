@@ -2,13 +2,15 @@ export * from './deviceManager';
 export * from './runner';
 export * from './constants';
 
-import { GetContextType, createRnvSDK } from '@rnv/core';
+import { GetContextType, createRnvModule } from '@rnv/core';
 import taskTargetLaunch from './tasks/taskTargetLaunch';
 
-export const Tasks = [taskTargetLaunch];
-
-const Sdk = createRnvSDK({
-    tasks: Tasks,
+const RnvModule = createRnvModule({
+    tasks: [taskTargetLaunch] as const,
+    name: '@rnv/sdk-kaios',
+    type: 'internal',
 });
 
-export type GetContext = GetContextType<typeof Sdk.getContext>;
+export default RnvModule;
+
+export type GetContext = GetContextType<typeof RnvModule.getContext>;

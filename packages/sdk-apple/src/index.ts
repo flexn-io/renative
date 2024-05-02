@@ -14,25 +14,67 @@ import taskPackage from './tasks/taskPackage';
 import taskConfigure from './tasks/taskConfigure';
 import taskRun from './tasks/taskRun';
 import taskBuild from './tasks/taskBuild';
-import { GetContextType, createRnvSDK } from '@rnv/core';
+import { GetContextType, createRnvModule } from '@rnv/core';
+import { Payload } from './types';
 
-export const Tasks = [
-    taskTargetLaunch,
-    taskTargetList,
-    taskCryptoInstallCerts,
-    taskCryptoUpdateProfile,
-    taskCryptoUpdateProfiles,
-    taskCryptoInstallProfiles,
-    taskLog,
-    taskExport,
-    taskPackage,
-    taskConfigure,
-    taskRun,
-    taskBuild,
-];
-
-const Sdk = createRnvSDK({
-    tasks: Tasks,
+const RnvModule = createRnvModule({
+    tasks: [
+        taskTargetLaunch,
+        taskTargetList,
+        taskCryptoInstallCerts,
+        taskCryptoUpdateProfile,
+        taskCryptoUpdateProfiles,
+        taskCryptoInstallProfiles,
+        taskLog,
+        taskExport,
+        taskPackage,
+        taskConfigure,
+        taskRun,
+        taskBuild,
+    ],
+    name: '@rnv/sdk-apple',
+    type: 'internal',
+    contextPayload: {
+        pluginConfigiOS: {
+            podfileHeader: '',
+            podfileNodeRequire: '',
+            podfileInject: '',
+            podPostInstall: '',
+            staticFrameworks: [],
+            exportOptions: '',
+            embeddedFonts: [],
+            embeddedFontSources: [],
+            ignoreProjectFonts: [],
+            pluginAppDelegateHImports: '',
+            pluginAppDelegateHExtensions: '',
+            pluginAppDelegateMmImports: '',
+            pluginAppDelegateMmMethods: '',
+            appDelegateMmMethods: {
+                application: {
+                    didFinishLaunchingWithOptions: [],
+                    applicationDidBecomeActive: [],
+                    open: [],
+                    supportedInterfaceOrientationsFor: [],
+                    didReceiveRemoteNotification: [],
+                    didFailToRegisterForRemoteNotificationsWithError: [],
+                    didReceive: [],
+                    didRegister: [],
+                    didRegisterForRemoteNotificationsWithDeviceToken: [],
+                    continue: [],
+                    didConnectCarInterfaceController: [],
+                    didDisconnectCarInterfaceController: [],
+                },
+                userNotificationCenter: {
+                    willPresent: [],
+                    didReceiveNotificationResponse: [],
+                },
+            },
+            podfileSources: '',
+            deploymentTarget: '',
+        },
+    } as Payload,
 });
 
-export type GetContext = GetContextType<typeof Sdk.getContext>;
+export default RnvModule;
+
+export type GetContext = GetContextType<typeof RnvModule.getContext>;

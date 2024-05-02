@@ -9,10 +9,10 @@ import {
     parsePlugins,
     writeCleanFile,
     DEFAULTS,
-    getContext,
     type ConfigPluginPlatformSchema,
 } from '@rnv/core';
 import { addSystemInjects, getAppTemplateFolder } from '@rnv/sdk-utils';
+import { getContext } from './getContext';
 
 export const parsePodFile = async () => {
     logDefault('parsePodFile');
