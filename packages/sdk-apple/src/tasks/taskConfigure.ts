@@ -1,7 +1,8 @@
 import { createTask, RnvTaskName } from '@rnv/core';
 import { configureFontSources } from '@rnv/sdk-react-native';
 import { configureXcodeProject } from '../runner';
-import { SdkPlatforms, SDKTaskOptionPresets } from '../common';
+import { SdkPlatforms } from '../common';
+import { TaskOptionPresets } from '../taskOptions';
 
 export default createTask({
     description: 'Configure current project',
@@ -13,7 +14,7 @@ export default createTask({
         await configureXcodeProject();
         await configureFontSources();
     },
-    options: SDKTaskOptionPresets.withConfigure(),
+    options: TaskOptionPresets.withConfigure(),
     task: RnvTaskName.configure,
     platforms: SdkPlatforms,
 });

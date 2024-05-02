@@ -17,25 +17,26 @@ import type { RnvEngine, RnvEnginePlatform } from '../engines/types';
 import type { OverridesOptions } from '../system/types';
 import type { RnvPlatform, RnvPlatformKey } from '../types';
 import type { NpmPackageFile } from '../configs/types';
-import { type ParamKeys, type ProgramOptionsKey } from '../tasks/constants';
+import { type ProgramOptionsKey } from '../tasks/taskOptions';
 import { type ExecaChildProcess } from 'execa';
 import { type RnvPlugin } from '../plugins/types';
-import type { RnvIntegration } from '../integrations/types';
 import type { DependencyMutation } from '../projects/types';
 import { CamelCasedProperties } from 'type-fest';
+import { RnvModule } from '../modules/types';
+import { ParamKeys, TaskOptionValue } from '../tasks/types';
 
 export type CreateContextOptions = {
-    program: RnvContextProgram;
+    program: RnvContextProgram<ProgramOptionsKey>;
     process: NodeJS.Process;
     cmd?: string;
     subCmd?: string;
     RNV_HOME_DIR?: string;
 };
 
-export type RnvContextProgram<ExtraKeys extends string = never> = {
+export type RnvContextProgram<OKey = ProgramOptionsKey> = {
     args?: string[];
     rawArgs?: string[];
-    opts: () => CamelCasedProperties<ParamKeys<ExtraKeys>>;
+    opts: <T = TaskOptionValue>() => CamelCasedProperties<ParamKeys<OKey, T>>;
     option?: (cmd: string, desc: string) => void;
     parse?: (arg: string[]) => void;
     allowUnknownOption: (p: boolean) => void;
@@ -44,8 +45,8 @@ export type RnvContextProgram<ExtraKeys extends string = never> = {
     isHelpInvoked?: boolean;
 };
 
-export type RnvContext<Payload = any, ExtraOptionKeys extends string = ProgramOptionsKey> = {
-    program: RnvContextProgram<ExtraOptionKeys>;
+export type RnvContext<Payload = any, OKey = ProgramOptionsKey> = {
+    program: RnvContextProgram<OKey>;
     /**
      * Extra payload object used by 3rd party (ie @rnv/sdk-apple) to decorate context with extra typed information
      */
@@ -108,7 +109,7 @@ export type RnvContextBuildConfig = Partial<ConfigFileBuildConfig> & {
 };
 
 export type RnvContextRuntime = {
-    integrationsByIndex: Array<RnvIntegration>;
+    modulesByIndex: Array<RnvModule>;
     enginesByPlatform: Record<string, RnvEngine>;
     enginesByIndex: Array<RnvEngine>;
     enginesById: Record<string, RnvEngine>;

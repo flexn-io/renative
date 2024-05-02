@@ -12,7 +12,7 @@ export const generatePlatformChoices = () => {
     const options = c.runtime.supportedPlatforms.map((v) => ({
         name: `${v.platform} - ${
             v.isConnected ? chalk().green('(connected)') : chalk().yellow('(ejected)')
-        } [${chalk().cyan(v.engine?.config?.id)}]`,
+        } [${chalk().cyan(v.engine?.id)}]`,
         value: v.platform,
         isConnected: v.isConnected,
     }));

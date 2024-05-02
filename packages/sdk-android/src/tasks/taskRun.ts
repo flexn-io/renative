@@ -2,6 +2,7 @@ import { getConfigProp, logSummary, createTask, RnvTaskName, RnvTaskOptionPreset
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '@rnv/sdk-react-native';
 import { getAndroidDeviceToRunOn, packageAndroid, runAndroid } from '../runner';
 import { SdkPlatforms } from '../constants';
+import { TaskOptions } from '../taskOptions';
 
 export default createTask({
     description: 'Run your rn app on target device or emulator',
@@ -24,10 +25,15 @@ export default createTask({
             }
             return waitForBundlerIfRequired();
         }
-        return runAndroid(runDevice!);
+        await runAndroid(runDevice!);
     },
     task: RnvTaskName.run,
     isPriorityOrder: true,
-    options: RnvTaskOptionPresets.withConfigure(RnvTaskOptionPresets.withRun()),
+    options: [
+        ...RnvTaskOptionPresets.withConfigure(),
+        ...RnvTaskOptionPresets.withRun(),
+        TaskOptions.resetAdb,
+        TaskOptions.skipTargetCheck,
+    ],
     platforms: SdkPlatforms,
 });

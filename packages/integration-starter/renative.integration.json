@@ -1,5 +1,4 @@
 {
     "$schema": "../../.rnv/schema/rnv.integration.json",
-    "id": "starter",
-    "packageName": "@rnv/integration-starter"
+    "name": "@rnv/integration-starter"
 }

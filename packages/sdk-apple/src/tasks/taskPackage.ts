@@ -1,6 +1,7 @@
 import { getConfigProp, createTask, RnvTaskName } from '@rnv/core';
 import { packageBundleForXcode } from '../runner';
-import { SDKTaskOptionPresets, SdkPlatforms } from '../common';
+import { SdkPlatforms } from '../common';
+import { TaskOptionPresets } from '../taskOptions';
 
 export default createTask({
     description: 'Package source files into bundle',
@@ -15,6 +16,6 @@ export default createTask({
         return packageBundleForXcode();
     },
     task: RnvTaskName.package,
-    options: SDKTaskOptionPresets.withConfigure(),
+    options: TaskOptionPresets.withConfigure(),
     platforms: SdkPlatforms,
 });

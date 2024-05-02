@@ -40,7 +40,7 @@ export const configureTemplateFiles = async () => {
                             matched = false;
                         }
                     } else if (pth.engines?.length) {
-                        const engId = c.runtime.engine?.config?.id;
+                        const engId = c.runtime.engine?.id;
                         if (engId && !pth.engines?.includes?.(engId)) {
                             matched = false;
                         }

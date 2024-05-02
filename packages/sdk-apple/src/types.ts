@@ -1,4 +1,4 @@
-import { ConfigPluginPlatformSchema, RnvContext } from '@rnv/core';
+import { ConfigPluginPlatformSchema } from '@rnv/core';
 
 export type AppleDevice = {
     udid?: string;
@@ -90,7 +90,6 @@ export type PayloadAppDelegateKey = keyof Payload['pluginConfigiOS']['appDelegat
 export type PayloadAppDelegateSubKey = keyof Payload['pluginConfigiOS']['appDelegateMmMethods']['application'] &
     keyof Payload['pluginConfigiOS']['appDelegateMmMethods']['userNotificationCenter'];
 
-export type Context = RnvContext<Payload>;
 export type ObjectiveCMethod = {
     isRequired?: boolean;
     func: string;

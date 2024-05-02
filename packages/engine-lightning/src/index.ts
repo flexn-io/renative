@@ -1,13 +1,14 @@
 import { GetContextType, createRnvEngine } from '@rnv/core';
-import { Tasks as TasksSdkWebOS } from '@rnv/sdk-webos';
-import { Tasks as TasksSdkTizen } from '@rnv/sdk-tizen';
+import ModuleSDKWebOS from '@rnv/sdk-webos';
+import ModuleSDKTizen from '@rnv/sdk-tizen';
 import taskBuild from './tasks/taskBuild';
 import taskConfigure from './tasks/taskConfigure';
 import taskRun from './tasks/taskRun';
 import { Config } from './config';
 
 const Engine = createRnvEngine({
-    tasks: [taskRun, taskBuild, taskConfigure, ...TasksSdkWebOS, ...TasksSdkTizen],
+    extendModules: [ModuleSDKWebOS, ModuleSDKTizen],
+    tasks: [taskRun, taskBuild, taskConfigure],
     config: Config,
     projectDirName: 'project',
     serverDirName: 'server',

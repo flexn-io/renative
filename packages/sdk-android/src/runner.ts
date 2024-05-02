@@ -26,11 +26,9 @@ import {
     logSuccess,
     logRaw,
     logError,
-    DEFAULTS,
     RnvPlatform,
     logInfo,
     RnvPlatformKey,
-    getContext,
 } from '@rnv/core';
 import { parseAndroidManifestSync } from './manifestParser';
 import {
@@ -50,7 +48,7 @@ import {
 import { parseGradleWrapperSync } from './gradleWrapperParser';
 import { parseValuesXml } from './xmlValuesParser';
 import { ejectGradleProject } from './ejector';
-import { AndroidDevice, Context, Payload } from './types';
+import { AndroidDevice } from './types';
 import {
     resetAdb,
     getAndroidTargets,
@@ -63,6 +61,7 @@ import {
 import { ANDROID_COLORS, ANDROID_STRINGS, ANDROID_STYLES, CLI_ANDROID_ADB } from './constants';
 import { runReactNativeAndroid, packageReactNativeAndroid, generateEnvVarsFile } from '@rnv/sdk-react-native';
 import { getEntryFile } from '@rnv/sdk-utils';
+import { Context, getContext } from './getContext';
 
 export const packageAndroid = async () => {
     logDefault('packageAndroid');
@@ -367,58 +366,13 @@ export const configureGradleProject = async () => {
 
 export const configureProject = async () => {
     logDefault('configureProject');
-    const c = getContext<Payload>();
+    const c = getContext();
 
     const appFolder = getAppFolder();
     const outputFile = getEntryFile();
 
     mkdirSync(path.join(appFolder, 'app/src/main/assets'));
     fsWriteFileSync(path.join(appFolder, `app/src/main/assets/${outputFile}.bundle`), '{}');
-
-    // INJECTORS
-    c.payload.pluginConfigAndroid = {
-        pluginIncludes: "include ':app'",
-        pluginPaths: '',
-        pluginPackages: '',
-        pluginActivityImports: '',
-        pluginActivityMethods: '',
-        pluginApplicationImports: '',
-        pluginApplicationMethods: '',
-        reactNativeHostMethods: '',
-        pluginApplicationCreateMethods: '',
-        pluginApplicationDebugServer: '',
-        applyPlugin: '',
-        defaultConfig: '',
-        pluginActivityCreateMethods: '',
-        pluginActivityResultMethods: '',
-        pluginSplashActivityImports: '',
-        buildGradleAllProjectsRepositories: '',
-        buildGradleBuildScriptRepositories: '',
-        buildGradlePlugins: '',
-        buildGradleAfterAll: '',
-        buildGradleBuildScriptDependencies: '',
-        injectReactNativeEngine: '',
-        buildGradleBuildScriptDexOptions: '',
-        appBuildGradleSigningConfigs: '',
-        packagingOptions: '',
-        appBuildGradleImplementations: '',
-        appBuildGradleAfterEvaluate: '',
-        kotlinVersion: '',
-        googleServicesVersion: '',
-        buildToolsVersion: '',
-        buildTypes: '',
-        compileOptions: '',
-        compileSdkVersion: DEFAULTS.compileSdkVersion,
-        ndkVersion: '',
-        gradleBuildToolsVersion: '',
-        gradleWrapperVersion: '',
-        localProperties: '',
-        minSdkVersion: DEFAULTS.minSdkVersion,
-        multiAPKs: '',
-        splits: '',
-        supportLibVersion: '',
-        targetSdkVersion: DEFAULTS.targetSdkVersion,
-    };
 
     // PLUGINS
     parsePlugins((plugin, pluginPlat, key) => {
