@@ -19,7 +19,6 @@ import type { ConfigFileEngine } from '../schema/types';
 import { generateLookupPaths } from '../configs';
 import { extractEngineName } from './nameExtractor';
 
-
 export const registerEngine = async (engine: RnvEngine, platform?: RnvPlatform, engConfig?: RnvEngineTemplate) => {
     const c = getContext();
     logDefault(`registerEngine:${engine.id}`);
@@ -420,6 +419,10 @@ export const installEngines = async (failOnMissingDeps?: boolean): Promise<boole
     const engineConfigs: Array<RnvEngineInstallConfig> = [];
 
     Object.keys(filteredEngines).forEach((k) => {
+        // This is needed to find the path to the just installed modules.
+        //  require function in nodejs operates based on the state of the module cache at the time of the call
+        // and doesn’t check if module is being installed  since the cache was created
+
         const pathLookups = generateLookupPaths(k);
         const engineRootPath = pathLookups.find((v) => fsExistsSync(v));
 
