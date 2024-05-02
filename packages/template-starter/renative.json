@@ -82,9 +82,7 @@
             "minSdkVersion": 21,
             "extendPlatform": "android",
             "engine": "engine-rn-tvos",
-            "includedPermissions": [
-                "INTERNET"
-            ]
+            "includedPermissions": ["INTERNET"]
         },
         "web": {
             "engine": "engine-rn-next"
@@ -96,7 +94,8 @@
             "reactNativeEngine": "hermes"
         },
         "macos": {
-            "engine": "engine-rn-electron"
+            "engine": "engine-rn-electron",
+            "assetFolderPlatform": "electron"
         },
         "windows": {
             "engine": "engine-rn-electron"
