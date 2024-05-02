@@ -26,7 +26,7 @@ import {
     getContext,
 } from '@rnv/core';
 import { CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from './constants';
-
+import * as deviceManager from './deviceManager';
 import { AndroidDevice } from './types';
 
 const CHECK_INTEVAL = 5000;
@@ -66,8 +66,7 @@ export const launchAndroidSimulator = async (
 
     if (target === true) {
         const { device } = c.program.opts();
-        const list = await getAndroidTargets(false, device, device);
-
+        const list = await deviceManager.getAndroidTargets(false, device, device);
         const devicesString = composeDevicesArray(list);
         const choices = devicesString;
         const response = await inquirerPrompt({
@@ -80,7 +79,6 @@ export const launchAndroidSimulator = async (
     } else {
         newTarget = target;
     }
-
     if (newTarget) {
         const actualTarget = typeof newTarget === 'string' ? newTarget : newTarget.name;
 
@@ -134,8 +132,8 @@ export const listAndroidTargets = async () => {
     const { device } = c.program.opts();
 
     await resetAdb();
-    const list = await getAndroidTargets(false, device, device);
-    const devices = await composeDevicesString(list);
+    const list = await deviceManager.getAndroidTargets(false, device, device);
+    const devices = deviceManager.composeDevicesString(list);
     logToSummary(`Android Targets:\n${devices}`);
     if (typeof devices === 'string' && devices.trim() === '') {
         logToSummary('Android Targets: No devices found');

@@ -1,20 +1,28 @@
-import { getContext } from '@rnv/core';
-import { composeDevicesArray, composeDevicesString, launchAndroidSimulator } from '../deviceManager';
+import { createRnvContext, getContext } from '@rnv/core';
+import * as deviceManager from '../deviceManager';
 import { AndroidDevice } from '../types';
 
 jest.mock('@rnv/core');
 
+beforeEach(() => {
+    createRnvContext();
+});
+
+afterEach(() => {
+    jest.resetAllMocks();
+});
+
 describe('composeDevicesString', () => {
-    it('returns empty string if there is no devices', async () => {
+    it('return empty string if there is no devices', async () => {
         //GIVEN
         const devicesArray: Array<AndroidDevice> = [];
         //WHEN
-        const result = composeDevicesString(devicesArray);
+        const result = deviceManager.composeDevicesString(devicesArray);
 
         //THEN
         expect(result).toEqual('\n');
     });
-    it('returns devices string if there are devices', async () => {
+    it('return devices string if there are devices', async () => {
         //GIVEN
         const devicesArray: Array<AndroidDevice> = [];
         const device1: AndroidDevice = {
@@ -24,7 +32,7 @@ describe('composeDevicesString', () => {
         };
         devicesArray.push(device1);
         //WHEN
-        const result = composeDevicesString(devicesArray);
+        const result = deviceManager.composeDevicesString(devicesArray);
 
         //THEN
         expect(result).toEqual('\n [1]> MockDevice1 |  | arch: undefined | udid: unknown \n');
@@ -32,16 +40,16 @@ describe('composeDevicesString', () => {
 });
 
 describe('composeDevicesArray', () => {
-    it('returns empty array if there is no devices', async () => {
+    it('return empty array if there is no devices', async () => {
         //GIVEN
         const devicesArray: Array<AndroidDevice> = [];
         //WHEN
-        const result = composeDevicesArray(devicesArray);
+        const result = deviceManager.composeDevicesArray(devicesArray);
 
         //THEN
         expect(result).toEqual([]);
     });
-    it('returns devices aray if there are devices', async () => {
+    it('return devices aray if there are devices', async () => {
         //GIVEN
         const devicesArray: Array<AndroidDevice> = [];
         const device1: AndroidDevice = {
@@ -58,19 +66,58 @@ describe('composeDevicesArray', () => {
             value: 'MockDevice1',
         });
         //WHEN
-        const result = composeDevicesArray(devicesArray);
+        const result = deviceManager.composeDevicesArray(devicesArray);
 
         //THEN
         expect(result).toEqual(expectedResult);
     });
 });
 
+describe('listAndroidTargets', () => {
+    it('return list of android targets', async () => {
+        //GIVEN
+        const mockFoundDeviceList = [{ name: 'simulator1', isActive: false, udid: '', isDevice: false }];
+        const ctx = getContext();
+        ctx.program.opts().device = 'device1';
+
+        const spy1 = jest.spyOn(deviceManager, 'getAndroidTargets').mockResolvedValue(mockFoundDeviceList);
+        const spy2 = jest
+            .spyOn(deviceManager, 'composeDevicesString')
+            .mockReturnValue('\n [1]> simulator1 | Phone 📱  | arch: undefined | udid:  \n');
+        //WHEN
+        const result = await deviceManager.listAndroidTargets();
+
+        //THEN
+        expect(result).toEqual('\n [1]> simulator1 | Phone 📱  | arch: undefined | udid:  \n');
+        spy1.mockRestore();
+        spy2.mockRestore();
+    });
+});
+
+//Need more tests
 describe('launchAndroidSimulator', () => {
-    it('launch sim with empty target name', async () => {
+    it('launch simulator with empty target name', async () => {
         //GIVEN
         const errorMessage = 'No simulator -t target name specified!';
         //WHEN
         //THEN
-        expect(launchAndroidSimulator('')).rejects.toBe(errorMessage);
+        expect(deviceManager.launchAndroidSimulator('')).rejects.toBe(errorMessage);
+    });
+    it('launch simulator when given target name', async () => {
+        //GIVEN
+        const ctx = getContext();
+        ctx.platform = 'android';
+        ctx.program.opts().target = undefined;
+        ctx.runtime.target = 'defaultTarget';
+        ctx.program.opts().device = 'device1';
+
+        const mockFoundDevice = { name: 'mock_sim_1', isActive: false, udid: '', isDevice: false };
+        const spy1 = jest.spyOn(deviceManager, 'getAndroidTargets').mockResolvedValue([mockFoundDevice]);
+        //WHEN
+        const result = await deviceManager.launchAndroidSimulator('mock_sim_1');
+
+        //THEN
+        expect(result).toEqual(true);
+        spy1.mockRestore();
     });
 });
