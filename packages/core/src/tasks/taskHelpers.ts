@@ -28,7 +28,8 @@ export const selectPlatformIfRequired = async (
                     `Task "${knownTaskInstance?.task}" has only one supported platform: "${platforms[0]}". Automatically selecting it.`
                 );
                 c.platform = platforms[0];
-                c.program.opts().platform = c.platform;
+                // c.program.opts().platform = c.platform;
+                // after making UTs, this doesn't work - no changes happen, so commenting it out
             } else {
                 const { platform } = await inquirerPrompt({
                     type: 'list',
