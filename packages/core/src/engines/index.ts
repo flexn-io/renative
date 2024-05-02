@@ -421,7 +421,7 @@ export const installEngines = async (failOnMissingDeps?: boolean): Promise<boole
     Object.keys(filteredEngines).forEach((k) => {
         // This is needed to find the path to the just installed modules.
         //  require function in nodejs operates based on the state of the module cache at the time of the call
-        // and doesn’t check if module is being installed  since the cache was created
+        // and it doesn’t dynamically update to check if a module has being installed  since the cache was created
 
         const pathLookups = generateLookupPaths(k);
         const engineRootPath = pathLookups.find((v) => fsExistsSync(v));
