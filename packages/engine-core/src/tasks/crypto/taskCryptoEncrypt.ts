@@ -36,10 +36,8 @@ const generateRandomKey = (length: number) =>
 
 const initializeCryptoDirectory = async (sourceFolder: string) => {
     const ctx = getContext();
-    const configDir = path.join(sourceFolder, 'appConfigs');
     const targetFile = 'renative.private.json';
     mkdirSync(sourceFolder);
-    mkdirSync(configDir);
 
     if (ctx.paths.project.configPrivateExists) {
         const options = [
@@ -62,32 +60,36 @@ const initializeCryptoDirectory = async (sourceFolder: string) => {
             copyFileSync(ctx.paths.project.configPrivate, path.join(sourceFolder, targetFile));
         }
     }
-    const appConfigsDirs = await readdirAsync(ctx.paths.project.appConfigsDir);
 
-    appConfigsDirs.forEach(async (item: string) => {
-        if (item == targetFile) {
-            copyFileSync(path.join(ctx.paths.project.appConfigsDir, item), path.join(configDir, targetFile));
-        }
-        const appConfigDir = path.join(configDir, item);
-        const itemPath = path.join(ctx.paths.project.appConfigsDir, item);
+    if (fsExistsSync(ctx.paths.project.appConfigsDir)) {
+        const configDir = path.join(sourceFolder, 'appConfigs');
+        mkdirSync(configDir);
+        const appConfigsDirs = await readdirAsync(ctx.paths.project.appConfigsDir);
+        appConfigsDirs.forEach(async (item: string) => {
+            if (item == targetFile) {
+                copyFileSync(path.join(ctx.paths.project.appConfigsDir, item), path.join(configDir, targetFile));
+            }
+            const appConfigDir = path.join(configDir, item);
+            const itemPath = path.join(ctx.paths.project.appConfigsDir, item);
 
-        const stat = statSync(itemPath);
-        if (stat && stat.isDirectory()) {
-            const existingFiles: string[] = await readdirAsync(itemPath);
+            const stat = statSync(itemPath);
+            if (stat && stat.isDirectory()) {
+                const existingFiles: string[] = await readdirAsync(itemPath);
 
-            existingFiles.map((file) => {
-                if (file === targetFile) {
-                    mkdirSync(appConfigDir);
-                    mkdirSync(path.join(appConfigDir, 'certs'));
+                existingFiles.map((file) => {
+                    if (file === targetFile) {
+                        mkdirSync(appConfigDir);
+                        mkdirSync(path.join(appConfigDir, 'certs'));
 
-                    copyFileSync(
-                        path.join(ctx.paths.project.appConfigsDir, item, targetFile),
-                        path.join(appConfigDir, targetFile)
-                    );
-                }
-            });
-        }
-    });
+                        copyFileSync(
+                            path.join(ctx.paths.project.appConfigsDir, item, targetFile),
+                            path.join(appConfigDir, targetFile)
+                        );
+                    }
+                });
+            }
+        });
+    }
 };
 
 const _checkAndConfigureCrypto = async () => {
@@ -174,11 +176,14 @@ Make sure you take into account special characters that might need to be escaped
 
 export default createTask({
     description: 'Encrypts secure files from `~/<wokspace>/<project>/..` to project',
-    dependsOn: [RnvTaskName.projectConfigure],
+    dependsOn: [RnvTaskName.configureSoft],
     fn: async ({ ctx }) => {
         const projectName = ctx.files.project.config?.projectName;
-
-        if (!projectName) return;
+        if (!projectName) {
+            return Promise.reject(
+                `projectName is missing. Make sure you're in a ReNative project or integration and have projectName defined.`
+            );
+        }
 
         const source = `./${projectName}`;
 
