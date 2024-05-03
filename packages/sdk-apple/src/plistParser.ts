@@ -16,8 +16,9 @@ import {
     RnvFolderName,
 } from '@rnv/core';
 import { getAppFolderName } from './common';
-import { Context, FilePlistJSON } from './types';
+import { FilePlistJSON } from './types';
 import { addSystemInjects, getAppTitle, getAppVersion, getAppVersionCode, getBuildFilePath } from '@rnv/sdk-utils';
+import { Context } from './getContext';
 
 const isBool = (value: unknown) => typeof value === 'boolean';
 const isNumber = (value: unknown) => typeof value === 'number' && Number.isFinite(value);

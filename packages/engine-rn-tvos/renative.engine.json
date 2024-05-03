@@ -1,7 +1,6 @@
 {
     "$schema": "../../.rnv/schema/rnv.engine.json",
-    "id": "engine-rn-tvos",
-    "packageName": "@rnv/engine-rn-tvos",
+    "name": "@rnv/engine-rn-tvos",
     "engineExtension": "rntvos",
     "overview": "React native based engine with added support for tvOS platform. Runs standard react native apps with native support",
     "plugins": {

@@ -31,11 +31,11 @@ import { parsePodFile } from './podfileParser';
 import { parseAppDelegate } from './objectiveCParser';
 import { parseXcodeProject } from './xcodeParser';
 import { parseXcscheme } from './xcschemeParser';
-import { AppleDevice, Context } from './types';
+import { AppleDevice } from './types';
 import { ObjectEncodingOptions } from 'fs';
 import { packageReactNativeIOS, runCocoaPods, runReactNativeIOS, EnvVars } from '@rnv/sdk-react-native';
 import { registerDevice } from './fastlane';
-import { getContext } from './getContext';
+import { Context, getContext } from './getContext';
 
 export const packageBundleForXcode = () => {
     return packageReactNativeIOS();
@@ -64,9 +64,9 @@ export const getIosDeviceToRunOn = async (c: Context) => {
     const { device } = c.program.opts();
     let devicesArr: AppleDevice[] = [];
     if (device === true) {
-        devicesArr = await getAppleDevices(c, false, true);
+        devicesArr = await getAppleDevices(false, true);
     } else {
-        devicesArr = await getAppleDevices(c, true, false);
+        devicesArr = await getAppleDevices(true, false);
     }
 
     let p;
@@ -724,46 +724,6 @@ export const configureXcodeProject = async () => {
     const appFolder = getAppFolder();
     const appFolderName = getAppFolderName();
     c.runtime.platformBuildsProjectPath = `${appFolder}/${appFolderName}.xcworkspace`;
-
-    // const bundleAssets = getConfigProp('bundleAssets') === true;
-    // INJECTORS
-    c.payload.pluginConfigiOS = {
-        podfileHeader: '',
-        podfileNodeRequire: '',
-        podfileInject: '',
-        podPostInstall: '',
-        staticFrameworks: [],
-        exportOptions: '',
-        embeddedFonts: [],
-        embeddedFontSources: [],
-        ignoreProjectFonts: [],
-        pluginAppDelegateHImports: '',
-        pluginAppDelegateHExtensions: '',
-        pluginAppDelegateMmImports: '',
-        pluginAppDelegateMmMethods: '',
-        appDelegateMmMethods: {
-            application: {
-                didFinishLaunchingWithOptions: [],
-                applicationDidBecomeActive: [],
-                open: [],
-                supportedInterfaceOrientationsFor: [],
-                didReceiveRemoteNotification: [],
-                didFailToRegisterForRemoteNotificationsWithError: [],
-                didReceive: [],
-                didRegister: [],
-                didRegisterForRemoteNotificationsWithDeviceToken: [],
-                continue: [],
-                didConnectCarInterfaceController: [],
-                didDisconnectCarInterfaceController: [],
-            },
-            userNotificationCenter: {
-                willPresent: [],
-                didReceiveNotificationResponse: [],
-            },
-        },
-        podfileSources: '',
-        deploymentTarget: '',
-    };
 
     // FONTS
     // parsePlugins((plugin, pluginPlat) => {

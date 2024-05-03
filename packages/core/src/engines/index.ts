@@ -2,7 +2,6 @@ import path from 'path';
 import { fsExistsSync, readObjectSync, writeFileSync } from '../system/fs';
 import { installPackageDependencies } from '../projects/npm';
 import { logDebug, logDefault, chalk, logInfo, logWarning, logError } from '../logger';
-import { doResolve } from '../system/resolve';
 import { configurePlugins } from '../plugins';
 import type { RnvContext } from '../context/types';
 import type { RnvTask } from '../tasks/types';
@@ -17,13 +16,19 @@ import { getConfigRootProp } from '../context/contextProps';
 import { registerRnvTasks } from '../tasks/taskRegistry';
 import { createDependencyMutation } from '../projects/mutations';
 import type { ConfigFileEngine } from '../schema/types';
+import { generateLookupPaths } from '../configs';
+import { extractEngineName } from './nameExtractor';
 
 export const registerEngine = async (engine: RnvEngine, platform?: RnvPlatform, engConfig?: RnvEngineTemplate) => {
     const c = getContext();
-    logDefault(`registerEngine:${engine.config.id}`);
+    logDefault(`registerEngine:${engine.id}`);
+    if (!engine.id) {
+        throw new Error('Engine id is required');
+    }
 
-    if (engine.config.id) {
-        c.runtime.enginesById[engine.config.id] = engine;
+    if (!c.runtime.enginesById[engine.id]) {
+        c.runtime.enginesById[engine.id] = engine;
+        registerRnvTasks(engine.tasks);
     }
 
     c.runtime.enginesByIndex.push(engine);
@@ -36,7 +41,8 @@ export const registerEngine = async (engine: RnvEngine, platform?: RnvPlatform, 
         );
     }
     _registerEnginePlatform(c, platform, engine);
-    registerRnvTasks(engine.tasks);
+
+    engine.initContextPayload();
 };
 
 const _registerEnginePlatform = (c: RnvContext, platform?: RnvPlatform, engine?: RnvEngine) => {
@@ -68,8 +74,7 @@ export const registerEngineExtension = (ext: string | null, eExt?: string | null
     return extArr;
 };
 
-export const generateEngineExtensions = (exts: Array<string>, config: ConfigFileEngine) => {
-    const { id, engineExtension } = config;
+export const generateEngineExtensions = (id: string, exts: Array<string>, engineExtension: string | undefined) => {
     let extArr: string[] = [];
     if (id) {
         extArr = [...registerEngineExtension(id)];
@@ -353,19 +358,22 @@ const _getFilteredEngines = (c: RnvContext) => {
     const supportedPlatforms = c.files.project.config?.defaults?.supportedPlatforms || [];
 
     const filteredEngines: Record<string, string> = {};
-    const ENGINE_ID_MAP = c.files.rnvConfigTemplates.config?.engineIdMap || {};
 
     supportedPlatforms.forEach((v) => {
         if (c.files.project.config) {
             const platforms = c.files.project.config?.platforms || {};
-            const engineKey = platforms[v]?.engine || rnvPlatforms?.[v]?.engine;
+            const engineId = platforms[v]?.engine || rnvPlatforms?.[v]?.engine;
 
-            if (engineKey) {
-                const engKey = ENGINE_ID_MAP[engineKey] || engineKey;
-                if (engines[engKey]) {
-                    filteredEngines[engKey] = engines[engKey];
+            if (engineId) {
+                // We need to engineName from engineId if present.
+                // This happens if user uses shortcut name ie: 'engine-rn' instead of '@rnv/engine-rn'
+                const engineName = extractEngineName(engineId);
+                if (engines[engineName]) {
+                    filteredEngines[engineName] = engines[engineName];
+                } else if (engines[engineId]) {
+                    filteredEngines[engineId] = engines[engineId];
                 } else {
-                    logWarning(`Platform ${v} requires engine ${engKey} which is not available in engines list`);
+                    logWarning(`Platform ${v} requires engine ${engineName} which is not available in engines list`);
                 }
             } else {
                 logWarning(`Platform ${v} has no engine configured`);
@@ -409,10 +417,15 @@ export const installEngines = async (failOnMissingDeps?: boolean): Promise<boole
     const enginesToInstall: Array<RnvEngineInstallConfig> = [];
     const readyEngines: Array<string> = [];
     const engineConfigs: Array<RnvEngineInstallConfig> = [];
-    // if (filteredEngines) {
 
     Object.keys(filteredEngines).forEach((k) => {
-        const engineRootPath = doResolve(k);
+        // This is needed to find the path to the just installed modules.
+        //  require function in nodejs operates based on the state of the module cache at the time of the call
+        // and it doesn’t dynamically update to check if a module has being installed  since the cache was created
+
+        const pathLookups = generateLookupPaths(k);
+        const engineRootPath = pathLookups.find((v) => fsExistsSync(v));
+
         const configPath = engineRootPath ? path.join(engineRootPath, 'renative.engine.json') : null;
         if (!configPath || !fsExistsSync(configPath)) {
             const engVer = getScopedVersion(c, k, filteredEngines[k], 'engineTemplates');
@@ -542,7 +555,7 @@ export const getEngineRunnerByPlatform = (platform: RnvPlatform, ignoreMissingEr
 
 export const getEngineRunnerByOwnerID = (task: RnvTask) => {
     const ctx = getContext();
-    const engine = ctx.runtime.enginesByIndex.find((v) => v.config.packageName === task.ownerID);
+    const engine = ctx.runtime.enginesByIndex.find((v) => v.config.name === task.ownerID);
     return engine;
 };
 

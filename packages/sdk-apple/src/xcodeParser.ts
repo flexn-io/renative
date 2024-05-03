@@ -18,9 +18,8 @@ import { provision } from 'ios-mobileprovision-finder';
 import path from 'path';
 import { getAppFolderName } from './common';
 import { parseProvisioningProfiles } from './provisionParser';
-import { Context } from './types';
 import { getAppId } from '@rnv/sdk-utils';
-import { getContext } from './getContext';
+import { Context, getContext } from './getContext';
 
 export const parseXcodeProject = async () => {
     const c = getContext();

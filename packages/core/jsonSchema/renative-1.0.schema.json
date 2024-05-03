@@ -5078,8 +5078,9 @@
         "integration": {
           "type": "object",
           "properties": {
-            "packageName": {
-              "type": "string"
+            "name": {
+              "type": "string",
+              "description": "Name of the integration (best to use name of the actual package)"
             }
           },
           "additionalProperties": false
@@ -5090,16 +5091,13 @@
             "custom": {
               "$ref": "#/definitions/zodExt"
             },
-            "id": {
+            "name": {
               "type": "string",
-              "description": "ID of engine"
-            },
-            "packageName": {
-              "type": "string"
+              "description": "Name of the engine (best to use name of the actual package)"
             },
             "engineExtension": {
               "type": "string",
-              "description": "Engine extension ised by rnv during compilation"
+              "description": "Engine extension used by rnv during compilation"
             },
             "overview": {
               "type": "string",
@@ -5527,12 +5525,6 @@
           "properties": {
             "projectTemplates": {
               "$ref": "#/definitions/zodProjectTemplates"
-            },
-            "engineIdMap": {
-              "type": "object",
-              "additionalProperties": {
-                "type": "string"
-              }
             },
             "engineTemplates": {
               "type": "object",

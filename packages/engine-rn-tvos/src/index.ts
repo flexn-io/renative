@@ -1,14 +1,15 @@
 import { createRnvEngine, GetContextType } from '@rnv/core';
-import { Tasks as TasksSdkAndroid } from '@rnv/sdk-android';
-import { Tasks as TasksSdkApple } from '@rnv/sdk-apple';
-import { Tasks as TasksSdkReactNative } from '@rnv/sdk-react-native';
+import ModuleSDKAndroid from '@rnv/sdk-android';
+import ModuleSDKApple from '@rnv/sdk-apple';
+import ModuleSDKReactNative from '@rnv/sdk-react-native';
 import { withRNVBabel } from './adapters/babelAdapter';
 import { withRNVMetro } from './adapters/metroAdapter';
 import { withRNVRNConfig } from '@rnv/sdk-react-native';
 import { Config } from './config';
 
 const Engine = createRnvEngine({
-    tasks: [...TasksSdkAndroid, ...TasksSdkApple, ...TasksSdkReactNative],
+    extendModules: [ModuleSDKAndroid, ModuleSDKApple, ModuleSDKReactNative],
+    tasks: [],
     config: Config,
     runtimeExtraProps: {
         reactNativePackageName: 'react-native-tvos',

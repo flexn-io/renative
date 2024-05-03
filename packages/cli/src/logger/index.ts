@@ -275,7 +275,7 @@ export const logSummary = (opts?: { header?: string; headerStyle?: 'success' | '
         // if (ctx.platform) {
         //     addon = ` ($.platforms.${ctx.platform}.engine)`;
         // }
-        str += printIntoBox(`Engine: ${currentChalk.gray(ctx.runtime?.engine?.config?.id || '')}`);
+        str += printIntoBox(`Engine: ${currentChalk.gray(ctx.runtime?.engine?.id || '')}`);
     }
     if (ctx.runtime?.currentTemplate) {
         str += printIntoBox(`Template: ${currentChalk.gray(ctx.runtime?.currentTemplate)}`);
@@ -587,7 +587,7 @@ export const logError = (e: Error | string | unknown, opts?: { skipAnalytics: bo
         const extra = {
             command: getCurrentCommand(),
             version: ctx.rnvVersion,
-            engine: ctx.runtime?.engine?.config?.id,
+            engine: ctx.runtime?.engine?.id,
             platform: ctx.platform,
             bundleAssets: !!ctx.runtime?.bundleAssets,
             os: ctx.process?.platform,

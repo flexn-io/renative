@@ -3,7 +3,6 @@ import {
     RnvContext,
     executeAsync,
     getConfigProp,
-    copyFolderContentsRecursiveSync,
     chalk,
     logDefault,
     logInfo,
@@ -28,19 +27,8 @@ export const configureNextIfRequired = async () => {
 
     c.runtime.platformBuildsProjectPath = `${getAppFolder()}`;
 
-    await copyAssetsFolder();
-
     const destPath = path.join(c.paths.project.dir, 'public');
-
-    if (c.paths.appConfig.dirs) {
-        c.paths.appConfig.dirs.forEach((v) => {
-            const sourcePath = path.join(v, `assets/${c.platform}`);
-            copyFolderContentsRecursiveSync(sourcePath, destPath);
-        });
-    } else {
-        const sourcePath = path.join(c.paths.appConfig.dir, `assets/${c.platform}`);
-        copyFolderContentsRecursiveSync(sourcePath, destPath);
-    }
+    await copyAssetsFolder(destPath);
 };
 
 export const runWebNext = async () => {

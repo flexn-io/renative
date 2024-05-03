@@ -170,7 +170,8 @@ export const addDevelopTizenCertificate = (c: RnvContext, secureProfileConfig: T
             });
     });
 
-const _getDeviceID = async (c: RnvContext, target: string) => {
+const _getDeviceID = async (target: string) => {
+    const c = getContext();
     const { device } = c.program.opts();
 
     if (device) {
@@ -431,7 +432,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
     if (isTargetSpecified) {
         // The user requested a specific target, searching for it in active ones
         if (net.isIP(target)) {
-            deviceID = await _getDeviceID(c, target);
+            deviceID = await _getDeviceID(target);
             return continueLaunching();
         }
 

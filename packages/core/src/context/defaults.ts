@@ -1,7 +1,4 @@
-// import path from 'path';
 import type { RnvContext, RnvContextPathObj } from './types';
-
-// export const USER_HOME_DIR = homedir();
 
 export const generateRnvConfigPathObj = (): RnvContextPathObj => {
     return {
@@ -29,7 +26,7 @@ export const generateRnvConfigFileObj = () => {
 };
 
 const runtime: RnvContext['runtime'] = {
-    integrationsByIndex: [],
+    modulesByIndex: [],
     plugins: {},
     pluginVersions: {},
     enginesByPlatform: {},

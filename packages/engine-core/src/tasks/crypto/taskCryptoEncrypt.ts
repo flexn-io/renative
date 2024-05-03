@@ -20,8 +20,9 @@ import {
     createTask,
 } from '@rnv/core';
 import { statSync } from 'fs';
-import { TaskOptions, getEnvExportCmd, getEnvVar } from './common';
+import { getEnvExportCmd, getEnvVar } from './common';
 import { getContext } from '../../getContext';
+import { TaskOptions } from '../../taskOptions';
 
 const iocane = require('iocane');
 

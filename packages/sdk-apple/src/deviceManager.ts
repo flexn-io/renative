@@ -6,22 +6,22 @@ import {
     logWarning,
     logDebug,
     executeAsync,
-    RnvContext,
     inquirerPrompt,
     RnvPlatform,
     ExecOptionsPresets,
     logInfo,
     logSuccess,
-    getContext,
 } from '@rnv/core';
 import { AppiumAppleDevice, AppleDevice } from './types';
 import { execFileSync } from 'child_process';
+import { getContext } from './getContext';
 
 const ERROR_MSG = {
     TARGET_EXISTS: 'Unable to boot device in current state: Booted',
 };
 
-export const getAppleDevices = async (c: RnvContext, ignoreDevices?: boolean, ignoreSimulators?: boolean) => {
+export const getAppleDevices = async (ignoreDevices?: boolean, ignoreSimulators?: boolean) => {
+    const c = getContext();
     const { platform } = c;
 
     logDefault('getAppleDevices', `ignoreDevices:${ignoreDevices} ignoreSimulators:${ignoreSimulators}`);
@@ -181,10 +181,9 @@ const _parseIOSDevicesList = (
 };
 
 export const launchAppleSimulator = async (target: string | boolean) => {
-    const c = getContext();
     logDefault('launchAppleSimulator', `${target}`);
 
-    const devicesArr = await getAppleDevices(c, true);
+    const devicesArr = await getAppleDevices(true);
 
     let selectedDevice;
     for (let i = 0; i < devicesArr.length; i++) {
@@ -262,7 +261,7 @@ export const listAppleDevices = async () => {
     logDefault('listAppleDevices');
     const c = getContext();
     const { platform } = c;
-    const devicesArr = await getAppleDevices(c);
+    const devicesArr = await getAppleDevices();
     let devicesString = '';
     devicesArr.forEach((v, i) => {
         devicesString += ` [${i + 1}]> ${chalk().bold(v.name)} | ${v.icon} | v: ${chalk().green(

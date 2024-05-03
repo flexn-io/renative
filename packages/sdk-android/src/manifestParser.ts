@@ -21,8 +21,8 @@ import {
     ConfigAndroidResourcesNode,
     RnvFolderName,
 } from '@rnv/core';
-import { Context } from './types';
 import { getBuildFilePath, getAppId, addSystemInjects } from '@rnv/sdk-utils';
+import { Context } from './getContext';
 
 const PROHIBITED_DUPLICATE_TAGS = ['intent-filter'];
 const SYSTEM_TAGS = ['tag', 'children'];
