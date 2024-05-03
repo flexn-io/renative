@@ -176,6 +176,7 @@ Make sure you take into account special characters that might need to be escaped
 
 export default createTask({
     description: 'Encrypts secure files from `~/<wokspace>/<project>/..` to project',
+    dependsOn: [RnvTaskName.configureSoft],
     fn: async ({ ctx }) => {
         const projectName = ctx.files.project.config?.projectName;
         if (!projectName) {
