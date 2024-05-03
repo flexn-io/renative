@@ -47,6 +47,7 @@ const _unzipAndCopy = async (
 
 export default createTask({
     description: 'Decrypt encrypted project files into local `~/<wokspace>/<project>/..`',
+    dependsOn: [RnvTaskName.configureSoft],
     fn: async ({ ctx }) => {
         const crypto = ctx.files.project.config?.crypto;
         const sourceRaw = crypto?.path;
