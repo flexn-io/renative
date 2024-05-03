@@ -2,7 +2,6 @@ import path from 'path';
 import { fsExistsSync, readObjectSync, writeFileSync } from '../system/fs';
 import { installPackageDependencies } from '../projects/npm';
 import { logDebug, logDefault, chalk, logInfo, logWarning, logError } from '../logger';
-import { doResolve } from '../system/resolve';
 import { configurePlugins } from '../plugins';
 import type { RnvContext } from '../context/types';
 import type { RnvTask } from '../tasks/types';
@@ -17,6 +16,7 @@ import { getConfigRootProp } from '../context/contextProps';
 import { registerRnvTasks } from '../tasks/taskRegistry';
 import { createDependencyMutation } from '../projects/mutations';
 import type { ConfigFileEngine } from '../schema/types';
+import { generateLookupPaths } from '../configs';
 import { extractEngineName } from './nameExtractor';
 
 export const registerEngine = async (engine: RnvEngine, platform?: RnvPlatform, engConfig?: RnvEngineTemplate) => {
@@ -417,10 +417,15 @@ export const installEngines = async (failOnMissingDeps?: boolean): Promise<boole
     const enginesToInstall: Array<RnvEngineInstallConfig> = [];
     const readyEngines: Array<string> = [];
     const engineConfigs: Array<RnvEngineInstallConfig> = [];
-    // if (filteredEngines) {
 
     Object.keys(filteredEngines).forEach((k) => {
-        const engineRootPath = doResolve(k);
+        // This is needed to find the path to the just installed modules.
+        //  require function in nodejs operates based on the state of the module cache at the time of the call
+        // and it doesn’t dynamically update to check if a module has being installed  since the cache was created
+
+        const pathLookups = generateLookupPaths(k);
+        const engineRootPath = pathLookups.find((v) => fsExistsSync(v));
+
         const configPath = engineRootPath ? path.join(engineRootPath, 'renative.engine.json') : null;
         if (!configPath || !fsExistsSync(configPath)) {
             const engVer = getScopedVersion(c, k, filteredEngines[k], 'engineTemplates');
