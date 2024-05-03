@@ -1,11 +1,11 @@
 import {
     chalk,
     logToSummary,
-    RnvTaskOptionPresets,
     getRegisteredEngines,
     createTask,
     RnvTaskName,
     generateStringFromTaskOption,
+    RnvTaskOptions,
 } from '@rnv/core';
 
 export default createTask({
@@ -14,7 +14,7 @@ export default createTask({
         // PARAMS
         let optsString = '';
 
-        RnvTaskOptionPresets.withAll().forEach((param) => {
+        Object.values(RnvTaskOptions).forEach((param) => {
             optsString += chalk().grey(`${generateStringFromTaskOption(param)}, ${param.description}\n`);
         });
 

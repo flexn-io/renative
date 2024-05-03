@@ -16,8 +16,9 @@ import {
     RnvFolderName,
 } from '@rnv/core';
 import { getAppFolderName } from './common';
-import { Context, FilePlistJSON } from './types';
+import { FilePlistJSON } from './types';
 import { addSystemInjects, getAppTitle, getAppVersion, getAppVersionCode, getBuildFilePath } from '@rnv/sdk-utils';
+import { Context } from './getContext';
 
 const isBool = (value: unknown) => typeof value === 'boolean';
 const isNumber = (value: unknown) => typeof value === 'number' && Number.isFinite(value);
@@ -93,7 +94,9 @@ export const parseInfoPlist = () =>
         const orientationSupport = getConfigProp('orientationSupport');
         const urlScheme = getConfigProp('urlScheme');
 
-        const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
+        const plistPath = getConfigProp('schemeTarget')
+            ? path.join(appFolder, `${getConfigProp('schemeTarget')}/Info.plist`)
+            : path.join(appFolder, `${appFolderName}/Info.plist`);
 
         // PLIST
         let plistObj =
@@ -115,6 +118,7 @@ export const parseInfoPlist = () =>
         if (c.payload.pluginConfigiOS.embeddedFonts.length) {
             plistObj.UIAppFonts = c.payload.pluginConfigiOS.embeddedFonts;
         }
+
         // PERMISSIONS
         const includedPermissions = getConfigProp('includedPermissions');
         if (includedPermissions && c.buildConfig.permissions) {

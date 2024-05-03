@@ -119,6 +119,14 @@ const _getInstallScript = (c: RnvContext) => {
 
 export const isYarnInstalled = () => commandExistsSync('yarn') || doResolve('yarn', false);
 
+export const checkAndInstallPackageDependenciesIfRequired = async () => {
+    const ctx = getContext();
+
+    if (ctx.mutations.pendingMutations.length > 0) {
+        await installPackageDependencies();
+    }
+};
+
 export const installPackageDependencies = async (failOnError = false) => {
     const c = getContext();
     const result = await handleMutations();

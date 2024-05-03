@@ -70,9 +70,7 @@ export const initializeTask = async (taskInstance: RnvTask | undefined) => {
 
     if (c.runtime.engine?.config) {
         logInfo(
-            `Current engine: ${chalk().bold(c.runtime.engine?.config?.id)} ${chalk().grey(
-                `(${c.runtime.engine?.rootPath})`
-            )}`
+            `Current engine: ${chalk().bold(c.runtime.engine?.id)} ${chalk().grey(`(${c.runtime.engine?.rootPath})`)}`
         );
     } else {
         logInfo(`Current engine: n/a`);
@@ -181,7 +179,8 @@ Description: ${taskInstance.description}
 };
 
 const _populateExtraParameters = (c: RnvContext, task: RnvTask) => {
-    c.program?.allowUnknownOption(false); // integration options are not known ahead of time
+    // TODO: Enable strict mode before release
+    //c.program?.allowUnknownOption(false); // integration options are not known ahead of time
     if (task.options) {
         task.options.forEach((opt) => {
             c.program.option?.(generateStringFromTaskOption(opt), opt.description);

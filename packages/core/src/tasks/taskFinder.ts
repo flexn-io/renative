@@ -31,7 +31,7 @@ export const findTasksByTaskName = (taskName: string) => {
                 // If we found a task with platform restriction and it does not match current platform we skip it
                 return;
             }
-            if (ctx.runtime.engine && v.ownerID !== ctx.runtime.engine?.config?.packageName) {
+            if (ctx.runtime.engine && v.ownerID !== ctx.runtime.engine?.config?.name) {
                 // If we already know specific engine to be used and task is not from that engine we skip it
                 return;
             }

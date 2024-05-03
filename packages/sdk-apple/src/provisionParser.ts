@@ -1,7 +1,7 @@
 import { provision, cert } from 'ios-mobileprovision-finder';
 import path from 'path';
 import { getConfigProp, chalk, logWarning } from '@rnv/core';
-import { Context } from './types';
+import { Context } from './getContext';
 
 export const parseProvisioningProfiles = async (c: Context) => {
     // PROJECT

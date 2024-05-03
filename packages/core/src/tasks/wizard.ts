@@ -10,14 +10,8 @@ import { RnvTask } from './types';
 const isTaskSupportedOnPlatform = (task: RnvTask, platform: RnvPlatform) => {
     if (!task.platforms) return true;
 
-    // TODO
-    // Filtering only by platform leaves more tasks than nescessary
-    // But also filtering by `task.ownerID !== selectedEngineID` filters out _all_ integration tasks
-    // `isEngine` hackily prevents that
-    const isEngine = task.ownerID !== '@rnv/engine-core' && task.ownerID?.includes('/engine');
-
-    const selectedEngineID = getEngineRunnerByPlatform(platform)?.config.packageName;
-    if (isEngine && selectedEngineID && task.ownerID && task.ownerID !== selectedEngineID) {
+    const selectedEngineID = getEngineRunnerByPlatform(platform)?.config.name;
+    if (task.ownerType === 'engine' && selectedEngineID && task.ownerID && task.ownerID !== selectedEngineID) {
         // If we already specified platform we can skip tasks registered to unsupported engines
         return false;
     }

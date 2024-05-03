@@ -1,9 +1,10 @@
-import { ConfigPluginPlatformSchema, RnvContext } from '@rnv/core';
+import { ConfigPluginPlatformSchema } from '@rnv/core';
 
 export type Payload = {
     pluginConfigAndroid: {
         gradleWrapperVersion: string;
         injectReactNativeEngine: string;
+        injectActivityOnCreate: string;
         appBuildGradleImplementations: string;
         pluginApplicationImports: string;
         reactNativeHostMethods: string;
@@ -51,8 +52,6 @@ export type Payload = {
         };
     };
 };
-
-export type Context = RnvContext<Payload>;
 
 export type AndroidDevice = {
     udid: string;

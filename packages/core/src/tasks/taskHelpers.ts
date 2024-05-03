@@ -2,7 +2,7 @@ import { inquirerPrompt } from '../api';
 import { getContext } from '../context/provider';
 import { getEngineRunnerByPlatform, registerPlatformEngine } from '../engines';
 import { chalk, logInfo } from '../logger';
-import { RnvTask, RnvTaskMap, RnvTaskOption } from './types';
+import { RnvTask, RnvTaskOption } from './types';
 
 const printCurrentPlatform = () => {
     const ctx = getContext();
@@ -61,33 +61,6 @@ export const getTaskNameFromCommand = (): string | undefined => {
     if (c.subCommand) taskName += ` ${c.subCommand}`;
 
     return taskName;
-};
-
-export const generateRnvTaskMap = <OKey extends string>(
-    taskArr: ReadonlyArray<RnvTask<OKey>>,
-    config: { name?: string; packageName?: string }
-) => {
-    const tasks: RnvTaskMap<OKey> = {};
-
-    const ownerID = config.packageName || config.name;
-    if (!ownerID) throw new Error('generateRnvTaskMap() requires config.<packageName | name> to be defined!');
-
-    taskArr.forEach((taskBlueprint) => {
-        const taskInstance = { ...taskBlueprint };
-        const plts = taskInstance.platforms || [];
-        const key = `${ownerID}:${plts.join('-')}:${taskInstance.task}`;
-        taskInstance.ownerID = ownerID;
-        taskInstance.key = key;
-        tasks[key] = taskInstance;
-    });
-    // if (extedTaskMaps) {
-    //     extedTaskMaps.forEach((taskMap) => {
-    //         Object.keys(taskMap).forEach((key) => {
-    //             tasks[key] = taskMap[key];
-    //         });
-    //     });
-    // }
-    return tasks;
 };
 
 export const generateStringFromTaskOption = (opt: RnvTaskOption) => {

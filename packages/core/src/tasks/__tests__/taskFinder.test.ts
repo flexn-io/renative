@@ -1,4 +1,4 @@
-import { findSuitableTask } from '../taskFinder';
+import { findSuitableTask, findTasksByTaskName } from '../taskFinder';
 import { getContext } from '../../context/provider';
 import { generateContextDefaults } from '../../context/defaults';
 import { getTaskNameFromCommand } from '../taskHelpers';
@@ -79,5 +79,20 @@ describe('Get suitable tasks', () => {
         // THEN
         expect(inquirerPrompt).toHaveBeenCalledTimes(1);
         expect(result).toEqual(MOCK_TASKS['en1::mock-task']);
+    });
+});
+
+describe('findTasksByTaskName', () => {
+    it('should find tasks by task name', async () => {
+        // GIVEN
+        jest.mocked(getContext).mockReturnValue(generateContextDefaults());
+        const ctx = getContext();
+        ctx.platform = 'android';
+        jest.mocked(getRegisteredTasks).mockReturnValue({ ...MOCK_TASKS });
+        // WHEN
+        const { match, available } = findTasksByTaskName('mock-task');
+        // THEN
+        expect(match).toEqual([MOCK_TASKS['en2::mock-task']]);
+        expect(available).toEqual(Object.values(MOCK_TASKS));
     });
 });

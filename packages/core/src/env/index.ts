@@ -26,7 +26,7 @@ const _generateEnvVars = (c: RnvContext) => {
         RNV_APP_BUILD_DIR: getRelativePath(c.paths.project.dir, getAppFolder()),
         RNV_IS_MONOREPO: isMonorepo,
         RNV_MONO_ROOT: isMonorepo ? path.join(c.paths.project.dir, monoRoot) : c.paths.project.dir,
-        RNV_ENGINE: c.runtime.engine?.config.id,
+        RNV_ENGINE: c.runtime.engine?.id,
         RNV_IS_NATIVE_TV: c.platform ? ['tvos', 'androidtv', 'firetv'].includes(c.platform) : false,
     };
 

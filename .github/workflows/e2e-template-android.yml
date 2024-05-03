@@ -30,7 +30,7 @@ jobs:
                   yarn config set network-timeout 300000
             - name: Bootstrap
               run: |
-                  yarn bootstrap-clean
+                  yarn bootstrap
             - name: Run
               run: |
                   cd packages/template-starter && yarn run:android-test & sleep 180

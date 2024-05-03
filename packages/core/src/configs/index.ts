@@ -183,7 +183,7 @@ const _loadConfigFiles = (
     // return result;
 };
 
-const generateLookupPaths = (pkgName: string) => {
+export const generateLookupPaths = (pkgName: string) => {
     const pathLookups: string[] = [
         // Following ones are for monorepo
         path.join(__dirname, '../..', RnvFolderName.nodeModules, pkgName),
@@ -297,15 +297,9 @@ export const parseRenativeConfigs = async () => {
     generatePlatformTemplatePaths();
 
     if (c.runtime.appId) {
-        if (!c.files.appConfig.config) {
-            // _generateConfigPaths(
-            //     c.paths.appConfig,
-            //     path.join(c.paths.project.appConfigsDir, c.runtime.appId)
-            // );
-            if (c.runtime.appConfigDir) {
-                generateContextPaths(c.paths.appConfig, c.runtime.appConfigDir);
-                _loadConfigFiles(c.files.appConfig, c.paths.appConfig, true);
-            }
+        if (c.runtime.appConfigDir) {
+            generateContextPaths(c.paths.appConfig, c.runtime.appConfigDir);
+            _loadConfigFiles(c.files.appConfig, c.paths.appConfig, true);
         }
 
         const workspaceAppConfigsDir = getRealPath(c.buildConfig.workspaceAppConfigsDir);
