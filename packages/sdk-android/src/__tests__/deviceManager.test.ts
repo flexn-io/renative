@@ -198,14 +198,15 @@ describe('askForNewEmulator', () => {
 
         jest.mocked(inquirerPrompt).mockResolvedValueOnce({ confirm: 'true' });
         jest.mocked(inquirerPrompt).mockResolvedValueOnce({ newEmuName: 'mock_emu' });
-        jest.mocked(execCLI).mockResolvedValue('command completed');
+        jest.mocked(execCLI).mockImplementation(() => Promise.resolve('resolved'));
         const spy1 = jest.spyOn(deviceManager, 'launchAndroidSimulator').mockResolvedValue(true);
 
         //WHEN
-        const result = deviceManager.askForNewEmulator();
+        const result = await deviceManager.askForNewEmulator();
         //THEN
         expect(execCLI).toHaveBeenCalledTimes(2);
-        expect(result).rejects.toBe('Action canceled!');
+        expect(result).toBeTruthy();
+
         spy1.mockRestore();
     });
 });

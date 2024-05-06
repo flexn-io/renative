@@ -587,7 +587,6 @@ export const askForNewEmulator = async () => {
     if (!platform) return;
 
     let emuName = c.files.workspace.config?.defaultTargets?.[platform];
-
     const { confirm } = await inquirerPrompt({
         name: 'confirm',
         type: 'confirm',
@@ -613,15 +612,15 @@ export const askForNewEmulator = async () => {
         switch (platform) {
             case 'android':
                 return _createEmulator(c, sdk, 'google_apis', emuName, arch).then(() =>
-                    launchAndroidSimulator(emuLaunch, true)
+                    deviceManager.launchAndroidSimulator(emuLaunch, true)
                 );
             case 'androidtv':
                 return _createEmulator(c, sdk, 'android-tv', emuName, arch).then(() =>
-                    launchAndroidSimulator(emuLaunch, true)
+                    deviceManager.launchAndroidSimulator(emuLaunch, true)
                 );
             case 'androidwear':
                 return _createEmulator(c, sdk, 'android-wear', emuName, arch).then(() =>
-                    launchAndroidSimulator(emuLaunch, true)
+                    deviceManager.launchAndroidSimulator(emuLaunch, true)
                 );
             default:
                 return Promise.reject('Cannot find any active or created emulators');
@@ -634,13 +633,13 @@ const _createEmulator = (c: RnvContext, apiVersion: string, emuPlatform: string,
     logDefault('_createEmulator');
 
     return execCLI(CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};${arch}"`)
-        .then(() =>
+        .then(() => {
             execCLI(
                 CLI_ANDROID_AVDMANAGER,
                 `create avd -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};x86"`,
                 ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER
-            )
-        )
+            );
+        })
         .catch((e) => logError(e));
 };
 
