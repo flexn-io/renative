@@ -1,4 +1,4 @@
-import { createRnvContext, getContext } from '@rnv/core';
+import { createRnvContext, execCLI, getContext, inquirerPrompt } from '@rnv/core';
 import * as deviceManager from '../deviceManager';
 import { AndroidDevice } from '../types';
 
@@ -118,6 +118,94 @@ describe('launchAndroidSimulator', () => {
 
         //THEN
         expect(result).toEqual(true);
+        spy1.mockRestore();
+    });
+});
+
+describe('resetAdb', () => {
+    it('reset android debug bridge ', async () => {
+        //GIVEN
+        const ctx = getContext();
+        ctx.program.opts().resetAdb = true;
+        //WHEN
+        await deviceManager.resetAdb();
+
+        //THEN
+        expect(execCLI).toHaveBeenCalledTimes(2);
+    });
+});
+
+//need deeper mocking...
+// describe('getAndroidTargets', () => {
+//     it('return list of android targets', async () => {
+//         //GIVEN
+//         const ctx = getContext();
+//         ctx.program.opts().device = 'device1';
+//         ctx.program.opts().skipTargetCheck = false;
+//         ctx.platform = 'android';
+//         jest.mocked(execCLI)
+//             .mockImplementation()
+//             .mockResolvedValueOnce('List of devices attached\n')
+//             .mockResolvedValueOnce('android_mock_phone\n' + 'android_mock_tv\n' + 'ios_mock_phone\n' + 'Wear_OS');
+
+//         //WHEN
+//         const result = await deviceManager.getAndroidTargets(false, false);
+
+//         //THEN
+//         expect(result).toBe([]);
+//         expect(execCLI).toHaveBeenCalledTimes(2);
+//     });
+// });
+
+describe('connectToWifiDevice', () => {
+    it('fail when connect to faulty IP address', async () => {
+        //GIVEN
+        jest.mocked(execCLI).mockResolvedValue("failed to connect to '1.1.1.1:5555': Operation timed out");
+        //WHEN
+        const result = await deviceManager.connectToWifiDevice('1.1.1.1');
+
+        //THEN
+        expect(execCLI).toHaveBeenCalledTimes(1);
+        expect(result).toBeFalsy();
+    });
+    it('pass when connect to correct IP address', async () => {
+        //GIVEN
+        jest.mocked(execCLI).mockResolvedValue('connected to 1.1.1.1:5555');
+        //WHEN
+        const result = await deviceManager.connectToWifiDevice('1.1.1.1');
+
+        //THEN
+        expect(execCLI).toHaveBeenCalledTimes(1);
+        expect(result).toBeTruthy();
+    });
+});
+
+describe('askForNewEmulator', () => {
+    it('fail when user declines', async () => {
+        //GIVEN
+        const ctx = getContext();
+        ctx.platform = 'android';
+
+        jest.mocked(inquirerPrompt).mockResolvedValue({ confirm: 'false' });
+        //WHEN
+        //THEN
+        expect(deviceManager.askForNewEmulator()).rejects.toBe('Action canceled!');
+    });
+    it('pass', async () => {
+        //GIVEN
+        const ctx = getContext();
+        ctx.platform = 'android';
+
+        jest.mocked(inquirerPrompt).mockResolvedValueOnce({ confirm: 'true' });
+        jest.mocked(inquirerPrompt).mockResolvedValueOnce({ newEmuName: 'mock_emu' });
+        jest.mocked(execCLI).mockResolvedValue('command completed');
+        const spy1 = jest.spyOn(deviceManager, 'launchAndroidSimulator').mockResolvedValue(true);
+
+        //WHEN
+        const result = deviceManager.askForNewEmulator();
+        //THEN
+        expect(execCLI).toHaveBeenCalledTimes(2);
+        expect(result).rejects.toBe('Action canceled!');
         spy1.mockRestore();
     });
 });
