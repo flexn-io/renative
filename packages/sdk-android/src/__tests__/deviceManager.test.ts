@@ -135,28 +135,6 @@ describe('resetAdb', () => {
     });
 });
 
-//need deeper mocking...
-// describe('getAndroidTargets', () => {
-//     it('return list of android targets', async () => {
-//         //GIVEN
-//         const ctx = getContext();
-//         ctx.program.opts().device = 'device1';
-//         ctx.program.opts().skipTargetCheck = false;
-//         ctx.platform = 'android';
-//         jest.mocked(execCLI)
-//             .mockImplementation()
-//             .mockResolvedValueOnce('List of devices attached\n')
-//             .mockResolvedValueOnce('android_mock_phone\n' + 'android_mock_tv\n' + 'ios_mock_phone\n' + 'Wear_OS');
-
-//         //WHEN
-//         const result = await deviceManager.getAndroidTargets(false, false);
-
-//         //THEN
-//         expect(result).toBe([]);
-//         expect(execCLI).toHaveBeenCalledTimes(2);
-//     });
-// });
-
 describe('connectToWifiDevice', () => {
     it('fail when connect to faulty IP address', async () => {
         //GIVEN
