@@ -191,7 +191,7 @@ describe('askForNewEmulator', () => {
         //THEN
         expect(deviceManager.askForNewEmulator()).rejects.toBe('Action canceled!');
     });
-    it('pass', async () => {
+    it('create new simulator', async () => {
         //GIVEN
         const ctx = getContext();
         ctx.platform = 'android';
@@ -209,4 +209,92 @@ describe('askForNewEmulator', () => {
 
         spy1.mockRestore();
     });
+});
+
+describe('checkForActiveEmulator', () => {
+    it('fail if there is no platform ', async () => {
+        //GIVEN
+        //WHEN
+        const result = await deviceManager.checkForActiveEmulator();
+
+        //THEN
+        expect(result).toBe(undefined);
+    });
+    it('return simulator when there is only one simulator', async () => {
+        //GIVEN
+        const ctx = getContext();
+        ctx.platform = 'android';
+        const mockFoundDeviceList = [{ name: 'simulator1', isActive: false, udid: '', isDevice: false }];
+        const spy1 = jest.spyOn(deviceManager, 'getAndroidTargets').mockResolvedValue(mockFoundDeviceList);
+
+        //WHEN
+        const result = await deviceManager.checkForActiveEmulator();
+
+        //THEN
+        expect(result).toEqual(mockFoundDeviceList[0]);
+        spy1.mockRestore();
+    }, 10000);
+    it('return first simulator when there are multiple simulator', async () => {
+        //GIVEN
+        const ctx = getContext();
+        ctx.platform = 'android';
+        const mockFoundDeviceList = [
+            { name: 'simulator1', isActive: false, udid: '', isDevice: false },
+            { name: 'simulator2', isActive: false, udid: '', isDevice: false },
+        ];
+        const spy1 = jest.spyOn(deviceManager, 'getAndroidTargets').mockResolvedValue(mockFoundDeviceList);
+
+        //WHEN
+        const result = await deviceManager.checkForActiveEmulator();
+
+        //THEN
+        expect(result).toEqual(mockFoundDeviceList[0]);
+        spy1.mockRestore();
+    }, 10000);
+    it('return selected simulator when there are multiple simulator', async () => {
+        //GIVEN
+        const ctx = getContext();
+        ctx.platform = 'android';
+        const mockFoundDeviceList = [
+            { name: 'simulator1', isActive: false, udid: '', isDevice: false },
+            { name: 'simulator2', isActive: false, udid: '', isDevice: false },
+        ];
+        const spy1 = jest.spyOn(deviceManager, 'getAndroidTargets').mockResolvedValue(mockFoundDeviceList);
+
+        //WHEN
+        const result = await deviceManager.checkForActiveEmulator('simulator2');
+
+        //THEN
+        expect(result).toEqual(mockFoundDeviceList[1]);
+        spy1.mockRestore();
+    }, 10000);
+    it('return first found simulator when searched sim not found', async () => {
+        //GIVEN
+        const ctx = getContext();
+        ctx.platform = 'android';
+        const mockFoundDeviceList = [
+            { name: 'simulator1', isActive: false, udid: '', isDevice: false },
+            { name: 'simulator2', isActive: false, udid: '', isDevice: false },
+        ];
+        const spy1 = jest.spyOn(deviceManager, 'getAndroidTargets').mockResolvedValue(mockFoundDeviceList);
+
+        //WHEN
+        const result = await deviceManager.checkForActiveEmulator('aaaa');
+
+        //THEN
+        expect(result).toEqual(mockFoundDeviceList[0]);
+        spy1.mockRestore();
+    }, 10000);
+    it('return first found simulator when searched sim not found', async () => {
+        //GIVEN
+        const ctx = getContext();
+        ctx.platform = 'android';
+        const mockFoundDeviceList = [];
+        const spy1 = jest.spyOn(deviceManager, 'getAndroidTargets').mockResolvedValue(mockFoundDeviceList);
+
+        //WHEN
+        //THEN
+        expect(deviceManager.checkForActiveEmulator()).rejects.toBe('Could not find any active emulators');
+        spy1.mockRestore();
+    }, 100000);
 });

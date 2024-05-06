@@ -669,7 +669,8 @@ export const checkForActiveEmulator = (emulatorName?: string) =>
             // Prevent the interval from running until enough promises return to make it stop or we get a result
             if (!running) {
                 running = true;
-                getAndroidTargets(false, true, false)
+                deviceManager
+                    .getAndroidTargets(false, true, false)
                     .then(async (v) => {
                         const simsOnly = v.filter((device) => !device.isDevice);
                         logDebug('Available devices after filtering', simsOnly);
@@ -692,7 +693,7 @@ export const checkForActiveEmulator = (emulatorName?: string) =>
                             if (attempts > maxAttempts) {
                                 clearInterval(poll);
                                 reject('Could not find any active emulators');
-                                // TODO: Asking for new emulator is worng as it diverts
+                                // TODO: Asking for new emulator is wrong as it diverts
                                 // user from underlying failure of not being able to connect
                                 // return _askForNewEmulator(c , platform);
                             }
