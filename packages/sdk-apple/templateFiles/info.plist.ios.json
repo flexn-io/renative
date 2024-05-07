@@ -17,7 +17,7 @@
     "UIAppFonts": [],
     "UIBackgroundModes": ["remote-notification"],
     "UIRequiredDeviceCapabilities": ["armv7"],
-    "UILaunchStoryboardName": "LaunchScreen",
+    "UILaunchStoryboardName": "LaunchScreen.storyboard",
     "UIRequiresFullScreen": true,
     "UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait"],
     "UISupportedInterfaceOrientations~ipad": ["UIInterfaceOrientationPortrait"],
