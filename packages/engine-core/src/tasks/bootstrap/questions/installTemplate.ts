@@ -113,8 +113,14 @@ const Question = async (data: NewProjectData) => {
     const npmCacheDir = path.join(c.paths.project.dir, RnvFolderName.dotRnv, RnvFolderName.npmCache);
 
     if (localTemplatePath) {
+        // testing purposes - instant reject
+        return Promise.reject('REJECTED TESTING');
         if (!fsExistsSync(localTemplatePath)) {
             return Promise.reject(`Local template path ${localTemplatePath} does not exist`);
+        }
+        const templateConfigPath = path.join(localTemplatePath, 'renative.template.json');
+        if (!fsExistsSync(templateConfigPath)) {
+            return Promise.reject(`Local template config ${templateConfigPath} does not exist - input a valid template path`);
         }
         const localTemplatePkgPath = path.join(localTemplatePath, RnvFileName.package);
         if (!fsExistsSync(localTemplatePath)) {
