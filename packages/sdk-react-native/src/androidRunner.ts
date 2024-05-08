@@ -92,13 +92,16 @@ export const runReactNativeAndroid = async (device: { udid?: string } | undefine
     logDefault('_runGradleApp');
 
     const signingConfig = getConfigProp('signingConfig') || 'Debug';
-    const appFolder = getAppFolder();
+    const appFolder = c.paths.project.dir;
 
     const udid = device?.udid;
+    // On Windows npx does not always resolve correct path, hence we manually resolve it here
+    // https://github.com/flexn-io/renative/issues/1409#issuecomment-2095531486
+    const reactNativeCmnd = `node  ${path.join(path.dirname(require.resolve('react-native')), 'cli.js')}`;
+    // const reactNativeCmnd =  'npx react-native';
 
-    let command = `npx react-native run-android --mode=${signingConfig} --no-packager --main-activity=${
-        platform === 'androidwear' ? 'MainActivity' : 'SplashActivity'
-    }`;
+    let command = `${reactNativeCmnd} run-android --mode=${signingConfig} --no-packager --main-activity=${platform === 'androidwear' ? 'MainActivity' : 'SplashActivity'
+        }`;
 
     if (udid) {
         command += ` --deviceId=${udid}`;
@@ -127,9 +130,8 @@ export const buildReactNativeAndroid = async () => {
     const outputAab = getConfigProp('aab');
     const extraGradleParams = getConfigProp('extraGradleParams') || '';
 
-    let command = `npx react-native build-android --mode=${signingConfig} --tasks ${
-        outputAab ? 'bundle' : 'assemble'
-    }${signingConfig}`;
+    let command = `npx react-native build-android --mode=${signingConfig} --tasks ${outputAab ? 'bundle' : 'assemble'
+        }${signingConfig}`;
 
     if (extraGradleParams) {
         command += ` --extra-params ${extraGradleParams}`;
