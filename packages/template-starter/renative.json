@@ -28,6 +28,7 @@
             "tvos",
             "webos",
             "macos",
+            "windows",
             "tizenwatch",
             "kaios",
             "chromecast",
@@ -100,7 +101,8 @@
             "assetFolderPlatform": "electron"
         },
         "windows": {
-            "engine": "engine-rn-electron"
+            "engine": "engine-rn-electron",
+            "assetFolderPlatform": "electron"
         },
         "ios": {
             "engine": "engine-rn",

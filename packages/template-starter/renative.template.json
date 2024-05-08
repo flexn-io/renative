@@ -49,6 +49,7 @@
                     "webpack.config.js"
                 ],
                 "platforms": [
+                    "windows",
                     "macos",
                     "tizen",
                     "webos",
