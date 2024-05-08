@@ -113,6 +113,7 @@ const Question = async (data: NewProjectData) => {
     const npmCacheDir = path.join(c.paths.project.dir, RnvFolderName.dotRnv, RnvFolderName.npmCache);
 
     if (localTemplatePath) {
+        return Promise.reject('TEST INSTANT ERROR');
         if (!fsExistsSync(localTemplatePath)) {
             return Promise.reject(`Local template path ${localTemplatePath} does not exist`);
         }
@@ -120,6 +121,10 @@ const Question = async (data: NewProjectData) => {
         if (!fsExistsSync(localTemplatePath)) {
             return Promise.reject(`Local template package ${localTemplatePkgPath} does not exist`);
         }
+        // const templateConfigPath = path.join(localTemplatePath, RnvFileName.renativeTemplate);
+        // if (!fsExistsSync(templateConfigPath)) {
+        //     return Promise.reject(`Local template config ${templateConfigPath} does not exist - not a valid template directory`);
+        // }
         const pkg = readObjectSync<NpmPackageFile>(localTemplatePkgPath);
 
         mkdirSync(npmCacheDir);
