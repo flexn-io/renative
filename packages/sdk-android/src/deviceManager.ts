@@ -660,9 +660,7 @@ const _createEmulator = (c: RnvContext, apiVersion: string, emuPlatform: string,
         .then(() =>
             execCLI(
                 CLI_ANDROID_AVDMANAGER,
-                `create avd -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};${
-                    c.isSystemMac ? 'arm64-v8a' : 'x86'
-                }"`,
+                `create avd -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};${arch}"`,
                 ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER
             )
         )
