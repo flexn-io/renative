@@ -92,7 +92,7 @@ export const runReactNativeAndroid = async (device: { udid?: string } | undefine
     logDefault('_runGradleApp');
 
     const signingConfig = getConfigProp('signingConfig') || 'Debug';
-    const appFolder = c.paths.project.dir;
+    const appFolder = getAppFolder();
 
     const udid = device?.udid;
     // On Windows npx does not always resolve correct path, hence we manually resolve it here
@@ -129,8 +129,12 @@ export const buildReactNativeAndroid = async () => {
     const signingConfig = getConfigProp('signingConfig') || DEFAULTS.signingConfig;
     const outputAab = getConfigProp('aab');
     const extraGradleParams = getConfigProp('extraGradleParams') || '';
+    // On Windows npx does not always resolve correct path, hence we manually resolve it here
+    // https://github.com/flexn-io/renative/issues/1409#issuecomment-2095531486
+    const reactNativeCmnd = `node  ${path.join(path.dirname(require.resolve('react-native')), 'cli.js')}`;
+    // const reactNativeCmnd =  'npx react-native';
 
-    let command = `npx react-native build-android --mode=${signingConfig} --tasks ${outputAab ? 'bundle' : 'assemble'
+    let command = `${reactNativeCmnd} build-android --mode=${signingConfig} --tasks ${outputAab ? 'bundle' : 'assemble'
         }${signingConfig}`;
 
     if (extraGradleParams) {
