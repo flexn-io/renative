@@ -112,7 +112,6 @@ const Question = async (data: NewProjectData) => {
     const npmCacheDir = path.join(c.paths.project.dir, RnvFolderName.dotRnv, RnvFolderName.npmCache);
 
     if (localTemplatePath) {
-        // testing purposes - instant reject
         if (!fsExistsSync(localTemplatePath)) {
             return Promise.reject(`Local template path ${localTemplatePath} does not exist`);
         }
