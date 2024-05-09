@@ -626,7 +626,7 @@ export const askForNewEmulator = async () => {
         emuName = newEmuName;
     }
 
-    const sdk = os.arch() === 'arm64' ? '30' : '28'; // go 30 if Apple Silicon
+    const sdk = os.arch() === 'arm64' ? '33' : '28'; // go 33 if Apple Silicon
     const arch = os.arch() === 'arm64' ? 'arm64-v8a' : 'x86';
 
     if (confirm && emuName !== undefined) {
