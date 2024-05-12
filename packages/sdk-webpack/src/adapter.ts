@@ -72,13 +72,7 @@ export const getMergedConfig = (rootConfig: Configuration, appPath: string) => {
 
     // Merge => static config, adapter config , project config
     // RNV-ADDITION
-    console.log('mergedConfig', mergedConfig);
-    mergedConfig.module?.rules?.map((it) => {
-        console.log('mergedConfig rule', it);
-        if (typeof it === 'object' && it?.oneOf && Array.isArray(it.oneOf)) {
-            it.oneOf.map((p) => console.log(' mergedConfig oneOf item', p));
-        }
-    });
+
     return mergedConfig;
 };
 
