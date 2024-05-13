@@ -32,7 +32,8 @@
             "tizenwatch",
             "kaios",
             "chromecast",
-            "linux"
+            "linux",
+            "windows"
         ],
         "defaultCommandSchemes": {
             "run": "debug",
@@ -83,9 +84,7 @@
             "minSdkVersion": 21,
             "extendPlatform": "android",
             "engine": "engine-rn-tvos",
-            "includedPermissions": [
-                "INTERNET"
-            ]
+            "includedPermissions": ["INTERNET"]
         },
         "web": {
             "engine": "engine-rn-next"
