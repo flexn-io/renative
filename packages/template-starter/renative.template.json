@@ -29,7 +29,7 @@
             },
             {
                 "paths": ["webpack.config.js"],
-                "platforms": ["macos", "tizen", "webos", "tizenwatch", "tizenmobile"]
+                "platforms": ["windows", "macos", "tizen", "webos", "tizenwatch", "tizenmobile"]
             }
         ],
         "renative_json": {
