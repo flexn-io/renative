@@ -117,7 +117,7 @@ const Question = async (data: NewProjectData) => {
         }
         const templateConfigPath = path.join(localTemplatePath, RnvFileName.renativeTemplate);
         if (!fsExistsSync(templateConfigPath)) {
-            return Promise.reject(`Renative template config ${templateConfigPath} does not exist`);
+            return Promise.reject(`Renative template config path ${templateConfigPath} does not exist. Are you sure the path provided is a correct template folder?`);
         }
         const localTemplatePkgPath = path.join(localTemplatePath, RnvFileName.package);
         if (!fsExistsSync(localTemplatePath)) {
