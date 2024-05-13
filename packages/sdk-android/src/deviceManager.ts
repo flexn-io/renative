@@ -614,9 +614,25 @@ export const askForNewEmulator = async () => {
     const { confirm } = await inquirerPrompt({
         name: 'confirm',
         type: 'confirm',
-        message: `Do you want ReNative to create new Emulator (${chalk().bold(emuName)}) for you?`,
+        message: `Do you want ReNative to create new Emulator (${chalk().bold(
+            emuName
+        )}) for you? Warning: created simulator can malfunction.`,
     });
 
+    if (!confirm) {
+        const { openStudio } = await inquirerPrompt({
+            name: 'openStudio',
+            type: 'confirm',
+            message: `Would you like to create simulator manually? (It will open Android Studio.)`,
+        });
+        if (openStudio) {
+            try {
+                return executeAsync('open -a /Applications/Android\\ Studio.app');
+            } catch (error) {
+                logError(`Couldn't open Android Studio. Please check if it installed correctly.Error: ${error}`);
+            }
+        }
+    }
     if (!emuName) {
         const { newEmuName } = await inquirerPrompt({
             name: 'confirm',
@@ -653,14 +669,20 @@ export const askForNewEmulator = async () => {
     return Promise.reject('Action canceled!');
 };
 
-const _createEmulator = (c: RnvContext, apiVersion: string, emuPlatform: string, emuName: string, arch = 'x86') => {
+const _createEmulator = async (
+    c: RnvContext,
+    apiVersion: string,
+    emuPlatform: string,
+    emuName: string,
+    arch = 'x86'
+) => {
     logDefault('_createEmulator');
 
     return execCLI(CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};${arch}"`)
         .then(() =>
             execCLI(
                 CLI_ANDROID_AVDMANAGER,
-                `create avd -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};${arch}"`,
+                `create avd -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};${arch} --device"`,
                 ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER
             )
         )
