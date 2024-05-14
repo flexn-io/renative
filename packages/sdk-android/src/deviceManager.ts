@@ -651,15 +651,15 @@ export const askForNewEmulator = async () => {
         };
         switch (platform) {
             case 'android':
-                return _createEmulator(c, sdk, 'google_apis', emuName, arch).then(() =>
+                return _createEmulator(c, sdk, 'google_apis', emuName, arch, 'pixel_3a').then(() =>
                     launchAndroidSimulator(emuLaunch, true)
                 );
             case 'androidtv':
-                return _createEmulator(c, sdk, 'android-tv', emuName, arch).then(() =>
+                return _createEmulator(c, sdk, 'android-tv', emuName, arch, 'tv_1080p').then(() =>
                     launchAndroidSimulator(emuLaunch, true)
                 );
             case 'androidwear':
-                return _createEmulator(c, sdk, 'android-wear', emuName, arch).then(() =>
+                return _createEmulator(c, sdk, 'android-wear', emuName, arch, 'wearos_small_round').then(() =>
                     launchAndroidSimulator(emuLaunch, true)
                 );
             default:
@@ -674,7 +674,8 @@ const _createEmulator = async (
     apiVersion: string,
     emuPlatform: string,
     emuName: string,
-    arch = 'x86'
+    arch = 'x86',
+    device: string
 ) => {
     logDefault('_createEmulator');
 
@@ -682,7 +683,7 @@ const _createEmulator = async (
         .then(() =>
             execCLI(
                 CLI_ANDROID_AVDMANAGER,
-                `create avd -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};${arch} --device"`,
+                `create avd -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};${arch}" --device "${device}"`,
                 ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER
             )
         )
