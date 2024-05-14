@@ -38,7 +38,6 @@ const mergeIntoProjectPackage = (data: NewProjectData, updateObj: NpmPackageFile
 
 const Question = async (data: NewProjectData) => {
     const { inputs, defaults, files } = data;
-
     const customTemplate: TemplateOption = { name: 'Custom Template (npm)...', value: { type: 'custom' } };
     const localTemplate: TemplateOption = { name: 'Local Template...', value: { type: 'local' } };
     const noTemplate: TemplateOption = { name: 'No Template (blank project)', value: { type: 'none' } };
@@ -115,6 +114,10 @@ const Question = async (data: NewProjectData) => {
     if (localTemplatePath) {
         if (!fsExistsSync(localTemplatePath)) {
             return Promise.reject(`Local template path ${localTemplatePath} does not exist`);
+        }
+        const templateConfigPath = path.join(localTemplatePath, RnvFileName.renativeTemplate);
+        if (!fsExistsSync(templateConfigPath)) {
+            return Promise.reject(`Renative template config path ${templateConfigPath} does not exist. Are you sure the path provided is a correct template folder?`);
         }
         const localTemplatePkgPath = path.join(localTemplatePath, RnvFileName.package);
         if (!fsExistsSync(localTemplatePath)) {
