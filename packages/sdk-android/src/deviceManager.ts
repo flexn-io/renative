@@ -23,6 +23,7 @@ import {
     executeAsync,
     ExecOptionsPresets,
     RnvPlatformKey,
+    fsWriteFileSync,
 } from '@rnv/core';
 import { CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from './constants';
 
@@ -423,6 +424,42 @@ const getAvdDetails = (c: RnvContext, deviceName: string) => {
     return results;
 };
 
+const changeAvdDetails = (c: RnvContext, deviceName: string, oldLine: string, newLine: string) => {
+    const { ANDROID_SDK_HOME, ANDROID_AVD_HOME } = process.env;
+
+    // .avd dir might be in other place than homedir. (https://developer.android.com/studio/command-line/variables)
+    const avdConfigPaths = [
+        `${ANDROID_AVD_HOME}`,
+        `${ANDROID_SDK_HOME}/.android/avd`,
+        `${c.paths.user.homeDir}/.android/avd`,
+    ];
+
+    avdConfigPaths.forEach((cPath) => {
+        if (fsExistsSync(cPath)) {
+            const filesPath = fsReaddirSync(cPath);
+
+            filesPath.forEach((fName) => {
+                const fPath = path.join(cPath, fName);
+                const dirent = fsLstatSync(fPath);
+                if (!dirent.isDirectory() && fName === `${deviceName}.ini`) {
+                    const avdData = fsReadFileSync(fPath).toString();
+                    const lines = avdData.trim().split(/\r?\n/);
+                    lines.forEach((line) => {
+                        const [key, value] = line.split('=');
+                        if (key === 'path') {
+                            const initData = fsReadFileSync(`${value}/config.ini`).toString();
+                            const changed_initData = initData.replace(oldLine, newLine);
+                            fsWriteFileSync(`${value}/config.ini`, changed_initData);
+                            return true;
+                        }
+                    });
+                }
+            });
+        }
+    });
+    return false;
+};
+
 const getEmulatorName = async (words: Array<string>) => {
     const emulator = words[0];
     const port = emulator.split('-')[1];
@@ -679,7 +716,7 @@ const _createEmulator = async (
 ) => {
     logDefault('_createEmulator');
 
-    return execCLI(CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};${arch}"`)
+    await execCLI(CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};${arch}"`)
         .then(() =>
             execCLI(
                 CLI_ANDROID_AVDMANAGER,
@@ -688,6 +725,14 @@ const _createEmulator = async (
             )
         )
         .catch((e) => logError(e));
+
+    try {
+        if (emuPlatform == 'android-tv') {
+            changeAvdDetails(c, emuName, 'hw.initialOrientation=portrait', 'hw.initialOrientation=landscape');
+        }
+    } catch (error) {
+        logError(error);
+    }
 };
 
 const waitForEmulatorToBeReady = (emulator: string) =>
