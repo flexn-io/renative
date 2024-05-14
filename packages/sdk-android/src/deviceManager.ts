@@ -26,7 +26,7 @@ import {
     fsWriteFileSync,
 } from '@rnv/core';
 import { CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from './constants';
-
+import * as deviceManager from './deviceManager';
 import { AndroidDevice } from './types';
 import { getContext } from './getContext';
 
@@ -67,8 +67,7 @@ export const launchAndroidSimulator = async (
 
     if (target === true) {
         const { device } = c.program.opts();
-        const list = await getAndroidTargets(false, device, device);
-
+        const list = await deviceManager.getAndroidTargets(false, device, device);
         const devicesString = composeDevicesArray(list);
         const choices = devicesString;
         const response = await inquirerPrompt({
@@ -81,7 +80,6 @@ export const launchAndroidSimulator = async (
     } else {
         newTarget = target;
     }
-
     if (newTarget) {
         const actualTarget = typeof newTarget === 'string' ? newTarget : newTarget.name;
 
@@ -135,8 +133,8 @@ export const listAndroidTargets = async () => {
     const { device } = c.program.opts();
 
     await resetAdb();
-    const list = await getAndroidTargets(false, device, device);
-    const devices = await composeDevicesString(list);
+    const list = await deviceManager.getAndroidTargets(false, device, device);
+    const devices = deviceManager.composeDevicesString(list);
     logToSummary(`Android Targets:\n${devices}`);
     if (typeof devices === 'string' && devices.trim() === '') {
         logToSummary('Android Targets: No devices found');
@@ -647,7 +645,6 @@ export const askForNewEmulator = async () => {
     if (!platform) return;
 
     let emuName = c.files.workspace.config?.defaultTargets?.[platform];
-
     const { confirm } = await inquirerPrompt({
         name: 'confirm',
         type: 'confirm',
@@ -689,15 +686,15 @@ export const askForNewEmulator = async () => {
         switch (platform) {
             case 'android':
                 return _createEmulator(c, sdk, 'google_apis', emuName, arch, 'pixel_3a').then(() =>
-                    launchAndroidSimulator(emuLaunch, true)
+                    deviceManager.launchAndroidSimulator(emuLaunch, true)
                 );
             case 'androidtv':
                 return _createEmulator(c, sdk, 'android-tv', emuName, arch, 'tv_1080p').then(() =>
-                    launchAndroidSimulator(emuLaunch, true)
+                    deviceManager.launchAndroidSimulator(emuLaunch, true)
                 );
             case 'androidwear':
                 return _createEmulator(c, sdk, 'android-wear', emuName, arch, 'wearos_small_round').then(() =>
-                    launchAndroidSimulator(emuLaunch, true)
+                    deviceManager.launchAndroidSimulator(emuLaunch, true)
                 );
             default:
                 return Promise.reject('Cannot find any active or created emulators');
@@ -717,13 +714,13 @@ const _createEmulator = async (
     logDefault('_createEmulator');
 
     await execCLI(CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};${arch}"`)
-        .then(() =>
+        .then(() => {
             execCLI(
                 CLI_ANDROID_AVDMANAGER,
                 `create avd -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};${arch}" --device "${device}"`,
                 ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER
-            )
-        )
+            );
+        })
         .catch((e) => logError(e));
 
     // Command line creates androidtv simulator initial orientation in portrait. This fix it.
@@ -762,7 +759,8 @@ export const checkForActiveEmulator = (emulatorName?: string) =>
             // Prevent the interval from running until enough promises return to make it stop or we get a result
             if (!running) {
                 running = true;
-                getAndroidTargets(false, true, false)
+                deviceManager
+                    .getAndroidTargets(false, true, false)
                     .then(async (v) => {
                         const simsOnly = v.filter((device) => !device.isDevice);
                         logDebug('Available devices after filtering', simsOnly);
@@ -785,7 +783,7 @@ export const checkForActiveEmulator = (emulatorName?: string) =>
                             if (attempts > maxAttempts) {
                                 clearInterval(poll);
                                 reject('Could not find any active emulators');
-                                // TODO: Asking for new emulator is worng as it diverts
+                                // TODO: Asking for new emulator is wrong as it diverts
                                 // user from underlying failure of not being able to connect
                                 // return _askForNewEmulator(c , platform);
                             }
