@@ -432,30 +432,14 @@ const changeAvdDetails = (c: RnvContext, deviceName: string, oldLine: string, ne
         `${c.paths.user.homeDir}/.android/avd`,
     ];
 
-    avdConfigPaths.forEach((cPath) => {
+    avdConfigPaths.forEach((dPath) => {
+        const cPath = path.join(dPath, `${deviceName}.avd`, 'config.ini');
         if (fsExistsSync(cPath)) {
-            const filesPath = fsReaddirSync(cPath);
-
-            filesPath.forEach((fName) => {
-                const fPath = path.join(cPath, fName);
-                const dirent = fsLstatSync(fPath);
-                if (!dirent.isDirectory() && fName === `${deviceName}.ini`) {
-                    const avdData = fsReadFileSync(fPath).toString();
-                    const lines = avdData.trim().split(/\r?\n/);
-                    lines.forEach((line) => {
-                        const [key, value] = line.split('=');
-                        if (key === 'path') {
-                            const initData = fsReadFileSync(`${value}/config.ini`).toString();
-                            const changed_initData = initData.replace(oldLine, newLine);
-                            fsWriteFileSync(`${value}/config.ini`, changed_initData);
-                            return true;
-                        }
-                    });
-                }
-            });
+            const initData = fsReadFileSync(cPath).toString();
+            const changed_initData = initData.replace(oldLine, newLine);
+            fsWriteFileSync(cPath, changed_initData);
         }
     });
-    return false;
 };
 
 const getEmulatorName = async (words: Array<string>) => {
