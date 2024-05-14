@@ -679,7 +679,7 @@ export const askForNewEmulator = async () => {
         emuName = newEmuName;
     }
 
-    const sdk = os.arch() === 'arm64' ? '33' : '28'; // go 33 if Apple Silicon
+    const sdk = os.arch() === 'arm64' ? (platform === 'androidwear' ? '33' : '34') : '28'; // go 34 if Apple Silicon
     const arch = os.arch() === 'arm64' ? 'arm64-v8a' : 'x86';
 
     if (confirm && emuName !== undefined) {
@@ -726,6 +726,7 @@ const _createEmulator = async (
         )
         .catch((e) => logError(e));
 
+    // Command line creates androidtv simulator initial orientation in portrait. This fix it.
     try {
         if (emuPlatform == 'android-tv') {
             changeAvdDetails(c, emuName, 'hw.initialOrientation=portrait', 'hw.initialOrientation=landscape');
