@@ -134,7 +134,7 @@ export const listAndroidTargets = async () => {
 
     await resetAdb();
     const list = await deviceManager.getAndroidTargets(false, device, device);
-    const devices = deviceManager.composeDevicesString(list);
+    const devices = await deviceManager.composeDevicesString(list);
     logToSummary(`Android Targets:\n${devices}`);
     if (typeof devices === 'string' && devices.trim() === '') {
         logToSummary('Android Targets: No devices found');
@@ -714,13 +714,13 @@ const _createEmulator = async (
     logDefault('_createEmulator');
 
     await execCLI(CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};${arch}"`)
-        .then(() => {
+        .then(() =>
             execCLI(
                 CLI_ANDROID_AVDMANAGER,
                 `create avd -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};${arch}" --device "${device}"`,
                 ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER
-            );
-        })
+            )
+        )
         .catch((e) => logError(e));
 
     // Command line creates androidtv simulator initial orientation in portrait. This fix it.
