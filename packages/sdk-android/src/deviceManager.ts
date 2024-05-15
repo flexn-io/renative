@@ -379,15 +379,15 @@ const getDeviceType = async (device: AndroidDevice, c: RnvContext) => {
     return device;
 };
 
-const getAvdDetails = (c: RnvContext, deviceName: string) => {
+const getAvdConfigPaths = () => {
+    const ctx = getContext();
     const { ANDROID_SDK_HOME, ANDROID_AVD_HOME } = process.env;
-
     // .avd dir might be in other place than homedir. (https://developer.android.com/studio/command-line/variables)
-    const avdConfigPaths = [
-        `${ANDROID_AVD_HOME}`,
-        `${ANDROID_SDK_HOME}/.android/avd`,
-        `${c.paths.user.homeDir}/.android/avd`,
-    ];
+    return [`${ANDROID_AVD_HOME}`, `${ANDROID_SDK_HOME}/.android/avd`, `${ctx.paths.user.homeDir}/.android/avd`];
+};
+
+const getAvdDetails = (deviceName: string) => {
+    const avdConfigPaths = getAvdConfigPaths();
 
     const results: { avdConfig?: Record<string, string> } = {};
 
@@ -423,14 +423,7 @@ const getAvdDetails = (c: RnvContext, deviceName: string) => {
 };
 
 const changeAvdDetails = (c: RnvContext, deviceName: string, oldLine: string, newLine: string) => {
-    const { ANDROID_SDK_HOME, ANDROID_AVD_HOME } = process.env;
-
-    // .avd dir might be in other place than homedir. (https://developer.android.com/studio/command-line/variables)
-    const avdConfigPaths = [
-        `${ANDROID_AVD_HOME}`,
-        `${ANDROID_SDK_HOME}/.android/avd`,
-        `${c.paths.user.homeDir}/.android/avd`,
-    ];
+    const avdConfigPaths = getAvdConfigPaths();
 
     avdConfigPaths.forEach((dPath) => {
         const cPath = path.join(dPath, `${deviceName}.avd`, 'config.ini');
@@ -549,7 +542,7 @@ const _parseDevicesResult = async (
                 let avdDetails;
 
                 try {
-                    avdDetails = getAvdDetails(c, line);
+                    avdDetails = getAvdDetails(line);
                 } catch (e) {
                     logError(e);
                 }
