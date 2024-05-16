@@ -2340,6 +2340,9 @@
             "version": "5.3.1",
             "web": {}
         },
+        "dotenv": {
+            "version": "16.4.5"
+        },
         "react-native-gesture-handler": {
             "version": "2.14.1",
             "android": {
