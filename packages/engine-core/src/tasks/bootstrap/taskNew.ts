@@ -6,6 +6,7 @@ import {
     configureTemplateFiles,
     generateLocalJsonSchemas,
     createTask,
+    handlePeerDepsNpm,
 } from '@rnv/core';
 import inquiryProjectFolder from './questions/projectFolder';
 import inquiryBootstrapQuestions from './questions/bootstrapQuestions';
@@ -76,6 +77,7 @@ export default createTask({
         // Telementry
         await telemetryNewProject(payload);
         await inquiryProjectInstall(payload);
+        handlePeerDepsNpm();
 
         logToSummary(generateProjectOverview(payload));
 

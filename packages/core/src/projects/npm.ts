@@ -119,6 +119,14 @@ const _getInstallScript = (c: RnvContext) => {
 
 export const isYarnInstalled = () => commandExistsSync('yarn') || doResolve('yarn', false);
 
+export const handlePeerDepsNpm = () => {
+    if (isYarnInstalled()) return;
+    logDefault('handlePeerDepsNpm');
+    const c = getContext();
+    const content = 'legacy-peer-deps=true';
+    const npmrcPath = path.join(c.paths.project.dir, '.npmrc');
+    writeFileSync(npmrcPath, content);
+};
 export const checkAndInstallPackageDependenciesIfRequired = async () => {
     const ctx = getContext();
 
