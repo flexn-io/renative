@@ -5,6 +5,8 @@ import { getTimestampPathsConfig, getAppFolder } from '../context/contextProps';
 import type { RnvPlatform } from '../types';
 import { doResolve } from '../system/resolve';
 import { getContext } from '../context/provider';
+import { inquirerPrompt } from '../api';
+import { updateProjectPlatforms, generatePlatformTemplatePaths } from '../configs/configProject';
 
 export const generatePlatformChoices = () => {
     const c = getContext();
@@ -27,13 +29,13 @@ export const cleanPlatformBuild = async (platform: RnvPlatform, cleanAllPlatform
     const cleanTasks = [];
 
     if (cleanAllPlatforms && c.buildConfig.platforms) {
-        Object.keys(c.buildConfig.platforms).forEach((k) => {
-            if (_isPlatformSupportedSync(k as RnvPlatform)) {
+        for (const k of Object.keys(c.buildConfig.platforms)) {
+            if (await _isPlatformSupported(k as RnvPlatform)) {
                 const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${k}`);
                 cleanTasks.push(cleanFolder(pPath));
             }
-        });
-    } else if (_isPlatformSupportedSync(platform)) {
+        }
+    } else if (await _isPlatformSupported(platform)) {
         const pPath = getAppFolder();
         cleanTasks.push(cleanFolder(pPath));
     }
@@ -41,17 +43,17 @@ export const cleanPlatformBuild = async (platform: RnvPlatform, cleanAllPlatform
     await Promise.all(cleanTasks);
 };
 
-export const createPlatformBuild = (platform: RnvPlatform) =>
-    new Promise<void>((resolve, reject) => {
+export const createPlatformBuild = async (platform: RnvPlatform) => {
         logDefault('createPlatformBuild');
         const c = getContext();
-
-        if (!platform || !_isPlatformSupportedSync(platform, undefined, reject)) return;
+        if(!platform) return;
+        const isPlatformSupported = await _isPlatformSupported(platform, true);
+        if(!isPlatformSupported) return;
 
         const ptDir = c.paths.project.platformTemplatesDirs[platform];
         if (!ptDir) {
-            logError(`Cannot create platform build: c.paths.project.platformTemplatesDirs[${platform}] is not defined`);
-            return;
+            // this was a logError('Cannot create platform ...') before. Shouldn't it be a reject?
+            return Promise.reject(`Cannot create platform build: c.paths.project.platformTemplatesDirs[${platform}] is not defined`);
         }
 
         const pPath = getAppFolder();
@@ -76,38 +78,41 @@ export const createPlatformBuild = (platform: RnvPlatform) =>
             c
         );
 
-        resolve();
-    });
+};
 
-const _isPlatformSupportedSync = (platform: RnvPlatform, resolve?: () => void, reject?: (e: string) => void) => {
+const _isPlatformSupported = async (platform: RnvPlatform, shouldResolve?: boolean) => {
     if (!platform) {
-        if (reject) {
-            reject(
+        if (shouldResolve) {
+            return Promise.reject(
                 chalk().red(
                     `You didn't specify platform. make sure you add "${chalk().white.bold(
                         '-p <PLATFORM>'
                     )}" option to your command!`
                 )
             );
-            return false;
         }
         return false;
     }
     const c = getContext();
 
     if (!c.runtime.availablePlatforms.includes(platform)) {
-        if (reject) {
-            reject(
-                chalk().red(
-                    `Platform ${platform} is not supported. Use one of the following: ${chalk().bold(
-                        c.runtime.availablePlatforms.join(', ')
-                    )} .`
-                )
-            );
-        }
-        return false;
+        const { enablePlatform } = await inquirerPrompt({
+            name: 'enablePlatform',
+            type: 'confirm',
+            message: `Platform ${platform} is not supported in your project. Would you like to enable it?`,
+        });
+
+        if(!enablePlatform) return false;
+        console.log('old:')
+        console.log(c.runtime.availablePlatforms);
+        console.log('new:');
+        console.log([...c.runtime.availablePlatforms, platform]);
+        updateProjectPlatforms([...c.runtime.availablePlatforms, platform]);
+        generatePlatformTemplatePaths();
+        console.log('good?')
+
+        return true;
     }
-    if (resolve) resolve();
     return true;
 };
 
