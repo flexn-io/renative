@@ -523,6 +523,14 @@ export const parseSettingsGradleSync = () => {
             pattern: '{{RN_GRADLE_PROJECT_NAME}}',
             override: c.files.project.config?.projectName?.replace('/', '-'),
         },
+        {
+            pattern: '{{SETTINGS_GRADLE_INCLUDE}}',
+            override: c.payload.pluginConfigAndroid.settingsGradleInclude,
+        },
+        {
+            pattern: '{{SETTINGS_GRADLE_PROJECT}}',
+            override: c.payload.pluginConfigAndroid.settingsGradleProject,
+        },
     ];
 
     addSystemInjects(injects);
@@ -620,6 +628,21 @@ export const injectPluginGradleSync = (pluginRoot: RnvPlugin, plugin: ConfigPlug
     // APP/BUILD.GRADLE
     if (!plugin.skipImplementation && plugin.implementation) {
         c.payload.pluginConfigAndroid.appBuildGradleImplementations += `${plugin.implementation}\n`;
+    }
+
+    // SETTINGS.GRADLE
+    // Make sure values by default are not undefined
+    if (!c.payload.pluginConfigAndroid.settingsGradleInclude) c.payload.pluginConfigAndroid.settingsGradleInclude = '';
+    if (!c.payload.pluginConfigAndroid.settingsGradleProject) c.payload.pluginConfigAndroid.settingsGradleProject = '';
+    // Add the needed injections for the plugin
+    if (plugin.templateAndroid?.settings_gradle) {
+        if (plugin.templateAndroid?.settings_gradle.include)
+            c.payload.pluginConfigAndroid.settingsGradleInclude += `, ${plugin.templateAndroid.settings_gradle.include}`;
+        if (plugin.templateAndroid?.settings_gradle.project)
+            c.payload.pluginConfigAndroid.settingsGradleProject += `${sanitizePluginPath(
+                plugin.templateAndroid.settings_gradle.project,
+                key
+            )}\n`;
     }
 
     parseAndroidConfigObject(plugin, key);
