@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Image, ScrollView, Text, View } from 'react-native';
-import { Api } from '@rnv/renative';
+import { Api, isPlatformIos } from '@rnv/renative';
 import { OrientationLocker, PORTRAIT, LANDSCAPE } from '../components/OrientationLocker';
 import { NewModuleButton } from '../components/NewModuleButton';
 import { useSplashScreen } from '../components/SplashScreen';
@@ -136,7 +136,16 @@ const AppContent = () => {
                     <TestCase id={6} title="Cast Support">
                         <CastComponent />
                     </TestCase>
+                    {/* 
+                        on iOS Splash screen does not work, package issue
+                        https://github.com/crazycodeboy/react-native-splash-screen/issues/610
+                    */}
                     <TestCase id={7} title="Splash Screen">
+                        {isPlatformIos && (
+                            <Text style={styles.text}>
+                                On iOS there is a package issue that prevents splash screen from showing
+                            </Text>
+                        )}
                         <Button onPress={() => SplashScreen.show()} title="Show SplashScreen" />
                     </TestCase>
                     <TestCase id={8} title="PhotoEditor">

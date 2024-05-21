@@ -138,7 +138,9 @@ describe('resetAdb', () => {
 describe('connectToWifiDevice', () => {
     it('fail when connect to faulty IP address', async () => {
         //GIVEN
-        jest.mocked(execCLI).mockResolvedValue("failed to connect to '1.1.1.1:5555': Operation timed out");
+        jest.mocked(execCLI).mockResolvedValue(
+            "Connection refused: failed to connect to '1.1.1.1:5555': Operation timed out"
+        );
         //WHEN
         const result = await deviceManager.connectToWifiDevice('1.1.1.1');
 
