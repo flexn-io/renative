@@ -6,7 +6,6 @@ import {
     configureTemplateFiles,
     generateLocalJsonSchemas,
     createTask,
-    handlePeerDepsNpm,
 } from '@rnv/core';
 import inquiryProjectFolder from './questions/projectFolder';
 import inquiryBootstrapQuestions from './questions/bootstrapQuestions';
@@ -25,6 +24,7 @@ import inquiryBookmarkTemplate from './questions/bookmarkTemplate';
 import inquiryAppConfigs from './questions/appConfigs';
 import inquiryConfigTemplates from './questions/configTemplates';
 import inquiryProjectInstall from './questions/installProject';
+import inquiryHandlePeerDepsNpm from './questions/resolvePeerDepsNPM';
 import {
     configureConfigOverrides,
     generateProjectOverview,
@@ -77,7 +77,7 @@ export default createTask({
         // Telementry
         await telemetryNewProject(payload);
         await inquiryProjectInstall(payload);
-        handlePeerDepsNpm();
+        await inquiryHandlePeerDepsNpm();
 
         logToSummary(generateProjectOverview(payload));
 
