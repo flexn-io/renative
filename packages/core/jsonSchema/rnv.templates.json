@@ -614,13 +614,17 @@
                                                 "type": "object",
                                                 "properties": {
                                                     "project": {
-                                                        "type": "string",
-                                                        "default": "",
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "string"
+                                                        },
                                                         "description": "project(plugin).projectDir you may want to add"
                                                     },
                                                     "include": {
-                                                        "type": "string",
-                                                        "default": "",
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "string"
+                                                        },
                                                         "description": "include next to the :app"
                                                     }
                                                 },

@@ -636,13 +636,20 @@ export const injectPluginGradleSync = (pluginRoot: RnvPlugin, plugin: ConfigPlug
     if (!c.payload.pluginConfigAndroid.settingsGradleProject) c.payload.pluginConfigAndroid.settingsGradleProject = '';
     // Add the needed injections for the plugin
     if (plugin.templateAndroid?.settings_gradle) {
-        if (plugin.templateAndroid?.settings_gradle.include)
-            c.payload.pluginConfigAndroid.settingsGradleInclude += `, ${plugin.templateAndroid.settings_gradle.include}`;
-        if (plugin.templateAndroid?.settings_gradle.project)
-            c.payload.pluginConfigAndroid.settingsGradleProject += `${sanitizePluginPath(
-                plugin.templateAndroid.settings_gradle.project,
-                key
-            )}\n`;
+        if (
+            plugin.templateAndroid?.settings_gradle.include &&
+            Array.isArray(plugin.templateAndroid?.settings_gradle.include)
+        )
+            plugin.templateAndroid?.settings_gradle.include.forEach((prjLine: string) => {
+                c.payload.pluginConfigAndroid.settingsGradleInclude += `, ${prjLine}`;
+            });
+        if (
+            plugin.templateAndroid?.settings_gradle.project &&
+            Array.isArray(plugin.templateAndroid?.settings_gradle.project)
+        )
+            plugin.templateAndroid?.settings_gradle.project.forEach((prjLine: string) => {
+                c.payload.pluginConfigAndroid.settingsGradleProject += `${sanitizePluginPath(prjLine, key)}\n`;
+            });
     }
 
     parseAndroidConfigObject(plugin, key);

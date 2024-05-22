@@ -160,8 +160,8 @@ const templateAndroid = z
         MainActivity_kt: T<ConfigTemplateAndroidMainActivityKT>(zodMainActivity_kt),
         SplashActivity_kt: z.object({}),
         settings_gradle: z.object({
-            include: z.string(),
-            project: z.string(),
+            include: z.array(z.string()),
+            project: z.array(z.string()),
         }),
         gradle_wrapper_properties: z.object({}),
         proguard_rules_pro: z.object({}),
