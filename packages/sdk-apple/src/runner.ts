@@ -146,7 +146,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
         if (c.runtime.target) {
             p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
         }
-    } else {
+    } else if (c.runtime.target || devicesArr.length > 0) {
         // check if the default sim is available
         const desiredSim = devicesArr.find((d) => d.name === c.runtime.target && !d.isDevice);
 
