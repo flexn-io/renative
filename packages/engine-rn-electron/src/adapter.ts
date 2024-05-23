@@ -1,6 +1,7 @@
 import { BabelConfig, withBabelPluginModuleResolver } from '@rnv/adapter';
+import { withRNVWebpack } from '@rnv/sdk-webpack';
 
-export const withRNVBabel = (cnf: BabelConfig): BabelConfig => {
+const withRNVBabel = (cnf: BabelConfig): BabelConfig => {
     const plugins = cnf?.plugins || [];
     return {
         retainLines: true,
@@ -11,3 +12,6 @@ export const withRNVBabel = (cnf: BabelConfig): BabelConfig => {
         plugins: [withBabelPluginModuleResolver(), ...plugins],
     };
 };
+
+
+export { withRNVWebpack, withRNVBabel };
