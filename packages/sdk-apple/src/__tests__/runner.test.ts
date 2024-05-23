@@ -85,6 +85,15 @@ describe('getIosDeviceToRunOn', () => {
             }
 
             if (type === 'list') {
+                // Testing the addition of global/project value should be handled in another UT
+                if (choices?.includes("Don't update")) {
+                    const choiceIndex = choices.findIndex((c) => c === "Don't update");
+                    return {
+                        [name as string]:
+                            (choices![choiceIndex] as { name: string; value: any }).value || choices![choiceIndex],
+                    };
+                }
+                // By default first value returned (aka the first simulator from the list in this case)
                 return {
                     [name as string]: (choices![0] as { name: string; value: any }).value || choices![0],
                 };
@@ -94,10 +103,7 @@ describe('getIosDeviceToRunOn', () => {
         const deviceArgs = await getIosDeviceToRunOn(ctx);
         //THEN
         expect(getAppleDevices).toHaveBeenCalledTimes(1);
-        // TODO: check the expected logic here because getIosDeviceToRunOn
-        // returns undefined in case of no target
-        expect(deviceArgs).toBe(undefined);
-        // expect(deviceArgs).toBe('--simulator iPhone\\ SE\\ (3rd\\ generation)');
+        expect(deviceArgs).toBe('--simulator iPhone\\ SE\\ (3rd\\ generation)');
     });
 
     it('should return the correct device when specified', async () => {
