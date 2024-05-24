@@ -55,16 +55,15 @@ export const extractSingleExecutableTask = async (
     });
     if (!hasPlatformAwareTasks && suitableTasks.length === 1) {
         return suitableTasks[0];
+    } else if (suitableTasks.length === 0) {
+        return undefined;
     }
 
     // Restart the process now we defined specific platform
     await selectPlatformIfRequired();
-    const newSuitableTasks = await findTasksByTaskName(taskName);
+    const newSuitableTasks = findTasksByTaskName(taskName);
 
-    if (newSuitableTasks.match.length === 0) {
-        logWarning('No suitable tasks found after platform selection');
-        // throw new Error('TODO cannot find any suitable tasks after platform selection');
-    } else if (newSuitableTasks.match.length === 1) {
+    if (newSuitableTasks.match.length === 1) {
         return newSuitableTasks.match[0];
     } else if (newSuitableTasks.match.length > 1) {
         // Found multiple Tasks with same name
@@ -80,6 +79,6 @@ export const extractSingleExecutableTask = async (
         });
         return result;
     }
-    // Found no tasks
-    return undefined;
+    logWarning('No suitable tasks found after platform selection');
+    // throw new Error('TODO cannot find any suitable tasks after platform selection');
 };
