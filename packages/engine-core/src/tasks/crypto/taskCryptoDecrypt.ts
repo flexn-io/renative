@@ -42,7 +42,7 @@ const _unzipAndCopy = async (
     if (ctx.files.project.package.name && fsExistsSync(ts)) {
         copyFileSync(ts, path.join(ctx.paths.workspace.dir, ctx.files.project.package.name, 'timestamp'));
     }
-    logSuccess(`Files succesfully extracted into ${destFolder}`);
+    logSuccess(`Files successfully extracted into ${destFolder}`);
 };
 
 export default createTask({

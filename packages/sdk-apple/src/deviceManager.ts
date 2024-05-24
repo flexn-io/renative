@@ -253,7 +253,7 @@ const _launchSimulator = async (selectedDevice: AppleDevice) => {
         return Promise.reject(e);
     }
 
-    logSuccess(`Succesfully launched ${selectedDevice.name}`);
+    logSuccess(`successfully launched ${selectedDevice.name}`);
     return true;
 };
 
