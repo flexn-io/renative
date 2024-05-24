@@ -409,7 +409,7 @@ const _setAutomaticSigning = async (c: Context) => {
     if (scheme && 'provisioningStyle' in scheme) {
         scheme.provisioningStyle = 'Automatic';
         writeFileSync(c.paths.appConfig.config, cnf);
-        logSuccess(`Succesfully updated ${c.paths.appConfig.config}`);
+        logSuccess(`successfully updated ${c.paths.appConfig.config}`);
     } else {
         return Promise.reject(
             `Failed to update ${c.paths.appConfig?.config}."platforms": { "${c.platform}": { buildSchemes: { "${c.runtime.scheme}" ... Object is null. Try update file manually`
@@ -444,7 +444,7 @@ const _setDevelopmentTeam = async (c: Context, teamID: string) => {
         );
     }
     writeFileSync(c.paths.appConfig.config, cnf);
-    logSuccess(`Succesfully updated ${c.paths.appConfig.config}`);
+    logSuccess(`successfully updated ${c.paths.appConfig.config}`);
 };
 
 const composeXcodeArgsFromCLI = (string: string) => {

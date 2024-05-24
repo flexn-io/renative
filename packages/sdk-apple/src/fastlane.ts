@@ -18,7 +18,7 @@ export const registerDevice = async () => {
             stdio: 'inherit',
             silent: true,
         });
-        logSuccess(`Succesfully registered device ${deviceName}:${udid}:${teamID}`);
+        logSuccess(`successfully registered device ${deviceName}:${udid}:${teamID}`);
         return true;
     } catch (e) {
         logWarning(e);
@@ -85,7 +85,7 @@ export const updateProfile = async (): Promise<boolean> => {
             stdio: 'inherit',
             silent: true,
         });
-        logSuccess(`Succesfully updated provisioning profile for ${appId}:${scheme}:${id}`);
+        logSuccess(`successfully updated provisioning profile for ${appId}:${scheme}:${id}`);
         return true;
     } catch (e) {
         logWarning(e);

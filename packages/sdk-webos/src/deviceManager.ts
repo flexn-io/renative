@@ -68,12 +68,12 @@ export const launchWebOSimulator = async (target: string | boolean) => {
 
     if (c.isSystemWin || c.isSystemLinux) {
         await executeAsync(ePath, ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY);
-        logSuccess(`Succesfully launched ${target}`);
+        logSuccess(`successfully launched ${target}`);
         return true;
     }
 
     await executeAsync(`${openCommand} ${ePath}`, ExecOptionsPresets.FIRE_AND_FORGET);
-    logSuccess(`Succesfully launched ${target}`);
+    logSuccess(`successfully launched ${target}`);
     return true;
 };
 
