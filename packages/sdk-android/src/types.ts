@@ -6,6 +6,8 @@ export type Payload = {
         injectReactNativeEngine: string;
         injectActivityOnCreate: string;
         appBuildGradleImplementations: string;
+        settingsGradleInclude: string;
+        settingsGradleProject: string;
         pluginApplicationImports: string;
         reactNativeHostMethods: string;
         packagingOptions: string;
