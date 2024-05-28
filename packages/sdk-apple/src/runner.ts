@@ -146,14 +146,16 @@ export const getIosDeviceToRunOn = async (c: Context) => {
         if (c.runtime.target) {
             p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
         }
-    } else if (c.runtime.target) {
+    } else if (c.runtime.target || devicesArr.length > 0) {
         // check if the default sim is available
         const desiredSim = devicesArr.find((d) => d.name === c.runtime.target && !d.isDevice);
 
         if (!desiredSim) {
             const { sim } = await inquirerPrompt({
                 name: 'sim',
-                message: `We couldn't find ${c.runtime.target} as a simulator supported by the current version of your Xcode. Please select another sim`,
+                message: !c.runtime.target
+                    ? `No global or project default simulator defined. Please select a supported simulator to use`
+                    : `We couldn't find ${c.runtime.target} as a simulator supported by the current version of your Xcode. Please select another sim`,
                 type: 'list',
                 choices: devicesArr
                     .filter((d) => !d.isDevice)
