@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Text, Image, View, PixelRatio, TouchableOpacity, StatusBar, ScrollView } from 'react-native';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { Text, Image, View, PixelRatio, TouchableOpacity, StatusBar, ScrollView, findNodeHandle } from 'react-native';
 import { Api } from '@rnv/renative';
 import { ICON_LOGO, CONFIG, ThemeProvider, ThemeContext, testProps } from '../config';
 import packageJson from '../../package.json';
@@ -11,6 +11,7 @@ const App = () => (
 );
 
 const AppThemed = () => {
+    const buttonRef = useRef(null);
     const { theme, toggle, dark } = useContext(ThemeContext);
 
     const [pixelRatio, setPixelRatio] = useState(1);
@@ -51,8 +52,13 @@ const AppThemed = () => {
                 }`}</Text>
                 <Text style={theme.styles.textH3}>{`pixelRatio: ${pixelRatio}, ${fontScale}`}</Text>
                 <TouchableOpacity
+                    ref={buttonRef}
                     onPress={toggle}
                     style={theme.styles.button}
+                    // Set the initial AndroidTV and tvOS focus to be on the button
+                    hasTVPreferredFocus
+                    // On AndroidTV going up can appear as lost focus, so block focus up
+                    nextFocusUp={findNodeHandle(buttonRef.current) || undefined}
                     {...testProps('template-starter-home-screen-try-my-button')}
                 >
                     <Text style={theme.styles.buttonText}>Try me!</Text>
