@@ -3519,7 +3519,17 @@
         },
         "react-native-web": {
             "version": "0.19.9",
-            "supportedPlatforms": ["web", "tizen", "webos", "macos"],
+            "supportedPlatforms": [
+                "web",
+                "tizen",
+                "webos",
+                "macos",
+                "linux",
+                "windows",
+                "chromecast",
+                "kaios",
+                "tizenwatch"
+            ],
             "pluginDependencies": {
                 "react": "source:rnv"
             },
