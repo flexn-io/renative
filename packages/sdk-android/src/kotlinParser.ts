@@ -106,12 +106,13 @@ export const parseMainActivitySync = () => {
 
     const templatePath = 'app/src/main/java/rnv_template/MainActivity.kt';
 
-    const templateAndroid = getConfigProp('templateAndroid', {});
+    if (!c.payload.pluginConfigAndroid.injectActivityOnCreate) {
+        const templateAndroid = getConfigProp('templateAndroid');
 
-    const mainActivity = templateAndroid?.MainActivity_kt;
-
-    c.payload.pluginConfigAndroid.injectActivityOnCreate =
-        mainActivity?.onCreate || 'super.onCreate(savedInstanceState)';
+        const mainActivity = templateAndroid?.MainActivity_kt;
+        c.payload.pluginConfigAndroid.injectActivityOnCreate =
+            mainActivity?.onCreate || 'super.onCreate(savedInstanceState)';
+    }
 
     const injects = [
         { pattern: '{{APPLICATION_ID}}', override: getAppId() },
@@ -206,7 +207,9 @@ export const injectPluginKotlinSync = (plugin: ConfigPluginPlatformSchema, key: 
             c.payload.pluginConfigAndroid.pluginActivityResultMethods += `${mainActivity.resultMethods.join('\n    ')}`;
         }
     }
-
+    if (mainActivity?.onCreate) {
+        c.payload.pluginConfigAndroid.injectActivityOnCreate = mainActivity.onCreate;
+    }
     _injectPackage(c, plugin, pkg);
 
     const mainApplication = templ?.MainApplication_kt;
