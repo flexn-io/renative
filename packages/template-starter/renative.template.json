@@ -21,7 +21,7 @@
             },
             {
                 "paths": ["Gemfile", "metro.config.js", ".bundle", "react-native.config.js"],
-                "platforms": ["ios", "android", "tvos", "firetv", "androidtv"]
+                "platforms": ["ios", "android", "androidwear", "tvos", "firetv", "androidtv"]
             },
             {
                 "paths": ["next.config.js", "next-env.d.ts", "src/pages"],
