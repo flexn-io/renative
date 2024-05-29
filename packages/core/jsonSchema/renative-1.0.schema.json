@@ -887,7 +887,24 @@
                     },
                     "settings_gradle": {
                       "type": "object",
-                      "properties": {},
+                      "properties": {
+                        "include": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "project": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "required": [
+                        "include",
+                        "project"
+                      ],
                       "additionalProperties": false
                     },
                     "gradle_wrapper_properties": {

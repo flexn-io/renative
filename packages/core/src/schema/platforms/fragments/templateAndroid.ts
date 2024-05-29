@@ -25,7 +25,7 @@ Injects / Overrides values in res/values files of generated android based projec
 > IMPORTANT: always ensure that your object contains \`tag\` and \`name\` to target correct tag to merge into
  `);
 // We using interfaces to reduce the size of d.ts files (zod + types in d.ts files are huge)
-export interface ConfigTemplateAndroidResources extends z.infer<typeof zodAndroidResources> {}
+export type ConfigTemplateAndroidResources = z.infer<typeof zodAndroidResources>;
 
 // AndroidManifest.xml
 // ==============================================================
@@ -74,7 +74,7 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 > IMPORTANT: always ensure that your object contains \`tag\` and \`android:name\` to target correct tag to merge into
  `);
 // We using interfaces to reduce the size of d.ts files (zod + types in d.ts files are huge)
-export interface ConfigTemplateAndroidAndroidManifest extends z.infer<typeof zodAndroidManifest> {}
+export type ConfigTemplateAndroidAndroidManifest = z.infer<typeof zodAndroidManifest>;
 
 // MainActivity.kt
 // ==============================================================
@@ -92,7 +92,7 @@ const zodMainActivity_kt = z
     })
     .partial();
 // We using interfaces to reduce the size of d.ts files (zod + types in d.ts files are huge)
-export interface ConfigTemplateAndroidMainActivityKT extends z.infer<typeof zodMainActivity_kt> {}
+export type ConfigTemplateAndroidMainActivityKT = z.infer<typeof zodMainActivity_kt>;
 
 // MainApplication.kt
 // ==============================================================
@@ -111,7 +111,7 @@ const zodMainApplication_kt = z
     .partial()
     .describe('Allows you to configure behaviour of MainActivity');
 // We using interfaces to reduce the size of d.ts files (zod + types in d.ts files are huge)
-export interface ConfigTemplateAndroidMainApplicationKT extends z.infer<typeof zodMainApplication_kt> {}
+export type ConfigTemplateAndroidMainApplicationKT = z.infer<typeof zodMainApplication_kt>;
 
 // templateAndroid
 // ==============================================================
@@ -159,13 +159,16 @@ const templateAndroid = z
         MainApplication_kt: T<ConfigTemplateAndroidMainApplicationKT>(zodMainApplication_kt),
         MainActivity_kt: T<ConfigTemplateAndroidMainActivityKT>(zodMainActivity_kt),
         SplashActivity_kt: z.object({}),
-        settings_gradle: z.object({}),
+        settings_gradle: z.object({
+            include: z.array(z.string()),
+            project: z.array(z.string()),
+        }),
         gradle_wrapper_properties: z.object({}),
         proguard_rules_pro: z.object({}),
     })
     .partial();
 // We using interfaces to reduce the size of d.ts files (zod + types in d.ts files are huge)
-export interface ConfigTemplateAndroidBase extends z.infer<typeof templateAndroid> {}
+export type ConfigTemplateAndroidBase = z.infer<typeof templateAndroid>;
 
 export const zodTemplateAndroidFragment = z
     .object({

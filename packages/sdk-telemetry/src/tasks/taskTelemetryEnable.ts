@@ -9,7 +9,7 @@ export default createTask({
 
             writeFileSync(ctx.paths.dotRnv.config, config);
 
-            logToSummary(`   Succesfully ${chalk().green('enabled')} ReNative telemetry on your machine.
+            logToSummary(`   successfully ${chalk().green('enabled')} ReNative telemetry on your machine.
    
    ReNative telemetry is completely anonymous. Thank you for participating!
    Learn more: https://renative.org/telemetry `);

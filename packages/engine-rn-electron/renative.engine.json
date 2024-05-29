@@ -29,5 +29,6 @@
                 "devDependencies": {}
             }
         }
-    }
+    },
+    "webpackExcludedDirs": ["pages"]
 }
