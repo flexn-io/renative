@@ -43,8 +43,8 @@ export type RnvContextProgram<OKey = ProgramOptionsKey> = {
     showHelpAfterError: () => void;
     outputHelp: () => void;
     isHelpInvoked?: boolean;
+    options?: ReadonlyArray<{ flags: string }>;
 };
-
 export type RnvContext<Payload = any, OKey = ProgramOptionsKey> = {
     program: RnvContextProgram<OKey>;
     /**
