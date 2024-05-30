@@ -127,6 +127,6 @@ export const buildKaiOSProject = async () => {
 
     const appFolder = getAppFolder();
     await buildCoreWebpackProject();
-    logSuccess(`Your build is located in  ${chalk().cyan(path.join(appFolder, `build'`))} .`);
+    logSuccess(`Your build is located in  ${chalk().cyan(path.join(appFolder, `build`))} .`);
     return true;
 };
