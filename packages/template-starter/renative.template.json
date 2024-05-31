@@ -40,7 +40,7 @@
             "devDependencies": {
                 "typescript": "5.2.2",
                 "@types/react": "18.3.3",
-                "@types/react-dom": "18.2.18",
+                "@types/react-dom": "18.3.0",
                 "@types/react-native": "0.72.3",
                 "@flexn/typescript-config": "1.0.0",
                 "@flexn/assets-renative-outline": "0.3.5",
