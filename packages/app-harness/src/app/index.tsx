@@ -174,10 +174,10 @@ const AppContent = () => {
                 }}
                 
             >
-                <Text style={[styles.dynamicText, { fontWeight: 'bold' }]}>{`Logs: `}</Text>
+                <Text style={[styles.dynamicText, { fontWeight: 'bold', paddingHorizontal: 25 }]}>{`Logs: `}</Text>
                 {logs
                     ? logs.map((it, idx) => (
-                          <Text key={idx} style={[styles.dynamicText, idx === logs.length - 1 && { paddingBottom: 60}]}>
+                          <Text key={idx} style={[styles.dynamicText, {paddingHorizontal: 25}, idx === logs.length - 1 && { paddingBottom: 80}]}>
                               {it}
                           </Text>
                       ))
