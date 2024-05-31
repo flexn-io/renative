@@ -552,7 +552,7 @@
             "tvos": {
                 "podName": "react-native-netinfo"
             },
-            "version": "9.3.8",
+            "version": "11.3.2",
             "webpackConfig": {
                 "moduleAliases": {
                     "@react-native-community/netinfo": {
