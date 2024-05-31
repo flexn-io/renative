@@ -2389,7 +2389,7 @@
             "macos": {
                 "podName": "react-native-get-random-values"
             },
-            "version": "1.8.0"
+            "version": "1.11.0"
         },
         "react-native-get-real-path": {
             "android": {
