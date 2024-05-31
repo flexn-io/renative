@@ -1869,7 +1869,7 @@
             "tvos": {
                 "podName": "RNDeviceInfo"
             },
-            "version": "10.5.1",
+            "version": "10.14.0",
             "webpackConfig": {
                 "moduleAliases": true,
                 "modulePaths": true
