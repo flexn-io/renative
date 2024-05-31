@@ -912,27 +912,6 @@
         "@react-native-windows/cli": {
             "version": "0.67.1"
         },
-        "DEPRECATED_@react-navigation": {
-            "deprecated": "Please use @react-navigation/*",
-            "npm": {
-                "@react-native-community/masked-view": "0.1.11",
-                "@react-navigation/bottom-tabs": "5.1.1",
-                "@react-navigation/core": "6.1.0",
-                "@react-navigation/drawer": "6.1.8",
-                "@react-navigation/material-bottom-tabs": "6.0.9",
-                "@react-navigation/material-top-tabs": "5.3.10",
-                "@react-navigation/native": "6.0.6",
-                "@react-navigation/native-stack": "5.0.5",
-                "@react-navigation/routers": "5.1.0",
-                "@react-navigation/stack": "6.0.11",
-                "@react-navigation/web": "1.0.0-alpha.9",
-                "react-native-safe-area-context": "4.3.4"
-            },
-            "pluginDependencies": {
-                "react-native-safe-area-context": "source:rnv",
-                "react-native-screens": "source:rnv"
-            }
-        },
         "@react-navigation/bottom-tabs": {
             "version": "6.5.19",
             "webpackConfig": {
@@ -983,12 +962,6 @@
         },
         "@react-navigation/stack": {
             "version": "6.3.28",
-            "webpackConfig": {
-                "modulePaths": true
-            }
-        },
-        "@react-navigation/web": {
-            "version": "1.0.0-alpha.9",
             "webpackConfig": {
                 "modulePaths": true
             }
@@ -3614,23 +3587,6 @@
             "ios": {},
             "macos": {},
             "version": "1.1.0"
-        },
-        "react-navigation": {
-            "deprecated": "This package is deprecated. Visit https://reactnavigation.org/docs/getting-started for more information.",
-            "npm": {
-                "@react-navigation/core": "3.4.2",
-                "@react-navigation/native": "3.5.0",
-                "@react-navigation/web": "1.0.0-alpha.9"
-            },
-            "pluginDependencies": {
-                "react-native-reanimated": "source:rnv",
-                "react-navigation-stack": "source:rnv",
-                "react-navigation-tabs": "source:rnv"
-            },
-            "version": "3.9.2",
-            "webpackConfig": {
-                "modulePaths": true
-            }
         },
         "react-navigation-drawer": {
             "version": "2.3.3",
