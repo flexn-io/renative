@@ -273,7 +273,7 @@
             "version": "github:nitaliano/react-native-mapbox-gl"
         },
         "@miblanchard/react-native-slider": {
-            "version": "2.1.0",
+            "version": "2.6.0",
             "webpackConfig": {
                 "moduleAliases": true,
                 "modulePaths": true
