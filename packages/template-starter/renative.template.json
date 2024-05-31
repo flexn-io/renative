@@ -20,42 +20,16 @@
                 ]
             },
             {
-                "paths": [
-                    "Gemfile",
-                    "metro.config.js",
-                    ".bundle",
-                    "react-native.config.js"
-                ],
-                "platforms": [
-                    "ios",
-                    "android",
-                    "tvos",
-                    "firetv",
-                    "androidtv"
-                ]
+                "paths": ["Gemfile", "metro.config.js", ".bundle", "react-native.config.js"],
+                "platforms": ["ios", "android", "tvos", "firetv", "androidtv"]
             },
             {
-                "paths": [
-                    "next.config.js",
-                    "next-env.d.ts",
-                    "src/pages"
-                ],
-                "platforms": [
-                    "web"
-                ]
+                "paths": ["next.config.js", "next-env.d.ts", "src/pages"],
+                "platforms": ["web"]
             },
             {
-                "paths": [
-                    "webpack.config.js"
-                ],
-                "platforms": [
-                    "windows",
-                    "macos",
-                    "tizen",
-                    "webos",
-                    "tizenwatch",
-                    "tizenmobile"
-                ]
+                "paths": ["webpack.config.js"],
+                "platforms": ["windows", "macos", "tizen", "webos", "tizenwatch", "tizenmobile"]
             }
         ],
         "renative_json": {
@@ -65,7 +39,7 @@
         "package_json": {
             "devDependencies": {
                 "typescript": "5.2.2",
-                "@types/react": "18.2.52",
+                "@types/react": "18.3.3",
                 "@types/react-dom": "18.2.18",
                 "@types/react-native": "0.72.3",
                 "@flexn/typescript-config": "1.0.0",
@@ -79,16 +53,8 @@
                 "dotenv": "16.4.5"
             },
             "browserslist": {
-                "production": [
-                    ">0.2%",
-                    "not dead",
-                    "not op_mini all"
-                ],
-                "development": [
-                    "last 1 chrome version",
-                    "last 1 firefox version",
-                    "last 1 safari version"
-                ]
+                "production": [">0.2%", "not dead", "not op_mini all"],
+                "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
             }
         }
     },
@@ -97,10 +63,6 @@
             "pkg-dir": "7.0.0",
             "xmlbuilder": "^15.1.1"
         },
-        "defaultSelectedPlatforms": [
-            "web",
-            "ios",
-            "android"
-        ]
+        "defaultSelectedPlatforms": ["web", "ios", "android"]
     }
 }
