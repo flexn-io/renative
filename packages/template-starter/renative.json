@@ -92,7 +92,7 @@
         "tvos": {
             "engine": "engine-rn-tvos",
             "schemeTarget": "RNVApp-tvOS",
-            "deploymentTarget": "14.0",
+            "deploymentTarget": "15.5",
             "reactNativeEngine": "hermes"
         },
         "macos": {
@@ -105,7 +105,7 @@
         },
         "ios": {
             "engine": "engine-rn",
-            "deploymentTarget": "14.0",
+            "deploymentTarget": "15.5",
             "reactNativeEngine": "hermes"
         }
     },
