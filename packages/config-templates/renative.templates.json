@@ -2826,7 +2826,7 @@
                 },
                 "podName": "react-native-orientation-locker"
             },
-            "version": "1.5.0"
+            "version": "1.7.0"
         },
         "react-native-paper": {
             "version": "4.11.2"
