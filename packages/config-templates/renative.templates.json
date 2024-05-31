@@ -616,7 +616,7 @@
             "macos": {
                 "podName": "react-native-slider"
             },
-            "version": "4.4.2"
+            "version": "4.5.2"
         },
         "@react-native-community/viewpager": {
             "android": {
