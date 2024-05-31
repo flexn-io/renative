@@ -1383,7 +1383,7 @@
             },
             "disableNpm": true
         },
-        "hash-source": "1.0.4",
+        "hash-source": "1.0.5",
         "ios-photo-editor": {
             "deprecated": "ios-photo-editor is DEPRECATED. use iOSPhotoEditor instead",
             "ios": {
