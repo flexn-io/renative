@@ -3071,7 +3071,7 @@
             }
         },
         "react-native-root-toast": {
-            "version": "3.2.1",
+            "version": "3.6.0",
             "webpackConfig": {
                 "nextTranspileModules": ["react-native-root-siblings", "static-container"]
             }
