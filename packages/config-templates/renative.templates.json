@@ -3710,7 +3710,7 @@
             "disableNpm": true
         },
         "static-container": {
-            "version": "1.3.0",
+            "version": "1.7.1",
             "webpackConfig": {
                 "modulePaths": true
             }
