@@ -347,7 +347,7 @@
             "ios": {
                 "podName": "react-native-cameraroll"
             },
-            "version": "5.2.4"
+            "version": "7.3.0"
         },
         "@react-native-clipboard/clipboard": {
             "android": {
