@@ -3538,7 +3538,7 @@
             "macos": {
                 "podName": "react-native-webview"
             },
-            "version": "11.23.0",
+            "version": "13.10.2",
             "webpackConfig": {
                 "modulePaths": true
             }
