@@ -2599,7 +2599,7 @@
             "macos": {
                 "podName": "react-native-image-picker"
             },
-            "version": "5.0.2"
+            "version": "7.1.2"
         },
         "react-native-image-resizer": {
             "android": {
