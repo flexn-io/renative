@@ -3487,7 +3487,7 @@
             "tvos": {
                 "podName": "react-native-video"
             },
-            "version": "5.2.1",
+            "version": "6.1.0",
             "webpackConfig": {
                 "modulePaths": true
             }
