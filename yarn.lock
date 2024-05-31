@@ -18008,15 +18008,15 @@ react-app-polyfill@^3.0.0:
     regenerator-runtime "^0.13.9"
     whatwg-fetch "^3.6.2"
 
-react-art@18.2.0:
-  version "18.2.0"
-  resolved "https://registry.npmjs.org/react-art/-/react-art-18.2.0.tgz#73b3929b1a0ce781b088bce76186d3793f0106c5"
-  integrity sha512-HfSK9OBtPIpkdI4QZAyWSxCIbM/I7+nqjybxp2FLmiFS7RN+eCEvOY0KdPw+6//B1oIU31t2o35s5EEhe0Fodw==
+react-art@18.3.1:
+  version "18.3.1"
+  resolved "https://registry.yarnpkg.com/react-art/-/react-art-18.3.1.tgz#247af63c77c0804bde61bb3522e601fe2378d477"
+  integrity sha512-81fRQ2K0zprDg1tjFzZzt0HhVXeXuTEjzAywz426gM+XFWKeb+4u4dKYSXyJPM5XBbRuIJmlXDmLgf+qX4hYlA==
   dependencies:
     art "^0.10.1"
     create-react-class "^15.6.2"
     loose-envify "^1.1.0"
-    scheduler "^0.23.0"
+    scheduler "^0.23.2"
 
 react-dev-utils@^12.0.0:
   version "12.0.1"
@@ -19139,7 +19139,7 @@ scheduler@^0.19.1:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
 
-scheduler@^0.23.0, scheduler@^0.23.2:
+scheduler@^0.23.2:
   version "0.23.2"
   resolved "https://registry.npmjs.org/scheduler/-/scheduler-0.23.2.tgz#414ba64a3b282892e944cf2108ecc078d115cdc3"
   integrity sha512-UOShsPwz7NrMUqhR6t0hWjFduvOzbtv7toDH1/hIrfRNIDBnnBWd0CwJTGvTpngVlmwGCdP9/Zl/tVrDqcuYzQ==
