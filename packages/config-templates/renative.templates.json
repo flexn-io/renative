@@ -3158,7 +3158,7 @@
             "version": "git+https://github.com/cjrorvik/react-native-simple-compass.git"
         },
         "react-native-simple-radio-button": {
-            "version": "2.7.3"
+            "version": "2.7.4"
         },
         "react-native-simple-shadow-view": {
             "android": {
