@@ -3697,7 +3697,7 @@
             }
         },
         "rnv-platform-info": {
-            "version": "1.0.8",
+            "version": "1.0.16",
             "webpackConfig": {
                 "nextTranspileModules": ["rnv-platform-info"]
             }
