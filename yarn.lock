@@ -18130,10 +18130,10 @@ react-native-orientation-locker@1.7.0:
   resolved "https://registry.yarnpkg.com/react-native-orientation-locker/-/react-native-orientation-locker-1.7.0.tgz#47ef2b9c24618e40f0a521f184b51270e576b028"
   integrity sha512-2PhG4UyRJktb3KCTISStuu8/q+Q3q3oPesGg9DhdY0b6Cu/ZzxkCvkbJte2TPWRYkS0JpClimvqVaonulGvDrA==
 
-react-native-permissions@4.1.4:
-  version "4.1.4"
-  resolved "https://registry.npmjs.org/react-native-permissions/-/react-native-permissions-4.1.4.tgz#7e105470acea7fc1748bb36915095fd3304cd9da"
-  integrity sha512-el6u90VZNFDEtmHpSheirwRhGvs6M5rSZcoqIqB128IPO00f2c1q+PP4kEaM1u19Q0ldQ+R+S7C/l8Zrduy6JQ==
+react-native-permissions@4.1.5:
+  version "4.1.5"
+  resolved "https://registry.yarnpkg.com/react-native-permissions/-/react-native-permissions-4.1.5.tgz#db4d1ddbf076570043f4fd4168f54bb6020aec92"
+  integrity sha512-r6VMRacASmtRHS+GZ+5HQCp9p9kiE+UU9magHOZCXZLTJitdTuVHWZRrb4v4oqZGU+zAp3mZhTQftuMMv+WLUg==
 
 "react-native-photo-editor@github:AppGyver/react-native-photo-editor#v0.1.2":
   version "0.1.1"
