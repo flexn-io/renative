@@ -3071,7 +3071,7 @@
             "webpackConfig": {
                 "modulePaths": true
             },
-            "version": "4.9.0"
+            "version": "4.10.3"
         },
         "react-native-safe-area-view": {
             "version": "4.9.0",
