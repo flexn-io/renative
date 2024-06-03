@@ -907,7 +907,7 @@
             "tvos": {
                 "podName": "RNCPicker"
             },
-            "version": "2.4.9"
+            "version": "2.7.6"
         },
         "@react-native-windows/cli": {
             "version": "0.67.1"
