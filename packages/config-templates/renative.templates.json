@@ -2317,7 +2317,7 @@
             "version": "16.4.5"
         },
         "react-native-gesture-handler": {
-            "version": "2.14.1",
+            "version": "2.16.2",
             "android": {
                 "package": "com.swmansion.gesturehandler.RNGestureHandlerPackage",
                 "path": "{{PLUGIN_ROOT}}/android",
