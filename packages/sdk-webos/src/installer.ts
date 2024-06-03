@@ -103,9 +103,8 @@ const _attemptAutoFix = async (c: RnvContext) => {
             return true;
         }
     }
-
-    logError(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOCATIONS.join(', ')}`);
-
+    console.log(SDK_LOCATIONS)
+    throw new Error(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOCATIONS.join(', ')}`);
     // const setupInstance = PlatformSetup(c);
     // await setupInstance.askToInstallSDK(sdkPlatform);
     generateBuildConfig();

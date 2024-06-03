@@ -28,7 +28,7 @@ import {
 import { checkCrypto } from '../crypto/common';
 import { checkAndInstallIfRequired, installPackageDependenciesAndPlugins } from '../../taskHelpers';
 import { configureFonts } from '@rnv/sdk-utils';
-
+import { checkWebosSdk } from '@rnv/sdk-webos';
 const checkIsRenativeProject = async () => {
     const c = getContext();
     const { paths } = c;
@@ -58,7 +58,7 @@ export default createTask({
         // if (!paths.project.configExists) {
         //     return Promise.reject(`${RnvTaskName.projectConfigure} not supported outside of renative project`);
         // }
-
+        await checkWebosSdk(); // it would make more sense for this to run right after 'npx rnv build' for webos, but core package doesn't allow imports from other renative packages because of dependancies
         await configurePlatformBuilds();
         await checkAndMigrateProject();
         await updateRenativeConfigs();

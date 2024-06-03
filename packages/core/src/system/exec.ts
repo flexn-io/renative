@@ -275,7 +275,7 @@ const execCLI = (cli: string, command: string, opts: ExecOptions = {}) => {
             c.buildConfig?.sdks
         );
         return Promise.reject(
-            `Location of your cli ${chalk().bold(p)} does not exists. check your ${chalk().bold(
+            `Location of your cli ${chalk().bold(p)} does not exist. check your ${chalk().bold(
                 c.paths.workspace.config
             )} file if your ${chalk().bold('sdks')} paths are correct`
         );
