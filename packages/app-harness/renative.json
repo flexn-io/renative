@@ -60,7 +60,7 @@
         },
         "@react-native-firebase/app": {
             "disablePluginTemplateOverrides": true,
-            "version": "18.6.1",
+            "version": "20.0.0",
             "ios": {
                 "podNames": [
                     "pod 'Firebase', :build_type => :static_framework",

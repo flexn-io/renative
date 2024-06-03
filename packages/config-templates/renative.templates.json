@@ -664,7 +664,7 @@
             "pluginDependencies": {
                 "@react-native-firebase/app": "source:rnv"
             },
-            "version": "16.7.0"
+            "version": "20.0.0"
         },
         "@react-native-firebase/app": {
             "android": {
@@ -732,7 +732,7 @@
                     "resourceFiles": ["RNVApp/GoogleService-Info.plist"]
                 }
             },
-            "version": "16.7.0"
+            "version": "20.0.0"
         },
         "@react-native-firebase/auth": {
             "android": {
@@ -761,7 +761,7 @@
             "pluginDependencies": {
                 "@react-native-firebase/app": "source:rnv"
             },
-            "version": "16.7.0"
+            "version": "20.0.0"
         },
         "@react-native-firebase/crashlytics": {
             "android": {
@@ -816,7 +816,7 @@
             "pluginDependencies": {
                 "@react-native-firebase/analytics": "source:rnv"
             },
-            "version": "16.7.0"
+            "version": "20.0.0"
         },
         "@react-native-firebase/messaging": {
             "android": {
@@ -836,7 +836,7 @@
             "pluginDependencies": {
                 "@react-native-firebase/app": "source:rnv"
             },
-            "version": "16.7.0"
+            "version": "20.0.0"
         },
         "@react-native-firebase/storage": {
             "android": {
@@ -867,7 +867,7 @@
             "pluginDependencies": {
                 "@react-native-firebase/app": "source:rnv"
             },
-            "version": "16.7.0"
+            "version": "20.0.0"
         },
         "@react-native-masked-view/masked-view": {
             "android": {
@@ -2276,7 +2276,7 @@
                 "URL_NAME": "",
                 "URL_SCHEME": ""
             },
-            "version": "5.5.5"
+            "version": "5.6.0"
         },
         "react-native-fs": {
             "android": {
