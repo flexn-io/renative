@@ -2741,7 +2741,7 @@
             "macos": {
                 "podName": "react-native-maps"
             },
-            "version": "0.31.1"
+            "version": "1.15.4"
         },
         "react-native-markdown-renderer": {
             "version": "3.2.8",
