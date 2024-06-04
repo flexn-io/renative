@@ -59,7 +59,7 @@ export const initializeTask = async (taskInstance: RnvTask | undefined) => {
     const { task } = taskInstance;
     logDefault('initializeTask', task);
     const c = getContext();
-    // _populateExtraParameters(c, taskInstance);
+    _populateExtraParameters(c, taskInstance);
 
     // If engine has not been selected by picking interactive platform selection
     // let's pick it based on task ownerID
@@ -103,7 +103,6 @@ const _executeTaskInstance = async (opts: {
         }
         throw new Error(`Task Instance is undefined`);
     }
-    _populateExtraParameters(c, taskInstance);
     const needsHelp = c.program.opts().help;
     const inOnlyMode = c.program.opts().only;
 
@@ -183,12 +182,8 @@ const _populateExtraParameters = (c: RnvContext, task: RnvTask) => {
     // TODO: Enable strict mode before release
     //c.program?.allowUnknownOption(false); // integration options are not known ahead of time
     if (task.options) {
-        const existingOptions = c.program?.options?.map((opt) => opt.flags) || [];
         task.options.forEach((opt) => {
-            const duplicatedOpt = existingOptions.find((exOpt) => exOpt.includes(opt.key));
-            if (!duplicatedOpt) {
-                c.program.option?.(generateStringFromTaskOption(opt), opt.description);
-            }
+            c.program.option?.(generateStringFromTaskOption(opt), opt.description);
         });
     }
     c.program.showHelpAfterError();
