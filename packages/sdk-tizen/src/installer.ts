@@ -58,7 +58,7 @@ const _isSdkInstalled = (c: RnvContext) => {
     return fsExistsSync(getRealPath(sdkPath));
 };
 
-const _attemptAutoFix = async (c: RnvContext) => {
+const _attemptAutoFix = async (c: RnvContext, throwError?: boolean) => {
     logDefault('_attemptAutoFix');
 
     if (!c.files.workspace.config) return;
@@ -98,7 +98,9 @@ const _attemptAutoFix = async (c: RnvContext) => {
         }
     }
 
-    logDefault(`_attemptAutoFix: no sdks found. searched at: ${getSdkLocations().join(', ')}`);
+    if (throwError) {
+        throw new Error(`_attemptAutoFix: no sdks found. searched at: ${getSdkLocations().join(', ')}`);
+    } else logDefault(`_attemptAutoFix: no sdks found. searched at: ${getSdkLocations().join(', ')}`);
 
     // const setupInstance = PlatformSetup(c);
     // await setupInstance.askToInstallSDK(sdkPlatform);
@@ -106,7 +108,7 @@ const _attemptAutoFix = async (c: RnvContext) => {
     return true;
 };
 
-export const checkTizenSdk = async () => {
+export const checkTizenSdk = async (throwError?: boolean) => {
     const c = getContext();
 
     logDefault('checkTizenSdk');
@@ -116,7 +118,7 @@ export const checkTizenSdk = async () => {
                 c.paths.workspace.config
             )} does not exist: ${chalk().bold(_getCurrentSdkPath(c))}`
         );
-        return _attemptAutoFix(c);
+        return _attemptAutoFix(c, throwError);
     }
     return true;
 };
