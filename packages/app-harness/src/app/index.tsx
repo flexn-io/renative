@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Image, ScrollView, Text, View } from 'react-native';
-import { Api, isPlatformIos } from '@rnv/renative';
+import React, { useEffect, useState, useRef } from 'react';
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Api, isPlatformIos, isWebBased, isFactorTv } from '@rnv/renative';
 import { OrientationLocker, PORTRAIT, LANDSCAPE } from '../components/OrientationLocker';
 import { NewModuleButton } from '../components/NewModuleButton';
 import { useSplashScreen } from '../components/SplashScreen';
@@ -53,18 +53,59 @@ const App = () => (
 );
 
 const AppContent = () => {
+    const orientationBtnRef = useRef<TouchableOpacity>(null);
+    const permissionBtnRef = useRef<TouchableOpacity>(null);
+    const splashBtnRef = useRef<TouchableOpacity>(null);
+    const photoEditorBtnRef = useRef<TouchableOpacity>(null);
+    const nativeModuleBtnRef = useRef<TouchableOpacity>(null);
     const [showVideo, setShowVideo] = useState(false);
     const { logDebug, logs } = useLoggerContext();
     const { SplashScreen } = useSplashScreen();
+    const focusableRefs = [nativeModuleBtnRef, orientationBtnRef, permissionBtnRef, splashBtnRef, photoEditorBtnRef];
+    const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
 
     useEffect(() => {
         SplashScreen.hide();
         addNotificationListeners(handleNotification);
-
+        if (isWebBased && isFactorTv && focusableRefs[0]?.current) {
+            focusableRefs[0].current.focus();
+            setFocusedIndex(0);
+        }
         return () => {
             removeNotificationListeners(handleNotification);
         };
     }, []);
+
+    useEffect(() => {
+        if (!isFactorTv || !isWebBased) return;
+        const handleKeyDown = (event: KeyboardEvent) => {
+            const currentIndex = focusableRefs.findIndex((ref) => ref.current === document.activeElement);
+
+            if (currentIndex === -1) return;
+            const moveFocus = (newIndex: number) => {
+                const newFocusedRef = focusableRefs[newIndex]?.current;
+                if (newFocusedRef) {
+                    newFocusedRef.focus();
+                    setFocusedIndex(newIndex);
+                }
+            };
+            const keyActions: { [key: string]: () => void } = {
+                ArrowUp: () => currentIndex > 0 && moveFocus(currentIndex - 1),
+                ArrowDown: () => currentIndex < focusableRefs.length - 1 && moveFocus(currentIndex + 1),
+            };
+            const action = keyActions[event.key];
+
+            if (action) {
+                event.preventDefault();
+                action();
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [focusableRefs]);
 
     const handleNotification: NotificationCallback = (message) => logDebug(message);
 
@@ -109,7 +150,17 @@ const AppContent = () => {
                         }`}</Text>
                     </TestCase>
                     <TestCase id={2} title="Native call">
-                        <NewModuleButton />
+                        <NewModuleButton
+                            ref={nativeModuleBtnRef}
+                            onFocus={() => setFocusedIndex(0)}
+                            onBlur={() => setFocusedIndex(null)}
+                            style={[
+                                styles.button,
+                                { backgroundColor: '#841584' },
+                                focusedIndex === 0 && styles.buttonFocused,
+                                isWebBased && isFactorTv && { outline: 'none' },
+                            ]}
+                        />
                     </TestCase>
                     <TestCase id={3} title="Orientation support ">
                         <OrientationLocker
@@ -117,7 +168,19 @@ const AppContent = () => {
                             onChange={(orientation) => logDebug(`onChange ${orientation}`)}
                             onDeviceChange={(orientation) => logDebug(`onDeviceChange ${orientation}`)}
                         />
-                        <Button title="Toggle Video" onPress={() => setShowVideo(!showVideo)} />
+                        <TouchableOpacity
+                            ref={orientationBtnRef}
+                            onPress={() => setShowVideo(!showVideo)}
+                            style={[
+                                styles.button,
+                                focusedIndex === 1 && styles.buttonFocused,
+                                isWebBased && isFactorTv && { outline: 'none' },
+                            ]}
+                            onFocus={() => setFocusedIndex(1)}
+                            onBlur={() => setFocusedIndex(null)}
+                        >
+                            <Text style={styles.buttonTitle}>Toggle Video</Text>
+                        </TouchableOpacity>
                         {showVideo && (
                             <View>
                                 <OrientationLocker orientation={LANDSCAPE} />
@@ -128,7 +191,19 @@ const AppContent = () => {
                         )}
                     </TestCase>
                     <TestCase id={4} title="Permissions">
-                        <Button onPress={handleRequestPermissions} title="Request permissions" />
+                        <TouchableOpacity
+                            ref={permissionBtnRef}
+                            onPress={handleRequestPermissions}
+                            style={[
+                                styles.button,
+                                focusedIndex === 2 && styles.buttonFocused,
+                                isWebBased && isFactorTv && { outline: 'none' },
+                            ]}
+                            onFocus={() => setFocusedIndex(2)}
+                            onBlur={() => setFocusedIndex(null)}
+                        >
+                            <Text style={styles.buttonTitle}>Request permissions</Text>
+                        </TouchableOpacity>
                     </TestCase>
                     <TestCase id={5} title="Image Support">
                         <Image source={ICON_LOGO} style={{ width: 100, height: 100 }} />
@@ -146,10 +221,31 @@ const AppContent = () => {
                                 On iOS there is a package issue that prevents splash screen from showing
                             </Text>
                         )}
-                        <Button onPress={() => SplashScreen.show()} title="Show SplashScreen" />
+                        <TouchableOpacity
+                            ref={splashBtnRef}
+                            onPress={() => SplashScreen.show()}
+                            style={[
+                                styles.button,
+                                focusedIndex === 3 && styles.buttonFocused,
+                                isWebBased && isFactorTv && { outline: 'none' },
+                            ]}
+                            onFocus={() => setFocusedIndex(3)}
+                            onBlur={() => setFocusedIndex(null)}
+                        >
+                            <Text style={styles.buttonTitle}>Show SplashScreen</Text>
+                        </TouchableOpacity>
                     </TestCase>
                     <TestCase id={8} title="PhotoEditor">
-                        <PhotoEditorButton />
+                        <PhotoEditorButton
+                            ref={photoEditorBtnRef}
+                            onFocus={() => setFocusedIndex(4)}
+                            onBlur={() => setFocusedIndex(null)}
+                            style={[
+                                styles.button,
+                                focusedIndex === 4 && styles.buttonFocused,
+                                isWebBased && isFactorTv && { outline: 'none' },
+                            ]}
+                        />
                     </TestCase>
                 </ScrollView>
             </View>

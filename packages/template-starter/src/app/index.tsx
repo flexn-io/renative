@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Text, Image, View, PixelRatio, TouchableOpacity, StatusBar, ScrollView, findNodeHandle } from 'react-native';
-import { Api } from '@rnv/renative';
+import { Api, isFactorTv, isWebBased } from '@rnv/renative';
 import { ICON_LOGO, CONFIG, ThemeProvider, ThemeContext, testProps } from '../config';
 import packageJson from '../../package.json';
 
@@ -22,13 +22,11 @@ const AppThemed = () => {
         setPixelRatio(PixelRatio.get());
         setFontScale(PixelRatio.getFontScale());
         setIsClient(true);
-        if (buttonRef?.current) {
+        if (isWebBased && isFactorTv && buttonRef?.current) {
             buttonRef?.current.focus();
         }
     }, []);
 
-   
-   
     return (
         <View style={theme.styles.wrapper}>
             <ScrollView style={theme.styles.scrollView} contentContainerStyle={theme.styles.container}>
@@ -61,7 +59,7 @@ const AppThemed = () => {
                     onPress={toggle}
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
-                    style={[theme.styles.button, isFocused &&{ ...theme.styles.focusedButton, outline:'none' }]} 
+                    style={[theme.styles.button, isFocused && { ...theme.styles.focusedButton, outline: 'none' }]}
                     // Set the initial AndroidTV and tvOS focus to be on the button
                     hasTVPreferredFocus
                     // On AndroidTV going up can appear as lost focus, so block focus up

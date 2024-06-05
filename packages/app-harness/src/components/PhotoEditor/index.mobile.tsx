@@ -1,12 +1,14 @@
-import React, { useEffect } from 'react';
-import { Button, Image } from 'react-native';
+import React, { forwardRef, useEffect } from 'react';
+import { Text, Image, TouchableOpacity, TouchableOpacityProps } from 'react-native';
 import { RNPhotoEditor } from 'react-native-photo-editor';
 import RNFS from 'react-native-fs';
 import RNFetchBlob from 'rn-fetch-blob';
 import { useLoggerContext } from '../../context';
 import { ICON_LOGO } from '../../config';
+import styles from '../../styles';
 
-export const PhotoEditorButton = () => {
+interface ButtonProps extends TouchableOpacityProps {}
+export const PhotoEditorButton = forwardRef<TouchableOpacity, ButtonProps>(({ onBlur, onFocus, style }, ref) => {
     const { logDebug } = useLoggerContext();
     const photoPath = RNFS.DocumentDirectoryPath + ICON_LOGO;
     useEffect(() => {
@@ -36,5 +38,9 @@ export const PhotoEditorButton = () => {
             },
         });
     };
-    return <Button onPress={handlePhotoEditor} title="Show PhotoEditor" />;
-};
+    return (
+        <TouchableOpacity ref={ref} onPress={handlePhotoEditor} onFocus={onFocus} onBlur={onBlur} style={style}>
+            <Text style={styles.buttonTitle}>Show PhotoEditor</Text>
+        </TouchableOpacity>
+    );
+});
