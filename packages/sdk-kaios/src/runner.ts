@@ -14,6 +14,8 @@ import {
     logError,
     logInfo,
     RnvContext,
+    logSuccess,
+    getAppFolder,
 } from '@rnv/core';
 import { launchKaiOSSimulator } from './deviceManager';
 
@@ -123,6 +125,8 @@ export const runKaiOSProject = async (c: RnvContext) => {
 export const buildKaiOSProject = async () => {
     logDefault('buildKaiOSProject');
 
+    const appFolder = getAppFolder();
     await buildCoreWebpackProject();
+    logSuccess(`Your build is located in  ${chalk().cyan(path.join(appFolder, `build`))} .`);
     return true;
 };
