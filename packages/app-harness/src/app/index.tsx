@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { Api, isPlatformIos, isWebBased, isFactorTv } from '@rnv/renative';
+import { Api, isPlatformIos, isWebBased, isFactorTv, isTizenwatch, isAndroidwear } from '@rnv/renative';
 import { OrientationLocker, PORTRAIT, LANDSCAPE } from '../components/OrientationLocker';
 import { NewModuleButton } from '../components/NewModuleButton';
 import { useSplashScreen } from '../components/SplashScreen';
@@ -59,6 +59,7 @@ const AppContent = () => {
     const photoEditorBtnRef = useRef<TouchableOpacity>(null);
     const nativeModuleBtnRef = useRef<TouchableOpacity>(null);
     const [showVideo, setShowVideo] = useState(false);
+    const [logsFocused, setLogsFocused] = useState(false);
     const { logDebug, logs } = useLoggerContext();
     const { SplashScreen } = useSplashScreen();
     const focusableRefs = [nativeModuleBtnRef, orientationBtnRef, permissionBtnRef, splashBtnRef, photoEditorBtnRef];
@@ -142,6 +143,9 @@ const AppContent = () => {
                     contentContainerStyle={{
                         backgroundColor: 'white',
                         padding: 10,
+                    }}
+                    onTouchStart={() => {
+                        setLogsFocused(false);
                     }}
                 >
                     <TestCase id={1} title="Hermes support ">
@@ -252,7 +256,7 @@ const AppContent = () => {
             <ScrollView
                 style={{
                     backgroundColor: '#EEEEEE',
-                    maxHeight: '20%',
+                    maxHeight: (isTizenwatch() || isAndroidwear()) && logsFocused ? '50%' : '20%',
                     width: '100%',
                     borderTopWidth: 1,
                     borderTopColor: 'black',
@@ -261,11 +265,21 @@ const AppContent = () => {
                 contentContainerStyle={{
                     paddingBottom: 10,
                 }}
+                onTouchStart={() => {
+                    setLogsFocused(true);
+                }}
             >
-                <Text style={[styles.dynamicText, { fontWeight: 'bold' }]}>{`Logs: `}</Text>
+                <Text style={[styles.dynamicText, { fontWeight: 'bold', paddingHorizontal: 25 }]}>{`Logs: `}</Text>
                 {logs
                     ? logs.map((it, idx) => (
-                          <Text key={idx} style={styles.dynamicText}>
+                          <Text
+                              key={idx}
+                              style={[
+                                  styles.dynamicText,
+                                  { paddingHorizontal: 25 },
+                                  idx === logs.length - 1 && { paddingBottom: 80 },
+                              ]}
+                          >
                               {it}
                           </Text>
                       ))
