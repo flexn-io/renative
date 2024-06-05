@@ -61,7 +61,7 @@ export const copyAssetsFolder = async (
         logInfo(
             `Found custom assetFolderPlatform: ${chalk().green(
                 assetFolderPlatform
-            )}. Will use it instead of deafult ${platform}`
+            )}. Will use it instead of default ${platform}`
         );
     }
 

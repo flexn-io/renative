@@ -26,5 +26,12 @@ export const zodConfigFileEngine = z
         plugins: z.record(z.string(), z.string()).describe('List of required plugins for this engine to work properly'),
         npm: zodEngineNpm,
         platforms: z.record(zodPlatformsKeys, zodEnginePlatform),
+        webpackExcludedDirs: z.optional(
+            z
+                .array(z.string())
+                .describe(
+                    'Allows to specify files or directories in the src folder that webpack should ignore when bundling code.'
+                )
+        ),
     })
     .partial();

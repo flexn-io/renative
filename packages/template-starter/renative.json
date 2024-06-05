@@ -28,7 +28,6 @@
             "tvos",
             "webos",
             "macos",
-            "windows",
             "tizenwatch",
             "kaios",
             "chromecast",
@@ -69,7 +68,7 @@
                     "org.gradle.configureondemand": true
                 },
                 "MainActivity_kt": {
-                    "onCreate": "super.onCreate(null)"
+                    "onCreate": "super.onCreate(savedInstanceState)"
                 }
             }
         },
@@ -84,9 +83,7 @@
             "minSdkVersion": 21,
             "extendPlatform": "android",
             "engine": "engine-rn-tvos",
-            "includedPermissions": [
-                "INTERNET"
-            ]
+            "includedPermissions": ["INTERNET"]
         },
         "web": {
             "engine": "engine-rn-next"
