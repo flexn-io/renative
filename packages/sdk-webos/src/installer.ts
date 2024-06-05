@@ -65,7 +65,7 @@ const _isSdkInstalled = (c: RnvContext) => {
     return fsExistsSync(getRealPath(sdkPath));
 };
 
-const _attemptAutoFix = async (c: RnvContext, throwError?: boolean) => {
+const _attemptAutoFix = async (c: RnvContext) => {
     logDefault('_attemptAutoFix');
 
     if (c.program.opts().hosted) {
@@ -104,10 +104,7 @@ const _attemptAutoFix = async (c: RnvContext, throwError?: boolean) => {
         }
     }
 
-    if(throwError){
-        throw new Error(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOCATIONS.join(', ')}`);
-    } else logDefault(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOCATIONS.join(', ')}`);
-
+    logError(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOCATIONS.join(', ')}`);
 
     // const setupInstance = PlatformSetup(c);
     // await setupInstance.askToInstallSDK(sdkPlatform);
@@ -115,7 +112,7 @@ const _attemptAutoFix = async (c: RnvContext, throwError?: boolean) => {
     return true;
 };
 
-export const checkWebosSdk = async (throwError?: boolean) => {
+export const checkWebosSdk = async () => {
     const c = getContext();
 
     logDefault('checkWebosSdk');
@@ -125,7 +122,7 @@ export const checkWebosSdk = async (throwError?: boolean) => {
                 c.paths.workspace.config
             )} does not exist: ${chalk().bold(_getCurrentSdkPath(c))}`
         );
-        return _attemptAutoFix(c, throwError);
+        return _attemptAutoFix(c);
     }
     return true;
 };
