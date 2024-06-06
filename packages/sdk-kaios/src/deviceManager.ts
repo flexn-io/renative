@@ -7,6 +7,7 @@ import {
     getContext,
     executeAsync,
     ExecOptionsPresets,
+    logToSummary,
 } from '@rnv/core';
 import path from 'path';
 
@@ -44,4 +45,26 @@ export const launchKaiOSSimulator = async (target: string | boolean) => {
         cwd: `${kaiosSdkPath}/${target}/kaiosrt`,
         ...ExecOptionsPresets.NO_SPINNER_FULL_ERROR_SUMMARY,
     });
+};
+
+export const listKaiosTargets = async () => {
+    const c = getContext();
+
+    const kaiosSdkPath = getRealPath(c.buildConfig?.sdks?.KAIOS_SDK);
+
+    if (!kaiosSdkPath) {
+        return Promise.reject(`c.buildConfig.sdks.KAIOS_SDK undefined`);
+    }
+
+    const availableSimulatorVersions = getDirectories(kaiosSdkPath).filter(
+        (directory) => directory.toLowerCase().indexOf('kaios') !== -1
+    );
+
+    // availableSimulatorVersions.map((a) => {
+    //     deviceArray.push(` [${deviceArray.length + 1}]> ${chalk().bold(a)} | simulator`);
+    // });
+
+    logToSummary(`Kaios Targets:\n${availableSimulatorVersions.join('\n')}`);
+
+    return true;
 };
