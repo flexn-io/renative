@@ -97,7 +97,6 @@ const AppContent = () => {
             const action = keyActions[event.key];
 
             if (action) {
-                event.preventDefault();
                 action();
             }
         };
