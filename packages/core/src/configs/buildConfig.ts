@@ -7,8 +7,7 @@ import {
     fsExistsSync,
     formatBytes,
     mkdirSync,
-    writeFileSync,
-    getRealPath
+    writeFileSync
 } from '../system/fs';
 import { chalk, logDefault, logWarning, logDebug } from '../logger';
 import { getContext } from '../context/provider';
@@ -50,29 +49,6 @@ export const generateBuildConfig = () => {
     logDebug('generateBuildConfig');
 
     const c = getContext();
-
-    if(c.runtime.task === 'build') {
-        switch (c.platform) {
-            // just copied a function from sdk-webos, since I can't import it here. Not ideal?
-            case 'webos': {
-                const _getCurrentSdkPath = (c: RnvContext) => (c.platform ? c.buildConfig?.sdks?.WEBOS_SDK : undefined);
-
-                const sdkPath = _getCurrentSdkPath(c);
-                
-                if(!fsExistsSync(getRealPath(sdkPath))) throw new Error(`${c.platform} platform build requires WebOS SDK to be installed. Your SDK path in ${chalk().bold(
-                        c.paths.workspace.config
-                    )} does not exist: ${chalk().bold(_getCurrentSdkPath(c))}`);
-                break;
-            }
-            case 'tizen':
-                console.log('tizen build');
-                break;
-            default:
-                console.log('default');
-        }
-
-    }
-
     const extraPlugins = getEnginesPluginDelta();
 
     const mergePathsPublic = [
