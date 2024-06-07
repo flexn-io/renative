@@ -1,6 +1,5 @@
 import { buildCoreWebpackProject, configureCoreWebProject, runWebpackServer } from '@rnv/sdk-webpack';
 import path from 'path';
-import _ from 'lodash';
 import {
     getPlatformProjectDir,
     fsWriteFileSync,
@@ -75,10 +74,9 @@ export const runKaiOSProject = async (c: RnvContext) => {
     logDefault('runKaiOSProject');
     const { platform } = c;
     if (!platform) return;
-    const { hosted, target } = c.program.opts();
-    const defaultTarget = c.runtime.target;
-
-    const targetToRun = target && _.isString(target) ? target : defaultTarget || target;
+    const { hosted } = c.program.opts();
+    const { target, isTargetTrue } = c.runtime;
+    const targetToRun = target || isTargetTrue;
     const bundleAssets = getConfigProp('bundleAssets') === true;
     const isHosted = hosted && !bundleAssets;
 

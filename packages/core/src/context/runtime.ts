@@ -1,4 +1,5 @@
 import path from 'path';
+import _ from 'lodash';
 import { isSystemWin } from '../system/is';
 import { fsExistsSync, fsReadFileSync } from '../system/fs';
 import { RnvContext } from './types';
@@ -36,9 +37,12 @@ export const configureRuntimeDefaults = async () => {
 
     c.runtime.port = Number(portString) + portOffset;
 
-    if (c.program.opts().target !== true) {
-        c.runtime.target = c.program.opts().target || defaultTarget;
-    } else c.runtime.isTargetTrue = c.program.opts().target;
+    if (_.isString(c.program.opts().target)) {
+        c.runtime.target = c.program.opts().target;
+    } else {
+        c.runtime.target = defaultTarget;
+    }
+    c.runtime.isTargetTrue = c.program.opts().target;
     c.runtime.scheme = c.program.opts().scheme || 'debug';
     c.runtime.localhost = c.program.opts().hostIp || defaultHost;
     c.runtime.timestamp = c.runtime.timestamp || Date.now();
