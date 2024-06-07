@@ -20,11 +20,11 @@ export const launchKaiOSSimulator = async (target: string | boolean) => {
         return Promise.reject(`c.buildConfig.sdks.KAIOS_SDK undefined`);
     }
 
-    if (typeof target !== 'string') {
-        const availableSimulatorVersions = getDirectories(kaiosSdkPath).filter(
-            (directory) => directory.toLowerCase().indexOf('kaios') !== -1
-        );
+    const availableSimulatorVersions = getDirectories(kaiosSdkPath).filter(
+        (directory) => directory.toLowerCase().indexOf('kaios') !== -1
+    );
 
+    if (typeof target !== 'string' || !availableSimulatorVersions.includes(target)) {
         const { selectedSimulator } = await inquirerPrompt({
             name: 'selectedSimulator',
             type: 'list',
