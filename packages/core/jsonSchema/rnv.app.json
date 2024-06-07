@@ -1600,6 +1600,12 @@
                                 "items": {
                                   "type": "string"
                                 }
+                              },
+                              "appDelegateMethods": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
                               }
                             },
                             "additionalProperties": false

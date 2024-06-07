@@ -254,6 +254,10 @@ export const parseAppDelegate = (
                 override: c.payload.pluginConfigiOS.pluginAppDelegateHImports,
             },
             {
+                pattern: '{{APPDELEGATE_H_METHODS}}',
+                override: c.payload.pluginConfigiOS.pluginAppDelegateHMethods,
+            },
+            {
                 pattern: '{{APPDELEGATE_H_EXTENSIONS}}',
                 override: c.payload.pluginConfigiOS.pluginAppDelegateHExtensions
                     ? ` <${c.payload.pluginConfigiOS.pluginAppDelegateHExtensions}>`
@@ -295,6 +299,10 @@ export const injectPluginObjectiveCSync = (c: Context, plugin: ConfigPluginPlatf
     const appDelegateHhImports = templateXcode?.AppDelegate_h?.appDelegateImports;
     if (appDelegateHhImports) {
         addAppDelegateImports(c, appDelegateHhImports, 'pluginAppDelegateHImports');
+    }
+    const appDelegateHMethods = templateXcode?.AppDelegate_h?.appDelegateMethods;
+    if (appDelegateHMethods) {
+        c.payload.pluginConfigiOS['pluginAppDelegateHMethods'] += appDelegateHMethods.join('\n ');
     }
     const appDelegateExtensions = templateXcode?.AppDelegate_h?.appDelegateExtensions;
     if (appDelegateExtensions instanceof Array) {

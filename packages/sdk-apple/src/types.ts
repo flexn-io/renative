@@ -37,6 +37,7 @@ export type Payload = {
         pluginAppDelegateMmImports: string;
         pluginAppDelegateMmMethods: string;
         pluginAppDelegateHExtensions: string;
+        pluginAppDelegateHMethods: string;
         pluginAppDelegateHImports: string;
         appDelegateMmMethods: {
             application: {

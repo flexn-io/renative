@@ -46,6 +46,7 @@ const RnvModule = createRnvModule({
             embeddedFontSources: [],
             ignoreProjectFonts: [],
             pluginAppDelegateHImports: '',
+            pluginAppDelegateHMethods: '',
             pluginAppDelegateHExtensions: '',
             pluginAppDelegateMmImports: '',
             pluginAppDelegateMmMethods: '',

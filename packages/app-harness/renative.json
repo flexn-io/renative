@@ -164,6 +164,13 @@
         "react-native": {
             "android": {
                 "implementation": "// TEST"
+            },
+            "ios": {
+                "templateXcode": {
+                    "AppDelegate_h": {
+                        "appDelegateMethods": ["@property (nonatomic, strong) UIView *appSwitcherView;"]
+                    }
+                }
             }
         },
         "react-native-google-cast": {
