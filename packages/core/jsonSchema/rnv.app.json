@@ -1573,6 +1573,12 @@
                                       }
                                     },
                                     "additionalProperties": false
+                                  },
+                                  "custom": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
                                   }
                                 },
                                 "additionalProperties": false

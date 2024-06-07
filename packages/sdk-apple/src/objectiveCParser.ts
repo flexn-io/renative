@@ -177,6 +177,7 @@ export const parseAppDelegate = (
                     end: null,
                 },
             },
+            custom: []
         };
 
         const constructMethod = (lines: Array<string>, method: ObjectiveCMethod) => {
@@ -203,10 +204,10 @@ export const parseAppDelegate = (
         mk.forEach((key) => {
             const method = methods[key];
             const mk2 = Object.keys(method) as Array<ObjectiveCAppDelegateSubKey>;
+
             mk2.forEach((key2) => {
                 const f = method[key2];
-                const lines: Array<PayloadAppDelegateMethod> =
-                    c.payload.pluginConfigiOS.appDelegateMmMethods[key][key2] || [];
+                const lines: Array<PayloadAppDelegateMethod> = c.payload.pluginConfigiOS.appDelegateMmMethods[key][key2] || [];
 
                 const cleanedLines: Record<string, PayloadAppDelegateMethod> = {};
 
@@ -232,6 +233,11 @@ export const parseAppDelegate = (
         injectors.forEach((v) => {
             c.payload.pluginConfigiOS.pluginAppDelegateMmMethods += constructMethod(v.lines, v.f);
         });
+
+        if (c.payload.pluginConfigiOS.appDelegateMmMethods.custom) {
+            c.payload.pluginConfigiOS.pluginAppDelegateMmMethods += c.payload.pluginConfigiOS.appDelegateMmMethods.custom.join('\n ');
+        }
+
 
         const injectsMm = [
             // { pattern: '{{BUNDLE}}', override: bundle },
@@ -324,26 +330,30 @@ export const injectPluginObjectiveCSync = (c: Context, plugin: ConfigPluginPlatf
         admk.forEach((delKey) => {
             const apDelMet = appDelegateMethods[delKey];
             if (apDelMet) {
-                const amdk2 = Object.keys(apDelMet) as Array<PayloadAppDelegateSubKey>;
-                amdk2.forEach((key2) => {
-                    const plugArr: Array<ConfigAppDelegateMethod> =
-                        c.payload.pluginConfigiOS.appDelegateMmMethods[delKey][key2];
-                    if (!plugArr) {
-                        logWarning(`appDelegateMethods.${delKey}.${chalk().red(key2)} not supported. SKIPPING.`);
-                    } else {
-                        const plugVal: Array<ConfigAppDelegateMethod> = apDelMet[key2];
-                        if (plugVal) {
-                            plugVal.forEach((v) => {
-                                const isString = typeof v === 'string';
-                                plugArr.push({
-                                    order: isString ? 0 : v?.order || 0,
-                                    value: isString ? v : v?.value,
-                                    weight: isString ? 0 : v?.weight || 0,
+                if (delKey === 'custom' && Array.isArray(apDelMet)) {
+                    c.payload.pluginConfigiOS.appDelegateMmMethods[delKey] = apDelMet;
+                } else {
+                    const amdk2 = Object.keys(apDelMet) as Array<PayloadAppDelegateSubKey>;
+                    amdk2.forEach((key2) => {
+                        const plugArr: Array<ConfigAppDelegateMethod> =
+                            c.payload.pluginConfigiOS.appDelegateMmMethods[delKey][key2];
+                        if (!plugArr) {
+                            logWarning(`appDelegateMethods.${delKey}.${chalk().red(key2)} not supported. SKIPPING.`);
+                        } else {
+                            const plugVal: Array<ConfigAppDelegateMethod> = apDelMet[key2];
+                            if (plugVal) {
+                                plugVal.forEach((v) => {
+                                    const isString = typeof v === 'string';
+                                    plugArr.push({
+                                        order: isString ? 0 : v?.order || 0,
+                                        value: isString ? v : v?.value,
+                                        weight: isString ? 0 : v?.weight || 0,
+                                    });
                                 });
-                            });
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         });
     }

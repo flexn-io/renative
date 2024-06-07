@@ -14,7 +14,7 @@ const zodAppDelegateMethod = z.array(
     ])
 );
 // We using interfaces to reduce the size of d.ts files (zod + types in d.ts files are huge)
-export type ConfigTemplateXcodeAppDelegateMethod = z.infer<typeof zodAppDelegateMethod>
+export type ConfigTemplateXcodeAppDelegateMethod = z.infer<typeof zodAppDelegateMethod>;
 
 const zodXcodeApplication_mm = z
     .object({
@@ -33,7 +33,7 @@ const zodXcodeApplication_mm = z
     })
     .partial();
 // We using interfaces to reduce the size of d.ts files (zod + types in d.ts files are huge)
-export type ConfigTemplateXcodeApplication = z.infer<typeof zodXcodeApplication_mm>
+export type ConfigTemplateXcodeApplication = z.infer<typeof zodXcodeApplication_mm>;
 
 const project_pbxproj = z
     .object({
@@ -52,7 +52,7 @@ const project_pbxproj = z
     })
     .partial();
 // We using interfaces to reduce the size of d.ts files (zod + types in d.ts files are huge)
-export type ConfigTemplateXcodeProjectPbxproj = z.infer<typeof project_pbxproj>
+export type ConfigTemplateXcodeProjectPbxproj = z.infer<typeof project_pbxproj>;
 
 export const zodTemplateXcodeFragment = z
     .object({
@@ -85,6 +85,7 @@ export const zodTemplateXcodeFragment = z
                                         didReceiveNotificationResponse: zodAppDelegateMethod,
                                     })
                                     .partial(),
+                                custom: z.array(z.string()),
                             })
                             .partial(),
 
