@@ -37,11 +37,7 @@ export const configureRuntimeDefaults = async () => {
 
     c.runtime.port = Number(portString) + portOffset;
 
-    if (_.isString(c.program.opts().target)) {
-        c.runtime.target = c.program.opts().target;
-    } else {
-        c.runtime.target = defaultTarget;
-    }
+    c.runtime.target = _.isString(c.program.opts().target) ? c.program.opts().target : defaultTarget;
     c.runtime.isTargetTrue = !!c.program.opts().target;
     c.runtime.scheme = c.program.opts().scheme || 'debug';
     c.runtime.localhost = c.program.opts().hostIp || defaultHost;
