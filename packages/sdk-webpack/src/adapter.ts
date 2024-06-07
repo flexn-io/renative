@@ -67,9 +67,15 @@ export const getMergedConfig = (rootConfig: Configuration, appPath: string) => {
 
             return undefined;
         },
+        customizeObject(a, b, key) {
+            if (key === 'output') {
+                return _mergeRule(a, b);
+            }
+            return undefined;
+        },
         // customizeArray: unique('plugins', rootPlugins, (plugin) => plugin.constructor && plugin.constructor.name),
     })(rootConfig, projectConfig);
-
+    console.log(mergedConfig);
     // Merge => static config, adapter config , project config
     // RNV-ADDITION
 
@@ -126,9 +132,7 @@ const _mergeRule = (rnvRule: any, cnfRule: any) => {
     return Object.keys({ ...rnvRule, ...cnfRule }).reduce((merged: any, key: string) => {
         const rnvValue = rnvRule[key];
         const cnfValue = cnfRule[key];
-        if (!rnvValue && !cnfValue) {
-            return merged;
-        }
+
         if (_.isArray(rnvValue) && _.isArray(cnfValue)) {
             if (key === 'include') {
                 merged[key] = process.env.RNV_MODULE_PATHS
@@ -140,7 +144,7 @@ const _mergeRule = (rnvRule: any, cnfRule: any) => {
         } else if (_.isPlainObject(rnvValue) && _.isPlainObject(cnfValue)) {
             merged[key] = _mergeRule(rnvValue, cnfValue);
         } else {
-            merged[key] = cnfValue !== undefined ? cnfValue : rnvValue;
+            merged[key] = key in cnfRule ? cnfValue : rnvValue;
         }
 
         return merged;
