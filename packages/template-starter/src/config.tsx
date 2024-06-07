@@ -115,7 +115,11 @@ const createStyleSheet = (currentTheme) =>
             padding: 10,
             backgroundColor: currentTheme.colorBrand,
             borderRadius: 10,
-        },
+            outline: 'none',
+        } as CustomStyleView,
+        focusedButton: {
+            opacity: 0.8,
+        } as CustomStyleView,
         buttonText: {
             fontFamily: currentTheme.primaryFontFamily,
             fontSize: getScaledValue(15),
@@ -134,6 +138,7 @@ const themes = {
     },
 };
 
+export type CustomStyleView = ViewStyle & { outline?: string };
 export type ThemeInterface = {
     theme: {
         static: {
@@ -152,7 +157,8 @@ export type ThemeInterface = {
             textH2: TextStyle;
             textH3: TextStyle;
             image: ImageStyle;
-            button: ViewStyle;
+            button: CustomStyleView;
+            focusedButton: CustomStyleView;
             buttonText: TextStyle;
             scrollView: ViewStyle;
         };
