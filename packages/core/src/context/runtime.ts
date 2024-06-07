@@ -1,5 +1,4 @@
 import path from 'path';
-import _ from 'lodash';
 import { isSystemWin } from '../system/is';
 import { fsExistsSync, fsReadFileSync } from '../system/fs';
 import { RnvContext } from './types';
