@@ -132,5 +132,8 @@
     "browserslist": [
         ">0.2%",
         "op_mini all"
-    ]
+    ],
+    "dependencies": {
+        "raf": "3.4.1"
+    }
 }
