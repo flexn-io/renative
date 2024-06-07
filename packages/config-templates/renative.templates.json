@@ -3491,7 +3491,7 @@
             "version": "0.2.13"
         },
         "react-native-web": {
-            "version": "0.19.9",
+            "version": "0.19.12",
             "supportedPlatforms": ["web", "tizen", "webos", "macos"],
             "pluginDependencies": {
                 "react": "source:rnv"
