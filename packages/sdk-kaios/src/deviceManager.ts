@@ -8,6 +8,7 @@ import {
     executeAsync,
     ExecOptionsPresets,
 } from '@rnv/core';
+import _ from 'lodash';
 import path from 'path';
 
 export const launchKaiOSSimulator = async (target: string | boolean) => {
@@ -20,7 +21,7 @@ export const launchKaiOSSimulator = async (target: string | boolean) => {
         return Promise.reject(`c.buildConfig.sdks.KAIOS_SDK undefined`);
     }
 
-    if (target === true) {
+    if (!_.isString(target)) {
         const availableSimulatorVersions = getDirectories(kaiosSdkPath).filter(
             (directory) => directory.toLowerCase().indexOf('kaios') !== -1
         );

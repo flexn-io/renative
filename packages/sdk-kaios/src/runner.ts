@@ -1,5 +1,6 @@
 import { buildCoreWebpackProject, configureCoreWebProject, runWebpackServer } from '@rnv/sdk-webpack';
 import path from 'path';
+import _ from 'lodash';
 import {
     getPlatformProjectDir,
     fsWriteFileSync,
@@ -73,10 +74,11 @@ const _configureProject = () =>
 export const runKaiOSProject = async (c: RnvContext) => {
     logDefault('runKaiOSProject');
     const { platform } = c;
-    const { hosted } = c.program.opts();
-
     if (!platform) return;
+    const { hosted, target } = c.program.opts();
+    const defaultTarget = c.runtime.target;
 
+    const targetToRun = target && _.isString(target) ? target : defaultTarget || target;
     const bundleAssets = getConfigProp('bundleAssets') === true;
     const isHosted = hosted && !bundleAssets;
 
@@ -92,7 +94,7 @@ export const runKaiOSProject = async (c: RnvContext) => {
 
     if (bundleAssets) {
         await buildCoreWebpackProject();
-        await launchKaiOSSimulator(true);
+        await launchKaiOSSimulator(targetToRun);
     } else {
         const isPortActive = await checkPortInUse(c.runtime.port);
         const isWeinreEnabled = REMOTE_DEBUGGER_ENABLED_PLATFORMS.includes(platform) && !bundleAssets && !hosted;
@@ -104,7 +106,7 @@ export const runKaiOSProject = async (c: RnvContext) => {
                 )} is not running. Starting it up for you...`
             );
             waitForHost('')
-                .then(() => launchKaiOSSimulator(true))
+                .then(() => launchKaiOSSimulator(targetToRun))
                 .catch(logError);
             await runWebpackServer(isWeinreEnabled);
         } else {
@@ -112,11 +114,11 @@ export const runKaiOSProject = async (c: RnvContext) => {
 
             if (resetCompleted) {
                 waitForHost('')
-                    .then(() => launchKaiOSSimulator(true))
+                    .then(() => launchKaiOSSimulator(targetToRun))
                     .catch(logError);
                 await runWebpackServer(isWeinreEnabled);
             } else {
-                await launchKaiOSSimulator(true);
+                await launchKaiOSSimulator(targetToRun);
             }
         }
     }
