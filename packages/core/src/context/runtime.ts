@@ -38,7 +38,7 @@ export const configureRuntimeDefaults = async () => {
 
     if (c.program.opts().target !== true) {
         c.runtime.target = c.program.opts().target || defaultTarget;
-    } else c.runtime.isTargetTrue = !!c.program.opts().target;
+    } else c.runtime.isTargetTrue = c.program.opts().target;
     c.runtime.scheme = c.program.opts().scheme || 'debug';
     c.runtime.localhost = c.program.opts().hostIp || defaultHost;
     c.runtime.timestamp = c.runtime.timestamp || Date.now();
