@@ -18,11 +18,11 @@
             "privacyManifests": {
                 "NSPrivacyAccessedAPITypes": [
                     {
-                        "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
+                        "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryActiveKeyboards",
                         "NSPrivacyAccessedAPITypeReasons": ["CA92.1"]
                     },
                     {
-                        "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryFileTimestamp",
+                        "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategorySystemBootTime",
                         "NSPrivacyAccessedAPITypeReasons": ["CA92.1", "E174.1"]
                     }
                 ]

@@ -1686,6 +1686,63 @@
                       "firebaseId": {
                         "type": "string"
                       },
+                      "privacyManifests": {
+                        "type": "object",
+                        "properties": {
+                          "NSPrivacyAccessedAPITypes": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "NSPrivacyAccessedAPIType": {
+                                  "type": "string",
+                                  "enum": [
+                                    "NSPrivacyAccessedAPICategorySystemBootTime",
+                                    "NSPrivacyAccessedAPICategoryDiskSpace",
+                                    "NSPrivacyAccessedAPICategoryActiveKeyboards",
+                                    "NSPrivacyAccessedAPICategoryUserDefaults"
+                                  ]
+                                },
+                                "NSPrivacyAccessedAPITypeReasons": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "enum": [
+                                      "DDA9.1",
+                                      "C617.1",
+                                      "3B52.1",
+                                      "0A2A.1",
+                                      "35F9.1",
+                                      "8FFB.1",
+                                      "3D61.1",
+                                      "85F4.1",
+                                      "E174.1",
+                                      "7D9E.1",
+                                      "B728.1",
+                                      "3EC4.1",
+                                      "54BD.1",
+                                      "CA92.1",
+                                      "1C8F.1",
+                                      "C56D.1",
+                                      "AC6B.1"
+                                    ]
+                                  }
+                                }
+                              },
+                              "required": [
+                                "NSPrivacyAccessedAPIType",
+                                "NSPrivacyAccessedAPITypeReasons"
+                              ],
+                              "additionalProperties": false,
+                              "description": "Official apple documentation https://developer.apple.com/documentation/bundleresources/privacy_manifest_files/describing_use_of_required_reason_api"
+                            }
+                          }
+                        },
+                        "required": [
+                          "NSPrivacyAccessedAPITypes"
+                        ],
+                        "additionalProperties": false
+                      },
                       "exportOptions": {
                         "type": "object",
                         "properties": {
@@ -2175,6 +2232,9 @@
                 },
                 "firebaseId": {
                   "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/buildSchemes/additionalProperties/properties/firebaseId"
+                },
+                "privacyManifests": {
+                  "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/buildSchemes/additionalProperties/properties/privacyManifests"
                 },
                 "exportOptions": {
                   "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/buildSchemes/additionalProperties/properties/exportOptions"
@@ -3185,6 +3245,9 @@
                       "firebaseId": {
                         "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/buildSchemes/additionalProperties/properties/firebaseId"
                       },
+                      "privacyManifests": {
+                        "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/buildSchemes/additionalProperties/properties/privacyManifests"
+                      },
                       "exportOptions": {
                         "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/buildSchemes/additionalProperties/properties/exportOptions"
                       },
@@ -3428,6 +3491,9 @@
                 },
                 "firebaseId": {
                   "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/buildSchemes/additionalProperties/properties/firebaseId"
+                },
+                "privacyManifests": {
+                  "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/buildSchemes/additionalProperties/properties/privacyManifests"
                 },
                 "exportOptions": {
                   "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/buildSchemes/additionalProperties/properties/exportOptions"

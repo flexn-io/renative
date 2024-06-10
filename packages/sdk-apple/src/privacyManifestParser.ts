@@ -1,5 +1,5 @@
 import path from 'path';
-import { getConfigProp, fsWriteFileSync, getAppFolder } from '@rnv/core';
+import { getConfigProp, fsWriteFileSync, getAppFolder, doResolve, logError } from '@rnv/core';
 import { getAppFolderName } from './common';
 
 export const parsePrivacyManifest = async () => {
@@ -41,5 +41,19 @@ export const parsePrivacyManifest = async () => {
         const filePath = path.join(appFolder, `${appFolderName}/PrivacyInfo.xcprivacy`);
 
         fsWriteFileSync(filePath, output);
+
+        const xcodePath = doResolve('xcode');
+        if (!xcodePath) {
+            logError(`Cannot resolve xcode path`);
+            return;
+        }
+        const xcode = require(xcodePath);
+        const projectPath = path.join(appFolder, `${appFolderName}.xcodeproj/project.pbxproj`);
+        const xcodeProj = xcode.project(projectPath);
+
+        xcodeProj.parse(() => {
+            xcodeProj.addResourceFile(filePath);
+            fsWriteFileSync(projectPath, xcodeProj.writeSync());
+        });
     }
 };

@@ -48,10 +48,37 @@ export const zodPlatformiOSFragment = z
         testFlightId: z.string(),
         firebaseId: z.string(),
         privacyManifests: z.object({
-            NSPrivacyAccessedAPITypes: z.array(z.object({
-                NSPrivacyAccessedAPIType: z.string(),
-                NSPrivacyAccessedAPITypeReasons: z.array(z.string()),
-            }))
+            NSPrivacyAccessedAPITypes: z.array(
+                z.object({
+                    NSPrivacyAccessedAPIType: z.union([
+                        z.literal('NSPrivacyAccessedAPICategorySystemBootTime'),
+                        z.literal('NSPrivacyAccessedAPICategoryDiskSpace'),
+                        z.literal('NSPrivacyAccessedAPICategoryActiveKeyboards'),
+                        z.literal('NSPrivacyAccessedAPICategoryUserDefaults'),
+                    ]),
+                    NSPrivacyAccessedAPITypeReasons: z.array(
+                        z.union([
+                            z.literal('DDA9.1'),
+                            z.literal('C617.1'),
+                            z.literal('3B52.1'),
+                            z.literal('0A2A.1'),
+                            z.literal('35F9.1'),
+                            z.literal('8FFB.1'),
+                            z.literal('3D61.1'),
+                            z.literal('85F4.1'),
+                            z.literal('E174.1'),
+                            z.literal('7D9E.1'),
+                            z.literal('B728.1'),
+                            z.literal('3EC4.1'),
+                            z.literal('54BD.1'),
+                            z.literal('CA92.1'),
+                            z.literal('1C8F.1'),
+                            z.literal('C56D.1'),
+                            z.literal('AC6B.1'),
+                        ])
+                    ),
+                }).describe("Official apple documentation https://developer.apple.com/documentation/bundleresources/privacy_manifest_files/describing_use_of_required_reason_api")
+            ),
         }),
         exportOptions: z
             .object({

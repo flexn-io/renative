@@ -786,7 +786,6 @@ export const configureXcodeProject = async () => {
     }
     console.log('PARSE........................')
 
-    await parsePrivacyManifest();
     await copyAssetsFolder(appFolderName);
     await copyAppleAssets(appFolderName);
     await parseAppDelegate(appFolder, appFolderName);
@@ -798,6 +797,7 @@ export const configureXcodeProject = async () => {
     await copyBuildsFolder();
     await runCocoaPods(c.program.opts().updatePods);
     await parseXcodeProject();
+    await parsePrivacyManifest();
     return true;
 };
 
