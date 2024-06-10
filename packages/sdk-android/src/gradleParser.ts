@@ -36,6 +36,9 @@ export const parseBuildGradleSync = () => {
         }`;
     }
 
+    const templateAndroid = getConfigProp('templateAndroid');
+    const buildscript = templateAndroid?.build_gradle?.buildscript;
+
     const injects: OverridesOptions = [
         {
             pattern: '{{COMPILE_SDK_VERSION}}',
@@ -125,7 +128,30 @@ export const parseBuildGradleSync = () => {
                 doResolve('react-native', true, { forceForwardPaths: true }) || 'react-native'
             }/sdks/hermesc/${currentOs}-bin/hermesc`,
         },
+        {
+            pattern: '{{INJECT_BUILDSCRIPT_EXT}}',
+            override: buildscript?.ext?.join('\n'),
+        },
+        {
+            pattern: '{{INJECT_BUILDSCRIPT_REPOSITORIES}}',
+            override: buildscript?.repositories?.join('\n'),
+        },
+        {
+            pattern: '{{INJECT_BUILDSCRIPT_CUSTOM}}',
+            override: buildscript?.custom?.join('\n'),
+        },
+        {
+            pattern: '{{INJECT_BUILDSCRIPT_DEPENDENCIES}}',
+            override: buildscript?.dependencies?.join('\n'),
+        },
+        {
+            pattern: '{{INJECT_GRADLE_AFTER_ALL}}',
+            override: templateAndroid?.build_gradle?.injectAfterAll?.join('\n'),
+        },
     ];
+
+
+    console.log('templateAndroid', templateAndroid?.build_gradle?.buildscript?.custom);
     addSystemInjects(injects);
 
     writeCleanFile(getBuildFilePath('build.gradle'), path.join(appFolder, 'build.gradle'), injects, undefined, c);
@@ -668,6 +694,8 @@ export const parseAndroidConfigObject = (plugin?: ConfigPluginPlatformSchema, ke
 
     // BUILD.GRADLE
     const buildGradle = templateAndroid?.build_gradle;
+
+    // console.log({ templateAndroid });
 
     const allProjRepos = buildGradle?.allprojects?.repositories;
     if (allProjRepos) {

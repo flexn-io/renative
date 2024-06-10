@@ -30,6 +30,20 @@
         },
         "android": {
             "templateAndroid": {
+                "build_gradle": {
+                    "buildscript": {
+                        "custom": [],
+                        "dependencies": ["def customVar2 = '2'"],
+                        "repositories": ["def customVar1 = '1'"],
+                        "ext": ["playServicesLocationVersion = \"21.0.1\""]
+                    },
+                    "injectAfterAll": [
+                        "allprojects {",
+                        "   repositories {",
+                        "   }",
+                        "}"
+                    ]
+                },
                 "styles_xml": {
                     "tag": "resources",
                     "children": [

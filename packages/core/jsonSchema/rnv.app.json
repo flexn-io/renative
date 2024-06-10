@@ -513,55 +513,41 @@
                           "build_gradle": {
                             "type": "object",
                             "properties": {
-                              "allprojects": {
-                                "type": "object",
-                                "properties": {
-                                  "repositories": {
-                                    "type": "object",
-                                    "additionalProperties": {
-                                      "type": "boolean"
-                                    },
-                                    "description": "Customize repositories section of build.gradle"
-                                  }
-                                },
-                                "required": [
-                                  "repositories"
-                                ],
-                                "additionalProperties": false
-                              },
-                              "plugins": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              },
                               "buildscript": {
                                 "type": "object",
                                 "properties": {
                                   "repositories": {
-                                    "type": "object",
-                                    "additionalProperties": {
-                                      "type": "boolean"
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
                                     }
                                   },
                                   "dependencies": {
-                                    "type": "object",
-                                    "additionalProperties": {
-                                      "type": "boolean"
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "ext": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "custom": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
                                     }
                                   }
                                 },
                                 "required": [
                                   "repositories",
-                                  "dependencies"
+                                  "dependencies",
+                                  "ext",
+                                  "custom"
                                 ],
                                 "additionalProperties": false
-                              },
-                              "dexOptions": {
-                                "type": "object",
-                                "additionalProperties": {
-                                  "type": "boolean"
-                                }
                               },
                               "injectAfterAll": {
                                 "type": "array",

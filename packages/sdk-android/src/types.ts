@@ -50,6 +50,11 @@ export type Payload = {
             // storePassword: string;
             // keyPassword: string;
         };
+        // buildScriptExt: string[];
+        // buildScriptRepositories: string[];
+        // buildScriptCustom: string[];
+        // gradleCustom: string[];
+        // buildScriptDependencies: string[];
     };
 };
 
