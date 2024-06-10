@@ -784,7 +784,6 @@ export const configureXcodeProject = async () => {
             )} => .platforms.${platform}.teamID . you will not be able to build ${platform} app for device!`
         );
     }
-    console.log('PARSE........................')
 
     await copyAssetsFolder(appFolderName);
     await copyAppleAssets(appFolderName);

@@ -22,7 +22,7 @@ export const parsePrivacyManifest = async () => {
                         <key>NSPrivacyAccessedAPIType</key>
                         <string>${api.NSPrivacyAccessedAPIType}</string>
                         <array>
-                        ${api.NSPrivacyAccessedAPITypeReasons.map((reason) => {
+                        ${api.NSPrivacyAccessedAPITypeReasons?.map((reason) => {
                             return `<string>${reason}</string>`;
                         }).join('\n')}
                         </array>
