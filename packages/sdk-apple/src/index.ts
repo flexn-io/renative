@@ -69,6 +69,7 @@ const RnvModule = createRnvModule({
                     willPresent: [],
                     didReceiveNotificationResponse: [],
                 },
+                custom: [],
             },
             podfileSources: '',
             deploymentTarget: '',

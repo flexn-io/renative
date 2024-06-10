@@ -13,6 +13,21 @@
         "portOffset": 10
     },
     "platforms": {
+        "ios": {
+            "urlScheme": "",
+            "privacyManifests": {
+                "NSPrivacyAccessedAPITypes": [
+                    {
+                        "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
+                        "NSPrivacyAccessedAPITypeReasons": ["CA92.1"]
+                    },
+                    {
+                        "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryFileTimestamp",
+                        "NSPrivacyAccessedAPITypeReasons": ["CA92.1", "E174.1"]
+                    }
+                ]
+            }
+        },
         "android": {
             "templateAndroid": {
                 "styles_xml": {

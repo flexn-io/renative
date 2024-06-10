@@ -47,6 +47,12 @@ export const zodPlatformiOSFragment = z
         sdk: z.string(),
         testFlightId: z.string(),
         firebaseId: z.string(),
+        privacyManifests: z.object({
+            NSPrivacyAccessedAPITypes: z.array(z.object({
+                NSPrivacyAccessedAPIType: z.string(),
+                NSPrivacyAccessedAPITypeReasons: z.array(z.string()),
+            }))
+        }),
         exportOptions: z
             .object({
                 method: z.string(),

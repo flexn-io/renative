@@ -36,6 +36,7 @@ import { ObjectEncodingOptions } from 'fs';
 import { packageReactNativeIOS, runCocoaPods, runReactNativeIOS, EnvVars } from '@rnv/sdk-react-native';
 import { registerDevice } from './fastlane';
 import { Context, getContext } from './getContext';
+import { parsePrivacyManifest } from './privacyManifestParser';
 
 export const packageBundleForXcode = () => {
     return packageReactNativeIOS();
@@ -783,7 +784,9 @@ export const configureXcodeProject = async () => {
             )} => .platforms.${platform}.teamID . you will not be able to build ${platform} app for device!`
         );
     }
+    console.log('PARSE........................')
 
+    await parsePrivacyManifest();
     await copyAssetsFolder(appFolderName);
     await copyAppleAssets(appFolderName);
     await parseAppDelegate(appFolder, appFolderName);
