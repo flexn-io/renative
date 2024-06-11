@@ -26,6 +26,10 @@ import {
     CLI_WEBOS_ARES_DEVICE_INFO,
 } from './constants';
 
+import { exec as execCb } from 'child_process';
+import { promisify } from 'util';
+const exec = promisify(execCb);
+
 const SDK_LOCATIONS = [path.join('/opt/webOS_TV_SDK'), path.join('C:\\webOS_TV_SDK')];
 
 const _logSdkWarning = (c: RnvContext) => {
@@ -36,18 +40,21 @@ export const checkAndConfigureWebosSdks = async () => {
     const c = getContext();
     logDefault(`checkAndConfigureWebosSdks:${c.platform}`);
     const sdk = c.buildConfig?.sdks?.WEBOS_SDK;
-    if (sdk) {
-        c.cli[CLI_WEBOS_ARES] = getRealPath(path.join(sdk, `CLI/bin/ares${isSystemWin ? '.cmd' : ''}`));
-        c.cli[CLI_WEBOS_ARES_PACKAGE] = getRealPath(path.join(sdk, `CLI/bin/ares-package${isSystemWin ? '.cmd' : ''}`));
-        c.cli[CLI_WEBOS_ARES_INSTALL] = getRealPath(path.join(sdk, `CLI/bin/ares-install${isSystemWin ? '.cmd' : ''}`));
-        c.cli[CLI_WEBOS_ARES_LAUNCH] = getRealPath(path.join(sdk, `CLI/bin/ares-launch${isSystemWin ? '.cmd' : ''}`));
+
+    const clipath = await getCliPath();
+
+    if (sdk && clipath) {
+        c.cli[CLI_WEBOS_ARES] = getRealPath(path.join(clipath, `ares${isSystemWin ? '.cmd' : ''}`));
+        c.cli[CLI_WEBOS_ARES_PACKAGE] = getRealPath(path.join(clipath, `ares-package${isSystemWin ? '.cmd' : ''}`));
+        c.cli[CLI_WEBOS_ARES_INSTALL] = getRealPath(path.join(clipath, `ares-install${isSystemWin ? '.cmd' : ''}`));
+        c.cli[CLI_WEBOS_ARES_LAUNCH] = getRealPath(path.join(clipath, `ares-launch${isSystemWin ? '.cmd' : ''}`));
         c.cli[CLI_WEBOS_ARES_SETUP_DEVICE] = getRealPath(
-            path.join(sdk, `CLI/bin/ares-setup-device${isSystemWin ? '.cmd' : ''}`)
+            path.join(clipath, `ares-setup-device${isSystemWin ? '.cmd' : ''}`)
         );
         c.cli[CLI_WEBOS_ARES_DEVICE_INFO] = getRealPath(
-            path.join(sdk, `CLI/bin/ares-device-info${isSystemWin ? '.cmd' : ''}`)
+            path.join(clipath, `ares-device-info${isSystemWin ? '.cmd' : ''}`)
         );
-        c.cli[CLI_WEBOS_ARES_NOVACOM] = getRealPath(path.join(sdk, `CLI/bin/ares-novacom${isSystemWin ? '.cmd' : ''}`));
+        c.cli[CLI_WEBOS_ARES_NOVACOM] = getRealPath(path.join(clipath, `ares-novacom${isSystemWin ? '.cmd' : ''}`));
     } else {
         _logSdkWarning(c);
     }
@@ -63,6 +70,15 @@ const _isSdkInstalled = (c: RnvContext) => {
     const sdkPath = _getCurrentSdkPath(c);
 
     return fsExistsSync(getRealPath(sdkPath));
+};
+
+const getCliPath = async () => {
+    try {
+        const { stdout } = await exec('which ares');
+        return stdout.slice(0, -5); // cutting out the 'ares' part, so I can get ares, ares-package, ares-launch, ...
+    } catch (error) {
+        throw new Error(`Couldn't ares with the command 'which ares'. Make sure webos cli is installed.`);
+    }
 };
 
 const _attemptAutoFix = async (c: RnvContext) => {
