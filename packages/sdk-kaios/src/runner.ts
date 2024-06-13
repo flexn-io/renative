@@ -73,10 +73,11 @@ const _configureProject = () =>
 export const runKaiOSProject = async (c: RnvContext) => {
     logDefault('runKaiOSProject');
     const { platform } = c;
-    const { hosted } = c.program.opts();
-
     if (!platform) return;
 
+    const { hosted } = c.program.opts();
+    const { target, isTargetTrue } = c.runtime;
+    const targetToRun = target || isTargetTrue;
     const bundleAssets = getConfigProp('bundleAssets') === true;
     const isHosted = hosted && !bundleAssets;
 
@@ -92,7 +93,7 @@ export const runKaiOSProject = async (c: RnvContext) => {
 
     if (bundleAssets) {
         await buildCoreWebpackProject();
-        await launchKaiOSSimulator(true);
+        await launchKaiOSSimulator(targetToRun);
     } else {
         const isPortActive = await checkPortInUse(c.runtime.port);
         const isWeinreEnabled = REMOTE_DEBUGGER_ENABLED_PLATFORMS.includes(platform) && !bundleAssets && !hosted;
@@ -104,7 +105,7 @@ export const runKaiOSProject = async (c: RnvContext) => {
                 )} is not running. Starting it up for you...`
             );
             waitForHost('')
-                .then(() => launchKaiOSSimulator(true))
+                .then(() => launchKaiOSSimulator(targetToRun))
                 .catch(logError);
             await runWebpackServer(isWeinreEnabled);
         } else {
@@ -112,11 +113,11 @@ export const runKaiOSProject = async (c: RnvContext) => {
 
             if (resetCompleted) {
                 waitForHost('')
-                    .then(() => launchKaiOSSimulator(true))
+                    .then(() => launchKaiOSSimulator(targetToRun))
                     .catch(logError);
                 await runWebpackServer(isWeinreEnabled);
             } else {
-                await launchKaiOSSimulator(true);
+                await launchKaiOSSimulator(targetToRun);
             }
         }
     }
