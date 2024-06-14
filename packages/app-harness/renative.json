@@ -14,7 +14,66 @@
     },
     "platforms": {
         "ios": {
-            "urlScheme": "",
+            "templateXcode": {
+                "AppDelegate_h": {
+                    "appDelegateMethods": ["@property (nonatomic, strong) UIView *appSwitcherView;"]
+                },
+                "AppDelegate_mm": {
+                    "appDelegateMethods": {
+                        "custom": [
+                            "- (UIImage *)createScreenshotOfCurrentContext {",
+                            "   CGSize screenSize = self.window.screen.bounds.size;",
+                            "   UIGraphicsBeginImageContext(screenSize);",
+                            "   CGContextRef currentContext = UIGraphicsGetCurrentContext();",
+                            "   if (!currentContext) {",
+                            "       return nil;",
+                            "   }",
+                            "   [self.window.layer renderInContext:currentContext];",
+                            "   UIImage *image = UIGraphicsGetImageFromCurrentImageContext();",
+                            "   UIGraphicsEndImageContext();",
+                            "   return image;",
+                            "}"
+                        ]
+                    }
+                }
+            },
+            "privacyManifests": {
+                "NSPrivacyAccessedAPITypes": [
+                    {
+                        "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryActiveKeyboards",
+                        "NSPrivacyAccessedAPITypeReasons": ["CA92.1"]
+                    },
+                    {
+                        "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategorySystemBootTime",
+                        "NSPrivacyAccessedAPITypeReasons": ["CA92.1", "E174.1"]
+                    }
+                ]
+            }
+        },
+        "tvos": {
+            "templateXcode": {
+                "AppDelegate_h": {
+                    "appDelegateMethods": ["@property (nonatomic, strong) UIView *appSwitcherView;"]
+                },
+                "AppDelegate_mm": {
+                    "appDelegateMethods": {
+                        "custom": [
+                            "- (UIImage *)createScreenshotOfCurrentContext {",
+                            "   CGSize screenSize = self.window.screen.bounds.size;",
+                            "   UIGraphicsBeginImageContext(screenSize);",
+                            "   CGContextRef currentContext = UIGraphicsGetCurrentContext();",
+                            "   if (!currentContext) {",
+                            "       return nil;",
+                            "   }",
+                            "   [self.window.layer renderInContext:currentContext];",
+                            "   UIImage *image = UIGraphicsGetImageFromCurrentImageContext();",
+                            "   UIGraphicsEndImageContext();",
+                            "   return image;",
+                            "}"
+                        ]
+                    }
+                }
+            },
             "privacyManifests": {
                 "NSPrivacyAccessedAPITypes": [
                     {
