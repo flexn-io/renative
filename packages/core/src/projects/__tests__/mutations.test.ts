@@ -36,6 +36,9 @@ describe('handleMutations', () => {
                 ],
             },
             buildConfig: { isTemplate: false },
+            runtime: {
+                isAppConfigured: true,
+            }
         };
         (getContext as jest.Mock).mockReturnValue(mockContext);
         (inquirerPrompt as jest.Mock).mockResolvedValue({ confirm: 'Update package and install (recommended)' });
