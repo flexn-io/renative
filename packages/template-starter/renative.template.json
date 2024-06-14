@@ -21,7 +21,9 @@
             },
             {
                 "paths": ["Gemfile", "metro.config.js", ".bundle", "react-native.config.js"],
-                "platforms": ["ios", "android", "tvos", "firetv", "androidtv"]
+
+                "platforms": ["ios", "android", "androidwear", "tvos", "firetv", "androidtv"]
+
             },
             {
                 "paths": ["next.config.js", "next-env.d.ts", "src/pages"],
@@ -29,7 +31,18 @@
             },
             {
                 "paths": ["webpack.config.js"],
-                "platforms": ["windows", "macos", "tizen", "webos", "tizenwatch", "tizenmobile"]
+
+                "platforms": [
+                    "windows",
+                    "macos",
+                    "tizen",
+                    "webos",
+                    "tizenwatch",
+                    "tizenmobile",
+                    "linux",
+                    "chromecast",
+                    "kaios"
+                ]
             }
         ],
         "renative_json": {
