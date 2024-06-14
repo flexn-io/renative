@@ -29,27 +29,36 @@ const comparePluginTemplates = async () => {
     });
 
     let idx = 0;
+    let shouldOverwriteAll = false;
     for (const key in differences) {
-        const answers = await inquirer.prompt([
-            {
-                type: 'list',
-                message: `Conflict on \`${key}\` dependency (${idx}/${Object.keys(differences).length}): \n\n${
-                    differences[key]
-                }\n`,
-                name: 'prompt',
-                choices: [
-                    {
-                        name: 'Overwrite',
-                        value: 'overwrite',
-                    },
-                    {
-                        name: 'Skip',
-                        value: 'skip',
-                    },
-                ],
-            },
-        ]);
-        if (answers.prompt === 'overwrite') {
+        let answers;
+        if (!shouldOverwriteAll) {
+            answers = await inquirer.prompt([
+                {
+                    type: 'list',
+                    message: `Conflict on \`${key}\` dependency (${idx}/${Object.keys(differences).length}): \n\n${
+                        differences[key]
+                    }\n`,
+                    name: 'prompt',
+                    choices: [
+                        {
+                            name: 'Overwrite',
+                            value: 'overwrite',
+                        },
+                        {
+                            name: 'Overwrite All',
+                            value: 'overwriteAll',
+                        },
+                        {
+                            name: 'Skip',
+                            value: 'skip',
+                        },
+                    ],
+                },
+            ]);
+        }
+        if (answers?.prompt !== 'skip') {
+            if (answers?.prompt === 'overwriteAll') shouldOverwriteAll = true;
             json1PluginTemplates[key] = json2PluginTemplates[key];
             const updatedJsonContent = JSON.stringify(json1, null, 4);
             await fsPromises.writeFile(originalFilePath, updatedJsonContent, 'utf8');
