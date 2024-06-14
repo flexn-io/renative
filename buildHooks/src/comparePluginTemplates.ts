@@ -2,8 +2,6 @@ import { promises as fsPromises } from 'fs';
 import inquirer from 'inquirer';
 import { diff, diffString } from 'json-diff';
 // todo
-// all diffs
-// total number of plugins, total number of conflicts, current plugin
 // overwrite all
 // check against latest npm version instead of other file
 
@@ -18,36 +16,45 @@ const comparePluginTemplates = async () => {
 
     const json1PluginTemplates = json1.pluginTemplates;
     const json2PluginTemplates = json2.pluginTemplates;
+    const differences = {};
 
-    for (const key of Object.keys(json1PluginTemplates)) {
+    Object.keys(json1PluginTemplates).forEach((key) => {
         if (json2PluginTemplates?.[key]) {
             const difference = diff(json1PluginTemplates[key], json2PluginTemplates[key]);
             const differenceString = diffString(json1PluginTemplates[key], json2PluginTemplates[key]);
             if (difference) {
-                const answers = await inquirer.prompt([
-                    {
-                        type: 'list',
-                        message: `Conflict on \`${key}\` dependency: \n\n${differenceString}\n`,
-                        name: 'prompt',
-                        choices: [
-                            {
-                                name: 'Overwrite',
-                                value: 'overwrite',
-                            },
-                            {
-                                name: 'Skip',
-                                value: 'skip',
-                            },
-                        ],
-                    },
-                ]);
-                if (answers.prompt === 'overwrite') {
-                    json1PluginTemplates[key] = json2PluginTemplates[key];
-                    const updatedJsonContent = JSON.stringify(json1, null, 4);
-                    await fsPromises.writeFile(originalFilePath, updatedJsonContent, 'utf8');
-                }
+                differences[key] = differenceString;
             }
         }
+    });
+
+    let idx = 0;
+    for (const key in differences) {
+        const answers = await inquirer.prompt([
+            {
+                type: 'list',
+                message: `Conflict on \`${key}\` dependency (${idx}/${Object.keys(differences).length}): \n\n${
+                    differences[key]
+                }\n`,
+                name: 'prompt',
+                choices: [
+                    {
+                        name: 'Overwrite',
+                        value: 'overwrite',
+                    },
+                    {
+                        name: 'Skip',
+                        value: 'skip',
+                    },
+                ],
+            },
+        ]);
+        if (answers.prompt === 'overwrite') {
+            json1PluginTemplates[key] = json2PluginTemplates[key];
+            const updatedJsonContent = JSON.stringify(json1, null, 4);
+            await fsPromises.writeFile(originalFilePath, updatedJsonContent, 'utf8');
+        }
+        idx++;
     }
 };
 
