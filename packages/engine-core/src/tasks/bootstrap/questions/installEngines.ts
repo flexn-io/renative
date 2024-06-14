@@ -97,7 +97,6 @@ const Question = async (data: NewProjectData) => {
     const { plugins } = c.buildConfig;
 
     if (plugins) {
-        const arr: RnvPlugin[] = [];
         Object.keys(plugins).forEach((k) => {
             const plugin = getMergedPlugin(c, k);
             if (!plugin) return;
@@ -110,7 +109,6 @@ const Question = async (data: NewProjectData) => {
                     _isPluginRequired(plugin, supportedPlatforms)
                 ) {
                     if (version) {
-                        arr.push(plugin);
                         if (!deps[k]) {
                             deps[k] = version;
                         }
