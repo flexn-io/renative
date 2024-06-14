@@ -122,18 +122,7 @@ const templateAndroid = z
             .describe('Overrides values in `gradle.properties` file of generated android based project'),
         build_gradle: z
             .object({
-                // buildScriptExt: z.array(z.string()),
-                // buildScriptRepositories: z.array(z.string()),
-                // buildScriptCustom: z.array(z.string()),
-                // gradleCustom: z.array(z.string()),
-                // buildScriptDependencies: z.array(z.string()),
-                // allprojects: z.object({
-                //     repositories: z
-                //         .record(z.string(), z.boolean())
-                //         .describe('Customize repositories section of build.gradle'),
-                // }),
                 plugins: z.array(z.string()),
-                dexOptions: z.record(z.string(), z.boolean()),
                 buildscript: z.object({
                     repositories: z.array(z.string()),
                     dependencies: z.array(z.string()),

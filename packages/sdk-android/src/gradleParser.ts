@@ -28,13 +28,6 @@ export const parseBuildGradleSync = () => {
     const c = getContext();
     const appFolder = getAppFolder();
 
-    let dexOptions = '';
-
-    if (c.payload.pluginConfigAndroid.buildGradleBuildScriptDexOptions) {
-        dexOptions = `dexOptions() {
-            ${c.payload.pluginConfigAndroid.buildGradleBuildScriptDexOptions}
-        }`;
-    }
 
     const templateAndroid = getConfigProp('templateAndroid');
     const buildscript = templateAndroid?.build_gradle?.buildscript;
@@ -61,14 +54,6 @@ export const parseBuildGradleSync = () => {
             override: c.payload.pluginConfigAndroid.buildToolsVersion,
         },
         {
-            pattern: '{{PLUGIN_INJECT_ALLPROJECTS_REPOSITORIES}}',
-            override: c.payload.pluginConfigAndroid.buildGradleAllProjectsRepositories,
-        },
-        {
-            pattern: '{{PLUGIN_INJECT_BUILDSCRIPT_REPOSITORIES}}',
-            override: c.payload.pluginConfigAndroid.buildGradleBuildScriptRepositories,
-        },
-        {
             pattern: '{{INJECT_KOTLIN_VERSION}}',
             override: c.payload.pluginConfigAndroid.kotlinVersion,
         },
@@ -91,14 +76,6 @@ export const parseBuildGradleSync = () => {
         {
             pattern: '{{INJECT_AFTER_ALL}}',
             override: c.payload.pluginConfigAndroid.buildGradleAfterAll,
-        },
-        {
-            pattern: '{{PLUGIN_INJECT_BUILDSCRIPT_DEPENDENCIES}}',
-            override: c.payload.pluginConfigAndroid.buildGradleBuildScriptDependencies,
-        },
-        {
-            pattern: '{{PLUGIN_INJECT_DEXOPTIONS}}',
-            override: dexOptions,
         },
         {
             pattern: '{{INJECT_REACT_NATIVE_ENGINE}}',
@@ -150,8 +127,6 @@ export const parseBuildGradleSync = () => {
         },
     ];
 
-
-    console.log('templateAndroid', templateAndroid?.build_gradle?.buildscript?.custom);
     addSystemInjects(injects);
 
     writeCleanFile(getBuildFilePath('build.gradle'), path.join(appFolder, 'build.gradle'), injects, undefined, c);
@@ -695,47 +670,10 @@ export const parseAndroidConfigObject = (plugin?: ConfigPluginPlatformSchema, ke
     // BUILD.GRADLE
     const buildGradle = templateAndroid?.build_gradle;
 
-    // console.log({ templateAndroid });
-
-    const allProjRepos = buildGradle?.allprojects?.repositories;
-    if (allProjRepos) {
-        Object.keys(allProjRepos).forEach((k) => {
-            if (allProjRepos[k] === true) {
-                c.payload.pluginConfigAndroid.buildGradleAllProjectsRepositories += `${sanitizePluginPath(k, key)}\n`;
-            }
-        });
-    }
-
     const plugins = buildGradle?.plugins;
     if (plugins?.forEach) {
         plugins.forEach((k) => {
             c.payload.pluginConfigAndroid.buildGradlePlugins += `${k}\n`;
-        });
-    }
-    const buildscriptRepos = buildGradle?.buildscript?.repositories;
-    if (buildscriptRepos) {
-        Object.keys(buildscriptRepos).forEach((k) => {
-            if (buildscriptRepos[k] === true) {
-                c.payload.pluginConfigAndroid.buildGradleBuildScriptRepositories += `${k}\n`;
-            }
-        });
-    }
-
-    const buildscriptDeps = buildGradle?.buildscript?.dependencies;
-    if (buildscriptDeps) {
-        Object.keys(buildscriptDeps).forEach((k) => {
-            if (buildscriptDeps[k] === true) {
-                c.payload.pluginConfigAndroid.buildGradleBuildScriptDependencies += `${k}\n`;
-            }
-        });
-    }
-
-    const buildscriptDexOptions = buildGradle?.dexOptions;
-    if (buildscriptDexOptions) {
-        Object.keys(buildscriptDexOptions).forEach((k) => {
-            if (buildscriptDexOptions[k] === true) {
-                c.payload.pluginConfigAndroid.buildGradleBuildScriptDexOptions += `${k}\n`;
-            }
         });
     }
 
