@@ -680,6 +680,12 @@
                     "build_gradle": {
                       "type": "object",
                       "properties": {
+                        "plugins": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
                         "buildscript": {
                           "type": "object",
                           "properties": {
