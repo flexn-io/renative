@@ -114,7 +114,8 @@
         "ts-jest": "^27.0.7",
         "ts-node": "^10.9.1",
         "typescript": "5.2.2",
-        "typescript-coverage-report": "0.8.0"
+        "typescript-coverage-report": "0.8.0",
+        "json-diff": "1.0.6"
     },
     "engines": {
         "node": ">=18.0.0",
