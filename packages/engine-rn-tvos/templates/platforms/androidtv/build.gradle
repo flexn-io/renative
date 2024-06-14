@@ -10,27 +10,40 @@ buildscript {
         // We use NDK 23 which has both M1 support and is the side-by-side NDK version from AGP.
         ndkVersion = '{{NDK_VERSION}}'
         kotlinVersion = '{{INJECT_KOTLIN_VERSION}}'
+
+        {{INJECT_BUILDSCRIPT_EXT}}
     }
+
     subprojects { subproject ->
-    afterEvaluate{
-        if((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
-            android {
-                compileSdkVersion rootProject.ext.compileSdkVersion
-                buildToolsVersion rootProject.ext.buildToolsVersion
+        afterEvaluate {
+            if ((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
+                android {
+                    compileSdkVersion rootProject.ext.compileSdkVersion
+                    buildToolsVersion rootProject.ext.buildToolsVersion
+                }
             }
         }
     }
-}
 
     repositories {
         google()
         mavenCentral()
+        maven { url = uri("https://www.jitpack.io" ) }
+
+        {{INJECT_BUILDSCRIPT_REPOSITORIES}}
     }
+
+    {{INJECT_BUILDSCRIPT_CUSTOM}}
+
     dependencies {
         classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
+
+        {{INJECT_BUILDSCRIPT_DEPENDENCIES}}
     }
 }
+
+{{INJECT_GRADLE_AFTER_ALL}}
 
 apply plugin: "com.facebook.react.rootproject"
