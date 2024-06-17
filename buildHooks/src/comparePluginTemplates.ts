@@ -2,7 +2,6 @@ import { promises as fsPromises } from 'fs';
 import inquirer from 'inquirer';
 import { diff, diffString } from 'json-diff';
 // todo
-// overwrite all
 // check against latest npm version instead of other file
 
 const comparePluginTemplates = async () => {
@@ -46,6 +45,11 @@ const comparePluginTemplates = async () => {
                             value: 'overwrite',
                         },
                         {
+                            name: 'Overwrite Version Only',
+                            value: 'overwriteVersion',
+                        },
+                        new inquirer.Separator(),
+                        {
                             name: 'Overwrite All',
                             value: 'overwriteAll',
                         },
@@ -59,7 +63,16 @@ const comparePluginTemplates = async () => {
         }
         if (answers?.prompt !== 'skip') {
             if (answers?.prompt === 'overwriteAll') shouldOverwriteAll = true;
-            json1PluginTemplates[key] = json2PluginTemplates[key];
+            if (
+                answers?.prompt === 'overwriteVersion' &&
+                json1PluginTemplates[key]?.version &&
+                json2PluginTemplates[key]?.version
+            ) {
+                json1PluginTemplates[key].version = json2PluginTemplates[key].version;
+            } else if (answers?.prompt === 'overwrite') {
+                json1PluginTemplates[key] = json2PluginTemplates[key];
+            }
+
             const updatedJsonContent = JSON.stringify(json1, null, 4);
             await fsPromises.writeFile(originalFilePath, updatedJsonContent, 'utf8');
         }
