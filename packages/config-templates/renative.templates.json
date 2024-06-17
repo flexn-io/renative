@@ -120,6 +120,16 @@
             }
         },
         "@bam.tech/react-native-image-resizer": {
+            "version": "3.0.7",
+            "ios": {
+                "podName": "react-native-image-resizer"
+            },
+            "tvos": {
+                "podName": "react-native-image-resizer"
+            },
+            "macos": {
+                "podName": "react-native-image-resizer"
+            },
             "android": {
                 "package": "com.reactnativeimageresizer.ImageResizerPackage"
             },
@@ -128,17 +138,7 @@
             },
             "firetv": {
                 "package": "com.reactnativeimageresizer.ImageResizerPackage"
-            },
-            "ios": {
-                "podName": "react-native-image-resizer"
-            },
-            "macos": {
-                "podName": "react-native-image-resizer"
-            },
-            "tvos": {
-                "podName": "react-native-image-resizer"
-            },
-            "version": "3.0.5"
+            }
         },
         "@flexn/create": {
             "version": "1.3.0-feat-rnv-update.8",
