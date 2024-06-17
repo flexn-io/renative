@@ -350,17 +350,17 @@
             "version": "7.3.0"
         },
         "@react-native-clipboard/clipboard": {
-            "android": {
-                "package": "com.reactnativecommunity.clipboard.ClipboardPackage",
-                "path": "{{PLUGIN_ROOT}}/android"
-            },
+            "version": "1.12.1",
             "ios": {
                 "podName": "RNCClipboard"
             },
             "macos": {
                 "podName": "RNCClipboard"
             },
-            "version": "1.9.0"
+            "android": {
+                "package": "com.reactnativecommunity.clipboard.ClipboardPackage",
+                "path": "{{PLUGIN_ROOT}}/android"
+            }
         },
         "@react-native-community/async-storage": {
             "android": {
