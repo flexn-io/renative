@@ -1,6 +1,15 @@
 import { promises as fsPromises } from 'fs';
 import inquirer from 'inquirer';
 import { diff, diffString } from 'json-diff';
+
+// this is a very simple utility script to compare pluginTemplates and transfer changes between them
+// npx rnv hooks run -x comparePluginTemplates <path-to-original-file> <path-to-newer-file>
+// you will see the diff and get several options to pick from:
+// overwrite - overwrites just the current plugin
+// overwrite version only
+// overwrite all
+// skip
+
 // todo
 // check against latest npm version instead of other file
 
