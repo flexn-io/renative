@@ -483,16 +483,16 @@
             "version": "1.5.1"
         },
         "@react-native-community/datetimepicker": {
-            "android": {
-                "package": "com.reactcommunity.rndatetimepicker.RNDateTimePickerPackage"
-            },
+            "version": "7.5.0",
             "ios": {
                 "podName": "RNDateTimePicker"
             },
             "macos": {
                 "podName": "RNDateTimePicker"
             },
-            "version": "6.7.5"
+            "android": {
+                "package": "com.reactcommunity.rndatetimepicker.RNDateTimePickerPackage"
+            }
         },
         "@react-native-community/geolocation": {
             "android": {
