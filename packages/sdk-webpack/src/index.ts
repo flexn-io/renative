@@ -21,6 +21,7 @@ import {
     CoreEnvVars,
     Env,
     getContext,
+    getAppFolder,
 } from '@rnv/core';
 import {
     checkPortInUse,
@@ -313,7 +314,13 @@ export const waitForWebpack = async (suffix = 'assets/bundle.js') => {
     });
 };
 
-export const buildWeb = async () => buildCoreWebpackProject();
+export const buildWeb = async () => {
+    logDefault('buildWebProject');
+
+    const appFolder = getAppFolder();
+    await buildCoreWebpackProject();
+    logSuccess(`Your build is located in  ${chalk().cyan(path.join(appFolder, `build`))} .`);
+};
 
 export const configureWebProject = async () => {
     const c = getContext();

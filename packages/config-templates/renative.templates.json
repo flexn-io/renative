@@ -61,10 +61,10 @@
             "engine": "engine-rn"
         },
         "androidtv": {
-            "engine": "engine-rn"
+            "engine": "engine-rn-tvos"
         },
         "firetv": {
-            "engine": "engine-rn"
+            "engine": "engine-rn-tvos"
         },
         "tvos": {
             "engine": "engine-rn-tvos"
@@ -3492,7 +3492,17 @@
         },
         "react-native-web": {
             "version": "0.19.12",
-            "supportedPlatforms": ["web", "tizen", "webos", "macos"],
+            "supportedPlatforms": [
+                "web",
+                "tizen",
+                "webos",
+                "macos",
+                "linux",
+                "windows",
+                "chromecast",
+                "kaios",
+                "tizenwatch"
+            ],
             "pluginDependencies": {
                 "react": "source:rnv"
             },

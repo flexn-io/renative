@@ -7,7 +7,7 @@ import {
     fsExistsSync,
     formatBytes,
     mkdirSync,
-    writeFileSync,
+    writeFileSync
 } from '../system/fs';
 import { chalk, logDefault, logWarning, logDebug } from '../logger';
 import { getContext } from '../context/provider';
@@ -49,7 +49,6 @@ export const generateBuildConfig = () => {
     logDebug('generateBuildConfig');
 
     const c = getContext();
-
     const extraPlugins = getEnginesPluginDelta();
 
     const mergePathsPublic = [
@@ -109,7 +108,6 @@ export const generateBuildConfig = () => {
 
 const _generateBuildConfig = (mergePaths: string[], mergeFiles: Array<object | undefined>) => {
     const c = getContext();
-
     const cleanPaths = mergePaths.filter((v) => v);
     const existsPaths = cleanPaths.filter((v) => {
         const exists = fsExistsSync(v);

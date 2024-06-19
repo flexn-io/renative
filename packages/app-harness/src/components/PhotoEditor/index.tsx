@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { useLoggerContext } from '../../context';
-import { Button } from 'react-native';
+import { Text, TouchableOpacity, TouchableOpacityProps } from 'react-native';
+import styles from '../../styles';
 
-export const PhotoEditorButton = () => {
+interface ButtonProps extends TouchableOpacityProps {}
+export const PhotoEditorButton = forwardRef<TouchableOpacity, ButtonProps>(({ onBlur, onFocus, style }, ref) => {
     const { logDebug } = useLoggerContext();
-
     const handlePhotoEditor = () => {
         logDebug('PhotoEditor not supported on this platform');
     };
 
-    return <Button onPress={handlePhotoEditor} title="Show PhotoEditor" />;
-};
+    return (
+        <TouchableOpacity ref={ref} onPress={handlePhotoEditor} onFocus={onFocus} onBlur={onBlur} style={style}>
+            <Text style={styles.buttonTitle}>Show PhotoEditor</Text>
+        </TouchableOpacity>
+    );
+});

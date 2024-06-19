@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Text, Image, View, PixelRatio, TouchableOpacity, StatusBar, ScrollView, findNodeHandle } from 'react-native';
-import { Api } from '@rnv/renative';
+import { Api, isFactorTv, isWebBased } from '@rnv/renative';
 import { ICON_LOGO, CONFIG, ThemeProvider, ThemeContext, testProps } from '../config';
 import packageJson from '../../package.json';
 
@@ -11,17 +11,20 @@ const App = () => (
 );
 
 const AppThemed = () => {
-    const buttonRef = useRef(null);
+    const buttonRef = useRef<TouchableOpacity>(null);
     const { theme, toggle, dark } = useContext(ThemeContext);
-
     const [pixelRatio, setPixelRatio] = useState(1);
     const [fontScale, setFontScale] = useState(1);
     const [isClient, setIsClient] = useState(false);
+    const [isFocused, setIsFocused] = useState(false);
 
     useEffect(() => {
         setPixelRatio(PixelRatio.get());
         setFontScale(PixelRatio.getFontScale());
         setIsClient(true);
+        if (isWebBased && isFactorTv && buttonRef?.current) {
+            buttonRef?.current.focus();
+        }
     }, []);
 
     return (
@@ -54,7 +57,9 @@ const AppThemed = () => {
                 <TouchableOpacity
                     ref={buttonRef}
                     onPress={toggle}
-                    style={theme.styles.button}
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}
+                    style={[theme.styles.button, isFocused && { ...theme.styles.focusedButton, outline: 'none' }]}
                     // Set the initial AndroidTV and tvOS focus to be on the button
                     hasTVPreferredFocus
                     // On AndroidTV going up can appear as lost focus, so block focus up
