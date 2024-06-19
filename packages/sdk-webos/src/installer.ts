@@ -49,10 +49,10 @@ export const checkAndConfigureWebosSdks = async () => {
             path.join(sdk, `CLI/bin/ares-setup-device${isSystemWin ? '.cmd' : ''}`)
         );
         c.cli[CLI_WEBOS_ARES_DEVICE_INFO] = getRealPath(
-            path.join(sdk, `CLI/bin/ares-device${isSystemWin ? '.cmd' : ''}`)
+            path.join(sdk, `CLI/bin/ares-device-info${isSystemWin ? '.cmd' : ''}`)
         );
         c.cli[CLI_WEBOS_ARES_NOVACOM] = getRealPath(path.join(sdk, `CLI/bin/ares-novacom${isSystemWin ? '.cmd' : ''}`));
-    } else if (sdk && clipathNewVersion) {
+    } else if (sdk && clipathNewVersion && fsExistsSync(clipathNewVersion + 'ares')) {
         c.cli[CLI_WEBOS_ARES] = getRealPath(path.join(clipathNewVersion, `ares${isSystemWin ? '.cmd' : ''}`));
         c.cli[CLI_WEBOS_ARES_PACKAGE] = getRealPath(
             path.join(clipathNewVersion, `ares-package${isSystemWin ? '.cmd' : ''}`)

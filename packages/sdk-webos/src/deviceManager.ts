@@ -256,6 +256,18 @@ export const runWebosSimOrDevice = async () => {
     const devices = await parseDevices(c, devicesResponse);
     const activeDevices = devices.filter((d) => d.active);
 
+    const simOrDevice = await inquirerPrompt({
+        type: 'list',
+        name: 'simOrDevice',
+        message: 'Do you want to run on a simulator or a device?',
+        choices: ['Simulator', 'Device'],
+    });
+
+    if (simOrDevice.simOrDevice === 'Simulator') {
+        await launchWebOSimulator(true);
+        return true;
+    }
+
     if (device) {
         // Running on a device
         const actualDevices = devices.filter((d) => d.isDevice);
@@ -312,6 +324,8 @@ export const runWebosSimOrDevice = async () => {
                 choices,
             });
             if (response.chosenDevice) {
+                console.log('the device is:');
+                console.log(response.chosenDevice);
                 return installAndLaunchApp(response.chosenDevice, appPath, tId);
             }
         } else {
