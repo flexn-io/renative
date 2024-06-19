@@ -4,6 +4,6 @@ module.exports = {
         'import/core-modules': ['@flexn/eslint-config'],
     },
     rules: {
-        '@typescript-eslint/no-empty-interface': 'warn',
+        '@typescript-eslint/no-empty-interface': 'off',
     },
 };
