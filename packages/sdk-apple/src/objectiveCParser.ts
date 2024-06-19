@@ -261,7 +261,7 @@ export const parseAppDelegate = (
             },
             {
                 pattern: '{{APPDELEGATE_H_METHODS}}',
-                override: c.payload.pluginConfigiOS.pluginAppDelegateHMethods,
+                override: c.payload.pluginConfigiOS.pluginAppDelegateHMethods ?? '',
             },
             {
                 pattern: '{{APPDELEGATE_H_EXTENSIONS}}',

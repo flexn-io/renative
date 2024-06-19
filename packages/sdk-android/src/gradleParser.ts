@@ -107,23 +107,23 @@ export const parseBuildGradleSync = () => {
         },
         {
             pattern: '{{INJECT_BUILDSCRIPT_EXT}}',
-            override: buildscript?.ext?.join('\n'),
+            override: buildscript?.ext?.join('\n') ?? '',
         },
         {
             pattern: '{{INJECT_BUILDSCRIPT_REPOSITORIES}}',
-            override: buildscript?.repositories?.join('\n'),
+            override: buildscript?.repositories?.join('\n') ?? '',
         },
         {
             pattern: '{{INJECT_BUILDSCRIPT_CUSTOM}}',
-            override: buildscript?.custom?.join('\n'),
+            override: buildscript?.custom?.join('\n') ?? '',
         },
         {
             pattern: '{{INJECT_BUILDSCRIPT_DEPENDENCIES}}',
-            override: buildscript?.dependencies?.join('\n'),
+            override: buildscript?.dependencies?.join('\n') ?? '',
         },
         {
             pattern: '{{INJECT_GRADLE_AFTER_ALL}}',
-            override: templateAndroid?.build_gradle?.injectAfterAll?.join('\n'),
+            override: templateAndroid?.build_gradle?.injectAfterAll?.join('\n') ?? '',
         },
     ];
 
