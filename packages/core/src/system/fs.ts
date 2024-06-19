@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'graceful-fs';
 import path from 'path';
 import rimraf from 'rimraf';
 import Svg2Js from 'svg2js';
@@ -37,7 +37,19 @@ export const fsReadFileSync = (dest: fs.PathLike | undefined) => fs.readFileSync
 
 export const fsChmodSync = (dest: fs.PathLike | undefined, flag: fs.Mode) => fs.chmodSync(dest!, flag);
 
-export const fsRenameSync = (arg1: fs.PathLike | undefined, arg2: fs.PathLike) => fs.renameSync(arg1!, arg2);
+export const fsRenameSync = (arg1: fs.PathLike | undefined, arg2: fs.PathLike) => {
+    // One of the paths does not exist
+    if (!arg1 || !arg2) return;
+    // File already exists with renamed name, skip renaming
+    if (fs.existsSync(arg2)) return;
+
+    if (fs.lstatSync(arg1).isDirectory()) {
+        fs.cpSync(arg1 as string, arg2 as string, { recursive: true });
+        fs.rmdirSync(arg1, { recursive: true });
+    } else if (fs.lstatSync(arg1).isFile()) {
+        fs.renameSync(arg1, arg2);
+    }
+};
 
 export const fsStatSync = (arg1: fs.PathLike | undefined) => fs.statSync(arg1!);
 
