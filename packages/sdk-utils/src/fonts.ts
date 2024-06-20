@@ -43,7 +43,7 @@ export const configureFonts = async () => {
                               file: require('${fontSource}'),
                           },`;
                         } else {
-                            logWarning(`Font ${chalk().bold(fontSource)} doesn't exist! Skipping.`);
+                            logWarning(`Font ${chalk().bold.white(fontSource)} doesn't exist! Skipping.`);
                         }
                     }
                 }

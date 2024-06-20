@@ -205,7 +205,9 @@ export const listWebOSTargets = async () => {
     const devicesResponse = await execCLI(CLI_WEBOS_ARES_DEVICE_INFO, '-D');
     const devices = await parseDevices(c, devicesResponse);
 
-    const deviceArray = devices.map((device, i) => ` [${i + 1}]> ${chalk().bold(device.name)} | ${device.device}`);
+    const deviceArray = devices.map(
+        (device, i) => ` [${i + 1}]> ${chalk().bold.white(device.name)} | ${device.device}`
+    );
 
     const webosSdkPath = getRealPath(c.buildConfig?.sdks?.WEBOS_SDK);
     if (!webosSdkPath) {
@@ -213,7 +215,7 @@ export const listWebOSTargets = async () => {
     }
     const availableSimulatorVersions = getDirectories(path.join(webosSdkPath, 'Simulator'));
     availableSimulatorVersions.map((a) => {
-        deviceArray.push(` [${deviceArray.length + 1}]> ${chalk().bold(a)} | simulator`);
+        deviceArray.push(` [${deviceArray.length + 1}]> ${chalk().bold.white(a)} | simulator`);
     });
 
     logToSummary(`WebOS Targets:\n${deviceArray.join('\n')}`);

@@ -71,7 +71,7 @@ const _attemptAutoFix = async (c: RnvContext) => {
     const result = getSdkLocations().find((v) => fsExistsSync(v));
 
     if (result) {
-        logSuccess(`Found existing ${c.platform} SDK location at ${chalk().bold(result)}`);
+        logSuccess(`Found existing ${c.platform} SDK location at ${chalk().bold.white(result)}`);
         let confirmSdk = true;
         if (!c.program.opts().ci) {
             const { confirm } = await inquirerPrompt({
@@ -112,9 +112,9 @@ export const checkTizenSdk = async () => {
     logDefault('checkTizenSdk');
     if (!_isSdkInstalled(c)) {
         logWarning(
-            `${c.platform} platform requires Tizen SDK to be installed. Your SDK path in ${chalk().bold(
+            `${c.platform} platform requires Tizen SDK to be installed. Your SDK path in ${chalk().bold.white(
                 c.paths.workspace.config
-            )} does not exist: ${chalk().bold(_getCurrentSdkPath(c))}`
+            )} does not exist: ${chalk().bold.white(_getCurrentSdkPath(c))}`
         );
         return _attemptAutoFix(c);
     }

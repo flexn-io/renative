@@ -58,7 +58,7 @@ export const startReactNative = async (opts: {
     }
 
     if (c.program.opts().resetHard || c.program.opts().reset) {
-        logInfo(`You passed ${chalk().bold('-r')} argument. --reset-cache will be applied to react-native`);
+        logInfo(`You passed ${chalk().bold.white('-r')} argument. --reset-cache will be applied to react-native`);
     }
     // logSummary('BUNDLER STARTED');
 

@@ -47,13 +47,13 @@ export default createTask({
             if (files.workspace.config?.appConfigsPath) {
                 if (!fsExistsSync(files.workspace.config.appConfigsPath)) {
                     logWarning(
-                        `Your custom global appConfig is pointing to ${chalk().bold(
+                        `Your custom global appConfig is pointing to ${chalk().bold.white(
                             files.workspace.config.appConfigsPath
                         )} which doesn't exist! Make sure you create one in that location`
                     );
                 } else {
                     logInfo(
-                        `Found custom appConfing location pointing to ${chalk().bold(
+                        `Found custom appConfing location pointing to ${chalk().bold.white(
                             files.workspace.config.appConfigsPath
                         )}. ReNativewill now swith to that location!`
                     );
@@ -64,7 +64,7 @@ export default createTask({
             // Check config sanity
             if (files.workspace.config?.defaultTargets === undefined) {
                 logWarning(
-                    `You're missing defaultTargets in your config ${chalk().bold(
+                    `You're missing defaultTargets in your config ${chalk().bold.white(
                         paths.workspace.config
                     )}. Let's add them!`
                 );

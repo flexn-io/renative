@@ -15,7 +15,7 @@ export const RnvTaskOptions = createTaskOptionsMap([
     },
     {
         key: 'printExec',
-        // key: 'print-exec',
+        // altKey: 'printExec',
         description: 'Print exec commands in full',
     },
     {
@@ -227,6 +227,7 @@ export const RnvTaskCoreOptionPresets = createTaskOptionsPreset({
         RnvTaskOptions.help,
         RnvTaskOptions.printExec,
         RnvTaskOptions.telemetryDebug,
+        RnvTaskOptions.json,
     ],
 });
 

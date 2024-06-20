@@ -287,7 +287,7 @@ def keystoreProps = new Properties()
 keystoreProps.load(new FileInputStream(keystorePropsFile))`;
         } else {
             logWarning(
-                `Your ${chalk().bold(
+                `Your ${chalk().bold.white(
                     keystorePathFull
                 )} does not exist. You won't be able to make production releases without it!`
             );
@@ -297,11 +297,11 @@ keystoreProps.load(new FileInputStream(keystorePropsFile))`;
         if (!keyAlias) missingKeys.push('keyAlias');
         if (!storePassword) missingKeys.push('storePassword');
         if (!keyPassword) missingKeys.push('keyPassword');
-        logWarning(`You defined store file ${chalk().bold(
+        logWarning(`You defined store file ${chalk().bold.white(
             storeFile
         )}, but you are missing following keys: ${chalk().red(missingKeys.join(', '))}
 Check your private files at:
-${chalk().bold(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
+${chalk().bold.white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
     }
 
     // BUILD_TYPES

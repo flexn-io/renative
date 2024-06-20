@@ -34,9 +34,9 @@ const checkIsRenativeProject = async () => {
     const { paths } = c;
     if (!paths.project.configExists) {
         return Promise.reject(
-            `This directory is not ReNative project. Project config ${chalk().bold(
+            `This directory is not ReNative project. Project config ${chalk().bold.white(
                 paths.project.config
-            )} is missing!. You can create new project with ${chalk().bold('rnv new')}`
+            )} is missing!. You can create new project with ${chalk().bold.white('rnv new')}`
         );
     }
     return true;
@@ -114,14 +114,14 @@ export default createTask({
             if (!runtime.disableReset) {
                 if (program.opts().resetHard) {
                     logInfo(
-                        `You passed ${chalk().bold('-R, --resetHard')} argument. "${chalk().bold(
+                        `You passed ${chalk().bold.white('-R, --resetHard')} argument. "${chalk().bold.white(
                             './platformAssets'
                         )}" will be cleaned up first`
                     );
                     await cleanPlaformAssets();
                 } else if (program.opts().resetAssets) {
                     logInfo(
-                        `You passed ${chalk().bold('-a, --resetAssets')} argument. "${chalk().bold(
+                        `You passed ${chalk().bold.white('-a, --resetAssets')} argument. "${chalk().bold.white(
                             './platformAssets'
                         )}" will be cleaned up first`
                     );

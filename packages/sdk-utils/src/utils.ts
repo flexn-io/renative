@@ -13,7 +13,9 @@ export const addSystemInjects = (injects: OverridesOptions) => {
 
 export const sanitizeColor = (val: string | undefined, key: string) => {
     if (!val) {
-        logWarning(`You are missing ${chalk().bold(key)} in your renative config. will use default #FFFFFF instead`);
+        logWarning(
+            `You are missing ${chalk().bold.white(key)} in your renative config. will use default #FFFFFF instead`
+        );
         return {
             rgb: [255, 255, 255, 1],
             rgbDecimal: [1, 1, 1, 1],

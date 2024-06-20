@@ -72,7 +72,7 @@ export default createTask({
                     name: 'option',
                     type: 'list',
                     choices: options,
-                    message: `How to decrypt to ${chalk().bold(destFolder)} ?`,
+                    message: `How to decrypt to ${chalk().bold.white(destFolder)} ?`,
                 });
                 if (option === options[0]) {
                     shouldCleanFolder = true;
@@ -86,7 +86,7 @@ export default createTask({
             if (fsExistsSync(destTemp)) {
                 const { confirm } = await inquirerPrompt({
                     type: 'confirm',
-                    message: `Found existing decrypted file at ${chalk().bold(
+                    message: `Found existing decrypted file at ${chalk().bold.white(
                         destTemp
                     )}. want to use it and skip decrypt ?`,
                 });
@@ -98,7 +98,7 @@ export default createTask({
 
             const key = ctx.program.opts().key || ctx.process.env[envVar];
             if (!key) {
-                return Promise.reject(`encrypt: You must pass ${chalk().bold('--key')} or have env var defined:
+                return Promise.reject(`encrypt: You must pass ${chalk().bold.white('--key')} or have env var defined:
 
 ${getEnvExportCmd(envVar, 'REPLACE_WITH_ENV_VARIABLE')}
 
@@ -106,7 +106,7 @@ Make sure you take into account special characters that might need to be escaped
 `);
             }
             if (!fsExistsSync(source)) {
-                return Promise.reject(`Can't decrypt. ${chalk().bold(source)} is missing!`);
+                return Promise.reject(`Can't decrypt. ${chalk().bold.white(source)} is missing!`);
             }
 
             let data;
@@ -124,14 +124,16 @@ ${e}
       ${chalk().green('SUGGESTION:')}
 
       ${chalk().yellow('STEP 1:')}
-      run: ${chalk().bold('rnv crypto encrypt')} locally at least once and commit the result back to your repository
+      run: ${chalk().bold.white(
+          'rnv crypto encrypt'
+      )} locally at least once and commit the result back to your repository
 
       ${chalk().yellow('STEP 2:')}
-      you should be able to use: ${chalk().bold('rnv crypto decrypt')} properly now
+      you should be able to use: ${chalk().bold.white('rnv crypto decrypt')} properly now
 
       ${chalk().yellow('IF ALL HOPE IS LOST:')}
       Raise new issue and copy this SUMMARY box output at:
-      ${chalk().bold('https://github.com/flexn-io/renative/issues')}
+      ${chalk().bold.white('https://github.com/flexn-io/renative/issues')}
       and we will try to help!
 
       `;
@@ -148,14 +150,14 @@ ${chalk().green('SUGGESTION:')}
 ${chalk().yellow('STEP 1:')}
 check if your ENV VAR is correct: ${getEnvExportCmd(envVar, '***********')}
 Make sure you take into account special characters that might need to be escaped
-or if someone did not encrypt ${chalk().bold(source)} with a different key
+or if someone did not encrypt ${chalk().bold.white(source)} with a different key
 
 ${chalk().yellow('STEP 2:')}
 run crypto decrypt again
 
 ${chalk().yellow('IF ALL HOPE IS LOST:')}
 Raise new issue and copy this SUMMARY box output at:
-${chalk().bold('https://github.com/flexn-io/renative/issues')}
+${chalk().bold.white('https://github.com/flexn-io/renative/issues')}
 and we will try to help!
 
 `);
@@ -195,7 +197,7 @@ and we will try to help!
 
             await _unzipAndCopy(ctx, shouldCleanFolder, destTemp, wsPath, ts, destFolder);
         } else {
-            logWarning(`You don't have {{ crypto.path }} specificed in ${chalk().bold(ctx.paths.appConfigBase)}`);
+            logWarning(`You don't have {{ crypto.path }} specificed in ${chalk().bold.white(ctx.paths.appConfigBase)}`);
             return true;
         }
     },

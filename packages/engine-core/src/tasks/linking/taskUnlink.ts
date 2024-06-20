@@ -25,7 +25,7 @@ export default createTask({
         let msg = 'Found following source packages:\n\n';
 
         linkablePackages.forEach((pkg) => {
-            msg += `${pkg.nmPath.replace(pkg.name, chalk().bold(pkg.name))} ${
+            msg += `${pkg.nmPath.replace(pkg.name, chalk().bold.white(pkg.name))} ${
                 pkg.isBrokenLink ? chalk().red('(broken)') : pkg.isLinked ? chalk().green('(linked)') : '(unlinked)'
             }\n`;
         });

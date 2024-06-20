@@ -10,7 +10,7 @@ export default createTask({
             null,
             (i, obj, mapping, defaultVal) => {
                 const isConnected = '';
-                return ` [${chalk().grey(i + 1)}]> ${chalk().bold(defaultVal)}${isConnected} \n`;
+                return ` [${chalk().grey(i + 1)}]> ${chalk().bold.white(defaultVal)}${isConnected} \n`;
             }
         );
 

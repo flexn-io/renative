@@ -24,7 +24,7 @@ export const versionCheck = async (c: RnvContext) => {
     );
     if (c.runtime.rnvVersionRunner && c.runtime.rnvVersionProject) {
         if (c.runtime.rnvVersionRunner !== c.runtime.rnvVersionProject && !c.program.opts().skipRnvCheck) {
-            const recCmd = chalk().bold(`$ npx ${getCurrentCommand(true)}`);
+            const recCmd = chalk().bold.white(`$ npx ${getCurrentCommand(true)}`);
             const actionNoUpdate = 'Continue and skip updating package.json';
             const actionWithUpdate = 'Continue and update package.json';
             const actionUpgrade = `Upgrade project to ${c.runtime.rnvVersionRunner}`;

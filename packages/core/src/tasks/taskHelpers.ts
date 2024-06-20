@@ -6,7 +6,7 @@ import { RnvTask, RnvTaskOption } from './types';
 
 const printCurrentPlatform = () => {
     const ctx = getContext();
-    const msg = `Current platform: ${chalk().white.bold(ctx.platform)}`;
+    const msg = `Current platform: ${chalk().bold.white(ctx.platform)}`;
     logInfo(msg);
 };
 

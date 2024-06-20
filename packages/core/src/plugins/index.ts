@@ -201,9 +201,9 @@ export const configurePlugins = async () => {
                 // Skip Warning as this is intentional "plugin":null override
             } else {
                 logWarning(
-                    `Plugin with name ${chalk().bold(
+                    `Plugin with name ${chalk().bold.white(
                         k
-                    )} does not exists in ReNative source:rnv scope. you need to define it manually here: ${chalk().bold(
+                    )} does not exists in ReNative source:rnv scope. you need to define it manually here: ${chalk().bold.white(
                         c.paths.project.builds.config
                     )}`
                 );
@@ -415,9 +415,9 @@ const _resolvePluginDependencies = async (
             const { confirm } = await inquirerPrompt({
                 type: 'confirm',
                 message: `Install ${key}?`,
-                warningMessage: `Plugin ${chalk().bold(key)} source:${chalk().bold(scope)} required by ${chalk().red(
-                    parentKey
-                )} is not installed`,
+                warningMessage: `Plugin ${chalk().bold.white(key)} source:${chalk().bold.white(
+                    scope
+                )} required by ${chalk().red(parentKey)} is not installed`,
             });
             if (confirm && c.files.project.config_original?.plugins) {
                 c.files.project.config_original.plugins[key] = `source:${scope}`;
@@ -427,7 +427,9 @@ const _resolvePluginDependencies = async (
             }
         } else {
             logWarning(
-                `Plugin ${chalk().bold(parentKey)} requires ${chalk().red(key)} which is not available in your system`
+                `Plugin ${chalk().bold.white(parentKey)} requires ${chalk().red(
+                    key
+                )} which is not available in your system`
             );
         }
     } else {
@@ -533,13 +535,13 @@ export const parsePlugins = (
                 //     );
                 // }
             } else {
-                logError(`You have no plugins defined in ${chalk().bold(c.paths.project.builds.config)}`);
+                logError(`You have no plugins defined in ${chalk().bold.white(c.paths.project.builds.config)}`);
             }
         } else {
             logWarning(
-                `You haven't included any ${chalk().bold('{ common: { includedPlugins: [] }}')} in your ${chalk().bold(
-                    c.paths.appConfig.config
-                )}. Your app might not work correctly`
+                `You haven't included any ${chalk().bold.white(
+                    '{ common: { includedPlugins: [] }}'
+                )} in your ${chalk().bold.white(c.paths.appConfig.config)}. Your app might not work correctly`
             );
         }
     }
@@ -684,7 +686,9 @@ const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
         // });
     } else {
         logDebug(
-            `Your plugin configuration has no override path ${chalk().bold(source)}. skipping folder override action`
+            `Your plugin configuration has no override path ${chalk().bold.white(
+                source
+            )}. skipping folder override action`
         );
     }
 
@@ -761,7 +765,7 @@ export const overrideFileContents = (dest: string, override: Record<string, stri
                 foundRegEx = true;
                 fileToFix = fileToFix.replace(regEx, override[fk]);
                 logSuccess(
-                    `${chalk().bold(dest.split('node_modules').pop())} requires override by: ${chalk().bold(
+                    `${chalk().bold.white(dest.split('node_modules').pop())} requires override by: ${chalk().bold.white(
                         overridePath.split('node_modules').pop()
                     )}. FIXING...DONE`
                 );
@@ -774,7 +778,7 @@ export const overrideFileContents = (dest: string, override: Record<string, stri
                     logWarning(
                         `No Match found in ${chalk().red(
                             dest.split('node_modules').pop()
-                        )} for expression: ${chalk().gray(term)}. source: ${chalk().bold(
+                        )} for expression: ${chalk().gray(term)}. source: ${chalk().bold.white(
                             overridePath.split('node_modules').pop()
                         )}`
                     );
@@ -842,7 +846,7 @@ export const checkForPluginDependencies = async (postInjectHandler?: AsyncCallba
             const answer = await inquirerPrompt({
                 type: 'confirm',
                 message: `Install ${Object.keys(toAdd).join(', ')}?`,
-                warningMessage: `One or more dependencies are not installed: ${chalk().bold(
+                warningMessage: `One or more dependencies are not installed: ${chalk().bold.white(
                     Object.keys(toAdd).join(', ')
                 )}`,
             });
@@ -895,7 +899,9 @@ export const overrideTemplatePlugins = async () => {
             }
         } else {
             logInfo(
-                `Plugin overrides disabled for: ${chalk().bold(key)} with disablePluginTemplateOverrides. SKIPPING`
+                `Plugin overrides disabled for: ${chalk().bold.white(
+                    key
+                )} with disablePluginTemplateOverrides. SKIPPING`
             );
         }
     }, true);

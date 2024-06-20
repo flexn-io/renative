@@ -162,7 +162,7 @@ const _getDeviceAsString = (device: AndroidDevice, i: number): string => {
     const { name, udid, isDevice, isActive, arch } = device;
     const deviceIcon = getDeviceIcon(device);
 
-    const deviceString = `${chalk().bold(name)} | ${deviceIcon} | arch: ${arch} | udid: ${chalk().grey(udid)}${
+    const deviceString = `${chalk().bold.white(name)} | ${deviceIcon} | arch: ${arch} | udid: ${chalk().grey(udid)}${
         isDevice ? chalk().red(' (device)') : ''
     } ${isActive ? chalk().magenta(' (active)') : ''}`;
 
@@ -173,7 +173,7 @@ const _getDeviceAsObject = (device: AndroidDevice): DeviceInfo => {
     const { name, udid, isDevice, isActive, arch } = device;
     const deviceIcon = getDeviceIcon(device);
 
-    const deviceString = `${chalk().bold(name)} | ${deviceIcon} | arch: ${arch} | udid: ${chalk().grey(udid)}${
+    const deviceString = `${chalk().bold.white(name)} | ${deviceIcon} | arch: ${arch} | udid: ${chalk().grey(udid)}${
         isDevice ? chalk().red(' (device)') : ''
     } ${isActive ? chalk().magenta(' (active)') : ''}`;
 
@@ -625,7 +625,7 @@ export const askForNewEmulator = async () => {
     const { confirm } = await inquirerPrompt({
         name: 'confirm',
         type: 'confirm',
-        message: `Do you want ReNative to create new Emulator (${chalk().bold(
+        message: `Do you want ReNative to create new Emulator (${chalk().bold.white(
             emuName
         )}) for you? Warning: created simulator can malfunction.`,
     });
@@ -743,11 +743,11 @@ export const checkForActiveEmulator = (emulatorName?: string) =>
                         logDebug('Available devices after filtering', simsOnly);
                         const found = emulatorName && simsOnly.find((v) => v.name === emulatorName);
                         if (found) {
-                            logSuccess(`Found active emulator! ${chalk().bold(found.udid)}. Will use it`);
+                            logSuccess(`Found active emulator! ${chalk().bold.white(found.udid)}. Will use it`);
                             clearInterval(poll);
                             resolve(found);
                         } else if (simsOnly.length > 0) {
-                            logSuccess(`Found active emulator! ${chalk().bold(simsOnly[0].udid)}. Will use it`);
+                            logSuccess(`Found active emulator! ${chalk().bold.white(simsOnly[0].udid)}. Will use it`);
                             clearInterval(poll);
                             resolve(simsOnly[0]);
                         } else {

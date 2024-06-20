@@ -21,7 +21,7 @@ export const confirmActiveBundler = async () => {
         name: 'selectedOption',
         type: 'list',
         choices,
-        warningMessage: `Another ${c.platform} server at port ${chalk().bold(c.runtime.port)} already running`,
+        warningMessage: `Another ${c.platform} server at port ${chalk().bold.white(c.runtime.port)} already running`,
     });
 
     if (choices[0] === selectedOption) {

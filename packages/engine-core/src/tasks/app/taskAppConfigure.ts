@@ -117,7 +117,7 @@ const _findAndSwitchAppConfigDir = async (ctx: RnvContext) => {
     if (appConfigsDirNames.length) {
         if (appConfigsDirNames.length === 1) {
             // we have only one, skip the question
-            logInfo(`Found only one app config available. Will use ${chalk().bold(appConfigsDirNames[0])}`);
+            logInfo(`Found only one app config available. Will use ${chalk().bold.white(appConfigsDirNames[0])}`);
             _setAppId(ctx, appConfigsDirNames[0]);
             return true;
         }
@@ -182,7 +182,7 @@ const appConfigure = async () => {
     } else if (ctx.program.opts().appConfigID) {
         const aid = await matchAppConfigID(ctx, ctx.program.opts().appConfigID);
         if (!aid) {
-            logWarning(`Cannot find app config ${chalk().bold(ctx.program.opts().appConfigID)}`);
+            logWarning(`Cannot find app config ${chalk().bold.white(ctx.program.opts().appConfigID)}`);
             const hasAppConfig = await _findAndSwitchAppConfigDir(ctx);
             if (!hasAppConfig) {
                 // await executeTask(c, RnvTaskName.appCreate, RnvTaskName.appConfigure);

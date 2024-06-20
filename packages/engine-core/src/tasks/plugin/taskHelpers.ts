@@ -43,7 +43,7 @@ export const getPluginList = (isUpdate = false) => {
                 } else {
                     versionString = `(${chalk().green(installedPluginVersion)})`;
                 }
-                output.asString += ` [${i}]> ${chalk().bold(k)} ${versionString}\n`;
+                output.asString += ` [${i}]> ${chalk().bold.white(k)} ${versionString}\n`;
                 output.asArray.push({
                     name: `${k} ${versionString}`,
                     value: k,
@@ -52,7 +52,7 @@ export const getPluginList = (isUpdate = false) => {
                 i++;
             } else if (!isUpdate) {
                 output.plugins.push(k);
-                output.asString += ` [${i}]> ${chalk().bold(k)} (${chalk().grey(
+                output.asString += ` [${i}]> ${chalk().bold.white(k)} (${chalk().grey(
                     plugin.disableNpm ? '(no npm)' : plugin.version
                 )}) [${platforms}] - ${installedString}\n`;
                 output.asArray.push({

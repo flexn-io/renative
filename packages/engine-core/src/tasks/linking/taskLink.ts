@@ -54,7 +54,7 @@ export default createTask({
         const choices: { name: string; value: LinkablePackage }[] = [];
 
         linkablePackages.forEach((pkg) => {
-            const title = `${pkg.nmPath.replace(pkg.name, chalk().bold(pkg.name))} ${
+            const title = `${pkg.nmPath.replace(pkg.name, chalk().bold.white(pkg.name))} ${
                 pkg.isBrokenLink ? chalk().red('(broken)') : pkg.isLinked ? chalk().green('(linked)') : '(unlinked)'
             }\n`;
 
