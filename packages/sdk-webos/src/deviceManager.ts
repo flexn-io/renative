@@ -43,8 +43,10 @@ export const launchWebOSimulator = async (target: string | boolean) => {
     const availableSimulatorVersions = getDirectories(path.join(webosSdkPath, 'Simulator'));
 
     if (target === true) {
-        if(availableSimulatorVersions.length == 0){
-            return Promise.reject(`Simulators not found in the specified path: ${path.join(webosSdkPath, 'Simulator')}`);
+        if (availableSimulatorVersions.length === 0) {
+            return Promise.reject(
+                `Simulators not found in the specified path: ${path.join(webosSdkPath, 'Simulator')}`
+            );
         }
         const { selectedSimulator } = await inquirerPrompt({
             name: 'selectedSimulator',
@@ -71,9 +73,9 @@ export const launchWebOSimulator = async (target: string | boolean) => {
 
     if (c.isSystemWin || c.isSystemLinux) {
         try {
-        await executeAsync(ePath, ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY);
-        logSuccess(`successfully launched ${target}`);
-        return true;
+            await executeAsync(ePath, ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY);
+            logSuccess(`successfully launched ${target}`);
+            return true;
         } catch (error) {
             return Promise.reject(`The Simulator can't be launched because it is already in use.`);
         }
