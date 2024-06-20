@@ -68,6 +68,9 @@ export const generateStringFromTaskOption = (opt: RnvTaskOption) => {
         cmd += `-${opt.shortcut}, `;
     }
     cmd += `--${opt.key}`;
+    if (opt.altKey) {
+        cmd += `, --${opt.altKey}`;
+    }
     if (opt.isVariadic) {
         if (opt.isRequired) {
             cmd += ` <value...>`;

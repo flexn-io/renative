@@ -14,8 +14,8 @@ export const RnvTaskOptions = createTaskOptionsMap([
         description: 'Show full debug Info',
     },
     {
-        key: 'printExec',
-        // altKey: 'printExec',
+        key: 'print-exec',
+        altKey: 'printExec',
         description: 'Print exec commands in full',
     },
     {
@@ -25,8 +25,8 @@ export const RnvTaskOptions = createTaskOptionsMap([
         description: 'select specific Platform',
     },
     {
-        key: 'skipTasks',
-        // key: 'skip-tasks',
+        key: 'skip-tasks',
+        altKey: 'skipTasks',
         isValueType: true,
         isRequired: true,
         description: 'List tasks which you want to skip during rnv execution',
@@ -46,8 +46,8 @@ export const RnvTaskOptions = createTaskOptionsMap([
         description: 'Monochrome console output without chalk',
     },
     {
-        key: 'maxErrorLength',
-        // key: 'max-error-length',
+        key: 'max-error-length',
+        altKey: 'maxErrorLength',
         isValueType: true,
         isRequired: true,
         description: 'Specify how many characters each error should display. Default 200',
@@ -61,15 +61,15 @@ export const RnvTaskOptions = createTaskOptionsMap([
         description: 'Default all prompts to yes',
     },
     {
-        key: 'telemetryDebug',
-        // key: 'telemetry-debug',
+        key: 'telemetry-debug',
+        altKey: 'telemetryDebug',
         description: 'If you have telemetry enabled, will print out exactly what is being collected into the console',
     },
     // OTHERS 1st --------------------------------
     // Still present in core
     {
-        key: 'packageManager',
-        // key: 'package-manager',
+        key: 'package-manager',
+        altKey: 'packageManager',
         isValueType: true,
         isRequired: true,
         // options: ['yarn', 'npm'],
@@ -77,8 +77,8 @@ export const RnvTaskOptions = createTaskOptionsMap([
         examples: ['--packageManager yarn', '--packageManager npm'],
     },
     {
-        key: 'npxMode',
-        // key: 'npx-mode',
+        key: 'npx-mode',
+        altKey: 'npxMode',
         description: 'Ensures you can use local npx rnv version after the command is done',
     },
     {
@@ -86,27 +86,27 @@ export const RnvTaskOptions = createTaskOptionsMap([
         description: 'Force engines to be loaded from node_modules rather than locally',
     },
     {
-        key: 'configName',
-        // key: 'config-name',
+        key: 'config-name',
+        altKey: 'configName',
         isValueType: true,
         isRequired: true,
         description: 'Use custom name for ./renative.json. (applies only at root level)',
     },
     {
-        key: 'skipDependencyCheck',
-        // key: 'skip-dependency-check',
+        key: 'skip-dependency-check',
+        altKey: 'skipDependencyCheck',
         description: 'Skips auto update of npm dependencies if mismatch found',
     },
     {
-        key: 'appConfigID',
-        // key: 'app-config-id',
+        key: 'app-config-id',
+        altKey: 'appConfigID',
         shortcut: 'c',
         isValueType: true,
         description: 'select specific app Config id',
     },
     {
-        key: 'skipRnvCheck',
-        // key: 'skip-rnv-check',
+        key: 'skip-rnv-check',
+        altKey: 'skipRnvCheck',
         description: 'Skips auto update of rnv dependencies if mismatch found',
     },
     {
@@ -123,8 +123,8 @@ export const RnvTaskOptions = createTaskOptionsMap([
         description: 'engine to be used ie "engine-rn"',
     },
     {
-        key: 'exeMethod',
-        // key: 'exe-method',
+        key: 'exe-method',
+        altKey: 'exeMethod',
         shortcut: 'x',
         isValueType: true,
         description: 'eXecutable method in buildHooks',
@@ -135,14 +135,14 @@ export const RnvTaskOptions = createTaskOptionsMap([
         description: 'also perform reset of platform build',
     },
     {
-        key: 'resetHard',
-        // key: 'reset-hard',
+        key: 'reset-hard',
+        altKey: 'resetHard',
         shortcut: 'R',
         description: 'also perform reset of platform platform and platform assets',
     },
     {
-        key: 'resetAssets',
-        // key: 'reset-assets',
+        key: 'reset-assets',
+        altKey: 'resetAssets',
         shortcut: 'a',
         description: 'also perform reset of platform assets',
     },
@@ -153,8 +153,8 @@ export const RnvTaskOptions = createTaskOptionsMap([
     // OTHERS 2nd --------------------------------
     // Still present in core but ONLY in runtime defaults
     {
-        // key: 'host-ip',
-        key: 'hostIp',
+        key: 'host-ip',
+        altKey: 'hostIp',
         isValueType: true,
         isRequired: true,
         description: 'Custom IP override',
@@ -191,8 +191,8 @@ export const RnvTaskOptions = createTaskOptionsMap([
     },
     // SDK-WEBPACK --------------------------------
     {
-        // key: 'debug-ip',
-        key: 'debugIp',
+        key: 'debug-ip',
+        altKey: 'debugIp',
         isValueType: true,
         isRequired: true,
         description: '(optional) overwrite the ip to which the remote debugger will connect',
