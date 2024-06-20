@@ -324,8 +324,6 @@ export const runWebosSimOrDevice = async () => {
                 choices,
             });
             if (response.chosenDevice) {
-                console.log('the device is:');
-                console.log(response.chosenDevice);
                 return installAndLaunchApp(response.chosenDevice, appPath, tId);
             }
         } else {

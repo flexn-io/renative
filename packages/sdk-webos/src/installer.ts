@@ -40,6 +40,10 @@ export const checkAndConfigureWebosSdks = async () => {
     const clipathNewVersion = await getCliPath();
     const clipathOldVersion = sdk && path.join(sdk, 'CLI/bin');
 
+    if (!fsExistsSync(sdk)) {
+        throw new Error('No Webos SDK found. Check if it is installed.');
+    }
+
     if (sdk && fsExistsSync(clipathOldVersion)) {
         c.cli[CLI_WEBOS_ARES] = getRealPath(path.join(sdk, `CLI/bin/ares${isSystemWin ? '.cmd' : ''}`));
         c.cli[CLI_WEBOS_ARES_PACKAGE] = getRealPath(path.join(sdk, `CLI/bin/ares-package${isSystemWin ? '.cmd' : ''}`));
@@ -91,7 +95,7 @@ const _isSdkInstalled = (c: RnvContext) => {
 
 const getCliPath = async () => {
     try {
-        const { stdout } = await exec('which ares');
+        const { stdout } = isSystemWin ? await exec('where.exe ares') : await exec('which ares');
         return stdout.slice(0, -5); // cutting out the 'ares' part, so I can get ares, ares-package, ares-launch, ...
     } catch (error) {
         return false;
