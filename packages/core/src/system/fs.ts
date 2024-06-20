@@ -43,7 +43,12 @@ export const fsRenameSync = (arg1: fs.PathLike | undefined, arg2: fs.PathLike) =
     // File already exists with renamed name, skip renaming
     if (fs.existsSync(arg2)) return;
 
-    fs.renameSync(arg1, arg2);
+    if (fs.lstatSync(arg1).isDirectory()) {
+        fs.cpSync(arg1 as string, arg2 as string, { recursive: true });
+        fs.rmdirSync(arg1, { recursive: true });
+    } else if (fs.lstatSync(arg1).isFile()) {
+        fs.renameSync(arg1, arg2);
+    }
 };
 
 export const fsStatSync = (arg1: fs.PathLike | undefined) => fs.statSync(arg1!);
