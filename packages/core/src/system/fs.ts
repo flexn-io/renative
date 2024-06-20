@@ -40,8 +40,6 @@ export const fsChmodSync = (dest: fs.PathLike | undefined, flag: fs.Mode) => fs.
 export const fsRenameSync = (arg1: fs.PathLike | undefined, arg2: fs.PathLike) => {
     // One of the paths does not exist
     if (!arg1 || !arg2) return;
-    // File already exists with renamed name, skip renaming
-    if (fs.existsSync(arg2)) return;
 
     if (fs.lstatSync(arg1).isDirectory()) {
         fs.cpSync(arg1 as string, arg2 as string, { recursive: true });

@@ -28,7 +28,7 @@ const _linkPackage = (pkg: LinkablePackage) => {
         logInfo(`${pkg.name} is set to skip linking. SKIPPING`);
     } else if (pkg.nmPathExists) {
         if (pkg.unlinkedPathExists) {
-            logInfo(`${pkg.name} found in exisitng cache. Removing and relinking...`);
+            logInfo(`${pkg.name} found in existing cache. Removing and relinking...`);
             removeDirSync(pkg.unlinkedPath);
         }
         mkdirSync(pkg.unlinkedPath);
