@@ -37,7 +37,7 @@ export const checkAndConfigureWebosSdks = async () => {
     logDefault(`checkAndConfigureWebosSdks:${c.platform}`);
     const sdk = c.buildConfig?.sdks?.WEBOS_SDK;
 
-    const clipathNewVersion = await getCliPath();
+    const clipathNewVersion = await getCliDirPath();
     const clipathOldVersion = sdk && path.join(sdk, 'CLI/bin');
 
     if (!fsExistsSync(sdk)) {
@@ -56,7 +56,7 @@ export const checkAndConfigureWebosSdks = async () => {
             path.join(sdk, `CLI/bin/ares-device-info${isSystemWin ? '.cmd' : ''}`)
         );
         c.cli[CLI_WEBOS_ARES_NOVACOM] = getRealPath(path.join(sdk, `CLI/bin/ares-novacom${isSystemWin ? '.cmd' : ''}`));
-    } else if (sdk && clipathNewVersion && fsExistsSync(clipathNewVersion + 'ares')) {
+    } else if (sdk && clipathNewVersion && fsExistsSync(clipathNewVersion + '/ares')) {
         c.cli[CLI_WEBOS_ARES] = getRealPath(path.join(clipathNewVersion, `ares${isSystemWin ? '.cmd' : ''}`));
         c.cli[CLI_WEBOS_ARES_PACKAGE] = getRealPath(
             path.join(clipathNewVersion, `ares-package${isSystemWin ? '.cmd' : ''}`)
@@ -93,10 +93,16 @@ const _isSdkInstalled = (c: RnvContext) => {
     return fsExistsSync(getRealPath(sdkPath));
 };
 
-const getCliPath = async () => {
+const getCliDirPath = async () => {
     try {
         const { stdout } = isSystemWin ? await exec('where.exe ares') : await exec('which ares');
-        return stdout.slice(0, -5); // cutting out the 'ares' part, so I can get ares, ares-package, ares-launch, ...
+        if (isSystemWin) {
+            // Windows returns multiple paths, we need to get the first one
+            const paths = stdout.split('\n');
+            return path.dirname(paths[0].trim());
+        } else {
+            return path.dirname(stdout.trim());
+        }
     } catch (error) {
         return false;
     }
