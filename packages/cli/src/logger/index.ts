@@ -57,7 +57,7 @@ export const logInitialize = () => {
 
 export const logWelcome = () => {
     const ctx = getContext();
-    if (ctx.program?.opts().help) return;
+    if (ctx.program?.opts().help || ctx.program?.opts().noIntro) return;
     const shortLen = 64;
     // prettier-ignore
     let str = _defaultColor(`

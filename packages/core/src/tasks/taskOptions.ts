@@ -19,6 +19,7 @@ export const RnvTaskOptions = createTaskOptionsMap([
         description: 'Print exec commands in full',
     },
     { key: 'no-summary', altKey: 'noSummary', description: 'Omit summary box in output' },
+    { key: 'no-intro', altKey: 'noIntro', description: 'Omit intro box in output' },
     {
         key: 'platform',
         shortcut: 'p',
@@ -230,6 +231,7 @@ export const RnvTaskCoreOptionPresets = createTaskOptionsPreset({
         RnvTaskOptions.telemetryDebug,
         RnvTaskOptions.json,
         RnvTaskOptions.noSummary,
+        RnvTaskOptions.noIntro,
     ],
 });
 
