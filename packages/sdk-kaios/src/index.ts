@@ -4,9 +4,10 @@ export * from './constants';
 
 import { GetContextType, createRnvModule } from '@rnv/core';
 import taskTargetLaunch from './tasks/taskTargetLaunch';
+import taskTargetList from './tasks/taskTargetList';
 
 const RnvModule = createRnvModule({
-    tasks: [taskTargetLaunch] as const,
+    tasks: [taskTargetLaunch, taskTargetList] as const,
     name: '@rnv/sdk-kaios',
     type: 'internal',
 });
