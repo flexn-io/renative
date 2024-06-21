@@ -207,8 +207,7 @@ export const logRaw = (...args: Array<string>) => {
 export const logSummary = (opts?: { header?: string; headerStyle?: 'success' | 'warning' | 'error' | 'none' }) => {
     const ctx = getContext();
     if (ctx.program?.opts().help) return;
-
-    if (_jsonOnly) return;
+    if (_jsonOnly || ctx.program?.opts().noSummary) return;
 
     if (ctx.paths.project.configExists && !ctx.paths.IS_NPX_MODE && !ctx.paths.IS_LINKED) {
         logAndSave(chalk().yellow('You are trying to run global rnv command in your current project.'), true);
