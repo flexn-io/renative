@@ -14,6 +14,7 @@ const zodAppDelegateMethod = z.array(
     ])
 );
 // We using interfaces to reduce the size of d.ts files (zod + types in d.ts files are huge)
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ConfigTemplateXcodeAppDelegateMethod extends z.infer<typeof zodAppDelegateMethod> {}
 
 const zodXcodeApplication_mm = z
@@ -33,6 +34,7 @@ const zodXcodeApplication_mm = z
     })
     .partial();
 // We using interfaces to reduce the size of d.ts files (zod + types in d.ts files are huge)
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ConfigTemplateXcodeApplication extends z.infer<typeof zodXcodeApplication_mm> {}
 
 const project_pbxproj = z
@@ -52,6 +54,7 @@ const project_pbxproj = z
     })
     .partial();
 // We using interfaces to reduce the size of d.ts files (zod + types in d.ts files are huge)
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ConfigTemplateXcodeProjectPbxproj extends z.infer<typeof project_pbxproj> {}
 
 export const zodTemplateXcodeFragment = z
