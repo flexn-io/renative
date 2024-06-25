@@ -91,7 +91,7 @@ const parseDevices = (c: RnvContext, devicesResponse: string): Promise<Array<Web
                 .filter((word) => word !== '');
             let deviceInfo = '';
             try {
-                deviceInfo = await execCLI(CLI_WEBOS_ARES_DEVICE_INFO, `-d ${name}`, {
+                deviceInfo = await execCLI(CLI_WEBOS_ARES_DEVICE_INFO, `-d ${name} -i`, {
                     silent: true,
                     timeout: 10000,
                 });
@@ -255,18 +255,6 @@ export const runWebosSimOrDevice = async () => {
     const devicesResponse = await execCLI(CLI_WEBOS_ARES_DEVICE_INFO, '-D');
     const devices = await parseDevices(c, devicesResponse);
     const activeDevices = devices.filter((d) => d.active);
-
-    const simOrDevice = await inquirerPrompt({
-        type: 'list',
-        name: 'simOrDevice',
-        message: 'Do you want to run on a simulator or a device?',
-        choices: ['Simulator', 'Device'],
-    });
-
-    if (simOrDevice.simOrDevice === 'Simulator') {
-        await launchWebOSimulator(true);
-        return true;
-    }
 
     if (device) {
         // Running on a device
