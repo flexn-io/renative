@@ -147,14 +147,16 @@ export const getIosDeviceToRunOn = async (c: Context) => {
         if (c.runtime.target) {
             p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
         }
-    } else if (c.runtime.target) {
+    } else if (c.runtime.target || devicesArr.length > 0) {
         // check if the default sim is available
         const desiredSim = devicesArr.find((d) => d.name === c.runtime.target && !d.isDevice);
 
         if (!desiredSim) {
             const { sim } = await inquirerPrompt({
                 name: 'sim',
-                message: `We couldn't find ${c.runtime.target} as a simulator supported by the current version of your Xcode. Please select another sim`,
+                message: !c.runtime.target
+                    ? `No global or project default simulator defined. Please select a supported simulator to use`
+                    : `We couldn't find ${c.runtime.target} as a simulator supported by the current version of your Xcode. Please select another sim`,
                 type: 'list',
                 choices: devicesArr
                     .filter((d) => !d.isDevice)
@@ -410,7 +412,7 @@ const _setAutomaticSigning = async (c: Context) => {
     if (scheme && 'provisioningStyle' in scheme) {
         scheme.provisioningStyle = 'Automatic';
         writeFileSync(c.paths.appConfig.config, cnf);
-        logSuccess(`Succesfully updated ${c.paths.appConfig.config}`);
+        logSuccess(`successfully updated ${c.paths.appConfig.config}`);
     } else {
         return Promise.reject(
             `Failed to update ${c.paths.appConfig?.config}."platforms": { "${c.platform}": { buildSchemes: { "${c.runtime.scheme}" ... Object is null. Try update file manually`
@@ -445,7 +447,7 @@ const _setDevelopmentTeam = async (c: Context, teamID: string) => {
         );
     }
     writeFileSync(c.paths.appConfig.config, cnf);
-    logSuccess(`Succesfully updated ${c.paths.appConfig.config}`);
+    logSuccess(`successfully updated ${c.paths.appConfig.config}`);
 };
 
 const composeXcodeArgsFromCLI = (string: string) => {

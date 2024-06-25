@@ -31,7 +31,8 @@
             "tizenwatch",
             "kaios",
             "chromecast",
-            "linux"
+            "linux",
+            "windows"
         ],
         "defaultCommandSchemes": {
             "run": "debug",
@@ -42,7 +43,7 @@
     },
     "templateConfig": {
         "name": "@rnv/template-starter",
-        "version": "1.0.0-rc.18"
+        "version": "1.0.0-rc.19"
     },
     "platforms": {
         "android": {
@@ -67,7 +68,7 @@
                     "org.gradle.configureondemand": true
                 },
                 "MainActivity_kt": {
-                    "onCreate": "super.onCreate(null)"
+                    "onCreate": "super.onCreate(savedInstanceState)"
                 }
             }
         },
@@ -82,9 +83,7 @@
             "minSdkVersion": 21,
             "extendPlatform": "android",
             "engine": "engine-rn-tvos",
-            "includedPermissions": [
-                "INTERNET"
-            ]
+            "includedPermissions": ["INTERNET"]
         },
         "web": {
             "engine": "engine-rn-next"
@@ -100,7 +99,8 @@
             "assetFolderPlatform": "electron"
         },
         "windows": {
-            "engine": "engine-rn-electron"
+            "engine": "engine-rn-electron",
+            "assetFolderPlatform": "electron"
         },
         "ios": {
             "engine": "engine-rn",

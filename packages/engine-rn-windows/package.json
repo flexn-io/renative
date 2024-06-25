@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-windows",
-    "version": "1.0.0-rc.18",
+    "version": "1.0.0-rc.19",
     "description": "ReNative Engine to build for Windows platform with react native support.",
     "keywords": [
         "react-native",
@@ -34,15 +34,15 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@rnv/adapter": "1.0.0-rc.18",
-        "@rnv/sdk-react-native": "1.0.0-rc.18",
+        "@rnv/adapter": "1.0.0-rc.19",
+        "@rnv/sdk-react-native": "1.0.0-rc.19",
         "@xmldom/xmldom": "0.7.7",
         "react-native-windows": "0.72.10"
     },
     "peerDependencies": {
         "@react-native-community/cli": "*",
         "@react-native/babel-preset": "0.73.21",
-        "@rnv/core": "^1.0.0-rc.18",
+        "@rnv/core": "^1.0.0-rc.19",
         "react-native": "*"
     },
     "private": false,

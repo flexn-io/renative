@@ -9,7 +9,7 @@ export default createTask({
 
             writeFileSync(ctx.paths.dotRnv.config, config);
 
-            logToSummary(`   Succesfully ${chalk().red('disabled')} ReNative telemetry on your machine.
+            logToSummary(`   successfully ${chalk().red('disabled')} ReNative telemetry on your machine.
 
    No data will be collected from your machine.
    Learn more: https://renative.org/telemetry`);

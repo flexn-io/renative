@@ -513,6 +513,22 @@
                           "build_gradle": {
                             "type": "object",
                             "properties": {
+                              "allprojects": {
+                                "type": "object",
+                                "properties": {
+                                  "repositories": {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                      "type": "boolean"
+                                    },
+                                    "description": "Customize repositories section of build.gradle"
+                                  }
+                                },
+                                "required": [
+                                  "repositories"
+                                ],
+                                "additionalProperties": false
+                              },
                               "plugins": {
                                 "type": "array",
                                 "items": {
@@ -523,37 +539,29 @@
                                 "type": "object",
                                 "properties": {
                                   "repositories": {
-                                    "type": "array",
-                                    "items": {
-                                      "type": "string"
+                                    "type": "object",
+                                    "additionalProperties": {
+                                      "type": "boolean"
                                     }
                                   },
                                   "dependencies": {
-                                    "type": "array",
-                                    "items": {
-                                      "type": "string"
-                                    }
-                                  },
-                                  "ext": {
-                                    "type": "array",
-                                    "items": {
-                                      "type": "string"
-                                    }
-                                  },
-                                  "custom": {
-                                    "type": "array",
-                                    "items": {
-                                      "type": "string"
+                                    "type": "object",
+                                    "additionalProperties": {
+                                      "type": "boolean"
                                     }
                                   }
                                 },
                                 "required": [
                                   "repositories",
-                                  "dependencies",
-                                  "ext",
-                                  "custom"
+                                  "dependencies"
                                 ],
                                 "additionalProperties": false
+                              },
+                              "dexOptions": {
+                                "type": "object",
+                                "additionalProperties": {
+                                  "type": "boolean"
+                                }
                               },
                               "injectAfterAll": {
                                 "type": "array",
@@ -1333,63 +1341,6 @@
                       "firebaseId": {
                         "type": "string"
                       },
-                      "privacyManifests": {
-                        "type": "object",
-                        "properties": {
-                          "NSPrivacyAccessedAPITypes": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "properties": {
-                                "NSPrivacyAccessedAPIType": {
-                                  "type": "string",
-                                  "enum": [
-                                    "NSPrivacyAccessedAPICategorySystemBootTime",
-                                    "NSPrivacyAccessedAPICategoryDiskSpace",
-                                    "NSPrivacyAccessedAPICategoryActiveKeyboards",
-                                    "NSPrivacyAccessedAPICategoryUserDefaults"
-                                  ]
-                                },
-                                "NSPrivacyAccessedAPITypeReasons": {
-                                  "type": "array",
-                                  "items": {
-                                    "type": "string",
-                                    "enum": [
-                                      "DDA9.1",
-                                      "C617.1",
-                                      "3B52.1",
-                                      "0A2A.1",
-                                      "35F9.1",
-                                      "8FFB.1",
-                                      "3D61.1",
-                                      "85F4.1",
-                                      "E174.1",
-                                      "7D9E.1",
-                                      "B728.1",
-                                      "3EC4.1",
-                                      "54BD.1",
-                                      "CA92.1",
-                                      "1C8F.1",
-                                      "C56D.1",
-                                      "AC6B.1"
-                                    ]
-                                  }
-                                }
-                              },
-                              "required": [
-                                "NSPrivacyAccessedAPIType",
-                                "NSPrivacyAccessedAPITypeReasons"
-                              ],
-                              "additionalProperties": false,
-                              "description": "Official apple documentation https://developer.apple.com/documentation/bundleresources/privacy_manifest_files/describing_use_of_required_reason_api"
-                            }
-                          }
-                        },
-                        "required": [
-                          "NSPrivacyAccessedAPITypes"
-                        ],
-                        "additionalProperties": false
-                      },
                       "exportOptions": {
                         "type": "object",
                         "properties": {
@@ -1622,12 +1573,6 @@
                                       }
                                     },
                                     "additionalProperties": false
-                                  },
-                                  "custom": {
-                                    "type": "array",
-                                    "items": {
-                                      "type": "string"
-                                    }
                                   }
                                 },
                                 "additionalProperties": false
@@ -1651,12 +1596,6 @@
                                 }
                               },
                               "appDelegateExtensions": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              },
-                              "appDelegateMethods": {
                                 "type": "array",
                                 "items": {
                                   "type": "string"
@@ -1879,9 +1818,6 @@
                 },
                 "firebaseId": {
                   "$ref": "#/definitions/rnv.app/properties/platforms/properties/ios/properties/buildSchemes/additionalProperties/properties/firebaseId"
-                },
-                "privacyManifests": {
-                  "$ref": "#/definitions/rnv.app/properties/platforms/properties/ios/properties/buildSchemes/additionalProperties/properties/privacyManifests"
                 },
                 "exportOptions": {
                   "$ref": "#/definitions/rnv.app/properties/platforms/properties/ios/properties/buildSchemes/additionalProperties/properties/exportOptions"
@@ -2892,9 +2828,6 @@
                       "firebaseId": {
                         "$ref": "#/definitions/rnv.app/properties/platforms/properties/ios/properties/buildSchemes/additionalProperties/properties/firebaseId"
                       },
-                      "privacyManifests": {
-                        "$ref": "#/definitions/rnv.app/properties/platforms/properties/ios/properties/buildSchemes/additionalProperties/properties/privacyManifests"
-                      },
                       "exportOptions": {
                         "$ref": "#/definitions/rnv.app/properties/platforms/properties/ios/properties/buildSchemes/additionalProperties/properties/exportOptions"
                       },
@@ -3138,9 +3071,6 @@
                 },
                 "firebaseId": {
                   "$ref": "#/definitions/rnv.app/properties/platforms/properties/ios/properties/buildSchemes/additionalProperties/properties/firebaseId"
-                },
-                "privacyManifests": {
-                  "$ref": "#/definitions/rnv.app/properties/platforms/properties/ios/properties/buildSchemes/additionalProperties/properties/privacyManifests"
                 },
                 "exportOptions": {
                   "$ref": "#/definitions/rnv.app/properties/platforms/properties/ios/properties/buildSchemes/additionalProperties/properties/exportOptions"

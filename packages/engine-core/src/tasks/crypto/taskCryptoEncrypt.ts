@@ -230,7 +230,7 @@ export default createTask({
             removeFilesSync([destTemp]);
             fsWriteFileSync(`${dest}.timestamp`, `${timestamp}`);
             fsWriteFileSync(`${tsWorkspacePath}`, `${timestamp}`);
-            logSuccess(`Files succesfully encrypted into ${dest}`);
+            logSuccess(`Files successfully encrypted into ${dest}`);
         } else {
             logWarning(`You don't have {{ crypto.path }} specificed in ${chalk().bold(ctx.paths.appConfigBase)}`);
         }

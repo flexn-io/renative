@@ -314,6 +314,22 @@
                                   "build_gradle": {
                                     "type": "object",
                                     "properties": {
+                                      "allprojects": {
+                                        "type": "object",
+                                        "properties": {
+                                          "repositories": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                              "type": "boolean"
+                                            },
+                                            "description": "Customize repositories section of build.gradle"
+                                          }
+                                        },
+                                        "required": [
+                                          "repositories"
+                                        ],
+                                        "additionalProperties": false
+                                      },
                                       "plugins": {
                                         "type": "array",
                                         "items": {
@@ -324,37 +340,29 @@
                                         "type": "object",
                                         "properties": {
                                           "repositories": {
-                                            "type": "array",
-                                            "items": {
-                                              "type": "string"
+                                            "type": "object",
+                                            "additionalProperties": {
+                                              "type": "boolean"
                                             }
                                           },
                                           "dependencies": {
-                                            "type": "array",
-                                            "items": {
-                                              "type": "string"
-                                            }
-                                          },
-                                          "ext": {
-                                            "type": "array",
-                                            "items": {
-                                              "type": "string"
-                                            }
-                                          },
-                                          "custom": {
-                                            "type": "array",
-                                            "items": {
-                                              "type": "string"
+                                            "type": "object",
+                                            "additionalProperties": {
+                                              "type": "boolean"
                                             }
                                           }
                                         },
                                         "required": [
                                           "repositories",
-                                          "dependencies",
-                                          "ext",
-                                          "custom"
+                                          "dependencies"
                                         ],
                                         "additionalProperties": false
+                                      },
+                                      "dexOptions": {
+                                        "type": "object",
+                                        "additionalProperties": {
+                                          "type": "boolean"
+                                        }
                                       },
                                       "injectAfterAll": {
                                         "type": "array",
@@ -925,12 +933,6 @@
                                               }
                                             },
                                             "additionalProperties": false
-                                          },
-                                          "custom": {
-                                            "type": "array",
-                                            "items": {
-                                              "type": "string"
-                                            }
                                           }
                                         },
                                         "additionalProperties": false
@@ -954,12 +956,6 @@
                                         }
                                       },
                                       "appDelegateExtensions": {
-                                        "type": "array",
-                                        "items": {
-                                          "type": "string"
-                                        }
-                                      },
-                                      "appDelegateMethods": {
                                         "type": "array",
                                         "items": {
                                           "type": "string"

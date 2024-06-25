@@ -21,6 +21,7 @@ import {
     CoreEnvVars,
     Env,
     getContext,
+    getAppFolder,
 } from '@rnv/core';
 import {
     checkPortInUse,
@@ -159,6 +160,7 @@ export const _runWebDevServer = async (c: RnvContext, enableRemoteDebugger?: boo
         ...EnvVars.PORT(),
         ...EnvVars.WEBPACK_TARGET(),
         ...EnvVars.RNV_EXTERNAL_PATHS(),
+        ...EnvVars.TS_EXCLUDE_SRC_DIRS(),
     };
 
     Object.keys(env).forEach((v) => {
@@ -204,6 +206,7 @@ export const buildCoreWebpackProject = async () => {
         ...EnvVars.PORT(),
         ...EnvVars.WEBPACK_TARGET(),
         ...EnvVars.RNV_EXTERNAL_PATHS(),
+        ...EnvVars.TS_EXCLUDE_SRC_DIRS(),
     };
     Object.keys(env).forEach((v) => {
         process.env[v] = env[v];
@@ -311,7 +314,13 @@ export const waitForWebpack = async (suffix = 'assets/bundle.js') => {
     });
 };
 
-export const buildWeb = async () => buildCoreWebpackProject();
+export const buildWeb = async () => {
+    logDefault('buildWebProject');
+
+    const appFolder = getAppFolder();
+    await buildCoreWebpackProject();
+    logSuccess(`Your build is located in  ${chalk().cyan(path.join(appFolder, `build`))} .`);
+};
 
 export const configureWebProject = async () => {
     const c = getContext();

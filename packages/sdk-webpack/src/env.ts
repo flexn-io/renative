@@ -39,6 +39,16 @@ export const EnvVars = {
             return { WEBPACK_TARGET: ctx.runtime.webpackTarget };
         }
     },
+    TS_EXCLUDE_SRC_DIRS: () => {
+        const ctx = getContext();
+        if (!ctx.platform) return;
+        const engine = ctx.runtime.enginesByPlatform[ctx.platform];
+        const excludedDirs =
+            ctx.buildConfig?.platforms?.[ctx.platform]?.webpackExcludedDirs ||
+            engine?.config?.webpackExcludedDirs ||
+            [];
+        return { TS_EXCLUDE_SRC_DIRS: excludedDirs.map((dir) => `src/${dir}`).join(',') };
+    },
     RNV_EXTERNAL_PATHS: () => {
         const ctx = getContext();
         return { RNV_EXTERNAL_PATHS: [ctx.paths.project.assets.dir, ctx.paths.project.dir].join(',') };
