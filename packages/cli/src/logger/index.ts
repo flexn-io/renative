@@ -29,7 +29,7 @@ const PRIVATE_PARAMS = ['-k', '--key'];
 let _isInfoEnabled = false;
 let _infoFilter: Array<string> = [];
 // let _c: RnvContext;
-// let _isMono = false;
+let _isMono = false;
 let _defaultColor: any = _chalkCols.white;
 let _highlightColor = _chalkCols.white;
 // let _analytics: AnalyticsApi;
@@ -47,8 +47,9 @@ export const logInitialize = () => {
     // _analytics = analytics;
 
     if (ctx.program.opts().mono) {
+        _isMono = true;
         currentChalk = _chalkMono;
-        chalkBlue = _chalkMono;
+        chalkBlue = _chalkMono.white;
     }
     _updateDefaultColors();
     // RNV = getCurrentCommand();
@@ -89,7 +90,7 @@ export const logWelcome = () => {
     //     shortLen
     // );
     // str += printIntoBox(`      ${ICN_ROCKET} ${currentChalk.yellow('Firing up!...')}`);
-    str += printIntoBox(`$ ${currentChalk.bold(getCurrentCommand(true))}`, shortLen);
+    str += printIntoBox(`$ ${_highlightColor(getCurrentCommand(true))}`, shortLen);
     if (ctx.timeStart) {
         // str += printIntoBox(`      Start Time: ${currentChalk.grey(ctx.timeStart.toLocaleString())}`);
     }
@@ -144,8 +145,8 @@ export function stripAnsi(string: string) {
 // };
 
 const _updateDefaultColors = () => {
-    _defaultColor = currentChalk;
-    _highlightColor = currentChalk.bold; //currentChalk.bold;
+    _defaultColor = currentChalk.white;
+    _highlightColor = currentChalk.bold.white; //currentChalk.bold;
 };
 _updateDefaultColors();
 
@@ -242,14 +243,20 @@ export const logSummary = (opts?: { header?: string; headerStyle?: 'success' | '
     const headerPrefix =
         headerStyle === 'success' ? '✔ ' : headerStyle === 'warning' ? '⚠ ' : headerStyle === 'error' ? '⨯ ' : '';
     const headerTextPlain = `${headerPrefix}${opts?.header || 'SUMMARY'}`;
-    const headerChalk =
-        headerStyle === 'success'
-            ? currentChalk.green.bold
-            : headerStyle === 'warning'
-            ? currentChalk.yellow.bold
-            : headerStyle === 'error'
-            ? currentChalk.green.red
-            : (v: string) => v;
+    let headerChalk;
+
+    if (_isMono) {
+        headerChalk = currentChalk.white;
+    } else {
+        headerChalk =
+            headerStyle === 'success'
+                ? currentChalk.green.bold
+                : headerStyle === 'warning'
+                ? currentChalk.yellow.bold
+                : headerStyle === 'error'
+                ? currentChalk.green.red
+                : (v: string) => v;
+    }
     let str = printBoxStart(
         `${headerChalk(headerTextPlain)} ${timeString} | rnv@${ctx.rnvVersion}`,
         getCurrentCommand()
@@ -468,8 +475,9 @@ export const logInitTask = (task: string) => {
             message: stripAnsi(_sanitizePaths(task)),
         });
     }
-
-    const msg = `${chalkBlue.bold('task:')} ○ ${task} ${taskCount}`;
+    const msg = !_isMono
+        ? `${chalkBlue.bold('task:')} ○ ${task} ${taskCount}`
+        : `${currentChalk.white('task:')} ○ ${task} ${taskCount}`;
 
     console.log(msg);
 };
@@ -535,7 +543,7 @@ export const logInfo = (msg: string) => {
             message: stripAnsi(_sanitizePaths(msg)),
         });
     }
-    console.log(`${currentChalk.bold('info:')} ${_sanitizePaths(msg)}`);
+    console.log(`${_highlightColor('info:')} ${_sanitizePaths(msg)}`);
 };
 
 export const logDebug = (...args: Array<string>) => {
@@ -615,7 +623,7 @@ export const logError = (e: Error | string | unknown, opts?: { skipAnalytics: bo
 
 export const logAppInfo = (c: RnvContext) => {
     if (!_jsonOnly) {
-        logInfo(`Current app config: ${currentChalk.bold(c.runtime.appId)}`);
+        logInfo(`Current app config: ${_highlightColor(c.runtime.appId)}`);
     }
 };
 
