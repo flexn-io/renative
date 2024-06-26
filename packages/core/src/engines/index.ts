@@ -90,7 +90,7 @@ export const generateEngineExtensions = (id: string, exts: Array<string>, engine
 export const configureEngines = async (c: RnvContext) => {
     logDefault('configureEngines');
 
-    const engines = _getFilteredEngines(c);
+    const engines = getFilteredEngines(c);
     const devDependencies = c.files.project.package.devDependencies || {};
     c.files.project.package.devDependencies = devDependencies;
     let needsPackageUpdate = false;
@@ -348,7 +348,7 @@ export const loadEnginePackageDeps = async (engineConfigs: Array<RnvEngineInstal
     // return addedDeps.length;
 };
 
-const _getFilteredEngines = (c: RnvContext) => {
+export const getFilteredEngines = (c: RnvContext) => {
     const engines = c.buildConfig?.engines;
     if (!engines) {
         logError('Engine configs missing in your renative.json. FIXING...DONE');
@@ -383,11 +383,11 @@ const _getFilteredEngines = (c: RnvContext) => {
     return filteredEngines;
 };
 
-const getScopedVersion = (
+export const getScopedVersion = (
     c: RnvContext,
     key: string,
     val: RenativeConfigVersion,
-    sourceObjKey: 'engineTemplates' | 'plugins'
+    sourceObjKey: 'engineTemplates' | 'plugins' | 'pluginTemplates'
 ) => {
     if (typeof val === 'string') {
         if (val.startsWith('source:')) {
@@ -413,7 +413,7 @@ export const installEngines = async (failOnMissingDeps?: boolean): Promise<boole
 
     if (!fsExistsSync(c.paths.project.config)) return true;
 
-    const filteredEngines: Record<string, string> = _getFilteredEngines(c);
+    const filteredEngines: Record<string, string> = getFilteredEngines(c);
     const enginesToInstall: Array<RnvEngineInstallConfig> = [];
     const readyEngines: Array<string> = [];
     const engineConfigs: Array<RnvEngineInstallConfig> = [];

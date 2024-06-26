@@ -14,7 +14,12 @@
     },
     "platforms": {
         "ios": {
-            "engine": "engine-rn"
+            "engine": "engine-rn",
+            "npm": {
+                "dependencies": {
+                    "dotenv": "16.4.5"
+                }
+            }
         },
         "macos": {
             "engine": "engine-rn"

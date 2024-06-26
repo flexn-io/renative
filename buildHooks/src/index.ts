@@ -1,10 +1,12 @@
+import { comparePluginTemplates } from './comparePluginTemplates';
 import { prePublish } from './prePublish';
 
-import { gitCommit, gitTag, gitCommitAndTag } from '@rnv/build-hooks-git';
+import { gitCommit, gitCommitAndTag, gitTag } from '@rnv/build-hooks-git';
 import { generateSchema } from '@rnv/build-hooks-schema';
 
 const hooks = {
     prePublish,
+    comparePluginTemplates,
     gitCommitAndTag,
     gitCommit,
     gitTag,
@@ -13,4 +15,4 @@ const hooks = {
 
 const pipes = {};
 
-export { pipes, hooks };
+export { hooks, pipes };
