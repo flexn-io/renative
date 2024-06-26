@@ -1,24 +1,24 @@
 import {
-    OverridesOptions,
-    chalk,
-    getAppConfigBuildsFolder,
-    inquirerPrompt,
-    logWarning,
     DEFAULTS,
+    OverridesOptions,
+    PlatformKey,
     RnvContext,
     RnvPlatform,
-    getConfigProp,
-    logTask,
+    chalk,
     fsExistsSync,
-    PlatformKey,
+    getAppConfigBuildsFolder,
+    getConfigProp,
+    inquirerPrompt,
+    logTask,
+    logWarning,
 } from '@rnv/core';
 import axios from 'axios';
 import open from 'better-opn';
+import colorString from 'color-string';
 import detectPort from 'detect-port';
 import killPort from 'kill-port';
+import os from 'os';
 import path from 'path';
-import ip from 'ip';
-import colorString from 'color-string';
 
 export const REMOTE_DEBUGGER_ENABLED_PLATFORMS: PlatformKey[] = ['tizen', 'tizenmobile', 'tizenwatch'];
 
@@ -293,7 +293,43 @@ export const confirmActiveBundler = async (c: RnvContext) => {
     return true;
 };
 
-export const getIP = () => ip.address();
+const ipFromLong = (longIp: number) =>
+    `${longIp >>> 24}.${(longIp >> 16) & 255}.${(longIp >> 8) & 255}.${longIp & 255}`;
+
+const isLoopback = (address: string) => {
+    // convert ipv4 ip if it's in a long form
+    if (!/\./.test(address) && !/:/.test(address)) {
+        address = ipFromLong(Number(address));
+    }
+
+    return (
+        /^(::f{4}:)?127\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})/.test(address) ||
+        /^0177\./.test(address) ||
+        /^0x7f\./i.test(address) ||
+        /^fe80::1$/i.test(address) ||
+        /^::1$/.test(address) ||
+        /^::$/.test(address)
+    );
+};
+
+export const getIP = () => {
+    const interfaces = os.networkInterfaces();
+
+    const all = Object.keys(interfaces)
+        .map((netIntInfoKey) => {
+            const addresses = interfaces?.[netIntInfoKey]?.filter((netIntInfo) => {
+                if (netIntInfo.family !== 'IPv4' || isLoopback(netIntInfo.address)) {
+                    return false;
+                }
+                return true;
+            });
+
+            return addresses?.length ? addresses[0].address : undefined;
+        })
+        .filter(Boolean);
+
+    return all.length ? all[0] : '127.0.0.1';
+};
 
 export const getAppTemplateFolder = (c: RnvContext, platform: RnvPlatform) =>
     platform ? path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`) : undefined;

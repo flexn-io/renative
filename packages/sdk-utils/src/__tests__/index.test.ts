@@ -1,5 +1,5 @@
-import { getValidLocalhost, getDevServerHost, getAppVersionCode } from '../';
-import { DEFAULTS, createRnvApi, createRnvContext, getContext, getConfigProp } from '@rnv/core';
+import { DEFAULTS, createRnvApi, createRnvContext, getConfigProp, getContext } from '@rnv/core';
+import { getAppVersionCode, getDevServerHost, getValidLocalhost } from '../';
 
 jest.mock('@rnv/core');
 jest.mock('axios');
@@ -7,7 +7,6 @@ jest.mock('better-opn');
 jest.mock('detect-port');
 jest.mock('kill-port');
 jest.mock('path');
-jest.mock('ip');
 jest.mock('color-string');
 
 beforeEach(() => {
