@@ -100,7 +100,7 @@ export const RnvTaskOptions = createTaskOptionsMap([
         description: 'Skips auto update of npm dependencies if mismatch found',
     },
     {
-        key: 'app-config-id',
+        key: 'app-config-ID',
         altKey: 'appConfigID',
         shortcut: 'c',
         isValueType: true,
