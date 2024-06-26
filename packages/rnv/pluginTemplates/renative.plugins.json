@@ -2,7 +2,7 @@
     "$schema": "../../../.rnv/schema/rnv.plugins.json",
     "pluginTemplates": {
         "@rnv/renative": {
-            "version": "1.0.0-rc.12",
+            "version": "1.0.0-feat-no-ip.0",
             "webpack": {
                 "moduleAliases": true,
                 "modulePaths": true
