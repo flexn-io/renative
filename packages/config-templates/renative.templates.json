@@ -120,6 +120,16 @@
             }
         },
         "@bam.tech/react-native-image-resizer": {
+            "version": "3.0.7",
+            "ios": {
+                "podName": "react-native-image-resizer"
+            },
+            "tvos": {
+                "podName": "react-native-image-resizer"
+            },
+            "macos": {
+                "podName": "react-native-image-resizer"
+            },
             "android": {
                 "package": "com.reactnativeimageresizer.ImageResizerPackage"
             },
@@ -128,17 +138,7 @@
             },
             "firetv": {
                 "package": "com.reactnativeimageresizer.ImageResizerPackage"
-            },
-            "ios": {
-                "podName": "react-native-image-resizer"
-            },
-            "macos": {
-                "podName": "react-native-image-resizer"
-            },
-            "tvos": {
-                "podName": "react-native-image-resizer"
-            },
-            "version": "3.0.5"
+            }
         },
         "@flexn/create": {
             "version": "1.3.0-feat-rnv-update.8",
@@ -273,7 +273,7 @@
             "version": "github:nitaliano/react-native-mapbox-gl"
         },
         "@miblanchard/react-native-slider": {
-            "version": "2.1.0",
+            "version": "2.6.0",
             "webpackConfig": {
                 "moduleAliases": true,
                 "modulePaths": true
@@ -347,20 +347,20 @@
             "ios": {
                 "podName": "react-native-cameraroll"
             },
-            "version": "5.2.4"
+            "version": "7.3.0"
         },
         "@react-native-clipboard/clipboard": {
-            "android": {
-                "package": "com.reactnativecommunity.clipboard.ClipboardPackage",
-                "path": "{{PLUGIN_ROOT}}/android"
-            },
+            "version": "1.12.1",
             "ios": {
                 "podName": "RNCClipboard"
             },
             "macos": {
                 "podName": "RNCClipboard"
             },
-            "version": "1.9.0"
+            "android": {
+                "package": "com.reactnativecommunity.clipboard.ClipboardPackage",
+                "path": "{{PLUGIN_ROOT}}/android"
+            }
         },
         "@react-native-community/async-storage": {
             "android": {
@@ -483,16 +483,16 @@
             "version": "1.5.1"
         },
         "@react-native-community/datetimepicker": {
-            "android": {
-                "package": "com.reactcommunity.rndatetimepicker.RNDateTimePickerPackage"
-            },
+            "version": "7.5.0",
             "ios": {
                 "podName": "RNDateTimePicker"
             },
             "macos": {
                 "podName": "RNDateTimePicker"
             },
-            "version": "6.7.5"
+            "android": {
+                "package": "com.reactcommunity.rndatetimepicker.RNDateTimePickerPackage"
+            }
         },
         "@react-native-community/geolocation": {
             "android": {
@@ -552,7 +552,7 @@
             "tvos": {
                 "podName": "react-native-netinfo"
             },
-            "version": "9.3.8",
+            "version": "11.3.2",
             "webpackConfig": {
                 "moduleAliases": {
                     "@react-native-community/netinfo": {
@@ -616,7 +616,7 @@
             "macos": {
                 "podName": "react-native-slider"
             },
-            "version": "4.4.2"
+            "version": "4.5.2"
         },
         "@react-native-community/viewpager": {
             "android": {
@@ -664,7 +664,7 @@
             "pluginDependencies": {
                 "@react-native-firebase/app": "source:rnv"
             },
-            "version": "16.7.0"
+            "version": "20.0.0"
         },
         "@react-native-firebase/app": {
             "android": {
@@ -732,7 +732,7 @@
                     "resourceFiles": ["RNVApp/GoogleService-Info.plist"]
                 }
             },
-            "version": "16.7.0"
+            "version": "20.0.0"
         },
         "@react-native-firebase/auth": {
             "android": {
@@ -761,7 +761,7 @@
             "pluginDependencies": {
                 "@react-native-firebase/app": "source:rnv"
             },
-            "version": "16.7.0"
+            "version": "20.0.0"
         },
         "@react-native-firebase/crashlytics": {
             "android": {
@@ -772,7 +772,7 @@
                     "BuildGradle": {
                         "buildscript": {
                             "dependencies": {
-                                "classpath 'com.google.firebase:firebase-crashlytics-gradle:2.4.1'": true
+                                "classpath 'com.google.firebase:firebase-crashlytics-gradle:3.0.0'": true
                             }
                         }
                     },
@@ -816,7 +816,7 @@
             "pluginDependencies": {
                 "@react-native-firebase/analytics": "source:rnv"
             },
-            "version": "16.7.0"
+            "version": "20.0.0"
         },
         "@react-native-firebase/messaging": {
             "android": {
@@ -836,7 +836,7 @@
             "pluginDependencies": {
                 "@react-native-firebase/app": "source:rnv"
             },
-            "version": "16.7.0"
+            "version": "20.0.0"
         },
         "@react-native-firebase/storage": {
             "android": {
@@ -867,7 +867,7 @@
             "pluginDependencies": {
                 "@react-native-firebase/app": "source:rnv"
             },
-            "version": "16.7.0"
+            "version": "20.0.0"
         },
         "@react-native-masked-view/masked-view": {
             "android": {
@@ -907,31 +907,10 @@
             "tvos": {
                 "podName": "RNCPicker"
             },
-            "version": "2.4.9"
+            "version": "2.7.6"
         },
         "@react-native-windows/cli": {
             "version": "0.67.1"
-        },
-        "DEPRECATED_@react-navigation": {
-            "deprecated": "Please use @react-navigation/*",
-            "npm": {
-                "@react-native-community/masked-view": "0.1.11",
-                "@react-navigation/bottom-tabs": "5.1.1",
-                "@react-navigation/core": "6.1.0",
-                "@react-navigation/drawer": "6.1.8",
-                "@react-navigation/material-bottom-tabs": "6.0.9",
-                "@react-navigation/material-top-tabs": "5.3.10",
-                "@react-navigation/native": "6.0.6",
-                "@react-navigation/native-stack": "5.0.5",
-                "@react-navigation/routers": "5.1.0",
-                "@react-navigation/stack": "6.0.11",
-                "@react-navigation/web": "1.0.0-alpha.9",
-                "react-native-safe-area-context": "4.3.4"
-            },
-            "pluginDependencies": {
-                "react-native-safe-area-context": "source:rnv",
-                "react-native-screens": "source:rnv"
-            }
         },
         "@react-navigation/bottom-tabs": {
             "version": "6.5.19",
@@ -983,12 +962,6 @@
         },
         "@react-navigation/stack": {
             "version": "6.3.28",
-            "webpackConfig": {
-                "modulePaths": true
-            }
-        },
-        "@react-navigation/web": {
-            "version": "1.0.0-alpha.9",
             "webpackConfig": {
                 "modulePaths": true
             }
@@ -1383,7 +1356,7 @@
             },
             "disableNpm": true
         },
-        "hash-source": "1.0.4",
+        "hash-source": "1.0.5",
         "ios-photo-editor": {
             "deprecated": "ios-photo-editor is DEPRECATED. use iOSPhotoEditor instead",
             "ios": {
@@ -1404,7 +1377,7 @@
             "disableNpm": true
         },
         "loader-utils": {
-            "version": "2.0.0"
+            "version": "3.2.1"
         },
         "lottie-react-native": {
             "android": {
@@ -1488,13 +1461,13 @@
             "disableNpm": true
         },
         "react": {
-            "version": "18.2.0"
+            "version": "18.3.1"
         },
         "react-art": {
-            "version": "18.2.0"
+            "version": "18.3.1"
         },
         "react-dom": {
-            "version": "18.2.0"
+            "version": "18.3.1"
         },
         "react-hot-loader": {
             "version": "4.3.12"
@@ -1682,7 +1655,7 @@
             "version": "2.1.0"
         },
         "react-native-autocomplete-input": {
-            "version": "5.3.2",
+            "version": "5.4.0",
             "webpackConfig": {
                 "moduleAliases": true,
                 "modulePaths": true
@@ -1869,7 +1842,7 @@
             "tvos": {
                 "podName": "RNDeviceInfo"
             },
-            "version": "10.5.1",
+            "version": "10.14.0",
             "webpackConfig": {
                 "moduleAliases": true,
                 "modulePaths": true
@@ -2303,7 +2276,7 @@
                 "URL_NAME": "",
                 "URL_SCHEME": ""
             },
-            "version": "5.5.5"
+            "version": "5.6.0"
         },
         "react-native-fs": {
             "android": {
@@ -2344,7 +2317,7 @@
             "version": "16.4.5"
         },
         "react-native-gesture-handler": {
-            "version": "2.14.1",
+            "version": "2.16.2",
             "android": {
                 "package": "com.swmansion.gesturehandler.RNGestureHandlerPackage",
                 "path": "{{PLUGIN_ROOT}}/android",
@@ -2389,7 +2362,7 @@
             "macos": {
                 "podName": "react-native-get-random-values"
             },
-            "version": "1.8.0"
+            "version": "1.11.0"
         },
         "react-native-get-real-path": {
             "android": {
@@ -2567,7 +2540,7 @@
             "pluginDependencies": {
                 "react-native-image-crop-picker-no-npm": "source:rnv"
             },
-            "version": "0.39.0"
+            "version": "0.41.1"
         },
         "react-native-image-crop-picker-no-npm": {
             "ios": {
@@ -2599,7 +2572,7 @@
             "macos": {
                 "podName": "react-native-image-picker"
             },
-            "version": "5.0.2"
+            "version": "7.1.2"
         },
         "react-native-image-resizer": {
             "android": {
@@ -2687,7 +2660,7 @@
             "tvos": {
                 "podName": "BVLinearGradient"
             },
-            "version": "2.6.2",
+            "version": "2.8.3",
             "webpackConfig": {
                 "moduleAliases": {
                     "react-native-linear-gradient": "react-native-web-linear-gradient"
@@ -2768,7 +2741,7 @@
             "macos": {
                 "podName": "react-native-maps"
             },
-            "version": "0.31.1"
+            "version": "1.15.4"
         },
         "react-native-markdown-renderer": {
             "version": "3.2.8",
@@ -2853,10 +2826,10 @@
                 },
                 "podName": "react-native-orientation-locker"
             },
-            "version": "1.5.0"
+            "version": "1.7.0"
         },
         "react-native-paper": {
-            "version": "4.11.2"
+            "version": "4.12.8"
         },
         "react-native-parallax-view": {
             "android": {
@@ -2899,7 +2872,7 @@
         },
         "react-native-peerjs": {
             "ios": {},
-            "version": "1.0.2"
+            "version": "1.0.4"
         },
         "react-native-permissions": {
             "android": {
@@ -2917,7 +2890,7 @@
             "tvos": {
                 "podName": "RNPermissions"
             },
-            "version": "4.1.4"
+            "version": "4.1.5"
         },
         "react-native-permissions-pods": {
             "ios": {
@@ -3019,7 +2992,7 @@
             "version": "8.0.4"
         },
         "react-native-progress": {
-            "version": "3.5.0"
+            "version": "5.0.1"
         },
         "react-native-prompt-android": {
             "android": {
@@ -3055,7 +3028,7 @@
             "tvos": {
                 "podName": "RNReanimated"
             },
-            "version": "3.6.1",
+            "version": "3.11.0",
             "disablePluginTemplateOverrides": true,
             "webpackConfig": {
                 "modulePaths": true
@@ -3071,7 +3044,7 @@
             }
         },
         "react-native-root-toast": {
-            "version": "3.2.1",
+            "version": "3.6.0",
             "webpackConfig": {
                 "nextTranspileModules": ["react-native-root-siblings", "static-container"]
             }
@@ -3098,7 +3071,7 @@
             "webpackConfig": {
                 "modulePaths": true
             },
-            "version": "4.9.0"
+            "version": "4.10.3"
         },
         "react-native-safe-area-view": {
             "version": "4.9.0",
@@ -3133,7 +3106,7 @@
             }
         },
         "react-native-select-dropdown": {
-            "version": "1.2.0"
+            "version": "3.3.4"
         },
         "react-native-sensors": {
             "android": {
@@ -3185,7 +3158,7 @@
             "version": "git+https://github.com/cjrorvik/react-native-simple-compass.git"
         },
         "react-native-simple-radio-button": {
-            "version": "2.7.3"
+            "version": "2.7.4"
         },
         "react-native-simple-shadow-view": {
             "android": {
@@ -3487,7 +3460,7 @@
             "tvos": {
                 "podName": "react-native-video"
             },
-            "version": "5.2.1",
+            "version": "6.1.0",
             "webpackConfig": {
                 "modulePaths": true
             }
@@ -3518,7 +3491,7 @@
             "version": "0.2.13"
         },
         "react-native-web": {
-            "version": "0.19.9",
+            "version": "0.19.12",
             "supportedPlatforms": [
                 "web",
                 "tizen",
@@ -3538,7 +3511,7 @@
             }
         },
         "react-native-web-image-loader": {
-            "version": "0.0.5"
+            "version": "0.1.1"
         },
         "react-native-webrtc": {
             "android": {
@@ -3575,7 +3548,7 @@
             "macos": {
                 "podName": "react-native-webview"
             },
-            "version": "11.23.0",
+            "version": "13.10.2",
             "webpackConfig": {
                 "modulePaths": true
             }
@@ -3611,7 +3584,7 @@
             "ios": {
                 "podName": "RNZipArchive"
             },
-            "version": "6.0.9"
+            "version": "6.1.1"
         },
         "react-native-zss-rich-text-editor": {
             "android": {
@@ -3624,23 +3597,6 @@
             "ios": {},
             "macos": {},
             "version": "1.1.0"
-        },
-        "react-navigation": {
-            "deprecated": "This package is deprecated. Visit https://reactnavigation.org/docs/getting-started for more information.",
-            "npm": {
-                "@react-navigation/core": "3.4.2",
-                "@react-navigation/native": "3.5.0",
-                "@react-navigation/web": "1.0.0-alpha.9"
-            },
-            "pluginDependencies": {
-                "react-native-reanimated": "source:rnv",
-                "react-navigation-stack": "source:rnv",
-                "react-navigation-tabs": "source:rnv"
-            },
-            "version": "3.9.2",
-            "webpackConfig": {
-                "modulePaths": true
-            }
         },
         "react-navigation-drawer": {
             "version": "2.3.3",
@@ -3707,7 +3663,7 @@
             }
         },
         "rnv-platform-info": {
-            "version": "1.0.8",
+            "version": "1.0.16",
             "webpackConfig": {
                 "nextTranspileModules": ["rnv-platform-info"]
             }
@@ -3720,7 +3676,7 @@
             "disableNpm": true
         },
         "static-container": {
-            "version": "1.3.0",
+            "version": "1.7.1",
             "webpackConfig": {
                 "modulePaths": true
             }
