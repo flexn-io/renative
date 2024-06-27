@@ -210,7 +210,39 @@ export const logRaw = (...args: Array<string>) => {
 export const logSummary = (opts?: { header?: string; headerStyle?: 'success' | 'warning' | 'error' | 'none' }) => {
     const ctx = getContext();
     if (ctx.program?.opts().help) return;
-    if (_jsonOnly || ctx.program?.opts().noSummary) return;
+    if (_jsonOnly) {
+        if (!ctx.logging.logMessages || !ctx.logging.logMessages.length) {
+            return;
+        } else {
+            const cleanedMessages = ctx.logging.logMessages
+                .map(stripAnsi)
+                .map((msg) => {
+                    const headerEndIndex = msg.indexOf(':') + 1;
+                    const header = msg.slice(0, headerEndIndex).trim();
+                    const items = msg
+                        .slice(headerEndIndex)
+                        .split('\n')
+                        .map((line) => line.trim())
+                        .filter((line) => line);
+                    return `${header} ${items.join(', ')}`;
+                })
+                .join('');
+            return _printJson({
+                type: 'summaryLog',
+                task: stripAnsi(_getCurrentTask()),
+                message: cleanedMessages,
+            });
+        }
+    }
+
+    if (ctx.program?.opts().noSummary) {
+        if (!ctx.logging.logMessages || !ctx.logging.logMessages.length) {
+            return;
+        } else {
+            console.log(ctx.logging.logMessages.join('').replace(/\n\s*\n\s*\n/g, '\n\n'));
+            return;
+        }
+    }
 
     if (ctx.paths.project.configExists && !ctx.paths.IS_NPX_MODE && !ctx.paths.IS_LINKED) {
         logAndSave(chalk().yellow('You are trying to run global rnv command in your current project.'), true);
