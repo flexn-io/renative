@@ -91,7 +91,7 @@ const parseDevices = (c: RnvContext, devicesResponse: string): Promise<Array<Web
                 .filter((word) => word !== '');
             let deviceInfo = '';
             try {
-                deviceInfo = await execCLI(CLI_WEBOS_ARES_DEVICE_INFO, `-d ${name} -i`, {
+                deviceInfo = await execCLI(CLI_WEBOS_ARES_DEVICE_INFO, `-i ${name}`, {
                     silent: true,
                     timeout: 10000,
                 });
