@@ -108,7 +108,7 @@ const getCliDirPath = async () => {
     }
 };
 
-const _attemptAutoFix = async (c: RnvContext) => {
+const _attemptAutoFix = async (c: RnvContext, shouldThrow?: boolean) => {
     logDefault('_attemptAutoFix');
 
     if (c.program.opts().hosted) {
@@ -147,6 +147,11 @@ const _attemptAutoFix = async (c: RnvContext) => {
         }
     }
 
+    if(shouldThrow) {
+        throw new Error(
+            `Your ${c.platform} SDK path is not configured. Please update your ${c.paths.workspace.config} file`
+        );
+    }
     logError(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOCATIONS.join(', ')}`);
 
     // const setupInstance = PlatformSetup(c);
@@ -155,7 +160,7 @@ const _attemptAutoFix = async (c: RnvContext) => {
     return true;
 };
 
-export const checkWebosSdk = async () => {
+export const checkWebosSdk = async (shouldThrow?: boolean) => {
     const c = getContext();
 
     logDefault('checkWebosSdk');
@@ -165,7 +170,7 @@ export const checkWebosSdk = async () => {
                 c.paths.workspace.config
             )} does not exist: ${chalk().bold(_getCurrentSdkPath(c))}`
         );
-        return _attemptAutoFix(c);
+        return _attemptAutoFix(c, shouldThrow);
     }
     return true;
 };

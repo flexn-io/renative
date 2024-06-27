@@ -7,7 +7,7 @@ export default createTask({
     isPrivate: true,
     fn: async () => {
         await checkAndConfigureTizenSdks();
-        await checkTizenSdk();
+        await checkTizenSdk(true);
     },
     task: RnvTaskName.sdkConfigure,
     platforms: SdkPlatforms,
