@@ -75,7 +75,9 @@ export const logWelcome = () => {
         ctx.rnvVersion = ctx.files.rnv.package.version;
         str += printIntoBox(
             currentChalk.grey(
-                `${ICN_ROCKET} v:${ctx.rnvVersion} | ${'renative.org'} | ${ctx.timeStart.toLocaleString()}`
+                `${!_isMono ? ICN_ROCKET : 'RNV'} v:${
+                    ctx.rnvVersion
+                } | ${'renative.org'} | ${ctx.timeStart.toLocaleString()}`
             ),
             shortLen
         );
