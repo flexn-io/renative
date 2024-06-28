@@ -85,6 +85,13 @@
             ]
           }
         },
+        "webpackExcludedDirs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Allows to specify files or directories in the src folder that webpack should ignore when bundling code."
+        },
         "$schema": {
           "type": "string",
           "description": "schema definition"
