@@ -33,6 +33,8 @@ export const parseAppDelegate = (
         logDefault('parseAppDelegateSync');
         const appDelegateMm = 'AppDelegate.mm';
         const appDelegateH = 'AppDelegate.h';
+        const templateXcode = getConfigProp('templateXcode');
+
         // const entryFile = getEntryFile(c, platform);
 
         // const forceBundle = getGetJsBundleFile(c, platform);
@@ -238,6 +240,13 @@ export const parseAppDelegate = (
             c.payload.pluginConfigiOS.pluginAppDelegateMmMethods += c.payload.pluginConfigiOS.appDelegateMmMethods.custom.join('\n ');
         }
 
+        // Root renative.json injections
+        injectPluginObjectiveCSync(c, null, '', true);
+
+        if (templateXcode?.AppDelegate_mm?.appDelegateMethods?.custom) {
+            c.payload.pluginConfigiOS.pluginAppDelegateMmMethods += templateXcode.AppDelegate_mm.appDelegateMethods.custom.join('\n ');
+        }
+        // end
 
         const injectsMm = [
             // { pattern: '{{BUNDLE}}', override: bundle },
@@ -291,9 +300,9 @@ export const parseAppDelegate = (
         resolve();
     });
 
-export const injectPluginObjectiveCSync = (c: Context, plugin: ConfigPluginPlatformSchema, key: string) => {
+export const injectPluginObjectiveCSync = (c: Context, plugin: ConfigPluginPlatformSchema | null, key: string, configProp = false) => {
     logDebug(`injectPluginObjectiveCSync:${c.platform}:${key}`);
-    const templateXcode = getFlavouredProp(plugin, 'templateXcode');
+    const templateXcode = configProp ? getConfigProp('templateXcode') : getFlavouredProp(plugin!, 'templateXcode');
     const appDelegateMmImports = templateXcode?.AppDelegate_mm?.appDelegateImports;
 
     if (appDelegateMmImports) {
@@ -303,6 +312,7 @@ export const injectPluginObjectiveCSync = (c: Context, plugin: ConfigPluginPlatf
     //     c.payload.pluginConfigiOS.pluginAppDelegateMethods += `${plugin.appDelegateMethods.join('\n    ')}`;
     // }
     const appDelegateHhImports = templateXcode?.AppDelegate_h?.appDelegateImports;
+
     if (appDelegateHhImports) {
         addAppDelegateImports(c, appDelegateHhImports, 'pluginAppDelegateHImports');
     }
