@@ -39,14 +39,16 @@ export const fsChmodSync = (dest: fs.PathLike | undefined, flag: fs.Mode) => fs.
 
 export const fsRenameSync = (arg1: fs.PathLike | undefined, arg2: fs.PathLike) => {
     // One of the paths does not exist
-    if (!arg1 || !arg2) return;
+    if (!arg1 || !arg2) return logError(`Cannot rename file. source path doesn't exist: ${!arg1 ? arg1 : arg2}`);
 
+    // If it's a directory, on Windows all files within need to be copied over, simple renaming
+    // will cause a permitions error
     if (fs.lstatSync(arg1).isDirectory()) {
         fs.cpSync(arg1 as string, arg2 as string, { recursive: true });
         fs.rmdirSync(arg1, { recursive: true });
-    } else if (fs.lstatSync(arg1).isFile()) {
-        fs.renameSync(arg1, arg2);
+        return;
     }
+    return fs.renameSync(arg1, arg2);
 };
 
 export const fsStatSync = (arg1: fs.PathLike | undefined) => fs.statSync(arg1!);
