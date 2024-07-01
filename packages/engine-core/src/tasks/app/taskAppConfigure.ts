@@ -206,6 +206,7 @@ const appConfigure = async () => {
 export default createTask({
     description: 'Configure project with specific appConfig',
     fn: async ({ ctx }) => {
+        if (ctx.runtime.isAppConfigured) return true;
         await appConfigure();
         await updateRenativeConfigs();
         logAppInfo(ctx);
