@@ -105,7 +105,9 @@ Debugger running at: ${debugUrl}`);
         \n<script src="http://${resolvedDebugIp}:${REMOTE_DEBUG_PORT}/target.js"></script>`;
     } catch (e) {
         logWarning(
-            `You are missing chii. You can install via ${chalk().bold('npm i -g chii')}) Trying to use weinre next`
+            `You are missing chii. You can install via ${chalk().bold.white.white(
+                'npm i -g chii'
+            )}) Trying to use weinre next`
         );
     }
 
@@ -142,7 +144,7 @@ Debugger running at: ${debugUrl}`);
             c.platform
         }"></script>`;
     } catch (e) {
-        logWarning(`You are missing weinre. Skipping debug. install via ${chalk().bold('npm i -g weinre')}`);
+        logWarning(`You are missing weinre. Skipping debug. install via ${chalk().bold.white('npm i -g weinre')}`);
     }
     return true;
 };
@@ -250,9 +252,9 @@ export const runWebpackServer = async (enableRemoteDebugger?: boolean) => {
 
     if (!isPortActive) {
         logInfo(
-            `Your ${chalk().bold(platform)} devServerHost ${chalk().bold(devServerHost)} at port ${chalk().bold(
-                port
-            )} is not running. Starting it up for you...`
+            `Your ${chalk().bold.white(platform)} devServerHost ${chalk().bold.white(
+                devServerHost
+            )} at port ${chalk().bold.white(port)} is not running. Starting it up for you...`
         );
         await _runWebBrowser(devServerHost, port, false);
         if (!bundleAssets) {

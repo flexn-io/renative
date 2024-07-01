@@ -99,7 +99,7 @@ const _isPlatformSupportedSync = (platform: RnvPlatform, resolve?: () => void, r
         if (reject) {
             reject(
                 chalk().red(
-                    `Platform ${platform} is not supported. Use one of the following: ${chalk().bold(
+                    `Platform ${platform} is not supported. Use one of the following: ${chalk().bold.white(
                         c.runtime.availablePlatforms.join(', ')
                     )} .`
                 )
@@ -117,7 +117,9 @@ export const isPlatformActive = (resolve?: () => void) => {
 
     if (!c.buildConfig || !c.buildConfig.platforms) {
         logError(
-            `Your appConfigFile is not configured properly! check ${chalk().bold(c.paths.appConfig.config)} location.`
+            `Your appConfigFile is not configured properly! check ${chalk().bold.white(
+                c.paths.appConfig.config
+            )} location.`
         );
         if (resolve) resolve();
         return false;

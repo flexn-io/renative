@@ -89,7 +89,7 @@ export const runWebOS = async (c: RnvContext) => {
 
         if (!isPortActive) {
             logInfo(
-                `Your ${chalk().bold(platform)} devServer at port ${chalk().bold(
+                `Your ${chalk().bold.white(platform)} devServer at port ${chalk().bold.white(
                     c.runtime.port
                 )} is not running. Starting it up for you...`
             );

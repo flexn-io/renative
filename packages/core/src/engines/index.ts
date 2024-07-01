@@ -207,9 +207,9 @@ export const loadEnginePluginDeps = async (engineConfigs: Array<RnvEngineInstall
         const addedPluginsKeys = Object.keys(addedPlugins);
 
         logInfo(
-            `Engines: ${chalk().yellow(engineKeys.join(','))} require plugins ${chalk().bold(
+            `Engines: ${chalk().yellow(engineKeys.join(','))} require plugins ${chalk().bold.white(
                 addedPluginsKeys.join(',')
-            )} to be added to ${chalk().bold(c.paths.project.config)}`
+            )} to be added to ${chalk().bold.white(c.paths.project.config)}`
         );
         const confirm = await inquirerPrompt({
             name: 'selectedScheme',

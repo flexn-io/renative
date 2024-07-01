@@ -29,7 +29,7 @@ const PRIVATE_PARAMS = ['-k', '--key'];
 let _isInfoEnabled = false;
 let _infoFilter: Array<string> = [];
 // let _c: RnvContext;
-// let _isMono = false;
+let _isMono = false;
 let _defaultColor: any = _chalkCols.white;
 let _highlightColor = _chalkCols.white;
 // let _analytics: AnalyticsApi;
@@ -47,8 +47,9 @@ export const logInitialize = () => {
     // _analytics = analytics;
 
     if (ctx.program.opts().mono) {
+        _isMono = true;
         currentChalk = _chalkMono;
-        chalkBlue = _chalkMono;
+        chalkBlue = _chalkMono.white;
     }
     _updateDefaultColors();
     // RNV = getCurrentCommand();
@@ -57,7 +58,7 @@ export const logInitialize = () => {
 
 export const logWelcome = () => {
     const ctx = getContext();
-    if (ctx.program?.opts().help) return;
+    if (ctx.program?.opts().help || ctx.program?.opts().noIntro) return;
     const shortLen = 64;
     // prettier-ignore
     let str = _defaultColor(`
@@ -74,7 +75,9 @@ export const logWelcome = () => {
         ctx.rnvVersion = ctx.files.rnv.package.version;
         str += printIntoBox(
             currentChalk.grey(
-                `${ICN_ROCKET} v:${ctx.rnvVersion} | ${'renative.org'} | ${ctx.timeStart.toLocaleString()}`
+                `${!_isMono ? ICN_ROCKET : 'RNV'} v:${
+                    ctx.rnvVersion
+                } | ${'renative.org'} | ${ctx.timeStart.toLocaleString()}`
             ),
             shortLen
         );
@@ -89,7 +92,7 @@ export const logWelcome = () => {
     //     shortLen
     // );
     // str += printIntoBox(`      ${ICN_ROCKET} ${currentChalk.yellow('Firing up!...')}`);
-    str += printIntoBox(`$ ${currentChalk.bold(getCurrentCommand(true))}`, shortLen);
+    str += printIntoBox(`$ ${_highlightColor(getCurrentCommand(true))}`, shortLen);
     if (ctx.timeStart) {
         // str += printIntoBox(`      Start Time: ${currentChalk.grey(ctx.timeStart.toLocaleString())}`);
     }
@@ -144,8 +147,8 @@ export function stripAnsi(string: string) {
 // };
 
 const _updateDefaultColors = () => {
-    _defaultColor = currentChalk;
-    _highlightColor = currentChalk.bold; //currentChalk.bold;
+    _defaultColor = currentChalk.white;
+    _highlightColor = currentChalk.bold.white; //currentChalk.bold;
 };
 _updateDefaultColors();
 
@@ -207,8 +210,39 @@ export const logRaw = (...args: Array<string>) => {
 export const logSummary = (opts?: { header?: string; headerStyle?: 'success' | 'warning' | 'error' | 'none' }) => {
     const ctx = getContext();
     if (ctx.program?.opts().help) return;
+    if (_jsonOnly) {
+        if (!ctx.logging.logMessages || !ctx.logging.logMessages.length) {
+            return;
+        } else {
+            const cleanedMessages = ctx.logging.logMessages
+                .map(stripAnsi)
+                .map((msg) => {
+                    const headerEndIndex = msg.indexOf(':') + 1;
+                    const header = msg.slice(0, headerEndIndex).trim();
+                    const items = msg
+                        .slice(headerEndIndex)
+                        .split('\n')
+                        .map((line) => line.trim())
+                        .filter((line) => line);
+                    return `${header} ${items.join(', ')}`;
+                })
+                .join('');
+            return _printJson({
+                type: 'summaryLog',
+                task: stripAnsi(_getCurrentTask()),
+                message: cleanedMessages,
+            });
+        }
+    }
 
-    if (_jsonOnly) return;
+    if (ctx.program?.opts().noSummary) {
+        if (!ctx.logging.logMessages || !ctx.logging.logMessages.length) {
+            return;
+        } else {
+            console.log(ctx.logging.logMessages.join('').replace(/\n\s*\n\s*\n/g, '\n\n'));
+            return;
+        }
+    }
 
     if (ctx.paths.project.configExists && !ctx.paths.IS_NPX_MODE && !ctx.paths.IS_LINKED) {
         logAndSave(chalk().yellow('You are trying to run global rnv command in your current project.'), true);
@@ -243,14 +277,20 @@ export const logSummary = (opts?: { header?: string; headerStyle?: 'success' | '
     const headerPrefix =
         headerStyle === 'success' ? '✔ ' : headerStyle === 'warning' ? '⚠ ' : headerStyle === 'error' ? '⨯ ' : '';
     const headerTextPlain = `${headerPrefix}${opts?.header || 'SUMMARY'}`;
-    const headerChalk =
-        headerStyle === 'success'
-            ? currentChalk.green.bold
-            : headerStyle === 'warning'
-            ? currentChalk.yellow.bold
-            : headerStyle === 'error'
-            ? currentChalk.green.red
-            : (v: string) => v;
+    let headerChalk;
+
+    if (_isMono) {
+        headerChalk = currentChalk.white;
+    } else {
+        headerChalk =
+            headerStyle === 'success'
+                ? currentChalk.green.bold
+                : headerStyle === 'warning'
+                ? currentChalk.yellow.bold
+                : headerStyle === 'error'
+                ? currentChalk.green.red
+                : (v: string) => v;
+    }
     let str = printBoxStart(
         `${headerChalk(headerTextPlain)} ${timeString} | rnv@${ctx.rnvVersion}`,
         getCurrentCommand()
@@ -469,8 +509,9 @@ export const logInitTask = (task: string) => {
             message: stripAnsi(_sanitizePaths(task)),
         });
     }
-
-    const msg = `${chalkBlue.bold('task:')} ○ ${task} ${taskCount}`;
+    const msg = !_isMono
+        ? `${chalkBlue.bold('task:')} ○ ${task} ${taskCount}`
+        : `${currentChalk.white('task:')} ○ ${task} ${taskCount}`;
 
     console.log(msg);
 };
@@ -536,7 +577,7 @@ export const logInfo = (msg: string) => {
             message: stripAnsi(_sanitizePaths(msg)),
         });
     }
-    console.log(`${currentChalk.bold('info:')} ${_sanitizePaths(msg)}`);
+    console.log(`${_highlightColor('info:')} ${_sanitizePaths(msg)}`);
 };
 
 export const logDebug = (...args: Array<string>) => {
@@ -616,7 +657,7 @@ export const logError = (e: Error | string | unknown, opts?: { skipAnalytics: bo
 
 export const logAppInfo = (c: RnvContext) => {
     if (!_jsonOnly) {
-        logInfo(`Current app config: ${currentChalk.bold(c.runtime.appId)}`);
+        logInfo(`Current app config: ${_highlightColor(c.runtime.appId)}`);
     }
 };
 

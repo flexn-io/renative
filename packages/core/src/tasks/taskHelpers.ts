@@ -6,7 +6,7 @@ import { RnvTask, RnvTaskOption } from './types';
 
 const printCurrentPlatform = () => {
     const ctx = getContext();
-    const msg = `Current platform: ${chalk().white.bold(ctx.platform)}`;
+    const msg = `Current platform: ${chalk().bold.white(ctx.platform)}`;
     logInfo(msg);
 };
 
@@ -69,6 +69,9 @@ export const generateStringFromTaskOption = (opt: RnvTaskOption) => {
         cmd += `-${opt.shortcut}, `;
     }
     cmd += `--${opt.key}`;
+    if (opt.altKey) {
+        cmd += `, --${opt.altKey}`;
+    }
     if (opt.isVariadic) {
         if (opt.isRequired) {
             cmd += ` <value...>`;

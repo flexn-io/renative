@@ -66,6 +66,7 @@ export type TaskPromptOption = {
 export type RnvTaskOption<OKey = string> = {
     shortcut?: string;
     key: OKey extends string ? OKey : never;
+    altKey?: OKey extends string ? OKey : never;
     isRequired?: boolean;
     isValueType?: boolean;
     isVariadic?: boolean;

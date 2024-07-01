@@ -55,6 +55,6 @@ export const isBuildSchemeSupported = async () => {
         c.program.opts().scheme = schemeVals[selectedScheme];
         c.runtime.scheme = c.program.opts().scheme;
     }
-    logInfo(`Current Build Scheme: ${chalk().bold(c.runtime.scheme)}`);
+    logInfo(`Current Build Scheme: ${chalk().bold.white(c.runtime.scheme)}`);
     return true;
 };

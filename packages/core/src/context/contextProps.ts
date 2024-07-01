@@ -142,7 +142,7 @@ export const getAppConfigBuildsFolder = (customPath?: string) => {
     const pp = customPath || c.paths.appConfig.dir;
     if (!pp) {
         logWarning(
-            `getAppConfigBuildsFolder: Path ${chalk().bold(
+            `getAppConfigBuildsFolder: Path ${chalk().bold.white(
                 'c.paths.appConfig.dir'
             )} not defined! can't return path. You might not be in renative project`
         );

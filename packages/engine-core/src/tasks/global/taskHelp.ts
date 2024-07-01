@@ -30,11 +30,11 @@ export default createTask({
         const cmdsString = commands.join(', ');
 
         logToSummary(`
-${chalk().bold('COMMANDS:')}
+${chalk().bold.white('COMMANDS:')}
 
 ${cmdsString}
 
-${chalk().bold('OPTIONS:')}
+${chalk().bold.white('OPTIONS:')}
 
 ${optsString}
 `);

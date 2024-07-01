@@ -532,7 +532,7 @@ export const readObjectSync = <T = object>(filePath?: string, sanitize?: boolean
             }
         }
     } catch (e) {
-        logError(`readObjectSync: Parsing of ${chalk().bold(filePath)} failed with ${e}`);
+        logError(`readObjectSync: Parsing of ${chalk().bold.white(filePath)} failed with ${e}`);
         return null;
     }
     return obj as T;
@@ -553,7 +553,7 @@ export const updateObjectSync = (filePath: string, updateObj: object) => {
 export const getRealPath = (p: string | undefined, key = 'undefined', original?: string) => {
     if (!p) {
         if (original) {
-            logDebug(`Path ${chalk().bold(key)} is not defined. using default: ${chalk().bold(original)}`);
+            logDebug(`Path ${chalk().bold.white(key)} is not defined. using default: ${chalk().bold.white(original)}`);
         }
         return original;
     }
@@ -588,7 +588,7 @@ const _refToValue = (ref: string, key: string) => {
             const output = lGet(obj, valPath);
             return output;
         } else {
-            logWarning(`_refToValue: ${chalk().bold(realPath)} does not exist!`);
+            logWarning(`_refToValue: ${chalk().bold.white(realPath)} does not exist!`);
         }
     }
     return ref;

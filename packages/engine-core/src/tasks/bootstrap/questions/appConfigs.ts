@@ -26,9 +26,9 @@ const Question = async (data: NewProjectData): Promise<void> => {
                 appConfig.common.id = inputs.appID;
                 appConfig.common.description = `This is ${inputs.appTitle} app!`;
                 logInfo(
-                    `Updating appConfig ${chalk().bold(appConfigID)} with title: ${chalk().bold(
+                    `Updating appConfig ${chalk().bold.white(appConfigID)} with title: ${chalk().bold.white(
                         inputs.appTitle
-                    )} and id: ${chalk().bold(inputs.appID)}`
+                    )} and id: ${chalk().bold.white(inputs.appID)}`
                 );
                 writeFileSync(appCnfPath, appConfig);
             }

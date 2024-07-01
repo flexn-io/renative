@@ -19,7 +19,7 @@ export const parseProvisioningProfiles = async (c: Context) => {
         return result;
     } catch (e) {
         logWarning(
-            `You have no provisioning files available. Check your ${chalk().bold(
+            `You have no provisioning files available. Check your ${chalk().bold.white(
                 path.join(c.paths.user.homeDir, 'Library/MobileDevice/Provisioning Profiles')
             )} folder`
         );

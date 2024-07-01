@@ -30,7 +30,7 @@ export const handleMutations = async () => {
     );
     let msg = '';
     mutations.forEach((m) => {
-        msg += `- ${chalk().bold(m.name)} (${chalk().red(m.original?.version || 'N/A')}) => (${chalk().green(
+        msg += `- ${chalk().bold.white(m.name)} (${chalk().red(m.original?.version || 'N/A')}) => (${chalk().green(
             m.updated.version
         )}) ${chalk().gray(`${m.msg} | ${m.source}`)}\n`;
     });

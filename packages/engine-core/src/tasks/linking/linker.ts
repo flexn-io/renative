@@ -72,7 +72,7 @@ export const getSourceDir = () => {
     const dirOption = ctx.program.opts().dir;
 
     if (dirOption) {
-        logInfo(`Using custom source directory: ${chalk().bold(dirOption)}`);
+        logInfo(`Using custom source directory: ${chalk().bold.white(dirOption)}`);
     }
 
     // As default we'll use the development source directory which is a monorepo

@@ -46,9 +46,9 @@ export const runWebNext = async () => {
 
     if (!isPortActive) {
         logInfo(
-            `Your ${chalk().bold(platform)} devServerHost ${chalk().bold(devServerHost)} at port ${chalk().bold(
-                port
-            )} is not running. Starting it up for you...`
+            `Your ${chalk().bold.white(platform)} devServerHost ${chalk().bold.white(
+                devServerHost
+            )} at port ${chalk().bold.white(port)} is not running. Starting it up for you...`
         );
         await _runWebBrowser(devServerHost, port, false);
 
@@ -103,7 +103,6 @@ export const getExportDir = (c: RnvContext) => {
 export const buildWebNext = async () => {
     const c = getContext();
     logDefault('buildWebNext');
-
 
     // On Windows npx does not always resolve correct path, hence we manually resolve it here
     // https://github.com/flexn-io/renative/issues/1409#issuecomment-2095531486

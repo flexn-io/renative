@@ -54,11 +54,11 @@ export const getWorkspaceDirPath = async (c: RnvContext) => {
                     const { conf } = await inquirerPrompt({
                         name: 'conf',
                         type: 'confirm',
-                        message: `Your project belongs to workspace ${chalk().bold(
+                        message: `Your project belongs to workspace ${chalk().bold.white(
                             ws
-                        )}. do you want to add new workspace ${chalk().bold(ws)} to your local system at ${chalk().bold(
-                            wsDir
-                        )}?`,
+                        )}. do you want to add new workspace ${chalk().bold.white(
+                            ws
+                        )} to your local system at ${chalk().bold.white(wsDir)}?`,
                         warningMessage: 'No app configs found for this project',
                     });
                     confirm = conf;
@@ -88,7 +88,7 @@ export const getWorkspaceOptions = () => {
     return generateOptions(c.files.dotRnv.configWorkspaces?.workspaces, false, null, (i, obj, mapping, defaultVal) => {
         logDebug('getWorkspaceOptions');
 
-        return ` [${chalk().grey(i + 1)}]> ${chalk().bold(defaultVal)} ${getWorkspaceConnectionString(obj)}\n`;
+        return ` [${chalk().grey(i + 1)}]> ${chalk().bold.white(defaultVal)} ${getWorkspaceConnectionString(obj)}\n`;
     });
 };
 
