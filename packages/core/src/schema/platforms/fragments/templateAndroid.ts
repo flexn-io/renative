@@ -25,7 +25,8 @@ Injects / Overrides values in res/values files of generated android based projec
 > IMPORTANT: always ensure that your object contains \`tag\` and \`name\` to target correct tag to merge into
  `);
 // We using interfaces to reduce the size of d.ts files (zod + types in d.ts files are huge)
-export type ConfigTemplateAndroidResources = z.infer<typeof zodAndroidResources>;
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface ConfigTemplateAndroidResources extends z.infer<typeof zodAndroidResources> {}
 
 // AndroidManifest.xml
 // ==============================================================
@@ -74,7 +75,8 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 > IMPORTANT: always ensure that your object contains \`tag\` and \`android:name\` to target correct tag to merge into
  `);
 // We using interfaces to reduce the size of d.ts files (zod + types in d.ts files are huge)
-export type ConfigTemplateAndroidAndroidManifest = z.infer<typeof zodAndroidManifest>;
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface ConfigTemplateAndroidAndroidManifest extends z.infer<typeof zodAndroidManifest> {}
 
 // MainActivity.kt
 // ==============================================================
@@ -92,7 +94,8 @@ const zodMainActivity_kt = z
     })
     .partial();
 // We using interfaces to reduce the size of d.ts files (zod + types in d.ts files are huge)
-export type ConfigTemplateAndroidMainActivityKT = z.infer<typeof zodMainActivity_kt>;
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface ConfigTemplateAndroidMainActivityKT extends z.infer<typeof zodMainActivity_kt> {}
 
 // MainApplication.kt
 // ==============================================================
@@ -111,7 +114,8 @@ const zodMainApplication_kt = z
     .partial()
     .describe('Allows you to configure behaviour of MainActivity');
 // We using interfaces to reduce the size of d.ts files (zod + types in d.ts files are huge)
-export type ConfigTemplateAndroidMainApplicationKT = z.infer<typeof zodMainApplication_kt>;
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface ConfigTemplateAndroidMainApplicationKT extends z.infer<typeof zodMainApplication_kt> {}
 
 // templateAndroid
 // ==============================================================
@@ -122,17 +126,13 @@ const templateAndroid = z
             .describe('Overrides values in `gradle.properties` file of generated android based project'),
         build_gradle: z
             .object({
-                allprojects: z.object({
-                    repositories: z
-                        .record(z.string(), z.boolean())
-                        .describe('Customize repositories section of build.gradle'),
-                }),
                 plugins: z.array(z.string()),
                 buildscript: z.object({
-                    repositories: z.record(z.string(), z.boolean()),
-                    dependencies: z.record(z.string(), z.boolean()),
+                    repositories: z.array(z.string()),
+                    dependencies: z.array(z.string()),
+                    ext: z.array(z.string()),
+                    custom: z.array(z.string()),
                 }),
-                dexOptions: z.record(z.string(), z.boolean()),
                 injectAfterAll: z.array(z.string()),
             })
             .partial()
@@ -168,7 +168,8 @@ const templateAndroid = z
     })
     .partial();
 // We using interfaces to reduce the size of d.ts files (zod + types in d.ts files are huge)
-export type ConfigTemplateAndroidBase = z.infer<typeof templateAndroid>;
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface ConfigTemplateAndroidBase extends z.infer<typeof templateAndroid> {}
 
 export const zodTemplateAndroidFragment = z
     .object({

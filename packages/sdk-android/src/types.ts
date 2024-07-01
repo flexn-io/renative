@@ -25,12 +25,9 @@ export type Payload = {
         kotlinVersion: string;
         pluginIncludes: string;
         pluginPaths: string;
-        buildGradleBuildScriptDexOptions: string;
         gradleBuildToolsVersion: string;
         supportLibVersion: string;
         buildToolsVersion: string;
-        buildGradleAllProjectsRepositories: string;
-        buildGradleBuildScriptRepositories: string;
         googleServicesVersion: string;
         pluginActivityImports: string;
         buildGradlePlugins: string;

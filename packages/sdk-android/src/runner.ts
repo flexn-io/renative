@@ -374,6 +374,9 @@ export const configureProject = async () => {
     mkdirSync(path.join(appFolder, 'app/src/main/assets'));
     fsWriteFileSync(path.join(appFolder, `app/src/main/assets/${outputFile}.bundle`), '{}');
 
+    // console.log({ templateAndroid: c });
+
+
     // PLUGINS
     parsePlugins((plugin, pluginPlat, key) => {
         injectPluginGradleSync(plugin, pluginPlat, key);

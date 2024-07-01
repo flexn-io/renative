@@ -13,8 +13,96 @@
         "portOffset": 10
     },
     "platforms": {
+        "ios": {
+            "templateXcode": {
+                "AppDelegate_h": {
+                    "appDelegateMethods": ["@property (nonatomic, strong) UIView *appSwitcherView;"]
+                },
+                "AppDelegate_mm": {
+                    "appDelegateMethods": {
+                        "custom": [
+                            "- (UIImage *)createScreenshotOfCurrentContext {",
+                            "   CGSize screenSize = self.window.screen.bounds.size;",
+                            "   UIGraphicsBeginImageContext(screenSize);",
+                            "   CGContextRef currentContext = UIGraphicsGetCurrentContext();",
+                            "   if (!currentContext) {",
+                            "       return nil;",
+                            "   }",
+                            "   [self.window.layer renderInContext:currentContext];",
+                            "   UIImage *image = UIGraphicsGetImageFromCurrentImageContext();",
+                            "   UIGraphicsEndImageContext();",
+                            "   return image;",
+                            "}"
+                        ]
+                    }
+                }
+            },
+            "privacyManifests": {
+                "NSPrivacyAccessedAPITypes": [
+                    {
+                        "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryActiveKeyboards",
+                        "NSPrivacyAccessedAPITypeReasons": ["CA92.1"]
+                    },
+                    {
+                        "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategorySystemBootTime",
+                        "NSPrivacyAccessedAPITypeReasons": ["CA92.1", "E174.1"]
+                    }
+                ]
+            }
+        },
+        "tvos": {
+            "templateXcode": {
+                "AppDelegate_h": {
+                    "appDelegateMethods": ["@property (nonatomic, strong) UIView *appSwitcherView;"]
+                },
+                "AppDelegate_mm": {
+                    "appDelegateMethods": {
+                        "custom": [
+                            "- (UIImage *)createScreenshotOfCurrentContext {",
+                            "   CGSize screenSize = self.window.screen.bounds.size;",
+                            "   UIGraphicsBeginImageContext(screenSize);",
+                            "   CGContextRef currentContext = UIGraphicsGetCurrentContext();",
+                            "   if (!currentContext) {",
+                            "       return nil;",
+                            "   }",
+                            "   [self.window.layer renderInContext:currentContext];",
+                            "   UIImage *image = UIGraphicsGetImageFromCurrentImageContext();",
+                            "   UIGraphicsEndImageContext();",
+                            "   return image;",
+                            "}"
+                        ]
+                    }
+                }
+            },
+            "privacyManifests": {
+                "NSPrivacyAccessedAPITypes": [
+                    {
+                        "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryActiveKeyboards",
+                        "NSPrivacyAccessedAPITypeReasons": ["CA92.1"]
+                    },
+                    {
+                        "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategorySystemBootTime",
+                        "NSPrivacyAccessedAPITypeReasons": ["CA92.1", "E174.1"]
+                    }
+                ]
+            }
+        },
         "android": {
             "templateAndroid": {
+                "build_gradle": {
+                    "buildscript": {
+                        "custom": [],
+                        "dependencies": ["def customVar2 = '2'"],
+                        "repositories": ["def customVar1 = '1'"],
+                        "ext": ["playServicesLocationVersion = \"21.0.1\""]
+                    },
+                    "injectAfterAll": [
+                        "allprojects {",
+                        "   repositories {",
+                        "   }",
+                        "}"
+                    ]
+                },
                 "styles_xml": {
                     "tag": "resources",
                     "children": [

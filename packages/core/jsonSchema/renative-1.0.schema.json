@@ -480,6 +480,13 @@
               },
               "getJsBundleFile": {
                 "type": "string"
+              },
+              "webpackExcludedDirs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Allows to specify files or directories in the src folder that webpack should ignore when bundling code. By default, the \"pages\" folder is excluded for web platforms that do not use next.js."
               }
             },
             "additionalProperties": false
@@ -680,22 +687,6 @@
                     "build_gradle": {
                       "type": "object",
                       "properties": {
-                        "allprojects": {
-                          "type": "object",
-                          "properties": {
-                            "repositories": {
-                              "type": "object",
-                              "additionalProperties": {
-                                "type": "boolean"
-                              },
-                              "description": "Customize repositories section of build.gradle"
-                            }
-                          },
-                          "required": [
-                            "repositories"
-                          ],
-                          "additionalProperties": false
-                        },
                         "plugins": {
                           "type": "array",
                           "items": {
@@ -706,29 +697,37 @@
                           "type": "object",
                           "properties": {
                             "repositories": {
-                              "type": "object",
-                              "additionalProperties": {
-                                "type": "boolean"
+                              "type": "array",
+                              "items": {
+                                "type": "string"
                               }
                             },
                             "dependencies": {
-                              "type": "object",
-                              "additionalProperties": {
-                                "type": "boolean"
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "ext": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "custom": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
                               }
                             }
                           },
                           "required": [
                             "repositories",
-                            "dependencies"
+                            "dependencies",
+                            "ext",
+                            "custom"
                           ],
                           "additionalProperties": false
-                        },
-                        "dexOptions": {
-                          "type": "object",
-                          "additionalProperties": {
-                            "type": "boolean"
-                          }
                         },
                         "injectAfterAll": {
                           "type": "array",
@@ -1165,6 +1164,12 @@
                                 }
                               },
                               "additionalProperties": false
+                            },
+                            "custom": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
                             }
                           },
                           "additionalProperties": false
@@ -1188,6 +1193,12 @@
                           }
                         },
                         "appDelegateExtensions": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "appDelegateMethods": {
                           "type": "array",
                           "items": {
                             "type": "string"
@@ -1592,6 +1603,9 @@
                   "getJsBundleFile": {
                     "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/getJsBundleFile"
                   },
+                  "webpackExcludedDirs": {
+                    "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/webpackExcludedDirs"
+                  },
                   "enableAndroidX": {
                     "type": [
                       "boolean",
@@ -1839,6 +1853,9 @@
             "getJsBundleFile": {
               "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/getJsBundleFile"
             },
+            "webpackExcludedDirs": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/webpackExcludedDirs"
+            },
             "enableAndroidX": {
               "$ref": "#/definitions/zodPlatformsSchema/properties/android/properties/buildSchemes/additionalProperties/properties/enableAndroidX",
               "description": "Enables new android X architecture"
@@ -2051,6 +2068,9 @@
                   "getJsBundleFile": {
                     "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/getJsBundleFile"
                   },
+                  "webpackExcludedDirs": {
+                    "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/webpackExcludedDirs"
+                  },
                   "ignoreWarnings": {
                     "type": "boolean",
                     "description": "Injects `inhibit_all_warnings` into Podfile"
@@ -2174,6 +2194,63 @@
                   },
                   "firebaseId": {
                     "type": "string"
+                  },
+                  "privacyManifests": {
+                    "type": "object",
+                    "properties": {
+                      "NSPrivacyAccessedAPITypes": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "NSPrivacyAccessedAPIType": {
+                              "type": "string",
+                              "enum": [
+                                "NSPrivacyAccessedAPICategorySystemBootTime",
+                                "NSPrivacyAccessedAPICategoryDiskSpace",
+                                "NSPrivacyAccessedAPICategoryActiveKeyboards",
+                                "NSPrivacyAccessedAPICategoryUserDefaults"
+                              ]
+                            },
+                            "NSPrivacyAccessedAPITypeReasons": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "enum": [
+                                  "DDA9.1",
+                                  "C617.1",
+                                  "3B52.1",
+                                  "0A2A.1",
+                                  "35F9.1",
+                                  "8FFB.1",
+                                  "3D61.1",
+                                  "85F4.1",
+                                  "E174.1",
+                                  "7D9E.1",
+                                  "B728.1",
+                                  "3EC4.1",
+                                  "54BD.1",
+                                  "CA92.1",
+                                  "1C8F.1",
+                                  "C56D.1",
+                                  "AC6B.1"
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            "NSPrivacyAccessedAPIType",
+                            "NSPrivacyAccessedAPITypeReasons"
+                          ],
+                          "additionalProperties": false,
+                          "description": "Official apple documentation https://developer.apple.com/documentation/bundleresources/privacy_manifest_files/describing_use_of_required_reason_api"
+                        }
+                      }
+                    },
+                    "required": [
+                      "NSPrivacyAccessedAPITypes"
+                    ],
+                    "additionalProperties": false
                   },
                   "exportOptions": {
                     "type": "object",
@@ -2332,6 +2409,9 @@
             "getJsBundleFile": {
               "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/getJsBundleFile"
             },
+            "webpackExcludedDirs": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/webpackExcludedDirs"
+            },
             "ignoreWarnings": {
               "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/ignoreWarnings",
               "description": "Injects `inhibit_all_warnings` into Podfile"
@@ -2419,6 +2499,9 @@
             },
             "firebaseId": {
               "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/firebaseId"
+            },
+            "privacyManifests": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/privacyManifests"
             },
             "exportOptions": {
               "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/exportOptions"
@@ -2533,6 +2616,9 @@
                   },
                   "getJsBundleFile": {
                     "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/getJsBundleFile"
+                  },
+                  "webpackExcludedDirs": {
+                    "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/webpackExcludedDirs"
                   },
                   "package": {
                     "type": "string"
@@ -2689,6 +2775,9 @@
             "getJsBundleFile": {
               "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/getJsBundleFile"
             },
+            "webpackExcludedDirs": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/webpackExcludedDirs"
+            },
             "package": {
               "$ref": "#/definitions/zodPlatformsSchema/properties/tizen/properties/buildSchemes/additionalProperties/properties/package"
             },
@@ -2816,6 +2905,9 @@
                   },
                   "getJsBundleFile": {
                     "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/getJsBundleFile"
+                  },
+                  "webpackExcludedDirs": {
+                    "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/webpackExcludedDirs"
                   },
                   "iconColor": {
                     "type": "string"
@@ -2950,6 +3042,9 @@
             "getJsBundleFile": {
               "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/getJsBundleFile"
             },
+            "webpackExcludedDirs": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/webpackExcludedDirs"
+            },
             "iconColor": {
               "$ref": "#/definitions/zodPlatformsSchema/properties/webos/properties/buildSchemes/additionalProperties/properties/iconColor"
             },
@@ -3065,6 +3160,9 @@
                   },
                   "getJsBundleFile": {
                     "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/getJsBundleFile"
+                  },
+                  "webpackExcludedDirs": {
+                    "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/webpackExcludedDirs"
                   },
                   "webpackConfig": {
                     "$ref": "#/definitions/zodPlatformsSchema/properties/tizen/properties/buildSchemes/additionalProperties/properties/webpackConfig"
@@ -3214,6 +3312,9 @@
             "getJsBundleFile": {
               "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/getJsBundleFile"
             },
+            "webpackExcludedDirs": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/webpackExcludedDirs"
+            },
             "webpackConfig": {
               "$ref": "#/definitions/zodPlatformsSchema/properties/tizen/properties/buildSchemes/additionalProperties/properties/webpackConfig"
             },
@@ -3351,6 +3452,9 @@
                   "getJsBundleFile": {
                     "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/getJsBundleFile"
                   },
+                  "webpackExcludedDirs": {
+                    "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/webpackExcludedDirs"
+                  },
                   "ignoreWarnings": {
                     "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/ignoreWarnings"
                   },
@@ -3428,6 +3532,9 @@
                   },
                   "firebaseId": {
                     "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/firebaseId"
+                  },
+                  "privacyManifests": {
+                    "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/privacyManifests"
                   },
                   "exportOptions": {
                     "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/exportOptions"
@@ -3585,6 +3692,9 @@
             "getJsBundleFile": {
               "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/getJsBundleFile"
             },
+            "webpackExcludedDirs": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/webpackExcludedDirs"
+            },
             "ignoreWarnings": {
               "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/ignoreWarnings",
               "description": "Injects `inhibit_all_warnings` into Podfile"
@@ -3672,6 +3782,9 @@
             },
             "firebaseId": {
               "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/firebaseId"
+            },
+            "privacyManifests": {
+              "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/privacyManifests"
             },
             "exportOptions": {
               "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/exportOptions"
@@ -3794,6 +3907,9 @@
                   },
                   "getJsBundleFile": {
                     "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/getJsBundleFile"
+                  },
+                  "webpackExcludedDirs": {
+                    "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/webpackExcludedDirs"
                   },
                   "electronConfig": {
                     "$ref": "#/definitions/zodPlatformsSchema/properties/macos/properties/buildSchemes/additionalProperties/properties/electronConfig"
@@ -4042,6 +4158,9 @@
             "getJsBundleFile": {
               "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/getJsBundleFile"
             },
+            "webpackExcludedDirs": {
+              "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/webpackExcludedDirs"
+            },
             "electronConfig": {
               "$ref": "#/definitions/zodPlatformsSchema/properties/macos/properties/buildSchemes/additionalProperties/properties/electronConfig",
               "description": "Allows you to configure electron app as per https://www.electron.build/"
@@ -4226,6 +4345,9 @@
         "firebaseId": {
           "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/firebaseId"
         },
+        "privacyManifests": {
+          "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/privacyManifests"
+        },
         "exportOptions": {
           "$ref": "#/definitions/zodPlatformsSchema/properties/ios/properties/buildSchemes/additionalProperties/properties/exportOptions"
         }
@@ -4258,6 +4380,9 @@
         },
         "getJsBundleFile": {
           "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/getJsBundleFile"
+        },
+        "webpackExcludedDirs": {
+          "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/webpackExcludedDirs"
         }
       },
       "additionalProperties": false
@@ -5185,6 +5310,13 @@
                   "xbox"
                 ]
               }
+            },
+            "webpackExcludedDirs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Allows to specify files or directories in the src folder that webpack should ignore when bundling code."
             }
           },
           "additionalProperties": false

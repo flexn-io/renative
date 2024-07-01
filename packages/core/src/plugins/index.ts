@@ -483,7 +483,6 @@ export const parsePlugins = (
             if (plugins) {
                 Object.keys(plugins).forEach((key) => {
                     const plugin = getMergedPlugin(c, key);
-
                     if (!plugin) return;
 
                     if (

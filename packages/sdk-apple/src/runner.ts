@@ -36,6 +36,7 @@ import { ObjectEncodingOptions } from 'fs';
 import { packageReactNativeIOS, runCocoaPods, runReactNativeIOS, EnvVars } from '@rnv/sdk-react-native';
 import { registerDevice } from './fastlane';
 import { Context, getContext } from './getContext';
+import { parsePrivacyManifest } from './privacyManifestParser';
 
 export const packageBundleForXcode = () => {
     return packageReactNativeIOS();
@@ -797,6 +798,7 @@ export const configureXcodeProject = async () => {
     await copyBuildsFolder();
     await runCocoaPods(c.program.opts().updatePods);
     await parseXcodeProject();
+    await parsePrivacyManifest();
     return true;
 };
 
