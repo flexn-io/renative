@@ -12,7 +12,9 @@ jest.mock('../../logger', () => ({
     logWarning: jest.fn(),
     logRaw: jest.fn(),
     chalk: () => ({
-        bold: jest.fn((text) => text),
+        bold: {
+            white: jest.fn((text) => text),
+        },
         red: jest.fn((text) => text),
         green: jest.fn((text) => text),
         gray: jest.fn((text) => text),
@@ -38,7 +40,7 @@ describe('handleMutations', () => {
             buildConfig: { isTemplate: false },
             runtime: {
                 isAppConfigured: true,
-            }
+            },
         };
         (getContext as jest.Mock).mockReturnValue(mockContext);
         (inquirerPrompt as jest.Mock).mockResolvedValue({ confirm: 'Update package and install (recommended)' });

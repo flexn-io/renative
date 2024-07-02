@@ -13,8 +13,8 @@ jest.mock('../../logger', () => ({
     logInfo: jest.fn(),
 
     chalk: () => ({
-        white: {
-            bold: jest.fn().mockReturnValue('mocked value'),
+        bold: {
+            white: jest.fn().mockReturnValue('mocked value'),
         },
     }),
 }));
