@@ -75,12 +75,12 @@ export default createTask({
         await configureTemplateFiles();
         await generateLocalJsonSchemas();
         await inquiryAppConfigs(payload);
+        await inquiryHandlePeerDepsNpm();
         await inquiryInstallEngines(payload);
         // Telementry
         await telemetryNewProject(payload);
 
         await inquiryProjectInstall(payload);
-        await inquiryHandlePeerDepsNpm();
 
         logToSummary(generateProjectOverview(payload));
 
