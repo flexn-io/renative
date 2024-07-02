@@ -75,7 +75,7 @@ export default createTask({
         }
 
         logSuccess(
-            `${chalk().bold(
+            `${chalk().bold.white(
                 selectedPlatforms.join(',')
             )} now using ReNative platformTemplates located associated platform engines.`
         );

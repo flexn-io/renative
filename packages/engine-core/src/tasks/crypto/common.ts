@@ -16,9 +16,9 @@ import path from 'path';
 
 export const getEnvExportCmd = (envVar: string, key: string) => {
     if (isSystemWin) {
-        return `${chalk().bold(`setx ${envVar} "${key}"`)}`;
+        return `${chalk().bold.white(`setx ${envVar} "${key}"`)}`;
     }
-    return `${chalk().bold(`export ${envVar}="${key}"`)}`;
+    return `${chalk().bold.white(`export ${envVar}="${key}"`)}`;
 };
 
 export const getEnvVar = () => {

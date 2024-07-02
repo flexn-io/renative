@@ -36,7 +36,7 @@
         "execa": "5.1.1",
         "lodash": "4.17.21",
         "ncp": "2.0.0",
-        "netcat": "1.4.0",
+        "netcat": "1.5.0",
         "resolve": "^1.0.0",
         "rimraf": "2.6.2",
         "semver": "^7.5.3",
@@ -45,7 +45,7 @@
         "svg2js": "0.0.4-alpha1",
         "tslib": "2.5.2",
         "type-fest": "4.14.0",
-        "zod": "3.22.4"
+        "zod": "3.23.8"
     },
     "peerDependencies": {
         "@rnv/config-templates": "^1.0.0-rc.19"

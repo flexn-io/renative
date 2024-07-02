@@ -25,6 +25,7 @@ import inquiryAppConfigs from './questions/appConfigs';
 import inquiryConfigTemplates from './questions/configTemplates';
 import inquiryProjectInstall from './questions/installProject';
 import inquiryHandlePeerDepsNpm from './questions/resolvePeerDepsNPM';
+import inquiryInstallEngines from './questions/installEngines';
 import {
     configureConfigOverrides,
     generateProjectOverview,
@@ -74,8 +75,10 @@ export default createTask({
         await configureTemplateFiles();
         await generateLocalJsonSchemas();
         await inquiryAppConfigs(payload);
+        await inquiryInstallEngines(payload);
         // Telementry
         await telemetryNewProject(payload);
+
         await inquiryProjectInstall(payload);
         await inquiryHandlePeerDepsNpm();
 

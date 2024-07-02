@@ -65,7 +65,7 @@ const _isSdkInstalled = (c: RnvContext) => {
     return fsExistsSync(getRealPath(sdkPath));
 };
 
-const _attemptAutoFix = async (c: RnvContext) => {
+const _attemptAutoFix = async (c: RnvContext, shouldThrow?: boolean) => {
     logDefault('_attemptAutoFix');
 
     if (c.program.opts().hosted) {
@@ -76,7 +76,7 @@ const _attemptAutoFix = async (c: RnvContext) => {
     const result = SDK_LOCATIONS.find((v) => fsExistsSync(v));
 
     if (result) {
-        logSuccess(`Found existing ${c.platform} SDK location at ${chalk().bold(result)}`);
+        logSuccess(`Found existing ${c.platform} SDK location at ${chalk().bold.white(result)}`);
         let confirmSdk = true;
         if (!c.program.opts().ci) {
             const { confirm } = await inquirerPrompt({
@@ -104,6 +104,11 @@ const _attemptAutoFix = async (c: RnvContext) => {
         }
     }
 
+    if(shouldThrow) {
+        throw new Error(
+            `Your ${c.platform} SDK path is not configured. Please update your ${c.paths.workspace.config} file`
+        );
+    }
     logError(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOCATIONS.join(', ')}`);
 
     // const setupInstance = PlatformSetup(c);
@@ -112,17 +117,17 @@ const _attemptAutoFix = async (c: RnvContext) => {
     return true;
 };
 
-export const checkWebosSdk = async () => {
+export const checkWebosSdk = async (shouldThrow?: boolean) => {
     const c = getContext();
 
     logDefault('checkWebosSdk');
     if (!_isSdkInstalled(c)) {
         logWarning(
-            `${c.platform} platform requires WebOS SDK to be installed. Your SDK path in ${chalk().bold(
+            `${c.platform} platform requires WebOS SDK to be installed. Your SDK path in ${chalk().bold.white(
                 c.paths.workspace.config
-            )} does not exist: ${chalk().bold(_getCurrentSdkPath(c))}`
+            )} does not exist: ${chalk().bold.white(_getCurrentSdkPath(c))}`
         );
-        return _attemptAutoFix(c);
+        return _attemptAutoFix(c, shouldThrow);
     }
     return true;
 };

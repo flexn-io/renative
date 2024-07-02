@@ -107,9 +107,9 @@ export const parseInfoPlist = () =>
 
         if (!plistObj.CFBundleDisplayName) {
             throw new Error(
-                `CFBundleDisplayName is required!. set it by adding ${chalk().bold(
+                `CFBundleDisplayName is required!. set it by adding ${chalk().bold.white(
                     '"common": { "title": "<ADD_TITLE>" }'
-                )} prop in ${chalk().bold(c.paths.appConfig.config)}`
+                )} prop in ${chalk().bold.white(c.paths.appConfig.config)}`
             );
         }
         plistObj.CFBundleShortVersionString = getAppVersion();

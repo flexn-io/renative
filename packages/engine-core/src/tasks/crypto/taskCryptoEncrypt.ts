@@ -123,7 +123,7 @@ const _checkAndConfigureCrypto = async () => {
 
     if (!fsExistsSync(sourceFolder)) {
         logInfo(
-            `It seems you are running encrypt for the first time. Directory ${chalk().bold(
+            `It seems you are running encrypt for the first time. Directory ${chalk().bold.white(
                 sourceFolder
             )} does not exist yet.
 RNV will create it for you, make sure you add whatever you want encrypted in it and then run the command again`
@@ -151,7 +151,7 @@ RNV will create it for you, make sure you add whatever you want encrypted in it 
             key = generateRandomKey(20);
             keyGenerated = true;
         } else {
-            return Promise.reject(`encrypt: You must pass ${chalk().bold('--key')} or have env var defined:
+            return Promise.reject(`encrypt: You must pass ${chalk().bold.white('--key')} or have env var defined:
 
 ${getEnvExportCmd(envVar, 'REPLACE_WITH_ENV_VARIABLE')}
 
@@ -230,9 +230,9 @@ export default createTask({
             removeFilesSync([destTemp]);
             fsWriteFileSync(`${dest}.timestamp`, `${timestamp}`);
             fsWriteFileSync(`${tsWorkspacePath}`, `${timestamp}`);
-            logSuccess(`Files succesfully encrypted into ${dest}`);
+            logSuccess(`Files successfully encrypted into ${dest}`);
         } else {
-            logWarning(`You don't have {{ crypto.path }} specificed in ${chalk().bold(ctx.paths.appConfigBase)}`);
+            logWarning(`You don't have {{ crypto.path }} specificed in ${chalk().bold.white(ctx.paths.appConfigBase)}`);
         }
     },
     options: [TaskOptions.key],

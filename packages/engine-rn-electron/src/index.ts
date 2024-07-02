@@ -4,7 +4,7 @@ import taskConfigure from './tasks/taskConfigure';
 import taskExport from './tasks/taskExport';
 import taskRun from './tasks/taskRun';
 import taskStart from './tasks/taskStart';
-import { withRNVBabel } from './adapter';
+import { withRNVBabel, withRNVWebpack } from './adapter';
 import { Config } from './config';
 
 const Engine = createRnvEngine({
@@ -31,6 +31,6 @@ const Engine = createRnvEngine({
 
 export type GetContext = GetContextType<typeof Engine.getContext>;
 
-export { withRNVBabel };
+export { withRNVBabel, withRNVWebpack };
 
 export default Engine;

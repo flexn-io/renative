@@ -21,6 +21,7 @@ import {
     CoreEnvVars,
     Env,
     getContext,
+    getAppFolder,
 } from '@rnv/core';
 import {
     checkPortInUse,
@@ -104,7 +105,9 @@ Debugger running at: ${debugUrl}`);
         \n<script src="http://${resolvedDebugIp}:${REMOTE_DEBUG_PORT}/target.js"></script>`;
     } catch (e) {
         logWarning(
-            `You are missing chii. You can install via ${chalk().bold('npm i -g chii')}) Trying to use weinre next`
+            `You are missing chii. You can install via ${chalk().bold.white.white(
+                'npm i -g chii'
+            )}) Trying to use weinre next`
         );
     }
 
@@ -141,7 +144,7 @@ Debugger running at: ${debugUrl}`);
             c.platform
         }"></script>`;
     } catch (e) {
-        logWarning(`You are missing weinre. Skipping debug. install via ${chalk().bold('npm i -g weinre')}`);
+        logWarning(`You are missing weinre. Skipping debug. install via ${chalk().bold.white('npm i -g weinre')}`);
     }
     return true;
 };
@@ -159,6 +162,7 @@ export const _runWebDevServer = async (c: RnvContext, enableRemoteDebugger?: boo
         ...EnvVars.PORT(),
         ...EnvVars.WEBPACK_TARGET(),
         ...EnvVars.RNV_EXTERNAL_PATHS(),
+        ...EnvVars.TS_EXCLUDE_SRC_DIRS(),
     };
 
     Object.keys(env).forEach((v) => {
@@ -204,6 +208,7 @@ export const buildCoreWebpackProject = async () => {
         ...EnvVars.PORT(),
         ...EnvVars.WEBPACK_TARGET(),
         ...EnvVars.RNV_EXTERNAL_PATHS(),
+        ...EnvVars.TS_EXCLUDE_SRC_DIRS(),
     };
     Object.keys(env).forEach((v) => {
         process.env[v] = env[v];
@@ -247,9 +252,9 @@ export const runWebpackServer = async (enableRemoteDebugger?: boolean) => {
 
     if (!isPortActive) {
         logInfo(
-            `Your ${chalk().bold(platform)} devServerHost ${chalk().bold(devServerHost)} at port ${chalk().bold(
-                port
-            )} is not running. Starting it up for you...`
+            `Your ${chalk().bold.white(platform)} devServerHost ${chalk().bold.white(
+                devServerHost
+            )} at port ${chalk().bold.white(port)} is not running. Starting it up for you...`
         );
         await _runWebBrowser(devServerHost, port, false);
         if (!bundleAssets) {
@@ -311,7 +316,13 @@ export const waitForWebpack = async (suffix = 'assets/bundle.js') => {
     });
 };
 
-export const buildWeb = async () => buildCoreWebpackProject();
+export const buildWeb = async () => {
+    logDefault('buildWebProject');
+
+    const appFolder = getAppFolder();
+    await buildCoreWebpackProject();
+    logSuccess(`Your build is located in  ${chalk().cyan(path.join(appFolder, `build`))} .`);
+};
 
 export const configureWebProject = async () => {
     const c = getContext();

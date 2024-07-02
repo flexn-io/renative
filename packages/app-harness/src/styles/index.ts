@@ -1,4 +1,4 @@
-import { isPlatformIos, isFactorMobile, isFactorWatch } from '@rnv/renative';
+import { isPlatformIos, isFactorMobile, isFactorWatch, isFactorTv, isWebBased } from '@rnv/renative';
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -42,6 +42,20 @@ const styles = StyleSheet.create({
     dynamicText: {
         color: 'black',
         fontSize: isFactorWatch ? 10 : 14,
+    },
+    button: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#2196F3',
+        paddingVertical: isFactorTv && isWebBased ? 16 : 10,
+    },
+    buttonFocused: {
+        opacity: 0.6,
+    },
+    buttonTitle: {
+        fontSize: isFactorWatch ? 10 : 16,
+        color: '#FFFFFF',
+        fontWeight: '500',
     },
 });
 

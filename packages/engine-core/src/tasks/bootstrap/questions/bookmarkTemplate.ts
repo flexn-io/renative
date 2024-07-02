@@ -23,7 +23,7 @@ const Question = async (data: NewProjectData) => {
         const { confirmAddTemplate } = await inquirerPrompt({
             name: 'confirmAddTemplate',
             type: 'confirm',
-            message: `Would you like to add ${chalk().bold(inputs.template.packageName)} to your ${
+            message: `Would you like to add ${chalk().bold.white(inputs.template.packageName)} to your ${
                 inputs.workspaceID
             } workspace template list?`,
         });

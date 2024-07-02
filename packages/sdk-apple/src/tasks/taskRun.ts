@@ -2,7 +2,7 @@ import { getConfigProp, logSummary, createTask, RnvTaskName, RnvTaskOptionPreset
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '@rnv/sdk-react-native';
 import { getIosDeviceToRunOn, runXcodeProject } from '../runner';
 import { SdkPlatforms } from '../common';
-import { TaskOptions } from '../taskOptions';
+import { TaskOptions, TaskOptionPresets } from '../taskOptions';
 import { Context } from '../getContext';
 
 export default createTask({
@@ -24,6 +24,11 @@ export default createTask({
     },
     task: RnvTaskName.run,
     isPriorityOrder: true,
-    options: [...RnvTaskOptionPresets.withConfigure(), ...RnvTaskOptionPresets.withRun(), TaskOptions.skipTargetCheck],
+    options: [
+        ...RnvTaskOptionPresets.withConfigure(),
+        ...RnvTaskOptionPresets.withRun(),
+        TaskOptions.skipTargetCheck,
+        ...TaskOptionPresets.withConfigure(),
+    ],
     platforms: SdkPlatforms,
 });

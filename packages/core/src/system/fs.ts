@@ -37,7 +37,19 @@ export const fsReadFileSync = (dest: fs.PathLike | undefined) => fs.readFileSync
 
 export const fsChmodSync = (dest: fs.PathLike | undefined, flag: fs.Mode) => fs.chmodSync(dest!, flag);
 
-export const fsRenameSync = (arg1: fs.PathLike | undefined, arg2: fs.PathLike) => fs.renameSync(arg1!, arg2);
+export const fsRenameSync = (arg1: fs.PathLike | undefined, arg2: fs.PathLike) => {
+    // One of the paths does not exist
+    if (!arg1 || !arg2) return logError(`Cannot rename file. source path doesn't exist: ${!arg1 ? arg1 : arg2}`);
+
+    // If it's a directory, on Windows all files within need to be copied over, simple renaming
+    // will cause a permitions error
+    if (fs.lstatSync(arg1).isDirectory()) {
+        fs.cpSync(arg1 as string, arg2 as string, { recursive: true });
+        fs.rmdirSync(arg1, { recursive: true });
+        return;
+    }
+    return fs.renameSync(arg1, arg2);
+};
 
 export const fsStatSync = (arg1: fs.PathLike | undefined) => fs.statSync(arg1!);
 
@@ -520,7 +532,7 @@ export const readObjectSync = <T = object>(filePath?: string, sanitize?: boolean
             }
         }
     } catch (e) {
-        logError(`readObjectSync: Parsing of ${chalk().bold(filePath)} failed with ${e}`);
+        logError(`readObjectSync: Parsing of ${chalk().bold.white(filePath)} failed with ${e}`);
         return null;
     }
     return obj as T;
@@ -541,7 +553,7 @@ export const updateObjectSync = (filePath: string, updateObj: object) => {
 export const getRealPath = (p: string | undefined, key = 'undefined', original?: string) => {
     if (!p) {
         if (original) {
-            logDebug(`Path ${chalk().bold(key)} is not defined. using default: ${chalk().bold(original)}`);
+            logDebug(`Path ${chalk().bold.white(key)} is not defined. using default: ${chalk().bold.white(original)}`);
         }
         return original;
     }
@@ -576,7 +588,7 @@ const _refToValue = (ref: string, key: string) => {
             const output = lGet(obj, valPath);
             return output;
         } else {
-            logWarning(`_refToValue: ${chalk().bold(realPath)} does not exist!`);
+            logWarning(`_refToValue: ${chalk().bold.white(realPath)} does not exist!`);
         }
     }
     return ref;

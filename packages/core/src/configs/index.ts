@@ -210,7 +210,9 @@ export const loadDefaultConfigTemplates = async () => {
 
         if (!configTemplatesPath) {
             return Promise.reject(
-                `RNV Cannot find package: ${chalk().bold(pkgName)}. Looked in: ${chalk().gray(pathLookups.join(', '))}`
+                `RNV Cannot find package: ${chalk().bold.white(pkgName)}. Looked in: ${chalk().gray(
+                    pathLookups.join(', ')
+                )}`
             );
         }
     }

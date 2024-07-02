@@ -27,7 +27,7 @@ describe('Test packageReactNativeAndroid', () => {
         await expect(packageReactNativeAndroid()).resolves.toBe(true);
         //THEN
         expect(logInfo).toHaveBeenCalledWith(
-            `bundleAssets in scheme ${chalk().bold(ctx.runtime.scheme)} marked false. SKIPPING PACKAGING...`
+            `bundleAssets in scheme ${chalk().bold.white(ctx.runtime.scheme)} marked false. SKIPPING PACKAGING...`
         );
     });
 

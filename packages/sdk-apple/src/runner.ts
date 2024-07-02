@@ -36,6 +36,7 @@ import { ObjectEncodingOptions } from 'fs';
 import { packageReactNativeIOS, runCocoaPods, runReactNativeIOS, EnvVars } from '@rnv/sdk-react-native';
 import { registerDevice } from './fastlane';
 import { Context, getContext } from './getContext';
+import { parsePrivacyManifest } from './privacyManifestParser';
 
 export const packageBundleForXcode = () => {
     return packageReactNativeIOS();
@@ -74,9 +75,9 @@ export const getIosDeviceToRunOn = async (c: Context) => {
     if (device === true) {
         if (devicesArr.length === 1) {
             logSuccess(
-                `Found one device connected! Device name: ${chalk().bold(devicesArr[0].name)} udid: ${chalk().bold(
-                    devicesArr[0].udid
-                )}`
+                `Found one device connected! Device name: ${chalk().bold.white(
+                    devicesArr[0].name
+                )} udid: ${chalk().bold.white(devicesArr[0].udid)}`
             );
             if (devicesArr[0].udid) {
                 p = `--udid ${devicesArr[0].udid}`;
@@ -146,14 +147,16 @@ export const getIosDeviceToRunOn = async (c: Context) => {
         if (c.runtime.target) {
             p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
         }
-    } else if (c.runtime.target) {
+    } else if (c.runtime.target || devicesArr.length > 0) {
         // check if the default sim is available
         const desiredSim = devicesArr.find((d) => d.name === c.runtime.target && !d.isDevice);
 
         if (!desiredSim) {
             const { sim } = await inquirerPrompt({
                 name: 'sim',
-                message: `We couldn't find ${c.runtime.target} as a simulator supported by the current version of your Xcode. Please select another sim`,
+                message: !c.runtime.target
+                    ? `No global or project default simulator defined. Please select a supported simulator to use`
+                    : `We couldn't find ${c.runtime.target} as a simulator supported by the current version of your Xcode. Please select another sim`,
                 type: 'list',
                 choices: devicesArr
                     .filter((d) => !d.isDevice)
@@ -280,9 +283,11 @@ const _checkLockAndExec = async (
             if (isDeviceNotRegistered) {
                 logError(e);
                 logWarning(
-                    `${c.platform} DEVICE: ${chalk().bold(c.runtime.target)} with UDID: ${chalk().bold(
+                    `${c.platform} DEVICE: ${chalk().bold.white(c.runtime.target)} with UDID: ${chalk().bold.white(
                         c.runtime.targetUDID
-                    )} is not included in your provisionong profile in TEAM: ${chalk().bold(getConfigProp('teamID'))}`
+                    )} is not included in your provisionong profile in TEAM: ${chalk().bold.white(
+                        getConfigProp('teamID')
+                    )}`
                 );
                 const { confirm } = await inquirerPrompt({
                     name: 'confirm',
@@ -318,14 +323,14 @@ const _checkLockAndExec = async (
 ${chalk().green('SUGGESTION:')}
 
 ${chalk().yellow('STEP 1:')}
-Open xcode workspace at: ${chalk().bold(`${appPath}/${appFolderName}.xcworkspace`)}
+Open xcode workspace at: ${chalk().bold.white(`${appPath}/${appFolderName}.xcworkspace`)}
 
 ${chalk().yellow('STEP 2:')}
-${chalk().bold('Run app and observe any extra errors')}
+${chalk().bold.white('Run app and observe any extra errors')}
 
 ${chalk().yellow('IF ALL HOPE IS LOST:')}
 Raise new issue and copy this SUMMARY box output at:
-${chalk().bold('https://github.com/flexn-io/renative/issues')}
+${chalk().bold.white('https://github.com/flexn-io/renative/issues')}
 and we will try to help!
 
 `);
@@ -340,8 +345,8 @@ const _handleMissingTeam = async (c: Context, e: unknown) => {
         logError(e);
         logWarning(`You need specify the development team if you want to run app on ${
             c.platform
-        } device. this can be set manually in ${chalk().bold(loc)}
-  You can find correct teamID in the URL of your apple developer account: ${chalk().bold(
+        } device. this can be set manually in ${chalk().bold.white(loc)}
+  You can find correct teamID in the URL of your apple developer account: ${chalk().bold.white(
       'https://developer.apple.com/account/#/overview/YOUR-TEAM-ID'
   )}
 Type in your Apple Team ID to be used (will be saved to ${c.paths.appConfig?.config})`);
@@ -367,18 +372,18 @@ const _handleProvisioningIssues = async (e: unknown, msg: string) => {
     const isProvAutomatic = provisioningStyle === 'Automatic';
     const proAutoText = isProvAutomatic
         ? ''
-        : `${chalk().bold('[4]>')} Switch to automatic signing for appId: ${c.runtime.appId} , platform: ${
+        : `${chalk().bold.white('[4]>')} Switch to automatic signing for appId: ${c.runtime.appId} , platform: ${
               c.platform
           }, scheme: ${c.runtime.scheme}`;
     const fixCommand = `rnv crypto updateProfile -p ${c.platform} -s ${c.runtime.scheme}`;
-    const workspacePath = chalk().bold(`${getAppFolder()}/${appFolderName}.xcworkspace`);
+    const workspacePath = chalk().bold.white(`${getAppFolder()}/${appFolderName}.xcworkspace`);
     logError(e);
     logWarning(`${msg}. To fix try:
-${chalk().bold('[1]>')} Configure your certificates, provisioning profiles correctly manually
-${chalk().bold('[2]>')} Try to generate matching profiles with ${chalk().bold(
+${chalk().bold.white('[1]>')} Configure your certificates, provisioning profiles correctly manually
+${chalk().bold.white('[2]>')} Try to generate matching profiles with ${chalk().bold.white(
         fixCommand
     )} (you need correct priviledges in apple developer portal)
-${chalk().bold(
+${chalk().bold.white(
     '[3]>'
 )} Open generated project in Xcode: ${workspacePath} and debug from there (Sometimes this helps for the first-time builds)
 ${proAutoText}`);
@@ -409,7 +414,7 @@ const _setAutomaticSigning = async (c: Context) => {
     if (scheme && 'provisioningStyle' in scheme) {
         scheme.provisioningStyle = 'Automatic';
         writeFileSync(c.paths.appConfig.config, cnf);
-        logSuccess(`Succesfully updated ${c.paths.appConfig.config}`);
+        logSuccess(`successfully updated ${c.paths.appConfig.config}`);
     } else {
         return Promise.reject(
             `Failed to update ${c.paths.appConfig?.config}."platforms": { "${c.platform}": { buildSchemes: { "${c.runtime.scheme}" ... Object is null. Try update file manually`
@@ -444,7 +449,7 @@ const _setDevelopmentTeam = async (c: Context, teamID: string) => {
         );
     }
     writeFileSync(c.paths.appConfig.config, cnf);
-    logSuccess(`Succesfully updated ${c.paths.appConfig.config}`);
+    logSuccess(`successfully updated ${c.paths.appConfig.config}`);
 };
 
 const composeXcodeArgsFromCLI = (string: string) => {
@@ -768,7 +773,7 @@ export const configureXcodeProject = async () => {
                         c.payload.pluginConfigiOS.embeddedFonts.push(font);
                     }
                 } else {
-                    logWarning(`Font ${chalk().bold(fontSource)} doesn't exist! Skipping.`);
+                    logWarning(`Font ${chalk().bold.white(fontSource)} doesn't exist! Skipping.`);
                 }
             }
         }
@@ -778,7 +783,7 @@ export const configureXcodeProject = async () => {
     const tId = getConfigProp('teamID');
     if (device && (!tId || tId === '')) {
         logError(
-            `You're missing teamID in your ${chalk().bold(
+            `You're missing teamID in your ${chalk().bold.white(
                 c.paths.appConfig.config
             )} => .platforms.${platform}.teamID . you will not be able to build ${platform} app for device!`
         );
@@ -795,6 +800,7 @@ export const configureXcodeProject = async () => {
     await copyBuildsFolder();
     await runCocoaPods(c.program.opts().updatePods);
     await parseXcodeProject();
+    await parsePrivacyManifest();
     return true;
 };
 

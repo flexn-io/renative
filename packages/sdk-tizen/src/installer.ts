@@ -58,7 +58,7 @@ const _isSdkInstalled = (c: RnvContext) => {
     return fsExistsSync(getRealPath(sdkPath));
 };
 
-const _attemptAutoFix = async (c: RnvContext) => {
+const _attemptAutoFix = async (c: RnvContext, shouldThrow?: boolean) => {
     logDefault('_attemptAutoFix');
 
     if (!c.files.workspace.config) return;
@@ -71,7 +71,7 @@ const _attemptAutoFix = async (c: RnvContext) => {
     const result = getSdkLocations().find((v) => fsExistsSync(v));
 
     if (result) {
-        logSuccess(`Found existing ${c.platform} SDK location at ${chalk().bold(result)}`);
+        logSuccess(`Found existing ${c.platform} SDK location at ${chalk().bold.white(result)}`);
         let confirmSdk = true;
         if (!c.program.opts().ci) {
             const { confirm } = await inquirerPrompt({
@@ -98,7 +98,10 @@ const _attemptAutoFix = async (c: RnvContext) => {
         }
     }
 
-    logDefault(`_attemptAutoFix: no sdks found. searched at: ${getSdkLocations().join(', ')}`);
+
+    if (shouldThrow) {
+        throw new Error(`_attemptAutoFix: no sdks found. searched at: ${getSdkLocations().join(', ')}`);
+    } else logDefault(`_attemptAutoFix: no sdks found. searched at: ${getSdkLocations().join(', ')}`);
 
     // const setupInstance = PlatformSetup(c);
     // await setupInstance.askToInstallSDK(sdkPlatform);
@@ -106,17 +109,17 @@ const _attemptAutoFix = async (c: RnvContext) => {
     return true;
 };
 
-export const checkTizenSdk = async () => {
+export const checkTizenSdk = async (shouldThrow?: boolean) => {
     const c = getContext();
 
     logDefault('checkTizenSdk');
     if (!_isSdkInstalled(c)) {
         logWarning(
-            `${c.platform} platform requires Tizen SDK to be installed. Your SDK path in ${chalk().bold(
+            `${c.platform} platform requires Tizen SDK to be installed. Your SDK path in ${chalk().bold.white(
                 c.paths.workspace.config
-            )} does not exist: ${chalk().bold(_getCurrentSdkPath(c))}`
+            )} does not exist: ${chalk().bold.white(_getCurrentSdkPath(c))}`
         );
-        return _attemptAutoFix(c);
+        return _attemptAutoFix(c, shouldThrow);
     }
     return true;
 };

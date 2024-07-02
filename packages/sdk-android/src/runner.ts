@@ -201,9 +201,9 @@ const _checkSigningCerts = async (c: Context) => {
     if (isRelease && !c.payload.pluginConfigAndroid?.store?.storeFile) {
         const msg = `You're attempting to ${
             c.command
-        } app in release mode but you have't configured your ${chalk().bold(
+        } app in release mode but you have't configured your ${chalk().bold.white(
             c.paths.workspace.appConfig.configPrivate
-        )} for ${chalk().bold(c.platform)} platform yet.`;
+        )} for ${chalk().bold.white(c.platform)} platform yet.`;
         if (c.program.opts().ci === true) {
             return Promise.reject(msg);
         }
@@ -254,9 +254,9 @@ const _checkSigningCerts = async (c: Context) => {
                         type: 'input',
                         name: 'storeFile',
                         default: './release.keystore',
-                        message: `Paste relative path to ${chalk().bold(
+                        message: `Paste relative path to ${chalk().bold.white(
                             c.paths.workspace.appConfig.dir
-                        )} of your existing ${chalk().bold('release.keystore')} file`,
+                        )} of your existing ${chalk().bold.white('release.keystore')} file`,
                     });
                     storeFile = result?.storeFile;
                 }
@@ -308,7 +308,9 @@ const _checkSigningCerts = async (c: Context) => {
             }
 
             updateObjectSync(c.paths.workspace.appConfig.configPrivate, c.files.workspace.appConfig.configPrivate);
-            logSuccess(`Successfully updated private config file at ${chalk().bold(c.paths.workspace.appConfig.dir)}.`);
+            logSuccess(
+                `Successfully updated private config file at ${chalk().bold.white(c.paths.workspace.appConfig.dir)}.`
+            );
             // await configureProject(c);
             await updateRenativeConfigs();
             await parseAppBuildGradleSync();
@@ -374,6 +376,9 @@ export const configureProject = async () => {
     mkdirSync(path.join(appFolder, 'app/src/main/assets'));
     fsWriteFileSync(path.join(appFolder, `app/src/main/assets/${outputFile}.bundle`), '{}');
 
+    // console.log({ templateAndroid: c });
+
+
     // PLUGINS
     parsePlugins((plugin, pluginPlat, key) => {
         injectPluginGradleSync(plugin, pluginPlat, key);
@@ -402,7 +407,7 @@ export const configureProject = async () => {
                             const fontDest = path.join(fontFolder, fontNormalised);
                             copyFileSync(fontSource, fontDest);
                         } else {
-                            logWarning(`Font ${chalk().bold(fontSource)} doesn't exist! Skipping.`);
+                            logWarning(`Font ${chalk().bold.white(fontSource)} doesn't exist! Skipping.`);
                         }
                     }
                 }

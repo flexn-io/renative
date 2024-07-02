@@ -136,17 +136,18 @@ describe('resetAdb', () => {
 });
 
 describe('connectToWifiDevice', () => {
-    //TODO need to update it to add pairing functionality
-    // it('fail when connect to faulty IP address', async () => {
-    //     //GIVEN
-    //     jest.mocked(execCLI).mockResolvedValue("failed to connect to '1.1.1.1:5555': Operation timed out");
-    //     //WHEN
-    //     const result = await deviceManager.connectToWifiDevice('1.1.1.1');
+    it('fail when connect to faulty IP address', async () => {
+        //GIVEN
+        jest.mocked(execCLI).mockResolvedValue(
+            "Connection refused: failed to connect to '1.1.1.1:5555': Operation timed out"
+        );
+        //WHEN
+        const result = await deviceManager.connectToWifiDevice('1.1.1.1');
 
-    //     //THEN
-    //     expect(execCLI).toHaveBeenCalledTimes(1);
-    //     expect(result).toBeFalsy();
-    // });
+        //THEN
+        expect(execCLI).toHaveBeenCalledTimes(1);
+        expect(result).toBeFalsy();
+    });
     it('pass when connect to correct IP address', async () => {
         //GIVEN
         jest.mocked(execCLI).mockResolvedValue('connected to 1.1.1.1:5555');
