@@ -22,11 +22,12 @@ import {
     createTask,
     checkAndInstallPackageDependenciesIfRequired,
     getContext,
+    RnvFileName,
 } from '@rnv/core';
 
 const _loadAppConfigIDfromDir = (dirName: string, appConfigsDir: string) => {
     logDebug(`_loadAppConfigIDfromDir:${dirName}:${appConfigsDir}`, chalk().grey);
-    const filePath = path.join(appConfigsDir, 'renative.json');
+    const filePath = path.join(appConfigsDir, RnvFileName.renative);
     if (fsExistsSync(filePath)) {
         try {
             const renativeConf = JSON.parse(fsReadFileSync(filePath).toString());
@@ -79,7 +80,7 @@ const _askUserAboutConfigs = async (ctx: RnvContext, dir: string, id: string, ba
     }
 
     if (choice === 'keepFolder') {
-        const filePath = path.join(basePath, dir, 'renative.json');
+        const filePath = path.join(basePath, dir, RnvFileName.renative);
         const fileContents = JSON.parse(fsReadFileSync(filePath).toString());
         fileContents.id = dir;
         conf.id = dir;

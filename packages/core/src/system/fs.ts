@@ -15,9 +15,6 @@ import type { ConfigPropKey } from '../schema/types';
 import lGet from 'lodash/get';
 
 export const fsWriteFileSync = (dest: string | undefined, data: string, options?: fs.WriteFileOptions) => {
-    // if (dest && dest.includes('renative.json')) {
-    //     console.log('FS_WRITE', dest, data.length);
-    // }
     if (!dest) return;
     fs.writeFileSync(dest, data, options);
 };
@@ -782,7 +779,7 @@ export const loadFile = <T, K extends Extract<keyof T, string>>(
             //         logWarning(`Invalid schema in ${pathObj[key]}. ISSUES: ${JSON.stringify(ajv.errors, null, 2)}`);
             //     }
             // }
-            // if (pathObj[key].includes?.('renative.json')) {
+            // if (pathObj[key].includes?.(RnvFileName.renative)) {
             //     console.log(`FILE_EXISTS: ${key}:true size:${formatBytes(Buffer.byteLength(fileString, 'utf8'))}`);
             // }
         }

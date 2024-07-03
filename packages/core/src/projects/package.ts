@@ -38,7 +38,7 @@ export const checkAndCreateProjectPackage = async () => {
         const packageVersion = c.files.project.config?.projectVersion || '0.1.0';
         const templateName = c.files.project.config?.templateConfig?.name;
         if (!templateName) {
-            logWarning('You are missing currentTemplate in your renative.json');
+            logWarning('You are missing currentTemplate in your renative config file');
         }
         const rnvVersion = c.files.rnvCore.package.version;
 

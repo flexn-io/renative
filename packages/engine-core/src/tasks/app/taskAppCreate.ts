@@ -14,6 +14,7 @@ import {
     ConfigFileApp,
     RnvTaskName,
     createTask,
+    RnvFileName,
 } from '@rnv/core';
 import { getContext } from '../../getContext';
 
@@ -117,7 +118,7 @@ export default createTask({
         if (sourcePath) await copyFolderContentsRecursive(sourcePath, destPath);
         logInfo('Copying new app config...DONE');
 
-        const confObjPath = path.join(destPath, 'renative.json');
+        const confObjPath = path.join(destPath, RnvFileName.renative);
         const confObj = readObjectSync<ConfigFileApp>(confObjPath) || {};
 
         confObj.id = appConfigId;

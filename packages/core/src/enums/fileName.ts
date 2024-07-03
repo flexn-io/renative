@@ -10,5 +10,6 @@ export const RnvFileName = {
     renativePlatforms: 'renative.platforms.json',
     renativeEngine: 'renative.engine.json',
     package: 'package.json',
+    rnvJson: 'rnv.json',
     // renativeProject: 'renative.project.json',
 } as const;

@@ -15,6 +15,7 @@ on:
     #         - '**/lerna.json'
     #         - '**/metadata.json'
     #         - '**/renative.json'
+    #         - '**/rnv.json'
     #         - '**/package.json'
     # pull_request:
     #     types: [labeled]
