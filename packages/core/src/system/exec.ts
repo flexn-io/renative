@@ -281,7 +281,7 @@ const execCLI = (cli: string, command: string, opts: ExecOptions = {}) => {
         );
     }
 
-    return _execute(c, `${p} ${command}`, { ...opts, shell: true });
+    return _execute(c, `"${p}" ${command}`, { ...opts, shell: true });
 };
 
 /**
