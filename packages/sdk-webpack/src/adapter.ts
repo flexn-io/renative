@@ -9,19 +9,19 @@ const env: Env = process?.env;
 
 export const withRNVWebpack = (cnf: Configuration) => {
     //TODO: implement further overrides
-    let rnvConfig: Configuration = {};
-    rnvConfig = {
+    const rnvConfig: Configuration = {
         module: {
             rules: [],
         },
         resolve: {},
     };
+
     rnvConfig?.module?.rules &&
         rnvConfig.module.rules.push({
             oneOf: [
                 {
                     test: /\.(js|mjs|cjs|jsx|ts|tsx)$/,
-                    include: _getIncludedModules((env.WEBPACK_EXCLUDED_DIRS || []).split(',')),
+                    include: _getIncludedModules(env.WEBPACK_EXCLUDED_PATHS),
                 },
             ],
         });
@@ -38,9 +38,8 @@ export const withRNVWebpack = (cnf: Configuration) => {
     return mergedConfig;
 };
 
+// Merge => static config, adapter config , project config
 export const getMergedConfig = (rootConfig: Configuration, appPath: string) => {
-    // RNV-ADDITION
-
     const projectConfig: Configuration = require(path.join(appPath, 'webpack.config'));
 
     const mergedConfig: Configuration = mergeWithCustomize({
@@ -56,23 +55,43 @@ export const getMergedConfig = (rootConfig: Configuration, appPath: string) => {
         },
         // customizeArray: unique('plugins', rootPlugins, (plugin) => plugin.constructor && plugin.constructor.name),
     })(rootConfig, projectConfig);
-
-    // Merge => static config, adapter config , project config
-    // RNV-ADDITION
-
     return mergedConfig;
 };
 
-const _getIncludedModules = (excludedDirs: string[]) => {
+const _getIncludedPaths = (basePath: string, excludedPaths: string[]) => {
     const srcDirs: string[] = [];
-    if (fsExistsSync(paths.appSrc)) {
-        const resources = fsReaddirSync(paths.appSrc);
-        resources.forEach((r) => {
-            if (!excludedDirs.includes(r)) {
-                srcDirs.push(path.join(paths.appSrc, r));
+    // track excluded sub-paths
+    const excPathsArrs = excludedPaths.map((p) => p.split('/'));
+    if (fsExistsSync(basePath)) {
+        const dirNames = fsReaddirSync(basePath);
+        dirNames.forEach((dirName) => {
+            let hasPathExcluded = false;
+            const subpaths: string[] = [];
+            excPathsArrs.forEach((pArr) => {
+                if (pArr[0] === dirName) {
+                    if (pArr.length <= 1) {
+                        hasPathExcluded = true;
+                    } else {
+                        subpaths.push(pArr.slice(1).join('/'));
+                    }
+                }
+            });
+            const incPath = path.join(basePath, dirName);
+            if (!hasPathExcluded) {
+                srcDirs.push(incPath);
+            }
+            if (subpaths.length) {
+                // recursively populate included paths
+                srcDirs.push(..._getIncludedPaths(incPath, subpaths));
             }
         });
     }
+    return srcDirs;
+};
+
+const _getIncludedModules = (excludedPathsStr: string | undefined) => {
+    const excludedPaths = excludedPathsStr ? excludedPathsStr.split(',') : [];
+    const srcDirs = _getIncludedPaths(paths.appSrc, excludedPaths);
     return env.RNV_MODULE_PATHS ? [...srcDirs, ...env.RNV_MODULE_PATHS.split(',')] : [...srcDirs];
 };
 

@@ -39,11 +39,11 @@ export const EnvVars = {
             return { WEBPACK_TARGET: ctx.runtime.webpackTarget };
         }
     },
-    WEBPACK_EXCLUDED_DIRS: () => {
+    WEBPACK_EXCLUDED_PATHS: () => {
         const webpackConfig = getConfigProp('webpackConfig');
 
-        if (webpackConfig?.excludedDirs) {
-            return { WEBPACK_EXCLUDED_DIRS: webpackConfig?.excludedDirs };
+        if (webpackConfig?.excludedPaths) {
+            return { WEBPACK_EXCLUDED_PATHS: webpackConfig?.excludedPaths };
         }
     },
     RNV_EXTERNAL_PATHS: () => {
