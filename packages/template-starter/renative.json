@@ -96,7 +96,10 @@
         },
         "macos": {
             "engine": "engine-rn-electron",
-            "assetFolderPlatform": "electron"
+            "assetFolderPlatform": "electron",
+            "webpackConfig": {
+                "excludedDirs": ["pages"]
+            }
         },
         "windows": {
             "engine": "engine-rn-electron",

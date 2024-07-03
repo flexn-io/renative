@@ -9,6 +9,11 @@ export const zodPlatformWebpackFragment = z
                     .array(z.string())
 
                     .describe('Allows you to inject custom script into html header'),
+                excludedDirs: z
+                    .array(z.string())
+                    .describe(
+                        'Allows to specify files or directories in the src folder that webpack should ignore when bundling code.'
+                    ),
             })
             .partial(),
 

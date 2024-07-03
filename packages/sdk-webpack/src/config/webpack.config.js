@@ -678,7 +678,10 @@ module.exports = function (webpackEnv) {
                                 noEmit: true,
                                 incremental: true,
                                 tsBuildInfoFile: paths.appTsBuildInfoFile,
-                                exclude: [...excludeTs, process.env.TS_EXCLUDE_SRC_DIRS],
+                                exclude: [
+                                    ...excludeTs,
+                                    (process.env.TS_EXCLUDE_SRC_DIRS || []).map((dir) => `src/${dir}`).join(','),
+                                ],
                             },
                         },
                         context: paths.appPath,

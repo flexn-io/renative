@@ -24,12 +24,5 @@ export const zodPlatformBaseFragment = z
             .describe('If set to `true` dedicated source map file will be generated alongside of compiled js bundle'),
         bundleIsDev: z.boolean().describe('If set to `true` debug build will be generated'),
         getJsBundleFile: z.string(),
-        webpackExcludedDirs: z.optional(
-            z
-                .array(z.string())
-                .describe(
-                    'Allows to specify files or directories in the src folder that webpack should ignore when bundling code. By default, the "pages" folder is excluded for web platforms that do not use next.js.'
-                )
-        ),
     })
     .partial();
