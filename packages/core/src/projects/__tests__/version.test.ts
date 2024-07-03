@@ -14,7 +14,7 @@ jest.mock('../../logger', () => ({
     logDefault: jest.fn(),
     getCurrentCommand: jest.fn(),
     chalk: () => {
-        return { red: jest.fn(), bold: jest.fn() };
+        return { red: jest.fn(), bold: { white: jest.fn() } };
     },
 }));
 

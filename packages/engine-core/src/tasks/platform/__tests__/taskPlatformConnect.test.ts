@@ -14,7 +14,7 @@ jest.mock('@rnv/core', () => ({
     RnvTaskName: { platformConnect: 'platformConnect' },
     chalk: () => {
         return {
-            bold: jest.fn(),
+            bold: { white: jest.fn() },
         };
     },
 }));

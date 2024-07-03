@@ -3,7 +3,9 @@ import task from '../taskPlatformEject';
 
 jest.mock('@rnv/core', () => ({
     chalk: jest.fn().mockReturnValue({
-        bold: jest.fn((str) => str),
+        bold: {
+            white: jest.fn((str) => str),
+        },
     }),
     logSuccess: jest.fn(),
     logError: jest.fn(),
