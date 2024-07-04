@@ -7,7 +7,7 @@ import {
     fsExistsSync,
     formatBytes,
     mkdirSync,
-    writeFileSync
+    writeFileSync,
 } from '../system/fs';
 import { chalk, logDefault, logWarning, logDebug } from '../logger';
 import { getContext } from '../context/provider';
@@ -27,16 +27,17 @@ const getEnginesPluginDelta = () => {
     const missingEnginePlugins: Record<string, string> = {};
 
     const engineConfig = c.platform ? c.runtime.enginesByPlatform[c.platform]?.config : undefined;
-    if (engineConfig?.plugins) {
-        const ePlugins = Object.keys(engineConfig.plugins);
+    const ePluginVals = engineConfig?.engine?.plugins;
+    if (ePluginVals) {
+        const ePlugins = Object.keys(ePluginVals);
 
         if (ePlugins?.length) {
             ePlugins.forEach((pluginKey) => {
-                if (!c.files?.project?.config?.plugins?.[pluginKey] && engineConfig.plugins?.[pluginKey]) {
-                    missingEnginePlugins[pluginKey] = engineConfig.plugins?.[pluginKey];
+                if (!c.files?.project?.config?.project?.plugins?.[pluginKey] && ePluginVals[pluginKey]) {
+                    missingEnginePlugins[pluginKey] = ePluginVals[pluginKey];
                 }
-                if (engineConfig.plugins?.[pluginKey]) {
-                    enginePlugins[pluginKey] = engineConfig.plugins?.[pluginKey];
+                if (ePluginVals[pluginKey]) {
+                    enginePlugins[pluginKey] = ePluginVals[pluginKey];
                 }
             });
         }

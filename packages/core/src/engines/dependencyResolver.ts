@@ -10,8 +10,8 @@ export const resolveEngineDependencies = async () => {
     const c = getContext();
     const { platform } = c;
     const engine = getEngineRunnerByPlatform(platform);
-    const npmDepsBase = engine?.config?.npm || {};
-    const npmDepsExt = platform ? engine?.config?.platforms?.[platform]?.npm || {} : {};
+    const npmDepsBase = engine?.config?.engine?.npm || {};
+    const npmDepsExt = platform ? engine?.config?.engine?.platforms?.[platform]?.npm || {} : {};
 
     const npmDeps = merge<Pick<NpmPackageFile, NpmDepKey>>(npmDepsBase, npmDepsExt);
 

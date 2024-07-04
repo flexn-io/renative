@@ -52,8 +52,8 @@ export const upgradeDependencies = (
     _fixDeps(packageFile?.devDependencies, version);
     _fixDeps(packageFile?.dependencies, version);
     _fixDeps(packageFile?.peerDependencies, version);
-    if (configFile?.templateConfig) {
-        configFile.templateConfig.version = version;
+    if (configFile?.projectTemplate?.templateConfig) {
+        configFile.projectTemplate.templateConfig.version = version;
     }
 
     if (packageFile) {
@@ -86,8 +86,8 @@ export const updateProjectPlatforms = (platforms: Array<RnvPlatformKey>) => {
     } = c.paths;
     const currentConfig = c.files.project.config;
     if (currentConfig) {
-        currentConfig.defaults = currentConfig.defaults || {};
-        currentConfig.defaults.supportedPlatforms = platforms;
+        currentConfig.project.defaults = currentConfig.project.defaults || {};
+        currentConfig.project.defaults.supportedPlatforms = platforms;
         writeFileSync(config, currentConfig);
     } else {
         logWarning('Config not loaded yet. skipping updateProjectPlatforms');

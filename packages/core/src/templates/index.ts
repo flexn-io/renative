@@ -24,7 +24,7 @@ export const configureTemplateFiles = async () => {
     const templateConfig = readObjectSync<ConfigFileTemplate>(c.paths.template.configTemplate);
 
     let mergedObj = _getProjectTemplateMergedConfig(templateConfig);
-    const includedPaths = mergedObj?.templateConfig?.includedPaths;
+    const includedPaths = mergedObj?.projectTemplate.templateConfig?.includedPaths;
 
     if (includedPaths) {
         includedPaths.forEach((pth) => {

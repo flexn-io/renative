@@ -197,11 +197,11 @@ export type RnvContextFiles = {
 export type RnvContextFileObj<T> = {
     config?: T;
     config_original?: T;
-    configLocal?: ConfigFileLocal;
-    configPrivate?: ConfigFilePrivate;
+    configLocal?: Partial<ConfigFileLocal>;
+    configPrivate?: Partial<ConfigFilePrivate>;
     configs: Array<T>;
-    configsLocal: Array<ConfigFileLocal>;
-    configsPrivate: Array<ConfigFilePrivate>;
+    configsLocal: Array<Partial<ConfigFileLocal>>;
+    configsPrivate: Array<Partial<ConfigFilePrivate>>;
 };
 
 export type RnvContextPaths = {

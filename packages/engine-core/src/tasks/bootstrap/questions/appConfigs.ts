@@ -21,10 +21,10 @@ const Question = async (data: NewProjectData): Promise<void> => {
             const appCnfPath = path.join(c.paths.project.appConfigsDir, appConfigID, RnvFileName.renative);
             const appConfig = readObjectSync<ConfigFileApp>(appCnfPath);
             if (appConfig) {
-                appConfig.common = appConfig.common || {};
-                appConfig.common.title = inputs.appTitle;
-                appConfig.common.id = inputs.appID;
-                appConfig.common.description = `This is ${inputs.appTitle} app!`;
+                appConfig.app.common = appConfig.app.common || {};
+                appConfig.app.common.title = inputs.appTitle;
+                appConfig.app.common.id = inputs.appID;
+                appConfig.app.common.description = `This is ${inputs.appTitle} app!`;
                 logInfo(
                     `Updating appConfig ${chalk().bold.white(appConfigID)} with title: ${chalk().bold.white(
                         inputs.appTitle

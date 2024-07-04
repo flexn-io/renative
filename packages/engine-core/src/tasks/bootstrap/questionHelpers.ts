@@ -84,12 +84,16 @@ export const initNewProject = async () => {
         inputs: {},
         files: {
             project: {
-                renativeConfig: {},
+                renativeConfig: {
+                    project: {},
+                },
                 packageJson: {},
             },
             configTemplates: {},
             template: {
-                renativeTemplateConfig: {},
+                renativeTemplateConfig: {
+                    projectTemplate: {},
+                },
                 renativeConfig: {},
             },
         },
@@ -108,25 +112,25 @@ export const configureConfigOverrides = async (data: NewProjectData) => {
     const supPlats = inputs.supportedPlatforms || [];
 
     // In case of copied config instead of extended we want to cleanup unused platforms
-    if (renativeConfig.platforms) {
-        Object.keys(renativeConfig.platforms).forEach((k) => {
+    if (renativeConfig.project?.platforms) {
+        Object.keys(renativeConfig.project.platforms).forEach((k) => {
             const key = k as RnvPlatformKey;
-            if (!supPlats.includes(key) && renativeConfig.platforms) {
-                delete renativeConfig.platforms[key];
+            if (!supPlats.includes(key) && renativeConfig.project?.platforms) {
+                delete renativeConfig.project.platforms[key];
             }
         });
     }
 
     // This is project config override only
-    renativeConfig.defaults = renativeConfig.defaults || {};
-    renativeConfig.defaults.supportedPlatforms = supPlats;
+    renativeConfig.project.defaults = renativeConfig.project?.defaults || {};
+    renativeConfig.project.defaults.supportedPlatforms = supPlats;
     // renativeConfig.engines = renativeConfig.engines || {};
 
     // This is merged config result
     // const loadedConf = c.files.project.config;
 
     // Configure only required engines based on supportedPlatforms
-    const engines = renativeConfig?.engines;
+    const engines = renativeConfig?.project.engines;
     if (engines) {
         // Remove unused engines based on selected platforms
         // TODO: old logic, this need to be reworked.

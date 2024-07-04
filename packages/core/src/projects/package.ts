@@ -34,9 +34,9 @@ export const checkAndCreateProjectPackage = async () => {
     if (!packageJsonIsValid()) {
         logInfo(`Your ${c.paths.project.package} is missing. CREATING...DONE`);
 
-        const packageName = c.files.project.config?.projectName || c.paths.project.dir.split('/').pop();
-        const packageVersion = c.files.project.config?.projectVersion || '0.1.0';
-        const templateName = c.files.project.config?.templateConfig?.name;
+        const packageName = c.files.project.config?.project?.projectName || c.paths.project.dir.split('/').pop();
+        const packageVersion = c.files.project.config?.project?.projectVersion || '0.1.0';
+        const templateName = c.files.project.config?.projectTemplate?.templateConfig?.name;
         if (!templateName) {
             logWarning('You are missing currentTemplate in your renative config file');
         }
@@ -53,7 +53,7 @@ export const checkAndCreateProjectPackage = async () => {
 
         const templateObj = readObjectSync<ConfigFileTemplate>(c.paths.template.configTemplate);
 
-        const pkgJson = templateObj?.templateConfig?.package_json || {};
+        const pkgJson = templateObj?.projectTemplate?.templateConfig?.package_json || {};
         pkgJson.name = packageName;
         pkgJson.version = packageVersion;
         pkgJson.dependencies = pkgJson.dependencies || {};
@@ -65,7 +65,8 @@ export const checkAndCreateProjectPackage = async () => {
         }
 
         if (templateName) {
-            pkgJson.devDependencies[templateName] = c.files.project.config?.templateConfig?.version || 'latest';
+            pkgJson.devDependencies[templateName] =
+                c.files.project.config?.projectTemplate?.templateConfig?.version || 'latest';
         }
         const pkgJsonStringClean = JSON.stringify(pkgJson, null, 2);
         fsWriteFileSync(c.paths.project.package, pkgJsonStringClean);

@@ -21,7 +21,7 @@ export default createTask({
             return;
         }
 
-        if (!ctx.files.project.config?.paths?.platformTemplatesDirs) {
+        if (!ctx.files.project.config?.project?.paths?.platformTemplatesDirs) {
             logToSummary('All supported platforms are connected. nothing to do.');
             return;
         }
@@ -45,12 +45,12 @@ export default createTask({
 
         if (selectedPlatforms.length) {
             selectedPlatforms.forEach((platform) => {
-                if (configOriginal.paths?.platformTemplatesDirs?.[platform]) {
-                    delete configOriginal.paths.platformTemplatesDirs[platform];
+                if (configOriginal.project?.paths?.platformTemplatesDirs?.[platform]) {
+                    delete configOriginal.project.paths.platformTemplatesDirs[platform];
                 }
 
-                if (!Object.keys(configOriginal.paths?.platformTemplatesDirs || {}).length) {
-                    delete configOriginal.paths?.platformTemplatesDirs; // also cleanup the empty object
+                if (!Object.keys(configOriginal.project?.paths?.platformTemplatesDirs || {}).length) {
+                    delete configOriginal.project.paths?.platformTemplatesDirs; // also cleanup the empty object
                 }
 
                 writeFileSync(ctx.paths.project.config, configOriginal);

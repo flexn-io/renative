@@ -119,10 +119,10 @@ export default createTask({
         logInfo('Copying new app config...DONE');
 
         const confObjPath = path.join(destPath, RnvFileName.renative);
-        const confObj = readObjectSync<ConfigFileApp>(confObjPath) || {};
+        const confObj = readObjectSync<ConfigFileApp>(confObjPath) || { app: {} };
 
-        confObj.id = appConfigId;
-        confObj.common = confObj.common || {};
+        confObj.app.id = appConfigId;
+        confObj.app.common = confObj.app.common || {};
 
         let appConfigTitle;
         if (c.program.opts().title) {
@@ -133,12 +133,12 @@ export default createTask({
             const { confTitle } = await inquirerPrompt({
                 name: 'confTitle',
                 type: 'input',
-                default: confObj.common?.title || '',
+                default: confObj.app.common?.title || '',
                 message: 'Type the title of the app',
             });
             appConfigTitle = confTitle;
         }
-        confObj.common.title = appConfigTitle || confObj.common.title;
+        confObj.app.common.title = appConfigTitle || confObj.app.common.title;
 
         let bundleId;
         if (c.program.opts().id) {
@@ -149,12 +149,12 @@ export default createTask({
             const { confId } = await inquirerPrompt({
                 name: 'confId',
                 type: 'input',
-                default: confObj.common?.id || '',
+                default: confObj.app.common?.id || '',
                 message: 'Type the id of the app (bundle identifier)',
             });
             bundleId = confId;
         }
-        confObj.common.id = bundleId || confObj.common.id;
+        confObj.app.common.id = bundleId || confObj.app.common.id;
 
         writeFileSync(confObjPath, confObj);
 

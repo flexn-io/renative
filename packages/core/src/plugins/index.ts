@@ -419,8 +419,8 @@ const _resolvePluginDependencies = async (
                     scope
                 )} required by ${chalk().red(parentKey)} is not installed`,
             });
-            if (confirm && c.files.project.config_original?.plugins) {
-                c.files.project.config_original.plugins[key] = `source:${scope}`;
+            if (confirm && c.files.project.config_original?.project?.plugins) {
+                c.files.project.config_original.project.plugins[key] = `source:${scope}`;
                 writeRenativeConfigFile(c.paths.project.config, c.files.project.config_original);
                 logSuccess(`Plugin ${key} sucessfully installed`);
                 c._requiresNpmInstall = true;
@@ -551,7 +551,7 @@ export const loadPluginTemplates = async () => {
 
     const c = getContext();
 
-    const customPluginTemplates = c.files.project.config?.paths?.pluginTemplates;
+    const customPluginTemplates = c.files.project.config?.project?.paths?.pluginTemplates;
     if (customPluginTemplates) {
         const missingDeps = _parsePluginTemplateDependencies(c, customPluginTemplates);
 
@@ -821,7 +821,7 @@ export const checkForPluginDependencies = async (postInjectHandler?: AsyncCallba
             c._renativePluginCache[pluginName] = renativePluginConfig;
         }
 
-        const pluginDeps = renativePluginConfig?.pluginDependencies;
+        const pluginDeps = renativePluginConfig?.pluginTemplates.pluginDependencies;
         if (pluginDeps) {
             // we have dependencies for this plugin
             Object.keys(pluginDeps).forEach((p) => {
@@ -856,8 +856,8 @@ export const checkForPluginDependencies = async (postInjectHandler?: AsyncCallba
         }
 
         if (install && c.files.project.config_original) {
-            c.files.project.config_original.plugins = {
-                ...(c.files.project.config_original.plugins || {}),
+            c.files.project.config_original.project.plugins = {
+                ...(c.files.project.config_original.project.plugins || {}),
                 ...toAdd,
             };
             writeRenativeConfigFile(c.paths.project.config, c.files.project.config_original);

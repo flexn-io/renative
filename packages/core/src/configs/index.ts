@@ -24,7 +24,8 @@ export const loadFileExtended = (fileObj: Record<string, any>, pathObj: RnvConte
     const extendsTemplate = fileObj[key]?.extendsTemplate;
     if (key === 'config' && extendsTemplate) {
         // extendsTemplate only applies to standard 'config'
-        let currTemplate = c.files.project[key]?.templateConfig?.name || fileObj[key].templateConfig?.name;
+        let currTemplate =
+            c.files.project[key]?.projectTemplate?.templateConfig?.name || fileObj[key].templateConfig?.name;
         if (!currTemplate) {
             if (extendsTemplate.startsWith('@')) {
                 currTemplate = extendsTemplate.split('/').slice(0, 2).join('/');
@@ -285,12 +286,12 @@ export const parseRenativeConfigs = async () => {
     }
 
     // LOAD WORKSPACE /[PROJECT_NAME]/RENATIVE.*.JSON
-    if (!c.files.project.config.projectName) {
+    if (!c.files.project.config?.project?.projectName) {
         return Promise.reject('Your renative.json is missing required property: projectName ');
     }
     generateContextPaths(
         c.paths.workspace.project,
-        path.join(c.paths.workspace.dir, c.files.project.config.projectName)
+        path.join(c.paths.workspace.dir, c.files.project.config.project.projectName)
     );
     _loadConfigFiles(c.files.workspace.project, c.paths.workspace.project);
 

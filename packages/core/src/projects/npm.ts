@@ -219,7 +219,7 @@ export const installPackageDependencies = async (failOnError = false) => {
         }
     }
     try {
-        const plats = c.files.project.config?.defaults?.supportedPlatforms;
+        const plats = c.files.project.config?.project?.defaults?.supportedPlatforms;
         if (
             Array.isArray(plats) &&
             (plats.includes('android') ||

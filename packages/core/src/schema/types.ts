@@ -138,31 +138,31 @@ type ConfigFileSectionApp = ConfigRootAppBaseFragment & {
 // BuildConfig -----------------------
 //
 type RootPluginsMerged = {
-    scopedPluginTemplates: Record<string, ConfigFileTemplates['template']['templatePlugins']['pluginTemplates']>;
+    scopedPluginTemplates: Record<string, ConfigFileTemplates['pluginTemplates']['pluginTemplates']>;
 };
 
-// renative.build.json
-// export type ConfigFileBuildConfig = ConfigFileTemplates &
-//     ConfigFileWorkspace &
-//     RootPluginsMerged &
-//     ConfigFileProject &
-//     ConfigFileLocal &
-//     ConfigRootAppBaseFragment;
+// renative.build.json;
+export type ConfigFileBuildConfig = ConfigFileSectionTemplates &
+    ConfigFileSectionWorkspace &
+    RootPluginsMerged &
+    ConfigFileSectionProject &
+    ConfigFileSectionLocal &
+    ConfigRootAppBaseFragment;
 
 // renative.build.json
 
-export type ConfigFileBuildConfig = {
-    template: {
-        templateProject: ConfigFileSectionTemplate;
-        templateIntegrations: ConfigFileSectionTemplates;
-        templateProjects: ConfigFileSectionTemplates;
-        templatePlugins: ConfigFileSectionTemplates;
-    };
-    workspace: ConfigFileSectionWorkspace;
-    project: ConfigFileSectionProject & RootPluginsMerged;
-    local: ConfigFileSectionLocal;
-    app: ConfigFileSectionApp;
-};
+// export type ConfigFileBuildConfig = {
+//     template: {
+//         templateProject: ConfigFileSectionTemplate;
+//         templateIntegrations: ConfigFileSectionTemplates;
+//         templateProjects: ConfigFileSectionTemplates;
+//         templatePlugins: ConfigFileSectionTemplates;
+//     };
+//     workspace: ConfigFileSectionWorkspace;
+//     project: ConfigFileSectionProject & RootPluginsMerged;
+//     local: ConfigFileSectionLocal;
+//     app: ConfigFileSectionApp;
+// };
 
 // export type ConfigFileRenative = {
 //     app: ConfigFileSectionApp;
@@ -277,35 +277,38 @@ export type ConfigFileRuntime = z.infer<typeof zodConfigFileRuntime>;
 export type ConfigFileRenative = {
     app: ConfigFileSectionApp;
     project: ConfigFileSectionProject;
-    local: ConfigFileSectionLocal;
-    overrides: ConfigFileSectionOverrides;
+    // local: ConfigFileSectionLocal[''];
+    overrides: ConfigFileSectionOverrides['overrides'];
     integration: ConfigFileSectionIntegration;
     engine: ConfigFileSectionEngine;
     plugin: ConfigFileSectionPlugin;
     private: ConfigFileSectionPrivate;
-    template: {
-        templateProject: ConfigFileSectionTemplate;
-        templateIntegrations: ConfigFileSectionTemplates;
-        templateProjects: ConfigFileSectionTemplates;
-        templatePlugins: ConfigFileSectionTemplates;
-    };
+    // template: {
+    projectTemplate: ConfigFileSectionTemplate;
+    integrationTemplates: ConfigFileSectionTemplates;
+    pluginTemplates: ConfigFileSectionTemplates;
+    platformTemplates: ConfigFileSectionTemplates;
+    // };
     workspace: ConfigFileSectionWorkspace;
-    // workspaces: ConfigFileSectionWorkspaces;
-} & ConfigFileSectionWorkspaces;
+    workspaces: ConfigFileSectionWorkspaces['workspaces'];
+} & ConfigFileSectionLocal;
 
-export type ConfigFileEngine = ConfigFileRenative;
+export type ConfigFileEngine = Pick<ConfigFileRenative, 'engine'>;
 export type ConfigFileIntegration = ConfigFileRenative;
 export type ConfigFileLocal = ConfigFileRenative;
 export type ConfigFileOverrides = ConfigFileRenative;
 // export type ConfigFileRuntime = ConfigFileRenative;
 export type ConfigFilePlugin = ConfigFileRenative;
-export type ConfigFileApp = ConfigFileRenative;
+export type ConfigFileApp = Pick<ConfigFileRenative, 'app'>;
 export type ConfigFilePrivate = ConfigFileRenative;
 export type ConfigFileProject = ConfigFileRenative;
-export type ConfigFileTemplate = ConfigFileRenative;
+export type ConfigFileTemplate = Pick<
+    ConfigFileRenative,
+    'pluginTemplates' | 'platformTemplates' | 'integrationTemplates' | 'projectTemplate'
+>;
 export type ConfigFileTemplates = ConfigFileRenative;
-export type ConfigFileWorkspace = ConfigFileRenative;
-export type ConfigFileWorkspaces = ConfigFileRenative;
+export type ConfigFileWorkspace = Pick<ConfigFileRenative, 'workspace'>;
+export type ConfigFileWorkspaces = Pick<ConfigFileRenative, 'workspaces'>;
 
 // ConfigProp -----------------------
 //

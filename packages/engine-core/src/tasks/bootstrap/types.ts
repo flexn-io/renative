@@ -33,14 +33,14 @@ export type NewProjectData = {
     };
     files: {
         template: {
-            renativeTemplateConfig: ConfigFileTemplate;
-            renativeConfig: ConfigFileProject;
+            renativeTemplateConfig: Partial<ConfigFileTemplate> & Pick<ConfigFileProject, 'projectTemplate'>;
+            renativeConfig: Partial<ConfigFileProject>;
         };
         configTemplates: {
             config?: ConfigFileTemplates;
         };
         project: {
-            renativeConfig: ConfigFileProject;
+            renativeConfig: Partial<ConfigFileProject> & Pick<ConfigFileProject, 'project'>;
             packageJson: NpmPackageFile;
             // renativeAppConfig: ConfigFileApp;
         };

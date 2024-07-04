@@ -132,6 +132,6 @@ export const loadWorkspacesConfigSync = () => {
     const defWsPath = c.paths.dotRnv.config;
 
     if (defWsPath && fsExistsSync(defWsPath)) {
-        c.files.dotRnv.config = readObjectSync<ConfigFileWorkspace>(defWsPath) || {};
+        c.files.dotRnv.config = readObjectSync<ConfigFileWorkspace>(defWsPath) || { workspace: {} };
     }
 };

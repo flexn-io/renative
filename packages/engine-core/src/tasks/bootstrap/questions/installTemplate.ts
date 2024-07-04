@@ -27,7 +27,7 @@ import { saveProgressIntoProjectConfig } from '../questionHelpers';
 import { merge } from 'lodash';
 import { getContext } from '../../../getContext';
 
-const mergeIntoProjectConfig = (data: NewProjectData, updateObj: ConfigFileProject) => {
+const mergeIntoProjectConfig = (data: NewProjectData, updateObj: Partial<ConfigFileProject>) => {
     const { files } = data;
     files.project.renativeConfig = merge(files.project.renativeConfig, updateObj);
 };
@@ -189,9 +189,11 @@ const Question = async (data: NewProjectData) => {
             },
         });
         mergeIntoProjectConfig(data, {
-            templateConfig: {
-                name: inputs.template.packageName,
-                version: filePath,
+            projectTemplate: {
+                templateConfig: {
+                    name: inputs.template.packageName,
+                    version: filePath,
+                },
             },
         });
         await saveProgressIntoProjectConfig(data);
@@ -223,9 +225,11 @@ const Question = async (data: NewProjectData) => {
             });
         }
         mergeIntoProjectConfig(data, {
-            templateConfig: {
-                name: inputs.template.packageName,
-                version: inputs.template.version,
+            projectTemplate: {
+                templateConfig: {
+                    name: inputs.template.packageName,
+                    version: inputs.template.version,
+                },
             },
         });
         await saveProgressIntoProjectConfig(data);
@@ -246,8 +250,14 @@ const Question = async (data: NewProjectData) => {
 
     const templateDir = path.join(c.paths.project.dir, 'node_modules', inputs.template.packageName);
 
-    const renativeTemplateConfig =
-        readObjectSync<ConfigFileTemplate>(path.join(templateDir, RnvFileName.renativeTemplate)) || {};
+    const renativeTemplateConfig: ConfigFileTemplate = readObjectSync<ConfigFileTemplate>(
+        path.join(templateDir, RnvFileName.renativeTemplate)
+    ) || {
+        integrationTemplates: {},
+        platformTemplates: {},
+        pluginTemplates: {},
+        projectTemplate: {},
+    };
     if (renativeTemplateConfig) {
         files.template.renativeTemplateConfig = renativeTemplateConfig;
     }

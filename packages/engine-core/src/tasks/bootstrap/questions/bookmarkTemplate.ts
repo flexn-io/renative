@@ -10,7 +10,7 @@ const Question = async (data: NewProjectData) => {
         return Promise.reject('Template not selected');
     }
 
-    const configFile = c.files.workspace.config || {};
+    const configFile = c.files.workspace.config || { workspace: {} };
     // const defProjTemplates = c.files.rnvConfigTemplates.config?.projectTemplates || {};
     // const wsProjTemplates = configFile.projectTemplates || {};
     const projTemplates = c.buildConfig.projectTemplates || {};
@@ -38,10 +38,10 @@ const Question = async (data: NewProjectData) => {
 
         if (configFile) {
             if (confirmAddTemplate) {
-                if (!configFile.projectTemplates) {
-                    configFile.projectTemplates = {};
+                if (!configFile.workspace.projectTemplates) {
+                    configFile.workspace.projectTemplates = {};
                 }
-                configFile.projectTemplates[templateName] = {
+                configFile.workspace.projectTemplates[templateName] = {
                     packageName: inputs.template.packageName,
                     localPath: inputs.template.localPath,
                     description: inputs.template.description,

@@ -41,14 +41,14 @@ const Question = async (data: NewProjectData) => {
 
     const supportedPlatforms =
         // files.template.renativeTemplateConfig?.templateConfig?.renative_json?..supportedPlatforms ||
-        files.template.renativeConfig?.defaults?.supportedPlatforms || [];
+        files.template.renativeConfig?.project?.defaults?.supportedPlatforms || [];
 
     supportedPlatforms.sort((a, b) => RnvPlatforms.indexOf(a) - RnvPlatforms.indexOf(b));
 
     const optsPlatforms = c.program.opts().platform && [c.program.opts().platform];
     const selectedPlatforms =
         optsPlatforms ||
-        files.template.renativeTemplateConfig?.bootstrapConfig?.defaultSelectedPlatforms ||
+        files.template.renativeTemplateConfig?.projectTemplate.bootstrapConfig?.defaultSelectedPlatforms ||
         supportedPlatforms;
 
     if (supportedPlatforms.length === 0) {
