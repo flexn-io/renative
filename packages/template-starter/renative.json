@@ -98,7 +98,7 @@
             "engine": "engine-rn-electron",
             "assetFolderPlatform": "electron",
             "webpackConfig": {
-                "excludedDirs": ["pages"]
+                "excludedPaths": ["pages"]
             }
         },
         "windows": {
