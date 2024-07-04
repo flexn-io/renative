@@ -294,12 +294,12 @@ export type ConfigFileRenative = {
 } & ConfigFileSectionLocal;
 
 export type ConfigFileEngine = Pick<ConfigFileRenative, 'engine'>;
-export type ConfigFileIntegration = ConfigFileRenative;
+export type ConfigFileIntegration = Pick<ConfigFileRenative, 'integration'>;
 export type ConfigFileLocal = ConfigFileRenative;
-export type ConfigFileOverrides = ConfigFileRenative;
+export type ConfigFileOverrides = Pick<ConfigFileRenative, 'overrides'>;
 // export type ConfigFileRuntime = ConfigFileRenative;
 export type ConfigFilePlugin = ConfigFileRenative;
-export type ConfigFileApp = Pick<ConfigFileRenative, 'app'>;
+export type ConfigFileApp = Pick<ConfigFileRenative, 'app' | 'project'>;
 export type ConfigFilePrivate = ConfigFileRenative;
 export type ConfigFileProject = ConfigFileRenative;
 export type ConfigFileTemplate = Pick<

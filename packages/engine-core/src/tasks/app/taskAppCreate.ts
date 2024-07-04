@@ -119,7 +119,7 @@ export default createTask({
         logInfo('Copying new app config...DONE');
 
         const confObjPath = path.join(destPath, RnvFileName.renative);
-        const confObj = readObjectSync<ConfigFileApp>(confObjPath) || { app: {} };
+        const confObj = readObjectSync<ConfigFileApp>(confObjPath) || { app: {}, project: {} };
 
         confObj.app.id = appConfigId;
         confObj.app.common = confObj.app.common || {};
