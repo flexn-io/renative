@@ -35,7 +35,7 @@ export const createWorkspace = async (workspaceID: string, workspacePath: string
 export const getWorkspaceDirPath = async (c: RnvContext) => {
     logDefault('getWorkspaceDirPath');
     const wss = c.files.dotRnv.configWorkspaces;
-    const ws = c.runtime.selectedWorkspace || c.buildConfig?.workspaceID;
+    const ws = c.runtime.selectedWorkspace || c.buildConfig?.project?.workspaceID;
     let dirPath;
     if (wss?.workspaces && ws) {
         dirPath = wss.workspaces[ws]?.path;

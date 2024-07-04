@@ -128,7 +128,7 @@ export type ConfigPlatformsSchema = Partial<Record<RnvPlatformKey, ConfigPlatfor
 //
 export type ConfigRootAppBaseFragment = z.infer<typeof zodRootAppBaseFragment>;
 
-export type ConfigFileApp = ConfigRootAppBaseFragment & {
+type ConfigFileSectionApp = ConfigRootAppBaseFragment & {
     common?: ConfigCommonSchema;
     platforms?: ConfigPlatformsSchema;
     plugins?: ConfigPluginsSchema;
@@ -138,16 +138,50 @@ export type ConfigFileApp = ConfigRootAppBaseFragment & {
 // BuildConfig -----------------------
 //
 type RootPluginsMerged = {
-    scopedPluginTemplates: Record<string, ConfigFileTemplates['pluginTemplates']>;
+    scopedPluginTemplates: Record<string, ConfigFileTemplates['template']['templatePlugins']['pluginTemplates']>;
 };
 
 // renative.build.json
-export type ConfigFileBuildConfig = ConfigFileTemplates &
-    ConfigFileWorkspace &
-    RootPluginsMerged &
-    ConfigFileProject &
-    ConfigFileLocal &
-    ConfigRootAppBaseFragment;
+// export type ConfigFileBuildConfig = ConfigFileTemplates &
+//     ConfigFileWorkspace &
+//     RootPluginsMerged &
+//     ConfigFileProject &
+//     ConfigFileLocal &
+//     ConfigRootAppBaseFragment;
+
+// renative.build.json
+
+export type ConfigFileBuildConfig = {
+    template: {
+        templateProject: ConfigFileSectionTemplate;
+        templateIntegrations: ConfigFileSectionTemplates;
+        templateProjects: ConfigFileSectionTemplates;
+        templatePlugins: ConfigFileSectionTemplates;
+    };
+    workspace: ConfigFileSectionWorkspace;
+    project: ConfigFileSectionProject & RootPluginsMerged;
+    local: ConfigFileSectionLocal;
+    app: ConfigFileSectionApp;
+};
+
+// export type ConfigFileRenative = {
+//     app: ConfigFileSectionApp;
+//     project: ConfigFileSectionProject;
+//     local: ConfigFileSectionLocal;
+//     overrides: ConfigFileSectionOverrides;
+//     integration: ConfigFileSectionIntegration;
+//     engine: ConfigFileSectionEngine;
+//     plugin: ConfigFileSectionPlugin;
+//     private: ConfigFileSectionPrivate;
+//     template: {
+//         templateProject: ConfigFileSectionTemplate;
+//         templateIntegrations: ConfigFileSectionTemplates;
+//         templateProjects: ConfigFileSectionTemplates;
+//         templatePlugins: ConfigFileSectionTemplates;
+//     };
+//     workspace: ConfigFileSectionWorkspace;
+//     // workspaces: ConfigFileSectionWorkspaces;
+// } & ConfigFileSectionWorkspaces;
 
 export type BuildConfigKey = keyof ConfigFileBuildConfig;
 
@@ -158,22 +192,22 @@ export type GetConfigRootPropVal<T, K extends ConfigPropRootKeyMerged<T>> = Conf
 // Engine -----------------------
 //
 // renative.engine.json
-export type ConfigFileEngine = z.infer<typeof zodConfigFileEngine>;
+type ConfigFileSectionEngine = z.infer<typeof zodConfigFileEngine>;
 
 // Integration -----------------------
 //
 // renative.integration.json
-export type ConfigFileIntegration = z.infer<typeof zodConfigFileIntegration>;
+type ConfigFileSectionIntegration = z.infer<typeof zodConfigFileIntegration>;
 
 // Local -----------------------
 //
 // renative.local.json
-export type ConfigFileLocal = z.infer<typeof zodConfigFileLocal>;
+type ConfigFileSectionLocal = z.infer<typeof zodConfigFileLocal>;
 
 // Overrides -----------------------
 //
 //overrides.json
-export type ConfigFileOverrides = z.infer<typeof zodConfigFileOverrides>;
+type ConfigFileSectionOverrides = z.infer<typeof zodConfigFileOverrides>;
 
 // Plugin -----------------------
 //
@@ -188,13 +222,13 @@ export type ConfigPluginPlatformsSchema = Record<RnvPlatformKey, ConfigPluginPla
 export type ConfigPluginSchema = ConfigPluginBaseFragment & Partial<ConfigPluginPlatformsSchema>;
 export type ConfigPluginsSchema = Record<string, ConfigPluginSchema | string>;
 // renative.plugin.json
-export type ConfigFilePlugin = ConfigPluginSchema & z.infer<typeof zodPluginFragment>;
+type ConfigFileSectionPlugin = ConfigPluginSchema & z.infer<typeof zodPluginFragment>;
 
 // Private -----------------------
 //
 export type ConfigPrivatePlatformAndroid = z.infer<typeof zodPrivatePlatformAndroid>;
 // renative.private.json
-export type ConfigFilePrivate = z.infer<typeof zodConfigFilePrivate>;
+type ConfigFileSectionPrivate = z.infer<typeof zodConfigFilePrivate>;
 
 // Project -----------------------
 //
@@ -203,7 +237,7 @@ export type ConfigRootProjectBaseFragment = z.infer<typeof zodRootProjectBaseFra
 };
 export type ConfigProjectPaths = Required<ConfigRootProjectBaseFragment>['paths'];
 // renative.json
-export type ConfigFileProject = ConfigRootProjectBaseFragment & {
+type ConfigFileSectionProject = ConfigRootProjectBaseFragment & {
     common?: ConfigCommonSchema;
     platforms?: ConfigPlatformsSchema;
     plugins?: ConfigPluginsSchema;
@@ -213,7 +247,7 @@ export type ConfigFileProject = ConfigRootProjectBaseFragment & {
 //
 type ConfigTemplateBootstrapConfig = z.infer<typeof zodConfigTemplateBootstrapConfig>;
 // renative.template.json
-export type ConfigFileTemplate = {
+type ConfigFileSectionTemplate = {
     // defaults: ConfigDefault,
     // engines: z.optional(EnginesSchema),
     templateConfig?: ConfigTemplateConfigFragment;
@@ -223,39 +257,55 @@ export type ConfigFileTemplate = {
 // Templates -----------------------
 //
 // renative.templates.json
-export type ConfigFileTemplates = z.infer<typeof zodConfigFileTemplates>;
+type ConfigFileSectionTemplates = z.infer<typeof zodConfigFileTemplates>;
 
 // Workspace -----------------------
 //
 // renative.workspace.json
-export type ConfigFileWorkspace = z.infer<typeof zodConfigFileWorkspace>;
+type ConfigFileSectionWorkspace = z.infer<typeof zodConfigFileWorkspace>;
 
 // Workspaces -----------------------
 //
 // renative.workspaces.json
-export type ConfigFileWorkspaces = z.infer<typeof zodConfigFileWorkspaces>;
-
-export type ConfigFileRenative = {
-    app: ConfigFileApp;
-    project: ConfigFileProject;
-    local: ConfigFileLocal;
-    overrides: ConfigFileOverrides;
-    integration: ConfigFileIntegration;
-    engine: ConfigFileEngine;
-    plugin: ConfigFilePlugin;
-    private: ConfigFilePrivate;
-    templateProject: ConfigFileTemplate;
-    templateIntegrations: ConfigFileTemplates;
-    templateProjects: ConfigFileTemplates;
-    templatePlugins: ConfigFileTemplates;
-    workspace: ConfigFileWorkspace;
-    workspaces: ConfigFileWorkspaces;
-};
+type ConfigFileSectionWorkspaces = z.infer<typeof zodConfigFileWorkspaces>;
 
 // Runtime -----------------------
 //
 // renative.runtime.json
 export type ConfigFileRuntime = z.infer<typeof zodConfigFileRuntime>;
+
+export type ConfigFileRenative = {
+    app: ConfigFileSectionApp;
+    project: ConfigFileSectionProject;
+    local: ConfigFileSectionLocal;
+    overrides: ConfigFileSectionOverrides;
+    integration: ConfigFileSectionIntegration;
+    engine: ConfigFileSectionEngine;
+    plugin: ConfigFileSectionPlugin;
+    private: ConfigFileSectionPrivate;
+    template: {
+        templateProject: ConfigFileSectionTemplate;
+        templateIntegrations: ConfigFileSectionTemplates;
+        templateProjects: ConfigFileSectionTemplates;
+        templatePlugins: ConfigFileSectionTemplates;
+    };
+    workspace: ConfigFileSectionWorkspace;
+    // workspaces: ConfigFileSectionWorkspaces;
+} & ConfigFileSectionWorkspaces;
+
+export type ConfigFileEngine = ConfigFileRenative;
+export type ConfigFileIntegration = ConfigFileRenative;
+export type ConfigFileLocal = ConfigFileRenative;
+export type ConfigFileOverrides = ConfigFileRenative;
+// export type ConfigFileRuntime = ConfigFileRenative;
+export type ConfigFilePlugin = ConfigFileRenative;
+export type ConfigFileApp = ConfigFileRenative;
+export type ConfigFilePrivate = ConfigFileRenative;
+export type ConfigFileProject = ConfigFileRenative;
+export type ConfigFileTemplate = ConfigFileRenative;
+export type ConfigFileTemplates = ConfigFileRenative;
+export type ConfigFileWorkspace = ConfigFileRenative;
+export type ConfigFileWorkspaces = ConfigFileRenative;
 
 // ConfigProp -----------------------
 //
