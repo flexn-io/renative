@@ -331,7 +331,7 @@ export const runTizenSimOrDevice = async () => {
         });
 
         if (startEmulator) {
-            const defaultTarget = c.files.workspace.config?.defaultTargets?.[platform];
+            const defaultTarget = c.files.workspace.config?.workspace?.defaultTargets?.[platform];
             if (!defaultTarget) {
                 logError('No default target found for tizen. please provide one using -t option');
                 return;

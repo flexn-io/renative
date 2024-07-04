@@ -198,8 +198,8 @@ export const getIosDeviceToRunOn = async (c: Context) => {
             if (chosenAction === actionGlobalUpdate) {
                 const configGlobal = c.files.workspace.config;
                 if (configGlobal) {
-                    if (!configGlobal.defaultTargets) configGlobal.defaultTargets = {};
-                    configGlobal.defaultTargets[c.platform] = sim.name;
+                    if (!configGlobal.workspace.defaultTargets) configGlobal.workspace.defaultTargets = {};
+                    configGlobal.workspace.defaultTargets[c.platform] = sim.name;
 
                     c.files.workspace.config = configGlobal;
                     writeFileSync(c.paths.workspace.config, configGlobal);
@@ -410,7 +410,7 @@ const _setAutomaticSigning = async (c: Context) => {
     const cnf = c.files.appConfig.config;
     if (!cnf) return;
 
-    const scheme = c.runtime.scheme && cnf.platforms?.[c.platform]?.buildSchemes?.[c.runtime.scheme];
+    const scheme = c.runtime.scheme && cnf.app.platforms?.[c.platform]?.buildSchemes?.[c.runtime.scheme];
     if (scheme && 'provisioningStyle' in scheme) {
         scheme.provisioningStyle = 'Automatic';
         writeFileSync(c.paths.appConfig.config, cnf);
@@ -431,12 +431,12 @@ const _setDevelopmentTeam = async (c: Context, teamID: string) => {
 
     try {
         // initialize if it doesn't exist, assume everything is set up, if it throws yell
-        const platforms = cnf.platforms || {};
+        const platforms = cnf.app.platforms || {};
         const plat = platforms[c.platform] || {};
-        cnf.platforms = platforms;
+        cnf.app.platforms = platforms;
         platforms[c.platform] = plat;
         if (!platforms[c.platform]) {
-            cnf.platforms[c.platform] = {};
+            cnf.app.platforms[c.platform] = {};
         }
         if ('teamID' in plat) {
             plat.teamID = teamID;

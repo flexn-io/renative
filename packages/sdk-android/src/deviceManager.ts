@@ -621,7 +621,7 @@ export const askForNewEmulator = async () => {
     logDefault('askForNewEmulator');
     if (!platform) return;
 
-    let emuName = c.files.workspace.config?.defaultTargets?.[platform];
+    let emuName = c.files.workspace.config?.workspace.defaultTargets?.[platform];
     const { confirm } = await inquirerPrompt({
         name: 'confirm',
         type: 'confirm',

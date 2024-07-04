@@ -134,8 +134,8 @@ const _attemptAutoFix = async (c: RnvContext, shouldThrow?: boolean) => {
             const cnf = c.files.workspace.config;
             if (!cnf) return false;
             try {
-                if (!cnf.sdks) cnf.sdks = {};
-                cnf.sdks.WEBOS_SDK = result;
+                if (!cnf.workspace.sdks) cnf.workspace.sdks = {};
+                cnf.workspace.sdks.WEBOS_SDK = result;
                 writeFileSync(c.paths.workspace.config, cnf);
                 generateBuildConfig();
                 await checkAndConfigureWebosSdks();
@@ -147,7 +147,7 @@ const _attemptAutoFix = async (c: RnvContext, shouldThrow?: boolean) => {
         }
     }
 
-    if(shouldThrow) {
+    if (shouldThrow) {
         throw new Error(
             `Your ${c.platform} SDK path is not configured. Please update your ${c.paths.workspace.config} file`
         );
