@@ -76,9 +76,7 @@ export const launchTizenSimulator = async (name: string | true): Promise<boolean
     logDefault(`launchTizenSimulator:${name}`);
 
     if (name === true) {
-        const targets = await execCLI(CLI_TIZEN_EMULATOR, 'list-vm', {
-            detached: true,
-        });
+        const targets = await execCLI(CLI_TIZEN_EMULATOR, 'list-vm');
         const lines = targets.split('\n');
         const devicesArray = lines.map((line) => ({ id: line, name: line }));
         const choices = _composeDevicesString(devicesArray);
@@ -117,9 +115,7 @@ export const launchTizenSimulator = async (name: string | true): Promise<boolean
 };
 
 export const listTizenTargets = async () => {
-    const targets = await execCLI(CLI_TIZEN_EMULATOR, 'list-vm', {
-        detached: true,
-    });
+    const targets = await execCLI(CLI_TIZEN_EMULATOR, 'list-vm');
     const targetArr = targets.split('\n');
     let targetStr = '';
     targetArr.forEach((_, i) => {
