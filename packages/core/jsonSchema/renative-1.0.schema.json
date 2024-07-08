@@ -2632,7 +2632,7 @@
                         },
                         "description": "Allows you to inject custom script into html header"
                       },
-                      "excludedDirs": {
+                      "excludedPaths": {
                         "type": "array",
                         "items": {
                           "type": "string"
