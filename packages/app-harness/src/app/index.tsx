@@ -237,7 +237,10 @@ const AppContent = () => {
                         )}
                         <TouchableOpacity
                             ref={splashBtnRef}
-                            onPress={() => SplashScreen.show()}
+                            onPress={() => {
+                                SplashScreen.show();
+                                setTimeout(() => SplashScreen.hide(), 3000);
+                            }}
                             style={[
                                 styles.button,
                                 focusedIndex === 3 && styles.buttonFocused,
