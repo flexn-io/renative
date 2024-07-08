@@ -126,9 +126,7 @@ const AppContent = () => {
                     source={ICON_LOGO}
                     {...testProps('app-harness-home-screen-renative-image')}
                 />
-                <Text style={styles.introText} {...testProps('app-harness-home-screen-intro-text')}>
-                    ReNative Harness
-                </Text>
+                <Text style={styles.introText}>ReNative Harness</Text>
                 <View style={{ flex: 1, alignItems: 'flex-end' }}>
                     <Text style={styles.dynamicText}>
                         {`v${config.version}, platform: ${Api.platform}, factor: ${Api.formFactor}, engine: ${Api.engine}`}
