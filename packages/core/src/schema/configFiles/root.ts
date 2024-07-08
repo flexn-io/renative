@@ -12,17 +12,19 @@ import { zodConfigFileEngine } from './engine';
 import { zodConfigFilePlugin } from './plugin';
 import { zodConfigFilePrivate } from './private';
 
-export const zodConfigFileRoot: AnyZodObject = z.object({
-    app: zodRootAppBaseFragment,
-    project: zodConfigFileProject,
-    local: zodConfigFileLocal,
-    overrides: zodConfigFileOverrides,
-    integration: zodConfigFileIntegration,
-    engine: zodConfigFileEngine,
-    plugin: zodConfigFilePlugin,
-    private: zodConfigFilePrivate,
-    template: zodConfigFileTemplate,
-    configTemplates: zodConfigFileTemplates,
-    workspace: zodConfigFileWorkspace,
-    workspaces: zodConfigFileWorkspaces,
-});
+export const zodConfigFileRoot: AnyZodObject = z
+    .object({
+        app: zodRootAppBaseFragment,
+        project: zodConfigFileProject,
+        local: zodConfigFileLocal,
+        overrides: zodConfigFileOverrides,
+        integration: zodConfigFileIntegration,
+        engine: zodConfigFileEngine,
+        plugin: zodConfigFilePlugin,
+        private: zodConfigFilePrivate,
+        template: zodConfigFileTemplate,
+        configTemplates: zodConfigFileTemplates,
+        workspace: zodConfigFileWorkspace,
+        workspaces: zodConfigFileWorkspaces,
+    })
+    .partial();
