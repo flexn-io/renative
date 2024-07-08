@@ -6,6 +6,11 @@ describe('Test App Harness', () => {
     });
 
     // done
+    it('--> Hfffermes support ', async () => {
+        await FlexnRunner.pause(10000);
+    });
+
+    // done
     it('--> Hermes support ', async () => {
         await FlexnRunner.waitForDisplayedById('app-harness-home-screen-renative-image');
         if (process.env.PLATFORM === 'web') {
@@ -48,7 +53,7 @@ describe('Test App Harness', () => {
             await FlexnRunner.clickByText('Allow');
             await FlexnRunner.expectToHaveTextById('app-harness-home-screen-logs-text-4', 'Permissions: granted');
         } else if (process.env.PLATFORM === 'android') {
-            await FlexnRunner.clickByText('ALLOW');
+            await FlexnRunner.clickByText('Allow');
             await FlexnRunner.expectToHaveTextById('app-harness-home-screen-logs-text-4', 'Permissions: granted');
         }
     });
