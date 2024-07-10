@@ -52,7 +52,6 @@ export const packageReactNativeIOS = (isDev = false) => {
     if (c.program.opts().info) {
         args.push('--verbose');
     }
-    // const reactNativeCmnd = `node "${path.join(path.dirname(require.resolve('react-native')), 'cli.js')}"`;
     return executeAsync(
         `node ${doResolve(
             c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'
@@ -81,6 +80,7 @@ export const runReactNativeIOS = async (
     // const cmd = `node ${doResolve(
     //     c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'
     // )}/local-cli/cli.js run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
+
     const cmd = `npx react-native run-ios --scheme=${scheme} --mode=${runScheme} --no-packager ${extraParamsString}`;
     const env: RnvEnvContext = {
         ...CoreEnvVars.BASE(),
