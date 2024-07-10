@@ -541,7 +541,6 @@ export const buildXcodeProject = async () => {
         p.push('-allowProvisioningUpdates');
     }
     if (ignoreLogs && !ps.includes('-quiet')) p.push('-quiet');
-console.log('^^^^^^^^^^^^')
     logDefault('buildXcodeProject', 'STARTING xcodebuild BUILD...');
 
     // TODO: check if below code is still required
