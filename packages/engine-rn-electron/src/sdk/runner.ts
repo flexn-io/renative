@@ -368,7 +368,7 @@ const _runElectronSimulator = async (c: RnvContext) => {
         platformProjectDir = path.join(getAppFolder()!, 'build');
     }
 
-    const cmd = `node ${doResolve('electron')}/cli.js ${path.join(platformProjectDir, '/main.js')}`;
+    const cmd = `node "${doResolve('electron')}/cli.js" "${path.join(platformProjectDir, '/main.js')}"`;
     await executeAsync(cmd, ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER);
 };
 

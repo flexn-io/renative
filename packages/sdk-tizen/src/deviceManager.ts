@@ -363,8 +363,8 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
     const continueLaunching = async () => {
         let hasDevice = false;
 
-        await execCLI(CLI_TIZEN, `build-web -- ${tBuild} -out ${intermediate}`);
-        await execCLI(CLI_TIZEN, `package -- ${intermediate} -s ${certProfile} -t wgt -o ${tOut}`);
+        await execCLI(CLI_TIZEN, `build-web -- "${tBuild}" -out "${intermediate}"`);
+        await execCLI(CLI_TIZEN, `package -- "${intermediate}" -s ${certProfile} -t wgt -o "${tOut}"`);
 
         try {
             const packageID = platform === 'tizenwatch' || platform === 'tizenmobile' ? tId.split('.')[0] : tId;
@@ -391,7 +391,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
             logError(err);
         }
         try {
-            await execCLI(CLI_TIZEN, `install -- ${tOut} -n ${wgtClean} -t ${deviceID}`);
+            await execCLI(CLI_TIZEN, `install -- "${tOut}" -n ${wgtClean} -t ${deviceID}`);
             hasDevice = true;
         } catch (err) {
             logError(err);

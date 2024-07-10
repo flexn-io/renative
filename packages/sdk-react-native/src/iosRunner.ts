@@ -52,7 +52,15 @@ export const packageReactNativeIOS = (isDev = false) => {
     if (c.program.opts().info) {
         args.push('--verbose');
     }
-
+    // const reactNativeCmnd = `node "${path.join(path.dirname(require.resolve('react-native')), 'cli.js')}"`;
+    console.log(
+        '$$$$$$$$$',
+        `${doResolve(
+            c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'
+        )}/local-cli/cli.js ${args.join(' ')} --config=${
+            c.runtime.runtimeExtraProps?.reactNativeMetroConfigName || 'metro.config.js'
+        }`
+    );
     return executeAsync(
         `node ${doResolve(
             c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'
@@ -78,7 +86,6 @@ export const runReactNativeIOS = async (
     extraParamsString: string
 ) => {
     logDefault('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme}`);
-
     // const cmd = `node ${doResolve(
     //     c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'
     // )}/local-cli/cli.js run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
