@@ -24,6 +24,8 @@ import {
     generateLocalJsonSchemas,
     RnvTaskName,
     getContext,
+    inquirerPrompt,
+    logWarning,
 } from '@rnv/core';
 import { checkCrypto } from '../crypto/common';
 import { checkAndInstallIfRequired, installPackageDependenciesAndPlugins } from '../../taskHelpers';
@@ -51,6 +53,27 @@ const configurePlatformBuilds = async () => {
     }
 };
 
+const checkProjectPathSpaces = async () => {
+    const c = getContext();
+    const projectDir = c.paths.project.dir;
+    const hasSpaces = /\s/.test(projectDir);
+    if (!hasSpaces) return true;
+
+    const warnMessage = `The project path ${chalk().bold.grey(
+        projectDir
+    )} contains spaces, which might cause issues with React Native and other tools. For more details, please visit: https://github.com/facebook/react-native/issues/34743.`;
+
+    const { confirm } = await inquirerPrompt({
+        type: 'confirm',
+        name: 'confirm',
+        message: `${warnMessage} Do you want to proceed? (yes/no)`,
+    });
+    if (!confirm) {
+        logWarning(warnMessage, true);
+        return Promise.reject(`Cancelled by user.`);
+    }
+    logWarning(warnMessage, true);
+};
 export default createTask({
     description: 'Configure current project',
     fn: async ({ ctx, taskName, originTaskName, parentTaskName }) => {
@@ -58,7 +81,7 @@ export default createTask({
         // if (!paths.project.configExists) {
         //     return Promise.reject(`${RnvTaskName.projectConfigure} not supported outside of renative project`);
         // }
-
+        await checkProjectPathSpaces();
         await configurePlatformBuilds();
         await checkAndMigrateProject();
         await updateRenativeConfigs();
