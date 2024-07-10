@@ -162,7 +162,7 @@ export const _runWebDevServer = async (c: RnvContext, enableRemoteDebugger?: boo
         ...EnvVars.PORT(),
         ...EnvVars.WEBPACK_TARGET(),
         ...EnvVars.RNV_EXTERNAL_PATHS(),
-        ...EnvVars.TS_EXCLUDE_SRC_DIRS(),
+        ...EnvVars.WEBPACK_EXCLUDED_PATHS(),
     };
 
     Object.keys(env).forEach((v) => {
@@ -199,7 +199,7 @@ export const buildCoreWebpackProject = async () => {
     const c = getContext();
     const { debug, debugIp } = c.program.opts();
     logDefault('buildCoreWebpackProject');
-    const env: Record<string, any> = {
+    const env: Env = {
         ...CoreEnvVars.BASE(),
         ...CoreEnvVars.RNV_EXTENSIONS(),
         ...EnvVars.RNV_MODULE_CONFIGS(),
@@ -208,7 +208,7 @@ export const buildCoreWebpackProject = async () => {
         ...EnvVars.PORT(),
         ...EnvVars.WEBPACK_TARGET(),
         ...EnvVars.RNV_EXTERNAL_PATHS(),
-        ...EnvVars.TS_EXCLUDE_SRC_DIRS(),
+        ...EnvVars.WEBPACK_EXCLUDED_PATHS(),
     };
     Object.keys(env).forEach((v) => {
         process.env[v] = env[v];

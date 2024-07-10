@@ -1,6 +1,6 @@
 {
     "name": "@rnv/integration-starter",
-    "version": "1.0.0-rc.19",
+    "version": "1.0.0-rc.21",
     "description": "ReNative Example Integration",
     "keywords": [
         "renative",
@@ -30,7 +30,7 @@
     "dependencies": {},
     "devDependencies": {},
     "peerDependencies": {
-        "@rnv/core": "^1.0.0-rc.19"
+        "@rnv/core": "^1.0.0-rc.21"
     },
     "publishConfig": {
         "access": "public"
