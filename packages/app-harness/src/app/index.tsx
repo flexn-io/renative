@@ -156,7 +156,7 @@ const AppContent = () => {
                         <NewModuleButton
                             ref={nativeModuleBtnRef}
                             onFocus={() => setFocusedIndex(0)}
-                            onBlur={() => setFocusedIndex(null)}
+                            onBlur={() => setFocusedIndex((prev) => (prev === 0 ? null : prev))}
                             style={[
                                 styles.button,
                                 { backgroundColor: '#841584' },
@@ -180,7 +180,9 @@ const AppContent = () => {
                                 isWebBased && isFactorTv && { outline: 'none' },
                             ]}
                             onFocus={() => setFocusedIndex(1)}
-                            onBlur={() => setFocusedIndex(null)}
+                            // Sometimes onFocus may work faster than onBlue and setting
+                            // this to null will remove focus from another item
+                            onBlur={() => setFocusedIndex((prev) => (prev === 1 ? null : prev))}
                         >
                             <Text style={styles.buttonTitle}>Toggle Video</Text>
                         </TouchableOpacity>
@@ -203,7 +205,7 @@ const AppContent = () => {
                                 isWebBased && isFactorTv && { outline: 'none' },
                             ]}
                             onFocus={() => setFocusedIndex(2)}
-                            onBlur={() => setFocusedIndex(null)}
+                            onBlur={() => setFocusedIndex((prev) => (prev === 2 ? null : prev))}
                         >
                             <Text style={styles.buttonTitle}>Request permissions</Text>
                         </TouchableOpacity>
@@ -233,7 +235,7 @@ const AppContent = () => {
                                 isWebBased && isFactorTv && { outline: 'none' },
                             ]}
                             onFocus={() => setFocusedIndex(3)}
-                            onBlur={() => setFocusedIndex(null)}
+                            onBlur={() => setFocusedIndex((prev) => (prev === 3 ? null : prev))}
                         >
                             <Text style={styles.buttonTitle}>Show SplashScreen</Text>
                         </TouchableOpacity>
@@ -242,7 +244,7 @@ const AppContent = () => {
                         <PhotoEditorButton
                             ref={photoEditorBtnRef}
                             onFocus={() => setFocusedIndex(4)}
-                            onBlur={() => setFocusedIndex(null)}
+                            onBlur={() => setFocusedIndex((prev) => (prev === 4 ? null : prev))}
                             style={[
                                 styles.button,
                                 focusedIndex === 4 && styles.buttonFocused,
