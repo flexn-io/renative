@@ -15,7 +15,6 @@ import { LoggerProvider, useLoggerContext } from '../context';
 import { NotificationCallback } from '../components/types';
 import { SafeAreaProvider } from '../components/SafeArea';
 import { PhotoEditorButton } from '../components/PhotoEditor';
-import { Player } from '../components/Player';
 
 // import { observe as observeLogBoxLogs, symbolicateLogNow } from 'react-native/Libraries/LogBox/Data/LogBoxData';
 
@@ -250,9 +249,6 @@ const AppContent = () => {
                                 isWebBased && isFactorTv && { outline: 'none' },
                             ]}
                         />
-                    </TestCase>
-                    <TestCase id={9} title="Player">
-                        <Player />
                     </TestCase>
                 </ScrollView>
             </View>

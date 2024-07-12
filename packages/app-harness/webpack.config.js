@@ -4,7 +4,9 @@ const { withRNVWebpack } = require('@rnv/adapter');
 
 module.exports = withRNVWebpack({
     output: {
-        chunkFormat: false,
+        //This allows to build and output a single JS file
+        //https://github.com/flexn-io/renative/issues/1353
+        // chunkFormat: false,
     },
     resolve: {
         alias: {
