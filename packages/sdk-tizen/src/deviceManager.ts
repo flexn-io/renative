@@ -121,13 +121,13 @@ export const listTizenTargets = async () => {
     const emulatorsString = await execCLI(CLI_TIZEN_EMULATOR, 'list-vm');
     const devicesString = await execCLI(CLI_SDB_TIZEN, 'devices');
     const emulatorArr = emulatorsString.split('\n');
-    const deviceArr = devicesString.split('\n');
+    const deviceArr = devicesString.split('\n').slice(1);
     let targetStr = '';
     emulatorArr.forEach((_, i) => {
         targetStr += `[${i}]> ${emulatorArr[i]}\n`;
     });
-    deviceArr.slice(1).forEach((_, i) => {
-        targetStr += `[${i}]> ${emulatorArr[i]}\n`;
+    deviceArr.forEach((_, i) => {
+        targetStr += `[${i}]> ${deviceArr[i]}\n`;
     });
     logToSummary(`Tizen Targets:\n${targetStr}`);
 };
