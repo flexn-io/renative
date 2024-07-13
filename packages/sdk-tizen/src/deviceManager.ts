@@ -123,11 +123,9 @@ export const listTizenTargets = async () => {
     const emulatorArr = emulatorsString.split('\n');
     const deviceArr = devicesString.split('\n').slice(1);
     let targetStr = '';
-    emulatorArr.forEach((_, i) => {
-        targetStr += `[${i}]> ${emulatorArr[i]}\n`;
-    });
-    deviceArr.forEach((_, i) => {
-        targetStr += `[${i}]> ${deviceArr[i]}\n`;
+    const targetArr = emulatorArr.concat(deviceArr);
+    targetArr.forEach((_, i) => {
+        targetStr += `[${i}]> ${targetArr[i]}\n`;
     });
     logToSummary(`Tizen Targets:\n${targetStr}`);
 };
