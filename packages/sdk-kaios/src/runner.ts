@@ -14,6 +14,8 @@ import {
     logError,
     logInfo,
     RnvContext,
+    logSuccess,
+    getAppFolder,
 } from '@rnv/core';
 import { launchKaiOSSimulator } from './deviceManager';
 
@@ -71,10 +73,11 @@ const _configureProject = () =>
 export const runKaiOSProject = async (c: RnvContext) => {
     logDefault('runKaiOSProject');
     const { platform } = c;
-    const { hosted } = c.program.opts();
-
     if (!platform) return;
 
+    const { hosted } = c.program.opts();
+    const { target, isTargetTrue } = c.runtime;
+    const targetToRun = target || isTargetTrue;
     const bundleAssets = getConfigProp('bundleAssets') === true;
     const isHosted = hosted && !bundleAssets;
 
@@ -90,19 +93,19 @@ export const runKaiOSProject = async (c: RnvContext) => {
 
     if (bundleAssets) {
         await buildCoreWebpackProject();
-        await launchKaiOSSimulator(true);
+        await launchKaiOSSimulator(targetToRun);
     } else {
         const isPortActive = await checkPortInUse(c.runtime.port);
         const isWeinreEnabled = REMOTE_DEBUGGER_ENABLED_PLATFORMS.includes(platform) && !bundleAssets && !hosted;
 
         if (!isPortActive) {
             logInfo(
-                `Your ${chalk().bold(platform)} devServer at port ${chalk().bold(
+                `Your ${chalk().bold.white(platform)} devServer at port ${chalk().bold.white(
                     c.runtime.port
                 )} is not running. Starting it up for you...`
             );
             waitForHost('')
-                .then(() => launchKaiOSSimulator(true))
+                .then(() => launchKaiOSSimulator(targetToRun))
                 .catch(logError);
             await runWebpackServer(isWeinreEnabled);
         } else {
@@ -110,11 +113,11 @@ export const runKaiOSProject = async (c: RnvContext) => {
 
             if (resetCompleted) {
                 waitForHost('')
-                    .then(() => launchKaiOSSimulator(true))
+                    .then(() => launchKaiOSSimulator(targetToRun))
                     .catch(logError);
                 await runWebpackServer(isWeinreEnabled);
             } else {
-                await launchKaiOSSimulator(true);
+                await launchKaiOSSimulator(targetToRun);
             }
         }
     }
@@ -123,6 +126,8 @@ export const runKaiOSProject = async (c: RnvContext) => {
 export const buildKaiOSProject = async () => {
     logDefault('buildKaiOSProject');
 
+    const appFolder = getAppFolder();
     await buildCoreWebpackProject();
+    logSuccess(`Your build is located in  ${chalk().cyan(path.join(appFolder, `build`))} .`);
     return true;
 };

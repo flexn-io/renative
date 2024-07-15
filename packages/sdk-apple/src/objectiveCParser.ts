@@ -33,6 +33,8 @@ export const parseAppDelegate = (
         logDefault('parseAppDelegateSync');
         const appDelegateMm = 'AppDelegate.mm';
         const appDelegateH = 'AppDelegate.h';
+        const templateXcode = getConfigProp('templateXcode');
+
         // const entryFile = getEntryFile(c, platform);
 
         // const forceBundle = getGetJsBundleFile(c, platform);
@@ -73,10 +75,10 @@ export const parseAppDelegate = (
         // You can add your custom initial props in the dictionary below.
         // They will be passed down to the ViewController used by React Native.
         self.initialProps = @{};
-        [super application:application didFinishLaunchingWithOptions:launchOptions];
+        bool didFinish=[super application:application didFinishLaunchingWithOptions:launchOptions];
                 `,
                     render: (v) => `${v};`,
-                    end: 'return YES;',
+                    end: 'return didFinish;',
                 },
                 sourceURLForBridge: {
                     isRequired: true,
@@ -177,6 +179,7 @@ export const parseAppDelegate = (
                     end: null,
                 },
             },
+            custom: []
         };
 
         const constructMethod = (lines: Array<string>, method: ObjectiveCMethod) => {
@@ -203,10 +206,10 @@ export const parseAppDelegate = (
         mk.forEach((key) => {
             const method = methods[key];
             const mk2 = Object.keys(method) as Array<ObjectiveCAppDelegateSubKey>;
+
             mk2.forEach((key2) => {
                 const f = method[key2];
-                const lines: Array<PayloadAppDelegateMethod> =
-                    c.payload.pluginConfigiOS.appDelegateMmMethods[key][key2] || [];
+                const lines: Array<PayloadAppDelegateMethod> = c.payload.pluginConfigiOS.appDelegateMmMethods[key][key2] || [];
 
                 const cleanedLines: Record<string, PayloadAppDelegateMethod> = {};
 
@@ -233,6 +236,18 @@ export const parseAppDelegate = (
             c.payload.pluginConfigiOS.pluginAppDelegateMmMethods += constructMethod(v.lines, v.f);
         });
 
+        if (c.payload.pluginConfigiOS.appDelegateMmMethods.custom) {
+            c.payload.pluginConfigiOS.pluginAppDelegateMmMethods += c.payload.pluginConfigiOS.appDelegateMmMethods.custom.join('\n ');
+        }
+
+        // Root renative.json injections
+        injectPluginObjectiveCSync(c, null, '', true);
+
+        if (templateXcode?.AppDelegate_mm?.appDelegateMethods?.custom) {
+            c.payload.pluginConfigiOS.pluginAppDelegateMmMethods += templateXcode.AppDelegate_mm.appDelegateMethods.custom.join('\n ');
+        }
+        // end
+
         const injectsMm = [
             // { pattern: '{{BUNDLE}}', override: bundle },
             // { pattern: '{{ENTRY_FILE}}', override: entryFile },
@@ -252,6 +267,10 @@ export const parseAppDelegate = (
             {
                 pattern: '{{APPDELEGATE_H_IMPORTS}}',
                 override: c.payload.pluginConfigiOS.pluginAppDelegateHImports,
+            },
+            {
+                pattern: '{{APPDELEGATE_H_METHODS}}',
+                override: c.payload.pluginConfigiOS.pluginAppDelegateHMethods ?? '',
             },
             {
                 pattern: '{{APPDELEGATE_H_EXTENSIONS}}',
@@ -281,9 +300,9 @@ export const parseAppDelegate = (
         resolve();
     });
 
-export const injectPluginObjectiveCSync = (c: Context, plugin: ConfigPluginPlatformSchema, key: string) => {
+export const injectPluginObjectiveCSync = (c: Context, plugin: ConfigPluginPlatformSchema | null, key: string, configProp = false) => {
     logDebug(`injectPluginObjectiveCSync:${c.platform}:${key}`);
-    const templateXcode = getFlavouredProp(plugin, 'templateXcode');
+    const templateXcode = configProp ? getConfigProp('templateXcode') : getFlavouredProp(plugin!, 'templateXcode');
     const appDelegateMmImports = templateXcode?.AppDelegate_mm?.appDelegateImports;
 
     if (appDelegateMmImports) {
@@ -293,8 +312,13 @@ export const injectPluginObjectiveCSync = (c: Context, plugin: ConfigPluginPlatf
     //     c.payload.pluginConfigiOS.pluginAppDelegateMethods += `${plugin.appDelegateMethods.join('\n    ')}`;
     // }
     const appDelegateHhImports = templateXcode?.AppDelegate_h?.appDelegateImports;
+
     if (appDelegateHhImports) {
         addAppDelegateImports(c, appDelegateHhImports, 'pluginAppDelegateHImports');
+    }
+    const appDelegateHMethods = templateXcode?.AppDelegate_h?.appDelegateMethods;
+    if (appDelegateHMethods) {
+        c.payload.pluginConfigiOS['pluginAppDelegateHMethods'] += appDelegateHMethods.join('\n ');
     }
     const appDelegateExtensions = templateXcode?.AppDelegate_h?.appDelegateExtensions;
     if (appDelegateExtensions instanceof Array) {
@@ -316,26 +340,30 @@ export const injectPluginObjectiveCSync = (c: Context, plugin: ConfigPluginPlatf
         admk.forEach((delKey) => {
             const apDelMet = appDelegateMethods[delKey];
             if (apDelMet) {
-                const amdk2 = Object.keys(apDelMet) as Array<PayloadAppDelegateSubKey>;
-                amdk2.forEach((key2) => {
-                    const plugArr: Array<ConfigAppDelegateMethod> =
-                        c.payload.pluginConfigiOS.appDelegateMmMethods[delKey][key2];
-                    if (!plugArr) {
-                        logWarning(`appDelegateMethods.${delKey}.${chalk().red(key2)} not supported. SKIPPING.`);
-                    } else {
-                        const plugVal: Array<ConfigAppDelegateMethod> = apDelMet[key2];
-                        if (plugVal) {
-                            plugVal.forEach((v) => {
-                                const isString = typeof v === 'string';
-                                plugArr.push({
-                                    order: isString ? 0 : v?.order || 0,
-                                    value: isString ? v : v?.value,
-                                    weight: isString ? 0 : v?.weight || 0,
+                if (delKey === 'custom' && Array.isArray(apDelMet)) {
+                    c.payload.pluginConfigiOS.appDelegateMmMethods[delKey] = apDelMet;
+                } else {
+                    const amdk2 = Object.keys(apDelMet) as Array<PayloadAppDelegateSubKey>;
+                    amdk2.forEach((key2) => {
+                        const plugArr: Array<ConfigAppDelegateMethod> =
+                            c.payload.pluginConfigiOS.appDelegateMmMethods[delKey][key2];
+                        if (!plugArr) {
+                            logWarning(`appDelegateMethods.${delKey}.${chalk().red(key2)} not supported. SKIPPING.`);
+                        } else {
+                            const plugVal: Array<ConfigAppDelegateMethod> = apDelMet[key2];
+                            if (plugVal) {
+                                plugVal.forEach((v) => {
+                                    const isString = typeof v === 'string';
+                                    plugArr.push({
+                                        order: isString ? 0 : v?.order || 0,
+                                        value: isString ? v : v?.value,
+                                        weight: isString ? 0 : v?.weight || 0,
+                                    });
                                 });
-                            });
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         });
     }

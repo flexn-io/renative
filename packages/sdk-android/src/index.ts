@@ -71,6 +71,8 @@ const RnvModule = createRnvModule({
             splits: '',
             supportLibVersion: '',
             targetSdkVersion: DEFAULTS.targetSdkVersion,
+            settingsGradleInclude: '',
+            settingsGradleProject: '',
         },
     } as Payload,
 });

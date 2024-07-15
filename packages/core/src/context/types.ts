@@ -44,7 +44,6 @@ export type RnvContextProgram<OKey = ProgramOptionsKey> = {
     outputHelp: () => void;
     isHelpInvoked?: boolean;
 };
-
 export type RnvContext<Payload = any, OKey = ProgramOptionsKey> = {
     program: RnvContextProgram<OKey>;
     /**

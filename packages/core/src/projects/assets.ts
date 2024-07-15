@@ -28,9 +28,9 @@ export const copyRuntimeAssets = async () => {
     if (!c.buildConfig?.common) {
         logDebug('BUILD_CONFIG', c.buildConfig);
         logWarning(
-            `Your ${chalk().bold(
+            `Your ${chalk().bold.white(
                 c.paths.appConfig.config
-            )} is misconfigured. (Maybe you have older version?). Missing ${chalk().bold(
+            )} is misconfigured. (Maybe you have older version?). Missing ${chalk().bold.white(
                 '{ common: {} }'
             )} object at root`
         );
@@ -61,7 +61,7 @@ export const copyAssetsFolder = async (
         logInfo(
             `Found custom assetFolderPlatform: ${chalk().green(
                 assetFolderPlatform
-            )}. Will use it instead of deafult ${platform}`
+            )}. Will use it instead of default ${platform}`
         );
     }
 

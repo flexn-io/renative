@@ -28,13 +28,9 @@ export const parseBuildGradleSync = () => {
     const c = getContext();
     const appFolder = getAppFolder();
 
-    let dexOptions = '';
 
-    if (c.payload.pluginConfigAndroid.buildGradleBuildScriptDexOptions) {
-        dexOptions = `dexOptions() {
-            ${c.payload.pluginConfigAndroid.buildGradleBuildScriptDexOptions}
-        }`;
-    }
+    const templateAndroid = getConfigProp('templateAndroid');
+    const buildscript = templateAndroid?.build_gradle?.buildscript;
 
     const injects: OverridesOptions = [
         {
@@ -56,14 +52,6 @@ export const parseBuildGradleSync = () => {
         {
             pattern: '{{BUILD_TOOLS_VERSION}}',
             override: c.payload.pluginConfigAndroid.buildToolsVersion,
-        },
-        {
-            pattern: '{{PLUGIN_INJECT_ALLPROJECTS_REPOSITORIES}}',
-            override: c.payload.pluginConfigAndroid.buildGradleAllProjectsRepositories,
-        },
-        {
-            pattern: '{{PLUGIN_INJECT_BUILDSCRIPT_REPOSITORIES}}',
-            override: c.payload.pluginConfigAndroid.buildGradleBuildScriptRepositories,
         },
         {
             pattern: '{{INJECT_KOTLIN_VERSION}}',
@@ -88,14 +76,6 @@ export const parseBuildGradleSync = () => {
         {
             pattern: '{{INJECT_AFTER_ALL}}',
             override: c.payload.pluginConfigAndroid.buildGradleAfterAll,
-        },
-        {
-            pattern: '{{PLUGIN_INJECT_BUILDSCRIPT_DEPENDENCIES}}',
-            override: c.payload.pluginConfigAndroid.buildGradleBuildScriptDependencies,
-        },
-        {
-            pattern: '{{PLUGIN_INJECT_DEXOPTIONS}}',
-            override: dexOptions,
         },
         {
             pattern: '{{INJECT_REACT_NATIVE_ENGINE}}',
@@ -125,7 +105,28 @@ export const parseBuildGradleSync = () => {
                 doResolve('react-native', true, { forceForwardPaths: true }) || 'react-native'
             }/sdks/hermesc/${currentOs}-bin/hermesc`,
         },
+        {
+            pattern: '{{INJECT_BUILDSCRIPT_EXT}}',
+            override: buildscript?.ext?.join('\n') ?? '',
+        },
+        {
+            pattern: '{{INJECT_BUILDSCRIPT_REPOSITORIES}}',
+            override: buildscript?.repositories?.join('\n') ?? '',
+        },
+        {
+            pattern: '{{INJECT_BUILDSCRIPT_CUSTOM}}',
+            override: buildscript?.custom?.join('\n') ?? '',
+        },
+        {
+            pattern: '{{INJECT_BUILDSCRIPT_DEPENDENCIES}}',
+            override: buildscript?.dependencies?.join('\n') ?? '',
+        },
+        {
+            pattern: '{{INJECT_GRADLE_AFTER_ALL}}',
+            override: templateAndroid?.build_gradle?.injectAfterAll?.join('\n') ?? '',
+        },
     ];
+
     addSystemInjects(injects);
 
     writeCleanFile(getBuildFilePath('build.gradle'), path.join(appFolder, 'build.gradle'), injects, undefined, c);
@@ -287,7 +288,7 @@ def keystoreProps = new Properties()
 keystoreProps.load(new FileInputStream(keystorePropsFile))`;
         } else {
             logWarning(
-                `Your ${chalk().bold(
+                `Your ${chalk().bold.white(
                     keystorePathFull
                 )} does not exist. You won't be able to make production releases without it!`
             );
@@ -297,11 +298,11 @@ keystoreProps.load(new FileInputStream(keystorePropsFile))`;
         if (!keyAlias) missingKeys.push('keyAlias');
         if (!storePassword) missingKeys.push('storePassword');
         if (!keyPassword) missingKeys.push('keyPassword');
-        logWarning(`You defined store file ${chalk().bold(
+        logWarning(`You defined store file ${chalk().bold.white(
             storeFile
         )}, but you are missing following keys: ${chalk().red(missingKeys.join(', '))}
 Check your private files at:
-${chalk().bold(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
+${chalk().bold.white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
     }
 
     // BUILD_TYPES
@@ -523,6 +524,14 @@ export const parseSettingsGradleSync = () => {
             pattern: '{{RN_GRADLE_PROJECT_NAME}}',
             override: c.files.project.config?.projectName?.replace('/', '-'),
         },
+        {
+            pattern: '{{SETTINGS_GRADLE_INCLUDE}}',
+            override: c.payload.pluginConfigAndroid.settingsGradleInclude,
+        },
+        {
+            pattern: '{{SETTINGS_GRADLE_PROJECT}}',
+            override: c.payload.pluginConfigAndroid.settingsGradleProject,
+        },
     ];
 
     addSystemInjects(injects);
@@ -622,6 +631,28 @@ export const injectPluginGradleSync = (pluginRoot: RnvPlugin, plugin: ConfigPlug
         c.payload.pluginConfigAndroid.appBuildGradleImplementations += `${plugin.implementation}\n`;
     }
 
+    // SETTINGS.GRADLE
+    // Make sure values by default are not undefined
+    if (!c.payload.pluginConfigAndroid.settingsGradleInclude) c.payload.pluginConfigAndroid.settingsGradleInclude = '';
+    if (!c.payload.pluginConfigAndroid.settingsGradleProject) c.payload.pluginConfigAndroid.settingsGradleProject = '';
+    // Add the needed injections for the plugin
+    if (plugin.templateAndroid?.settings_gradle) {
+        if (
+            plugin.templateAndroid?.settings_gradle.include &&
+            Array.isArray(plugin.templateAndroid?.settings_gradle.include)
+        )
+            plugin.templateAndroid?.settings_gradle.include.forEach((prjLine: string) => {
+                c.payload.pluginConfigAndroid.settingsGradleInclude += `, ${prjLine}`;
+            });
+        if (
+            plugin.templateAndroid?.settings_gradle.project &&
+            Array.isArray(plugin.templateAndroid?.settings_gradle.project)
+        )
+            plugin.templateAndroid?.settings_gradle.project.forEach((prjLine: string) => {
+                c.payload.pluginConfigAndroid.settingsGradleProject += `${sanitizePluginPath(prjLine, key)}\n`;
+            });
+    }
+
     parseAndroidConfigObject(plugin, key);
 
     if (!skipPathResolutions && pathAbsolute) {
@@ -669,45 +700,10 @@ export const parseAndroidConfigObject = (plugin?: ConfigPluginPlatformSchema, ke
     // BUILD.GRADLE
     const buildGradle = templateAndroid?.build_gradle;
 
-    const allProjRepos = buildGradle?.allprojects?.repositories;
-    if (allProjRepos) {
-        Object.keys(allProjRepos).forEach((k) => {
-            if (allProjRepos[k] === true) {
-                c.payload.pluginConfigAndroid.buildGradleAllProjectsRepositories += `${sanitizePluginPath(k, key)}\n`;
-            }
-        });
-    }
-
     const plugins = buildGradle?.plugins;
     if (plugins?.forEach) {
         plugins.forEach((k) => {
             c.payload.pluginConfigAndroid.buildGradlePlugins += `${k}\n`;
-        });
-    }
-    const buildscriptRepos = buildGradle?.buildscript?.repositories;
-    if (buildscriptRepos) {
-        Object.keys(buildscriptRepos).forEach((k) => {
-            if (buildscriptRepos[k] === true) {
-                c.payload.pluginConfigAndroid.buildGradleBuildScriptRepositories += `${k}\n`;
-            }
-        });
-    }
-
-    const buildscriptDeps = buildGradle?.buildscript?.dependencies;
-    if (buildscriptDeps) {
-        Object.keys(buildscriptDeps).forEach((k) => {
-            if (buildscriptDeps[k] === true) {
-                c.payload.pluginConfigAndroid.buildGradleBuildScriptDependencies += `${k}\n`;
-            }
-        });
-    }
-
-    const buildscriptDexOptions = buildGradle?.dexOptions;
-    if (buildscriptDexOptions) {
-        Object.keys(buildscriptDexOptions).forEach((k) => {
-            if (buildscriptDexOptions[k] === true) {
-                c.payload.pluginConfigAndroid.buildGradleBuildScriptDexOptions += `${k}\n`;
-            }
         });
     }
 

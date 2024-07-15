@@ -1,9 +1,9 @@
-import { DEFAULTS, getConfigProp, logDefault, getContext, inquirerPrompt, chalk } from '@rnv/core';
+import { DEFAULTS, chalk, getConfigProp, getContext, inquirerPrompt, logDefault } from '@rnv/core';
 import axios from 'axios';
 import open from 'better-opn';
 import detectPort from 'detect-port';
 import killPort from 'kill-port';
-import ip from 'ip';
+import os from 'os';
 
 export const confirmActiveBundler = async () => {
     const c = getContext();
@@ -21,7 +21,7 @@ export const confirmActiveBundler = async () => {
         name: 'selectedOption',
         type: 'list',
         choices,
-        warningMessage: `Another ${c.platform} server at port ${chalk().bold(c.runtime.port)} already running`,
+        warningMessage: `Another ${c.platform} server at port ${chalk().bold.white(c.runtime.port)} already running`,
     });
 
     if (choices[0] === selectedOption) {
@@ -125,4 +125,40 @@ export const isUrlLocalhost = (value: string) => {
     return false;
 };
 
-export const getIP = () => ip.address();
+const ipFromLong = (longIp: number) =>
+    `${longIp >>> 24}.${(longIp >> 16) & 255}.${(longIp >> 8) & 255}.${longIp & 255}`;
+
+const isLoopback = (address: string) => {
+    // convert ipv4 ip if it's in a long form
+    if (!/\./.test(address) && !/:/.test(address)) {
+        address = ipFromLong(Number(address));
+    }
+
+    return (
+        /^(::f{4}:)?127\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})/.test(address) ||
+        /^0177\./.test(address) ||
+        /^0x7f\./i.test(address) ||
+        /^fe80::1$/i.test(address) ||
+        /^::1$/.test(address) ||
+        /^::$/.test(address)
+    );
+};
+
+export const getIP = () => {
+    const interfaces = os.networkInterfaces();
+
+    const all = Object.keys(interfaces)
+        .map((netIntInfoKey) => {
+            const addresses = interfaces?.[netIntInfoKey]?.filter((netIntInfo) => {
+                if (netIntInfo.family !== 'IPv4' || isLoopback(netIntInfo.address)) {
+                    return false;
+                }
+                return true;
+            });
+
+            return addresses?.length ? addresses[0].address : undefined;
+        })
+        .filter(Boolean);
+
+    return all.length ? all[0] : '127.0.0.1';
+};

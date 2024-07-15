@@ -89,7 +89,7 @@ export const runWebOS = async (c: RnvContext) => {
 
         if (!isPortActive) {
             logInfo(
-                `Your ${chalk().bold(platform)} devServer at port ${chalk().bold(
+                `Your ${chalk().bold.white(platform)} devServer at port ${chalk().bold.white(
                     c.runtime.port
                 )} is not running. Starting it up for you...`
             );
@@ -133,7 +133,6 @@ export const buildWebOSProject = async () => {
             path.join(getPlatformProjectDir()!, 'splashBackground.png'),
             path.join(tDir, 'splashBackground.png')
         );
-
         await execCLI(CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`);
 
         logSuccess(`Your IPK package is located in ${chalk().cyan(tOut)} .`);

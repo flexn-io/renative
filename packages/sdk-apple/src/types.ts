@@ -37,6 +37,7 @@ export type Payload = {
         pluginAppDelegateMmImports: string;
         pluginAppDelegateMmMethods: string;
         pluginAppDelegateHExtensions: string;
+        pluginAppDelegateHMethods: string;
         pluginAppDelegateHImports: string;
         appDelegateMmMethods: {
             application: {
@@ -57,6 +58,7 @@ export type Payload = {
                 willPresent: Array<PayloadAppDelegateMethod>;
                 didReceiveNotificationResponse: Array<PayloadAppDelegateMethod>;
             };
+            custom: Array<string>;
         };
         podfileSources: string;
         deploymentTarget: string;
@@ -146,6 +148,7 @@ export type ObjectiveCAppDelegate = {
         willPresent: ObjectiveCMethod;
         didReceiveNotificationResponse: ObjectiveCMethod;
     };
+    custom: Array<string>;
 };
 
 export type ObjectiveCAppDelegateSubKey = keyof ObjectiveCAppDelegate['application'] &

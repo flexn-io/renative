@@ -43,7 +43,7 @@
     },
     "templateConfig": {
         "name": "@rnv/template-starter",
-        "version": "1.0.0-rc.18"
+        "version": "1.0.0-rc.21"
     },
     "platforms": {
         "android": {
@@ -68,7 +68,7 @@
                     "org.gradle.configureondemand": true
                 },
                 "MainActivity_kt": {
-                    "onCreate": "super.onCreate(null)"
+                    "onCreate": "super.onCreate(savedInstanceState)"
                 }
             }
         },
@@ -83,7 +83,9 @@
             "minSdkVersion": 21,
             "extendPlatform": "android",
             "engine": "engine-rn-tvos",
-            "includedPermissions": ["INTERNET"]
+            "includedPermissions": [
+                "INTERNET"
+            ]
         },
         "web": {
             "engine": "engine-rn-next"
@@ -91,12 +93,17 @@
         "tvos": {
             "engine": "engine-rn-tvos",
             "schemeTarget": "RNVApp-tvOS",
-            "deploymentTarget": "14.0",
+            "deploymentTarget": "15.5",
             "reactNativeEngine": "hermes"
         },
         "macos": {
             "engine": "engine-rn-electron",
-            "assetFolderPlatform": "electron"
+            "assetFolderPlatform": "electron",
+            "webpackConfig": {
+                "excludedPaths": [
+                    "pages"
+                ]
+            }
         },
         "windows": {
             "engine": "engine-rn-electron",
@@ -104,7 +111,7 @@
         },
         "ios": {
             "engine": "engine-rn",
-            "deploymentTarget": "14.0",
+            "deploymentTarget": "15.5",
             "reactNativeEngine": "hermes"
         }
     },

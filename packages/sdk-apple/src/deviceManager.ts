@@ -193,11 +193,11 @@ export const launchAppleSimulator = async (target: string | boolean) => {
     }
 
     if (selectedDevice) {
-        logInfo(`Launching: ${chalk().bold(selectedDevice.name)} (use -t to use different target)...`);
+        logInfo(`Launching: ${chalk().bold.white(selectedDevice.name)} (use -t to use different target)...`);
         await _launchSimulator(selectedDevice);
         return selectedDevice.name;
     } else if (target !== true && target !== undefined) {
-        logWarning(`Your specified simulator target ${chalk().bold(target)} doesn't exist`);
+        logWarning(`Your specified simulator target ${chalk().bold.white(target)} doesn't exist`);
     }
 
     const devices = devicesArr.map((v) => ({
@@ -253,7 +253,7 @@ const _launchSimulator = async (selectedDevice: AppleDevice) => {
         return Promise.reject(e);
     }
 
-    logSuccess(`Succesfully launched ${selectedDevice.name}`);
+    logSuccess(`successfully launched ${selectedDevice.name}`);
     return true;
 };
 
@@ -264,7 +264,7 @@ export const listAppleDevices = async () => {
     const devicesArr = await getAppleDevices();
     let devicesString = '';
     devicesArr.forEach((v, i) => {
-        devicesString += ` [${i + 1}]> ${chalk().bold(v.name)} | ${v.icon} | v: ${chalk().green(
+        devicesString += ` [${i + 1}]> ${chalk().bold.white(v.name)} | ${v.icon} | v: ${chalk().green(
             v.version
         )} | udid: ${chalk().grey(v.udid)}${v.isDevice ? chalk().red(' (device)') : ''}\n`;
     });

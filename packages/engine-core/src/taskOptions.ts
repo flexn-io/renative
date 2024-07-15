@@ -9,7 +9,8 @@ export const TaskOptions = createTaskOptionsMap([
         description: 'Pass the key/password',
     },
     {
-        key: 'gitEnabled',
+        key: 'git-enabled',
+        altKey: 'gitEnabled',
         description: 'Enable git in your newly created project',
         isValueType: true,
     },
@@ -33,17 +34,20 @@ export const TaskOptions = createTaskOptionsMap([
         description: 'select specific template',
     },
     {
-        key: 'projectName',
+        key: 'project-name',
+        altKey: 'projectName',
         isValueType: true,
         description: 'select the name of the new project',
     },
     {
-        key: 'projectTemplate',
+        key: 'project-template',
+        altKey: 'projectTemplate',
         isValueType: true,
         description: 'select the template of new project',
     },
     {
-        key: 'templateVersion',
+        key: 'template-version',
+        altKey: 'templateVersion',
         isValueType: true,
         description: 'select the template version',
     },
@@ -53,7 +57,8 @@ export const TaskOptions = createTaskOptionsMap([
         description: 'select the title of the app',
     },
     {
-        key: 'appVersion',
+        key: 'app-version',
+        altKey: 'appVersion',
         isValueType: true,
         description: 'select the version of the app',
     },

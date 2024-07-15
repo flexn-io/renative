@@ -64,6 +64,8 @@ const cssModuleRegex = /\.module\.css$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
 
+var tsConfig = fs.readFileSync(paths.appTsConfig, 'utf-8');
+var excludeTs = tsConfig.exclude || [];
 // const hasJsxRuntime = (() => {
 //     if (process.env.DISABLE_NEW_JSX_TRANSFORM === 'true') {
 //         return false;
@@ -676,6 +678,10 @@ module.exports = function (webpackEnv) {
                                 noEmit: true,
                                 incremental: true,
                                 tsBuildInfoFile: paths.appTsBuildInfoFile,
+                                exclude: [
+                                    ...excludeTs,
+                                    ...(process.env.WEBPACK_EXCLUDED_PATHS || '').split(',').map((dir) => `src/${dir}`),
+                                ],
                             },
                         },
                         context: paths.appPath,

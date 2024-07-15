@@ -24,6 +24,7 @@ import bookmarkTemplate from '../questions/bookmarkTemplate';
 import configTemplates from '../questions/configTemplates';
 import projectFolder from '../questions/projectFolder';
 import installProject from '../questions/installProject';
+import inquiryHandlePeerDepsNpm from '../questions/resolvePeerDepsNPM';
 
 jest.mock('@rnv/core');
 jest.mock('lodash/set');
@@ -47,6 +48,7 @@ jest.mock('../questions/projectFolder');
 jest.mock('../questions/installProject');
 jest.mock('../questionHelpers');
 jest.mock('../questions/appConfigs');
+jest.mock('../questions/resolvePeerDepsNPM');
 
 beforeEach(() => {
     createRnvContext();
@@ -113,5 +115,6 @@ describe('taskNew tests', () => {
         expect(configTemplates).toHaveBeenCalled();
         expect(projectFolder).toHaveBeenCalled();
         expect(installProject).toHaveBeenCalled();
+        expect(inquiryHandlePeerDepsNpm).toHaveBeenCalled();
     });
 });

@@ -189,7 +189,7 @@ export const generateProjectOverview = (data: NewProjectData) => {
   Enabled Platforms: ${highlight((inputs.supportedPlatforms || []).join(', '))}
   -------------------------
   ${chalk().green('✔ Your project is ready!')} Run it with:
-${chalk().bold(`
+${chalk().bold.white(`
   cd ${inputs.projectFolderName}${installAddon}
   npx rnv run`)}`;
 

@@ -26,7 +26,7 @@ export const packageReactNativeAndroid = async () => {
     const bundleAssets = getConfigProp('bundleAssets') === true;
 
     if (!bundleAssets && platform !== 'androidwear') {
-        logInfo(`bundleAssets in scheme ${chalk().bold(c.runtime.scheme)} marked false. SKIPPING PACKAGING...`);
+        logInfo(`bundleAssets in scheme ${chalk().bold.white(c.runtime.scheme)} marked false. SKIPPING PACKAGING...`);
         return true;
     }
 
@@ -95,8 +95,12 @@ export const runReactNativeAndroid = async (device: { udid?: string } | undefine
     const appFolder = getAppFolder();
 
     const udid = device?.udid;
+    // On Windows npx does not always resolve correct path, hence we manually resolve it here
+    // https://github.com/flexn-io/renative/issues/1409#issuecomment-2095531486
+    const reactNativeCmnd = `node  ${path.join(path.dirname(require.resolve('react-native')), 'cli.js')}`;
+    // const reactNativeCmnd =  'npx react-native';
 
-    let command = `npx react-native run-android --mode=${signingConfig} --no-packager --main-activity=${
+    let command = `${reactNativeCmnd} run-android --mode=${signingConfig} --no-packager --main-activity=${
         platform === 'androidwear' ? 'MainActivity' : 'SplashActivity'
     }`;
 
@@ -126,8 +130,12 @@ export const buildReactNativeAndroid = async () => {
     const signingConfig = getConfigProp('signingConfig') || DEFAULTS.signingConfig;
     const outputAab = getConfigProp('aab');
     const extraGradleParams = getConfigProp('extraGradleParams') || '';
+    // On Windows npx does not always resolve correct path, hence we manually resolve it here
+    // https://github.com/flexn-io/renative/issues/1409#issuecomment-2095531486
+    const reactNativeCmnd = `node  ${path.join(path.dirname(require.resolve('react-native')), 'cli.js')}`;
+    // const reactNativeCmnd =  'npx react-native';
 
-    let command = `npx react-native build-android --mode=${signingConfig} --tasks ${
+    let command = `${reactNativeCmnd} build-android --mode=${signingConfig} --tasks ${
         outputAab ? 'bundle' : 'assemble'
     }${signingConfig}`;
 

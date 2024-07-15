@@ -46,9 +46,9 @@ export const runWebNext = async () => {
 
     if (!isPortActive) {
         logInfo(
-            `Your ${chalk().bold(platform)} devServerHost ${chalk().bold(devServerHost)} at port ${chalk().bold(
-                port
-            )} is not running. Starting it up for you...`
+            `Your ${chalk().bold.white(platform)} devServerHost ${chalk().bold.white(
+                devServerHost
+            )} at port ${chalk().bold.white(port)} is not running. Starting it up for you...`
         );
         await _runWebBrowser(devServerHost, port, false);
 
@@ -104,7 +104,11 @@ export const buildWebNext = async () => {
     const c = getContext();
     logDefault('buildWebNext');
 
-    await executeAsync('npx next build', {
+    // On Windows npx does not always resolve correct path, hence we manually resolve it here
+    // https://github.com/flexn-io/renative/issues/1409#issuecomment-2095531486
+    const nextCmnd = `node ${path.join(path.dirname(require.resolve('next/package.json')), 'dist', 'bin', 'next')}`;
+    // const nextCmnd = 'npx next';
+    await executeAsync(`${nextCmnd} build`, {
         env: {
             ...CoreEnvVars.BASE(),
             ...CoreEnvVars.RNV_EXTENSIONS(),
@@ -130,7 +134,13 @@ Dev server running at: ${url}
     const opts = !c.program?.opts()?.json
         ? ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER
         : ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY;
-    return executeAsync(`npx next ${bundleAssets ? 'start' : 'dev'} --port ${c.runtime.port}`, {
+
+    // On Windows npx does not always resolve correct path, hence we manually resolve it here
+    // https://github.com/flexn-io/renative/issues/1409#issuecomment-2095531486
+    const nextCmnd = `node ${path.join(path.dirname(require.resolve('next/package.json')), 'dist', 'bin', 'next')}`;
+    // const nextCmnd = 'npx next';
+
+    return executeAsync(`${nextCmnd} ${bundleAssets ? 'start' : 'dev'} --port ${c.runtime.port}`, {
         env: {
             ...CoreEnvVars.BASE(),
             ...CoreEnvVars.RNV_EXTENSIONS(),
@@ -148,7 +158,12 @@ export const exportWebNext = async () => {
 
     const exportDir = getExportDir(c);
 
-    await executeAsync(`npx next build`, {
+    // On Windows npx does not always resolve correct path, hence we manually resolve it here
+    // https://github.com/flexn-io/renative/issues/1409#issuecomment-2095531486
+    const nextCmnd = `node ${path.join(path.dirname(require.resolve('next/package.json')), 'dist', 'bin', 'next')}`;
+    // const nextCmnd = 'npx next';
+
+    await executeAsync(`${nextCmnd} build`, {
         env: {
             ...CoreEnvVars.BASE(),
             ...CoreEnvVars.RNV_EXTENSIONS(),

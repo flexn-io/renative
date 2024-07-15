@@ -18,6 +18,7 @@ import {
     logInfo,
     mkdirSync,
     readObjectSync,
+    writeFileSync,
 } from '@rnv/core';
 import type { NewProjectData, TemplateOption } from '../types';
 import path from 'path';
@@ -38,7 +39,6 @@ const mergeIntoProjectPackage = (data: NewProjectData, updateObj: NpmPackageFile
 
 const Question = async (data: NewProjectData) => {
     const { inputs, defaults, files } = data;
-
     const customTemplate: TemplateOption = { name: 'Custom Template (npm)...', value: { type: 'custom' } };
     const localTemplate: TemplateOption = { name: 'Local Template...', value: { type: 'local' } };
     const noTemplate: TemplateOption = { name: 'No Template (blank project)', value: { type: 'none' } };
@@ -116,6 +116,12 @@ const Question = async (data: NewProjectData) => {
         if (!fsExistsSync(localTemplatePath)) {
             return Promise.reject(`Local template path ${localTemplatePath} does not exist`);
         }
+        const templateConfigPath = path.join(localTemplatePath, RnvFileName.renativeTemplate);
+        if (!fsExistsSync(templateConfigPath)) {
+            return Promise.reject(
+                `Renative template config path ${templateConfigPath} does not exist. Are you sure the path provided is a correct template folder?`
+            );
+        }
         const localTemplatePkgPath = path.join(localTemplatePath, RnvFileName.package);
         if (!fsExistsSync(localTemplatePath)) {
             return Promise.reject(`Local template package ${localTemplatePkgPath} does not exist`);
@@ -162,11 +168,21 @@ const Question = async (data: NewProjectData) => {
             }
         });
 
+        const copiedlocalTemplatePath = `${RnvFolderName.dotRnv}/${RnvFolderName.npmCache}/${inputs.template.packageName}`;
+
+        if (!isYarnInstalled()) {
+            const localPackageFilePath = path.join(`${copiedlocalTemplatePath}`, 'package.json');
+            const localPackageFile = readObjectSync<NpmPackageFile>(localPackageFilePath);
+            if (localPackageFile) {
+                delete localPackageFile.devDependencies;
+                writeFileSync(localPackageFilePath, localPackageFile);
+            }
+        }
+        // NOTE: this is a workaround for npm/yarn bug where manually added packages are overriden on next install
+        const filePath = `file:${copiedlocalTemplatePath}`;
         if (!inputs.template.packageName) {
             return;
         }
-        // NOTE: this is a workaround for npm/yarn bug where manually added packages are overriden on next install
-        const filePath = `file:${RnvFolderName.dotRnv}/${RnvFolderName.npmCache}/${inputs.template.packageName}`;
         mergeIntoProjectPackage(data, {
             devDependencies: {
                 [inputs.template?.packageName]: filePath,
@@ -179,6 +195,7 @@ const Question = async (data: NewProjectData) => {
             },
         });
         await saveProgressIntoProjectConfig(data);
+
         await executeAsync(`${isYarnInstalled() ? 'yarn' : 'npm install'}`, {
             cwd: c.paths.project.dir,
         });

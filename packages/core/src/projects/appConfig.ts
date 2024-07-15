@@ -16,7 +16,6 @@ export const copyBuildsFolder = () =>
 
         const destPath = path.join(getAppFolder());
         const tsPathsConfig = getTimestampPathsConfig();
-
         generateConfigPropInjects();
         const allInjects = [...c.configPropsInjects, ...c.systemPropsInjects, ...c.runtimePropsInjects];
 

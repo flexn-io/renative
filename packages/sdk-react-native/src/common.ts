@@ -124,7 +124,7 @@ export const configureFontSources = async () => {
                     const fontFolder = fontSource.split('/').slice(0, -1).join('/');
                     fontFolders.add(fontFolder);
                 } else {
-                    logWarning(`Font ${chalk().bold(fontSource)} doesn't exist! Skipping.`);
+                    logWarning(`Font ${chalk().bold.white(fontSource)} doesn't exist! Skipping.`);
                 }
             }
         }

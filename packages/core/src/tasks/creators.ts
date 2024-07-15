@@ -11,7 +11,11 @@ type TaskOptionsMap<OKey> = Record<Extract<OKey, string>, RnvTaskOption<OKey>>;
 export const createTaskOptionsMap = <OKey>(opts: ReadonlyArray<RnvTaskOption<OKey>>) => {
     const map: Partial<TaskOptionsMap<OKey>> = {};
     opts.forEach((opt) => {
-        map[opt.key] = opt;
+        if (opt.altKey) {
+            map[opt.altKey] = opt;
+        } else {
+            map[opt.key] = opt;
+        }
     });
     return map as TaskOptionsMap<OKey>;
 };

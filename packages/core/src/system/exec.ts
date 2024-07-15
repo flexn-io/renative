@@ -275,13 +275,13 @@ const execCLI = (cli: string, command: string, opts: ExecOptions = {}) => {
             c.buildConfig?.sdks
         );
         return Promise.reject(
-            `Location of your cli ${chalk().bold(p)} does not exists. check your ${chalk().bold(
+            `Location of your cli ${chalk().bold.white(p)} does not exists. check your ${chalk().bold.white(
                 c.paths.workspace.config
-            )} file if your ${chalk().bold('sdks')} paths are correct`
+            )} file if your ${chalk().bold.white('sdks')} paths are correct`
         );
     }
 
-    return _execute(c, `${p} ${command}`, { ...opts, shell: true });
+    return _execute(c, `"${p}" ${command}`, { ...opts, shell: true });
 };
 
 /**
@@ -499,7 +499,9 @@ const commandExistsUnixSync = (commandName: string, cleanedCommandName: string) 
     if (fileNotExistsSync(commandName)) {
         try {
             const stdout = execSync(
-                `command -v ${cleanedCommandName} 2>/dev/null` + ` && { echo >&1 ${cleanedCommandName}; exit 0; }`
+                `command -v ${cleanedCommandName} 2>/dev/null` +
+                    `&& ${cleanedCommandName} --version 2>/dev/null` +
+                    ` && { echo >&1 ${cleanedCommandName}; exit 0; }`
             );
             return !!stdout;
         } catch (error) {

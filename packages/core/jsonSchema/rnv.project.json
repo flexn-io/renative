@@ -858,22 +858,6 @@
                           "build_gradle": {
                             "type": "object",
                             "properties": {
-                              "allprojects": {
-                                "type": "object",
-                                "properties": {
-                                  "repositories": {
-                                    "type": "object",
-                                    "additionalProperties": {
-                                      "type": "boolean"
-                                    },
-                                    "description": "Customize repositories section of build.gradle"
-                                  }
-                                },
-                                "required": [
-                                  "repositories"
-                                ],
-                                "additionalProperties": false
-                              },
                               "plugins": {
                                 "type": "array",
                                 "items": {
@@ -884,29 +868,37 @@
                                 "type": "object",
                                 "properties": {
                                   "repositories": {
-                                    "type": "object",
-                                    "additionalProperties": {
-                                      "type": "boolean"
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
                                     }
                                   },
                                   "dependencies": {
-                                    "type": "object",
-                                    "additionalProperties": {
-                                      "type": "boolean"
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "ext": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "custom": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
                                     }
                                   }
                                 },
                                 "required": [
                                   "repositories",
-                                  "dependencies"
+                                  "dependencies",
+                                  "ext",
+                                  "custom"
                                 ],
                                 "additionalProperties": false
-                              },
-                              "dexOptions": {
-                                "type": "object",
-                                "additionalProperties": {
-                                  "type": "boolean"
-                                }
                               },
                               "injectAfterAll": {
                                 "type": "array",
@@ -1216,7 +1208,24 @@
                           },
                           "settings_gradle": {
                             "type": "object",
-                            "properties": {},
+                            "properties": {
+                              "include": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "project": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "required": [
+                              "include",
+                              "project"
+                            ],
                             "additionalProperties": false
                           },
                           "gradle_wrapper_properties": {
@@ -1686,6 +1695,63 @@
                       "firebaseId": {
                         "type": "string"
                       },
+                      "privacyManifests": {
+                        "type": "object",
+                        "properties": {
+                          "NSPrivacyAccessedAPITypes": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "NSPrivacyAccessedAPIType": {
+                                  "type": "string",
+                                  "enum": [
+                                    "NSPrivacyAccessedAPICategorySystemBootTime",
+                                    "NSPrivacyAccessedAPICategoryDiskSpace",
+                                    "NSPrivacyAccessedAPICategoryActiveKeyboards",
+                                    "NSPrivacyAccessedAPICategoryUserDefaults"
+                                  ]
+                                },
+                                "NSPrivacyAccessedAPITypeReasons": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "enum": [
+                                      "DDA9.1",
+                                      "C617.1",
+                                      "3B52.1",
+                                      "0A2A.1",
+                                      "35F9.1",
+                                      "8FFB.1",
+                                      "3D61.1",
+                                      "85F4.1",
+                                      "E174.1",
+                                      "7D9E.1",
+                                      "B728.1",
+                                      "3EC4.1",
+                                      "54BD.1",
+                                      "CA92.1",
+                                      "1C8F.1",
+                                      "C56D.1",
+                                      "AC6B.1"
+                                    ]
+                                  }
+                                }
+                              },
+                              "required": [
+                                "NSPrivacyAccessedAPIType",
+                                "NSPrivacyAccessedAPITypeReasons"
+                              ],
+                              "additionalProperties": false,
+                              "description": "Official apple documentation https://developer.apple.com/documentation/bundleresources/privacy_manifest_files/describing_use_of_required_reason_api"
+                            }
+                          }
+                        },
+                        "required": [
+                          "NSPrivacyAccessedAPITypes"
+                        ],
+                        "additionalProperties": false
+                      },
                       "exportOptions": {
                         "type": "object",
                         "properties": {
@@ -1918,6 +1984,12 @@
                                       }
                                     },
                                     "additionalProperties": false
+                                  },
+                                  "custom": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
                                   }
                                 },
                                 "additionalProperties": false
@@ -1941,6 +2013,12 @@
                                 }
                               },
                               "appDelegateExtensions": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "appDelegateMethods": {
                                 "type": "array",
                                 "items": {
                                   "type": "string"
@@ -2164,6 +2242,9 @@
                 "firebaseId": {
                   "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/buildSchemes/additionalProperties/properties/firebaseId"
                 },
+                "privacyManifests": {
+                  "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/buildSchemes/additionalProperties/properties/privacyManifests"
+                },
                 "exportOptions": {
                   "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/buildSchemes/additionalProperties/properties/exportOptions"
                 },
@@ -2311,6 +2392,13 @@
                               "type": "string"
                             },
                             "description": "Allows you to inject custom script into html header"
+                          },
+                          "excludedPaths": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "description": "Allows to specify files or directories in the src folder that webpack should ignore when bundling code."
                           }
                         },
                         "additionalProperties": false
@@ -3173,6 +3261,9 @@
                       "firebaseId": {
                         "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/buildSchemes/additionalProperties/properties/firebaseId"
                       },
+                      "privacyManifests": {
+                        "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/buildSchemes/additionalProperties/properties/privacyManifests"
+                      },
                       "exportOptions": {
                         "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/buildSchemes/additionalProperties/properties/exportOptions"
                       },
@@ -3210,6 +3301,9 @@
                         },
                         "additionalProperties": false,
                         "description": "Allows you to configure electron wrapper app window"
+                      },
+                      "webpackConfig": {
+                        "$ref": "#/definitions/rnv.project/properties/platforms/properties/tizen/properties/buildSchemes/additionalProperties/properties/webpackConfig"
                       }
                     },
                     "additionalProperties": false
@@ -3417,6 +3511,9 @@
                 "firebaseId": {
                   "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/buildSchemes/additionalProperties/properties/firebaseId"
                 },
+                "privacyManifests": {
+                  "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/buildSchemes/additionalProperties/properties/privacyManifests"
+                },
                 "exportOptions": {
                   "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/buildSchemes/additionalProperties/properties/exportOptions"
                 },
@@ -3434,6 +3531,9 @@
                 "BrowserWindow": {
                   "$ref": "#/definitions/rnv.project/properties/platforms/properties/macos/properties/buildSchemes/additionalProperties/properties/BrowserWindow",
                   "description": "Allows you to configure electron wrapper app window"
+                },
+                "webpackConfig": {
+                  "$ref": "#/definitions/rnv.project/properties/platforms/properties/tizen/properties/buildSchemes/additionalProperties/properties/webpackConfig"
                 }
               },
               "additionalProperties": false
@@ -3667,6 +3767,9 @@
                           }
                         },
                         "additionalProperties": false
+                      },
+                      "webpackConfig": {
+                        "$ref": "#/definitions/rnv.project/properties/platforms/properties/tizen/properties/buildSchemes/additionalProperties/properties/webpackConfig"
                       }
                     },
                     "additionalProperties": false
@@ -3800,6 +3903,9 @@
                 },
                 "templateVSProject": {
                   "$ref": "#/definitions/rnv.project/properties/platforms/properties/windows/properties/buildSchemes/additionalProperties/properties/templateVSProject"
+                },
+                "webpackConfig": {
+                  "$ref": "#/definitions/rnv.project/properties/platforms/properties/tizen/properties/buildSchemes/additionalProperties/properties/webpackConfig"
                 }
               },
               "additionalProperties": false

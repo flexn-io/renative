@@ -300,7 +300,9 @@ export const runTizenSimOrDevice = async () => {
 
     if (!appName) {
         throw new Error(
-            `runTizen: ${chalk().grey(platform)}.appName not defined in your ${chalk().bold(c.paths.appConfig.config)}`
+            `runTizen: ${chalk().grey(platform)}.appName not defined in your ${chalk().bold.white(
+                c.paths.appConfig.config
+            )}`
         );
     }
 

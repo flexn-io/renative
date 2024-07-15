@@ -44,40 +44,41 @@ export const cleanPlatformBuild = async (platform: RnvPlatform, cleanAllPlatform
 };
 
 export const createPlatformBuild = async (platform: RnvPlatform) => {
-        logDefault('createPlatformBuild');
-        const c = getContext();
-        if(!platform) return;
-        const isPlatformSupported = await _isPlatformSupported(platform, true);
-        if(!isPlatformSupported) return;
+    logDefault('createPlatformBuild');
+    const c = getContext();
+    if (!platform) return;
+    const isPlatformSupported = await _isPlatformSupported(platform, true);
+    if (!isPlatformSupported) return;
 
-        const ptDir = c.paths.project.platformTemplatesDirs[platform];
-        if (!ptDir) {
-            // this was a logError('Cannot create platform ...') before. Shouldn't it be a reject?
-            return Promise.reject(`Cannot create platform build: c.paths.project.platformTemplatesDirs[${platform}] is not defined`);
-        }
-
-        const pPath = getAppFolder();
-        const ptPath = path.join(ptDir, `${platform}`);
-
-        copyFolderContentsRecursiveSync(
-            ptPath,
-            pPath,
-            false,
-            [path.join(ptPath, '_privateConfig')],
-            false,
-            [
-                {
-                    pattern: '{{PATH_REACT_NATIVE}}',
-                    override:
-                        doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native', true, {
-                            forceForwardPaths: true,
-                        }) || '',
-                },
-            ],
-            getTimestampPathsConfig(),
-            c
+    const ptDir = c.paths.project.platformTemplatesDirs[platform];
+    if (!ptDir) {
+        // this was a logError('Cannot create platform ...') before. Shouldn't it be a reject?
+        return Promise.reject(
+            `Cannot create platform build: c.paths.project.platformTemplatesDirs[${platform}] is not defined`
         );
+    }
 
+    const pPath = getAppFolder();
+    const ptPath = path.join(ptDir, `${platform}`);
+
+    copyFolderContentsRecursiveSync(
+        ptPath,
+        pPath,
+        false,
+        [path.join(ptPath, '_privateConfig')],
+        false,
+        [
+            {
+                pattern: '{{PATH_REACT_NATIVE}}',
+                override:
+                    doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native', true, {
+                        forceForwardPaths: true,
+                    }) || '',
+            },
+        ],
+        getTimestampPathsConfig(),
+        c
+    );
 };
 
 const _isPlatformSupported = async (platform: RnvPlatform, shouldResolve?: boolean) => {
@@ -102,16 +103,27 @@ const _isPlatformSupported = async (platform: RnvPlatform, shouldResolve?: boole
             message: `Platform ${platform} is not supported in your project. Would you like to enable it?`,
         });
 
-        if(!enablePlatform) return false;
-        console.log('old:')
+        if (!enablePlatform) return false;
+        console.log('old:');
         console.log(c.runtime.availablePlatforms);
         console.log('new:');
         console.log([...c.runtime.availablePlatforms, platform]);
         updateProjectPlatforms([...c.runtime.availablePlatforms, platform]);
         generatePlatformTemplatePaths();
-        console.log('good?')
+        console.log('good?');
 
         return true;
+        // TODO. Release 1.0 changes
+        // if (reject) {
+        //     reject(
+        //         chalk().red(
+        //             `Platform ${platform} is not supported. Use one of the following: ${chalk().bold.white(
+        //                 c.runtime.availablePlatforms.join(', ')
+        //             )} .`
+        //         )
+        //     );
+        // }
+        // return false;
     }
     return true;
 };
@@ -122,7 +134,9 @@ export const isPlatformActive = (resolve?: () => void) => {
 
     if (!c.buildConfig || !c.buildConfig.platforms) {
         logError(
-            `Your appConfigFile is not configured properly! check ${chalk().bold(c.paths.appConfig.config)} location.`
+            `Your appConfigFile is not configured properly! check ${chalk().bold.white(
+                c.paths.appConfig.config
+            )} location.`
         );
         if (resolve) resolve();
         return false;

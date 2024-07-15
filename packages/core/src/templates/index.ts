@@ -99,9 +99,9 @@ const _applyTemplate = async (c: RnvContext) => {
     }
     if (!fsExistsSync(c.paths.template.configTemplate)) {
         logWarning(
-            `Template file ${chalk().bold(c.paths.template.configTemplate)} does not exist. check your ${chalk().bold(
-                c.paths.template.dir
-            )}. skipping`
+            `Template file ${chalk().bold.white(
+                c.paths.template.configTemplate
+            )} does not exist. check your ${chalk().bold.white(c.paths.template.dir)}. skipping`
         );
         return true;
     }
@@ -139,10 +139,10 @@ const _copyIncludedPaths = (c: RnvContext, name: string) => {
     if (!fsExistsSync(destPath) && fsExistsSync(sourcePath)) {
         try {
             if (fsLstatSync(sourcePath).isDirectory()) {
-                logInfo(`Missing directory ${chalk().bold(`${destPath}.js`)}. COPYING from TEMPATE...DONE`);
+                logInfo(`Missing directory ${chalk().bold.white(`${destPath}.js`)}. COPYING from TEMPLATE...DONE`);
                 copyFolderContentsRecursiveSync(sourcePath, destPath);
             } else {
-                logInfo(`Missing file ${chalk().bold(`${destPath}.js`)}. COPYING from TEMPATE...DONE`);
+                logInfo(`Missing file ${chalk().bold.white(`${destPath}.js`)}. COPYING from TEMPLATE...DONE`);
                 copyFileSync(sourcePath, destPath);
             }
         } catch (e) {

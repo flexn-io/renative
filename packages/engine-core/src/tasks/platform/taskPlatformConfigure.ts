@@ -35,9 +35,9 @@ export default createTask({
         if (!fsExistsSync(dest)) {
             if (!entryFile) {
                 logWarning(
-                    `Missing ${chalk().red(entryFile)} key for ${chalk().bold(
+                    `Missing ${chalk().red(entryFile)} key for ${chalk().bold.white(
                         ctx.platform
-                    )} platform in your ${chalk().bold(ctx.paths.appConfig.config)}.`
+                    )} platform in your ${chalk().bold.white(ctx.paths.appConfig.config)}.`
                 );
             }
         }
@@ -57,7 +57,7 @@ export default createTask({
 
         if ((program.opts().reset || program.opts().resetHard) && !ctx.runtime.disableReset) {
             logInfo(
-                `You passed ${chalk().bold(program.opts().reset ? '-r' : '-R')} argument. "${chalk().bold(
+                `You passed ${chalk().bold.white(program.opts().reset ? '-r' : '-R')} argument. "${chalk().bold.white(
                     getAppFolder()
                 )}" CLEANING...DONE`
             );

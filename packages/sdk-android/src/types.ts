@@ -6,6 +6,8 @@ export type Payload = {
         injectReactNativeEngine: string;
         injectActivityOnCreate: string;
         appBuildGradleImplementations: string;
+        settingsGradleInclude: string;
+        settingsGradleProject: string;
         pluginApplicationImports: string;
         reactNativeHostMethods: string;
         packagingOptions: string;
@@ -23,12 +25,9 @@ export type Payload = {
         kotlinVersion: string;
         pluginIncludes: string;
         pluginPaths: string;
-        buildGradleBuildScriptDexOptions: string;
         gradleBuildToolsVersion: string;
         supportLibVersion: string;
         buildToolsVersion: string;
-        buildGradleAllProjectsRepositories: string;
-        buildGradleBuildScriptRepositories: string;
         googleServicesVersion: string;
         pluginActivityImports: string;
         buildGradlePlugins: string;

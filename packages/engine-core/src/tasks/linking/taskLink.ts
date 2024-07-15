@@ -28,7 +28,7 @@ const _linkPackage = (pkg: LinkablePackage) => {
         logInfo(`${pkg.name} is set to skip linking. SKIPPING`);
     } else if (pkg.nmPathExists) {
         if (pkg.unlinkedPathExists) {
-            logInfo(`${pkg.name} found in exisitng cache. Removing and relinking...`);
+            logInfo(`${pkg.name} found in existing cache. Removing and relinking...`);
             removeDirSync(pkg.unlinkedPath);
         }
         mkdirSync(pkg.unlinkedPath);
@@ -54,7 +54,7 @@ export default createTask({
         const choices: { name: string; value: LinkablePackage }[] = [];
 
         linkablePackages.forEach((pkg) => {
-            const title = `${pkg.nmPath.replace(pkg.name, chalk().bold(pkg.name))} ${
+            const title = `${pkg.nmPath.replace(pkg.name, chalk().bold.white(pkg.name))} ${
                 pkg.isBrokenLink ? chalk().red('(broken)') : pkg.isLinked ? chalk().green('(linked)') : '(unlinked)'
             }\n`;
 
