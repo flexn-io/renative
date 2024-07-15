@@ -298,7 +298,7 @@ const applyOverridePatch = (ov: Override) => {
     fs.unlinkSync(tempPath);
 };
 
-const promptPlugin = async (ov: Override) => {
+const promptOverride = async (ov: Override) => {
     if (ov.kind === 'matching') return;
     console.clear();
     console.log(getOverrideSummary(ov));
@@ -361,7 +361,7 @@ export const comparePluginOverrides = async () => {
         process.stdout.write('[r]eview  [A]pply all  [q]uit ');
         const key = await getKeyPress();
         if (key === 'r') {
-            for (const ov of overrides) await promptPlugin(ov);
+            for (const ov of overrides) await promptOverride(ov);
             process.exit(0);
         } else if (key === 'A') {
             for (const ov of overrides) {
