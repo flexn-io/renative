@@ -236,7 +236,7 @@ const diffPluginOverrides = ({
                 paths,
                 ourPluginPath,
                 incomingPluginPath,
-                usedVersion: getContext().files.scopedConfigTemplates['rnv']?.pluginTemplates?.[pluginName]?.version,
+                ourUsedVersion: getContext().files.scopedConfigTemplates['rnv']?.pluginTemplates?.[pluginName]?.version,
                 ...(difference && !paths.some(({ ourPath }) => fs.existsSync(ourPath))
                     ? { kind: 'new', difference, matchesOurVersions: findMatchingVersions() }
                     : difference
