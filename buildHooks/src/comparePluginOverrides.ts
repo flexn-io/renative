@@ -1,3 +1,5 @@
+// npx rnv hooks run -x comparePluginOverrides ./packages/config-templates/pluginTemplates ~/other-project/packages/orchestra-plugins/pluginTemplates
+
 import { chalk, getContext } from '@rnv/core';
 import execa from 'execa';
 import fs, { mkdirSync } from 'fs';
@@ -49,9 +51,17 @@ const getKeyPress = (): Promise<string> => {
         process.stdin.once('data', (data) => {
             process.stdin.pause();
             process.stdin.setRawMode(false);
+            process.stdout.clearLine(0);
+            process.stdout.cursorTo(0);
             resolve(data.toString());
         });
     });
+};
+
+const chalks = {
+    matching: chalk().bold,
+    different: chalk().bold.magenta,
+    new: chalk().bold.green,
 };
 
 const getGitLog = (paths: string[]): GitLogItem[] =>
@@ -237,29 +247,22 @@ const diffPluginOverrides = ({
                 ourPluginPath,
                 incomingPluginPath,
                 ourUsedVersion: getContext().files.scopedConfigTemplates['rnv']?.pluginTemplates?.[pluginName]?.version,
-                ...(difference && !paths.some(({ ourPath }) => fs.existsSync(ourPath))
-                    ? { kind: 'new', difference, matchesOurVersions: findMatchingVersions() }
-                    : difference
+                ...(!difference
+                    ? { kind: 'matching' }
+                    : paths.some(({ ourPath }) => fs.existsSync(ourPath))
                     ? { kind: 'different', difference }
-                    : { kind: 'matching' }),
+                    : { kind: 'new', difference, matchesOurVersions: findMatchingVersions() }),
             };
         }) ?? []
     );
 };
 
 const getOverrideSummary = (ov: Override) => {
-    let headline = `${ov.pluginName}${ov.version ? `@${ov.version}` : ''} ${ov.kind}`;
-    if (ov.kind === 'new') {
-        headline = chalk().bold.green(headline);
-        if (ov.matchesOurVersions?.length) {
-            headline = `${headline}, but same as our ${ov.matchesOurVersions
-                .map((ourVersion) => (ourVersion ? `@${ourVersion}` : 'versionless'))
-                .join(', ')}`;
-        }
-    } else if (ov.kind === 'different') {
-        headline = chalk().bold.magenta(headline);
-    } else if (ov.kind === 'matching') {
-        headline = chalk().bold(headline);
+    let headline = chalks[ov.kind](`${ov.pluginName}${ov.version ? `@${ov.version}` : ''} ${ov.kind}`);
+    if (ov.kind === 'new' && ov.matchesOurVersions?.length) {
+        headline = `${headline}, but same as our ${ov.matchesOurVersions
+            .map((ourVersion) => (ourVersion ? `@${ourVersion}` : 'versionless'))
+            .join(', ')}`;
     }
     const difference = ov.kind === 'matching' ? undefined : ov.difference;
     return [
@@ -284,9 +287,20 @@ const showOverrideDiff = (ov: Override) => {
     fs.unlinkSync(tempPath);
 };
 
-const promptPlugin = async (ov: Override) => {
-    console.clear();
+const applyOverridePatch = (ov: Override) => {
     if (ov.kind === 'matching') return;
+    fs.mkdirSync(ov.ourPluginPath, { recursive: true });
+    const tempPath = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'rnv-plugins-script-')), 'plugin.patch');
+    fs.writeFileSync(tempPath, ov.difference.patch);
+    execa.sync('patch', ['--version-control', 'none', '--strip', '1', '--remove-empty-files', '--input', tempPath], {
+        cwd: ov.ourPluginPath,
+    });
+    fs.unlinkSync(tempPath);
+};
+
+const promptPlugin = async (ov: Override) => {
+    if (ov.kind === 'matching') return;
+    console.clear();
     console.log(getOverrideSummary(ov));
     showOverrideDiff(ov);
     console.log();
@@ -294,47 +308,27 @@ const promptPlugin = async (ov: Override) => {
         process.stdout.write('[a]ccept  [v]iew  [s]kip  [q]uit ');
         const key = await getKeyPress();
         if (key === 's') {
-            process.stdout.clearLine(0);
-            process.stdout.cursorTo(0);
-            console.log('Skipped');
             return;
         } else if (key === 'a') {
-            fs.mkdirSync(ov.ourPluginPath, { recursive: true });
-            if (ov.kind === 'new' || ov.kind === 'different') {
-                const tempPath = path.join(
-                    fs.mkdtempSync(path.join(os.tmpdir(), 'rnv-plugins-script-')),
-                    'plugin.patch'
-                );
-                fs.writeFileSync(tempPath, ov.difference.patch);
-                execa.sync(
-                    'patch',
-                    ['--version-control', 'none', '--strip', '1', '--remove-empty-files', '--input', tempPath],
-                    { cwd: ov.ourPluginPath }
-                );
-                fs.unlinkSync(tempPath);
-            }
-            process.stdout.clearLine(0);
-            process.stdout.cursorTo(0);
-            console.log('Skipped');
+            applyOverridePatch(ov);
             return;
         } else if (key === 'v') {
             showOverrideDiff(ov);
-            process.stdout.clearLine(0);
-            process.stdout.cursorTo(0);
-        } else if (key === '\x03' || key === 'q') {
-            console.log();
+        } else if (key === 'q' || key === '\x03') {
             process.exit(0);
-        } else {
-            process.stdout.clearLine(0);
-            process.stdout.cursorTo(0);
         }
     }
 };
 
 export const comparePluginOverrides = async () => {
     process.stdout.write('This may take a few seconds...');
-    const ourOverridesPath = process.argv[process.argv.length - 2];
-    const incomingOverridesPath = process.argv[process.argv.length - 1];
+    const arg1 = getContext().program.args?.[2] ?? '';
+    const arg2 = getContext().program.args?.[3] ?? '';
+    if (!fs.existsSync(arg1) || !fs.existsSync(arg2))
+        throw new Error('Must provide paths to two pluginTemplates directories');
+    const ourOverridesPath = path.resolve(arg1);
+    const incomingOverridesPath = path.resolve(arg2);
+
     const overrides = fs
         .readdirSync(incomingOverridesPath)
         .filter((p) => fs.statSync(path.join(incomingOverridesPath, p)).isDirectory())
@@ -348,9 +342,9 @@ export const comparePluginOverrides = async () => {
     const newButMatchingOtherCount =
         overrides.filter((d: Override) => d.kind === 'new' && d.matchesOurVersions?.length).length ?? 0;
     const countsSummary = [
-        `${chalk().bold(`${overrides.filter((d) => d.kind === 'matching').length ?? 0} matching`)}`,
-        `${chalk().bold.magenta(`${overrides.filter((d) => d.kind === 'different').length ?? 0} different`)}`,
-        `${chalk().bold.green(`${overrides.filter((d) => d.kind === 'new').length ?? 0} new`)}${
+        `${chalks.matching(`${overrides.filter((d) => d.kind === 'matching').length ?? 0} matching`)}`,
+        `${chalks.different(`${overrides.filter((d) => d.kind === 'different').length ?? 0} different`)}`,
+        `${chalks.new(`${overrides.filter((d) => d.kind === 'new').length ?? 0} new`)}${
             newButMatchingOtherCount ? ` (${newButMatchingOtherCount} of which match one of our other versions)` : ''
         }`,
     ].join(' | ');
@@ -364,17 +358,20 @@ export const comparePluginOverrides = async () => {
     console.log(fullSummary);
 
     for (;;) {
-        process.stdout.write('[r]eview  [q]uit ');
+        process.stdout.write('[r]eview  [A]pply all  [q]uit ');
         const key = await getKeyPress();
         if (key === 'r') {
             for (const ov of overrides) await promptPlugin(ov);
             process.exit(0);
-        } else if (key === 'q' || key === '\x03') {
-            console.log();
+        } else if (key === 'A') {
+            for (const ov of overrides) {
+                if (ov.kind === 'matching') continue;
+                console.log('Applying', chalks[ov.kind](`${ov.pluginName}${ov.version ? `@${ov.version}` : ''}`));
+                applyOverridePatch(ov);
+            }
             process.exit(0);
-        } else {
-            process.stdout.clearLine(0);
-            process.stdout.cursorTo(0);
+        } else if (key === 'q' || key === '\x03') {
+            process.exit(0);
         }
     }
 };
