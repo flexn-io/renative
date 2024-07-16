@@ -69,10 +69,10 @@ const checkProjectPathSpaces = async () => {
         message: `${warnMessage} Do you want to proceed? (yes/no)`,
     });
     if (!confirm) {
-        logWarning(warnMessage, true);
+        logWarning(warnMessage, { skipSanitizePaths: true });
         return Promise.reject(`Cancelled by user.`);
     }
-    logWarning(warnMessage, true);
+    logWarning(warnMessage, { skipSanitizePaths: true });
 };
 export default createTask({
     description: 'Configure current project',

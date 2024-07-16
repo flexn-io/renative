@@ -29,8 +29,7 @@ export const logExitTask: RnvApiLogger['logExitTask'] = (task, customChalk?) =>
 
 export const logHook: RnvApiLogger['logHook'] = (hook = '', msg = '') => getApi().logger.logHook(hook, msg);
 
-export const logWarning: RnvApiLogger['logWarning'] = (msg, shouldSanitizePath) =>
-    getApi().logger.logWarning(msg, shouldSanitizePath);
+export const logWarning: RnvApiLogger['logWarning'] = (msg, opts) => getApi().logger.logWarning(msg, opts);
 
 export const logInfo: RnvApiLogger['logInfo'] = (msg) => getApi().logger.logInfo(msg);
 
