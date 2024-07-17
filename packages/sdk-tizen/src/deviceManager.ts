@@ -121,6 +121,7 @@ export const listTizenTargets = async () => {
     const emulatorsString = await execCLI(CLI_TIZEN_EMULATOR, 'list-vm');
     const devicesString = await execCLI(CLI_SDB_TIZEN, 'devices');
     const emulatorArr = emulatorsString.split('\n');
+    // Removed first line because cli gives header ("List of devices attached") before devices list
     const deviceArr = devicesString.split('\n').slice(1);
     let targetStr = '';
     const targetArr = emulatorArr.concat(deviceArr);
