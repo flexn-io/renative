@@ -19,6 +19,7 @@ import taskHooksRun from './tasks/hooks/taskHooksRun';
 import taskHooksPipes from './tasks/hooks/taskHooksPipes';
 import taskClean from './tasks/global/taskClean';
 import taskStatus from './tasks/global/taskStatus';
+import taskEnvinfo from './tasks/global/taskEnvinfo';
 import taskConfig from './tasks/global/taskConfig';
 import taskHelp from './tasks/global/taskHelp';
 import taskNew from './tasks/bootstrap/taskNew';
@@ -64,6 +65,7 @@ const Engine = createRnvEngine({
         taskHooksPipes,
         taskClean,
         taskStatus,
+        taskEnvinfo,
         taskConfig,
         taskHelp,
         taskNew,

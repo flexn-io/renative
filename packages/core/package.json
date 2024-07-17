@@ -45,7 +45,11 @@
         "svg2js": "0.0.4-alpha1",
         "tslib": "2.5.2",
         "type-fest": "4.14.0",
-        "zod": "3.23.8"
+        "zod": "3.23.8",
+        "envinfo": "7.13.0"
+    },
+    "devDependencies": {
+        "@types/envinfo": "7.8.4"
     },
     "peerDependencies": {
         "@rnv/config-templates": "^1.0.0-rc.21"
