@@ -553,8 +553,8 @@ export const logHook = (hook = '', msg = '') => {
 
 export const logWarning = (msg: string | boolean | unknown, opts?: { skipSanitizePaths?: boolean }) => {
     const ctx = getContext();
-    const shouldSanitizePath = opts?.skipSanitizePaths ?? false;
-    const msgSn = typeof msg === 'string' && !shouldSanitizePath ? _sanitizePaths(msg) : String(msg);
+    const skipSanitizePaths = opts?.skipSanitizePaths ?? false;
+    const msgSn = typeof msg === 'string' && !skipSanitizePaths ? _sanitizePaths(msg) : String(msg);
     if (_jsonOnly) {
         return _printJson({
             type: 'log',
