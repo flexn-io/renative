@@ -133,7 +133,7 @@ export const buildWebOSProject = async () => {
             path.join(getPlatformProjectDir()!, 'splashBackground.png'),
             path.join(tDir, 'splashBackground.png')
         );
-        await execCLI(CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`);
+        await execCLI(CLI_WEBOS_ARES_PACKAGE, `-o "${tOut}" "${tDir}" -n`);
 
         logSuccess(`Your IPK package is located in ${chalk().cyan(tOut)} .`);
     }
