@@ -76,12 +76,13 @@ export const launchTizenSimulator = async (name: string | true): Promise<boolean
     logDefault(`launchTizenSimulator:${name}`);
 
     if (name === true) {
-        const targets = await execCLI(CLI_TIZEN_EMULATOR, 'list-vm', {
-            detached: true,
-        });
-        const lines = targets.split('\n');
-        const devicesArray = lines.map((line) => ({ id: line, name: line }));
-        const choices = _composeDevicesString(devicesArray);
+        const emulators = await execCLI(CLI_TIZEN_EMULATOR, 'list-vm');
+        const devices = await execCLI(CLI_SDB_TIZEN, 'devices');
+        const emulators_lines = emulators.split('\n');
+        const devices_lines = devices.split('\n');
+        const lines = emulators_lines.concat(devices_lines.slice(1));
+        const targetsArray = lines.map((line) => ({ id: line, name: line }));
+        const choices = _composeDevicesString(targetsArray);
         const { chosenEmulator } = await inquirerPrompt({
             name: 'chosenEmulator',
             type: 'list',
@@ -117,11 +118,13 @@ export const launchTizenSimulator = async (name: string | true): Promise<boolean
 };
 
 export const listTizenTargets = async () => {
-    const targets = await execCLI(CLI_TIZEN_EMULATOR, 'list-vm', {
-        detached: true,
-    });
-    const targetArr = targets.split('\n');
+    const emulatorsString = await execCLI(CLI_TIZEN_EMULATOR, 'list-vm');
+    const devicesString = await execCLI(CLI_SDB_TIZEN, 'devices');
+    const emulatorArr = emulatorsString.split('\n');
+    // Removed first line because cli gives header ("List of devices attached") before devices list
+    const deviceArr = devicesString.split('\n').slice(1);
     let targetStr = '';
+    const targetArr = emulatorArr.concat(deviceArr);
     targetArr.forEach((_, i) => {
         targetStr += `[${i}]> ${targetArr[i]}\n`;
     });
