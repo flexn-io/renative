@@ -298,9 +298,22 @@ const applyOverridePatch = (ov: Override) => {
     fs.mkdirSync(ov.ourPluginPath, { recursive: true });
     const tempPath = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'rnv-plugins-script-')), 'plugin.patch');
     fs.writeFileSync(tempPath, ov.difference.patch);
-    execa.sync('patch', ['--version-control', 'none', '--strip', '1', '--remove-empty-files', '--input', tempPath], {
-        cwd: ov.ourPluginPath,
-    });
+    execa.sync(
+        'patch',
+        [
+            '--version-control',
+            'none',
+            '--strip',
+            '1',
+            '--remove-empty-files',
+            '--ignore-whitespace',
+            '--input',
+            tempPath,
+        ],
+        {
+            cwd: ov.ourPluginPath,
+        }
+    );
     fs.unlinkSync(tempPath);
 };
 
