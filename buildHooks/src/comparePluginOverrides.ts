@@ -64,6 +64,15 @@ const chalks = {
     new: chalk().bold.green,
 };
 
+const paginate = (content: string, opts: string[] = []) => {
+    const tempPath = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'rnv-plugins-script-')), 'pager');
+    fs.writeFileSync(tempPath, content);
+    execa.sync('less', ['--prompt=[q]uit  [h]elp ', '--RAW-CONTROL-CHARS', '--clear-screen', ...opts, tempPath], {
+        stdio: 'inherit',
+    });
+    fs.unlinkSync(tempPath);
+};
+
 const getGitLog = (paths: string[]): GitLogItem[] =>
     paths
         .flatMap((p) =>
@@ -281,10 +290,7 @@ const getOverrideSummary = (ov: Override) => {
 
 const showOverrideDiff = (ov: Override) => {
     if (ov.kind === 'matching') return;
-    const tempPath = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'rnv-plugins-script-')), 'pager');
-    fs.writeFileSync(tempPath, `${getOverrideSummary(ov)}\n\n${ov.difference.diff ?? ''}`);
-    execa.sync('less', ['--RAW-CONTROL-CHARS', '--clear-screen', tempPath], { stdio: 'inherit' });
-    fs.unlinkSync(tempPath);
+    paginate(`${getOverrideSummary(ov)}\n\n${ov.difference.diff ?? ''}`);
 };
 
 const applyOverridePatch = (ov: Override) => {
@@ -305,7 +311,7 @@ const promptOverride = async (ov: Override) => {
     showOverrideDiff(ov);
     console.log();
     for (;;) {
-        process.stdout.write('[a]ccept  [v]iew  [s]kip  [q]uit ');
+        process.stdout.write('[a]apply  [v]iew  [s]kip  [q]uit ');
         const key = await getKeyPress();
         if (key === 's') {
             return;
@@ -349,11 +355,8 @@ export const comparePluginOverrides = async () => {
         }`,
     ].join(' | ');
     const overrideSummaries = overrides.map((o) => getOverrideSummary(o)).join('\n\n');
-    const fullSummary = `${countsSummary}\n\n${overrideSummaries}\n`;
-    const tempPath = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'rnv-plugins-script-')), 'pager');
-    fs.writeFileSync(tempPath, fullSummary);
-    execa.sync('less', ['--RAW-CONTROL-CHARS', '--clear-screen', '--tilde', tempPath], { stdio: 'inherit' });
-    fs.unlinkSync(tempPath);
+    const fullSummary = `${countsSummary}\n\n${overrideSummaries}\n\n`;
+    paginate(fullSummary, ['--tilde', '--quit-if-one-screen']);
     console.clear();
     console.log(fullSummary);
 
