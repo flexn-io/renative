@@ -499,9 +499,7 @@ const commandExistsUnixSync = (commandName: string, cleanedCommandName: string) 
     if (fileNotExistsSync(commandName)) {
         try {
             const stdout = execSync(
-                `command -v ${cleanedCommandName} 2>/dev/null` +
-                    `&& ${cleanedCommandName} --version 2>/dev/null` +
-                    ` && { echo >&1 ${cleanedCommandName}; exit 0; }`
+                `command -v ${cleanedCommandName} 2>/dev/null` + ` && { echo >&1 ${cleanedCommandName}; exit 0; }`
             );
             return !!stdout;
         } catch (error) {
