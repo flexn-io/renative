@@ -61,19 +61,35 @@ beforeEach(() => {
 
 describe('packageReactNativeIOS', () => {
     it('returns if platform isn`t specified', async () => {
+        // GIVEN
         (getContext as jest.Mock).mockReturnValue({ ...ctx, platform: undefined });
+
+        // WHEN
         await packageReactNativeIOS(true);
+
+        // THEN
         expect(executeAsync).not.toHaveBeenCalled();
     });
 
     it('calls executeAsync with correct arguments when isDev is true', async () => {
+        // GIVEN
         (getContext as jest.Mock).mockReturnValue(ctx);
+
+        // WHEN
         await packageReactNativeIOS(true);
+
+        // THEN
         expect(executeAsync).toHaveBeenCalledWith(expect.stringContaining('--dev true'), expect.anything());
     });
 
     it('generateChecksum testing', async () => {
+        // GIVEN
+        (getContext as jest.Mock).mockReturnValue(ctx);
+
+        // WHEN
         await packageReactNativeIOS(false);
+
+        // THEN
         expect(executeAsync).toHaveBeenCalledWith(expect.stringContaining('--dev false'), expect.anything());
     });
 });

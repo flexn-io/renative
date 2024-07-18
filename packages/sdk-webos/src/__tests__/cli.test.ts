@@ -9,6 +9,7 @@ jest.mock('@rnv/core', () => ({
     logError: jest.fn(),
     fsExistsSync: jest.fn(),
     getRealPath: jest.fn().mockImplementation((p) => p),
+    isSystemWin: true,
 }));
 
 jest.mock('fs', () => ({
@@ -27,6 +28,7 @@ beforeEach(() => {
 
 describe('checkAndConfigureWebosSdks', () => {
     it('throws an error if no WebOS SDK is found', async () => {
+        // GIVEN
         const mockContext = {
             platform: 'webos',
             buildConfig: {
@@ -41,10 +43,14 @@ describe('checkAndConfigureWebosSdks', () => {
         (core.fsExistsSync as jest.Mock).mockReturnValue(false);
         (exec as any).mockImplementation((cmd, callback) => callback(null, { stdout: '/path/to/cli' }));
 
+        // WHEN
         const reject = installer.checkAndConfigureWebosSdks();
+
+        // THEN
         await expect(reject).rejects.toThrow('No Webos SDK found. Check if it is installed.');
     });
     it('checks for old version of CLI(installed manually and placed in SDK folder)', async () => {
+        // GIVEN
         const mockContext = {
             platform: 'webos',
             buildConfig: {
@@ -59,11 +65,15 @@ describe('checkAndConfigureWebosSdks', () => {
         (core.fsExistsSync as jest.Mock).mockReturnValue(true);
         (exec as any).mockImplementation((cmd, callback) => callback(null, { stdout: '/path/to/cli' }));
 
+        // WHEN
         await installer.checkAndConfigureWebosSdks();
+
+        // THEN
         expect(core.getContext().cli).toHaveProperty('webosAres');
         expect(core.getContext().cli.webosAres).toContain('/path/to/sdk/CLI/bin/ares');
     });
     it('checks for new version of CLI(installed with npm)', async () => {
+        // GIVEN
         const mockContext = {
             platform: 'webos',
             buildConfig: {
@@ -73,18 +83,21 @@ describe('checkAndConfigureWebosSdks', () => {
             },
             cli: {},
         };
-
         (core.getContext as jest.Mock).mockReturnValue(mockContext);
         (exec as any).mockImplementation((cmd, callback) => callback(null, { stdout: '/path/to/cli' }));
         (core.fsExistsSync as jest.Mock).mockReturnValueOnce(true);
         (core.fsExistsSync as jest.Mock).mockReturnValueOnce(false);
         (core.fsExistsSync as jest.Mock).mockReturnValueOnce(true);
 
+        // WHEN
         await installer.checkAndConfigureWebosSdks();
+
+        // THEN
         expect(core.getContext().cli).toHaveProperty('webosAres');
         expect(core.getContext().cli.webosAres).toContain('/path/to/ares');
     });
     it('correct path resolution for Windows', async () => {
+        // GIVEN
         const mockContext = {
             platform: 'webos',
             buildConfig: {
@@ -95,7 +108,6 @@ describe('checkAndConfigureWebosSdks', () => {
             isSystemWin: true,
             cli: {},
         };
-        expect(core.isSystemWin).toBe(true);
 
         (core.getContext as jest.Mock).mockReturnValue(mockContext);
         (exec as any).mockImplementation((cmd, callback) => callback(null, { stdout: '/path/to/cli' }));
@@ -103,8 +115,12 @@ describe('checkAndConfigureWebosSdks', () => {
         (core.fsExistsSync as jest.Mock).mockReturnValueOnce(false);
         (core.fsExistsSync as jest.Mock).mockReturnValueOnce(true);
 
+        // WHEN
         await installer.checkAndConfigureWebosSdks();
+
+        // THEN
+        expect(core.isSystemWin).toBe(true);
         expect(core.getContext().cli).toHaveProperty('webosAres');
-        expect(core.getContext().cli.webosAres).toContain('/path/to/ares');
+        expect(core.getContext().cli.webosAres).toBe('/path/to/ares.cmd');
     });
 });
