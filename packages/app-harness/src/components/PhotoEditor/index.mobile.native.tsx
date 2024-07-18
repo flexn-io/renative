@@ -4,10 +4,10 @@ import { RNPhotoEditor } from 'react-native-photo-editor';
 import RNFS from 'react-native-fs';
 import RNFetchBlob from 'rn-fetch-blob';
 import { useLoggerContext } from '../../context';
-import { ICON_LOGO } from '../../config';
+import { ICON_LOGO, testProps } from '../../config';
 import styles from '../../styles';
 
-interface ButtonProps extends TouchableOpacityProps {}
+type ButtonProps = TouchableOpacityProps;
 export const PhotoEditorButton = forwardRef<TouchableOpacity, ButtonProps>(({ onBlur, onFocus, style }, ref) => {
     const { logDebug } = useLoggerContext();
     const photoPath = RNFS.DocumentDirectoryPath + ICON_LOGO;
@@ -40,7 +40,9 @@ export const PhotoEditorButton = forwardRef<TouchableOpacity, ButtonProps>(({ on
     };
     return (
         <TouchableOpacity ref={ref} onPress={handlePhotoEditor} onFocus={onFocus} onBlur={onBlur} style={style}>
-            <Text style={styles.buttonTitle}>Show PhotoEditor</Text>
+            <Text style={styles.buttonTitle} {...testProps('app-harness-home-request-photo-editor-button')}>
+                Show PhotoEditor
+            </Text>
         </TouchableOpacity>
     );
 });

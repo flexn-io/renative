@@ -126,9 +126,7 @@ const AppContent = () => {
                     source={ICON_LOGO}
                     {...testProps('app-harness-home-screen-renative-image')}
                 />
-                <Text style={styles.introText} {...testProps('app-harness-home-screen-intro-text')}>
-                    ReNative Harness
-                </Text>
+                <Text style={styles.introText}>ReNative Harness</Text>
                 <View style={{ flex: 1, alignItems: 'flex-end' }}>
                     <Text style={styles.dynamicText}>
                         {`v${config.version}, platform: ${Api.platform}, factor: ${Api.formFactor}, engine: ${Api.engine}`}
@@ -148,7 +146,7 @@ const AppContent = () => {
                     }}
                 >
                     <TestCase id={1} title="Hermes support ">
-                        <Text style={styles.text}>{`hermes: ${
+                        <Text style={styles.text} {...testProps('app-harness-home-screen-harmes-text')}>{`hermes: ${
                             typeof HermesInternal === 'object' && HermesInternal !== null ? 'yes' : 'no'
                         }`}</Text>
                     </TestCase>
@@ -184,13 +182,17 @@ const AppContent = () => {
                             // this to null will remove focus from another item
                             onBlur={() => setFocusedIndex((prev) => (prev === 1 ? null : prev))}
                         >
-                            <Text style={styles.buttonTitle}>Toggle Video</Text>
+                            <Text style={styles.buttonTitle} {...testProps('app-harness-home-toggle-video-button')}>
+                                Toggle Video
+                            </Text>
                         </TouchableOpacity>
                         {showVideo && (
                             <View>
                                 <OrientationLocker orientation={LANDSCAPE} />
                                 <View style={{ width: 320, height: 180, backgroundColor: '#ccc' }}>
-                                    <Text style={styles.text}>Landscape video goes here</Text>
+                                    <Text style={styles.text} {...testProps('app-harness-home-landscape-video')}>
+                                        Landscape video goes here
+                                    </Text>
                                 </View>
                             </View>
                         )}
@@ -207,11 +209,20 @@ const AppContent = () => {
                             onFocus={() => setFocusedIndex(2)}
                             onBlur={() => setFocusedIndex((prev) => (prev === 2 ? null : prev))}
                         >
-                            <Text style={styles.buttonTitle}>Request permissions</Text>
+                            <Text
+                                style={styles.buttonTitle}
+                                {...testProps('app-harness-home-request-permissions-button')}
+                            >
+                                Request permissions
+                            </Text>
                         </TouchableOpacity>
                     </TestCase>
                     <TestCase id={5} title="Image Support">
-                        <Image source={ICON_LOGO} style={{ width: 100, height: 100 }} />
+                        <Image
+                            source={ICON_LOGO}
+                            style={{ width: 100, height: 100 }}
+                            {...testProps('app-harness-home-image-support')}
+                        />
                     </TestCase>
                     <TestCase id={6} title="Cast Support">
                         <CastComponent />
@@ -228,7 +239,10 @@ const AppContent = () => {
                         )}
                         <TouchableOpacity
                             ref={splashBtnRef}
-                            onPress={() => SplashScreen.show()}
+                            onPress={() => {
+                                SplashScreen.show();
+                                setTimeout(() => SplashScreen.hide(), 3000);
+                            }}
                             style={[
                                 styles.button,
                                 focusedIndex === 3 && styles.buttonFocused,
@@ -237,7 +251,9 @@ const AppContent = () => {
                             onFocus={() => setFocusedIndex(3)}
                             onBlur={() => setFocusedIndex((prev) => (prev === 3 ? null : prev))}
                         >
-                            <Text style={styles.buttonTitle}>Show SplashScreen</Text>
+                            <Text style={styles.buttonTitle} {...testProps('app-harness-home-splash-screen-button')}>
+                                Show SplashScreen
+                            </Text>
                         </TouchableOpacity>
                     </TestCase>
                     <TestCase id={8} title="PhotoEditor">
@@ -280,6 +296,7 @@ const AppContent = () => {
                                   { paddingHorizontal: 25 },
                                   idx === logs.length - 1 && { paddingBottom: 80 },
                               ]}
+                              {...testProps(`app-harness-home-screen-logs-text-${idx}`)}
                           >
                               {it}
                           </Text>
