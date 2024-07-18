@@ -4,7 +4,6 @@ import { exec } from 'child_process';
 
 jest.mock('@rnv/core', () => ({
     ...jest.requireActual('@rnv/core'),
-    isSystemWin: true,
     getContext: jest.fn(),
     logDefault: jest.fn(),
     logError: jest.fn(),
