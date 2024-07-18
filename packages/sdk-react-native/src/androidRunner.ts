@@ -42,30 +42,18 @@ export const packageReactNativeAndroid = async () => {
     logInfo('ANDROID PACKAGE STARTING...');
 
     try {
-        let cmd = `${reactNative} bundle --platform android --dev false --assets-dest ${path.join(
-            appFolder,
-            'app',
-            'src',
-            'main',
-            'res'
-        )} --entry-file ${c.buildConfig.platforms?.[c.platform]?.entryFile}.js --bundle-output ${path.join(
-            appFolder,
-            'app',
-            'src',
-            'main',
-            'assets',
-            `${outputFile}.bundle`
-        )} --config=metro.config.js`;
+        let cmd = `${reactNative} bundle --platform android --dev false --assets-dest ${path
+            .join(appFolder, 'app', 'src', 'main', 'res')
+            .replace(/ /g, '\\ ')} --entry-file ${
+            c.buildConfig.platforms?.[c.platform]?.entryFile
+        }.js --bundle-output ${path
+            .join(appFolder, 'app', 'src', 'main', 'assets', `${outputFile}.bundle`)
+            .replace(/ /g, '\\ ')} --config=metro.config.js`;
 
         if (getConfigProp('enableSourceMaps')) {
-            cmd += ` --sourcemap-output ${path.join(
-                appFolder,
-                'app',
-                'src',
-                'main',
-                'assets',
-                `${outputFile}.bundle.map`
-            )}`;
+            cmd += ` --sourcemap-output ${path
+                .join(appFolder, 'app', 'src', 'main', 'assets', `${outputFile}.bundle.map`)
+                .replace(/ /g, '\\ ')}`;
         }
 
         await executeAsync(cmd, {
@@ -97,7 +85,7 @@ export const runReactNativeAndroid = async (device: { udid?: string } | undefine
     const udid = device?.udid;
     // On Windows npx does not always resolve correct path, hence we manually resolve it here
     // https://github.com/flexn-io/renative/issues/1409#issuecomment-2095531486
-    const reactNativeCmnd = `node  ${path.join(path.dirname(require.resolve('react-native')), 'cli.js')}`;
+    const reactNativeCmnd = `node "${path.join(path.dirname(require.resolve('react-native')), 'cli.js')}"`;
     // const reactNativeCmnd =  'npx react-native';
 
     let command = `${reactNativeCmnd} run-android --mode=${signingConfig} --no-packager --main-activity=${
@@ -132,7 +120,10 @@ export const buildReactNativeAndroid = async () => {
     const extraGradleParams = getConfigProp('extraGradleParams') || '';
     // On Windows npx does not always resolve correct path, hence we manually resolve it here
     // https://github.com/flexn-io/renative/issues/1409#issuecomment-2095531486
-    const reactNativeCmnd = `node  ${path.join(path.dirname(require.resolve('react-native')), 'cli.js')}`;
+    const reactNativeCmnd = `node  ${path.join(
+        path.dirname(require.resolve('react-native')).replace(/ /g, '\\ '),
+        'cli.js'
+    )}`;
     // const reactNativeCmnd =  'npx react-native';
 
     let command = `${reactNativeCmnd} build-android --mode=${signingConfig} --tasks ${
