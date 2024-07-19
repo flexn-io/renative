@@ -90,7 +90,7 @@ const _getEnvironmentInfo = async () => {
                 IDEs: ['Xcode', 'Android Studio'],
                 SDKs: ['iOS SDK', 'Android SDK'],
                 npmPackages: ['react', 'react-native', '@react-native-community/cli', 'rnv'],
-                npmGlobalPackages: ['*react-native*'],
+                npmGlobalPackages: ['*react-native*', 'rnv', 'lerna'],
             },
             { json: true, duplicates: false }
         );
