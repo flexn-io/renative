@@ -47,13 +47,7 @@ export const extractSingleExecutableTask = async (
     suitableTasks: RnvTask[],
     taskName: string
 ): Promise<RnvTask | undefined> => {
-    let hasPlatformAwareTasks = false;
-    suitableTasks.forEach((v) => {
-        if (v.platforms !== undefined && v.platforms.length > 1) {
-            hasPlatformAwareTasks = true;
-        }
-    });
-    if (!hasPlatformAwareTasks && suitableTasks.length === 1) {
+    if (suitableTasks.length === 1) {
         return suitableTasks[0];
     } else if (suitableTasks.length === 0) {
         return undefined;
