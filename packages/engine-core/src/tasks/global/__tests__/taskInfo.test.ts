@@ -1,6 +1,6 @@
 import { createRnvContext, execCLI, getContext, logDebug } from '@rnv/core';
 import semver from 'semver';
-import { _checkAndConfigureTargetSdk, _formatObject, _getCliVersions } from '../taskEnvinfo';
+import { _checkAndConfigureTargetSdk, _formatObject, _getCliVersions } from '../taskInfo';
 
 jest.mock('@rnv/core');
 jest.mock('semver');

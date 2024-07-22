@@ -10,7 +10,7 @@ export default createTask({
         await _getCliVersions(parsedInfo);
         return logToSummary(_formatObject(parsedInfo));
     },
-    task: RnvTaskName.envinfo,
+    task: RnvTaskName.info,
     isGlobalScope: true,
 });
 
