@@ -1,4 +1,4 @@
-import { createTask, logSuccess, RnvTaskName, getContext, execCLI, logError, logDebug } from '@rnv/core';
+import { createTask, RnvTaskName, getContext, execCLI, logError, logDebug, logToSummary } from '@rnv/core';
 import envinfo from 'envinfo';
 import semver from 'semver';
 
@@ -8,13 +8,13 @@ export default createTask({
         const parsedInfo = await _getEnvironmentInfo();
         await _checkAndConfigureSdks();
         await _getCliVersions(parsedInfo);
-        return logSuccess(_formatObject(parsedInfo));
+        return logToSummary(_formatObject(parsedInfo));
     },
     task: RnvTaskName.envinfo,
     isGlobalScope: true,
 });
 
-const _checkAndConfigureSdks = async () => {
+export const _checkAndConfigureSdks = async () => {
     const moduleConfigs = [
         { moduleName: 'sdk-tizen', configureFunction: 'checkAndConfigureTizenSdks' },
         { moduleName: 'sdk-webos', configureFunction: 'checkAndConfigureWebosSdks' },
@@ -25,7 +25,7 @@ const _checkAndConfigureSdks = async () => {
     }
 };
 
-const _checkAndConfigureTargetSdk = async (moduleName: string, configureFunction: string): Promise<void> => {
+export const _checkAndConfigureTargetSdk = async (moduleName: string, configureFunction: string): Promise<void> => {
     try {
         const SDKModule = require(`@rnv/${moduleName}`);
         await SDKModule[configureFunction]();
@@ -34,7 +34,7 @@ const _checkAndConfigureTargetSdk = async (moduleName: string, configureFunction
     }
 };
 
-const _getCliVersions = async (parsedInfo: any) => {
+export const _getCliVersions = async (parsedInfo: any) => {
     const c = getContext();
     const cliVersions: { [key: string]: { version: string; path: string } } = {};
 
@@ -60,7 +60,7 @@ const _getCliVersions = async (parsedInfo: any) => {
         parsedInfo.CLI = cliVersions;
     }
 };
-const _formatObject = (obj: any, indent = 0) => {
+export const _formatObject = (obj: any, indent = 0) => {
     let formattedString = '';
     if (indent === 0) formattedString += '\n';
     for (const key in obj) {
@@ -68,7 +68,7 @@ const _formatObject = (obj: any, indent = 0) => {
             formattedString +=
                 ' '.repeat(indent) + `${key}: ${obj[key].version} ${obj[key].path ? `- ${obj[key].path}` : ''}\n`;
         } else if (Array.isArray(obj[key])) {
-            formattedString += ' '.repeat(indent) + `${key}: [${obj[key].join(', ')}]\n`;
+            formattedString += ' '.repeat(indent) + `${key}: ${obj[key].join(', ')}\n`;
         } else if (typeof obj[key] === 'object') {
             formattedString += ' '.repeat(indent) + `${key}:\n`;
             formattedString += _formatObject(obj[key], indent + 2);
