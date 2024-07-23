@@ -40,7 +40,7 @@ export const startReactNative = async (opts: {
     let startCmd = '';
 
     if (customCliPath) {
-        startCmd = `node ${customCliPath} start`;
+        startCmd = `node ${customCliPath.replace(/ /g, '\\ ')} start`;
     } else {
         startCmd = `npx react-native start`;
     }
