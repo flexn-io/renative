@@ -8,7 +8,8 @@ export default createTask({
         const parsedInfo = await _getEnvironmentInfo();
         await _checkAndConfigureSdks();
         await _getCliVersions(parsedInfo);
-        return logToSummary(_formatObject(parsedInfo));
+        logToSummary(_formatObject(parsedInfo));
+        return true;
     },
     task: RnvTaskName.info,
     isGlobalScope: true,

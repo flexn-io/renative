@@ -1,6 +1,7 @@
-import { createRnvContext, execCLI, getContext, logDebug } from '@rnv/core';
+import { createRnvContext, execCLI, getContext, logDebug, logToSummary, logError } from '@rnv/core';
+import envinfo from 'envinfo';
 import semver from 'semver';
-import { _checkAndConfigureTargetSdk, _formatObject, _getCliVersions } from '../taskInfo';
+import taskInfo from '../taskInfo';
 
 jest.mock('@rnv/core');
 jest.mock('semver');
@@ -10,171 +11,169 @@ jest.mock('envinfo', () => ({
 
 beforeEach(() => {
     createRnvContext();
-});
-
-afterEach(() => {
     jest.resetAllMocks();
+    jest.resetModules();
 });
 
-describe('_formatObject tests', () => {
-    it('should format nested arrays correctly', () => {
-        // GIVEN
-        const obj = {
-            key1: {
-                key2: {
-                    key3: ['item1', 'item2'],
-                },
-            },
-        };
-        // WHEN
-        const result = _formatObject(obj);
-        // THEN
-        expect(result).toBe('\nkey1:\n  key2:\n    key3: item1, item2\n');
-    });
-    it('should format nested objects correctly', () => {
-        // GIVEN
-        const obj = {
-            key1: {
-                key2: {
-                    key3: {
-                        version: '1.0.0',
-                        path: '/mocked/path',
-                    },
-                },
-            },
-        };
-        // WHEN
-        const result = _formatObject(obj);
-        // THEN
-        expect(result).toBe('\nkey1:\n  key2:\n    key3: 1.0.0 - /mocked/path\n');
-    });
-});
-
-describe('_getCliVersions tests', () => {
-    it('should add CLI versions to parsedInfo', async () => {
+describe('taskInfo tests', () => {
+    it('Execute task.rnv.info', async () => {
         // GIVEN
         const ctx = getContext();
-        const cliVersionOutput = '1.0.0';
-        const parsedInfo: { CLI?: any } = {};
-
         ctx.cli = {
             webosAres: '/path/to/webosAres',
             tizen: '/path/to/tizen',
         };
+        const mockEnvInfo = { System: { OS: 'macOS', CPU: 'Intel' } };
+        jest.mocked(envinfo.run).mockResolvedValue(JSON.stringify(mockEnvInfo));
 
-        jest.mocked(execCLI).mockResolvedValue(cliVersionOutput);
-        semver.coerce = jest.fn().mockReturnValue({ version: '1.0.0' });
-        //WHEN
-        await _getCliVersions(parsedInfo);
-        //THEN
-        expect(execCLI).toHaveBeenCalledTimes(2);
-        expect(parsedInfo).toHaveProperty('CLI');
-        expect(parsedInfo.CLI).toHaveProperty('WEBOS CLI', { version: '1.0.0', path: '/path/to/webosAres' });
-        expect(parsedInfo.CLI).toHaveProperty('TIZEN CLI', { version: '1.0.0', path: '/path/to/tizen' });
-    });
-    it('should not add CLI versions if no cli is present in context', async () => {
-        // GIVEN
-        const parsedInfo: { CLI?: any } = {};
-        //WHEN
-        await _getCliVersions(parsedInfo);
-        //THEN
-        expect(execCLI).not.toHaveBeenCalled();
-        expect(parsedInfo.CLI).toBeUndefined();
-    });
-    it('should add only available CLI versions if one cli is present in context', async () => {
-        // GIVEN
-        const ctx = getContext();
-        const cliVersionOutput = '1.0.0';
-        const parsedInfo: { CLI?: any } = {};
-
-        ctx.cli = {
-            webosAres: '/path/to/webosAres',
-        };
-        jest.mocked(execCLI).mockResolvedValue(cliVersionOutput);
-        semver.coerce = jest.fn().mockReturnValue({ version: '1.0.0' });
-        //WHEN
-        await _getCliVersions(parsedInfo);
-        //THEN
-        expect(execCLI).toHaveBeenCalledTimes(1);
-        expect(parsedInfo).toHaveProperty('CLI');
-        expect(parsedInfo.CLI).toHaveProperty('WEBOS CLI', { version: '1.0.0', path: '/path/to/webosAres' });
-        expect(parsedInfo.CLI).not.toHaveProperty('TIZEN CLI');
-    });
-
-    it('should handle errors properly', async () => {
-        // GIVEN
-        const ctx = getContext();
-        const parsedInfo: { CLI?: any } = {};
-        ctx.cli = {
-            webosAres: '/path/to/webosAres',
-            tizen: '/path/to/tizen',
-        };
-
-        const error = new Error('Test error');
-
-        jest.mocked(execCLI).mockRejectedValue(error);
-        semver.coerce = jest.fn().mockReturnValue(null);
-
-        //WHEN
-        await _getCliVersions(parsedInfo);
-        //THEN
-        expect(execCLI).toHaveBeenCalledTimes(2);
-        expect(parsedInfo.CLI).toBeUndefined();
-        expect(logDebug).toHaveBeenCalledTimes(2);
-        expect(logDebug).toHaveBeenLastCalledWith(`Error getting version for TIZEN CLI: `, error);
-    });
-});
-
-describe('_checkAndConfigureTargetSdk tests', () => {
-    beforeEach(() => {
-        jest.resetModules();
-    });
-    // GIVEN
-
-    it('should call the SDK module function', async () => {
-        // GIVEN
-        const mockConfigureFunction = jest.fn();
+        const mockCheckAndConfigure = jest.fn();
         jest.mock(
-            `@rnv/mockModule`,
+            '@rnv/sdk-tizen',
             () => ({
-                mockConfigureFunction,
+                checkAndConfigureTizenSdks: mockCheckAndConfigure,
             }),
             { virtual: true }
         );
+        jest.mock(
+            '@rnv/sdk-webos',
+            () => ({
+                checkAndConfigureWebosSdks: mockCheckAndConfigure,
+            }),
+            { virtual: true }
+        );
+
+        const mockExecCLI = jest.mocked(execCLI).mockResolvedValue('1.0.0');
+        semver.coerce = jest.fn().mockReturnValue({ version: '1.0.0' });
+
         // WHEN
-        await _checkAndConfigureTargetSdk('mockModule', 'mockConfigureFunction');
-
-        //THEN
-        expect(mockConfigureFunction).toHaveBeenCalled();
+        await expect(
+            taskInfo.fn?.({
+                ctx,
+                taskName: 'MOCK_taskName',
+                originTaskName: 'MOCK_originTaskName',
+                parentTaskName: 'MOCK_parentTaskName',
+                shouldSkip: false,
+            })
+        ).resolves.toEqual(true);
+        // THEN
+        expect(envinfo.run).toHaveBeenCalled();
+        expect(mockCheckAndConfigure).toHaveBeenCalledTimes(2);
+        expect(mockExecCLI).toHaveBeenCalledTimes(2);
+        expect(logToSummary).toHaveBeenCalledWith(expect.stringContaining('System:\n  OS: macOS\n  CPU: Intel\n'));
+        expect(logToSummary).toHaveBeenCalledWith(expect.stringContaining('WEBOS CLI: 1.0.0 - /path/to/webosAres\n'));
+        expect(logToSummary).toHaveBeenCalledWith(expect.stringContaining('TIZEN CLI: 1.0.0 - /path/to/tizen\n'));
     });
+    it('should handle errors when getting environment info', async () => {
+        // GIVEN
+        const ctx = getContext();
+        const mockError = new Error('Test error');
+        jest.mocked(envinfo.run).mockRejectedValue(mockError);
+        //WHEN
+        await expect(
+            taskInfo.fn?.({
+                ctx,
+                taskName: 'MOCK_taskName',
+                originTaskName: 'MOCK_originTaskName',
+                parentTaskName: 'MOCK_parentTaskName',
+                shouldSkip: false,
+            })
+        ).resolves.toEqual(true);
+        //THEN
+        expect(logError).toHaveBeenCalledWith(mockError);
+        expect(logToSummary).toHaveBeenCalledWith(expect.objectContaining(mockError));
+    });
+    it('should handle errors during SDK configuration', async () => {
+        // GIVEN
+        const ctx = getContext();
+        const mockEnvInfo = { System: { OS: 'macOS', CPU: 'Intel' } };
+        jest.mocked(envinfo.run).mockResolvedValue(JSON.stringify(mockEnvInfo));
+        const cliVersionOutput = '1.0.0';
+        ctx.cli = {
+            webosAres: '/path/to/webosAres',
+            tizen: '/path/to/tizen',
+        };
+        jest.mocked(execCLI).mockResolvedValue(cliVersionOutput);
+        semver.coerce = jest.fn().mockReturnValue({ version: '1.0.0' });
+        jest.mock(
+            '@rnv/sdk-tizen',
+            () => ({
+                checkAndConfigureTizenSdks: jest.fn().mockRejectedValue(new Error('Tizen SDK error')),
+            }),
+            { virtual: true }
+        );
+        jest.mock(
+            '@rnv/sdk-webos',
+            () => ({
+                checkAndConfigureWebosSdks: jest.fn(),
+            }),
+            { virtual: true }
+        );
 
+        // WHEN
+        await expect(
+            taskInfo.fn?.({
+                ctx,
+                taskName: 'MOCK_taskName',
+                originTaskName: 'MOCK_originTaskName',
+                parentTaskName: 'MOCK_parentTaskName',
+                shouldSkip: false,
+            })
+        ).resolves.toEqual(true);
+        // THEN
+        expect(envinfo.run).toHaveBeenCalled();
+        expect(execCLI).toHaveBeenCalledTimes(2);
+        expect(logDebug).toHaveBeenCalledWith('Error configuring sdk-tizen SDK: ', new Error('Tizen SDK error'));
+        expect(logDebug).not.toHaveBeenCalledWith('Error configuring sdk-webos SDK: ', new Error('WebOS SDK error'));
+        expect(logToSummary).toHaveBeenCalledWith(expect.stringContaining('System:\n  OS: macOS\n  CPU: Intel\n'));
+        expect(logToSummary).toHaveBeenCalledWith(expect.stringContaining('WEBOS CLI: 1.0.0 - /path/to/webosAres\n'));
+    });
     it('should handle error and log it if module is not found', async () => {
         // GIVEN
-        const moduleName = 'nonExistentModule';
-        const configureFunction = 'checkAndConfigureMockSdks';
-
-        //WHEN
-        await _checkAndConfigureTargetSdk(moduleName, configureFunction);
-
-        // THEN
-        expect(logDebug).toHaveBeenCalledTimes(1);
-        expect(logDebug).toHaveBeenCalledWith(
-            `Error configuring ${moduleName} SDK: `,
-            expect.objectContaining({
-                message: expect.stringContaining(`Cannot find module '@rnv/${moduleName}'`),
-            })
-        );
-    });
-    it('should handle error and log it if the configure function throws an error', async () => {
+        const ctx = getContext();
+        const mockEnvInfo = { System: { OS: 'macOS', CPU: 'Intel' } };
+        jest.mocked(envinfo.run).mockResolvedValue(JSON.stringify(mockEnvInfo));
+        const cliVersionOutput = '1.0.0';
+        const errorMessage = `Cannot find module '@rnv/sdk-tizen'`;
+        ctx.cli = {
+            webosAres: '/path/to/webosAres',
+        };
+        jest.mocked(execCLI).mockResolvedValue(cliVersionOutput);
+        semver.coerce = jest.fn().mockReturnValue({ version: '1.0.0' });
         jest.mock(
-            '@rnv/mockModule',
+            '@rnv/sdk-tizen',
+            () => {
+                throw new Error(errorMessage);
+            },
+            { virtual: true }
+        );
+        jest.mock(
+            '@rnv/sdk-webos',
             () => ({
-                mockConfigureFunction: jest.fn().mockRejectedValue(new Error('Configuration error')),
+                checkAndConfigureWebosSdks: jest.fn(),
             }),
             { virtual: true }
         );
-        await _checkAndConfigureTargetSdk('mockModule', 'mockConfigureFunction');
 
-        expect(logDebug).toHaveBeenCalledWith('Error configuring mockModule SDK: ', new Error('Configuration error'));
+        // WHEN
+        await expect(
+            taskInfo.fn?.({
+                ctx,
+                taskName: 'MOCK_taskName',
+                originTaskName: 'MOCK_originTaskName',
+                parentTaskName: 'MOCK_parentTaskName',
+                shouldSkip: false,
+            })
+        ).resolves.toEqual(true);
+        // THEN
+        expect(envinfo.run).toHaveBeenCalled();
+        expect(execCLI).toHaveBeenCalledTimes(1);
+        expect(logDebug).toHaveBeenCalledWith(
+            `Error configuring sdk-tizen SDK: `,
+            expect.objectContaining({
+                message: expect.stringContaining(errorMessage),
+            })
+        );
+        expect(logToSummary).toHaveBeenCalledWith(expect.stringContaining('System:\n  OS: macOS\n  CPU: Intel\n'));
+        expect(logToSummary).toHaveBeenCalledWith(expect.stringContaining('WEBOS CLI: 1.0.0 - /path/to/webosAres\n'));
     });
 });
