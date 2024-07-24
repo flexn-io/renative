@@ -15,7 +15,7 @@ export default createTask({
     isGlobalScope: true,
 });
 
-export const _checkAndConfigureSdks = async () => {
+const _checkAndConfigureSdks = async () => {
     const moduleConfigs = [
         { moduleName: 'sdk-tizen', configureFunction: 'checkAndConfigureTizenSdks' },
         { moduleName: 'sdk-webos', configureFunction: 'checkAndConfigureWebosSdks' },
@@ -26,7 +26,7 @@ export const _checkAndConfigureSdks = async () => {
     }
 };
 
-export const _checkAndConfigureTargetSdk = async (moduleName: string, configureFunction: string): Promise<void> => {
+const _checkAndConfigureTargetSdk = async (moduleName: string, configureFunction: string): Promise<void> => {
     try {
         const SDKModule = require(`@rnv/${moduleName}`);
         await SDKModule[configureFunction]();
@@ -35,7 +35,7 @@ export const _checkAndConfigureTargetSdk = async (moduleName: string, configureF
     }
 };
 
-export const _getCliVersions = async (parsedInfo: any) => {
+const _getCliVersions = async (parsedInfo: any) => {
     const c = getContext();
     const cliVersions: { [key: string]: { version: string; path: string } } = {};
 
@@ -61,7 +61,7 @@ export const _getCliVersions = async (parsedInfo: any) => {
         parsedInfo.CLI = cliVersions;
     }
 };
-export const _formatObject = (obj: any, indent = 0) => {
+const _formatObject = (obj: any, indent = 0) => {
     let formattedString = '';
     if (indent === 0) formattedString += '\n';
     for (const key in obj) {
