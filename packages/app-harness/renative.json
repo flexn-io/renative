@@ -96,12 +96,7 @@
                         "repositories": ["def customVar1 = '1'"],
                         "ext": ["playServicesLocationVersion = \"21.0.1\""]
                     },
-                    "injectAfterAll": [
-                        "allprojects {",
-                        "   repositories {",
-                        "   }",
-                        "}"
-                    ]
+                    "injectAfterAll": ["allprojects {", "   repositories {", "   }", "}"]
                 },
                 "styles_xml": {
                     "tag": "resources",
@@ -258,8 +253,14 @@
             }
         },
         "react-native": {
+            "version": "0.73.4",
             "android": {
-                "implementation": "// TEST"
+                "path": "react-native",
+                "templateAndroid": {
+                    "MainActivity_kt": {
+                        "onCreate": "super.onCreate(null)"
+                    }
+                }
             }
         },
         "react-native-google-cast": {
