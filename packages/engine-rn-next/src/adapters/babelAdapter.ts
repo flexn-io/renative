@@ -3,7 +3,7 @@ import { BabelConfig, withBabelPluginModuleResolver } from '@rnv/adapter';
 export const withRNVBabel = (cnf: BabelConfig): BabelConfig => {
     const plugins = cnf?.plugins || [];
 
-    return {
+    const x = {
         retainLines: true,
         presets: [
             [
@@ -19,4 +19,8 @@ export const withRNVBabel = (cnf: BabelConfig): BabelConfig => {
         ...cnf,
         plugins: [withBabelPluginModuleResolver(), ...plugins],
     };
+    console.log('babel return:');
+    console.log(x);
+    console.log('done');
+    return x;
 };

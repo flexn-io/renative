@@ -7,6 +7,9 @@ export const withRNVWebpack = (cnf: Configuration) => {
     //TODO: implement further overrides
     const rnvConfig: Configuration = {};
     const config = merge(rnvConfig, cnf);
+    console.log('config:');
+    console.log(config);
+    console.log('end of config');
     return config;
 };
 
