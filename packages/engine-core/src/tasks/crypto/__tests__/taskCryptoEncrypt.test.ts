@@ -11,17 +11,22 @@ import {
     fsReadFileSync,
     inquirerPrompt,
     createRnvContext,
+    logInfo,
 } from '@rnv/core';
-
 import { getEnvExportCmd, getEnvVar } from '../common';
 import { getContext } from '../../../getContext';
+import path from 'path';
 const iocane = require('iocane');
 
 jest.mock('@rnv/core');
+
 jest.mock('path');
 jest.mock('tar');
 jest.mock('iocane');
-jest.mock('util');
+jest.mock('util', () => ({
+    ...jest.requireActual('util'),
+    promisify: jest.fn((fn) => fn),
+}));
 jest.mock('fs');
 jest.mock('../common.ts');
 
@@ -194,5 +199,42 @@ describe('taskCryptoEncrypt tests', () => {
             })
         );
         expect(getEnvExportCmd).toHaveBeenCalled();
+    });
+    it('should initialize crypto directory if it does not exist', async () => {
+        //GIVEN
+        const ctx = updateContext();
+        const sourceFolder = `${ctx.paths.workspace.dir}/${ctx.files.project?.config?.projectName}`;
+        jest.mocked(getEnvVar).mockReturnValue('CRYPTO_RNV_TESTPROJECT');
+        jest.mocked(path.join).mockImplementation((...paths) => paths.join('/').replace(/\/\.\//g, '/'));
+        jest.mocked(fsExistsSync).mockImplementation((path) => {
+            if (path === sourceFolder) return false;
+            return true;
+        });
+        jest.mocked(inquirerPrompt).mockResolvedValueOnce({ confirm: true }).mockResolvedValueOnce({ confirm: true });
+        jest.mocked(getRealPath).mockReturnValue(`${ctx.paths.project.dir}/secrets/privateConfigs.enc`);
+        require('@rnv/core').fsReaddir.mockResolvedValue([]);
+        //THEN
+
+        await expect(
+            task.fn?.({
+                ctx,
+                taskName: 'MOCK_taskName',
+                originTaskName: 'MOCK_originTaskName',
+                parentTaskName: 'MOCK_parentTaskName',
+                shouldSkip: false,
+            })
+        ).resolves.toEqual(undefined);
+        //WHEN
+        expect(fsExistsSync).toHaveBeenCalledWith(sourceFolder);
+        expect(mkdirSync).toHaveBeenCalledWith(sourceFolder);
+        expect(inquirerPrompt).toHaveBeenCalledWith(
+            expect.objectContaining({
+                type: 'confirm',
+                message: 'Once ready, Continue?',
+            })
+        );
+        expect(logInfo).toHaveBeenCalledWith(
+            expect.stringContaining(`It seems you are running encrypt for the first time. Directory `)
+        );
     });
 });
