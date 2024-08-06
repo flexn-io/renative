@@ -117,16 +117,52 @@ export const launchTizenSimulator = async (name: string | true): Promise<boolean
     return Promise.reject('No simulator -t target name specified!');
 };
 
-export const listTizenTargets = async () => {
+export const listTizenTargets = async (platform: string) => {
     const emulatorsString = await execCLI(CLI_TIZEN_EMULATOR, 'list-vm');
     const devicesString = await execCLI(CLI_SDB_TIZEN, 'devices');
-    const emulatorArr = emulatorsString.split('\n');
-    // Removed first line because cli gives header ("List of devices attached") before devices list
-    const deviceArr = devicesString.split('\n').slice(1);
+    const allDownloadedEmulators = emulatorsString.split('\n'); // all tizen, tizenwatch and tizenmobile emulators
+    const specificPlatformEmulators: string[] = []; // tizen, tizenwatch, tizenmobile - only 1 of them
+    for (let i = 0; i < allDownloadedEmulators.length; i++) {
+        try {
+            const detailString = await execCLI(CLI_TIZEN_EMULATOR, 'detail -n ' + allDownloadedEmulators[i]);
+            if (detailString.includes('Error:')) {
+                // emulator doesn't exist. Won't ever really happen, but just in case.
+                // throw new Error(detailString);
+                throw new Error(detailString);
+            }
+
+            const detailLines = detailString // turn the command return into array
+                .split('\n')
+                .map((line: string) => line.trim())
+                .filter((line: string) => line !== '');
+
+            const detailObj = detailLines.reduce<{ [key: string]: string }>((acc: any, line: string) => {
+                // make it into a readable object
+                const [key, ...value] = line.split(':');
+                if (key && value) {
+                    acc[key.trim()] = value.join(':').trim();
+                }
+                return acc;
+            }, {});
+
+            const TizenEmulatorTemplate = detailObj.Template.toLowerCase();
+            if (
+                (platform === 'tizen' && TizenEmulatorTemplate.includes('tizen')) ||
+                (platform === 'tizenwatch' && TizenEmulatorTemplate.includes('wearable')) ||
+                (platform === 'tizenmobile' && TizenEmulatorTemplate.includes('mobile'))
+            ) {
+                specificPlatformEmulators.push(allDownloadedEmulators[i]);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     let targetStr = '';
-    const targetArr = emulatorArr.concat(deviceArr);
-    targetArr.forEach((_, i) => {
-        targetStr += `[${i}]> ${targetArr[i]}\n`;
+    const devicesArr = devicesString.split('\n').slice(1);
+    const finalTargetList = specificPlatformEmulators.concat(devicesArr);
+    finalTargetList.forEach((_, i) => {
+        targetStr += `[${i}]> ${finalTargetList[i]}\n`;
     });
     logToSummary(`Tizen Targets:\n${targetStr}`);
 };
