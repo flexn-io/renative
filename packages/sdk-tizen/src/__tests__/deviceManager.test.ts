@@ -1,4 +1,4 @@
-import { createRnvContext, fsExistsSync, getContext } from '@rnv/core';
+import { createRnvContext, fsExistsSync } from '@rnv/core';
 import { listTizenTargets } from '../deviceManager';
 import { execCLI, logToSummary } from '@rnv/core';
 
