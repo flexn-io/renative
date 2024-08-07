@@ -78,11 +78,16 @@ export const launchTizenSimulator = async (name: string | true): Promise<boolean
     if (name === true) {
         const emulators = await execCLI(CLI_TIZEN_EMULATOR, 'list-vm');
         const devices = await execCLI(CLI_SDB_TIZEN, 'devices');
-        const emulators_lines = emulators.split('\n');
         const devices_lines = devices.split('\n');
-        const lines = emulators_lines.concat(devices_lines.slice(1));
+
+        const allDownloadedEmulators = emulators.split('\n'); // all tizen, tizenwatch and tizenmobile emulators
+        const specificEmulators = await getSubplatformDevices(allDownloadedEmulators, c.platform);
+
+        const lines = specificEmulators.concat(devices_lines.slice(1));
+
         const targetsArray = lines.map((line) => ({ id: line, name: line }));
         const choices = _composeDevicesString(targetsArray);
+
         const { chosenEmulator } = await inquirerPrompt({
             name: 'chosenEmulator',
             type: 'list',
@@ -117,14 +122,12 @@ export const launchTizenSimulator = async (name: string | true): Promise<boolean
     return Promise.reject('No simulator -t target name specified!');
 };
 
-export const listTizenTargets = async (platform: string) => {
-    const emulatorsString = await execCLI(CLI_TIZEN_EMULATOR, 'list-vm');
-    const devicesString = await execCLI(CLI_SDB_TIZEN, 'devices');
-    const allDownloadedEmulators = emulatorsString.split('\n'); // all tizen, tizenwatch and tizenmobile emulators
-    const specificPlatformEmulators: string[] = []; // tizen, tizenwatch, tizenmobile - only 1 of them
-    for (let i = 0; i < allDownloadedEmulators.length; i++) {
+const getSubplatformDevices = async (allTizenEmulators: string[], neededPlatform: string) => {
+    // subplatform meaning tizen, tizenwatch or tizenmobile
+    const specificEmulators = [];
+    for (let i = 0; i < allTizenEmulators.length; i++) {
         try {
-            const detailString = await execCLI(CLI_TIZEN_EMULATOR, 'detail -n ' + allDownloadedEmulators[i]);
+            const detailString = await execCLI(CLI_TIZEN_EMULATOR, 'detail -n ' + allTizenEmulators[i]);
             if (detailString.includes('Error:')) {
                 // emulator doesn't exist. Won't ever really happen, but just in case.
                 // throw new Error(detailString);
@@ -147,16 +150,24 @@ export const listTizenTargets = async (platform: string) => {
 
             const TizenEmulatorTemplate = detailObj.Template.toLowerCase();
             if (
-                (platform === 'tizen' && TizenEmulatorTemplate.includes('tizen')) ||
-                (platform === 'tizenwatch' && TizenEmulatorTemplate.includes('wearable')) ||
-                (platform === 'tizenmobile' && TizenEmulatorTemplate.includes('mobile'))
+                (neededPlatform === 'tizen' && TizenEmulatorTemplate.includes('tizen')) ||
+                (neededPlatform === 'tizenwatch' && TizenEmulatorTemplate.includes('wearable')) ||
+                (neededPlatform === 'tizenmobile' && TizenEmulatorTemplate.includes('mobile'))
             ) {
-                specificPlatformEmulators.push(allDownloadedEmulators[i]);
+                specificEmulators.push(allTizenEmulators[i]);
             }
         } catch (err) {
             console.log(err);
         }
     }
+    return specificEmulators;
+};
+
+export const listTizenTargets = async (platform: string) => {
+    const emulatorsString = await execCLI(CLI_TIZEN_EMULATOR, 'list-vm');
+    const devicesString = await execCLI(CLI_SDB_TIZEN, 'devices');
+    const allDownloadedEmulators = emulatorsString.split('\n'); // all tizen, tizenwatch and tizenmobile emulators
+    const specificPlatformEmulators = await getSubplatformDevices(allDownloadedEmulators, platform); // tizen, tizenwatch, tizenmobile - only 1 of them
 
     let targetStr = '';
     const devicesArr = devicesString.split('\n').slice(1);
