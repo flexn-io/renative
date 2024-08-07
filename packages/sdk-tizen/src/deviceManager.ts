@@ -81,7 +81,7 @@ export const launchTizenSimulator = async (name: string | true): Promise<boolean
         const devices_lines = devices.split('\n');
 
         const allDownloadedEmulators = emulators.split('\n'); // all tizen, tizenwatch and tizenmobile emulators
-        const specificEmulators = await getSubplatformDevices(allDownloadedEmulators, c.platform);
+        const specificEmulators = await getSubplatformDevices(allDownloadedEmulators, c.platform as string);
 
         const lines = specificEmulators.concat(devices_lines.slice(1));
 
