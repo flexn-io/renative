@@ -166,11 +166,13 @@ const getSubplatformDevices = async (allTizenEmulators: string[], neededPlatform
 export const listTizenTargets = async (platform: string) => {
     const emulatorsString = await execCLI(CLI_TIZEN_EMULATOR, 'list-vm');
     const devicesString = await execCLI(CLI_SDB_TIZEN, 'devices');
-    const allDownloadedEmulators = emulatorsString.split('\n'); // all tizen, tizenwatch and tizenmobile emulators
-    const specificPlatformEmulators = await getSubplatformDevices(allDownloadedEmulators, platform); // tizen, tizenwatch, tizenmobile - only 1 of them
-
-    let targetStr = '';
     const devicesArr = devicesString.split('\n').slice(1);
+
+    const allDownloadedEmulators = emulatorsString.split('\n'); // all tizen, tizenwatch and tizenmobile emulators
+    const specificPlatformEmulators = await getSubplatformDevices(allDownloadedEmulators.concat(devicesArr), platform); // tizen, tizenwatch, tizenmobile - only 1 of them
+    console.log('REAL DEVICES:');
+    console.log(devicesArr);
+    let targetStr = '';
     const finalTargetList = specificPlatformEmulators.concat(devicesArr);
     finalTargetList.forEach((_, i) => {
         targetStr += `[${i}]> ${finalTargetList[i]}\n`;
