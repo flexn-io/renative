@@ -117,6 +117,9 @@
         "typescript": "5.2.2",
         "typescript-coverage-report": "0.8.0"
     },
+    "resolutions": {
+        "@react-native-community/cli-platform-ios": "12.3.6"
+    },
     "engines": {
         "node": ">=18.0.0",
         "npm": ">=9.0.0"

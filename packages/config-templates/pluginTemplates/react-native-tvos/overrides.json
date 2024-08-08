@@ -4,6 +4,12 @@
           "Platform';\n\nexport": "Platform';\nimport NativeModules from '../../BatchedBridge/NativeModules';\n\nexport",
           "NativeComponentRegistry.get<Props>(\n    'RCTScrollView'": "NativeComponentRegistry.get<Props>(\n    Platform.isTV && 'RCTScrollViewTV' in NativeModules.UIManager && Platform.OS === 'android' ? 'RCTScrollViewTV' : 'RCTScrollView'",
           "Platform.OS === 'android'\n    ? {\n        uiViewClassName: 'RCTScrollView'": "Platform.OS === 'android'\n    ? {\n        uiViewClassName: Platform.isTV && 'RCTScrollViewTV' in NativeModules.UIManager ? 'RCTScrollViewTV' : 'RCTScrollView'"
+      },
+      "node_modules/cli-platform-ios/build/tools/listIOSDevices.js": {
+        "rawOutput.filter(device => !device.platform.includes('macos')).sort(device => device.simulator ? 1 : -1).map(device => {": "rawOutput.sort(device => device.simulator ? 1 : -1).map(device => { // <= PATCHED BY RENATIVE"
+      },
+      "node_modules/cli-platform-ios/build/commands/runIOS/index.js": {
+          "_cliTools().logger.error(`Could not find a device named: \"${_chalk().default.bold(String(deviceName))}\". ${printFoundDevices(devices)}`);": "_cliTools().logger.error(`Could not find a device: \"${_chalk().default.bold(String(deviceName))}\". ${printFoundDevices(devices)}`);\n   throw 'Could not find device'; // <= PATCHED BY RENATIVE"
       }
   }
 }
