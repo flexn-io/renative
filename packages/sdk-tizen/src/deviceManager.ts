@@ -128,6 +128,8 @@ const getSubplatformDevices = async (allTizenEmulators: string[], neededPlatform
     for (let i = 0; i < allTizenEmulators.length; i++) {
         try {
             const detailString = await execCLI(CLI_TIZEN_EMULATOR, 'detail -n ' + allTizenEmulators[i]);
+            console.log('details:');
+            console.log(detailString);
             if (detailString.includes('Error:')) {
                 // emulator doesn't exist. Won't ever really happen, but just in case.
                 // throw new Error(detailString);
@@ -166,11 +168,13 @@ const getSubplatformDevices = async (allTizenEmulators: string[], neededPlatform
 export const listTizenTargets = async (platform: string) => {
     const emulatorsString = await execCLI(CLI_TIZEN_EMULATOR, 'list-vm');
     const devicesString = await execCLI(CLI_SDB_TIZEN, 'devices');
-    const allDownloadedEmulators = emulatorsString.split('\n'); // all tizen, tizenwatch and tizenmobile emulators
-    const specificPlatformEmulators = await getSubplatformDevices(allDownloadedEmulators, platform); // tizen, tizenwatch, tizenmobile - only 1 of them
-
-    let targetStr = '';
     const devicesArr = devicesString.split('\n').slice(1);
+
+    const allDownloadedEmulators = emulatorsString.split('\n'); // all tizen, tizenwatch and tizenmobile emulators
+    const specificPlatformEmulators = await getSubplatformDevices(allDownloadedEmulators.concat(devicesArr), platform); // tizen, tizenwatch, tizenmobile - only 1 of them
+    console.log('REAL DEVICES:');
+    console.log(devicesArr);
+    let targetStr = '';
     const finalTargetList = specificPlatformEmulators.concat(devicesArr);
     finalTargetList.forEach((_, i) => {
         targetStr += `[${i}]> ${finalTargetList[i]}\n`;
