@@ -6,10 +6,10 @@ import { SdkPlatforms } from '../constants';
 export default createTask({
     description: 'List all available targets for specific platform',
     dependsOn: [RnvTaskName.workspaceConfigure],
-    fn: async () => {
+    fn: async ({ ctx }) => {
         await checkAndConfigureTizenSdks();
         await checkTizenSdk();
-        return listTizenTargets();
+        return listTizenTargets(ctx.platform || '');
     },
     task: RnvTaskName.targetList,
     options: [RnvTaskOptions.target],
