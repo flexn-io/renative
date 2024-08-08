@@ -128,6 +128,7 @@
                 }
             }
         },
+
         "rn-fetch-blob": "source:rnv",
         "react-native-carplay": "source:rnv",
         "@react-native-community/push-notification-ios": "source:rnv",
