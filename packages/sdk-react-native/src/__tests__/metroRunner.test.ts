@@ -67,7 +67,7 @@ describe('startReactNative tests', () => {
         jest.mocked(isBundlerActive).mockResolvedValue(true);
         jest.mocked(confirmActiveBundler).mockResolvedValue(true);
         const customCliPath = '/custom/path/to/react-native-cli';
-        const expectedCommand = `node ${customCliPath.replace(/ /g, '\\ ')} start --port 8081 --no-interactive`;
+        const expectedCommand = `node ${customCliPath} start --port 8081 --no-interactive`;
         //WHEN
         await expect(startReactNative({ waitForBundler: true, customCliPath })).resolves.toEqual(undefined);
         //THEN
