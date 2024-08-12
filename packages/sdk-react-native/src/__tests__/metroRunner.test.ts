@@ -36,7 +36,7 @@ describe('startReactNative tests', () => {
         expect(logDefault).toHaveBeenCalledWith('startReactNative');
         expect(result).toBe(false);
     });
-    it('should handle active bundler correctly when waitForBundler is true', async () => {
+    it('should execute command when bundler is active and the server is restarted ', async () => {
         //GIVEN
         updateContext();
         jest.mocked(isBundlerActive).mockResolvedValue(true);
@@ -60,7 +60,16 @@ describe('startReactNative tests', () => {
             expect.stringContaining('Dev server running at: http://localhost:8081/index.bundle?platform=ios')
         );
     });
-
+    it('should skip execute command when bundler is active and the server is not restarted', async () => {
+        //GIVEN
+        updateContext();
+        jest.mocked(isBundlerActive).mockResolvedValue(true);
+        jest.mocked(confirmActiveBundler).mockResolvedValue(false);
+        //WHEN
+        await expect(startReactNative({ waitForBundler: true })).resolves.toEqual(true);
+        //THEN
+        expect(executeAsync).not.toHaveBeenCalled();
+    });
     it('should execute command with custom CLI path', async () => {
         //GIVEN
         updateContext();
