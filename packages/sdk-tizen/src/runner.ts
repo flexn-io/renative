@@ -180,8 +180,8 @@ export const buildTizenProject = async () => {
         const tIntermediate = path.join(tDir, 'intermediate');
         const tBuild = path.join(tDir, 'build');
 
-        await execCLI(CLI_TIZEN, `build-web -- ${tBuild} -out ${tIntermediate}`);
-        await execCLI(CLI_TIZEN, `package -- ${tIntermediate} -s ${certProfile} -t wgt -o ${tOut}`);
+        await execCLI(CLI_TIZEN, `build-web -- "${tBuild}" -out "${tIntermediate}"`);
+        await execCLI(CLI_TIZEN, `package -- "${tIntermediate}" -s ${certProfile} -t wgt -o "${tOut}"`);
 
         logSuccess(`Your WGT package is located in ${chalk().cyan(tOut)} .`);
     }

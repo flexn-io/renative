@@ -47,13 +47,7 @@ export const extractSingleExecutableTask = async (
     suitableTasks: RnvTask[],
     taskName: string
 ): Promise<RnvTask | undefined> => {
-    let hasPlatformAwareTasks = false;
-    suitableTasks.forEach((v) => {
-        if (v.platforms) {
-            hasPlatformAwareTasks = true;
-        }
-    });
-    if (!hasPlatformAwareTasks && suitableTasks.length === 1) {
+    if (suitableTasks.length === 1) {
         return suitableTasks[0];
     } else if (suitableTasks.length === 0) {
         return undefined;
@@ -62,7 +56,6 @@ export const extractSingleExecutableTask = async (
     // Restart the process now we defined specific platform
     await selectPlatformIfRequired();
     const newSuitableTasks = findTasksByTaskName(taskName);
-
     if (newSuitableTasks.match.length === 1) {
         return newSuitableTasks.match[0];
     } else if (newSuitableTasks.match.length > 1) {
