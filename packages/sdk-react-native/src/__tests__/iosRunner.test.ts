@@ -124,9 +124,11 @@ describe('packageReactNativeIOS', () => {
         );
     });
     it('should generate checksum of Podfile content and plugin versions', () => {
+        // GIVEN
         const mockPodfileChecksum = 'podfilechecksum';
         const mockPluginVersionsChecksum = 'pluginversionschecksum';
 
+        //THEN
         expect(`${generateChecksum(mockPodfileChecksum)}${generateChecksum(mockPluginVersionsChecksum)}`).toBe(
             '57ca0a750b367e0b100abae884b7b35151babb11c8c9c4de2375cf27cf03fd69'
         ); // expecting same input to always equal same checksum
@@ -142,10 +144,14 @@ describe('runCocoaPods', () => {
     });
 
     it('should skip pod action if checkIfPodsIsRequired returns false', async () => {
+        //GIVEN
         (getCurrentCommand as jest.Mock).mockReturnValue('currentCommand');
         (getContext as jest.Mock).mockReturnValue({ runtime: { _skipNativeDepResolutions: true } });
+
+        //WHEN
         const result = await runCocoaPods(false);
 
+        //THEN
         expect(logInfo).toHaveBeenCalledWith(
             'Skipping pod action. Reason: Command currentCommand explicitly skips pod checks'
         );
@@ -153,14 +159,17 @@ describe('runCocoaPods', () => {
     });
 
     it('should reject if app folder does not exist', async () => {
+        //GIVEN
         (fsExistsSync as jest.Mock).mockReturnValue(false);
         (getAppFolder as jest.Mock).mockReturnValue('/fake/app/folder');
         (getContext as jest.Mock).mockReturnValue({ runtime: { _skipNativeDepResolutions: false } });
 
+        //THEN
         await expect(runCocoaPods(true)).rejects.toEqual('Location /fake/app/folder does not exists!');
     });
 
     it('should execute pod update if forceUpdatePods is true', async () => {
+        //GIVEN
         (fsWriteFileSync as jest.Mock).mockReturnValue(true);
         (fsReadFileSync as jest.Mock).mockReturnValue('appFolder/Podfile');
         (fsExistsSync as jest.Mock).mockReturnValue(true);
@@ -168,8 +177,11 @@ describe('runCocoaPods', () => {
         (getContext as jest.Mock).mockReturnValue({
             runtime: { _skipNativeDepResolutions: false, pluginVersions: { 1: 1 } },
         });
+
+        //WHEN
         await runCocoaPods(true);
 
+        //THEN
         expect(executeAsync).toHaveBeenCalledWith('bundle install');
         expect(executeAsync).toHaveBeenLastCalledWith(
             'bundle exec pod update',
@@ -178,6 +190,7 @@ describe('runCocoaPods', () => {
     });
 
     it('should skip pod action, if chosing that in the inquirer prompt', async () => {
+        //GIVEN
         (fsWriteFileSync as jest.Mock).mockReturnValue(true);
         (fsReadFileSync as jest.Mock).mockReturnValue('appFolder/Podfile');
         (fsExistsSync as jest.Mock).mockReturnValue(true);
@@ -187,10 +200,11 @@ describe('runCocoaPods', () => {
         });
         (inquirerPrompt as jest.Mock).mockResolvedValue({ selectedOption: 'Skip pod action' });
 
+        //WHEN
         const run = await runCocoaPods(true);
 
+        //THEN
         expect(run).toEqual(false);
-
         expect(executeAsync).not.toHaveBeenCalledWith('bundle install');
     });
 });
