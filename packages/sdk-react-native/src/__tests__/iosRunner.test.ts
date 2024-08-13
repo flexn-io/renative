@@ -1,5 +1,17 @@
 import { packageReactNativeIOS } from '../iosRunner';
-import { executeAsync, getContext } from '@rnv/core';
+import {
+    executeAsync,
+    getContext,
+    getAppFolder,
+    fsExistsSync,
+    logInfo,
+    inquirerPrompt,
+    getCurrentCommand,
+    fsWriteFileSync,
+    fsReadFileSync,
+} from '@rnv/core';
+import { generateChecksum, runCocoaPods } from '../iosRunner';
+
 const ctx = {
     platform: 'ios',
     runtime: {
@@ -44,15 +56,14 @@ jest.mock('@rnv/core', () => ({
         BASE: jest.fn(() => ({ BASE_VAR: 'mockedBaseValue' })),
         RNV_EXTENSIONS: jest.fn(() => ({ EXTENSION_VAR: 'mockedExtensionValue' })),
     },
-}));
-
-jest.mock('../iosRunner', () => ({
-    ...jest.requireActual('../iosRunner'),
+    doResolve: jest.fn().mockReturnValue('path/to/react-native'),
+    fsReadFileSync: jest.fn(),
+    fsExistsSync: jest.fn(),
+    fsWriteFileSync: jest.fn(),
     logDefault: jest.fn(),
-    getConfigProp: jest.fn().mockImplementation((prop) => {
-        if (prop === 'entryFile') return 'index';
-        if (prop === 'enableSourceMaps') return true;
-    }),
+    logInfo: jest.fn(),
+    inquirerPrompt: jest.fn(),
+    getCurrentCommand: jest.fn(),
 }));
 
 beforeEach(() => {
@@ -65,7 +76,7 @@ describe('packageReactNativeIOS', () => {
         (getContext as jest.Mock).mockReturnValue({ ...ctx, platform: undefined });
 
         // WHEN
-        await packageReactNativeIOS(true);
+        packageReactNativeIOS(true);
 
         // THEN
         expect(executeAsync).not.toHaveBeenCalled();
@@ -74,22 +85,112 @@ describe('packageReactNativeIOS', () => {
     it('calls executeAsync with correct arguments when isDev is true', async () => {
         // GIVEN
         (getContext as jest.Mock).mockReturnValue(ctx);
-
         // WHEN
-        await packageReactNativeIOS(true);
+        packageReactNativeIOS(true);
 
         // THEN
-        expect(executeAsync).toHaveBeenCalledWith(expect.stringContaining('--dev true'), expect.anything());
+        expect(executeAsync).toHaveBeenCalledWith(
+            'node path/to/react-native/local-cli/cli.js bundle --platform ios --dev true --assets-dest platformBuilds/com.test_ios --entry-file index.js --bundle-output /mocked/app/folder/main.jsbundle --sourcemap-output /mocked/app/folder/main.jsbundle.map --config=metro.config.js',
+            {
+                env: {
+                    BASE_VAR: 'mockedBaseValue',
+                    EXTENSION_VAR: 'mockedExtensionValue',
+                    RNV_APP_ID: 'mockedAppId',
+                    RNV_REACT_NATIVE_PATH: 'mockedReactNativePath',
+                    RNV_SKIP_LINKING: 'mockedSkipLinking',
+                },
+            }
+        );
     });
-
-    it('generateChecksum testing', async () => {
+    it('calls executeAsync with correct arguments when isDev is false', async () => {
         // GIVEN
         (getContext as jest.Mock).mockReturnValue(ctx);
 
         // WHEN
-        await packageReactNativeIOS(false);
+        packageReactNativeIOS(false);
 
         // THEN
-        expect(executeAsync).toHaveBeenCalledWith(expect.stringContaining('--dev false'), expect.anything());
+        expect(executeAsync).toHaveBeenCalledWith(
+            'node path/to/react-native/local-cli/cli.js bundle --platform ios --dev false --assets-dest platformBuilds/com.test_ios --entry-file index.js --bundle-output /mocked/app/folder/main.jsbundle --sourcemap-output /mocked/app/folder/main.jsbundle.map --config=metro.config.js',
+            {
+                env: {
+                    BASE_VAR: 'mockedBaseValue',
+                    EXTENSION_VAR: 'mockedExtensionValue',
+                    RNV_APP_ID: 'mockedAppId',
+                    RNV_REACT_NATIVE_PATH: 'mockedReactNativePath',
+                    RNV_SKIP_LINKING: 'mockedSkipLinking',
+                },
+            }
+        );
+    });
+    it('should generate checksum of Podfile content and plugin versions', () => {
+        const mockPodfileChecksum = 'podfilechecksum';
+        const mockPluginVersionsChecksum = 'pluginversionschecksum';
+
+        expect(`${generateChecksum(mockPodfileChecksum)}${generateChecksum(mockPluginVersionsChecksum)}`).toBe(
+            '57ca0a750b367e0b100abae884b7b35151babb11c8c9c4de2375cf27cf03fd69'
+        ); // expecting same input to always equal same checksum
+    });
+});
+
+describe('runCocoaPods', () => {
+    beforeEach(() => {
+        (logInfo as jest.Mock).mockImplementation(jest.fn());
+        (fsExistsSync as jest.Mock).mockReturnValue(false);
+        (executeAsync as jest.Mock).mockImplementation(jest.fn());
+        (inquirerPrompt as jest.Mock).mockResolvedValue({ selectedOption: 'Continue with pod action (recommended)' });
+    });
+
+    it('should skip pod action if checkIfPodsIsRequired returns false', async () => {
+        (getCurrentCommand as jest.Mock).mockReturnValue('currentCommand');
+        (getContext as jest.Mock).mockReturnValue({ runtime: { _skipNativeDepResolutions: true } });
+        const result = await runCocoaPods(false);
+
+        expect(logInfo).toHaveBeenCalledWith(
+            'Skipping pod action. Reason: Command currentCommand explicitly skips pod checks'
+        );
+        expect(result).toBe(false);
+    });
+
+    it('should reject if app folder does not exist', async () => {
+        (fsExistsSync as jest.Mock).mockReturnValue(false);
+        (getAppFolder as jest.Mock).mockReturnValue('/fake/app/folder');
+        (getContext as jest.Mock).mockReturnValue({ runtime: { _skipNativeDepResolutions: false } });
+
+        await expect(runCocoaPods(true)).rejects.toEqual('Location /fake/app/folder does not exists!');
+    });
+
+    it('should execute pod update if forceUpdatePods is true', async () => {
+        (fsWriteFileSync as jest.Mock).mockReturnValue(true);
+        (fsReadFileSync as jest.Mock).mockReturnValue('appFolder/Podfile');
+        (fsExistsSync as jest.Mock).mockReturnValue(true);
+        (getAppFolder as jest.Mock).mockReturnValue('/real/app/folder');
+        (getContext as jest.Mock).mockReturnValue({
+            runtime: { _skipNativeDepResolutions: false, pluginVersions: { 1: 1 } },
+        });
+        await runCocoaPods(true);
+
+        expect(executeAsync).toHaveBeenCalledWith('bundle install');
+        expect(executeAsync).toHaveBeenLastCalledWith(
+            'bundle exec pod update',
+            expect.objectContaining({ cwd: '/real/app/folder' })
+        );
+    });
+
+    it('should skip pod action, if chosing that in the inquirer prompt', async () => {
+        (fsWriteFileSync as jest.Mock).mockReturnValue(true);
+        (fsReadFileSync as jest.Mock).mockReturnValue('appFolder/Podfile');
+        (fsExistsSync as jest.Mock).mockReturnValue(true);
+        (getAppFolder as jest.Mock).mockReturnValue('/real/app/folder');
+        (getContext as jest.Mock).mockReturnValue({
+            runtime: { _skipNativeDepResolutions: false, pluginVersions: { 1: 1 } },
+        });
+        (inquirerPrompt as jest.Mock).mockResolvedValue({ selectedOption: 'Skip pod action' });
+
+        const run = await runCocoaPods(true);
+
+        expect(run).toEqual(false);
+
+        expect(executeAsync).not.toHaveBeenCalledWith('bundle install');
     });
 });
