@@ -1,5 +1,5 @@
 import path from 'path';
-import { getAppConfigBuildsFolder, getAppFolder } from '../context/contextProps';
+import { getAppConfigBuildsFolder, getAppFolder, getConfigRootProp } from '../context/contextProps';
 import { parseRenativeConfigs } from '../configs';
 import {
     copyFolderContentsRecursiveSync,
@@ -664,11 +664,13 @@ const getCleanRegExString = (str: string) => str.replace(/[-\\.,_*+?^$[\](){}!=|
 
 const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
     const source = path.join(pluginsPath, dir, 'overrides');
+    const isMonorepo = getConfigRootProp('isMonorepo');
 
     const dest = doResolve(dir, false);
     if (!dest) return;
 
     const plugin = getMergedPlugin(c, dir);
+
     let flavourSource;
     if (plugin) {
         flavourSource = path.resolve(pluginsPath, dir, `overrides@${plugin.version}`);
@@ -690,51 +692,78 @@ const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
             )}. skipping folder override action`
         );
     }
+    const overridePath = _findOverridePath(pluginsPath, dir, plugin);
+    _applyFileOverrides(overridePath, dest);
 
-    let overridePath: string | undefined;
-    if (plugin?.version) {
-        const pluginVerArr = plugin.version.split('.');
-        const pluginVersions: Array<string> = [];
-        let prevVersion: string;
-        pluginVerArr.forEach((v) => {
-            if (prevVersion) {
-                prevVersion = `${prevVersion}.${v}`;
-            } else {
-                prevVersion = `${v}`;
+    // override @react-native-community in nested packages
+    if (plugin?._id === '@react-native-community/cli' || plugin?._id === '@react-native-community/cli-platform-ios') {
+        const dests: string[] = [];
+        const targetPkgs = ['react-native', 'react-native-tvos'];
+        targetPkgs.forEach((pkg) => {
+            const res = doResolve(plugin._id, false, {
+                basedir: path.join(
+                    isMonorepo ? path.join(c.paths.project.dir, '../..') : c.paths.project.dir,
+                    'node_modules',
+                    pkg
+                ),
+            });
+            if (res) {
+                dests.push(res);
             }
-            pluginVersions.push(prevVersion);
         });
-        pluginVersions.reverse();
 
-        for (let i = 0; i < pluginVersions.length; i++) {
-            overridePath = path.resolve(pluginsPath, dir, `overrides@${pluginVersions[i]}.json`);
-            if (fsExistsSync(overridePath)) {
-                break;
-            }
-        }
+        dests.forEach((dest) => {
+            const overridePath = _findOverridePath(pluginsPath, dir, plugin);
+            _applyFileOverrides(overridePath, dest);
+        });
     }
+};
 
-    if (overridePath && !fsExistsSync(overridePath)) {
-        overridePath = path.resolve(pluginsPath, dir, 'overrides.json');
-    }
+const _applyFileOverrides = (overridePath: string | undefined, dest: string) => {
     const overrideConfig = overridePath ? readObjectSync<ConfigFileOverrides>(overridePath) : null;
     const overrides = overrideConfig?.overrides;
     if (overrides) {
         Object.keys(overrides).forEach((k) => {
             const ovDir = path.join(dest, k);
             const override = overrides[k];
-
             if (fsExistsSync(ovDir)) {
                 if (fsLstatSync(ovDir).isDirectory()) {
-                    logWarning('overrides.json: Directories not supported yet. specify path to actual file');
+                    logWarning('overrides.json: Directories not supported yet. Specify path to actual file.');
                 } else {
                     overrideFileContents(ovDir, override, overridePath);
                 }
             }
         });
     }
+};
 
-    // const parentDest = path.join(dir, '..')
+const _findOverridePath = (pluginsPath: string, dir: string, plugin: RnvPlugin | null) => {
+    if (!plugin?.version) return;
+    let overridePath: string | undefined;
+
+    const pluginVerArr = plugin.version.split('.');
+    const pluginVersions: Array<string> = [];
+    let prevVersion: string;
+    pluginVerArr.forEach((v) => {
+        if (prevVersion) {
+            prevVersion = `${prevVersion}.${v}`;
+        } else {
+            prevVersion = `${v}`;
+        }
+        pluginVersions.push(prevVersion);
+    });
+    pluginVersions.reverse();
+
+    for (let i = 0; i < pluginVersions.length; i++) {
+        overridePath = path.resolve(pluginsPath, dir, `overrides@${pluginVersions[i]}.json`);
+        if (fsExistsSync(overridePath)) {
+            break;
+        }
+    }
+    if (overridePath && !fsExistsSync(overridePath)) {
+        overridePath = path.resolve(pluginsPath, dir, 'overrides.json');
+    }
+    return overridePath;
 };
 
 export const overrideFileContents = (dest: string, override: Record<string, string>, overridePath = '') => {
@@ -880,7 +909,6 @@ export const overrideTemplatePlugins = async () => {
 
     const rnvPluginsDirs = c.paths.scopedConfigTemplates.pluginTemplatesDirs;
     const appPluginDirs = c.paths.appConfig.pluginDirs;
-
     parsePlugins((plugin, pluginPlat, key) => {
         if (!plugin.disablePluginTemplateOverrides) {
             if (plugin?._scopes?.length) {
