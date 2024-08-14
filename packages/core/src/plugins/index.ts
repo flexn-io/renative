@@ -693,6 +693,7 @@ const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
         );
     }
     const overridePath = _findOverridePath(pluginsPath, dir, plugin);
+
     _applyFileOverrides(overridePath, dest);
 
     // override @react-native-community in nested packages
@@ -713,7 +714,6 @@ const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
         });
 
         dests.forEach((dest) => {
-            const overridePath = _findOverridePath(pluginsPath, dir, plugin);
             _applyFileOverrides(overridePath, dest);
         });
     }
