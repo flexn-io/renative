@@ -6,6 +6,7 @@ import {
     fsExistsSync,
     fsLstatSync,
     fsReadFileSync,
+    fsReaddirSync,
     fsWriteFileSync,
     mergeObjects,
     readObjectSync,
@@ -664,11 +665,8 @@ const getCleanRegExString = (str: string) => str.replace(/[-\\.,_*+?^$[\](){}!=|
 
 const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
     const source = path.join(pluginsPath, dir, 'overrides');
-    const isMonorepo = getConfigRootProp('isMonorepo');
-
     const dest = doResolve(dir, false);
     if (!dest) return;
-
     const plugin = getMergedPlugin(c, dir);
 
     let flavourSource;
@@ -696,27 +694,42 @@ const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
 
     _applyFileOverrides(overridePath, dest);
 
-    // override @react-native-community in nested packages
-    if (plugin?._id === '@react-native-community/cli' || plugin?._id === '@react-native-community/cli-platform-ios') {
-        const dests: string[] = [];
-        const targetPkgs = ['react-native', 'react-native-tvos'];
-        targetPkgs.forEach((pkg) => {
-            const res = doResolve(plugin._id, false, {
-                basedir: path.join(
-                    isMonorepo ? path.join(c.paths.project.dir, '../..') : c.paths.project.dir,
-                    'node_modules',
-                    pkg
-                ),
-            });
-            if (res) {
-                dests.push(res);
-            }
-        });
+    //override plugin in nested packages
+    _applyOverridesToNestedModules(c, pluginsPath, dir, plugin);
+};
 
-        dests.forEach((dest) => {
-            _applyFileOverrides(overridePath, dest);
-        });
+const _applyOverridesToNestedModules = (c: RnvContext, pluginsPath: string, dir: string, plugin: RnvPlugin | null) => {
+    const isMonorepo = getConfigRootProp('isMonorepo');
+
+    const rootNodeModules = path.join(
+        isMonorepo ? path.join(c.paths.project.dir, '../..') : c.paths.project.dir,
+        'node_modules'
+    );
+
+    _findNodeModules(rootNodeModules).forEach((nestedNodeModules) => {
+        const nestedDest = path.join(nestedNodeModules, dir);
+        const nestedOverridePath = _findOverridePath(pluginsPath, dir, plugin);
+        _applyFileOverrides(nestedOverridePath, nestedDest);
+    });
+};
+
+const _findNodeModules = (startPath: string): string[] => {
+    const c = getContext();
+    const plugins = Object.keys(c.buildConfig.plugins || {});
+    const results: string[] = [];
+    if (!fsExistsSync(startPath)) return results;
+    const entries = fsReaddirSync(startPath);
+    if (entries.includes('node_modules')) {
+        results.push(path.join(startPath, 'node_modules'));
     }
+    entries.forEach((entry) => {
+        const fullPath = path.join(startPath, entry);
+        if (fsLstatSync(fullPath).isDirectory() && plugins.includes(entry)) {
+            results.push(..._findNodeModules(fullPath));
+        }
+    });
+    console.log(results);
+    return results;
 };
 
 const _applyFileOverrides = (overridePath: string | undefined, dest: string) => {
@@ -793,7 +806,7 @@ export const overrideFileContents = (dest: string, override: Record<string, stri
                 foundRegEx = true;
                 fileToFix = fileToFix.replace(regEx, override[fk]);
                 logSuccess(
-                    `${chalk().bold.white(dest.split('node_modules').pop())} requires override by: ${chalk().bold.white(
+                    `${chalk().bold.white(dest)} requires override by: ${chalk().bold.white(
                         overridePath.split('node_modules').pop()
                     )}. FIXING...DONE`
                 );
