@@ -728,7 +728,6 @@ const _findNodeModules = (startPath: string): string[] => {
             results.push(..._findNodeModules(fullPath));
         }
     });
-    console.log(results);
     return results;
 };
 
