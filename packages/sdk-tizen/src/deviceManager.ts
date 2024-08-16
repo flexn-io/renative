@@ -146,7 +146,8 @@ const getSubplatformDevices = async (allTizenEmulators: string[], neededPlatform
 
             const TizenEmulatorTemplate = detailObj.Template.toLowerCase();
             if (
-                (neededPlatform === 'tizen' && TizenEmulatorTemplate.includes('tizen')) ||
+                (neededPlatform === 'tizen' &&
+                    (TizenEmulatorTemplate.includes('tizen') || TizenEmulatorTemplate.includes('tv'))) ||
                 (neededPlatform === 'tizenwatch' && TizenEmulatorTemplate.includes('wearable')) ||
                 (neededPlatform === 'tizenmobile' && TizenEmulatorTemplate.includes('mobile'))
             ) {
