@@ -211,7 +211,7 @@
             "entryFile": "index",
             "certificateProfile": "RNVanillaCert",
             "package": "NkVRhWHJST",
-            "id": "NkVRhWHJST.RNVanillaTV",
+            "id": "NkVRhWHJST",
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false
@@ -227,7 +227,7 @@
             "entryFile": "index",
             "certificateProfile": "RNVanillaCert",
             "package": "cHIP2fIRQZ",
-            "id": "cHIP2fIRQZ.RNVanillaWatch",
+            "id": "cHIP2fIRQZ",
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false
@@ -243,7 +243,7 @@
             "entryFile": "index",
             "certificateProfile": "RNVanillaCert",
             "package": "PauodvCU2r",
-            "id": "PauodvCU2r.RNVanillaMobile",
+            "id": "PauodvCU2r",
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false
