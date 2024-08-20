@@ -92,15 +92,15 @@
         },
         "tizen": {
             "package": "NkVRhWHJST",
-            "id": "NkVRhWHJST"
+            "id": "NkVRhWHJST.RNVanillaTV"
         },
         "tizenwatch": {
             "package": "cHIP2fIRQZ",
-            "id": "cHIP2fIRQZ"
+            "id": "cHIP2fIRQZ.RNVanillaWatch"
         },
         "tizenmobile": {
             "package": "PauodvCU2r",
-            "id": "PauodvCU2r"
+            "id": "PauodvCU2r.RNVanillaMobile"
         },
         "web": {
             "buildSchemes": {
