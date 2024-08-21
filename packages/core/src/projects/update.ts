@@ -22,7 +22,7 @@ export const checkAndUpdateProjectIfRequired = async () => {
 
     if (!platform) return;
     const { isMonorepo } = c.buildConfig;
-    if (isMonorepo || supportedPlatforms?.includes(platform)) return true;
+    if (isMonorepo) return true;
     await applyTemplate();
 
     const templateConfigFile = readObjectSync<ConfigFileTemplate>(c.paths.template.configTemplate);
@@ -45,13 +45,15 @@ export const checkAndUpdateProjectIfRequired = async () => {
                     return Promise.reject('Cancelled by user');
                 }
 
-                //update renative.json and copy missing files
                 if (supportedPlatforms) {
-                    supportedPlatforms.push(platform);
+                    if (!supportedPlatforms.includes(platform)) {
+                        supportedPlatforms.push(platform);
+                        if (c.files.project.config) {
+                            writeFileSync(c.paths.project.config, c.files.project.config);
+                        }
+                    }
                 }
-                if (c.files.project.config) {
-                    writeFileSync(c.paths.project.config, c.files.project.config);
-                }
+
                 missingFiles.forEach((mf) => {
                     const destPath = path.join(c.paths.project.dir, mf);
                     const sourcePath = path.join(c.paths.template.dir, mf);
