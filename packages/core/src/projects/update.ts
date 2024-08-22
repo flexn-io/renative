@@ -33,8 +33,13 @@ export const checkAndUpdateProjectIfRequired = async () => {
             logError(`Platform ${platform} is not supported!`);
             return Promise.reject(`Platform ${platform} is not supported!`);
         } else {
-            const missingFiles = _getPathsForPlatform(templateConfigFile, platform);
-            if (missingFiles.length) {
+            const missingFiles = _getMisFilesForPlatform(
+                templateConfigFile,
+                platform,
+                c.paths.project.dir,
+                c.paths.template.dir
+            );
+            if (missingFiles.length || !supportedPlatforms?.includes(platform)) {
                 const { confirm } = await inquirerPrompt({
                     type: 'confirm',
                     message: `You are trying to run platform ${chalk().bold.magenta(
@@ -89,10 +94,22 @@ const _getAllAvailablePlatforms = (templateConfigFile: ConfigFileTemplate): stri
         return acc;
     }, [] as string[]);
 };
-const _getPathsForPlatform = (templateConfigFile: ConfigFileTemplate, platform: RnvPlatform) => {
+const _getMisFilesForPlatform = (
+    templateConfigFile: ConfigFileTemplate,
+    platform: RnvPlatform,
+    projectPath: string,
+    templatePath: string
+) => {
     const includedPaths = templateConfigFile.templateConfig?.includedPaths || [];
     const result = includedPaths.find(
         (item) => typeof item !== 'string' && item.platforms && item.platforms.includes(platform!)
     );
-    return result && typeof result !== 'string' ? result.paths : [];
+
+    if (result && typeof result !== 'string') {
+        const nonExistingFiles = result.paths.filter(
+            (file) => !fsExistsSync(path.join(projectPath, file)) && fsExistsSync(path.join(templatePath, file))
+        );
+        return nonExistingFiles;
+    }
+    return [];
 };

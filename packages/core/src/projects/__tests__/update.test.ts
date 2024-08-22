@@ -90,7 +90,11 @@ describe('checkAndUpdateProjectIfRequired', () => {
             templateConfig: { includedPaths: [{ platforms: ['android'], paths: ['mockFile.js'] }] },
         });
         jest.mocked(inquirerPrompt).mockResolvedValue({ confirm: true });
-        jest.mocked(fsExistsSync).mockReturnValueOnce(false).mockReturnValueOnce(true);
+        jest.mocked(fsExistsSync)
+            .mockReturnValueOnce(false)
+            .mockReturnValueOnce(true)
+            .mockReturnValueOnce(false)
+            .mockReturnValueOnce(true);
         jest.mocked(fsLstatSync).mockReturnValue({ isDirectory: () => false } as any);
         jest.mocked(path.join).mockImplementation((...paths) => paths.join('/'));
         const sourcePath = path.join(c.paths.template.dir, 'mockFile.js');
@@ -120,7 +124,11 @@ describe('checkAndUpdateProjectIfRequired', () => {
             templateConfig: { includedPaths: [{ platforms: ['android'], paths: ['mockFile.js'] }] },
         });
         jest.mocked(inquirerPrompt).mockResolvedValue({ confirm: true });
-        jest.mocked(fsExistsSync).mockReturnValueOnce(false).mockReturnValueOnce(true);
+        jest.mocked(fsExistsSync)
+            .mockReturnValueOnce(false)
+            .mockReturnValueOnce(true)
+            .mockReturnValueOnce(false)
+            .mockReturnValueOnce(true);
         jest.mocked(fsLstatSync).mockReturnValue({ isDirectory: () => false } as any);
         jest.mocked(path.join).mockImplementation((...paths) => paths.join('/'));
         const sourcePath = path.join(c.paths.template.dir, 'mockFile.js');
