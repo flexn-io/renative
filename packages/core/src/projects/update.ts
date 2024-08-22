@@ -33,12 +33,12 @@ export const checkAndUpdateProjectIfRequired = async () => {
             logError(`Platform ${platform} is not supported!`);
             return Promise.reject(`Platform ${platform} is not supported!`);
         } else {
-            const missingFiles = _getMisFilesForPlatform(
+            const missingFiles = _getMisFilesForPlatform({
                 templateConfigFile,
                 platform,
-                c.paths.project.dir,
-                c.paths.template.dir
-            );
+                projectPath: c.paths.project.dir,
+                templatePath: c.paths.template.dir,
+            });
             if (missingFiles.length || !supportedPlatforms?.includes(platform)) {
                 const { confirm } = await inquirerPrompt({
                     type: 'confirm',
@@ -94,12 +94,13 @@ const _getAllAvailablePlatforms = (templateConfigFile: ConfigFileTemplate): stri
         return acc;
     }, [] as string[]);
 };
-const _getMisFilesForPlatform = (
-    templateConfigFile: ConfigFileTemplate,
-    platform: RnvPlatform,
-    projectPath: string,
-    templatePath: string
-) => {
+const _getMisFilesForPlatform = (opts: {
+    templateConfigFile: ConfigFileTemplate;
+    platform: RnvPlatform;
+    projectPath: string;
+    templatePath: string;
+}) => {
+    const { templateConfigFile, platform, projectPath, templatePath } = opts;
     const includedPaths = templateConfigFile.templateConfig?.includedPaths || [];
     const result = includedPaths.find(
         (item) => typeof item !== 'string' && item.platforms && item.platforms.includes(platform!)
