@@ -45,6 +45,7 @@ const Question = async (data: NewProjectData) => {
 
     const c = getContext();
     const { templateVersion, projectTemplate } = c.program.opts();
+    let { localTemplatePath } = c.program.opts();
 
     const projectTemplates = c.buildConfig.projectTemplates || {}; // c.files.rnvConfigTemplates.config?.projectTemplates || {};
 
@@ -66,13 +67,12 @@ const Question = async (data: NewProjectData) => {
     options.push(customTemplate);
     options.push(localTemplate);
     options.push(noTemplate);
-    let localTemplatePath: string | undefined;
 
     inputs.template = {};
 
     if (checkInputValue(projectTemplate)) {
         inputs.template.packageName = projectTemplate;
-    } else {
+    } else if (!checkInputValue(localTemplatePath)) {
         const iRes = await inquirerPrompt({
             name: 'inputTemplate',
             type: 'list',
@@ -112,7 +112,7 @@ const Question = async (data: NewProjectData) => {
 
     const npmCacheDir = path.join(c.paths.project.dir, RnvFolderName.dotRnv, RnvFolderName.npmCache);
 
-    if (localTemplatePath) {
+    if (checkInputValue(localTemplatePath)) {
         if (!fsExistsSync(localTemplatePath)) {
             return Promise.reject(`Local template path ${localTemplatePath} does not exist`);
         }
