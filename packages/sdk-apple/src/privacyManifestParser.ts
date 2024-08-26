@@ -45,6 +45,7 @@ export const parsePrivacyManifest = () => {
             const xcodePath = doResolve('xcode');
             if (!xcodePath) {
                 logError(`Cannot resolve xcode path`);
+                resolve();
                 return;
             }
 
@@ -57,6 +58,8 @@ export const parsePrivacyManifest = () => {
                 fsWriteFileSync(projectPath, xcodeProj.writeSync());
                 resolve();
             });
+        } else {
+            resolve();
         }
     });
 };
