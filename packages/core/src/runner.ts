@@ -12,6 +12,7 @@ import { runInteractiveWizard } from './tasks/wizard';
 import { initializeTask } from './tasks/taskExecutors';
 import { getTaskNameFromCommand, selectPlatformIfRequired } from './tasks/taskHelpers';
 import { logInfo } from './logger';
+import { checkAndUpdateProjectIfRequired } from './projects/update';
 
 export const exitRnvCore = async (code: number) => {
     const ctx = getContext();
@@ -40,7 +41,7 @@ export const executeRnvCore = async () => {
     await configureRuntimeDefaults();
     await checkAndMigrateProject();
     await updateRenativeConfigs();
-    // await checkAndBootstrapIfRequired();
+    await checkAndUpdateProjectIfRequired();
 
     // TODO: rename to something more meaningful or DEPRECATE entirely
     if (c.program.opts().npxMode) {
