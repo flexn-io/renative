@@ -265,7 +265,6 @@ const _getRunningDevices = async (c: RnvContext) => {
             }
         })
     );
-
     return devices;
 };
 
@@ -315,7 +314,8 @@ export const runTizenSimOrDevice = async () => {
     const tBuild = bundleAssets ? path.join(tDir, 'build') : tDir;
     const intermediate = path.join(tDir, 'intermediate');
     const tOut = path.join(tDir, 'output');
-    const tId = getConfigProp('id');
+    // change id for win & linux platforms
+    const tId = (getConfigProp('id') || '').split('.')[0];
     const certProfile = getConfigProp('certificateProfile') || DEFAULTS.certificateProfile;
 
     const wgt = `${appName}.wgt`;
