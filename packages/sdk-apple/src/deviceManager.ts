@@ -16,6 +16,7 @@ import { AppleDevice } from './types';
 import { execFileSync } from 'child_process';
 import { getContext } from './getContext';
 
+type DeviceType = Device & { modelName: string };
 const ERROR_MSG = {
     TARGET_EXISTS: 'Unable to boot device in current state: Booted',
 };
@@ -26,7 +27,8 @@ export const getAppleDevices = async (ignoreDevices?: boolean, ignoreSimulators?
     logDefault('getAppleDevices', `ignoreDevices:${ignoreDevices} ignoreSimulators:${ignoreSimulators}`);
     const { skipTargetCheck } = c.program.opts();
 
-    const connectedDevicesArray = await listIOSDevices();
+    const connectedDevicesArray = (await listIOSDevices()).filter((d) => d.isAvailable) as DeviceType[];
+
     const allDevicesAndSims = _parseNewIOSDevicesList(connectedDevicesArray);
 
     let filteredTargets = allDevicesAndSims;
@@ -38,6 +40,7 @@ export const getAppleDevices = async (ignoreDevices?: boolean, ignoreSimulators?
     if (ignoreSimulators) {
         filteredTargets = allDevicesAndSims.filter((d) => d.isDevice);
     }
+    console.log('########### filteredTargets', filteredTargets);
 
     if (!skipTargetCheck) {
         return filteredTargets
@@ -54,29 +57,30 @@ export const getAppleDevices = async (ignoreDevices?: boolean, ignoreSimulators?
     return filteredTargets;
 };
 
-const _parseNewIOSDevicesList = (rawDevices: Array<Device>) => {
-    const decideIcon = (device: Device) => {
-        const { name } = device;
-        if (name?.includes('iPhone') || name?.includes('iPod')) {
+const _parseNewIOSDevicesList = (rawDevices: Array<DeviceType>) => {
+    const decideIcon = (device: DeviceType) => {
+        const { modelName } = device;
+        if (modelName?.includes('iPhone') || modelName?.includes('iPod')) {
             return 'Phone 📱';
         }
-        if (name?.includes('iPad')) {
+        if (modelName?.includes('iPad')) {
             return 'Tablet 💊';
         }
-        if (name?.includes('Apple TV')) {
+        if (modelName?.includes('Apple TV')) {
             return 'TV 📺';
         }
         return 'Apple Device';
     };
 
     return rawDevices.map((device): AppleDevice => {
-        const { name, version, udid, type } = device;
+        const { name, version, udid, type, modelName } = device;
         const icon = decideIcon(device);
         return {
             udid,
             name,
             icon,
             version,
+            modelName,
             isDevice: type === 'device',
         };
     });

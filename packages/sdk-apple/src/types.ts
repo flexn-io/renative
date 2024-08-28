@@ -7,6 +7,7 @@ export type AppleDevice = {
     name?: string;
     icon?: string;
     isDevice?: boolean;
+    modelName?: string;
 };
 
 export type AppiumAppleDevice = {
