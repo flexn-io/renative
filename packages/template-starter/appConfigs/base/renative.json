@@ -210,8 +210,8 @@
             "appName": "RNVanillaTV",
             "entryFile": "index",
             "certificateProfile": "RNVanillaCert",
-            "package": "NkVRhWHJST",
-            "id": "NkVRhWHJST.RNVanillaTV",
+            "package": "NkVRhWHJSX",
+            "id": "NkVRhWHJSX.RNVanillaTV",
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false
