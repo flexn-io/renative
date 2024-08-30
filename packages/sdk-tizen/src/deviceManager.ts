@@ -71,9 +71,9 @@ const formatXMLObject = (
     return {};
 };
 
-export const launchTizenSimulator = async (name: string | true): Promise<boolean> => {
+export const launchTizenEmulator = async (name: string | true): Promise<boolean> => {
     const c = getContext();
-    logDefault(`launchTizenSimulator:${name}`);
+    logDefault(`launchTizenEmulator:${name}`);
 
     if (name === true) {
         const emulators = await execCLI(CLI_TIZEN_EMULATOR, 'list-vm');
@@ -109,7 +109,7 @@ export const launchTizenSimulator = async (name: string | true): Promise<boolean
             if (typeof e === 'string') {
                 if (e.includes(ERROR_MSG.UNKNOWN_VM)) {
                     logError(`The VM "${name}" does not exist.`);
-                    return launchTizenSimulator(true);
+                    return launchTizenEmulator(true);
                 }
 
                 if (e.includes(ERROR_MSG.ALREADY_RUNNING)) {
@@ -119,7 +119,7 @@ export const launchTizenSimulator = async (name: string | true): Promise<boolean
             }
         }
     }
-    return Promise.reject('No simulator -t target name specified!');
+    return Promise.reject('No emulator -t target name specified!');
 };
 
 const getSubplatformDevices = async (allTizenEmulators: string[], neededPlatform: string) => {
@@ -358,7 +358,6 @@ export const runTizenSimOrDevice = async () => {
     const tBuild = bundleAssets ? path.join(tDir, 'build') : tDir;
     const intermediate = path.join(tDir, 'intermediate');
     const tOut = path.join(tDir, 'output');
-    // change id for win & linux platforms
     const tId = getConfigProp('id');
     const certProfile = getConfigProp('certificateProfile') || DEFAULTS.certificateProfile;
 
@@ -385,7 +384,7 @@ export const runTizenSimOrDevice = async () => {
                 return;
             }
             try {
-                await launchTizenSimulator(defaultTarget);
+                await launchTizenEmulator(defaultTarget);
                 deviceID = defaultTarget;
                 await _waitForEmulatorToBeReady(defaultTarget);
                 return continueLaunching();
@@ -393,7 +392,7 @@ export const runTizenSimOrDevice = async () => {
                 logDebug(`askForEmulator:ERRROR: ${e}`);
                 try {
                     await execCLI(CLI_TIZEN_EMULATOR, `create -n ${defaultTarget} -p tv-samsung-5.0-x86`);
-                    await launchTizenSimulator(defaultTarget);
+                    await launchTizenEmulator(defaultTarget);
                     deviceID = defaultTarget;
                     await _waitForEmulatorToBeReady(defaultTarget);
                     return continueLaunching();
@@ -422,7 +421,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
             if (typeof e === 'string' && e.includes('No device matching')) {
                 if (target) {
                     isRunningEmulator = true;
-                    await launchTizenSimulator(target);
+                    await launchTizenEmulator(target);
                     hasDevice = await _waitForEmulatorToBeReady(target);
                 } else {
                     return Promise.reject('Not target specified. (-t)');
@@ -452,7 +451,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
 
             if (target) {
                 isRunningEmulator = true;
-                await launchTizenSimulator(target);
+                await launchTizenEmulator(target);
                 hasDevice = await _waitForEmulatorToBeReady(target);
             } else {
                 return Promise.reject('Not target specified. (-t)');
@@ -467,6 +466,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
         // }
 
         if (platform !== 'tizenwatch' && platform !== 'tizenmobile' && hasDevice) {
+            // change id for for emulator because tizen 8+ fails to run app
             await execCLI(CLI_TIZEN, `run -p ${isRunningEmulator ? tId.split('.')[0] : tId} -t ${deviceID}`);
         } else if ((platform === 'tizenwatch' || platform === 'tizenmobile') && hasDevice) {
             const packageID = tId.split('.');
@@ -496,9 +496,9 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
             }
         }
         try {
-            // try to launch it, see if it's a simulator that's not started yet
+            // try to launch it, see if it's a emulator that's not started yet
             isRunningEmulator = true;
-            await launchTizenSimulator(target);
+            await launchTizenEmulator(target);
             await _waitForEmulatorToBeReady(target);
             deviceID = target;
             return continueLaunching();
