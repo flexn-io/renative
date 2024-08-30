@@ -159,6 +159,5 @@ export const getIP = () => {
             return addresses?.length ? addresses[0].address : undefined;
         })
         .filter(Boolean);
-
-    return all.length ? all[0] : '127.0.0.1';
+    return all.length ? all.at(-1) : '127.0.0.1';
 };
