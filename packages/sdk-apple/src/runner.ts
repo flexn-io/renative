@@ -33,7 +33,13 @@ import { parseXcodeProject } from './xcodeParser';
 import { parseXcscheme } from './xcschemeParser';
 import { AppleDevice } from './types';
 import { ObjectEncodingOptions } from 'fs';
-import { packageReactNativeIOS, runCocoaPods, runReactNativeIOS, EnvVars } from '@rnv/sdk-react-native';
+import {
+    packageReactNativeIOS,
+    runCocoaPods,
+    runReactNativeIOS,
+    EnvVars,
+    generateEnvVarsFile,
+} from '@rnv/sdk-react-native';
 import { registerDevice } from './fastlane';
 import { Context, getContext } from './getContext';
 import { parsePrivacyManifest } from './privacyManifestParser';
@@ -800,6 +806,8 @@ export const configureXcodeProject = async () => {
     await runCocoaPods(c.program.opts().updatePods);
     await parseXcodeProject();
     await parsePrivacyManifest();
+    await generateEnvVarsFile();
+
     return true;
 };
 
