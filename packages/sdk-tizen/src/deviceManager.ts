@@ -358,7 +358,7 @@ export const runTizenSimOrDevice = async () => {
     const intermediate = path.join(tDir, 'intermediate');
     const tOut = path.join(tDir, 'output');
     // change id for win & linux platforms
-    const tId = (getConfigProp('id') || '').split('.')[0];
+    const tId = getConfigProp('id');
     const certProfile = getConfigProp('certificateProfile') || DEFAULTS.certificateProfile;
 
     const wgt = `${appName}.wgt`;
@@ -414,7 +414,9 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
 
         try {
             const packageID = platform === 'tizenwatch' || platform === 'tizenmobile' ? tId.split('.')[0] : tId;
-            await execCLI(CLI_TIZEN, `uninstall -p ${packageID} -t ${deviceID}`, { ignoreErrors: true });
+            await execCLI(CLI_TIZEN, `uninstall -p ${packageID} -t ${deviceID}`, {
+                ignoreErrors: true,
+            });
             hasDevice = true;
         } catch (e) {
             if (typeof e === 'string' && e.includes('No device matching')) {
