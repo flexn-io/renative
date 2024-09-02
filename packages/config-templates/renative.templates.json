@@ -1056,7 +1056,7 @@
             "version": "5.2.11"
         },
         "aws-amplify": "4.3.13",
-        "axios": "1.6.0",
+        "axios": "1.7.4",
         "crashlytics": {
             "android": {
                 "templateAndroid": {
@@ -2701,6 +2701,14 @@
         "react-native-maps": {
             "android": {
                 "templateAndroid": {
+                    "app_build_gradle": {
+                        "implementations": [
+                            "(project(':react-native-maps')){\n exclude group: 'com.google.android.gms' }",
+                            "'com.google.android.gms:play-services-base:18.0.1'",
+                            "'com.google.android.gms:play-services-location:19.0.1'",
+                            "'com.google.android.gms:play-services-maps:18.0.2'"
+                        ]
+                    },
                     "AndroidManifest_xml": {
                         "tag": "application",
                         "children": [
@@ -2717,23 +2725,18 @@
                             }
                         ]
                     },
-                    "implementations": [
-                        "(project(':react-native-maps')){\n exclude group: 'com.google.android.gms', module: 'play-services-base' \n exclude group: 'com.google.android.gms', module: 'play-services-maps' }",
-                        "'com.google.android.gms:play-services-base:17.2.1'",
-                        "'com.google.android.gms:play-services-maps:17.0.0'"
-                    ]
+                    "strings_xml": {
+                        "tag": "resources",
+                        "children": [
+                            {
+                                "tag": "string",
+                                "name": "google_maps_api_key",
+                                "value": "{{props.GOOGLE_MAPS_API_KEY}}"
+                            }
+                        ]
+                    }
                 },
-                "package": "com.airbnb.android.react.maps.MapsPackage",
-                "path": "{{PLUGIN_ROOT}}/android",
-                "ResourceStrings": {
-                    "children": [
-                        {
-                            "child_value": "{{props.GOOGLE_MAPS_API_KEY}}",
-                            "name": "google_maps_api_key",
-                            "tag": "string"
-                        }
-                    ]
-                }
+                "path": "{{PLUGIN_ROOT}}/android"
             },
             "androidtv": {
                 "extendPlatform": "android"

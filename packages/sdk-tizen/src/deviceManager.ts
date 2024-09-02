@@ -78,11 +78,16 @@ export const launchTizenSimulator = async (name: string | true): Promise<boolean
     if (name === true) {
         const emulators = await execCLI(CLI_TIZEN_EMULATOR, 'list-vm');
         const devices = await execCLI(CLI_SDB_TIZEN, 'devices');
-        const emulators_lines = emulators.split('\n');
         const devices_lines = devices.split('\n');
-        const lines = emulators_lines.concat(devices_lines.slice(1));
+
+        const allDownloadedEmulators = emulators.split('\n'); // all tizen, tizenwatch and tizenmobile emulators
+        const specificEmulators = await getSubplatformDevices(allDownloadedEmulators, c.platform as string);
+
+        const lines = specificEmulators.concat(devices_lines.slice(1));
+
         const targetsArray = lines.map((line) => ({ id: line, name: line }));
         const choices = _composeDevicesString(targetsArray);
+
         const { chosenEmulator } = await inquirerPrompt({
             name: 'chosenEmulator',
             type: 'list',
@@ -117,16 +122,54 @@ export const launchTizenSimulator = async (name: string | true): Promise<boolean
     return Promise.reject('No simulator -t target name specified!');
 };
 
-export const listTizenTargets = async () => {
+const getSubplatformDevices = async (allTizenEmulators: string[], neededPlatform: string) => {
+    // subplatform meaning tizen, tizenwatch or tizenmobile
+    const specificEmulators = [];
+    for (let i = 0; i < allTizenEmulators.length; i++) {
+        try {
+            const detailString = await execCLI(CLI_TIZEN_EMULATOR, 'detail -n ' + allTizenEmulators[i]);
+            if (detailString === undefined) continue;
+
+            const detailLines = detailString // turn the command return into array
+                .split('\n')
+                .map((line: string) => line.trim())
+                .filter((line: string) => line !== '');
+
+            const detailObj = detailLines.reduce<{ [key: string]: string }>((acc: any, line: string) => {
+                // make it into a readable object
+                const [key, ...value] = line.split(':');
+                if (key && value) {
+                    acc[key.trim()] = value.join(':').trim();
+                }
+                return acc;
+            }, {});
+
+            const TizenEmulatorTemplate = detailObj.Template.toLowerCase();
+            if (
+                (neededPlatform === 'tizen' &&
+                    (TizenEmulatorTemplate.includes('tizen') || TizenEmulatorTemplate.includes('tv'))) ||
+                (neededPlatform === 'tizenwatch' && TizenEmulatorTemplate.includes('wearable')) ||
+                (neededPlatform === 'tizenmobile' && TizenEmulatorTemplate.includes('mobile'))
+            ) {
+                specificEmulators.push(allTizenEmulators[i]);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+    return specificEmulators;
+};
+
+export const listTizenTargets = async (platform: string) => {
     const emulatorsString = await execCLI(CLI_TIZEN_EMULATOR, 'list-vm');
     const devicesString = await execCLI(CLI_SDB_TIZEN, 'devices');
-    const emulatorArr = emulatorsString.split('\n');
-    // Removed first line because cli gives header ("List of devices attached") before devices list
-    const deviceArr = devicesString.split('\n').slice(1);
+    const devicesArr = devicesString.split('\n').slice(1);
+    const allDownloadedEmulators = emulatorsString.split('\n'); // all tizen, tizenwatch and tizenmobile emulators
+    const specificPlatformEmulators = await getSubplatformDevices(allDownloadedEmulators.concat(devicesArr), platform); // tizen, tizenwatch, tizenmobile - only 1 of them
     let targetStr = '';
-    const targetArr = emulatorArr.concat(deviceArr);
-    targetArr.forEach((_, i) => {
-        targetStr += `[${i}]> ${targetArr[i]}\n`;
+    const finalTargetList = specificPlatformEmulators.concat(devicesArr);
+    finalTargetList.forEach((_, i) => {
+        targetStr += `[${i}]> ${finalTargetList[i]}\n`;
     });
     logToSummary(`Tizen Targets:\n${targetStr}`);
 };
@@ -265,7 +308,6 @@ const _getRunningDevices = async (c: RnvContext) => {
             }
         })
     );
-
     return devices;
 };
 
@@ -315,7 +357,8 @@ export const runTizenSimOrDevice = async () => {
     const tBuild = bundleAssets ? path.join(tDir, 'build') : tDir;
     const intermediate = path.join(tDir, 'intermediate');
     const tOut = path.join(tDir, 'output');
-    const tId = getConfigProp('id');
+    // change id for win & linux platforms
+    const tId = (getConfigProp('id') || '').split('.')[0];
     const certProfile = getConfigProp('certificateProfile') || DEFAULTS.certificateProfile;
 
     const wgt = `${appName}.wgt`;

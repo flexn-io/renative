@@ -147,7 +147,7 @@ const _attemptAutoFix = async (c: RnvContext, shouldThrow?: boolean) => {
         }
     }
 
-    if(shouldThrow) {
+    if (shouldThrow) {
         throw new Error(
             `Your ${c.platform} SDK path is not configured. Please update your ${c.paths.workspace.config} file`
         );

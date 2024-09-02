@@ -16,7 +16,6 @@ export const RnvTaskName = {
     link: 'link',
     unlink: 'unlink',
     publish: 'publish',
-    status: 'status',
     switch: 'switch',
     targetLaunch: 'target launch',
     targetList: 'target list',

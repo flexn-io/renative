@@ -96,12 +96,7 @@
                         "repositories": ["def customVar1 = '1'"],
                         "ext": ["playServicesLocationVersion = \"21.0.1\""]
                     },
-                    "injectAfterAll": [
-                        "allprojects {",
-                        "   repositories {",
-                        "   }",
-                        "}"
-                    ]
+                    "injectAfterAll": ["allprojects {", "   repositories {", "   }", "}"]
                 },
                 "styles_xml": {
                     "tag": "resources",
@@ -133,6 +128,7 @@
                 }
             }
         },
+
         "rn-fetch-blob": "source:rnv",
         "react-native-carplay": "source:rnv",
         "@react-native-community/push-notification-ios": "source:rnv",
