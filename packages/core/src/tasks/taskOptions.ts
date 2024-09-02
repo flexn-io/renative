@@ -232,6 +232,7 @@ export const RnvTaskCoreOptionPresets = createTaskOptionsPreset({
         RnvTaskOptions.json,
         RnvTaskOptions.noSummary,
         RnvTaskOptions.noIntro,
+        RnvTaskOptions.skipDependencyCheck,
     ],
 });
 
