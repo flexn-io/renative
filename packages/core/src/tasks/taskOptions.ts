@@ -237,6 +237,7 @@ export const RnvTaskCoreOptionPresets = createTaskOptionsPreset({
         RnvTaskOptions.noSummary,
         RnvTaskOptions.noIntro,
         RnvTaskOptions.offline,
+        RnvTaskOptions.skipDependencyCheck,
     ],
 });
 
