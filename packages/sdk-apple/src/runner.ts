@@ -43,6 +43,7 @@ import {
 import { registerDevice } from './fastlane';
 import { Context, getContext } from './getContext';
 import { parsePrivacyManifest } from './privacyManifestParser';
+import { getAppId } from '@rnv/sdk-utils';
 
 export const packageBundleForXcode = () => {
     return packageReactNativeIOS();
@@ -233,11 +234,46 @@ export const runXcodeProject = async (runDeviceArguments?: string) => {
 
     if (runDeviceArguments) {
         // await launchAppleSimulator(c, c.runtime.target); @TODO - do we still need this? RN CLI does it as well
-
         //const allowProvisioningUpdates = getConfigProp('allowProvisioningUpdates', true);
         //if (allowProvisioningUpdates) p = `${p} --allowProvisioningUpdates`;
         if (bundleAssets) {
             await packageReactNativeIOS(bundleIsDev);
+        }
+        if (c.platform === 'tvos' && !runDeviceArguments.includes('--simulator')) {
+            try {
+                await executeAsync(`ios-deploy -c`);
+            } catch (error) {
+                if (typeof error === 'string' && error.includes('Command failed with exit code 253')) {
+                    logError(
+                        `Ios-deploy couldn't find a connected device. For a more reliable connection, use a USB cable instead of wireless.`
+                    );
+                    const { confirm } = await inquirerPrompt({
+                        type: 'confirm',
+                        name: 'confirm',
+                        message: 'Would you like to use an Xcode script to build and launch the app?',
+                    });
+                    if (confirm) {
+                        try {
+                            await buildXcodeProject();
+                        } catch (e) {
+                            await _handleMissingTeam(c, e);
+                        }
+                        const udid = runDeviceArguments.split(' ')[1];
+
+                        await executeAsync(
+                            `xcrun devicectl device install app -d ${udid} ${path.join(
+                                appPath,
+                                `build/RNVApp/Build/Products/${runScheme}-appletvos/RNVApp-tvOS.app`
+                            )}`
+                        );
+
+                        return executeAsync(
+                            `xcrun devicectl device process launch --device ${udid} --activate ${getAppId()?.toLowerCase()}`
+                        );
+                    }
+                    return;
+                }
+            }
         }
         return _checkLockAndExec(c, appPath, schemeTarget, runScheme, runDeviceArguments);
     }
