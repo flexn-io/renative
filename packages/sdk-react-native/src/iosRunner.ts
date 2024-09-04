@@ -20,6 +20,7 @@ import { EnvVars } from './env';
 import shellQuote from 'shell-quote';
 import path from 'path';
 import crypto from 'crypto';
+import { isOfflineMode } from '@rnv/sdk-utils';
 
 export const packageReactNativeIOS = (isDev = false) => {
     const c = getContext();
@@ -126,6 +127,9 @@ const checkIfPodsIsRequired = (
     c: RnvContext,
     forceUpdatePods: boolean
 ): { result: boolean; reason: string; code: number } => {
+    if (isOfflineMode()) {
+        return { result: false, reason: 'You passed --offline option', code: 7 };
+    }
     if (c.runtime._skipNativeDepResolutions) {
         return { result: false, reason: `Command ${getCurrentCommand(true)} explicitly skips pod checks`, code: 1 };
     }
