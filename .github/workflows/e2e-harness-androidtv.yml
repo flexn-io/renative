@@ -37,6 +37,9 @@ jobs:
             - name: E2E
               run: |
                   cd packages/app-harness && yarn e2e:androidtv && kill $(lsof -t -i:8094)
+            - name: Delete app
+              run: |
+                  adb uninstall renative.harness.test
             # Commented because e2e tests would fail due to minion issues
             # - name: Post message to Slack via Webhook
             #   if: ${{ github.event_name == 'push' && failure() }}
