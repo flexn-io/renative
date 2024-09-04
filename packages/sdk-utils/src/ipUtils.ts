@@ -1,4 +1,4 @@
-import { DEFAULTS, chalk, getConfigProp, getContext, inquirerPrompt, logDefault } from '@rnv/core';
+import { DEFAULTS, chalk, getConfigProp, getContext, inquirerPrompt, isSystemWin, logDefault } from '@rnv/core';
 import axios from 'axios';
 import open from 'better-opn';
 import detectPort from 'detect-port';
@@ -159,5 +159,6 @@ export const getIP = () => {
             return addresses?.length ? addresses[0].address : undefined;
         })
         .filter(Boolean);
-    return all.length ? all.at(-1) : '127.0.0.1';
+
+    return all.length ? (isSystemWin && all.length > 1 ? all[1] : all[0]) : '127.0.0.1';
 };
