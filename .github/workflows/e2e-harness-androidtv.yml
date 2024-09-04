@@ -33,7 +33,7 @@ jobs:
                   yarn bootstrap
             - name: Run
               run: |
-                  cd packages/app-harness && yarn run:androidtv-test & sleep 300
+                  cd packages/app-harness && yarn run:androidtv-test & sleep 400
             - name: E2E
               run: |
                   cd packages/app-harness && yarn e2e:androidtv && kill $(lsof -t -i:8094)
