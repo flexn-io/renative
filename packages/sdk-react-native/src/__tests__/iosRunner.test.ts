@@ -64,6 +64,7 @@ jest.mock('@rnv/core', () => ({
     logInfo: jest.fn(),
     inquirerPrompt: jest.fn(),
     getCurrentCommand: jest.fn(),
+    isOfflineMode: jest.fn(),
 }));
 
 beforeEach(() => {
