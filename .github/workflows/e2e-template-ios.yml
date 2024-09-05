@@ -34,7 +34,7 @@ jobs:
                   yarn bootstrap
             - name: Run
               run: |
-                  cd packages/template-starter && yarn run:ios-test & sleep 700
+                  cd packages/template-starter && yarn run:ios-test & sleep 800
             - name: E2E
               run: |
                   cd packages/template-starter && yarn e2e:ios && kill $(lsof -t -i:8082)
