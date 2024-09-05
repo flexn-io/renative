@@ -742,32 +742,33 @@ export const overrideFileContents = (dest: string, override: Record<string, stri
         let fileToFix = fsReadFileSync(dest).toString();
 
         let foundRegEx = false;
+        const markerComment = '/*RNV*/';
         const failTerms: Array<string> = [];
         Object.keys(override).forEach((fk) => {
-            const regEx = new RegExp(`${getCleanRegExString(fk)}`, 'g');
-            const count = (fileToFix.match(regEx) || []).length;
+            const originalRegEx = new RegExp(`${getCleanRegExString(fk)}`, 'g');
+            const overrideRegEx = new RegExp(`${getCleanRegExString(override[fk])}`, 'g');
+            const originalExists = originalRegEx.test(fileToFix);
+            const overrideExists = overrideRegEx.test(fileToFix);
 
-            if (!count) {
-                const overrided = override[fk];
-                const regEx2 = new RegExp(getCleanRegExString(overrided), 'g');
-                const count2 = (fileToFix.match(regEx2) || []).length;
-
-                if (!count2) {
-                    failTerms.push(fk);
-                } else {
-                    foundRegEx = true;
-                    logInfo(
-                        `${chalk().gray(dest)} overriden by: ${chalk().gray(overridePath.split('node_modules').pop())}`
-                    );
-                }
-            } else {
+            if (originalExists) {
                 foundRegEx = true;
-                fileToFix = fileToFix.replace(regEx, override[fk]);
+                if (override[fk].startsWith('\n')) {
+                    const newContent = `${markerComment}${override[fk]}${markerComment}`;
+                    fileToFix = fileToFix.replace(originalRegEx, `${fk}${newContent}`);
+                } else {
+                    fileToFix = fileToFix.replace(originalRegEx, `${override[fk]}`);
+                }
                 logSuccess(
                     `${chalk().bold.white(dest.split('node_modules').pop())} requires override by: ${chalk().bold.white(
                         overridePath.split('node_modules').pop()
                     )}. FIXING...DONE`
                 );
+            } else if (overrideExists) {
+                logInfo(
+                    `${chalk().gray(dest)} overriden by: ${chalk().gray(overridePath.split('node_modules').pop())}`
+                );
+            } else {
+                failTerms.push(fk);
             }
         });
         if (!foundRegEx) {
