@@ -34,7 +34,7 @@ jobs:
                   yarn bootstrap
             - name: Run
               run: |
-                  cd packages/template-starter && yarn run:tvos-test & sleep 1000
+                  cd packages/template-starter && yarn run:tvos-test & sleep 1200
             - name: E2E
               run: |
                   cd packages/template-starter && yarn e2e:tvos && kill $(lsof -t -i:8085)
