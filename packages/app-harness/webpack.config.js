@@ -6,7 +6,7 @@ module.exports = withRNVWebpack({
     output: {
         //This allows to build and output a single JS file
         //https://github.com/flexn-io/renative/issues/1353
-        // chunkFormat: false,
+        chunkFormat: false,
     },
     resolve: {
         alias: {
