@@ -40,6 +40,7 @@ jobs:
             - name: Delete app
               run: |
                   adb uninstall renative.helloworld.test
+              continue-on-error: true
             # Commented because e2e tests would fail due to minion issues
             # - name: Post message to Slack via Webhook
             #   if: ${{ github.event_name == 'push' && failure() }}
