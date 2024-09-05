@@ -5,4 +5,3 @@ export * from './ipUtils';
 export * from './utils';
 export * from './target';
 export * from './axiosUtils';
-export * from './getCliOptions';

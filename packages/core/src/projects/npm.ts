@@ -7,6 +7,7 @@ import { RnvContext } from '../context/types';
 import { inquirerPrompt } from '../api';
 import { getContext } from '../context/provider';
 import { handleMutations } from './mutations';
+import { isOfflineMode } from './utils';
 
 export const checkIfProjectAndNodeModulesExists = async () => {
     logDefault('checkIfProjectAndNodeModulesExists');
@@ -133,6 +134,10 @@ export const installPackageDependencies = async (failOnError = false) => {
 
     if (!result) {
         c._requiresNpmInstall = false;
+        return;
+    }
+
+    if (isOfflineMode('install package dependencies')) {
         return;
     }
 
