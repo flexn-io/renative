@@ -15,12 +15,12 @@ import {
     getCurrentCommand,
     inquirerPrompt,
     RnvEnvContext,
+    isOfflineMode,
 } from '@rnv/core';
 import { EnvVars } from './env';
 import shellQuote from 'shell-quote';
 import path from 'path';
 import crypto from 'crypto';
-import { isOfflineMode } from '@rnv/sdk-utils';
 
 export const packageReactNativeIOS = (isDev = false) => {
     const c = getContext();
