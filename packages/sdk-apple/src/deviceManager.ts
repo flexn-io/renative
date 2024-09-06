@@ -1,6 +1,4 @@
-// import { utilities } from 'appium-ios-device';
 import listIOSDevices from '@react-native-community/cli-platform-ios/build/tools/listIOSDevices';
-import { Device } from '@react-native-community/cli-platform-ios/build/types';
 import {
     chalk,
     logToSummary,
@@ -12,11 +10,10 @@ import {
     logInfo,
     logSuccess,
 } from '@rnv/core';
-import { AppleDevice } from './types';
+import { AppleDevice, DeviceType } from './types';
 import { execFileSync } from 'child_process';
 import { getContext } from './getContext';
 
-type DeviceType = Device & { modelName: string };
 const ERROR_MSG = {
     TARGET_EXISTS: 'Unable to boot device in current state: Booted',
 };
@@ -40,7 +37,6 @@ export const getAppleDevices = async (ignoreDevices?: boolean, ignoreSimulators?
     if (ignoreSimulators) {
         filteredTargets = allDevicesAndSims.filter((d) => d.isDevice);
     }
-    console.log('########### filteredTargets', filteredTargets);
 
     if (!skipTargetCheck) {
         return filteredTargets
