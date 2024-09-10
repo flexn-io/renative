@@ -95,6 +95,7 @@ export default createTask({
         TaskOptions.projectName,
         TaskOptions.projectTemplate,
         TaskOptions.templateVersion,
+        TaskOptions.localTemplatePath,
         TaskOptions.title,
         TaskOptions.appVersion,
         TaskOptions.id,

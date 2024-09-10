@@ -45,34 +45,36 @@ const Question = async (data: NewProjectData) => {
 
     const c = getContext();
     const { templateVersion, projectTemplate } = c.program.opts();
+    let { localTemplatePath } = c.program.opts();
 
     const projectTemplates = c.buildConfig.projectTemplates || {}; // c.files.rnvConfigTemplates.config?.projectTemplates || {};
-
-    const options: TemplateOption[] = [];
-    let defaultOverride;
-    Object.keys(projectTemplates).forEach((k) => {
-        const value = projectTemplates[k];
-        const option: TemplateOption = {
-            name: `${k} ${chalk().grey(`- ${value.localPath || value.description}`)}`,
-            value: { ...value, type: 'existing', packageName: value?.packageName || k },
-        };
-        options.push(option);
-        if (value.localPath) {
-            defaultOverride = option.value;
-        }
-    });
-
-    options.push(inquirerSeparator('Advanced:----------------'));
-    options.push(customTemplate);
-    options.push(localTemplate);
-    options.push(noTemplate);
-    let localTemplatePath: string | undefined;
+    const projectTemplateKeys = Object.keys(projectTemplates);
 
     inputs.template = {};
 
     if (checkInputValue(projectTemplate)) {
         inputs.template.packageName = projectTemplate;
-    } else {
+    } else if (!checkInputValue(localTemplatePath)) {
+        const options: TemplateOption[] = [];
+        let defaultOverride;
+        projectTemplateKeys.forEach((k) => {
+            const value = projectTemplates[k];
+
+            const option: TemplateOption = {
+                name: `${k} ${chalk().grey(`- ${value.localPath || value.description}`)}`,
+                value: { ...value, type: 'existing', packageName: value?.packageName || k },
+            };
+            options.push(option);
+            if (value.localPath) {
+                defaultOverride = option.value;
+            }
+        });
+
+        options.push(inquirerSeparator('Advanced:----------------'));
+        options.push(customTemplate);
+        options.push(localTemplate);
+        options.push(noTemplate);
+
         const iRes = await inquirerPrompt({
             name: 'inputTemplate',
             type: 'list',
@@ -112,7 +114,7 @@ const Question = async (data: NewProjectData) => {
 
     const npmCacheDir = path.join(c.paths.project.dir, RnvFolderName.dotRnv, RnvFolderName.npmCache);
 
-    if (localTemplatePath) {
+    if (checkInputValue(localTemplatePath)) {
         if (!fsExistsSync(localTemplatePath)) {
             return Promise.reject(`Local template path ${localTemplatePath} does not exist`);
         }
@@ -136,6 +138,12 @@ const Question = async (data: NewProjectData) => {
         inputs.template.packageName = pkg.name;
         inputs.template.version = pkg.version;
         inputs.template.localPath = localTemplatePath;
+        projectTemplateKeys.find((tpl) => {
+            const value = projectTemplates[tpl];
+            if (value.localPath === localTemplatePath && inputs.template) {
+                inputs.template.type = 'existing';
+            }
+        });
 
         if (!inputs.template) return;
 

@@ -100,6 +100,10 @@ export const RnvTaskOptions = createTaskOptionsMap([
         description: 'Skips auto update of npm dependencies if mismatch found',
     },
     {
+        key: 'offline',
+        description: 'Run without connecting to the internet whenever possible',
+    },
+    {
         key: 'app-config-ID',
         altKey: 'appConfigID',
         shortcut: 'c',
@@ -232,6 +236,8 @@ export const RnvTaskCoreOptionPresets = createTaskOptionsPreset({
         RnvTaskOptions.json,
         RnvTaskOptions.noSummary,
         RnvTaskOptions.noIntro,
+        RnvTaskOptions.offline,
+        RnvTaskOptions.skipDependencyCheck,
     ],
 });
 

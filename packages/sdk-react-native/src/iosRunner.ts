@@ -15,6 +15,7 @@ import {
     getCurrentCommand,
     inquirerPrompt,
     RnvEnvContext,
+    isOfflineMode,
 } from '@rnv/core';
 import { EnvVars } from './env';
 import shellQuote from 'shell-quote';
@@ -126,6 +127,9 @@ const checkIfPodsIsRequired = (
     c: RnvContext,
     forceUpdatePods: boolean
 ): { result: boolean; reason: string; code: number } => {
+    if (isOfflineMode()) {
+        return { result: false, reason: 'You passed --offline option', code: 7 };
+    }
     if (c.runtime._skipNativeDepResolutions) {
         return { result: false, reason: `Command ${getCurrentCommand(true)} explicitly skips pod checks`, code: 1 };
     }

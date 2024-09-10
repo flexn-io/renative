@@ -52,6 +52,12 @@ export const TaskOptions = createTaskOptionsMap([
         description: 'select the template version',
     },
     {
+        key: 'local-template-path',
+        altKey: 'localTemplatePath',
+        isValueType: true,
+        description: 'select the local template path (absolute)',
+    },
+    {
         key: 'title',
         isValueType: true,
         description: 'select the title of the app',
