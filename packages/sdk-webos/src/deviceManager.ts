@@ -38,7 +38,9 @@ export const launchWebOSimulator = async (target: string | boolean) => {
     const c = getContext();
     const webosSdkPath = getRealPath(c.buildConfig?.sdks?.WEBOS_SDK);
     if (!webosSdkPath) {
-        return Promise.reject(`c.buildConfig.sdks.WEBOS_SDK undefined`);
+        return Promise.reject(
+            `Your ${c.platform} SDK path is not configured. Please update your ${c.paths.workspace.config} file`
+            );
     }
     const availableSimulatorVersions = getDirectories(path.join(webosSdkPath, 'Simulator'));
 
@@ -130,8 +132,11 @@ const launchAppOnSimulator = async (c: RnvContext, appPath: string) => {
 
     const webosSdkPath = getRealPath(c.buildConfig?.sdks?.WEBOS_SDK);
 
+
     if (!webosSdkPath) {
-        return Promise.reject(`c.buildConfig.sdks.WEBOS_SDK undefined`);
+        return Promise.reject(
+            `Your ${c.platform} SDK path is not configured. Please update your ${c.paths.workspace.config} file`
+        );
     }
 
     const simulatorDirPath = path.join(webosSdkPath, 'Simulator');
@@ -220,7 +225,9 @@ export const listWebOSTargets = async () => {
 
     const webosSdkPath = getRealPath(c.buildConfig?.sdks?.WEBOS_SDK);
     if (!webosSdkPath) {
-        return Promise.reject(`c.buildConfig.sdks.WEBOS_SDK undefined`);
+        return Promise.reject(
+            `Your ${c.platform} SDK path is not configured. Please update your ${c.paths.workspace.config} file`
+            );
     }
     const availableSimulatorVersions = getDirectories(path.join(webosSdkPath, 'Simulator'));
     availableSimulatorVersions.map((a) => {
