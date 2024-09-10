@@ -52,7 +52,7 @@ export const checkAndConfigureWebosSdks = async () => {
             path.join(sdk, `CLI/bin/ares-device-info${isSystemWin ? '.cmd' : ''}`)
         );
         c.cli[CLI_WEBOS_ARES_NOVACOM] = getRealPath(path.join(sdk, `CLI/bin/ares-novacom${isSystemWin ? '.cmd' : ''}`));
-    } else if ( clipathNewVersion && fsExistsSync(clipathNewVersion + '/ares')) {
+    } else if (clipathNewVersion && fsExistsSync(clipathNewVersion + '/ares')) {
         c.cli[CLI_WEBOS_ARES] = getRealPath(path.join(clipathNewVersion, `ares${isSystemWin ? '.cmd' : ''}`));
         c.cli[CLI_WEBOS_ARES_PACKAGE] = getRealPath(
             path.join(clipathNewVersion, `ares-package${isSystemWin ? '.cmd' : ''}`)
@@ -144,6 +144,11 @@ const _attemptAutoFix = async (c: RnvContext, shouldThrow?: boolean) => {
     }
     logError(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOCATIONS.join(', ')}`);
 
+    if (shouldThrow) {
+        throw new Error(
+            `Your ${c.platform} SDK path is not configured. Please update your ${c.paths.workspace.config} file`
+        );
+    }
     // const setupInstance = PlatformSetup(c);
     // await setupInstance.askToInstallSDK(sdkPlatform);
     generateBuildConfig();

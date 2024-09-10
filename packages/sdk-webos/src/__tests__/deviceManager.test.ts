@@ -16,8 +16,11 @@ afterEach(() => {
 describe('launchWebOSimulator', () => {
     it('should fail if webos SDK path is not defined', async () => {
         //GIVEN
+        const ctx = getContext();
+        ctx.platform = 'webos';
+        ctx.paths.workspace.config = '/path/test';
         const target = true;
-        const errorMessage = `c.buildConfig.sdks.WEBOS_SDK undefined`;
+        const errorMessage = `Your webos SDK path is not configured. Please update your /path/test file`;
 
         jest.mocked(getRealPath).mockReturnValue(undefined);
 
