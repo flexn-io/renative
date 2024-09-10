@@ -3,8 +3,10 @@ import { getAppConfigBuildsFolder, getAppFolder } from '../context/contextProps'
 import { parseRenativeConfigs } from '../configs';
 import {
     copyFolderContentsRecursiveSync,
+    fsCopyFileSync,
     fsExistsSync,
     fsLstatSync,
+    fsMkdirSync,
     fsReadFileSync,
     fsWriteFileSync,
     mergeObjects,
@@ -33,7 +35,7 @@ import type {
     ConfigPluginPlatformSchema,
     ConfigPluginSchema,
 } from '../schema/types';
-
+import fs from 'fs';
 const _getPluginScope = (plugin: ConfigPluginSchema | string): RnvPluginScope => {
     if (typeof plugin === 'string') {
         if (plugin.startsWith('source:')) {
@@ -738,60 +740,151 @@ const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
 };
 
 export const overrideFileContents = (dest: string, override: Record<string, string>, overridePath = '') => {
+    // console.log('dest : ', dest, 'override: ', override, 'overridePath :', overridePath);
+    const overrideDir = _ensureOverrideDirExists();
+    const apliedOverrideFilePath = path.join(overrideDir, 'applied_overrides.json');
+
     if (fsExistsSync(dest)) {
-        let fileToFix = fsReadFileSync(dest).toString();
+        const backupPath = _saveOriginalFile(dest, overrideDir);
+        const appliedOverrides = _readAppliedOverrides(apliedOverrideFilePath);
+        const fileKey = _getFileKey(dest);
+        const currentOverride = appliedOverrides[fileKey] || {};
 
-        let foundRegEx = false;
-        const markerComment = '/*RNV*/';
-        const failTerms: Array<string> = [];
-        Object.keys(override).forEach((fk) => {
-            const originalRegEx = new RegExp(`${getCleanRegExString(fk)}`, 'g');
-            const overrideRegEx = new RegExp(`${getCleanRegExString(override[fk])}`, 'g');
-            const originalExists = originalRegEx.test(fileToFix);
-            const overrideExists = overrideRegEx.test(fileToFix);
+        const overridesChanged = JSON.stringify(currentOverride) !== JSON.stringify(override);
+        console.log('@@@@@@@@@@ overridesChanged', overridesChanged);
+        if (overridesChanged) {
+            revertOverrideToOriginal(dest, backupPath);
+            let fileToFix = fsReadFileSync(dest).toString();
 
-            if (originalExists) {
-                foundRegEx = true;
-                if (override[fk].startsWith('\n')) {
-                    const newContent = `${markerComment}${override[fk]}${markerComment}`;
-                    fileToFix = fileToFix.replace(originalRegEx, `${fk}${newContent}`);
-                } else {
-                    fileToFix = fileToFix.replace(originalRegEx, `${override[fk]}`);
-                }
-                logSuccess(
-                    `${chalk().bold.white(dest.split('node_modules').pop())} requires override by: ${chalk().bold.white(
-                        overridePath.split('node_modules').pop()
-                    )}. FIXING...DONE`
-                );
-            } else if (overrideExists) {
-                logInfo(
-                    `${chalk().gray(dest)} overriden by: ${chalk().gray(overridePath.split('node_modules').pop())}`
-                );
-            } else {
-                failTerms.push(fk);
-            }
-        });
-        if (!foundRegEx) {
-            if (overridePath !== 'REACT_CORE_OVERRIDES') {
-                // We only warn against user defined overrides.
-                failTerms.forEach((term) => {
-                    logWarning(
-                        `No Match found in ${chalk().red(
+            let foundRegEx = false;
+            const markerComment = '/*RNV*/';
+            const failTerms: Array<string> = [];
+            Object.keys(override).forEach((fk) => {
+                const originalRegEx = new RegExp(`${getCleanRegExString(fk)}`, 'g');
+                const overrideRegEx = new RegExp(`${getCleanRegExString(override[fk])}`, 'g');
+                const originalExists = originalRegEx.test(fileToFix);
+                const overrideExists = overrideRegEx.test(fileToFix);
+
+                if (originalExists) {
+                    console.log('$$$$$$ originalExists', originalExists);
+                    foundRegEx = true;
+                    if (override[fk].startsWith('\n')) {
+                        const newContent = `${markerComment}${override[fk]}${markerComment}`;
+                        fileToFix = _isJavaScriptFile(dest)
+                            ? fileToFix.replace(originalRegEx, `${fk}${newContent}`)
+                            : fileToFix.replace(originalRegEx, `${fk}${override[fk]}`);
+                    } else {
+                        fileToFix = fileToFix.replace(originalRegEx, `${override[fk]}`);
+                    }
+                    logSuccess(
+                        `${chalk().bold.white(
                             dest.split('node_modules').pop()
-                        )} for expression: ${chalk().gray(term)}. source: ${chalk().bold.white(
+                        )} requires override by: ${chalk().bold.white(
                             overridePath.split('node_modules').pop()
-                        )}`
+                        )}. FIXING...DONE`
                     );
-                });
+                } else if (overrideExists) {
+                    console.log('$$$$$$ overrideExists', overrideExists);
+
+                    logInfo(
+                        `${chalk().gray(dest)} overriden by: ${chalk().gray(overridePath.split('node_modules').pop())}`
+                    );
+                } else {
+                    failTerms.push(fk);
+                }
+            });
+            if (!foundRegEx) {
+                if (overridePath !== 'REACT_CORE_OVERRIDES') {
+                    // We only warn against user defined overrides.
+                    failTerms.forEach((term) => {
+                        logWarning(
+                            `No Match found in ${chalk().red(
+                                dest.split('node_modules').pop()
+                            )} for expression: ${chalk().gray(term)}. source: ${chalk().bold.white(
+                                overridePath.split('node_modules').pop()
+                            )}`
+                        );
+                    });
+                }
+                return;
             }
-            return;
+            fsWriteFileSync(dest, fileToFix);
+            appliedOverrides[fileKey] = override;
+            console.log('$$$$$$$ appliedOverrides', appliedOverrides);
+            _writeAppliedOverrides(appliedOverrides, apliedOverrideFilePath);
         }
-        fsWriteFileSync(dest, fileToFix);
     } else {
         logDebug(`overrideFileContents Warning: path does not exists ${dest}`);
     }
 };
 
+const _saveOriginalFile = (dest: string, overrideDir: string): string => {
+    const nodeModulesIndex = dest.indexOf('node_modules');
+    if (nodeModulesIndex === -1) {
+        throw new Error('File path does not contain node_modules or another identifiable root directory.');
+    }
+    const relativePathFromNodeModules = dest.substring(nodeModulesIndex + 'node_modules'.length);
+    const backupPath = path.join(overrideDir, relativePathFromNodeModules);
+    const buckupDir = path.dirname(backupPath);
+    if (!fsExistsSync(buckupDir)) {
+        fs.mkdirSync(buckupDir, { recursive: true });
+    }
+
+    if (!fsExistsSync(backupPath)) {
+        fsCopyFileSync(dest, backupPath);
+    }
+    return backupPath;
+};
+
+const _readBackupContent = (backupPath: string): string => {
+    if (fsExistsSync(backupPath)) {
+        return fsReadFileSync(backupPath).toString();
+    }
+    return '';
+};
+
+const _readAppliedOverrides = (apliedOverrideFilePath: string) => {
+    if (fsExistsSync(apliedOverrideFilePath)) {
+        return JSON.parse(fsReadFileSync(apliedOverrideFilePath).toString());
+    }
+    return {};
+};
+const _writeAppliedOverrides = (appliedOverrides: Record<string, string>, apliedOverrideFilePath: string) => {
+    fsWriteFileSync(apliedOverrideFilePath, JSON.stringify(appliedOverrides, null, 2), 'utf8');
+};
+
+const _getFileKey = (dest: string): string => {
+    const nodeModulesIndex = dest.indexOf('node_modules');
+    if (nodeModulesIndex !== -1) {
+        const parts = dest.substring(nodeModulesIndex).split(path.sep);
+        const packageFilePathIndex =
+            parts.findIndex((part) => !part.startsWith('@') && !part.startsWith('node_modules')) + 1;
+        const relativeFilePath = parts.slice(packageFilePathIndex).join(path.sep);
+        return relativeFilePath;
+    }
+    return dest;
+};
+const _ensureOverrideDirExists = () => {
+    const c = getContext();
+    const overrideDir = path.join(c.paths.project.dir, '.rnv', 'overrides');
+    if (!fsExistsSync(overrideDir)) {
+        fsMkdirSync(overrideDir);
+    }
+    return overrideDir;
+};
+const revertOverrideToOriginal = (filePath: string, backupPath: string) => {
+    const originalContent = _readBackupContent(backupPath);
+    if (originalContent) {
+        fsWriteFileSync(filePath, originalContent);
+        logInfo(`Reverted ${filePath} to its original state before applying new overrides.`);
+    } else {
+        logWarning(`No original file found to revert for ${filePath}.`);
+    }
+};
+const _isJavaScriptFile = (filePath: string) => {
+    const ext = path.extname(filePath);
+    return ['.js', '.jsx', '.ts', '.tsx', '.cjs', '.mjs'].includes(ext);
+};
 const _getPluginConfiguration = (c: RnvContext, pluginName: string) => {
     let renativePlugin: ConfigFilePlugin | undefined;
     let renativePluginPath;
