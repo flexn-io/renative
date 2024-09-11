@@ -730,7 +730,7 @@ const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
                 if (fsLstatSync(ovDir).isDirectory()) {
                     logWarning('overrides.json: Directories not supported yet. specify path to actual file');
                 } else {
-                    overrideFileContents(ovDir, override, overridePath);
+                    overrideFileContents(ovDir, override, overridePath, k);
                 }
             }
         });
@@ -738,7 +738,12 @@ const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
 
     // const parentDest = path.join(dir, '..')
 };
-export const overrideFileContents = (dest: string, override: Record<string, string>, overridePath = '') => {
+export const overrideFileContents = (
+    dest: string,
+    override: Record<string, string>,
+    overridePath = '',
+    fileKey: string
+) => {
     const overrideDir = _ensureOverrideDirExists();
     const appliedOverrideFilePath = path.join(overrideDir, 'applied_overrides.json');
 
@@ -747,11 +752,9 @@ export const overrideFileContents = (dest: string, override: Record<string, stri
     if (fsExistsSync(dest)) {
         let fileToFix = fsReadFileSync(dest).toString();
         const { backupPath, isFirstRun } = _saveOriginalFile(dest, overrideDir);
-
-        const fileKey = _getFileKey(dest);
-        const previousOverride = appliedOverrides[fileKey] || {};
+        const packageName = _getPackageName(dest, fileKey);
+        const previousOverride = appliedOverrides[packageName]?.[fileKey] || {};
         const overridesChanged = JSON.stringify(previousOverride) !== JSON.stringify(override);
-
         if (overridesChanged && !isFirstRun) {
             revertOverrideToOriginal(dest, backupPath);
             fileToFix = fsReadFileSync(dest).toString();
@@ -805,9 +808,9 @@ export const overrideFileContents = (dest: string, override: Record<string, stri
             }
             // return;
         }
-
         if (overridesChanged) {
-            appliedOverrides[fileKey] = override;
+            appliedOverrides[packageName] = appliedOverrides[packageName] || {};
+            appliedOverrides[packageName][fileKey] = override;
             fsWriteFileSync(dest, fileToFix);
             _writeAppliedOverrides(appliedOverrides, appliedOverrideFilePath);
         }
@@ -815,6 +818,16 @@ export const overrideFileContents = (dest: string, override: Record<string, stri
         logDebug(`overrideFileContents Warning: path does not exist ${dest}`);
     }
 };
+const _getPackageName = (dest: string, fileKey: string): string => {
+    const nodeModulesIndex = dest.lastIndexOf('node_modules');
+    if (nodeModulesIndex !== -1) {
+        const relativePath = dest.slice(nodeModulesIndex + 'node_modules'.length + 1);
+        const packageName = relativePath.replace(`/${fileKey}`, '');
+        return packageName;
+    }
+    return '';
+};
+
 const _saveOriginalFile = (dest: string, overrideDir: string) => {
     const nodeModulesIndex = dest.indexOf('node_modules');
     let isFirstRun = false;
@@ -852,17 +865,6 @@ const _writeAppliedOverrides = (appliedOverrides: Record<string, string>, aplied
     fsWriteFileSync(apliedOverrideFilePath, JSON.stringify(appliedOverrides, null, 2), 'utf8');
 };
 
-const _getFileKey = (dest: string): string => {
-    const nodeModulesIndex = dest.indexOf('node_modules');
-    if (nodeModulesIndex !== -1) {
-        const parts = dest.substring(nodeModulesIndex).split(path.sep);
-        const packageFilePathIndex =
-            parts.findIndex((part) => !part.startsWith('@') && !part.startsWith('node_modules')) + 1;
-        const relativeFilePath = parts.slice(packageFilePathIndex).join(path.sep);
-        return relativeFilePath;
-    }
-    return dest;
-};
 const _ensureOverrideDirExists = () => {
     const c = getContext();
     const isMonorepo = getConfigRootProp('isMonorepo');
@@ -875,11 +877,11 @@ const _ensureOverrideDirExists = () => {
     }
     return overrideDir;
 };
-const revertOverrideToOriginal = (filePath: string, backupPath: string) => {
+export const revertOverrideToOriginal = (filePath: string, backupPath: string) => {
     const originalContent = _readBackupContent(backupPath);
     if (originalContent) {
         fsWriteFileSync(filePath, originalContent);
-        logInfo(`Reverted ${filePath} to its original state before applying new overrides.`);
+        logInfo(`Reverted ${filePath} to its original state.`);
     } else {
         logWarning(`No original file found to revert for ${filePath}.`);
     }
