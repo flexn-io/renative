@@ -40,7 +40,7 @@ export const launchWebOSimulator = async (target: string | boolean) => {
     const webosSdkPath = getRealPath(c.buildConfig?.sdks?.WEBOS_SDK);
     if (!webosSdkPath) {
         return Promise.reject(
-            `Your ${c.platform} SDK path is not configured. Please update your ${c.paths.workspace.config} file`
+            `Your ${c.platform} SDK path is not configured. If you want to run simulator please update your ${c.paths.workspace.config} file with simulator path.`
         );
     }
     const availableSimulatorVersions = getDirectories(path.join(webosSdkPath, 'Simulator'));
