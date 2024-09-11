@@ -1,4 +1,3 @@
-import listIOSDevices from '@react-native-community/cli-platform-ios/build/tools/listIOSDevices';
 import {
     chalk,
     logToSummary,
@@ -19,6 +18,8 @@ const ERROR_MSG = {
 };
 
 export const getAppleDevices = async (ignoreDevices?: boolean, ignoreSimulators?: boolean) => {
+    const listIOSDevices = require('@react-native-community/cli-platform-ios/build/tools/listIOSDevices.js').default;
+
     const c = getContext();
     const { platform } = c;
     logDefault('getAppleDevices', `ignoreDevices:${ignoreDevices} ignoreSimulators:${ignoreSimulators}`);
