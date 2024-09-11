@@ -25,7 +25,7 @@ export const getAppleDevices = async (ignoreDevices?: boolean, ignoreSimulators?
     logDefault('getAppleDevices', `ignoreDevices:${ignoreDevices} ignoreSimulators:${ignoreSimulators}`);
     const { skipTargetCheck } = c.program.opts();
 
-    const connectedDevicesArray = (await listIOSDevices()).filter((d) => d.isAvailable) as DeviceType[];
+    const connectedDevicesArray = ((await listIOSDevices()) as DeviceType[]).filter((d) => d.isAvailable);
 
     const allDevicesAndSims = _parseNewIOSDevicesList(connectedDevicesArray);
 
