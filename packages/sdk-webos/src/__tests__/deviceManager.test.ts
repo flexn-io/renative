@@ -18,9 +18,9 @@ describe('launchWebOSimulator', () => {
         //GIVEN
         const ctx = getContext();
         ctx.platform = 'webos';
-        ctx.paths.workspace.config = '/path/test';
+        ctx.paths.workspace.config = '/path/test/renative';
         const target = true;
-        const errorMessage = `Your webos SDK path is not configured. Please update your /path/test file`;
+        const errorMessage = `Your webos SDK path is not configured. If you want to run simulator please update your /path/test/renative file with simulator path.`;
 
         jest.mocked(getRealPath).mockReturnValue(undefined);
 

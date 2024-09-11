@@ -76,11 +76,6 @@ describe('checkAndConfigureWebosSdks', () => {
         // GIVEN
         const mockContext = {
             platform: 'webos',
-            // buildConfig: {
-            //     sdks: {
-            //         WEBOS_SDK: '/path/to/sdk',
-            //     },
-            // },
             cli: {},
         };
         (core.getContext as jest.Mock).mockReturnValue(mockContext);
