@@ -81,12 +81,14 @@ export const launchTizenEmulator = async (name: string | true): Promise<boolean>
         const devices_lines = devices.split('\n');
 
         const allDownloadedEmulators = emulators.split('\n'); // all tizen, tizenwatch and tizenmobile emulators
-        console.log(allDownloadedEmulators);
-        const specificEmulators = await getSubplatformDevices(allDownloadedEmulators, c.platform as string);
 
-        const lines = specificEmulators.concat(devices_lines.slice(1));
+        const specificEmulators = await getSubplatformDevices(allDownloadedEmulators, c.platform as string);
+        const devicesArr = devices_lines.slice(1).map((line: string) => line.split(' ')[0]); // devices array with only their ip
+
+        const lines = specificEmulators.concat(devicesArr);
 
         const targetsArray = lines.map((line) => ({ id: line, name: line }));
+
         const choices = _composeDevicesString(targetsArray);
 
         const { chosenEmulator } = await inquirerPrompt({
@@ -100,6 +102,11 @@ export const launchTizenEmulator = async (name: string | true): Promise<boolean>
     }
 
     if (name) {
+        const ipRegex = /^(?:\d{1,3}\.){3}\d{1,3}:\d{1,5}$/;
+        if (name === true || ipRegex.test(name)) {
+            logInfo('Connecting to device'); // don't continue with further code - launching on device works diffirently than on emulator
+            return true;
+        }
         try {
             await executeAsync(
                 `${c.cli[CLI_TIZEN_EMULATOR]} launch --name ${name}`,
@@ -168,8 +175,8 @@ export const listTizenTargets = async (platform: string) => {
         .split('\n')
         .slice(1)
         .map((line: string) => line.split(' ')[0]);
-    console.log(devicesArr);
     // turns devices string: '  List of devices attached \n192.168.0.105:26101     device          UE43NU7192' to only the '192.168.0.105:26101'
+
     const allDownloadedEmulators = emulatorsString.split('\n'); // all tizen, tizenwatch and tizenmobile emulators
     const specificPlatformEmulators = await getSubplatformDevices(allDownloadedEmulators.concat(devicesArr), platform); // tizen, tizenwatch, tizenmobile - only 1 of them
     let targetStr = '';
