@@ -43,7 +43,7 @@
     },
     "templateConfig": {
         "name": "@rnv/template-starter",
-        "version": "1.1.0-rc.1"
+        "version": "1.2.0-rc.1"
     },
     "platforms": {
         "android": {
@@ -84,7 +84,9 @@
             "minSdkVersion": 21,
             "extendPlatform": "android",
             "engine": "engine-rn-tvos",
-            "includedPermissions": ["INTERNET"]
+            "includedPermissions": [
+                "INTERNET"
+            ]
         },
         "web": {
             "engine": "engine-rn-next"
@@ -99,7 +101,9 @@
             "engine": "engine-rn-electron",
             "assetFolderPlatform": "electron",
             "webpackConfig": {
-                "excludedPaths": ["pages"]
+                "excludedPaths": [
+                    "pages"
+                ]
             }
         },
         "windows": {
