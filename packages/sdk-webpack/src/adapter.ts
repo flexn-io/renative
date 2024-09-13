@@ -2,40 +2,29 @@ import path from 'path';
 import { Configuration } from 'webpack';
 import paths from './config/paths';
 import { mergeWithCustomize } from 'webpack-merge';
-import { fsExistsSync, fsReaddirSync, getContext } from '@rnv/core';
+import { Env, fsExistsSync, fsReaddirSync } from '@rnv/core';
 import _ from 'lodash';
+
+const env: Env = process?.env;
 
 export const withRNVWebpack = (cnf: Configuration) => {
     //TODO: implement further overrides
-    let rnvConfig: Configuration = {};
-    const c = getContext();
-    const { platform } = c;
-    if (platform) {
-        if (process.env.RNV_ENGINE_PATH) {
-            const engine = require(process.env.RNV_ENGINE_PATH);
-            if (engine.withRNVWebpack) {
-                const excludedDirs =
-                    c.buildConfig?.platforms?.[platform]?.webpackExcludedDirs ||
-                    engine.default.config.webpackExcludedDirs ||
-                    [];
-                rnvConfig = {
-                    module: {
-                        rules: [],
-                    },
-                    resolve: {},
-                };
-                rnvConfig?.module?.rules &&
-                    rnvConfig.module.rules.push({
-                        oneOf: [
-                            {
-                                test: /\.(js|mjs|cjs|jsx|ts|tsx)$/,
-                                include: _getIncludedModules(excludedDirs),
-                            },
-                        ],
-                    });
-            }
-        }
-    }
+    const rnvConfig: Configuration = {
+        module: {
+            rules: [],
+        },
+        resolve: {},
+    };
+
+    rnvConfig?.module?.rules &&
+        rnvConfig.module.rules.push({
+            oneOf: [
+                {
+                    test: /\.(js|mjs|cjs|jsx|ts|tsx)$/,
+                    include: _getIncludedModules(env.WEBPACK_EXCLUDED_PATHS),
+                },
+            ],
+        });
 
     const mergedConfig: Configuration = mergeWithCustomize({
         customizeArray(a, b, key) {
@@ -49,12 +38,9 @@ export const withRNVWebpack = (cnf: Configuration) => {
     return mergedConfig;
 };
 
+// Merge => static config, adapter config , project config
 export const getMergedConfig = (rootConfig: Configuration, appPath: string) => {
-    // RNV-ADDITION
-
     const projectConfig: Configuration = require(path.join(appPath, 'webpack.config'));
-
-    // const rootPlugins = rootConfig.plugins?.map((plugin) => plugin?.constructor.name) as string[];
 
     const mergedConfig: Configuration = mergeWithCustomize({
         customizeArray(a, b, key) {
@@ -69,24 +55,44 @@ export const getMergedConfig = (rootConfig: Configuration, appPath: string) => {
         },
         // customizeArray: unique('plugins', rootPlugins, (plugin) => plugin.constructor && plugin.constructor.name),
     })(rootConfig, projectConfig);
-
-    // Merge => static config, adapter config , project config
-    // RNV-ADDITION
-
     return mergedConfig;
 };
 
-const _getIncludedModules = (excludedDirs: string[]) => {
+const _getIncludedPaths = (basePath: string, excludedPaths: string[]) => {
     const srcDirs: string[] = [];
-    if (fsExistsSync(paths.appSrc)) {
-        const resources = fsReaddirSync(paths.appSrc);
-        resources.forEach((r) => {
-            if (!excludedDirs.includes(r)) {
-                srcDirs.push(path.join(paths.appSrc, r));
+    // track excluded sub-paths
+    const excPathsArrs = excludedPaths.map((p) => p.split('/'));
+    if (fsExistsSync(basePath)) {
+        const dirNames = fsReaddirSync(basePath);
+        dirNames.forEach((dirName) => {
+            let hasPathExcluded = false;
+            const subpaths: string[] = [];
+            excPathsArrs.forEach((pArr) => {
+                if (pArr[0] === dirName) {
+                    if (pArr.length <= 1) {
+                        hasPathExcluded = true;
+                    } else {
+                        subpaths.push(pArr.slice(1).join('/'));
+                    }
+                }
+            });
+            const incPath = path.join(basePath, dirName);
+            if (!hasPathExcluded) {
+                srcDirs.push(incPath);
+            }
+            if (subpaths.length) {
+                // recursively populate included paths
+                srcDirs.push(..._getIncludedPaths(incPath, subpaths));
             }
         });
     }
-    return process.env.RNV_MODULE_PATHS ? [...srcDirs, ...process.env.RNV_MODULE_PATHS.split(',')] : [...srcDirs];
+    return srcDirs;
+};
+
+const _getIncludedModules = (excludedPathsStr: string | undefined) => {
+    const excludedPaths = excludedPathsStr ? excludedPathsStr.split(',') : [];
+    const srcDirs = _getIncludedPaths(paths.appSrc, excludedPaths);
+    return env.RNV_MODULE_PATHS ? [...srcDirs, ...env.RNV_MODULE_PATHS.split(',')] : [...srcDirs];
 };
 
 const _getMergedRules = (rnvRules: any[], cnfRules: any[]) => {
@@ -126,13 +132,11 @@ const _mergeRule = (rnvRule: any, cnfRule: any) => {
     return Object.keys({ ...rnvRule, ...cnfRule }).reduce((merged: any, key: string) => {
         const rnvValue = rnvRule[key];
         const cnfValue = cnfRule[key];
-        if (!rnvValue && !cnfValue) {
-            return merged;
-        }
+
         if (_.isArray(rnvValue) && _.isArray(cnfValue)) {
             if (key === 'include') {
-                merged[key] = process.env.RNV_MODULE_PATHS
-                    ? _.uniq([...cnfValue, ...process.env.RNV_MODULE_PATHS.split(',')])
+                merged[key] = env.RNV_MODULE_PATHS
+                    ? _.uniq([...cnfValue, ...env.RNV_MODULE_PATHS.split(',')])
                     : [...cnfValue];
             } else {
                 merged[key] = [...cnfValue];
@@ -140,7 +144,7 @@ const _mergeRule = (rnvRule: any, cnfRule: any) => {
         } else if (_.isPlainObject(rnvValue) && _.isPlainObject(cnfValue)) {
             merged[key] = _mergeRule(rnvValue, cnfValue);
         } else {
-            merged[key] = cnfValue !== undefined ? cnfValue : rnvValue;
+            merged[key] = key in cnfRule ? cnfValue : rnvValue;
         }
 
         return merged;

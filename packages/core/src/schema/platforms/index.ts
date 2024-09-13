@@ -44,12 +44,16 @@ const webSchema = createPlatformSchema(
 
 const macosSchema = createPlatformSchema(
     zodPlatformiOSFragment.merge(
-        zodPlatformReactNativeFragment.merge(zodTemplateXcodeFragment.merge(zodPlatformElectronFragment))
+        zodPlatformReactNativeFragment.merge(
+            zodTemplateXcodeFragment.merge(zodPlatformElectronFragment.merge(zodPlatformWebpackFragment))
+        )
     )
 );
 
 const windowsSchema = createPlatformSchema(
-    zodPlatformElectronFragment.merge(zodPlatformReactNativeFragment.merge(zodPlatformWindowsFragment))
+    zodPlatformElectronFragment.merge(
+        zodPlatformReactNativeFragment.merge(zodPlatformWindowsFragment.merge(zodPlatformWebpackFragment))
+    )
 );
 
 export const zodPlatformsSchema: AnyZodObject = z

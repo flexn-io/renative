@@ -15,6 +15,7 @@ import { LoggerProvider, useLoggerContext } from '../context';
 import { NotificationCallback } from '../components/types';
 import { SafeAreaProvider } from '../components/SafeArea';
 import { PhotoEditorButton } from '../components/PhotoEditor';
+import { Player } from '../components/Player';
 
 // import { observe as observeLogBoxLogs, symbolicateLogNow } from 'react-native/Libraries/LogBox/Data/LogBoxData';
 
@@ -154,7 +155,7 @@ const AppContent = () => {
                         <NewModuleButton
                             ref={nativeModuleBtnRef}
                             onFocus={() => setFocusedIndex(0)}
-                            onBlur={() => setFocusedIndex(null)}
+                            onBlur={() => setFocusedIndex((prev) => (prev === 0 ? null : prev))}
                             style={[
                                 styles.button,
                                 { backgroundColor: '#841584' },
@@ -178,7 +179,9 @@ const AppContent = () => {
                                 isWebBased && isFactorTv && { outline: 'none' },
                             ]}
                             onFocus={() => setFocusedIndex(1)}
-                            onBlur={() => setFocusedIndex(null)}
+                            // Sometimes onFocus may work faster than onBlue and setting
+                            // this to null will remove focus from another item
+                            onBlur={() => setFocusedIndex((prev) => (prev === 1 ? null : prev))}
                         >
                             <Text style={styles.buttonTitle} {...testProps('app-harness-home-toggle-video-button')}>
                                 Toggle Video
@@ -205,7 +208,7 @@ const AppContent = () => {
                                 isWebBased && isFactorTv && { outline: 'none' },
                             ]}
                             onFocus={() => setFocusedIndex(2)}
-                            onBlur={() => setFocusedIndex(null)}
+                            onBlur={() => setFocusedIndex((prev) => (prev === 2 ? null : prev))}
                         >
                             <Text
                                 style={styles.buttonTitle}
@@ -247,7 +250,7 @@ const AppContent = () => {
                                 isWebBased && isFactorTv && { outline: 'none' },
                             ]}
                             onFocus={() => setFocusedIndex(3)}
-                            onBlur={() => setFocusedIndex(null)}
+                            onBlur={() => setFocusedIndex((prev) => (prev === 3 ? null : prev))}
                         >
                             <Text style={styles.buttonTitle} {...testProps('app-harness-home-splash-screen-button')}>
                                 Show SplashScreen
@@ -258,13 +261,16 @@ const AppContent = () => {
                         <PhotoEditorButton
                             ref={photoEditorBtnRef}
                             onFocus={() => setFocusedIndex(4)}
-                            onBlur={() => setFocusedIndex(null)}
+                            onBlur={() => setFocusedIndex((prev) => (prev === 4 ? null : prev))}
                             style={[
                                 styles.button,
                                 focusedIndex === 4 && styles.buttonFocused,
                                 isWebBased && isFactorTv && { outline: 'none' },
                             ]}
                         />
+                    </TestCase>
+                    <TestCase id={9} title="Player">
+                        <Player />
                     </TestCase>
                 </ScrollView>
             </View>

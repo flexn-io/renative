@@ -20,6 +20,7 @@ import {
     getConfigProp,
     getAppFolder,
     getContext,
+    logError,
 } from '@rnv/core';
 import { WebosDevice } from './types';
 import {
@@ -38,7 +39,9 @@ export const launchWebOSimulator = async (target: string | boolean) => {
     const c = getContext();
     const webosSdkPath = getRealPath(c.buildConfig?.sdks?.WEBOS_SDK);
     if (!webosSdkPath) {
-        return Promise.reject(`c.buildConfig.sdks.WEBOS_SDK undefined`);
+        return Promise.reject(
+            `Your ${c.platform} SDK path is not configured. If you want to run simulator please update your ${c.paths.workspace.config} file with simulator path.`
+        );
     }
     const availableSimulatorVersions = getDirectories(path.join(webosSdkPath, 'Simulator'));
 
@@ -131,7 +134,9 @@ const launchAppOnSimulator = async (c: RnvContext, appPath: string) => {
     const webosSdkPath = getRealPath(c.buildConfig?.sdks?.WEBOS_SDK);
 
     if (!webosSdkPath) {
-        return Promise.reject(`c.buildConfig.sdks.WEBOS_SDK undefined`);
+        return Promise.reject(
+            `Your ${c.platform} SDK path is not configured. If you want to run simulator please update your ${c.paths.workspace.config} file with simulator path.`
+        );
     }
 
     const simulatorDirPath = path.join(webosSdkPath, 'Simulator');
@@ -175,7 +180,7 @@ const launchAppOnSimulator = async (c: RnvContext, appPath: string) => {
         );
     }
 
-    await execCLI(CLI_WEBOS_ARES_LAUNCH, `-s ${version} ${appPath}`);
+    await execCLI(CLI_WEBOS_ARES_LAUNCH, `-s ${version} "${appPath}"`);
     logInfo(
         `Launched app on webOS TV simulator ${selectedOption}. If you do not see the app opening please close the simulator and try again.`
     );
@@ -184,11 +189,11 @@ const launchAppOnSimulator = async (c: RnvContext, appPath: string) => {
 // Used for actual devices
 const installAndLaunchApp = async (target: string, appPath: string, tId: string) => {
     try {
-        await execCLI(CLI_WEBOS_ARES_INSTALL, `--device ${target} ${appPath}`);
+        await execCLI(CLI_WEBOS_ARES_INSTALL, `--device ${target} "${appPath}"`);
     } catch (e) {
         // installing it again if it fails. For some reason webosCLI says that it can't connect to
         // the device from time to time. Running it again works.
-        await execCLI(CLI_WEBOS_ARES_INSTALL, `--device ${target} ${appPath}`);
+        await execCLI(CLI_WEBOS_ARES_INSTALL, `--device ${target} "${appPath}"`);
     }
     // const { hosted } = c.program.opts();
     // const { platform } = c;
@@ -220,7 +225,9 @@ export const listWebOSTargets = async () => {
 
     const webosSdkPath = getRealPath(c.buildConfig?.sdks?.WEBOS_SDK);
     if (!webosSdkPath) {
-        return Promise.reject(`c.buildConfig.sdks.WEBOS_SDK undefined`);
+        return Promise.reject(
+            `Your ${c.platform} SDK path is not configured. Please update your ${c.paths.workspace.config} file`
+        );
     }
     const availableSimulatorVersions = getDirectories(path.join(webosSdkPath, 'Simulator'));
     availableSimulatorVersions.map((a) => {
@@ -260,7 +267,7 @@ export const runWebosSimOrDevice = async () => {
     const appPath = path.join(tOut, `${tId}_${cnfg.version}_all.ipk`);
 
     // Start the fun
-    await execCLI(CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${appLocation} -n`);
+    await execCLI(CLI_WEBOS_ARES_PACKAGE, `-o "${tOut}" "${appLocation}" -n`);
 
     // List all devices
     const devicesResponse = await execCLI(CLI_WEBOS_ARES_DEVICE_INFO, '-D');
@@ -326,7 +333,11 @@ export const runWebosSimOrDevice = async () => {
                 return installAndLaunchApp(response.chosenDevice, appPath, tId);
             }
         } else {
-            return launchAppOnSimulator(c, appLocation);
+            try {
+                return await launchAppOnSimulator(c, appLocation);
+            } catch (error) {
+                return logError(`${error}`);
+            }
         }
     } else {
         // Target specified, using that

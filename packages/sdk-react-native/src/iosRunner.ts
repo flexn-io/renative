@@ -15,6 +15,7 @@ import {
     getCurrentCommand,
     inquirerPrompt,
     RnvEnvContext,
+    isOfflineMode,
 } from '@rnv/core';
 import { EnvVars } from './env';
 import shellQuote from 'shell-quote';
@@ -52,7 +53,6 @@ export const packageReactNativeIOS = (isDev = false) => {
     if (c.program.opts().info) {
         args.push('--verbose');
     }
-
     return executeAsync(
         `node ${doResolve(
             c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'
@@ -77,11 +77,11 @@ export const runReactNativeIOS = async (
     runScheme: string,
     extraParamsString: string
 ) => {
-    logDefault('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme}`);
-
+    logDefault('runReactNativeIOS', `scheme:${scheme} runScheme:${runScheme}`);
     // const cmd = `node ${doResolve(
     //     c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'
     // )}/local-cli/cli.js run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
+
     const cmd = `npx react-native run-ios --scheme=${scheme} --mode=${runScheme} --no-packager ${extraParamsString}`;
     const env: RnvEnvContext = {
         ...CoreEnvVars.BASE(),
@@ -127,6 +127,9 @@ const checkIfPodsIsRequired = (
     c: RnvContext,
     forceUpdatePods: boolean
 ): { result: boolean; reason: string; code: number } => {
+    if (isOfflineMode()) {
+        return { result: false, reason: 'You passed --offline option', code: 7 };
+    }
     if (c.runtime._skipNativeDepResolutions) {
         return { result: false, reason: `Command ${getCurrentCommand(true)} explicitly skips pod checks`, code: 1 };
     }

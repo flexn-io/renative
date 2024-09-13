@@ -112,25 +112,12 @@ export const getAndroidDeviceToRunOn = async () => {
 
             const choices = [...activeDeviceInfoArr, ...inactiveDeviceInfoArr];
 
-            let chosenTarget: string;
-
-            if (activeDeviceInfoArr.length === 1 && inactiveDeviceInfoArr.length === 0 && !target) {
-                chosenTarget = activeDeviceInfoArr[0].value;
-                logInfo(`Found only one active target: ${chalk().magenta(chosenTarget)}. Will use it.`);
-            } else if (activeDeviceInfoArr.length === 0 && inactiveDeviceInfoArr.length === 1 && !target) {
-                //If we have no active devices and only one AVD available let's just launch it.
-                chosenTarget = inactiveDeviceInfoArr[0].value;
-                logInfo(`Found only one target to launch: ${chalk().magenta(chosenTarget)}. Will use it.`);
-            } else {
-                const response = await inquirerPrompt({
-                    name: 'chosenTarget',
-                    type: 'list',
-                    message: 'What target would you like to use?',
-                    choices,
-                });
-                chosenTarget = response?.chosenTarget;
-            }
-
+            const { chosenTarget } = await inquirerPrompt({
+                name: 'chosenTarget',
+                type: 'list',
+                message: 'What target would you like to use?',
+                choices,
+            });
             if (chosenTarget) {
                 const dev = activeDevices.find((d) => d.name === chosenTarget);
                 if (dev) return dev;
@@ -377,7 +364,6 @@ export const configureProject = async () => {
     fsWriteFileSync(path.join(appFolder, `app/src/main/assets/${outputFile}.bundle`), '{}');
 
     // console.log({ templateAndroid: c });
-
 
     // PLUGINS
     parsePlugins((plugin, pluginPlat, key) => {

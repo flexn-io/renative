@@ -29,6 +29,5 @@
         "tizenmobile": {},
         "chromecast": {},
         "kaios": {}
-    },
-    "webpackExcludedDirs": ["pages"]
+    }
 }

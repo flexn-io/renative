@@ -43,7 +43,7 @@
     },
     "templateConfig": {
         "name": "@rnv/template-starter",
-        "version": "1.0.0-rc.19"
+        "version": "1.2.0-rc.1"
     },
     "platforms": {
         "android": {
@@ -70,7 +70,8 @@
                 "MainActivity_kt": {
                     "onCreate": "super.onCreate(savedInstanceState)"
                 }
-            }
+            },
+            "engine": "engine-rn"
         },
         "androidtv": {
             "extendPlatform": "android",
@@ -83,7 +84,9 @@
             "minSdkVersion": 21,
             "extendPlatform": "android",
             "engine": "engine-rn-tvos",
-            "includedPermissions": ["INTERNET"]
+            "includedPermissions": [
+                "INTERNET"
+            ]
         },
         "web": {
             "engine": "engine-rn-next"
@@ -96,7 +99,12 @@
         },
         "macos": {
             "engine": "engine-rn-electron",
-            "assetFolderPlatform": "electron"
+            "assetFolderPlatform": "electron",
+            "webpackConfig": {
+                "excludedPaths": [
+                    "pages"
+                ]
+            }
         },
         "windows": {
             "engine": "engine-rn-electron",

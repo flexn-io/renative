@@ -106,7 +106,9 @@ export const buildWebNext = async () => {
 
     // On Windows npx does not always resolve correct path, hence we manually resolve it here
     // https://github.com/flexn-io/renative/issues/1409#issuecomment-2095531486
-    const nextCmnd = `node ${path.join(path.dirname(require.resolve('next/package.json')), 'dist', 'bin', 'next')}`;
+    const nextCmnd = `node ${path
+        .join(path.dirname(require.resolve('next/package.json')), 'dist', 'bin', 'next')
+        .replace(/ /g, '\\ ')}`;
     // const nextCmnd = 'npx next';
     await executeAsync(`${nextCmnd} build`, {
         env: {
@@ -137,9 +139,8 @@ Dev server running at: ${url}
 
     // On Windows npx does not always resolve correct path, hence we manually resolve it here
     // https://github.com/flexn-io/renative/issues/1409#issuecomment-2095531486
-    const nextCmnd = `node ${path.join(path.dirname(require.resolve('next/package.json')), 'dist', 'bin', 'next')}`;
+    const nextCmnd = `node "${path.join(path.dirname(require.resolve('next/package.json')), 'dist', 'bin', 'next')}"`;
     // const nextCmnd = 'npx next';
-
     return executeAsync(`${nextCmnd} ${bundleAssets ? 'start' : 'dev'} --port ${c.runtime.port}`, {
         env: {
             ...CoreEnvVars.BASE(),
@@ -160,7 +161,9 @@ export const exportWebNext = async () => {
 
     // On Windows npx does not always resolve correct path, hence we manually resolve it here
     // https://github.com/flexn-io/renative/issues/1409#issuecomment-2095531486
-    const nextCmnd = `node ${path.join(path.dirname(require.resolve('next/package.json')), 'dist', 'bin', 'next')}`;
+    const nextCmnd = `node ${path
+        .join(path.dirname(require.resolve('next/package.json')), 'dist', 'bin', 'next')
+        .replace(/ /g, '\\ ')}`;
     // const nextCmnd = 'npx next';
 
     await executeAsync(`${nextCmnd} build`, {

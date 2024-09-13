@@ -439,13 +439,15 @@
 			files = (
 			);
 			inputPaths = (
+				"$(SRCROOT)/.xcode.env.local",
+				"$(SRCROOT)/.xcode.env",
 			);
 			name = "Bundle React Native Code And Images";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n{{PATH_REACT_NATIVE}}/scripts/react-native-xcode.sh";
+			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"{{PATH_REACT_NATIVE}}/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"{{PATH_REACT_NATIVE}}/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
 		2D0FE9B0618B7653931FB828 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
