@@ -35,6 +35,7 @@
         "run:ios-test": "npx rnv run -p ios -s test -c harness --packageManager yarn --ci -r",
         "run:tvos-test": "npx rnv run -p tvos -s test -c harness --packageManager yarn --ci -r",
         "start:web-test": "npx rnv start -p web -s test -c harness --packageManager yarn --ci",
+        "run:web-test": "npx rnv run -p web -s test -c harness --packageManager yarn --ci",
         "tsc": "tsc --noEmit --composite false",
         "watch": "tsc --watch --preserveWatchOutput --noEmit"
     },
