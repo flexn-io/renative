@@ -427,8 +427,11 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
         await execCLI(CLI_TIZEN, `package -- "${intermediate}" -s ${certProfile} -t wgt -o "${tOut}"`);
 
         try {
-            const packageID = platform === 'tizenwatch' || platform === 'tizenmobile' ? tId.split('.')[0] : tId;
-            await execCLI(CLI_TIZEN, `uninstall -p ${packageID} -t ${deviceID}`, { ignoreErrors: true });
+            // const packageID = platform === 'tizenwatch' || platform === 'tizenmobile' ? tId.split('.')[0] : tId;
+            const packageID = tId;
+            await execCLI(CLI_TIZEN, `uninstall -p ${packageID} -t ${deviceID}`, {
+                ignoreErrors: true,
+            });
             hasDevice = true;
         } catch (e) {
             if (typeof e === 'string' && e.includes('No device matching')) {
