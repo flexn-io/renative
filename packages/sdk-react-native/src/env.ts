@@ -1,6 +1,7 @@
 import {
     CoreEnvVars,
     doResolve,
+    executeAsync,
     fsWriteFileSync,
     getAppFolder,
     getConfigProp,
@@ -75,11 +76,17 @@ export const EnvVars = {
 };
 
 export const generateEnvVarsFile = async () => {
+    const c = getContext();
+    if (!c.platform) return;
+
+    const isApplePlatform = c.platform === 'ios' || c.platform === 'tvos';
+    const fileName = isApplePlatform ? '.xcode.env.local' : '.env';
     const destDir = getAppFolder();
-    const destPath = path.join(destDir, '.env');
+    const destPath = path.join(destDir, fileName);
+
     const envVars: Record<string, any> = {
         ...CoreEnvVars.BASE(),
-        RNV_EXTENSIONS: CoreEnvVars.RNV_EXTENSIONS().RNV_EXTENSIONS.join(', '),
+        RNV_EXTENSIONS: CoreEnvVars.RNV_EXTENSIONS().RNV_EXTENSIONS.join(','),
         ...EnvVars.RCT_METRO_PORT(),
         ...EnvVars.RNV_REACT_NATIVE_PATH(),
         ...EnvVars.RCT_NO_LAUNCH_PACKAGER(),
@@ -87,10 +94,17 @@ export const generateEnvVarsFile = async () => {
         ...EnvVars.RCT_NEW_ARCH_ENABLED(),
         ...EnvVars.RNV_FLIPPER_ENABLED(),
         ...EnvVars.RNV_SKIP_LINKING(),
+        ...(isApplePlatform
+            ? {
+                  NODE_BINARY: await executeAsync(`which node`, {
+                      cwd: c.paths.project.dir,
+                  }),
+              }
+            : {}),
     };
     let env = '';
     Object.keys(envVars).forEach((key) => {
-        env += `${key}=${envVars[key]}\n`;
+        env += ` ${isApplePlatform ? 'export' : ''} ${key}=${envVars[key]}\n`;
     });
 
     fsWriteFileSync(destPath, env);

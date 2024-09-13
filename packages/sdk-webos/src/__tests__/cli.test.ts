@@ -47,7 +47,7 @@ describe('checkAndConfigureWebosSdks', () => {
         const reject = installer.checkAndConfigureWebosSdks();
 
         // THEN
-        await expect(reject).rejects.toThrow('No Webos SDK found. Check if it is installed.');
+        await expect(reject).rejects.toThrow('No Webos CLI found. Check if it is installed.');
     });
     it('checks for old version of CLI(installed manually and placed in SDK folder)', async () => {
         // GIVEN
@@ -76,11 +76,6 @@ describe('checkAndConfigureWebosSdks', () => {
         // GIVEN
         const mockContext = {
             platform: 'webos',
-            buildConfig: {
-                sdks: {
-                    WEBOS_SDK: '/path/to/sdk',
-                },
-            },
             cli: {},
         };
         (core.getContext as jest.Mock).mockReturnValue(mockContext);

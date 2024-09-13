@@ -15,12 +15,12 @@ import {
     getCurrentCommand,
     inquirerPrompt,
     RnvEnvContext,
+    isOfflineMode,
 } from '@rnv/core';
 import { EnvVars } from './env';
 import shellQuote from 'shell-quote';
 import path from 'path';
 import crypto from 'crypto';
-import { isOfflineMode } from '@rnv/sdk-utils';
 
 export const packageReactNativeIOS = (isDev = false) => {
     const c = getContext();
@@ -77,7 +77,7 @@ export const runReactNativeIOS = async (
     runScheme: string,
     extraParamsString: string
 ) => {
-    logDefault('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme}`);
+    logDefault('runReactNativeIOS', `scheme:${scheme} runScheme:${runScheme}`);
     // const cmd = `node ${doResolve(
     //     c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'
     // )}/local-cli/cli.js run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;

@@ -22,7 +22,7 @@ on:
 jobs:
     e2e-harness-androidtv:
         if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.label.name == 'e2e-harness-androidtv' || github.event.label.name == 'e2e' }}
-        runs-on: [self-hosted, macos]
+        runs-on: [self-hosted, macos, android]
         steps:
             - uses: actions/checkout@v2
             - name: Setup
@@ -33,10 +33,14 @@ jobs:
                   yarn bootstrap
             - name: Run
               run: |
-                  cd packages/app-harness && yarn run:androidtv-test & sleep 180
+                  cd packages/app-harness && yarn run:androidtv-test & sleep 240
             - name: E2E
               run: |
                   cd packages/app-harness && yarn e2e:androidtv && kill $(lsof -t -i:8094)
+            - name: Delete app
+              run: |
+                  adb uninstall renative.harness.test
+              continue-on-error: true
             # Commented because e2e tests would fail due to minion issues
             # - name: Post message to Slack via Webhook
             #   if: ${{ github.event_name == 'push' && failure() }}

@@ -3,11 +3,12 @@ import {
     checkForPluginDependencies,
     getContext,
     installPackageDependencies,
+    isOfflineMode,
     logDefault,
     logInfo,
     overrideTemplatePlugins,
 } from '@rnv/core';
-import { configureFonts, isOfflineMode } from '@rnv/sdk-utils';
+import { configureFonts } from '@rnv/sdk-utils';
 
 export const installPackageDependenciesAndPlugins = async () => {
     logDefault('installPackageDependenciesAndPlugins');
