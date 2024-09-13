@@ -103,8 +103,11 @@ export const launchTizenEmulator = async (name: string | true): Promise<boolean>
 
     if (name) {
         const ipRegex = /^(?:\d{1,3}\.){3}\d{1,3}:\d{1,5}$/;
-        if (name === true || ipRegex.test(name)) {
-            logInfo('Connecting to device'); // don't continue with further code - launching on device works diffirently than on emulator
+        if (name !== true && ipRegex.test(name)) {
+            // if ip is chosen, real device boot should start
+            logInfo('Connecting to device');
+            c.runtime.target = name.split(':')[0];
+            await runTizenSimOrDevice();
             return true;
         }
         try {
