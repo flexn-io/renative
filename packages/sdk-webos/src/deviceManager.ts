@@ -277,7 +277,6 @@ export const runWebosSimOrDevice = async () => {
     if (device) {
         // Running on a device
         const actualDevices = devices.filter((d) => d.isDevice);
-
         if (!actualDevices.length) {
             // No device configured. Asking to configure
             const response = await inquirerPrompt({
@@ -341,6 +340,11 @@ export const runWebosSimOrDevice = async () => {
         }
     } else {
         // Target specified, using that
-        return installAndLaunchApp(c.program.opts().target, appPath, tId);
+        const target_name = devices.find((device) => {
+            return device.device.includes(c.program.opts().target);
+        })?.name || c.program.opts().target;
+        
+
+        return installAndLaunchApp(target_name, appPath, tId);
     }
 };
