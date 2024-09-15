@@ -1,4 +1,5 @@
 import {
+    RnvFileName,
     RnvTaskName,
     createTask,
     fsExistsSync,
@@ -23,19 +24,21 @@ export default createTask({
             return logWarning(`Plugin overrides have not been applied yet`);
         }
         const rootPath = isMonorepo ? path.join(ctx.paths.project.dir, '../..') : path.join(ctx.paths.project.dir);
-        const appliedOverrideFilePath = path.join(overrideDir, 'applied_overrides.json');
+        const appliedOverrideFilePath = path.join(overrideDir, RnvFileName.appliedOverride);
         const appliedOverrides = fsExistsSync(appliedOverrideFilePath)
             ? JSON.parse(fsReadFileSync(appliedOverrideFilePath).toString())
             : {};
         Object.keys(appliedOverrides).forEach((packageName) => {
             const packageOverrides = appliedOverrides[packageName];
             Object.keys(packageOverrides).forEach((fileKey) => {
-                const dest = path.join(rootPath, 'node_modules', packageName, fileKey);
-                const backupPath = path.join(overrideDir, packageName, fileKey);
-                if (fsExistsSync(backupPath)) {
-                    revertOverrideToOriginal(dest, backupPath);
-                } else {
-                    logWarning(`Backup file not found for ${dest}. Cannot revert.`);
+                if (fileKey !== 'version') {
+                    const dest = path.join(rootPath, 'node_modules', packageName, fileKey);
+                    const backupPath = path.join(overrideDir, packageName, fileKey);
+                    if (fsExistsSync(backupPath)) {
+                        revertOverrideToOriginal(dest, backupPath);
+                    } else {
+                        logWarning(`Backup file not found for ${dest}. Cannot revert.`);
+                    }
                 }
             });
         });
