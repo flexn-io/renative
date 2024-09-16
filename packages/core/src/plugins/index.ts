@@ -1,4 +1,5 @@
 import path from 'path';
+import * as crypto from 'crypto';
 import { getAppConfigBuildsFolder, getAppFolder, getConfigRootProp } from '../context/contextProps';
 import { parseRenativeConfigs } from '../configs';
 import {
@@ -8,6 +9,8 @@ import {
     fsLstatSync,
     fsMkdirSync,
     fsReadFileSync,
+    fsReaddirSync,
+    fsStatSync,
     fsWriteFileSync,
     mergeObjects,
     readObjectSync,
@@ -681,15 +684,9 @@ const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
         }
 
         if (flavourSource && fsExistsSync(flavourSource)) {
-            logInfo(`${chalk().gray(dest)} overriden by: ${chalk().gray(flavourSource.split('node_modules').pop())}`);
-            copyFolderContentsRecursiveSync(flavourSource, dest, false);
+            _applyOverrideFiles(flavourSource, dest, dir);
         } else if (fsExistsSync(source)) {
-            console.log('**************', source, dest);
-            logInfo(`${chalk().gray(dest)} overriden by: ${chalk().gray(source.split('node_modules').pop())}`);
-            copyFolderContentsRecursiveSync(source, dest, false);
-            // fsReaddirSync(pp).forEach((dir) => {
-            //     copyFileSync(path.resolve(pp, file), path.resolve(c.paths.project.dir, 'node_modules', dir));
-            // });
+            _applyOverrideFiles(source, dest, dir);
         } else {
             logDebug(
                 `Your plugin configuration has no override path ${chalk().bold.white(
@@ -745,13 +742,40 @@ const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
     });
 };
 
+const _applyOverrideFiles = (source: string, dest: string, dir: string) => {
+    const overrideDir = _ensureOverrideDirExists();
+    const appliedOverrideFilePath = path.join(overrideDir, RnvFileName.appliedOverride);
+    const appliedOverrides = _readAppliedOverrides(appliedOverrideFilePath);
+    const overrideFiles = _getFilesInDirectory(source);
+    overrideFiles.forEach((file) => {
+        const relativeFilePath = path.relative(source, file);
+        const destFilePath = path.join(dest, relativeFilePath);
+        const fileKey = path.relative(dest, destFilePath);
+        const packageVersion = _getCurrentPackageVersion(dir);
+        const newFileHash = _generateChecksum(fsReadFileSync(file).toString());
+        if (fsExistsSync(destFilePath)) {
+            _backupOriginalFile(destFilePath, overrideDir, dir, fileKey);
+        }
+        const currentOverride = appliedOverrides[dir] || {};
+        const existingFileHash = currentOverride[fileKey];
+        if (newFileHash !== existingFileHash) {
+            appliedOverrides[dir] = appliedOverrides[dir] || {};
+            appliedOverrides[dir][fileKey] = newFileHash;
+            appliedOverrides[dir].version = packageVersion;
+            _writeAppliedOverrides(appliedOverrides, appliedOverrideFilePath);
+            fsCopyFileSync(file, destFilePath);
+        }
+    });
+
+    logInfo(`${chalk().gray(dest)} overriden by: ${chalk().gray(source.split('node_modules').pop())}`);
+};
+
 export const overrideFileContents = (
     dest: string,
     override: Record<string, string>,
     overridePath = '',
     fileKey: string
 ) => {
-    console.log('dest', dest, 'overridePath', overridePath, 'fileKey', fileKey);
     const overrideDir = _ensureOverrideDirExists();
     const appliedOverrideFilePath = path.join(overrideDir, RnvFileName.appliedOverride);
 
@@ -762,14 +786,7 @@ export const overrideFileContents = (
         const { backupPath, isFirstRun } = _saveOriginalFile(dest, overrideDir);
         const packageName = _getPackageName(dest, fileKey);
         const previousOverride = appliedOverrides[packageName]?.[fileKey] || {};
-
-        let packageVersion = '';
-        const rootPath = _getRootPath();
-        const packageJsonPath = path.join(rootPath, 'node_modules', packageName, RnvFileName.package);
-        if (fsExistsSync(packageJsonPath)) {
-            const packageContent = JSON.parse(fsReadFileSync(packageJsonPath).toString());
-            packageVersion = packageContent.version;
-        }
+        const packageVersion = _getCurrentPackageVersion(packageName);
 
         const overridesChanged = JSON.stringify(previousOverride) !== JSON.stringify(override);
         if (overridesChanged && !isFirstRun) {
@@ -832,7 +849,42 @@ export const overrideFileContents = (
         logDebug(`overrideFileContents Warning: path does not exist ${dest}`);
     }
 };
+const _generateChecksum = (content: string) => {
+    return crypto.createHash('sha256').update(content, 'utf8').digest('hex');
+};
+const _getCurrentPackageVersion = (packageName: string) => {
+    const rootPath = _getRootPath();
+    const packageJsonPath = path.join(rootPath, 'node_modules', packageName, RnvFileName.package);
+    if (fsExistsSync(packageJsonPath)) {
+        const packageContent = JSON.parse(fsReadFileSync(packageJsonPath).toString());
+        return packageContent.version;
+    }
+    return '';
+};
+const _backupOriginalFile = (filePath: string, overrideDir: string, dir: string, relativeFilePath: string) => {
+    const backupFilePath = path.join(overrideDir, dir, relativeFilePath);
 
+    if (!fsExistsSync(backupFilePath)) {
+        const backupFileDir = path.dirname(backupFilePath);
+        if (!fsExistsSync(backupFileDir)) {
+            fs.mkdirSync(backupFileDir, { recursive: true });
+        }
+        fsCopyFileSync(filePath, backupFilePath);
+    }
+};
+
+const _getFilesInDirectory = (dir: string) => {
+    let files: string[] = [];
+    fsReaddirSync(dir).forEach((file) => {
+        const fullPath = path.join(dir, file);
+        if (fsStatSync(fullPath).isDirectory()) {
+            files = files.concat(_getFilesInDirectory(fullPath));
+        } else {
+            files.push(fullPath);
+        }
+    });
+    return files;
+};
 const _getRootPath = () => {
     const c = getContext();
     const isMonorepo = getConfigRootProp('isMonorepo');
