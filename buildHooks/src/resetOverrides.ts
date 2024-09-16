@@ -1,5 +1,12 @@
 // npx rnv hooks run -x resetOverrides
-import { RnvFileName, fsExistsSync, fsReadFileSync, removeDirSync, revertOverrideToOriginal } from '@rnv/core';
+import {
+    RnvFileName,
+    fsExistsSync,
+    fsReadFileSync,
+    logSuccess,
+    removeDirSync,
+    revertOverrideToOriginal,
+} from '@rnv/core';
 import path from 'path';
 
 export const resetOverrides = async () => {
@@ -32,5 +39,7 @@ export const resetOverrides = async () => {
             }
         });
         removeDirSync(overrideDir);
+        return logSuccess('Plugin overrides have been reverted successfully');
     }
+    return logSuccess(`Plugin overrides have not been applied yet`);
 };
