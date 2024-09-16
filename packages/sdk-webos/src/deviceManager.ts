@@ -339,12 +339,14 @@ export const runWebosSimOrDevice = async () => {
             }
         }
     } else {
-        // Target specified, using that
-        const target_name = devices.find((device) => {
-            return device.device.includes(c.program.opts().target);
-        })?.name || c.program.opts().target;
-        
+        const target_name =
+            devices.find((device) => {
+                return device.device.includes(c.program.opts().target) || device.name.includes(c.program.opts().target);
+            })?.name;
 
+            if(!target_name){
+                return Promise.reject(`Target ${c.program.opts().target} doesn't exist.`);
+            }
         return installAndLaunchApp(target_name, appPath, tId);
     }
 };
