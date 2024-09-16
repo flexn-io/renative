@@ -1,8 +1,8 @@
-// npx rnv hooks run -x resetOverridesOnInstall
+// npx rnv hooks run -x resetOverrides
 import { RnvFileName, fsExistsSync, fsReadFileSync, removeDirSync, revertOverrideToOriginal } from '@rnv/core';
 import path from 'path';
 
-export const resetOverridesOnInstall = async () => {
+export const resetOverrides = async () => {
     const overrideDir = path.join(process.cwd(), '.rnv', 'overrides');
 
     const appliedOverrideFilePath = path.join(overrideDir, RnvFileName.appliedOverride);
