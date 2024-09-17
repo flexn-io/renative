@@ -163,7 +163,7 @@ export const getAndroidDeviceToRunOn = async () => {
         return availableDevice;
     } else if (defaultTarget) {
         // neither a target nor an active device is found, revert to default target if available
-        logDefault('Default target used', defaultTarget);
+        logDebug('Default target used', defaultTarget);
         const foundDevice = devicesAndEmulators.find(
             (d) => d.udid.includes(defaultTarget) || d.name.includes(defaultTarget)
         );
