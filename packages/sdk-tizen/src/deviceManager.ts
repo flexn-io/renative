@@ -81,7 +81,6 @@ export const launchTizenEmulator = async (name: string | true): Promise<boolean>
         const devices_lines = devices.split('\n');
 
         const allDownloadedEmulators = emulators.split('\n'); // all tizen, tizenwatch and tizenmobile emulators
-
         const specificEmulators = await getSubplatformDevices(allDownloadedEmulators, c.platform as string);
         const devicesArr = devices_lines.slice(1).map((line: string) => line.split(' ')[0]); // devices array with only their ip
 
