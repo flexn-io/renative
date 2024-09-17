@@ -100,15 +100,14 @@ export const launchTizenEmulator = async (name: string | true): Promise<boolean>
 
         name = chosenEmulator;
     }
-
-    if (name) {
+    if (name && typeof name === 'string') {
         const ipRegex = /^(?:\d{1,3}\.){3}\d{1,3}:\d{1,5}$/;
-        if (name !== true && ipRegex.test(name)) {
+        if (ipRegex.test(name)) {
             // if ip is chosen, real device boot should start
             logInfo('Connecting to device');
             c.runtime.target = name.split(':')[0];
             await runTizenSimOrDevice();
-            return true;
+            return new Promise(() => logInfo('Device is launched.'));
         }
         try {
             await executeAsync(
@@ -430,8 +429,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
         await execCLI(CLI_TIZEN, `package -- "${intermediate}" -s ${certProfile} -t wgt -o "${tOut}"`);
 
         try {
-            // const packageID = platform === 'tizenwatch' || platform === 'tizenmobile' ? tId.split('.')[0] : tId;
-            const packageID = tId;
+            const packageID = platform === 'tizenwatch' || platform === 'tizenmobile' ? tId.split('.')[0] : tId;
             await execCLI(CLI_TIZEN, `uninstall -p ${packageID} -t ${deviceID}`, {
                 ignoreErrors: true,
             });
