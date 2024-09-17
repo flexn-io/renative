@@ -20,6 +20,7 @@ import {
     getConfigProp,
     getAppFolder,
     getContext,
+    logError,
 } from '@rnv/core';
 import { WebosDevice } from './types';
 import {
@@ -38,7 +39,9 @@ export const launchWebOSimulator = async (target: string | boolean) => {
     const c = getContext();
     const webosSdkPath = getRealPath(c.buildConfig?.sdks?.WEBOS_SDK);
     if (!webosSdkPath) {
-        return Promise.reject(`c.buildConfig.sdks.WEBOS_SDK undefined`);
+        return Promise.reject(
+            `Your ${c.platform} SDK path is not configured. If you want to run simulator please update your ${c.paths.workspace.config} file with simulator path.`
+        );
     }
     const availableSimulatorVersions = getDirectories(path.join(webosSdkPath, 'Simulator'));
 
@@ -131,7 +134,9 @@ const launchAppOnSimulator = async (c: RnvContext, appPath: string) => {
     const webosSdkPath = getRealPath(c.buildConfig?.sdks?.WEBOS_SDK);
 
     if (!webosSdkPath) {
-        return Promise.reject(`c.buildConfig.sdks.WEBOS_SDK undefined`);
+        return Promise.reject(
+            `Your ${c.platform} SDK path is not configured. If you want to run simulator please update your ${c.paths.workspace.config} file with simulator path.`
+        );
     }
 
     const simulatorDirPath = path.join(webosSdkPath, 'Simulator');
@@ -220,7 +225,9 @@ export const listWebOSTargets = async () => {
 
     const webosSdkPath = getRealPath(c.buildConfig?.sdks?.WEBOS_SDK);
     if (!webosSdkPath) {
-        return Promise.reject(`c.buildConfig.sdks.WEBOS_SDK undefined`);
+        return Promise.reject(
+            `Your ${c.platform} SDK path is not configured. Please update your ${c.paths.workspace.config} file`
+        );
     }
     const availableSimulatorVersions = getDirectories(path.join(webosSdkPath, 'Simulator'));
     availableSimulatorVersions.map((a) => {
@@ -326,7 +333,11 @@ export const runWebosSimOrDevice = async () => {
                 return installAndLaunchApp(response.chosenDevice, appPath, tId);
             }
         } else {
-            return launchAppOnSimulator(c, appLocation);
+            try {
+                return await launchAppOnSimulator(c, appLocation);
+            } catch (error) {
+                return logError(`${error}`);
+            }
         }
     } else {
         // Target specified, using that

@@ -7,7 +7,7 @@ export default createTask({
     isPrivate: true,
     fn: async () => {
         await checkAndConfigureWebosSdks();
-        await checkWebosSdk(true);
+        await checkWebosSdk();
     },
     task: RnvTaskName.sdkConfigure,
     platforms: SdkPlatforms,

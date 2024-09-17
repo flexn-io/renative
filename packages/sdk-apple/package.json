@@ -1,6 +1,6 @@
 {
     "name": "@rnv/sdk-apple",
-    "version": "1.1.0-rc.1",
+    "version": "1.2.0-rc.1",
     "description": "ReNative Apple SDK",
     "keywords": [],
     "homepage": "https://github.com/flexn-io/renative#readme",
@@ -30,16 +30,16 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@rnv/sdk-react-native": "1.1.0-rc.1",
-        "@rnv/sdk-utils": "1.1.0-rc.1",
+        "@rnv/sdk-react-native": "1.2.0-rc.1",
+        "@rnv/sdk-utils": "1.2.0-rc.1",
         "appium-ios-device": "2.7.10",
         "ios-mobileprovision-finder": "1.1.0",
         "xcode": "3.0.1"
     },
     "peerDependencies": {
-        "@react-native-community/cli": "^11.3.8",
-        "@react-native-community/cli-platform-ios": "^11.3.8",
-        "@rnv/core": "^1.1.0-rc.1"
+        "@react-native-community/cli": "^12.3.6",
+        "@react-native-community/cli-platform-ios": "^12.3.6",
+        "@rnv/core": "^1.2.0-rc.1"
     },
     "private": false,
     "publishConfig": {

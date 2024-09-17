@@ -1,18 +1,15 @@
-import { utilities } from 'appium-ios-device';
 import {
     chalk,
     logToSummary,
     logDefault,
     logWarning,
-    logDebug,
     executeAsync,
     inquirerPrompt,
-    RnvPlatform,
     ExecOptionsPresets,
     logInfo,
     logSuccess,
 } from '@rnv/core';
-import { AppiumAppleDevice, AppleDevice } from './types';
+import { AppleDevice, DeviceType } from './types';
 import { execFileSync } from 'child_process';
 import { getContext } from './getContext';
 
@@ -21,163 +18,69 @@ const ERROR_MSG = {
 };
 
 export const getAppleDevices = async (ignoreDevices?: boolean, ignoreSimulators?: boolean) => {
+    const listIOSDevices = require('@react-native-community/cli-platform-ios/build/tools/listIOSDevices.js').default;
+
     const c = getContext();
     const { platform } = c;
-
     logDefault('getAppleDevices', `ignoreDevices:${ignoreDevices} ignoreSimulators:${ignoreSimulators}`);
-
     const { skipTargetCheck } = c.program.opts();
 
-    const connectedDevicesIds = await utilities.getConnectedDevices();
-    const connectedDevicesArray = await Promise.all(
-        connectedDevicesIds.map(async (id: string) => {
-            const info = await utilities.getDeviceInfo(id);
-            return {
-                udid: id,
-                ...info,
-            };
-        })
-    );
+    const connectedDevicesArray = ((await listIOSDevices()) as DeviceType[]).filter((d) => d.isAvailable);
 
-    const res = await executeAsync('xcrun simctl list --json');
-    const simctl = JSON.parse(res.toString());
-    const availableSims: Array<AppleDevice> = [];
-    if (simctl.devices) {
-        Object.keys(simctl.devices).forEach((runtime) => {
-            logDebug('runtime', runtime);
-            simctl.devices[runtime].forEach((device: AppleDevice) => {
-                if (device.isAvailable) {
-                    availableSims.push({
-                        ...device,
-                        version: runtime.split('.').pop(),
-                    });
-                }
-            });
-        });
+    const allDevicesAndSims = _parseNewIOSDevicesList(connectedDevicesArray);
+
+    let filteredTargets = allDevicesAndSims;
+
+    if (ignoreDevices) {
+        filteredTargets = allDevicesAndSims.filter((d) => !d.isDevice);
     }
 
-    const devicesArr = _parseNewIOSDevicesList(connectedDevicesArray, platform, ignoreDevices);
-
-    const simulatorsArr = _parseIOSDevicesList(availableSims, platform, ignoreDevices, ignoreSimulators);
-    let allDevices = [...devicesArr, ...simulatorsArr];
+    if (ignoreSimulators) {
+        filteredTargets = allDevicesAndSims.filter((d) => d.isDevice);
+    }
 
     if (!skipTargetCheck) {
-        // filter watches
-        allDevices = allDevices.filter((d) => !d.version?.includes('watchOS'));
-        // filter other platforms
-        allDevices = allDevices.filter((d) => {
-            if (platform === 'ios' && (d.icon?.includes('Phone') || d.icon?.includes('Tablet'))) {
-                return true;
-            }
-            if (platform === 'tvos' && d.icon?.includes('TV')) return true;
-            return false;
-        });
+        return filteredTargets
+            .filter((d) => !d.name?.includes('Watch'))
+            .filter((d) => !d.name?.includes('My Mac'))
+            .filter((d) => {
+                if (platform === 'ios' && (d.icon?.includes('Phone') || d.icon?.includes('Tablet'))) {
+                    return true;
+                }
+                if (platform === 'tvos' && d.icon?.includes('TV')) return true;
+                return false;
+            });
     }
-    return allDevices;
+    return filteredTargets;
 };
 
-const _parseNewIOSDevicesList = (
-    rawDevices: Array<AppiumAppleDevice>,
-    platform: RnvPlatform,
-    ignoreDevices = false
-) => {
-    const devices: Array<AppleDevice> = [];
-    if (ignoreDevices) return devices;
-    const decideIcon = (device: AppiumAppleDevice) => {
-        const { ProductName, DeviceClass } = device;
-        if (ProductName?.includes('iPhone') || ProductName?.includes('iPad') || ProductName?.includes('iPod')) {
-            let icon = 'Phone 📱';
-            if (DeviceClass?.includes('iPad')) icon = 'Tablet 💊';
-            return icon;
+const _parseNewIOSDevicesList = (rawDevices: Array<DeviceType>) => {
+    const decideIcon = (device: DeviceType) => {
+        const { modelName } = device;
+        if (modelName?.includes('iPhone') || modelName?.includes('iPod')) {
+            return 'Phone 📱';
         }
-        if (ProductName?.includes('TV') && !ProductName?.includes('iPhone') && !ProductName?.includes('iPad')) {
+        if (modelName?.includes('iPad')) {
+            return 'Tablet 💊';
+        }
+        if (modelName?.includes('Apple TV')) {
             return 'TV 📺';
         }
         return 'Apple Device';
     };
 
-    return rawDevices.map((device) => {
-        const { DeviceName, ProductVersion, udid } = device;
-        const version = ProductVersion;
+    return rawDevices.map((device): AppleDevice => {
+        const { name, version, udid, type, modelName } = device;
         const icon = decideIcon(device);
         return {
             udid,
-            name: DeviceName,
+            name,
             icon,
             version,
-            isDevice: true,
+            modelName,
+            isDevice: type === 'device',
         };
     });
-};
-
-const _parseIOSDevicesList = (
-    rawDevices: string | Array<AppleDevice>,
-    platform: RnvPlatform,
-    ignoreDevices = false,
-    ignoreSimulators = false
-) => {
-    const devices: Array<AppleDevice> = [];
-    const decideIcon = (device: AppleDevice) => {
-        const { name, isDevice } = device;
-        switch (platform) {
-            case 'ios':
-                if (name?.includes('iPhone') || name?.includes('iPad') || name?.includes('iPod')) {
-                    let icon = 'Phone 📱';
-                    if (name.includes('iPad')) icon = 'Tablet 💊';
-                    return icon;
-                }
-                return undefined;
-            case 'tvos':
-                if (name?.includes('TV') && !name?.includes('iPhone') && !name?.includes('iPad')) {
-                    return 'TV 📺';
-                }
-                return undefined;
-            default:
-                if (isDevice) {
-                    return 'Apple Device';
-                }
-                return undefined;
-        }
-    };
-    if (typeof rawDevices === 'string' && !ignoreDevices) {
-        rawDevices.split('\n').forEach((line) => {
-            const s1 = line.match(/\[.*?\]/);
-            const s2 = line.match(/\(.*?\)/g);
-            // const s3 = line.substring(0, line.indexOf('(') - 1);
-            const s4 = line.substring(0, line.indexOf('[') - 1);
-            let isSim = false;
-            if (s2 && s1) {
-                if (s2[s2.length - 1] === '(Simulator)') {
-                    isSim = true;
-                    s2.pop();
-                }
-                const version = s2.pop();
-                let name = `${s4.substring(0, s4.lastIndexOf('(') - 1)}`;
-                name = name || 'undefined';
-                const udid = s1[0].replace(/\[|\]/g, '');
-                const isDevice = !isSim;
-                if (!isDevice) return; // only take care of devices.
-
-                if (!ignoreDevices) {
-                    const device = { udid, name, version, isDevice };
-                    devices.push({ ...device, icon: decideIcon(device) });
-                }
-            }
-        });
-    } else if (typeof rawDevices === 'object' && !ignoreSimulators) {
-        rawDevices.forEach((d) => {
-            const { name, udid, version } = d;
-            const device = {
-                name,
-                udid,
-                isDevice: false,
-                version,
-            };
-            devices.push({ ...device, icon: decideIcon(device) });
-        });
-    }
-
-    return devices;
 };
 
 export const launchAppleSimulator = async (target: string | boolean) => {
