@@ -133,9 +133,5 @@
     "browserslist": [
         ">0.2%",
         "op_mini all"
-    ],
-    "dependencies": {
-        "dotenv": "16.4.5",
-        "raf": "3.4.1"
-    }
+    ]
 }

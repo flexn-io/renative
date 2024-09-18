@@ -71,10 +71,9 @@ const formatXMLObject = (
     return {};
 };
 
-export const launchTizenEmulator = async (name: string | true): Promise<boolean> => {
+export const launchTizenEmulator = async (name: string | true, hideDevices?: boolean): Promise<boolean> => {
     const c = getContext();
     logDefault(`launchTizenEmulator:${name}`);
-
     if (name === true) {
         const emulators = await execCLI(CLI_TIZEN_EMULATOR, 'list-vm');
         const devices = await execCLI(CLI_SDB_TIZEN, 'devices');
@@ -86,7 +85,9 @@ export const launchTizenEmulator = async (name: string | true): Promise<boolean>
 
         const lines = specificEmulators.concat(devicesArr);
 
-        const targetsArray = lines.map((line) => ({ id: line, name: line }));
+        const targetsArray = hideDevices
+            ? specificEmulators.map((line) => ({ id: line, name: line }))
+            : lines.map((line) => ({ id: line, name: line }));
 
         const choices = _composeDevicesString(targetsArray);
 
@@ -105,7 +106,7 @@ export const launchTizenEmulator = async (name: string | true): Promise<boolean>
             // if ip is chosen, real device boot should start
             logInfo('Connecting to device');
             c.runtime.target = name.split(':')[0];
-            await runTizenSimOrDevice();
+            await runTizenSimOrDevice(true);
             return new Promise(() => logInfo('Device is launched.'));
         }
         try {
@@ -348,7 +349,7 @@ const _composeDevicesString = (devices: Array<Pick<TizenDevice, 'id' | 'name'>>)
 //     }
 // };
 
-export const runTizenSimOrDevice = async () => {
+export const runTizenSimOrDevice = async (onlyRun?: true | null) => {
     const c = getContext();
     const { target } = c.runtime;
     const { platform } = c;
@@ -382,8 +383,11 @@ export const runTizenSimOrDevice = async () => {
     let deviceID: string;
 
     if (!tId) return Promise.reject(`Tizen platform requires "id" filed in platforms.tizen`);
-
     const askForEmulator = async () => {
+        if (!target) {
+            launchTizenEmulator(true);
+            return;
+        }
         const { startEmulator } = await inquirerPrompt({
             name: 'startEmulator',
             type: 'confirm',
@@ -423,6 +427,11 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
 
     const continueLaunching = async () => {
         let hasDevice = false;
+
+        // if (onlyRun) {
+        //     await execCLI(CLI_TIZEN, `run -p ${tId} -t ${deviceID}`);
+        //     return true;
+        // }
 
         await execCLI(CLI_TIZEN, `build-web -- "${tBuild}" -out "${intermediate}"`);
         await execCLI(CLI_TIZEN, `package -- "${intermediate}" -s ${certProfile} -t wgt -o "${tOut}"`);

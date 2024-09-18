@@ -11,7 +11,7 @@ export default createTask({
         await checkAndConfigureTizenSdks();
         const target = await getTargetWithOptionalPrompt();
         await checkTizenSdk();
-        return launchTizenEmulator(target);
+        return launchTizenEmulator(target, true);
     },
     task: RnvTaskName.targetLaunch,
     options: [RnvTaskOptions.target],
