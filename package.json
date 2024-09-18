@@ -56,7 +56,7 @@
         "url": "git://github.com/flexn-io/renative.git"
     },
     "scripts": {
-        "bootstrap": "npx lerna@6 bootstrap && yarn build && yarn link:rnv && yarn generateSchema && yarn resetOverrides",
+        "bootstrap": "npx lerna@6 bootstrap && yarn build && yarn link:rnv && yarn generateSchema",
         "bootstrap-clean": "yarn clean-gitignore && yarn bootstrap",
         "build": "lerna run build",
         "clean-gitignore": "git clean -f -d -i -X",
@@ -66,7 +66,6 @@
         "deploy:next": "yarn pre-publish && npx lerna publish from-package --dist-tag next && git push --tags origin HEAD",
         "deploy:prod": "yarn pre-publish && npx lerna publish from-package && git push --tags origin HEAD",
         "generateSchema": "npx rnv hooks run -x generateSchema",
-        "resetOverrides": "npx rnv hooks run -x resetOverrides",
         "link:rnv": "npm r rnv -g && cd packages/rnv && npm link",
         "lint": "npx eslint ./packages",
         "postinstall": "npx lerna link --force-local && npx jetify",

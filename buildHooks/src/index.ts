@@ -1,6 +1,5 @@
 import { comparePluginTemplates } from './comparePluginTemplates';
 import { comparePluginOverrides } from './comparePluginOverrides';
-import { resetOverrides } from './resetOverrides';
 
 import { prePublish } from './prePublish';
 import { gitCommit, gitCommitAndTag, gitTag } from '@rnv/build-hooks-git';
@@ -14,7 +13,6 @@ const hooks = {
     gitCommit,
     gitTag,
     generateSchema,
-    resetOverrides,
 };
 
 const pipes = {};
