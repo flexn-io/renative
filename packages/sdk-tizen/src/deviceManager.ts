@@ -34,6 +34,7 @@ export const DEFAULT_CERTIFICATE_NAME = 'tizen_author';
 const ERROR_MSG = {
     UNKNOWN_VM: 'does not match any VM',
     ALREADY_RUNNING: 'is running now',
+    NO_SUPPORT: 'Your system cannot support HW virtualization',
 };
 
 type PlatKeyObj = {
@@ -94,7 +95,7 @@ export const launchTizenEmulator = async (name: string | true, hideDevices?: boo
         const { chosenEmulator } = await inquirerPrompt({
             name: 'chosenEmulator',
             type: 'list',
-            message: 'What emulator would you like to launch?',
+            message: 'which emulator or device would you like to launch?',
             choices,
         });
 
@@ -106,7 +107,7 @@ export const launchTizenEmulator = async (name: string | true, hideDevices?: boo
             // if ip is chosen, real device boot should start
             logInfo('Connecting to device');
             c.runtime.target = name.split(':')[0];
-            await runTizenSimOrDevice(true);
+            await runTizenSimOrDevice();
             return new Promise(() => logInfo('Device is launched.'));
         }
         try {
@@ -118,12 +119,15 @@ export const launchTizenEmulator = async (name: string | true, hideDevices?: boo
         } catch (e) {
             if (typeof e === 'string') {
                 if (e.includes(ERROR_MSG.UNKNOWN_VM)) {
-                    logError(`The VM "${name}" does not exist.`);
-                    return launchTizenEmulator(true);
+                    logError(`The VM/device "${name}" does not exist.`);
+                    return launchTizenEmulator(true, hideDevices);
                 }
-
                 if (e.includes(ERROR_MSG.ALREADY_RUNNING)) {
-                    logError(`The VM "${name}" is already running.`);
+                    logError(`The VM/device "${name}" is already running.`);
+                    return true;
+                }
+                if (e.includes(ERROR_MSG.NO_SUPPORT)) {
+                    logError(`Your system cannot support HW virtualization.`);
                     return true;
                 }
             }
@@ -349,7 +353,7 @@ const _composeDevicesString = (devices: Array<Pick<TizenDevice, 'id' | 'name'>>)
 //     }
 // };
 
-export const runTizenSimOrDevice = async (onlyRun?: true | null) => {
+export const runTizenSimOrDevice = async () => {
     const c = getContext();
     const { target } = c.runtime;
     const { platform } = c;
@@ -427,11 +431,6 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
 
     const continueLaunching = async () => {
         let hasDevice = false;
-
-        // if (onlyRun) {
-        //     await execCLI(CLI_TIZEN, `run -p ${tId} -t ${deviceID}`);
-        //     return true;
-        // }
 
         await execCLI(CLI_TIZEN, `build-web -- "${tBuild}" -out "${intermediate}"`);
         await execCLI(CLI_TIZEN, `package -- "${intermediate}" -s ${certProfile} -t wgt -o "${tOut}"`);
