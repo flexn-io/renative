@@ -187,8 +187,8 @@ const getDeviceType = async (ipArr: string[], neededPlatform: string) => {
         try {
             const capabilityString = await execCLI(CLI_SDB_TIZEN, `-s ${ipArr[i]} capability`);
             if (
-                (capabilityString.includes('profile_name:tv') && neededPlatform === 'tizen') ||
-                neededPlatform === 'tv'
+                capabilityString.includes('profile_name:tv') &&
+                (neededPlatform === 'tizen' || neededPlatform === 'tv')
             ) {
                 returnArr.push(ipArr[i]);
             }
@@ -199,7 +199,7 @@ const getDeviceType = async (ipArr: string[], neededPlatform: string) => {
                 returnArr.push(ipArr[i]);
             }
         } catch (err) {
-            console.log(err);
+            logError(`Couldn't connect to ${ipArr[i]} device.`);
         }
     }
     return returnArr;
