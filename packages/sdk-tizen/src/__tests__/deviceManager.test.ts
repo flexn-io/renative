@@ -10,7 +10,7 @@ import {
     inquirerPrompt,
     ExecOptionsPresets,
 } from '@rnv/core';
-import { listTizenTargets, launchTizenEmulator } from '../deviceManager';
+import { listTizenTargets, launchTizenTarget } from '../deviceManager';
 import { CLI_TIZEN_EMULATOR, CLI_SDB_TIZEN } from '../constants';
 
 const ERROR_MSG = {
@@ -84,7 +84,7 @@ describe('listTizenTargets', () => {
     });
 });
 
-describe('launchTizenEmulator', () => {
+describe('launchTizenTarget', () => {
     it('should launch the specified emulator by name', async () => {
         const mockContext = { cli: { [CLI_TIZEN_EMULATOR]: 'tizen-emulator' }, platform: 'tizen' };
         const ctx = { ...getContext(), ...mockContext };
@@ -92,9 +92,9 @@ describe('launchTizenEmulator', () => {
 
         (executeAsync as jest.Mock).mockResolvedValue(true);
 
-        const result = await launchTizenEmulator('emulatorName');
+        const result = await launchTizenTarget('emulatorName');
 
-        expect(logDefault).toHaveBeenCalledWith('launchTizenEmulator:emulatorName');
+        expect(logDefault).toHaveBeenCalledWith('launchTizenTarget:emulatorName');
         expect(executeAsync).toHaveBeenCalledWith(
             'tizen-emulator launch --name emulatorName',
             ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY
@@ -109,19 +109,61 @@ describe('launchTizenEmulator', () => {
         (execCLI as jest.Mock).mockResolvedValueOnce('emulator1\nemulator2').mockResolvedValueOnce('device1\ndevice2');
         (inquirerPrompt as jest.Mock).mockResolvedValue({ chosenEmulator: 'emulator1' });
         (executeAsync as jest.Mock).mockResolvedValue(true);
-        const result = await launchTizenEmulator(true);
+        const result = await launchTizenTarget(true);
         expect(execCLI).toHaveBeenCalledWith(CLI_TIZEN_EMULATOR, 'list-vm');
         expect(execCLI).toHaveBeenCalledWith(CLI_SDB_TIZEN, 'devices');
         expect(inquirerPrompt).toHaveBeenCalledWith({
             name: 'chosenEmulator',
             type: 'list',
-            message: 'What emulator would you like to launch?',
+            message: 'which emulator or device would you like to launch?',
             choices: expect.any(Array),
         });
         expect(executeAsync).toHaveBeenCalledWith(
             'tizen-emulator launch --name emulator1',
             ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY
         );
+        expect(result).toBe(true);
+    });
+    it('should hide real devices from prompt, if true is passed', async () => {
+        const mockContext = { cli: { [CLI_TIZEN_EMULATOR]: 'tizen-emulator' }, platform: 'tizen' };
+        const ctx = { ...getContext(), ...mockContext };
+        createRnvContext(ctx);
+
+        (execCLI as jest.Mock)
+            .mockResolvedValueOnce('emulator1\nemulator2')
+            .mockResolvedValueOnce(
+                'firstTrashLineThatTizenDeviceCmdReturns\n111.111.0.111:26101     device          UE43NU7192'
+            );
+        (inquirerPrompt as jest.Mock).mockResolvedValue({ chosenEmulator: 'emulator1' });
+        (executeAsync as jest.Mock).mockResolvedValue(true);
+        const result = await launchTizenTarget(true, true);
+        expect(inquirerPrompt).toHaveBeenCalledWith({
+            name: 'chosenEmulator',
+            type: 'list',
+            message: 'which emulator or device would you like to launch?',
+            choices: [], // not correct, because emulators are not mocked, but doesn't matter here, since its testing devices
+        });
+        expect(result).toBe(true);
+    });
+    it('should show real devices(same conditions as test above, just not passing 2nd param true to launchTizenTarget) ', async () => {
+        const mockContext = { cli: { [CLI_TIZEN_EMULATOR]: 'tizen-emulator' }, platform: 'tizen' };
+        const ctx = { ...getContext(), ...mockContext };
+        createRnvContext(ctx);
+
+        (execCLI as jest.Mock)
+            .mockResolvedValueOnce('emulator1\nemulator2')
+            .mockResolvedValueOnce(
+                'firstTrashLineThatTizenDeviceCmdReturns\n111.111.0.111:26101     device          UE43NU7192'
+            );
+        (inquirerPrompt as jest.Mock).mockResolvedValue({ chosenEmulator: 'emulator1' });
+        (executeAsync as jest.Mock).mockResolvedValue(true);
+        const result = await launchTizenTarget(true);
+        expect(inquirerPrompt).toHaveBeenCalledWith({
+            name: 'chosenEmulator',
+            type: 'list',
+            message: 'which emulator or device would you like to launch?',
+            choices: [{ key: '111.111.0.111:26101', name: '111.111.0.111:26101', value: '111.111.0.111:26101' }],
+        });
         expect(result).toBe(true);
     });
     it('should handle unknown VM error and retry with prompt', async () => {
@@ -133,14 +175,14 @@ describe('launchTizenEmulator', () => {
         (execCLI as jest.Mock).mockResolvedValueOnce('emulator1\nemulator2').mockResolvedValueOnce('device1\ndevice2');
         (inquirerPrompt as jest.Mock).mockResolvedValue({ chosenEmulator: 'emulator1' });
         (executeAsync as jest.Mock).mockResolvedValue(true);
-        const result = await launchTizenEmulator('unknownEmulator');
-        expect(logError).toHaveBeenCalledWith('The VM "unknownEmulator" does not exist.');
+        const result = await launchTizenTarget('unknownEmulator');
+        expect(logError).toHaveBeenCalledWith('The VM/device "unknownEmulator" does not exist.');
         expect(execCLI).toHaveBeenCalledWith(CLI_TIZEN_EMULATOR, 'list-vm');
         expect(execCLI).toHaveBeenCalledWith(CLI_SDB_TIZEN, 'devices');
         expect(inquirerPrompt).toHaveBeenCalledWith({
             name: 'chosenEmulator',
             type: 'list',
-            message: 'What emulator would you like to launch?',
+            message: 'which emulator or device would you like to launch?',
             choices: expect.any(Array),
         });
         expect(executeAsync).toHaveBeenCalledWith(
@@ -155,11 +197,11 @@ describe('launchTizenEmulator', () => {
         createRnvContext(ctx);
 
         (executeAsync as jest.Mock).mockRejectedValueOnce(ERROR_MSG.ALREADY_RUNNING);
-        const result = await launchTizenEmulator('runningEmulator');
-        expect(logError).toHaveBeenCalledWith('The VM "runningEmulator" is already running.');
+        const result = await launchTizenTarget('runningEmulator');
+        expect(logError).toHaveBeenCalledWith('The VM/device "runningEmulator" is already running.');
         expect(result).toBe(true);
     });
     it('should reject if no name is specified', async () => {
-        await expect(launchTizenEmulator('')).rejects.toEqual('No emulator -t target name specified!');
+        await expect(launchTizenTarget('')).rejects.toEqual('No emulator -t target name specified!');
     });
 });

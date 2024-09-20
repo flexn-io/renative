@@ -1,7 +1,7 @@
 import { createTask, RnvTaskName, RnvTaskOptions } from '@rnv/core';
 import { getTargetWithOptionalPrompt } from '@rnv/sdk-utils';
 import { checkAndConfigureTizenSdks, checkTizenSdk } from '../installer';
-import { launchTizenEmulator } from '../deviceManager';
+import { launchTizenTarget } from '../deviceManager';
 import { SdkPlatforms } from '../constants';
 
 export default createTask({
@@ -11,7 +11,7 @@ export default createTask({
         await checkAndConfigureTizenSdks();
         const target = await getTargetWithOptionalPrompt();
         await checkTizenSdk();
-        return launchTizenEmulator(target);
+        return launchTizenTarget(target, true);
     },
     task: RnvTaskName.targetLaunch,
     options: [RnvTaskOptions.target],

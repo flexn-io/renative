@@ -34,6 +34,7 @@ export const DEFAULT_CERTIFICATE_NAME = 'tizen_author';
 const ERROR_MSG = {
     UNKNOWN_VM: 'does not match any VM',
     ALREADY_RUNNING: 'is running now',
+    NO_SUPPORT: 'Your system cannot support HW virtualization',
 };
 
 type PlatKeyObj = {
@@ -71,44 +72,43 @@ const formatXMLObject = (
     return {};
 };
 
-export const launchTizenEmulator = async (name: string | true): Promise<boolean> => {
+export const launchTizenTarget = async (name: string | true, hideDevices?: boolean): Promise<boolean> => {
     const c = getContext();
-    logDefault(`launchTizenEmulator:${name}`);
-
+    logDefault(`launchTizenTarget:${name}`);
     if (name === true) {
         const emulators = await execCLI(CLI_TIZEN_EMULATOR, 'list-vm');
         const devices = await execCLI(CLI_SDB_TIZEN, 'devices');
         const devices_lines = devices.split('\n');
 
         const allDownloadedEmulators = emulators.split('\n'); // all tizen, tizenwatch and tizenmobile emulators
-
         const specificEmulators = await getSubplatformDevices(allDownloadedEmulators, c.platform as string);
         const devicesArr = devices_lines.slice(1).map((line: string) => line.split(' ')[0]); // devices array with only their ip
 
         const lines = specificEmulators.concat(devicesArr);
 
-        const targetsArray = lines.map((line) => ({ id: line, name: line }));
+        const targetsArray = hideDevices
+            ? specificEmulators.map((line) => ({ id: line, name: line }))
+            : lines.map((line) => ({ id: line, name: line }));
 
         const choices = _composeDevicesString(targetsArray);
 
         const { chosenEmulator } = await inquirerPrompt({
             name: 'chosenEmulator',
             type: 'list',
-            message: 'What emulator would you like to launch?',
+            message: 'which emulator or device would you like to launch?',
             choices,
         });
 
         name = chosenEmulator;
     }
-
-    if (name) {
+    if (name && typeof name === 'string') {
         const ipRegex = /^(?:\d{1,3}\.){3}\d{1,3}:\d{1,5}$/;
-        if (name !== true && ipRegex.test(name)) {
+        if (ipRegex.test(name)) {
             // if ip is chosen, real device boot should start
             logInfo('Connecting to device');
             c.runtime.target = name.split(':')[0];
             await runTizenSimOrDevice();
-            return true;
+            return new Promise(() => logInfo('Device is launched.'));
         }
         try {
             await executeAsync(
@@ -119,12 +119,15 @@ export const launchTizenEmulator = async (name: string | true): Promise<boolean>
         } catch (e) {
             if (typeof e === 'string') {
                 if (e.includes(ERROR_MSG.UNKNOWN_VM)) {
-                    logError(`The VM "${name}" does not exist.`);
-                    return launchTizenEmulator(true);
+                    logError(`The VM/device "${name}" does not exist.`);
+                    return launchTizenTarget(true, hideDevices);
                 }
-
                 if (e.includes(ERROR_MSG.ALREADY_RUNNING)) {
-                    logError(`The VM "${name}" is already running.`);
+                    logError(`The VM/device "${name}" is already running.`);
+                    return true;
+                }
+                if (e.includes(ERROR_MSG.NO_SUPPORT)) {
+                    logError(`Your system cannot support HW virtualization.`);
                     return true;
                 }
             }
@@ -384,8 +387,11 @@ export const runTizenSimOrDevice = async () => {
     let deviceID: string;
 
     if (!tId) return Promise.reject(`Tizen platform requires "id" filed in platforms.tizen`);
-
     const askForEmulator = async () => {
+        if (!target) {
+            launchTizenTarget(true);
+            return;
+        }
         const { startEmulator } = await inquirerPrompt({
             name: 'startEmulator',
             type: 'confirm',
@@ -400,7 +406,7 @@ export const runTizenSimOrDevice = async () => {
                 return;
             }
             try {
-                await launchTizenEmulator(defaultTarget);
+                await launchTizenTarget(defaultTarget);
                 deviceID = defaultTarget;
                 await _waitForEmulatorToBeReady(defaultTarget);
                 return continueLaunching();
@@ -408,7 +414,7 @@ export const runTizenSimOrDevice = async () => {
                 logDebug(`askForEmulator:ERRROR: ${e}`);
                 try {
                     await execCLI(CLI_TIZEN_EMULATOR, `create -n ${defaultTarget} -p tv-samsung-5.0-x86`);
-                    await launchTizenEmulator(defaultTarget);
+                    await launchTizenTarget(defaultTarget);
                     deviceID = defaultTarget;
                     await _waitForEmulatorToBeReady(defaultTarget);
                     return continueLaunching();
@@ -439,7 +445,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
             if (typeof e === 'string' && e.includes('No device matching')) {
                 if (target) {
                     isRunningEmulator = true;
-                    await launchTizenEmulator(target);
+                    await launchTizenTarget(target);
                     hasDevice = await _waitForEmulatorToBeReady(target);
                 } else {
                     return Promise.reject('Not target specified. (-t)');
@@ -469,7 +475,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
 
             if (target) {
                 isRunningEmulator = true;
-                await launchTizenEmulator(target);
+                await launchTizenTarget(target);
                 hasDevice = await _waitForEmulatorToBeReady(target);
             } else {
                 return Promise.reject('Not target specified. (-t)');
@@ -516,7 +522,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
         try {
             // try to launch it, see if it's a emulator that's not started yet
             isRunningEmulator = true;
-            await launchTizenEmulator(target);
+            await launchTizenTarget(target);
             await _waitForEmulatorToBeReady(target);
             deviceID = target;
             return continueLaunching();
