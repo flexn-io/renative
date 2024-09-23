@@ -100,7 +100,9 @@ export const launchTizenEmulator = async (name: string | true, hideDevices?: boo
         const { chosenEmulator } = await inquirerPrompt({
             name: 'chosenEmulator',
             type: 'list',
-            message: 'which emulator or device would you like to launch?',
+            message: hideDevices
+                ? 'which emulator would you like to launch?'
+                : 'which emulator or device would you like to launch?',
             choices,
         });
 
@@ -213,7 +215,7 @@ export const listTizenTargets = async (platform: string) => {
         .slice(1)
         .map((line: string) => line.split(' ')[0]);
     // turns devices string: '  List of devices attached \n192.168.0.105:26101     device          UE43NU7192' to only the '192.168.0.105:26101'
-    console.log('platform:', platform);
+
     const allDownloadedEmulators = emulatorsString.split('\n'); // all tizen, tizenwatch and tizenmobile emulators
     const specificEmulators = await getEmulatorType(allDownloadedEmulators, platform); // tizen, tizenwatch, tizenmobile - only 1 of them
     const specificDevices = await getDeviceType(devicesArr, platform); // tv, wearable, mobile
