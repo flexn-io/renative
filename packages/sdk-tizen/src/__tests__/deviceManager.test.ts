@@ -142,7 +142,7 @@ describe('launchTizenTarget', () => {
         );
         expect(result).toBe(true);
     });
-    it('should hide real devices from prompt, if the second paramater of launchTizenEmulator() is true', async () => {
+    it('should hide real devices from prompt, if the second paramater of launchTizenTarget() is true', async () => {
         const mockContext = { cli: { [CLI_TIZEN_EMULATOR]: 'tizen-emulator' }, platform: 'tizen' };
         const ctx = { ...getContext(), ...mockContext };
         createRnvContext(ctx);
@@ -173,7 +173,7 @@ describe('launchTizenTarget', () => {
         });
         expect(result).toBe(true);
     });
-    it('should show real devices(same conditions as test above, just not passing 2nd param true to launchTizenEmulator) ', async () => {
+    it('should show real devices(same conditions as test above, just not passing 2nd param true to launchTizenTarget) ', async () => {
         //GIVEN
         const mockContext = { cli: { [CLI_TIZEN_EMULATOR]: 'tizen-emulator' }, platform: 'tizen' };
         const ctx = { ...getContext(), ...mockContext };
