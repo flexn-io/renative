@@ -148,6 +148,19 @@ export const getAndroidDeviceToRunOn = async () => {
         }
         logDebug('Target not found, asking where to run');
         return askWhereToRun();
+    } else if (activeDevices.length === 1 && device) {
+        logDebug('Device provided', device);
+        if (_isString(device)) {
+            if (foundDevice) {
+                if (foundDevice.isActive) {
+                    return foundDevice;
+                }
+            }
+            return askWhereToRun();
+        }
+        const availableDevice = activeDevices[0];
+        logInfo(`Found device ${availableDevice.name}:${availableDevice.udid}`);
+        return availableDevice;
     } else if (defaultTarget) {
         // neither a target nor an active device is found, revert to default target if available
         logDebug('Default target used', defaultTarget);

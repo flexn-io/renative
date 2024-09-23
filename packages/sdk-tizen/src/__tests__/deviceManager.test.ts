@@ -10,7 +10,7 @@ import {
     inquirerPrompt,
     ExecOptionsPresets,
 } from '@rnv/core';
-import { listTizenTargets, launchTizenEmulator } from '../deviceManager';
+import { listTizenTargets, launchTizenTarget } from '../deviceManager';
 import { CLI_TIZEN_EMULATOR, CLI_SDB_TIZEN } from '../constants';
 
 const ERROR_MSG = {
@@ -81,7 +81,7 @@ describe('listTizenTargets', () => {
     });
 });
 
-describe('launchTizenEmulator', () => {
+describe('launchTizenTarget', () => {
     it('should launch the specified emulator by name', async () => {
         const mockContext = { cli: { [CLI_TIZEN_EMULATOR]: 'tizen-emulator' }, platform: 'tizen' };
         const ctx = { ...getContext(), ...mockContext };
@@ -89,9 +89,9 @@ describe('launchTizenEmulator', () => {
 
         (executeAsync as jest.Mock).mockResolvedValue(true);
 
-        const result = await launchTizenEmulator('emulatorName');
+        const result = await launchTizenTarget('emulatorName');
 
-        expect(logDefault).toHaveBeenCalledWith('launchTizenEmulator:emulatorName');
+        expect(logDefault).toHaveBeenCalledWith('launchTizenTarget:emulatorName');
         expect(executeAsync).toHaveBeenCalledWith(
             'tizen-emulator launch --name emulatorName',
             ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY
@@ -116,11 +116,7 @@ describe('launchTizenEmulator', () => {
 
         (inquirerPrompt as jest.Mock).mockResolvedValue({ chosenEmulator: 'emulatorTizen' });
         (executeAsync as jest.Mock).mockResolvedValue(true);
-
-        //WHEN
-        const result = await launchTizenEmulator(true);
-
-        //THEN
+        const result = await launchTizenTarget(true);
         expect(execCLI).toHaveBeenCalledWith(CLI_TIZEN_EMULATOR, 'list-vm');
         expect(execCLI).toHaveBeenCalledWith(CLI_SDB_TIZEN, 'devices');
         expect(inquirerPrompt).toHaveBeenCalledWith({
@@ -162,7 +158,7 @@ describe('launchTizenEmulator', () => {
 
         (inquirerPrompt as jest.Mock).mockResolvedValue({ chosenEmulator: 'emulatorTizen' });
         (executeAsync as jest.Mock).mockResolvedValue(true);
-        const result = await launchTizenEmulator(true, true);
+        const result = await launchTizenTarget(true, true);
         expect(inquirerPrompt).toHaveBeenCalledWith({
             name: 'chosenEmulator',
             type: 'list',
@@ -194,9 +190,8 @@ describe('launchTizenEmulator', () => {
 
         (inquirerPrompt as jest.Mock).mockResolvedValue({ chosenEmulator: 'emulator1' });
         (executeAsync as jest.Mock).mockResolvedValue(true);
-
         //WHEN
-        const result = await launchTizenEmulator(true);
+        const result = await launchTizenTarget(true);
 
         //THEN
         expect(inquirerPrompt).toHaveBeenCalledWith({
@@ -227,11 +222,7 @@ describe('launchTizenEmulator', () => {
             .mockResolvedValueOnce('profile_name:tv');
         (inquirerPrompt as jest.Mock).mockResolvedValue({ chosenEmulator: 'emulatorTizen' });
         (executeAsync as jest.Mock).mockResolvedValue(true);
-
-        //WHEN
-        const result = await launchTizenEmulator('unknownEmulator');
-
-        //THEN
+        const result = await launchTizenTarget('unknownEmulator');
         expect(logError).toHaveBeenCalledWith('The VM/device "unknownEmulator" does not exist.');
         expect(execCLI).toHaveBeenCalledWith(CLI_TIZEN_EMULATOR, 'list-vm');
         expect(execCLI).toHaveBeenCalledWith(CLI_SDB_TIZEN, 'devices');
@@ -264,11 +255,11 @@ describe('launchTizenEmulator', () => {
         createRnvContext(ctx);
 
         (executeAsync as jest.Mock).mockRejectedValueOnce(ERROR_MSG.ALREADY_RUNNING);
-        const result = await launchTizenEmulator('runningEmulator');
+        const result = await launchTizenTarget('runningEmulator');
         expect(logError).toHaveBeenCalledWith('The VM/device "runningEmulator" is already running.');
         expect(result).toBe(true);
     });
     it('should reject if no name is specified', async () => {
-        await expect(launchTizenEmulator('')).rejects.toEqual('No emulator -t target name specified!');
+        await expect(launchTizenTarget('')).rejects.toEqual('No emulator -t target name specified!');
     });
 });

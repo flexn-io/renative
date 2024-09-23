@@ -72,9 +72,9 @@ const formatXMLObject = (
     return {};
 };
 
-export const launchTizenEmulator = async (name: string | true, hideDevices?: boolean): Promise<boolean> => {
+export const launchTizenTarget = async (name: string | true, hideDevices?: boolean): Promise<boolean> => {
     const c = getContext();
-    logDefault(`launchTizenEmulator:${name}`);
+    logDefault(`launchTizenTarget:${name}`);
     if (name === true) {
         const emulators = await execCLI(CLI_TIZEN_EMULATOR, 'list-vm');
         const devices = await execCLI(CLI_SDB_TIZEN, 'devices');
@@ -127,7 +127,7 @@ export const launchTizenEmulator = async (name: string | true, hideDevices?: boo
             if (typeof e === 'string') {
                 if (e.includes(ERROR_MSG.UNKNOWN_VM)) {
                     logError(`The VM/device "${name}" does not exist.`);
-                    return launchTizenEmulator(true, hideDevices);
+                    return launchTizenTarget(true, hideDevices);
                 }
                 if (e.includes(ERROR_MSG.ALREADY_RUNNING)) {
                     logError(`The VM/device "${name}" is already running.`);
@@ -428,7 +428,7 @@ export const runTizenSimOrDevice = async () => {
     if (!tId) return Promise.reject(`Tizen platform requires "id" filed in platforms.tizen`);
     const askForEmulator = async () => {
         if (!target) {
-            launchTizenEmulator(true);
+            launchTizenTarget(true);
             return;
         }
         const { startEmulator } = await inquirerPrompt({
@@ -445,7 +445,7 @@ export const runTizenSimOrDevice = async () => {
                 return;
             }
             try {
-                await launchTizenEmulator(defaultTarget);
+                await launchTizenTarget(defaultTarget);
                 deviceID = defaultTarget;
                 await _waitForEmulatorToBeReady(defaultTarget);
                 return continueLaunching();
@@ -453,7 +453,7 @@ export const runTizenSimOrDevice = async () => {
                 logDebug(`askForEmulator:ERRROR: ${e}`);
                 try {
                     await execCLI(CLI_TIZEN_EMULATOR, `create -n ${defaultTarget} -p tv-samsung-5.0-x86`);
-                    await launchTizenEmulator(defaultTarget);
+                    await launchTizenTarget(defaultTarget);
                     deviceID = defaultTarget;
                     await _waitForEmulatorToBeReady(defaultTarget);
                     return continueLaunching();
@@ -484,7 +484,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
             if (typeof e === 'string' && e.includes('No device matching')) {
                 if (target) {
                     isRunningEmulator = true;
-                    await launchTizenEmulator(target);
+                    await launchTizenTarget(target);
                     hasDevice = await _waitForEmulatorToBeReady(target);
                 } else {
                     return Promise.reject('Not target specified. (-t)');
@@ -514,7 +514,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
 
             if (target) {
                 isRunningEmulator = true;
-                await launchTizenEmulator(target);
+                await launchTizenTarget(target);
                 hasDevice = await _waitForEmulatorToBeReady(target);
             } else {
                 return Promise.reject('Not target specified. (-t)');
@@ -561,7 +561,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
         try {
             // try to launch it, see if it's a emulator that's not started yet
             isRunningEmulator = true;
-            await launchTizenEmulator(target);
+            await launchTizenTarget(target);
             await _waitForEmulatorToBeReady(target);
             deviceID = target;
             return continueLaunching();
