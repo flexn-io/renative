@@ -65,7 +65,7 @@
         "tsconfig.json",
         "typings",
         "webpack.config.js",
-        "scripts/postinstall.js"
+        "scripts"
     ],
     "repository": {
         "type": "git",
