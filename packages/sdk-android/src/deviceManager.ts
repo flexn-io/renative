@@ -457,7 +457,7 @@ export const connectToWifiDevice = async (target: string) => {
 
     if (deviceResponse.includes('connected')) return true;
 
-    if (deviceResponse.includes('Connection refused')) {
+    if (deviceResponse.includes('Connection refused') || deviceResponse.includes('timed out')) {
         logError(`Failed to ${connect_str}. Connection refused. Make sure to that ip and port are correct.`, {
             skipAnalytics: true,
         });
