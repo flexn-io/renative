@@ -64,7 +64,8 @@
         "templateOverrides",
         "tsconfig.json",
         "typings",
-        "webpack.config.js"
+        "webpack.config.js",
+        "scripts/postinstall.js"
     ],
     "repository": {
         "type": "git",

@@ -463,15 +463,23 @@ export const parsePlugins = (
     const c = getContext();
     const { platform } = c;
     logDefault('parsePlugins');
-    if (c.buildConfig && platform) {
+    if (c.buildConfig) {
         const includedPluginsConfig = getConfigProp('includedPlugins');
         // default to all plugins if it's not defined (null allowed for overrides)
         const includedPlugins = includedPluginsConfig === undefined ? ['*'] : includedPluginsConfig;
 
         const excludedPlugins = getConfigProp('excludedPlugins') || [];
+        const supportedPlatforms = c.files.project.config?.defaults?.supportedPlatforms || [];
+        const platformsToCheck = platform ? [platform] : supportedPlatforms;
+        const parsedPlugins: string[] = [];
 
         const handleActivePlugin = (plugin: RnvPlugin, pluginPlat: ConfigPluginPlatformSchema, key: string) => {
             // log deprecated if present
+            if (plugin._id) {
+                if (!parsedPlugins.includes(plugin._id)) {
+                    parsedPlugins.push(plugin._id);
+                } else return;
+            }
             if (plugin.deprecated) {
                 logWarning(plugin.deprecated);
             }
@@ -491,45 +499,51 @@ export const parsePlugins = (
                 Object.keys(plugins).forEach((key) => {
                     const plugin = getMergedPlugin(c, key);
                     if (!plugin) return;
-
                     if (
                         (includedPlugins.includes('*') || includedPlugins.includes(key)) &&
                         !excludedPlugins.includes(key)
                     ) {
-                        const pluginPlat: ConfigPluginPlatformSchema = plugin[platform] || {};
+                        platformsToCheck.forEach((platformToCheck) => {
+                            const pluginPlat: ConfigPluginPlatformSchema = plugin[platformToCheck] || {};
 
-                        // NOTE: we do not want to disable plugin just because object is missing. instead we will let people to do it explicitly
-                        // {
-                        //     skipLinking: true,
-                        //     disabled: true,
-                        // };
-                        //TODO: consider supportedPlatforms for plugins
-                        const isPluginPlatDisabled = pluginPlat.disabled === true;
-                        const isPluginDisabled = plugin.disabled === true;
-                        const isPluginPlatSupported = plugin.supportedPlatforms
-                            ? plugin.supportedPlatforms.includes(platform)
-                            : true;
+                            // NOTE: we do not want to disable plugin just because object is missing. instead we will let people to do it explicitly
+                            // {
+                            //     skipLinking: true,
+                            //     disabled: true,
+                            // };
+                            //TODO: consider supportedPlatforms for plugins
+                            const isPluginPlatDisabled = pluginPlat.disabled === true;
+                            const isPluginDisabled = plugin.disabled === true;
+                            const isPluginPlatSupported = plugin.supportedPlatforms
+                                ? plugin.supportedPlatforms.includes(platformToCheck)
+                                : true;
 
-                        if (ignorePlatformObjectCheck || includeDisabledOrExcludedPlugins) {
-                            if (isPluginDisabled) {
-                                logDefault(`Plugin ${key} is marked disabled. skipping.`);
-                            } else if (isPluginPlatDisabled) {
-                                logDefault(`Plugin ${key} is marked disabled for platform ${platform}. skipping.`);
-                            } else if (!isPluginPlatSupported) {
-                                logDefault(
-                                    `Plugin ${key}'s supportedPlatforms does not include ${platform}. skipping.`
-                                );
+                            if (ignorePlatformObjectCheck || includeDisabledOrExcludedPlugins) {
+                                if (isPluginDisabled) {
+                                    logDefault(`Plugin ${key} is marked disabled. skipping.`);
+                                } else if (isPluginPlatDisabled) {
+                                    logDefault(
+                                        `Plugin ${key} is marked disabled for platform ${platformToCheck}. skipping.`
+                                    );
+                                } else if (!isPluginPlatSupported) {
+                                    logDefault(
+                                        `Plugin ${key}'s supportedPlatforms does not include ${platformToCheck}. skipping.`
+                                    );
+                                }
+
+                                handleActivePlugin(plugin, pluginPlat, key);
+                            } else if (!isPluginPlatDisabled && !isPluginDisabled && isPluginPlatSupported) {
+                                handleActivePlugin(plugin, pluginPlat, key);
                             }
-                            handleActivePlugin(plugin, pluginPlat, key);
-                        } else if (!isPluginPlatDisabled && !isPluginDisabled && isPluginPlatSupported) {
-                            handleActivePlugin(plugin, pluginPlat, key);
-                        }
+                        });
                     } else if (includeDisabledOrExcludedPlugins) {
-                        const pluginPlat = plugin[platform] || {};
-                        if (excludedPlugins.includes(key)) {
-                            plugin.disabled = true;
-                            handleActivePlugin(plugin, pluginPlat, key);
-                        }
+                        platformsToCheck.forEach((platformToCheck) => {
+                            const pluginPlat = plugin[platformToCheck] || {};
+                            if (excludedPlugins.includes(key)) {
+                                plugin.disabled = true;
+                                handleActivePlugin(plugin, pluginPlat, key);
+                            }
+                        });
                     }
                 });
                 // Not valid warning as web based plugins might not need web definition object to work

@@ -4407,7 +4407,14 @@
                 "version": {
                   "type": "string"
                 },
-                "browserslist": {}
+                "browserslist": {},
+                "scripts": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Defines scripts you want to include in template"
+                }
               },
               "additionalProperties": false
             }

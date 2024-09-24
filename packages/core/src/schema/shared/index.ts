@@ -72,6 +72,9 @@ export const zodTemplateConfigFragment = z
                     name: z.string(),
                     version: z.string(),
                     browserslist: z.any(),
+                    scripts: z
+                        .record(z.string(), z.string())
+                        .describe('Defines scripts you want to include in template'),
                 })
                 .partial()
         ),
