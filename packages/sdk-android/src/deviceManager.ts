@@ -477,21 +477,6 @@ export const connectToWifiDevice = async (target: string) => {
         });
         return false;
     }
-    // await new Promise(() => {
-    //     child_process.execFile('ping', ['-c', '5', target.split(':')[0]], async (error) => {
-    //         if (error) {
-    //             logError(`Failed to ${connect_str}. Connection refused. Make sure to that ip and port are correct.`, {
-    //                 skipAnalytics: true,
-    //             });
-    //             return false;
-    //         } else {
-    //             logWarning(
-    //                 `You'll need to pair your device before installing app. \nFor more information: https://developer.android.com/studio/run/device`
-    //             );
-    //             return await _pairDevices(target);
-    //         }
-    //     });
-    // });
 };
 
 const _pairDevices = async (target: string) => {

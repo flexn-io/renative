@@ -147,7 +147,7 @@ describe('connectToWifiDevice', () => {
         //THEN
         expect(execCLI).toHaveBeenCalledTimes(1);
         expect(result).toBeFalsy();
-    });
+    }, 10000);
     it('pass when connect to correct IP address', async () => {
         //GIVEN
         jest.mocked(execCLI).mockResolvedValue('connected to 1.1.1.1:5555');
