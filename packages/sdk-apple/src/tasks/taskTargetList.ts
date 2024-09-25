@@ -4,7 +4,7 @@ import { SdkPlatforms } from '../common';
 
 export default createTask({
     description: 'List all available targets for specific platform',
-    dependsOn: [RnvTaskName.workspaceConfigure],
+    dependsOn: [RnvTaskName.projectConfigure],
     fn: async () => {
         return listAppleDevices();
     },
