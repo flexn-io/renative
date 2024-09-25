@@ -5,7 +5,7 @@ import { SdkPlatforms } from '../common';
 
 export default createTask({
     description: 'Launch specific ios target',
-    dependsOn: [RnvTaskName.workspaceConfigure],
+    dependsOn: [RnvTaskName.projectConfigure],
     fn: async () => {
         const target = await getTargetWithOptionalPrompt();
         return launchAppleSimulator(target);
