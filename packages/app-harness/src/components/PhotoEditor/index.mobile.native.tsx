@@ -4,7 +4,7 @@ import { RNPhotoEditor } from 'react-native-photo-editor';
 import RNFS from 'react-native-fs';
 import RNFetchBlob from 'rn-fetch-blob';
 import { useLoggerContext } from '../../context';
-import { ICON_LOGO, testProps } from '../../config';
+import { ICON_LOGO } from '../../config';
 import styles from '../../styles';
 
 type ButtonProps = TouchableOpacityProps;
@@ -40,9 +40,7 @@ export const PhotoEditorButton = forwardRef<TouchableOpacity, ButtonProps>(({ on
     };
     return (
         <TouchableOpacity ref={ref} onPress={handlePhotoEditor} onFocus={onFocus} onBlur={onBlur} style={style}>
-            <Text style={styles.buttonTitle} {...testProps('app-harness-home-photo-editor-button')}>
-                Show PhotoEditor
-            </Text>
+            <Text style={styles.buttonTitle}>Show PhotoEditor</Text>
         </TouchableOpacity>
     );
 });

@@ -34,22 +34,21 @@ describe('Test App Harness', () => {
         }
     });
 
-    // TODO
-    // it('--> Request permissions', async () => {
-    //     await FlexnRunner.clickById('app-harness-home-request-permissions-button');
-    //     if (process.env.PLATFORM === 'web') {
-    //         await FlexnRunner.expectToHaveTextById(
-    //             'app-harness-home-logs-text-3',
-    //             'Permissions: requestPermissions not supported on this platform'
-    //         );
-    //     } else if (process.env.PLATFORM === 'ios') {
-    //         await FlexnRunner.clickByText('Allow');
-    //         await FlexnRunner.expectToHaveTextById('app-harness-home-logs-text-4', 'Permissions: granted');
-    //     } else if (process.env.PLATFORM === 'android') {
-    //         await FlexnRunner.clickByText('Allow');
-    //         await FlexnRunner.expectToHaveTextById('app-harness-home-logs-text-4', 'Permissions: granted');
-    //     }
-    // });
+    it('--> Request permissions', async () => {
+        await FlexnRunner.clickById('app-harness-home-request-permissions-button');
+        if (process.env.PLATFORM === 'web') {
+            await FlexnRunner.expectToHaveTextById(
+                'app-harness-home-logs-text-3',
+                'Permissions: requestPermissions not supported on this platform'
+            );
+        } else if (process.env.PLATFORM === 'ios') {
+            await FlexnRunner.clickByText('Allow');
+            await FlexnRunner.expectToHaveTextById('app-harness-home-logs-text-4', 'Permissions: granted');
+        } else if (process.env.PLATFORM === 'android') {
+            await FlexnRunner.clickByText('Allow');
+            await FlexnRunner.expectToHaveTextById('app-harness-home-logs-text-4', 'Permissions: granted');
+        }
+    });
 
     it('--> Orientation support ', async () => {
         await FlexnRunner.clickById('app-harness-home-toggle-video-button');
@@ -80,26 +79,15 @@ describe('Test App Harness', () => {
     });
 
     // IN PROGRESS
-    it('--> Splash Screen', async () => {
-        await FlexnRunner.clickById('app-harness-home-splash-screen-button');
-        if (process.env.PLATFORM === 'web') {
-            await FlexnRunner.expectToHaveTextById(
-                'app-harness-home-logs-text-3',
-                'SplashScreen.show not supported on this platform'
-            );
-        } else {
-            await FlexnRunner.expectToBeDisplayedById('');
-        }
-    });
-
-    // TODO
-    // if (process.env.PLATFORM === 'web') {
-    //     it('--> PhotoEditor', async () => {
-    //         await FlexnRunner.clickById('app-harness-home-photo-editor-button');
+    // it('--> Splash Screen', async () => {
+    //     await FlexnRunner.clickById('app-harness-home-splash-screen-button');
+    //     if (process.env.PLATFORM === 'web') {
     //         await FlexnRunner.expectToHaveTextById(
-    //             'app-harness-home-logs-text-5',
-    //             'PhotoEditor not supported on this platform'
+    //             'app-harness-home-logs-text-3',
+    //             'SplashScreen.show not supported on this platform'
     //         );
-    //     });
-    // }
+    //     } else {
+    //         await FlexnRunner.expectToBeDisplayedById('');
+    //     }
+    // });
 });

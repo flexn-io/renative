@@ -2,7 +2,6 @@ import React, { forwardRef } from 'react';
 import { useLoggerContext } from '../../context';
 import { Text, TouchableOpacity, TouchableOpacityProps } from 'react-native';
 import styles from '../../styles';
-import { testProps } from '../../config';
 
 type ButtonProps = TouchableOpacityProps;
 export const PhotoEditorButton = forwardRef<TouchableOpacity, ButtonProps>(({ onBlur, onFocus, style }, ref) => {
@@ -13,9 +12,7 @@ export const PhotoEditorButton = forwardRef<TouchableOpacity, ButtonProps>(({ on
 
     return (
         <TouchableOpacity ref={ref} onPress={handlePhotoEditor} onFocus={onFocus} onBlur={onBlur} style={style}>
-            <Text style={styles.buttonTitle} {...testProps('app-harness-home-photo-editor-button')}>
-                Show PhotoEditor
-            </Text>
+            <Text style={styles.buttonTitle}>Show PhotoEditor</Text>
         </TouchableOpacity>
     );
 });
