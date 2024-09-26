@@ -60,4 +60,5 @@ export const RnvTaskName = {
     telemetryEnable: 'telemetry enable',
     telemetryStatus: 'telemetry status',
     config: 'config',
+    patchReset: 'patch reset',
 } as const;
