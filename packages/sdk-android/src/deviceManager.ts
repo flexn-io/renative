@@ -459,7 +459,7 @@ export const connectToWifiDevice = async (target: string) => {
 
     try {
         await new Promise((resolve, reject) => {
-            child_process.execFile('ping', ['-c', '5', target.split(':')[0]], (error, stdout) => {
+            child_process.execFile('ping', ['-c', '1', target.split(':')[0]], (error, stdout) => {
                 if (error) {
                     reject(error);
                 } else {
