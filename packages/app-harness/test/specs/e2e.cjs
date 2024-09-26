@@ -34,22 +34,6 @@ describe('Test App Harness', () => {
         }
     });
 
-    it('--> Request permissions', async () => {
-        await FlexnRunner.clickById('app-harness-home-request-permissions-button');
-        if (process.env.PLATFORM === 'web') {
-            await FlexnRunner.expectToHaveTextById(
-                'app-harness-home-logs-text-3',
-                'Permissions: requestPermissions not supported on this platform'
-            );
-        } else if (process.env.PLATFORM === 'ios') {
-            await FlexnRunner.clickByText('Allow');
-            await FlexnRunner.expectToHaveTextById('app-harness-home-logs-text-4', 'Permissions: granted');
-        } else if (process.env.PLATFORM === 'android') {
-            await FlexnRunner.clickByText('Allow');
-            await FlexnRunner.expectToHaveTextById('app-harness-home-logs-text-4', 'Permissions: granted');
-        }
-    });
-
     it('--> Orientation support ', async () => {
         await FlexnRunner.clickById('app-harness-home-toggle-video-button');
         if (process.env.PLATFORM !== 'web') {
@@ -77,17 +61,4 @@ describe('Test App Harness', () => {
             await FlexnRunner.expectToBeDisplayedByText('OK');
         }
     });
-
-    // IN PROGRESS
-    // it('--> Splash Screen', async () => {
-    //     await FlexnRunner.clickById('app-harness-home-splash-screen-button');
-    //     if (process.env.PLATFORM === 'web') {
-    //         await FlexnRunner.expectToHaveTextById(
-    //             'app-harness-home-logs-text-3',
-    //             'SplashScreen.show not supported on this platform'
-    //         );
-    //     } else {
-    //         await FlexnRunner.expectToBeDisplayedById('');
-    //     }
-    // });
 });

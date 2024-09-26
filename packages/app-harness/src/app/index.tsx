@@ -206,12 +206,7 @@ const AppContent = () => {
                             onFocus={() => setFocusedIndex(2)}
                             onBlur={() => setFocusedIndex((prev) => (prev === 2 ? null : prev))}
                         >
-                            <Text
-                                style={styles.buttonTitle}
-                                {...testProps('app-harness-home-request-permissions-button')}
-                            >
-                                Request permissions
-                            </Text>
+                            <Text style={styles.buttonTitle}>Request permissions</Text>
                         </TouchableOpacity>
                     </TestCase>
                     <TestCase id={5} title="Image Support">
@@ -238,7 +233,7 @@ const AppContent = () => {
                             ref={splashBtnRef}
                             onPress={() => {
                                 SplashScreen.show();
-                                setTimeout(() => SplashScreen.hide(), 60000);
+                                setTimeout(() => SplashScreen.hide(), 3000);
                             }}
                             style={[
                                 styles.button,
@@ -248,9 +243,7 @@ const AppContent = () => {
                             onFocus={() => setFocusedIndex(3)}
                             onBlur={() => setFocusedIndex((prev) => (prev === 3 ? null : prev))}
                         >
-                            <Text style={styles.buttonTitle} {...testProps('app-harness-home-splash-screen-button')}>
-                                Show SplashScreen
-                            </Text>
+                            <Text style={styles.buttonTitle}>Show SplashScreen</Text>
                         </TouchableOpacity>
                     </TestCase>
                     <TestCase id={8} title="PhotoEditor">
