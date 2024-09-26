@@ -16,6 +16,11 @@ describe('Test App Harness', () => {
 
     it('--> Native Call', async () => {
         await FlexnRunner.clickById('app-harness-home-native-call-button');
+        // https://github.com/flexn-io/renative/issues/1733
+        if (process.env.PLATFORM === 'androidtv') {
+            await FlexnRunner.pressButtonDown(2);
+        }
+        await FlexnRunner.pressButtonSelect(1);
         if (process.env.PLATFORM === 'web') {
             await FlexnRunner.expectToHaveTextById(
                 'app-harness-home-logs-text-2',
@@ -31,12 +36,24 @@ describe('Test App Harness', () => {
                 'app-harness-home-logs-text-3',
                 'NativeModules not supported for this platform'
             );
+        } else if (process.env.PLATFORM === 'androidtv') {
+            await FlexnRunner.expectToHaveTextById(
+                'app-harness-home-logs-text-1',
+                'NativeModules not supported for this platform'
+            );
+        } else if (process.env.PLATFORM === 'tvos') {
+            await FlexnRunner.expectToHaveTextById(
+                'app-harness-home-logs-text-2',
+                'NativeModules not supported for this platform'
+            );
         }
     });
 
     it('--> Orientation support ', async () => {
         await FlexnRunner.clickById('app-harness-home-toggle-video-button');
-        if (process.env.PLATFORM !== 'web') {
+        await FlexnRunner.pressButtonDown(1);
+        await FlexnRunner.pressButtonSelect(1);
+        if (process.env.PLATFORM === 'ios' || process.env.PLATFORM === 'android') {
             await FlexnRunner.scrollById(
                 'app-harness-home-landscape-video-text',
                 'down',
@@ -45,20 +62,22 @@ describe('Test App Harness', () => {
         }
         await FlexnRunner.expectToBeDisplayedById('app-harness-home-landscape-video-text');
         await FlexnRunner.clickById('app-harness-home-toggle-video-button');
+        await FlexnRunner.pressButtonSelect(1);
     });
 
     it('--> Image Support ', async () => {
+        await FlexnRunner.pressButtonDown(2);
         await FlexnRunner.expectToBeDisplayedById('app-harness-home-image-support-image');
     });
 
     it('--> Cast Support ', async () => {
-        if (process.env.PLATFORM === 'web' || process.env.PLATFORM === 'ios') {
-            await FlexnRunner.expectToHaveTextById('app-harness-home-cast-support-text', 'Not supported');
-        } else if (process.env.PLATFORM === 'android') {
+        if (process.env.PLATFORM === 'android') {
             await FlexnRunner.clickById('app-harness-home-cast-support-button');
             await FlexnRunner.expectToBeDisplayedByText('Cast to');
             await FlexnRunner.waitForDisplayedByText('OK');
             await FlexnRunner.expectToBeDisplayedByText('OK');
+        } else {
+            await FlexnRunner.expectToHaveTextById('app-harness-home-cast-support-text', 'Not supported');
         }
     });
 });
