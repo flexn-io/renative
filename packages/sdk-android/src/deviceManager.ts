@@ -459,13 +459,17 @@ export const connectToWifiDevice = async (target: string) => {
 
     try {
         await new Promise((resolve, reject) => {
-            child_process.execFile('ping', ['-c', '1', target.split(':')[0]], (error, stdout) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve(stdout);
+            child_process.execFile(
+                'ping',
+                isSystemWin ? [target.split(':')[0]] : ['-c', '1', target.split(':')[0]],
+                (error, stdout) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(stdout);
+                    }
                 }
-            });
+            );
         });
         logWarning(
             `You'll need to pair your device before installing app. \nFor more information: https://developer.android.com/studio/run/device`
