@@ -18,7 +18,7 @@ export function CastComponent() {
 
     return (
         <CastButton
-            {...testProps('app-harness-home-cast-button')}
+            {...testProps('app-harness-home-cast-support-button')}
             style={{ width: 24, height: 24, tintColor: 'black' }}
         />
     );

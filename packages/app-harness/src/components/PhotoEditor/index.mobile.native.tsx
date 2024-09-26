@@ -40,7 +40,7 @@ export const PhotoEditorButton = forwardRef<TouchableOpacity, ButtonProps>(({ on
     };
     return (
         <TouchableOpacity ref={ref} onPress={handlePhotoEditor} onFocus={onFocus} onBlur={onBlur} style={style}>
-            <Text style={styles.buttonTitle} {...testProps('app-harness-home-request-photo-editor-button')}>
+            <Text style={styles.buttonTitle} {...testProps('app-harness-home-photo-editor-button')}>
                 Show PhotoEditor
             </Text>
         </TouchableOpacity>

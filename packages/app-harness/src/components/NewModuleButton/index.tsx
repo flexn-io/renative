@@ -12,7 +12,7 @@ export const NewModuleButton = forwardRef<TouchableOpacity, ButtonProps>(({ onBl
     };
     return (
         <TouchableOpacity ref={ref} onPress={onPress} onFocus={onFocus} onBlur={onBlur} style={style}>
-            <Text style={styles.buttonTitle} {...testProps('app-harness-home-screen-native-call-button')}>
+            <Text style={styles.buttonTitle} {...testProps('app-harness-home-native-call-button')}>
                 Click to invoke native module!
             </Text>
         </TouchableOpacity>

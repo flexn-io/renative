@@ -122,11 +122,7 @@ const AppContent = () => {
     return (
         <View style={styles.wrapper}>
             <View style={styles.header}>
-                <Image
-                    style={styles.logo}
-                    source={ICON_LOGO}
-                    {...testProps('app-harness-home-screen-renative-image')}
-                />
+                <Image style={styles.logo} source={ICON_LOGO} {...testProps('app-harness-home-renative-image')} />
                 <Text style={styles.introText}>ReNative Harness</Text>
                 <View style={{ flex: 1, alignItems: 'flex-end' }}>
                     <Text style={styles.dynamicText}>
@@ -147,7 +143,7 @@ const AppContent = () => {
                     }}
                 >
                     <TestCase id={1} title="Hermes support ">
-                        <Text style={styles.text} {...testProps('app-harness-home-screen-harmes-text')}>{`hermes: ${
+                        <Text style={styles.text} {...testProps('app-harness-home-hermes-support-text')}>{`hermes: ${
                             typeof HermesInternal === 'object' && HermesInternal !== null ? 'yes' : 'no'
                         }`}</Text>
                     </TestCase>
@@ -191,7 +187,7 @@ const AppContent = () => {
                             <View>
                                 <OrientationLocker orientation={LANDSCAPE} />
                                 <View style={{ width: 320, height: 180, backgroundColor: '#ccc' }}>
-                                    <Text style={styles.text} {...testProps('app-harness-home-landscape-video')}>
+                                    <Text style={styles.text} {...testProps('app-harness-home-landscape-video-text')}>
                                         Landscape video goes here
                                     </Text>
                                 </View>
@@ -222,7 +218,7 @@ const AppContent = () => {
                         <Image
                             source={ICON_LOGO}
                             style={{ width: 100, height: 100 }}
-                            {...testProps('app-harness-home-image-support')}
+                            {...testProps('app-harness-home-image-support-image')}
                         />
                     </TestCase>
                     <TestCase id={6} title="Cast Support">
@@ -242,7 +238,7 @@ const AppContent = () => {
                             ref={splashBtnRef}
                             onPress={() => {
                                 SplashScreen.show();
-                                setTimeout(() => SplashScreen.hide(), 3000);
+                                setTimeout(() => SplashScreen.hide(), 60000);
                             }}
                             style={[
                                 styles.button,
@@ -300,7 +296,7 @@ const AppContent = () => {
                                   { paddingHorizontal: 25 },
                                   idx === logs.length - 1 && { paddingBottom: 80 },
                               ]}
-                              {...testProps(`app-harness-home-screen-logs-text-${idx}`)}
+                              {...testProps(`app-harness-home-logs-text-${idx}`)}
                           >
                               {it}
                           </Text>
