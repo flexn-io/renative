@@ -47,7 +47,7 @@ export const checkTizenStudioCert = async (): Promise<boolean> => {
         await execCLI(
             CLI_TIZEN,
             `security-profiles list -n ${getConfigProp('certificateProfile') || DEFAULTS.certificateProfile}`
-        ); // default should be gotten from renative.json
+        );
         return true;
     } catch (e) {
         return false;
@@ -77,7 +77,7 @@ export const configureTizenGlobal = () =>
                         const certPassword = '1234';
 
                         addDevelopTizenCertificate(c, {
-                            profileName: getConfigProp('certificateProfile') || DEFAULTS.certificateProfile, // default should be gotten from renative.json
+                            profileName: getConfigProp('certificateProfile') || DEFAULTS.certificateProfile,
                             certPath: path.join(certDirPath, `${certFilename}.p12`),
                             certPassword,
                         })
@@ -172,7 +172,7 @@ export const buildTizenProject = async () => {
 
     if (!platform) return;
 
-    const certProfile = getConfigProp('certificateProfile') || DEFAULTS.certificateProfile; // default should be gotten from renative.json
+    const certProfile = getConfigProp('certificateProfile') || DEFAULTS.certificateProfile;
     const tDir = getPlatformProjectDir()!;
 
     await buildCoreWebpackProject();

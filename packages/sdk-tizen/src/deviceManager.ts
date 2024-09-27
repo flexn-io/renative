@@ -417,9 +417,7 @@ export const runTizenSimOrDevice = async () => {
     const intermediate = path.join(tDir, 'intermediate');
     const tOut = path.join(tDir, 'output');
     const tId = getConfigProp('id');
-    console.log('certProfile here is:');
-    const certProfile = getConfigProp('certificateProfile') || DEFAULTS.certificateProfile; // default should be gotten from renative.json
-    console.log(certProfile);
+    const certProfile = getConfigProp('certificateProfile') || DEFAULTS.certificateProfile;
 
     const wgt = `${appName}.wgt`;
     // the tizen CLI cannot handle .wgt files with spaces correctly.

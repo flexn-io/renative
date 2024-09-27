@@ -209,7 +209,7 @@
         "tizen": {
             "appName": "RNVanillaTV",
             "entryFile": "index",
-            "certificateProfile": "newCert",
+            "certificateProfile": "RNVanillaCert",
             "package": "NkVRhWHJSX",
             "id": "NkVRhWHJSX.RNVanillaTV",
             "buildSchemes": {
@@ -225,7 +225,7 @@
         "tizenwatch": {
             "appName": "RNVanillaWatch",
             "entryFile": "index",
-            "certificateProfile": "newCert",
+            "certificateProfile": "RNVanillaCert",
             "package": "cHIP2fIRQZ",
             "id": "cHIP2fIRQZ.RNVanillaWatch",
             "buildSchemes": {
@@ -241,7 +241,7 @@
         "tizenmobile": {
             "appName": "RNVanillaMobile",
             "entryFile": "index",
-            "certificateProfile": "newCert",
+            "certificateProfile": "RNVanillaCert",
             "package": "PauodvCU2r",
             "id": "PauodvCU2r.RNVanillaMobile",
             "buildSchemes": {
