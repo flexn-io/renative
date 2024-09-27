@@ -62,7 +62,6 @@ describe('getAppleDevices', () => {
         jest.mocked(listIOSDevices).mockResolvedValueOnce(devices);
         // WHEN
         const result = await getAppleDevices(true, false);
-        console.log(result);
         // THEN
         expect(result).toHaveLength(2);
         expect(result[0].name).toBe('iPhone 15 Pro');

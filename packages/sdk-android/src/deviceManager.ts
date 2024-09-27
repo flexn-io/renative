@@ -455,18 +455,32 @@ export const connectToWifiDevice = async (target: string) => {
 
     const deviceResponse = await execCLI(CLI_ANDROID_ADB, connect_str);
 
-    if (deviceResponse.includes('connected')) return true;
+    if (deviceResponse.includes('connected to')) return true;
 
-    if (deviceResponse.includes('Connection refused')) {
+    try {
+        await new Promise((resolve, reject) => {
+            child_process.execFile(
+                'ping',
+                isSystemWin ? [target.split(':')[0]] : ['-c', '1', target.split(':')[0]],
+                (error, stdout) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(stdout);
+                    }
+                }
+            );
+        });
+        logWarning(
+            `You'll need to pair your device before installing app. \nFor more information: https://developer.android.com/studio/run/device`
+        );
+        return await _pairDevices(target);
+    } catch (error) {
         logError(`Failed to ${connect_str}. Connection refused. Make sure to that ip and port are correct.`, {
             skipAnalytics: true,
         });
         return false;
     }
-    logWarning(
-        `You'll need to pair your device before installing app. \nFor more information: https://developer.android.com/studio/run/device`
-    );
-    return await _pairDevices(target);
 };
 
 const _pairDevices = async (target: string) => {
