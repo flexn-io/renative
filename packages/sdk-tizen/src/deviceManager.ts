@@ -247,7 +247,7 @@ export const createDevelopTizenCertificate = (c: RnvContext) =>
         )
             .then(() =>
                 addDevelopTizenCertificate(c, {
-                    profileName: DEFAULTS.certificateProfile,
+                    profileName: getConfigProp('certificateProfile') || DEFAULTS.certificateProfile,
                     certPath: path.join(certDirPath, `${certFilename}.p12`),
                     certPassword,
                 })
@@ -417,7 +417,9 @@ export const runTizenSimOrDevice = async () => {
     const intermediate = path.join(tDir, 'intermediate');
     const tOut = path.join(tDir, 'output');
     const tId = getConfigProp('id');
-    const certProfile = getConfigProp('certificateProfile') || DEFAULTS.certificateProfile;
+    console.log('certProfile here is:');
+    const certProfile = getConfigProp('certificateProfile') || DEFAULTS.certificateProfile; // default should be gotten from renative.json
+    console.log(certProfile);
 
     const wgt = `${appName}.wgt`;
     // the tizen CLI cannot handle .wgt files with spaces correctly.
