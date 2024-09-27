@@ -7,7 +7,7 @@ import { useLoggerContext } from '../../context';
 import { ICON_LOGO } from '../../config';
 import styles from '../../styles';
 
-interface ButtonProps extends TouchableOpacityProps {}
+type ButtonProps = TouchableOpacityProps;
 export const PhotoEditorButton = forwardRef<TouchableOpacity, ButtonProps>(({ onBlur, onFocus, style }, ref) => {
     const { logDebug } = useLoggerContext();
     const photoPath = RNFS.DocumentDirectoryPath + ICON_LOGO;

@@ -3,7 +3,7 @@ import { useLoggerContext } from '../../context';
 import { Text, TouchableOpacity, TouchableOpacityProps } from 'react-native';
 import styles from '../../styles';
 
-interface ButtonProps extends TouchableOpacityProps {}
+type ButtonProps = TouchableOpacityProps;
 export const PhotoEditorButton = forwardRef<TouchableOpacity, ButtonProps>(({ onBlur, onFocus, style }, ref) => {
     const { logDebug } = useLoggerContext();
     const handlePhotoEditor = () => {

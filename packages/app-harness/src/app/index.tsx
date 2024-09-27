@@ -122,14 +122,8 @@ const AppContent = () => {
     return (
         <View style={styles.wrapper}>
             <View style={styles.header}>
-                <Image
-                    style={styles.logo}
-                    source={ICON_LOGO}
-                    {...testProps('app-harness-home-screen-renative-image')}
-                />
-                <Text style={styles.introText} {...testProps('app-harness-home-screen-intro-text')}>
-                    ReNative Harness
-                </Text>
+                <Image style={styles.logo} source={ICON_LOGO} {...testProps('app-harness-home-renative-image')} />
+                <Text style={styles.introText}>ReNative Harness</Text>
                 <View style={{ flex: 1, alignItems: 'flex-end' }}>
                     <Text style={styles.dynamicText}>
                         {`v${config.version}, platform: ${Api.platform}, factor: ${Api.formFactor}, engine: ${Api.engine}`}
@@ -149,7 +143,7 @@ const AppContent = () => {
                     }}
                 >
                     <TestCase id={1} title="Hermes support ">
-                        <Text style={styles.text}>{`hermes: ${
+                        <Text style={styles.text} {...testProps('app-harness-home-hermes-support-text')}>{`hermes: ${
                             typeof HermesInternal === 'object' && HermesInternal !== null ? 'yes' : 'no'
                         }`}</Text>
                     </TestCase>
@@ -185,13 +179,17 @@ const AppContent = () => {
                             // this to null will remove focus from another item
                             onBlur={() => setFocusedIndex((prev) => (prev === 1 ? null : prev))}
                         >
-                            <Text style={styles.buttonTitle}>Toggle Video</Text>
+                            <Text style={styles.buttonTitle} {...testProps('app-harness-home-toggle-video-button')}>
+                                Toggle Video
+                            </Text>
                         </TouchableOpacity>
                         {showVideo && (
                             <View>
                                 <OrientationLocker orientation={LANDSCAPE} />
                                 <View style={{ width: 320, height: 180, backgroundColor: '#ccc' }}>
-                                    <Text style={styles.text}>Landscape video goes here</Text>
+                                    <Text style={styles.text} {...testProps('app-harness-home-landscape-video-text')}>
+                                        Landscape video goes here
+                                    </Text>
                                 </View>
                             </View>
                         )}
@@ -212,7 +210,11 @@ const AppContent = () => {
                         </TouchableOpacity>
                     </TestCase>
                     <TestCase id={5} title="Image Support">
-                        <Image source={ICON_LOGO} style={{ width: 100, height: 100 }} />
+                        <Image
+                            source={ICON_LOGO}
+                            style={{ width: 100, height: 100 }}
+                            {...testProps('app-harness-home-image-support-image')}
+                        />
                     </TestCase>
                     <TestCase id={6} title="Cast Support">
                         <CastComponent />
@@ -229,7 +231,10 @@ const AppContent = () => {
                         )}
                         <TouchableOpacity
                             ref={splashBtnRef}
-                            onPress={() => SplashScreen.show()}
+                            onPress={() => {
+                                SplashScreen.show();
+                                setTimeout(() => SplashScreen.hide(), 3000);
+                            }}
                             style={[
                                 styles.button,
                                 focusedIndex === 3 && styles.buttonFocused,
@@ -284,6 +289,7 @@ const AppContent = () => {
                                   { paddingHorizontal: 25 },
                                   idx === logs.length - 1 && { paddingBottom: 80 },
                               ]}
+                              {...testProps(`app-harness-home-logs-text-${idx}`)}
                           >
                               {it}
                           </Text>

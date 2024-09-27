@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { CastButton, useRemoteMediaClient } from 'react-native-google-cast';
+import { testProps } from '../../config';
 
 export function CastComponent() {
     const client = useRemoteMediaClient();
@@ -15,5 +16,10 @@ export function CastComponent() {
         }
     }, [client]);
 
-    return <CastButton style={{ width: 24, height: 24, tintColor: 'black' }} />;
+    return (
+        <CastButton
+            {...testProps('app-harness-home-cast-support-button')}
+            style={{ width: 24, height: 24, tintColor: 'black' }}
+        />
+    );
 }

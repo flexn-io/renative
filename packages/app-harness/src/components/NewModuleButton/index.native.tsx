@@ -2,8 +2,9 @@ import React, { forwardRef } from 'react';
 import { NativeModules, TouchableOpacityProps, TouchableOpacity, Text } from 'react-native';
 import { useLoggerContext } from '../../context';
 import styles from '../../styles';
+import { testProps } from '../../config';
 
-interface ButtonProps extends TouchableOpacityProps {}
+type ButtonProps = TouchableOpacityProps;
 export const NewModuleButton = forwardRef<TouchableOpacity, ButtonProps>(({ onBlur, onFocus, style }, ref) => {
     const { TestNativeModule } = NativeModules;
     const { logDebug } = useLoggerContext();
@@ -23,7 +24,9 @@ export const NewModuleButton = forwardRef<TouchableOpacity, ButtonProps>(({ onBl
     };
     return (
         <TouchableOpacity ref={ref} onPress={onPress} onFocus={onFocus} onBlur={onBlur} style={style}>
-            <Text style={styles.buttonTitle}>Click to invoke native module!</Text>
+            <Text style={styles.buttonTitle} {...testProps('app-harness-home-native-call-button')}>
+                Click to invoke native module!
+            </Text>
         </TouchableOpacity>
     );
 });
