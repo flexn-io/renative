@@ -4,6 +4,7 @@ import { checkTizenStudioCert } from '../runner';
 
 export default createTask({
     description: 'Change tizen certificate',
+    dependsOn: [RnvTaskName.appConfigure],
     fn: async ({ ctx }) => {
         for (const config of ctx.paths.appConfig.configs) {
             if (config.includes('base')) {
