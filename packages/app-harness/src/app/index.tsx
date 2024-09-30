@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, Text, TouchableOpacity, View, findNodeHandle } from 'react-native';
 import { Api, isPlatformIos, isWebBased, isFactorTv, isTizenwatch, isAndroidwear } from '@rnv/renative';
 import { OrientationLocker, PORTRAIT, LANDSCAPE } from '../components/OrientationLocker';
 import { NewModuleButton } from '../components/NewModuleButton';
@@ -73,6 +73,12 @@ const AppContent = () => {
             focusableRefs[0].current.focus();
             setFocusedIndex(0);
         }
+        // Set the initial AndroidTV and tvOS focus to be on the button
+        focusableRefs[0]?.current?.setNativeProps({ hasTVPreferredFocus: true });
+        // On AndroidTV going up can appear as lost focus, so block focus up
+        focusableRefs[0]?.current?.setNativeProps({
+            nextFocusUp: findNodeHandle(nativeModuleBtnRef.current) || undefined,
+        });
         return () => {
             removeNotificationListeners(handleNotification);
         };
