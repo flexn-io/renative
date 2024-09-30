@@ -72,13 +72,10 @@ const AppContent = () => {
         if (isWebBased && isFactorTv && focusableRefs[0]?.current) {
             focusableRefs[0].current.focus();
             setFocusedIndex(0);
+        } else if (!isWebBased) {
+            // Set the initial AndroidTV and tvOS focus to be on the button
+            focusableRefs[0]?.current?.setNativeProps({ hasTVPreferredFocus: true });
         }
-        // Set the initial AndroidTV and tvOS focus to be on the button
-        focusableRefs[0]?.current?.setNativeProps({ hasTVPreferredFocus: true });
-        // On AndroidTV going up can appear as lost focus, so block focus up
-        focusableRefs[0]?.current?.setNativeProps({
-            nextFocusUp: findNodeHandle(nativeModuleBtnRef.current) || undefined,
-        });
         return () => {
             removeNotificationListeners(handleNotification);
         };
