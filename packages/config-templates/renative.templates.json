@@ -2599,39 +2599,23 @@
             },
             "ios": {
                 "templateXcode": {
-                    "appDelegateImports": [
-                        "GoogleCast"
-                    ],
                     "AppDelegate_mm": {
-                        "appDelegateImports": [
-                            "GoogleCast/GoogleCast.h"
-                        ],
+                        "appDelegateImports": ["GoogleCast/GoogleCast.h"],
                         "appDelegateMethods": {
                             "application": {
                                 "didFinishLaunchingWithOptions": [
                                     "NSString *receiverAppID = kGCKDefaultMediaReceiverApplicationID; // or @\"ABCD1234\"",
-                                    "GCKDiscoveryCriteria *criteria = [[GCKDiscoveryCriteria alloc] initWithApplicationID:receiverAppID];",
-                                    "GCKCastOptions* options = [[GCKCastOptions alloc] initWithDiscoveryCriteria:criteria];",
-                                    "[GCKCastContext setSharedInstanceWithOptions:options];"
+                                    "GCKDiscoveryCriteria *criteria = [[GCKDiscoveryCriteria alloc] initWithApplicationID:receiverAppID]",
+                                    "GCKCastOptions* options = [[GCKCastOptions alloc] initWithDiscoveryCriteria:criteria]",
+                                    "options.disableDiscoveryAutostart = {{props.DISABLE_DISCOVERY_AUTOSTART}}",
+                                    "options.startDiscoveryAfterFirstTapOnCastButton = {{props.START_DISCOVERY_AFTER_FIRST_TAP_ON_CAST_BUTTON}}",
+                                    "[GCKCastContext setSharedInstanceWithOptions:options]"
                                 ]
                             }
                         }
                     },
-                    "appDelegateMethods": {
-                        "application": {
-                            "didFinishLaunchingWithOptions": [
-                                "let receiverAppID = \"{{props.APPLICATION_ID}}\" // or \"ABCD1234\"",
-                                "let criteria = GCKDiscoveryCriteria(applicationID: receiverAppID)",
-                                "let options = GCKCastOptions(discoveryCriteria: criteria)",
-                                "GCKCastContext.setSharedInstanceWith(options)"
-                            ]
-                        }
-                    },
                     "Info_plist": {
-                        "NSBonjourServices": [
-                            "_googlecast._tcp",
-                            "_CC1AD845._googlecast._tcp"
-                        ],
+                        "NSBonjourServices": ["_googlecast._tcp", "_CC1AD845._googlecast._tcp"],
                         "NSLocalNetworkUsageDescription": "${PRODUCT_NAME} uses the local network to discover Cast-enabled devices on your WiFi network."
                     }
                 },
@@ -2640,7 +2624,9 @@
                 "podName": "react-native-google-cast/NoBluetoothArm"
             },
             "props": {
-                "APPLICATION_ID": "01234"
+                "APPLICATION_ID": "01234",
+                "DISABLE_DISCOVERY_AUTOSTART": "false",
+                "START_DISCOVERY_AFTER_FIRST_TAP_ON_CAST_BUTTON": "false"
             },
             "version": "4.8.0"
         },
