@@ -23,7 +23,7 @@ export const zodConfigFileRoot: AnyZodObject = z
         plugin: zodConfigFilePlugin,
         private: zodConfigFilePrivate,
         template: zodConfigFileTemplate,
-        configTemplates: zodConfigFileTemplates,
+        templates: zodConfigFileTemplates,
         workspace: zodConfigFileWorkspace,
         workspaces: zodConfigFileWorkspaces,
     })

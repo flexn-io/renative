@@ -52,8 +52,8 @@ export const upgradeDependencies = (
     _fixDeps(packageFile?.devDependencies, version);
     _fixDeps(packageFile?.dependencies, version);
     _fixDeps(packageFile?.peerDependencies, version);
-    if (configFile?.projectTemplate?.templateConfig) {
-        configFile.projectTemplate.templateConfig.version = version;
+    if (configFile?.templates?.templateConfig) {
+        configFile.templates.templateConfig.version = version;
     }
 
     if (packageFile) {

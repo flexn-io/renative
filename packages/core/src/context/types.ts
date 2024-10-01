@@ -7,6 +7,7 @@ import type {
     ConfigFilePrivate,
     ConfigFileProject,
     ConfigFileRuntime,
+    ConfigFileTemplate,
     ConfigFileTemplates,
     ConfigFileWorkspace,
     ConfigFileWorkspaces,
@@ -175,7 +176,7 @@ export type RnvContextFiles = {
         package?: NpmPackageFile;
         config?: ConfigFileTemplates;
     };
-    scopedConfigTemplates: Record<string, ConfigFileTemplates>;
+    scopedConfigTemplates: Record<string, ConfigFileTemplate>;
     workspace: RnvContextFileObj<ConfigFileWorkspace> & {
         project: RnvContextFileObj<ConfigFileProject>;
         appConfig: RnvContextFileObj<ConfigFileApp>;

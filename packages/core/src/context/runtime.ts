@@ -10,7 +10,7 @@ import { getContext } from './provider';
 export const configureRuntimeDefaults = async () => {
     const c = getContext();
 
-    c.runtime.appId = c.files.project?.configLocal?._meta?.currentAppConfigId || _getAppId(c);
+    c.runtime.appId = c.files.project?.configLocal?.local?._meta?.currentAppConfigId || _getAppId(c);
     if (c.runtime.appId) {
         c.runtime.appConfigDir = path.join(c.paths.project.appConfigsDir, c.runtime.appId);
     }

@@ -28,10 +28,10 @@ import { updatePackage } from '../projects/package';
 import type {
     ConfigFileOverrides,
     ConfigFilePlugin,
-    ConfigFileTemplates,
     ConfigProjectPaths,
     ConfigPluginPlatformSchema,
     ConfigPluginSchema,
+    ConfigFileTemplate,
 } from '../schema/types';
 
 const _getPluginScope = (plugin: ConfigPluginSchema | string): RnvPluginScope => {
@@ -622,7 +622,7 @@ const _parsePluginTemplateDependencies = (
 
                     if (fsExistsSync(ptConfig)) {
                         const ptConfigs = c.files.scopedConfigTemplates;
-                        const ptConfigFile = readObjectSync<ConfigFileTemplates>(ptConfig);
+                        const ptConfigFile = readObjectSync<ConfigFileTemplate>(ptConfig);
                         if (ptConfigFile) {
                             ptConfigs[k] = ptConfigFile;
                         }
@@ -821,7 +821,7 @@ export const checkForPluginDependencies = async (postInjectHandler?: AsyncCallba
             c._renativePluginCache[pluginName] = renativePluginConfig;
         }
 
-        const pluginDeps = renativePluginConfig?.pluginTemplates.pluginDependencies;
+        const pluginDeps = renativePluginConfig?.templates?.pluginTemplates.pluginDependencies;
         if (pluginDeps) {
             // we have dependencies for this plugin
             Object.keys(pluginDeps).forEach((p) => {

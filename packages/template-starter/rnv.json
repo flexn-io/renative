@@ -216,5 +216,11 @@
             },
             "defaultSelectedPlatforms": ["web", "ios", "android"]
         }
+    },
+    "templates": {
+        "engineTemplates": {}
+    },
+    "local": {
+        "_meta": {}
     }
 }

@@ -14,6 +14,7 @@ import { getContext } from '../context/provider';
 import type { RnvContext, RnvContextBuildConfig } from '../context/types';
 import type { FileUtilsPropConfig } from '../system/types';
 import type { RnvPlatformKey } from '../types';
+import { ConfigFileRenative } from '../schema/types';
 
 const _arrayMergeOverride = (_destinationArray: Array<string>, sourceArray: Array<string>) => sourceArray;
 
@@ -46,12 +47,74 @@ const getEnginesPluginDelta = () => {
     return enginePlugins;
 };
 
+export type FlatConfigFile = Record<string, any>;
+export type ConfigFile = ConfigFileRenative | FlatConfigFile;
+
+const renativeKeys: (keyof ConfigFileRenative)[] = [
+    'app',
+    'project',
+    'workspace',
+    'local',
+    // '_meta',
+    // 'defaultTargets',
+    // 'workspaceAppConfigsDir',
+    'overrides',
+    'integration',
+    'engine',
+    'plugin',
+    'private',
+    'integration',
+    'template',
+    'templates',
+    'workspaces',
+];
+
+const isConfigFileNamespace = (file: ConfigFile): file is ConfigFileRenative => {
+    if (!file || typeof file !== 'object') return false;
+    return renativeKeys.some((key) => key in file);
+};
+const transformConfig = (config: ConfigFileRenative): FlatConfigFile => {
+    const transformedConfig: FlatConfigFile = {};
+    Object.entries(config).forEach(([key, value]) => {
+        if (renativeKeys.includes(key as keyof ConfigFileRenative)) {
+            if (typeof value === 'object' && value !== null) {
+                Object.entries(value).forEach(([nestedKey, nestedValue]) => {
+                    if (nestedKey === '$schema') {
+                        transformedConfig[nestedKey] = nestedValue;
+                    } else {
+                        transformedConfig[nestedKey] = nestedValue;
+                    }
+                });
+            }
+        }
+    });
+    return transformedConfig;
+};
+
+const categorizeFiles = (
+    file: ConfigFile | undefined,
+    namespaceFiles: FlatConfigFile[],
+    nonNamespaceFiles: FlatConfigFile[]
+) => {
+    if (file) {
+        if (isConfigFileNamespace(file)) {
+            // console.log('########## NamespaceFiles', file);
+            const transformedFile = transformConfig(file);
+            // console.log('!!!!!!!!! transformedFile', transformedFile);
+
+            namespaceFiles.push(transformedFile);
+        } else {
+            // console.log('########## nonNamespaceFiles:', file);
+            nonNamespaceFiles.push(file);
+        }
+    }
+};
+
 export const generateBuildConfig = () => {
     logDebug('generateBuildConfig');
 
     const c = getContext();
     const extraPlugins = getEnginesPluginDelta();
-
     const mergePathsPublic = [
         // TODO: do we need to merge .rnv/renative.json with .customWorkspace/reantive.json ?
         // c.paths.dotRnv.config,
@@ -76,6 +139,9 @@ export const generateBuildConfig = () => {
         ...c.paths.appConfig.configsPrivate,
     ];
     const mergePaths = [...mergePathsPublic, ...mergePathsPrivate];
+
+    const namespaceFiles: ConfigFileRenative[] = [];
+    const nonNamespaceFiles: FlatConfigFile[] = [];
 
     const mergeFilesPublic = [
         // TODO: do we need to merge .rnv/renative.json with .customWorkspace/reantive.json ?
@@ -103,8 +169,8 @@ export const generateBuildConfig = () => {
         ...c.files.appConfig.configsPrivate,
     ];
     const mergeFiles = [...mergeFilesPublic, ...mergeFilesPrivate];
-
-    _generateBuildConfig(mergePaths, mergeFiles);
+    mergeFiles.forEach((file) => categorizeFiles(file, namespaceFiles, nonNamespaceFiles));
+    _generateBuildConfig(mergePaths, [...namespaceFiles, ...nonNamespaceFiles]);
 };
 
 const _generateBuildConfig = (mergePaths: string[], mergeFiles: Array<object | undefined>) => {
@@ -121,6 +187,7 @@ const _generateBuildConfig = (mergePaths: string[], mergeFiles: Array<object | u
     });
 
     const scopedPluginTemplates: Record<string, any> = {};
+
     if (c.files.scopedConfigTemplates) {
         Object.keys(c.files.scopedConfigTemplates).forEach((v) => {
             const plgs = c.files.scopedConfigTemplates[v].pluginTemplates;
@@ -146,7 +213,7 @@ const _generateBuildConfig = (mergePaths: string[], mergeFiles: Array<object | u
     logDebug(
         `generateBuildConfig:mergeOrder.length:${mergePaths.length},cleanPaths.length:${cleanPaths.length},existsPaths.length:${existsPaths.length},existsFiles.length:${existsFiles.length}`
     );
-
+    existsFiles.map((f) => console.log('######### mergeFile', f));
     let out: RnvContextBuildConfig = merge.all<RnvContextBuildConfig>([...meta, ...existsFiles], {
         arrayMerge: _arrayMergeOverride,
     });

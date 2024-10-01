@@ -13,7 +13,7 @@ import { generatePlatformTemplatePaths } from './configProject';
 import { RnvFileName } from '../enums/fileName';
 import { getContext } from '../context/provider';
 import { RnvFolderName } from '../enums/folderName';
-import type { ConfigFileTemplates } from '../schema/types';
+import type { ConfigFileTemplate, ConfigFileTemplates } from '../schema/types';
 
 export const loadFileExtended = (fileObj: Record<string, any>, pathObj: RnvContextPathObj, key: RnvContextFileKey) => {
     const c = getContext();
@@ -24,8 +24,8 @@ export const loadFileExtended = (fileObj: Record<string, any>, pathObj: RnvConte
     const extendsTemplate = fileObj[key]?.extendsTemplate;
     if (key === 'config' && extendsTemplate) {
         // extendsTemplate only applies to standard 'config'
-        let currTemplate =
-            c.files.project[key]?.projectTemplate?.templateConfig?.name || fileObj[key].templateConfig?.name;
+
+        let currTemplate = c.files.project[key]?.templates?.templateConfig?.name || fileObj[key].templateConfig?.name;
         if (!currTemplate) {
             if (extendsTemplate.startsWith('@')) {
                 currTemplate = extendsTemplate.split('/').slice(0, 2).join('/');
@@ -223,12 +223,19 @@ export const loadDefaultConfigTemplates = async () => {
     ctx.paths.rnvConfigTemplates.pluginTemplatesDir = path.join(configTemplatesPath, 'pluginTemplates');
     ctx.paths.rnvConfigTemplates.config = path.join(configTemplatesPath, 'renative.templates.json');
 
-    const rnvConfigTemplates = readObjectSync<ConfigFileTemplates>(ctx.paths.rnvConfigTemplates.config);
+    const rnvConfigTemplates = readObjectSync<ConfigFileTemplates | ConfigFileTemplate>(
+        ctx.paths.rnvConfigTemplates.config
+    );
 
     if (rnvConfigTemplates) {
-        ctx.files.rnvConfigTemplates.config = rnvConfigTemplates;
+        const normalizedRnvConfigTemplates: ConfigFileTemplates = {
+            templates: {
+                ...('templates' in rnvConfigTemplates ? rnvConfigTemplates.templates : rnvConfigTemplates),
+            },
+        };
+        ctx.files.rnvConfigTemplates.config = normalizedRnvConfigTemplates;
         ctx.files.scopedConfigTemplates = {
-            rnv: rnvConfigTemplates,
+            rnv: normalizedRnvConfigTemplates.templates as ConfigFileTemplate,
         };
     }
 
@@ -279,7 +286,7 @@ export const parseRenativeConfigs = async () => {
 
     // // LOAD PLUGIN TEMPLATES
     // await loadPluginTemplates(c);
-
+    // console.log('!!!!!!!!!! c.files', c.files);
     if (!c.files.project.config) {
         logDebug(`BUILD_CONFIG: c.files.project.config does not exists. path: ${c.paths.project.config}`);
         return;
@@ -298,7 +305,7 @@ export const parseRenativeConfigs = async () => {
     c.paths.workspace.project.appConfigBase.dir = path.join(c.paths.workspace.project.dir, 'appConfigs', 'base');
 
     generatePlatformTemplatePaths();
-
+    console.log('c.runtime.appId ', c.runtime.appId);
     if (c.runtime.appId) {
         if (c.runtime.appConfigDir) {
             generateContextPaths(c.paths.appConfig, c.runtime.appConfigDir);
@@ -331,4 +338,5 @@ export const parseRenativeConfigs = async () => {
         generateLocalConfig();
         generateBuildConfig();
     }
+    // console.log('buildConfig!!!!!!!!!! ', getContext().buildConfig);
 };

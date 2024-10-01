@@ -5,13 +5,14 @@ import { writeFileSync } from '../system/fs';
 export const generateLocalConfig = (resetAppId?: boolean) => {
     logDefault('generateLocalConfig', `resetAppId:${!!resetAppId}`);
     const c = getContext();
-
+    // TODO ADD AS NAMESPACE ???????
     const configLocal = c.files.project.configLocal || {};
-    configLocal._meta = configLocal._meta || {};
+    configLocal.local = configLocal.local || {};
+    configLocal.local._meta = configLocal.local._meta || {};
     if (resetAppId) {
-        delete configLocal._meta.currentAppConfigId;
+        delete configLocal.local._meta.currentAppConfigId;
     } else {
-        configLocal._meta.currentAppConfigId = c.runtime.appId;
+        configLocal.local._meta.currentAppConfigId = c.runtime.appId;
     }
     c.files.project.configLocal = configLocal;
     writeFileSync(c.paths.project.configLocal, configLocal);

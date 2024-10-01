@@ -354,7 +354,7 @@ export const getFilteredEngines = (c: RnvContext) => {
         logError('Engine configs missing in your renative.json. FIXING...DONE');
         return {};
     }
-    const rnvPlatforms = c.files.rnvConfigTemplates.config?.platformTemplates?.platformTemplates;
+    const rnvPlatforms = c.files.rnvConfigTemplates.config?.templates?.platformTemplates;
     const supportedPlatforms = c.files.project.config?.project?.defaults?.supportedPlatforms || [];
 
     const filteredEngines: Record<string, string> = {};

@@ -11,7 +11,7 @@ import type { FileUtilsPropConfig, OverridesOptions, TimestampPathsConfig } from
 import { getApi } from '../api/provider';
 import { getContext } from '../context/provider';
 import { matchRegEx } from './regEx';
-import type { ConfigPropKey } from '../schema/types';
+import type { ConfigFileRenative, ConfigPropKey } from '../schema/types';
 import lGet from 'lodash/get';
 
 export const fsWriteFileSync = (dest: string | undefined, data: string, options?: fs.WriteFileOptions) => {
@@ -755,7 +755,8 @@ export const getFileListSync = (dir: fs.PathLike) => {
 export const loadFile = <T, K extends Extract<keyof T, string>>(
     fileObj: T,
     pathObj: Partial<Record<K, unknown>>,
-    key: K
+    key: K,
+    namespace?: keyof ConfigFileRenative
 ) => {
     const pKey = `${key}Exists` as K;
     const pth = pathObj[key];
@@ -770,7 +771,23 @@ export const loadFile = <T, K extends Extract<keyof T, string>>(
     try {
         if (typeof pth === 'string') {
             const fileString = fsReadFileSync(pth).toString();
-            fileObj[key] = JSON.parse(fileString);
+            const configFile = JSON.parse(fileString);
+            const updatedConfigFile: Record<string, any> = {};
+
+            if (configFile?.$schema && !configFile.$schema.includes('rnv/schema/renative-1.0.schema.json')) {
+                const currentScheme = configFile.$schema;
+                const getNameSpace = (currentScheme: string) => {
+                    const parts = currentScheme.split('/');
+                    const filename = parts[parts.length - 1];
+                    const namespace = filename.split('.')[1];
+                    return namespace || null;
+                };
+                const misNamespace = namespace || getNameSpace(currentScheme);
+                if (misNamespace) {
+                    updatedConfigFile[misNamespace] = { ...configFile };
+                }
+            }
+            fileObj[key] = Object.keys(updatedConfigFile).length ? updatedConfigFile : configFile;
             pathObj[pKey] = true;
             logDebug(`FILE_EXISTS: ${key}:true size:${formatBytes(Buffer.byteLength(fileString, 'utf8'))}`);
             // if (validateRuntimeObjectSchema && fileObj[key]) {
