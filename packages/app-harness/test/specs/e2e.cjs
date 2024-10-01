@@ -16,10 +16,6 @@ describe('Test App Harness', () => {
 
     it('--> Native Call', async () => {
         await FlexnRunner.clickById('app-harness-home-native-call-button');
-        // https://github.com/flexn-io/renative/issues/1733
-        if (process.env.PLATFORM === 'androidtv') {
-            await FlexnRunner.pressButtonDown(2);
-        }
         await FlexnRunner.pressButtonSelect(1);
         if (process.env.PLATFORM === 'web') {
             await FlexnRunner.expectToHaveTextById(
