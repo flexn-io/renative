@@ -61,4 +61,5 @@ export const RnvTaskName = {
     telemetryStatus: 'telemetry status',
     config: 'config',
     patchReset: 'patch reset',
+    tizenCertificate: 'tizen certificate',
 } as const;

@@ -44,7 +44,10 @@ const DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION = `${DEFAULT_CERTIFICATE_NAME}.p12
 
 export const checkTizenStudioCert = async (): Promise<boolean> => {
     try {
-        await execCLI(CLI_TIZEN, `security-profiles list -n ${DEFAULTS.certificateProfile}`);
+        await execCLI(
+            CLI_TIZEN,
+            `security-profiles list -n ${getConfigProp('certificateProfile') || DEFAULTS.certificateProfile}`
+        );
         return true;
     } catch (e) {
         return false;
@@ -74,7 +77,7 @@ export const configureTizenGlobal = () =>
                         const certPassword = '1234';
 
                         addDevelopTizenCertificate(c, {
-                            profileName: DEFAULTS.certificateProfile,
+                            profileName: getConfigProp('certificateProfile') || DEFAULTS.certificateProfile,
                             certPath: path.join(certDirPath, `${certFilename}.p12`),
                             certPassword,
                         })

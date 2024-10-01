@@ -247,7 +247,7 @@ export const createDevelopTizenCertificate = (c: RnvContext) =>
         )
             .then(() =>
                 addDevelopTizenCertificate(c, {
-                    profileName: DEFAULTS.certificateProfile,
+                    profileName: getConfigProp('certificateProfile') || DEFAULTS.certificateProfile,
                     certPath: path.join(certDirPath, `${certFilename}.p12`),
                     certPassword,
                 })
