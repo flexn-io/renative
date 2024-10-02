@@ -1,6 +1,5 @@
 {
     "$schema": "../../.rnv/schema/rnv.engine.json",
-    "id": "engine-rn-web",
     "engineExtension": "rnw",
     "name": "@rnv/engine-rn-web",
     "overview": "React native based engine with web transpiler provided by react-native-web",

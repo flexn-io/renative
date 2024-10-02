@@ -5,7 +5,7 @@ export default createTask({
     fn: async ({ ctx }) => {
         const { config } = ctx.files.dotRnv;
         if (config) {
-            config.disableTelemetry = true;
+            config.workspace.disableTelemetry = true;
 
             writeFileSync(ctx.paths.dotRnv.config, config);
 

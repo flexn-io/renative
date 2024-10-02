@@ -16,7 +16,9 @@ const Question = async (data: NewProjectData): Promise<void> => {
 
     const cnfTemplatesName = '@rnv/config-templates';
     const cnfDepVer =
-        files.template.renativeTemplateConfig?.templateConfig?.package_json?.devDependencies?.[cnfTemplatesName];
+        files.template.renativeTemplateConfig?.projectTemplate?.templateConfig?.package_json?.devDependencies?.[
+            cnfTemplatesName
+        ];
     if (cnfDepVer) {
         // If we find the config-templates package in the devDependencies of the project's package.json,
         // we will use it as source for engines

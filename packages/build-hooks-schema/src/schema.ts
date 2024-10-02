@@ -6,29 +6,29 @@ import fs from 'fs';
 
 export const generateSchema = async () => {
     const {
-        zodConfigFilePlugin,
-        zodConfigFilePrivate,
-        zodConfigFileProject,
-        zodConfigFileTemplate,
-        zodConfigFileTemplates,
-        zodConfigFileWorkspace,
-        zodConfigFileIntegration,
-        zodConfigFileApp,
-        zodConfigFileLocal,
-        zodConfigFileEngine,
+        // zodConfigFilePlugin,
+        // zodConfigFilePrivate,
+        // zodConfigFileProject,
+        // zodConfigFileTemplate,
+        // zodConfigFileTemplates,
+        // zodConfigFileWorkspace,
+        // zodConfigFileIntegration,
+        // zodConfigFileApp,
+        // zodConfigFileLocal,
+        // zodConfigFileEngine,
         zodConfigFileRoot,
     } = ZodFileSchema;
     // LEGACY
-    _generateSchemaFile({ schema: zodConfigFileProject, schemaId: 'rnv.project' });
-    _generateSchemaFile({ schema: zodConfigFileApp, schemaId: 'rnv.app' });
-    _generateSchemaFile({ schema: zodConfigFileLocal, schemaId: 'rnv.local' });
-    _generateSchemaFile({ schema: zodConfigFileEngine, schemaId: 'rnv.engine' });
-    _generateSchemaFile({ schema: zodConfigFileWorkspace, schemaId: 'rnv.workspace' });
-    _generateSchemaFile({ schema: zodConfigFileTemplate, schemaId: 'rnv.template' });
-    _generateSchemaFile({ schema: zodConfigFilePrivate, schemaId: 'rnv.private' });
-    _generateSchemaFile({ schema: zodConfigFilePlugin, schemaId: 'rnv.plugin' });
-    _generateSchemaFile({ schema: zodConfigFileTemplates, schemaId: 'rnv.templates' });
-    _generateSchemaFile({ schema: zodConfigFileIntegration, schemaId: 'rnv.integration' });
+    // _generateSchemaFile({ schema: zodConfigFileProject, schemaId: 'rnv.project' });
+    // _generateSchemaFile({ schema: zodConfigFileApp, schemaId: 'rnv.app' });
+    // _generateSchemaFile({ schema: zodConfigFileLocal, schemaId: 'rnv.local' });
+    // _generateSchemaFile({ schema: zodConfigFileEngine, schemaId: 'rnv.engine' });
+    // _generateSchemaFile({ schema: zodConfigFileWorkspace, schemaId: 'rnv.workspace' });
+    // _generateSchemaFile({ schema: zodConfigFileTemplate, schemaId: 'rnv.template' });
+    // _generateSchemaFile({ schema: zodConfigFilePrivate, schemaId: 'rnv.private' });
+    // _generateSchemaFile({ schema: zodConfigFilePlugin, schemaId: 'rnv.plugin' });
+    // _generateSchemaFile({ schema: zodConfigFileTemplates, schemaId: 'rnv.templates' });
+    // _generateSchemaFile({ schema: zodConfigFileIntegration, schemaId: 'rnv.integration' });
     // CURRENT
     const definitions: Record<string, any> = {};
     Object.values(ZodSharedSchema).forEach((val) => {

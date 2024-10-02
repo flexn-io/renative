@@ -46,10 +46,11 @@ export default createTask({
                 // engine.ejectPlatform(c, platform, destDir);
                 ejectPlatform(platform);
 
-                configOriginal.paths = configOriginal.paths || {};
+                configOriginal.project.paths = configOriginal.project.paths || {};
 
-                configOriginal.paths.platformTemplatesDirs = configOriginal.paths.platformTemplatesDirs || {};
-                configOriginal.paths.platformTemplatesDirs[platform] = `./${'platformTemplates'}`;
+                configOriginal.project.paths.platformTemplatesDirs =
+                    configOriginal.project.paths.platformTemplatesDirs || {};
+                configOriginal.project.paths.platformTemplatesDirs[platform] = `./${'platformTemplates'}`;
                 writeFileSync(ctx.paths.project.config, configOriginal);
             });
 
@@ -57,7 +58,7 @@ export default createTask({
                 `${chalk().bold.white(
                     selectedPlatforms.join(',')
                 )} platform templates are located in ${chalk().bold.white(
-                    ctx.files.project.config?.paths?.platformTemplatesDirs?.[selectedPlatforms[0]]
+                    ctx.files.project.config?.project?.paths?.platformTemplatesDirs?.[selectedPlatforms[0]]
                 )} now. You can edit them directly!`
             );
         } else {

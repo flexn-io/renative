@@ -12,31 +12,31 @@ export const createRnvEngine = <
 >(
     opts: CreateRnvEngineOpts<OKey, Modules>
 ) => {
-    if (!opts.config.name) {
+    if (!opts.config.engine.name) {
         throw new Error('Engine name is required. check your renative.engine.json file');
     }
     // This allows users to use shortcut of the full engine names
     // ie: "-e engine-rn" instead of "-e @rnv/engine-rn"
-    const id = extractEngineId(opts.config.name);
+    const id = extractEngineId(opts.config.engine.name);
     const platforms: RnvEnginePlatforms = opts?.platforms;
     Object.keys(platforms).forEach((k) => {
         const p = k as RnvPlatformKey;
         const plat = platforms[p];
         if (plat) {
-            plat.extensions = generateEngineExtensions(id, plat.extensions, opts.config.engineExtension);
+            plat.extensions = generateEngineExtensions(id, plat.extensions, opts.config.engine.engineExtension);
         }
     });
 
     const engine: RnvEngine<OKey, Modules> = {
         ...opts,
         platforms,
-        id: opts.config.name,
+        id: opts.config.engine.name,
         serverDirName: opts.serverDirName || '',
         projectDirName: opts.projectDirName || '',
         runtimeExtraProps: opts.runtimeExtraProps || {},
         tasks: createTaskMap<any, any>({
             tasks: [...opts.tasks, ...(opts.extendModules?.flatMap((m) => m.originalTasks) ?? [])],
-            ownerID: opts.config.name,
+            ownerID: opts.config.engine.name,
             ownerType: 'engine',
         }),
         initContextPayload: () => {

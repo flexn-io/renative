@@ -19,7 +19,7 @@ export default createTask({
                 Object.keys(plugins).forEach((_key) => {
                     //TODO: fix this. not working
                     // c.buildConfig.plugins[key] = o.json[key];
-                    cnf.plugins = cnf.plugins || {};
+                    cnf.project.plugins = cnf.project.plugins || {};
                     // cnf.plugins[key] = pluginList.json[key];
                 });
 

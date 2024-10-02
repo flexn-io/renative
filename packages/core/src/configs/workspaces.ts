@@ -5,6 +5,7 @@ import { chalk, logDefault, logDebug, logInfo, logWarning } from '../logger';
 import type { RnvContext } from '../context/types';
 import { generateOptions, inquirerPrompt } from '../api';
 import type { ConfigFileWorkspace, ConfigFileWorkspaces } from '../schema/types';
+import { RnvFileName } from '../enums/fileName';
 
 export const createWorkspace = async (workspaceID: string, workspacePath: string) => {
     const c = getContext();
@@ -25,7 +26,7 @@ export const createWorkspace = async (workspaceID: string, workspacePath: string
     };
 
     mkdirSync(workspacePath);
-    writeFileSync(path.join(workspacePath, 'renative.json'), workspaceConfig);
+    writeFileSync(path.join(workspacePath, RnvFileName.renative), workspaceConfig);
 
     writeFileSync(c.paths.dotRnv.configWorkspaces, cnf);
     return true;
@@ -34,7 +35,7 @@ export const createWorkspace = async (workspaceID: string, workspacePath: string
 export const getWorkspaceDirPath = async (c: RnvContext) => {
     logDefault('getWorkspaceDirPath');
     const wss = c.files.dotRnv.configWorkspaces;
-    const ws = c.runtime.selectedWorkspace || c.buildConfig?.workspaceID;
+    const ws = c.runtime.selectedWorkspace || c.buildConfig?.project?.workspaceID;
     let dirPath;
     if (wss?.workspaces && ws) {
         dirPath = wss.workspaces[ws]?.path;
@@ -131,6 +132,6 @@ export const loadWorkspacesConfigSync = () => {
     const defWsPath = c.paths.dotRnv.config;
 
     if (defWsPath && fsExistsSync(defWsPath)) {
-        c.files.dotRnv.config = readObjectSync<ConfigFileWorkspace>(defWsPath) || {};
+        c.files.dotRnv.config = readObjectSync<ConfigFileWorkspace>(defWsPath) || { workspace: {} };
     }
 };

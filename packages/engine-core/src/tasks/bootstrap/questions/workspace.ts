@@ -23,7 +23,7 @@ const Question = async (data: NewProjectData) => {
     }
 
     c.runtime.selectedWorkspace = data.inputs.workspaceID;
-    data.files.project.renativeConfig.workspaceID = data.inputs.workspaceID;
+    data.files.project.renativeConfig.project.workspaceID = data.inputs.workspaceID;
 };
 
 export default Question;

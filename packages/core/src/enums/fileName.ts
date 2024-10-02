@@ -11,5 +11,6 @@ export const RnvFileName = {
     renativeEngine: 'renative.engine.json',
     package: 'package.json',
     appliedOverride: 'applied_overrides.json',
+    schema: 'renative-1.0.schema.json',
     // renativeProject: 'renative.project.json',
 } as const;

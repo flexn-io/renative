@@ -224,13 +224,13 @@ const _checkSigningCerts = async (c: Context) => {
                 message: 'Do you want to generate new keystore as well?',
             });
 
-            const platforms = c.files.workspace.appConfig.configPrivate?.platforms || {};
+            const platforms = c.files.workspace.appConfig.configPrivate?.project?.platforms || {};
 
             if (c.files.workspace.appConfig.configPrivate) {
                 const platCandidates: RnvPlatformKey[] = ['androidwear', 'androidtv', 'android', 'firetv'];
 
                 platCandidates.forEach((v) => {
-                    if (c.files.workspace.appConfig.configPrivate?.platforms?.[v]) {
+                    if (c.files.workspace.appConfig.configPrivate?.project?.platforms?.[v]) {
                         platCandidate = v;
                     }
                 });
@@ -294,7 +294,9 @@ const _checkSigningCerts = async (c: Context) => {
                 if (c.paths.workspace.appConfig.dir) {
                     mkdirSync(c.paths.workspace.appConfig.dir);
                     c.files.workspace.appConfig.configPrivate = {
-                        platforms: {},
+                        project: {
+                            platforms: {},
+                        },
                     };
                     if (storeFile) {
                         platforms[c.platform] = {

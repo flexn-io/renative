@@ -49,9 +49,9 @@ export default createTask({
     description: 'Decrypt encrypted project files into local `~/<wokspace>/<project>/..`',
     dependsOn: [RnvTaskName.configureSoft],
     fn: async ({ ctx }) => {
-        const crypto = ctx.files.project.config?.crypto;
+        const crypto = ctx.files.project.config?.project?.crypto;
         const sourceRaw = crypto?.path;
-        const projectName = ctx.files.project.config?.projectName;
+        const projectName = ctx.files.project.config?.project?.projectName;
 
         if (!crypto?.isOptional && sourceRaw) {
             const envVar = getEnvVar();

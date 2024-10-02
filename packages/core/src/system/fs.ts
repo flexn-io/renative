@@ -782,7 +782,7 @@ export const loadFile = <T, K extends Extract<keyof T, string>>(
             //         logWarning(`Invalid schema in ${pathObj[key]}. ISSUES: ${JSON.stringify(ajv.errors, null, 2)}`);
             //     }
             // }
-            // if (pathObj[key].includes?.('renative.json')) {
+            // if (pathObj[key].includes?.(RnvFileName.renative)) {
             //     console.log(`FILE_EXISTS: ${key}:true size:${formatBytes(Buffer.byteLength(fileString, 'utf8'))}`);
             // }
         }
