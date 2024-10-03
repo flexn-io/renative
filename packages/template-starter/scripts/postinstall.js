@@ -39,7 +39,7 @@ const RNV_HOME_DIR = path.join(__dirname, '..');
     }
 })();
 
-export const resetOverrides = async () => {
+const resetOverrides = async () => {
     const overrideDir = path.join(process.cwd(), '.rnv', 'overrides');
 
     const appliedOverrideFilePath = path.join(overrideDir, RnvFileName.appliedOverride);
