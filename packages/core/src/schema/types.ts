@@ -315,3 +315,4 @@ export type ConfigPropKey = keyof ConfigProp;
 export type ConfigPropMerged<T> = ConfigProp & T;
 export type ConfigPropKeyMerged<T> = keyof ConfigPropMerged<T>;
 export type GetConfigPropVal<T, K extends ConfigPropKeyMerged<T>> = ConfigPropMerged<T>[K] | undefined;
+export type FlatConfigFile = Record<string, any>;

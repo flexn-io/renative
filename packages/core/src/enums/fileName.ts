@@ -1,3 +1,5 @@
+import { ConfigFileRenative } from '../schema/types';
+
 export const RnvFileName = {
     renative: 'renative.json',
     renativeLocal: 'renative.local.json',
@@ -14,3 +16,19 @@ export const RnvFileName = {
     schema: 'renative-1.0.schema.json',
     // renativeProject: 'renative.project.json',
 } as const;
+
+export const renativeKeys: (keyof ConfigFileRenative)[] = [
+    'app',
+    'project',
+    'workspace',
+    'local',
+    'overrides',
+    'integration',
+    'engine',
+    'plugin',
+    'private',
+    'integration',
+    'template',
+    'templates',
+    'workspaces',
+];

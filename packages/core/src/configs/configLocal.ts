@@ -1,19 +1,13 @@
-import path from 'path';
-import { getConfigRootProp } from '../context/contextProps';
 import { getContext } from '../context/provider';
 import { logDefault } from '../logger';
 import { writeFileSync } from '../system/fs';
-import { RnvFileName } from '../enums/fileName';
+import { generateNewSchemaPath } from './utils';
 
 export const generateLocalConfig = (resetAppId?: boolean) => {
     logDefault('generateLocalConfig', `resetAppId:${!!resetAppId}`);
     const c = getContext();
-    const isMonorepo = getConfigRootProp('isMonorepo');
 
-    const schemePath = isMonorepo
-        ? path.join(c.paths.project.dir, '../.rnv', 'schema', RnvFileName.schema)
-        : path.join(c.paths.project.dir, '.rnv/schema', RnvFileName.schema);
-    const relativeShemePath = path.relative(c.paths.project.configLocal, schemePath);
+    const relativeShemePath = generateNewSchemaPath(c.paths.project.configLocal);
 
     const configLocal = c.files.project.configLocal || {};
     if (!configLocal?.$schema) {

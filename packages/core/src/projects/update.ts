@@ -28,7 +28,7 @@ export const checkAndUpdateProjectIfRequired = async () => {
 
     const originalTemplateConfigFile = readObjectSync<ConfigFileTemplate>(c.paths.template.configTemplate);
     if (originalTemplateConfigFile) {
-        const templateConfigFile = getUpdatedConfigFile<ConfigFileTemplate>(
+        const templateConfigFile = await getUpdatedConfigFile<ConfigFileTemplate>(
             originalTemplateConfigFile,
             c.paths.template.configTemplate
         );

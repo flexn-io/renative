@@ -9,7 +9,7 @@ import type { RenativeConfigVersion, RnvPlatform } from '../types';
 import type { RnvEngine, RnvEngineInstallConfig, RnvEngineTemplate } from './types';
 import { inquirerPrompt } from '../api';
 import { getContext } from '../context/provider';
-import { writeRenativeConfigFile } from '../configs/utils';
+import { getUpdatedConfigFile, writeRenativeConfigFile } from '../configs/utils';
 import { checkAndCreateProjectPackage } from '../projects/package';
 import { getEngineTemplateByPlatform } from '../configs/engines';
 import { getConfigRootProp } from '../context/contextProps';
@@ -182,24 +182,28 @@ export const loadEnginePluginDeps = async (engineConfigs: Array<RnvEngineInstall
     const addedPlugins: Record<string, Array<string>> = {};
     let hasAddedPlugins = false;
     const originalProjectPlugins = cnf.engine?.plugins || {};
-    engineConfigs.forEach((ecf) => {
-        const engineConfig = readObjectSync<ConfigFileEngine>(ecf.configPath);
-        const engPlugins = engineConfig?.engine.plugins;
-        if (engPlugins) {
-            const projectPlugins = c.files.project.config?.project.plugins;
-            // Comparing original config causes engine think that template is not extended with additional deps
-            if (projectPlugins) {
-                Object.keys(engPlugins).forEach((k) => {
-                    if (!projectPlugins[k]) {
-                        hasAddedPlugins = true;
-                        originalProjectPlugins[k] = engPlugins[k];
-                        addedPlugins[k] = addedPlugins[k] || [];
-                        addedPlugins[k].push(k);
-                    }
-                });
+
+    for (const ecf of engineConfigs) {
+        const originalEngineConfig = readObjectSync<ConfigFileEngine>(ecf.configPath);
+        if (originalEngineConfig) {
+            const engineConfig = await getUpdatedConfigFile<ConfigFileEngine>(originalEngineConfig, ecf.configPath);
+            const engPlugins = engineConfig.engine.plugins;
+            if (engPlugins) {
+                const projectPlugins = c.files.project.config?.project.plugins;
+                // Comparing original config causes engine think that template is not extended with additional deps
+                if (projectPlugins) {
+                    Object.keys(engPlugins).forEach((k) => {
+                        if (!projectPlugins[k]) {
+                            hasAddedPlugins = true;
+                            originalProjectPlugins[k] = engPlugins[k];
+                            addedPlugins[k] = addedPlugins[k] || [];
+                            addedPlugins[k].push(k);
+                        }
+                    });
+                }
             }
         }
-    });
+    }
 
     if (hasAddedPlugins) {
         const engineKeys = engineConfigs.map((v) => v.key);

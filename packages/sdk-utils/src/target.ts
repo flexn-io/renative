@@ -7,7 +7,7 @@ export const getTargetWithOptionalPrompt = async () => {
     const options = [];
 
     if (platform && !target) {
-        const projectTarget = ctx.files.project.configLocal?.defaultTargets?.[platform];
+        const projectTarget = ctx.files.project.configLocal?.local?.defaultTargets?.[platform];
         if (projectTarget) {
             options.push({ name: `${projectTarget} (project default)`, value: projectTarget });
         }

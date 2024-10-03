@@ -44,7 +44,7 @@ export default createTask({
 
         if (fsExistsSync(paths.workspace.config)) {
             const configFile = JSON.parse(fsReadFileSync(paths.workspace.config).toString());
-            const updatedFile = getUpdatedConfigFile(configFile, paths.workspace.config, 'workspace');
+            const updatedFile = await getUpdatedConfigFile(configFile, paths.workspace.config, 'workspace');
             files.workspace.config = updatedFile;
 
             if (files.workspace.config?.workspace?.appConfigsPath) {

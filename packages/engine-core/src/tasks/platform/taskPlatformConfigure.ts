@@ -30,8 +30,6 @@ export default createTask({
         await isBuildSchemeSupported();
 
         const entryFile = getConfigProp('entryFile');
-        console.log('@@@@@@@@@@ c.buildConfig', ctx.buildConfig.platforms);
-        console.log('@@@@@@@@@@ ctx.runtime', ctx.runtime);
 
         const dest = path.join(ctx.paths.project.dir, `${entryFile}.js`);
         if (!fsExistsSync(dest)) {

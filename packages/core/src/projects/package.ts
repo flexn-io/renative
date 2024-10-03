@@ -53,7 +53,7 @@ export const checkAndCreateProjectPackage = async () => {
 
         const originalTemplateObj = readObjectSync<ConfigFileTemplate>(c.paths.template.configTemplate);
         if (originalTemplateObj) {
-            const templateObj = getUpdatedConfigFile(originalTemplateObj);
+            const templateObj = await getUpdatedConfigFile(originalTemplateObj);
             const pkgJson = templateObj?.template?.templateConfig?.package_json || {};
             pkgJson.name = packageName;
             pkgJson.version = packageVersion;
@@ -74,7 +74,7 @@ export const checkAndCreateProjectPackage = async () => {
         }
     }
 
-    loadFile(c.files.project, c.paths.project, 'package');
+    await loadFile(c.files.project, c.paths.project, 'package');
 
     return true;
 };
