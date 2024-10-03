@@ -52,8 +52,8 @@ export const upgradeDependencies = (
     _fixDeps(packageFile?.devDependencies, version);
     _fixDeps(packageFile?.dependencies, version);
     _fixDeps(packageFile?.peerDependencies, version);
-    if (configFile?.projectTemplate?.templateConfig) {
-        configFile.projectTemplate.templateConfig.version = version;
+    if (configFile?.project?.templateConfig) {
+        configFile.project.templateConfig.version = version;
     }
 
     if (packageFile) {
@@ -108,7 +108,7 @@ export const generatePlatformTemplatePaths = () => {
     const pt = c.buildConfig.paths?.platformTemplatesDirs || {};
     const result: Record<string, string> = {};
 
-    if (c.buildConfig?.project?.defaults) {
+    if (c.buildConfig?.defaults) {
         c.buildConfig?.defaults?.supportedPlatforms?.forEach((platform: RnvPlatform) => {
             if (platform) {
                 const engine = c.runtime.enginesByPlatform[platform];

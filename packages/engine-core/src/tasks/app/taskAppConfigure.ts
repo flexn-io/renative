@@ -142,7 +142,7 @@ const _findAndSwitchAppConfigDir = async (ctx: RnvContext) => {
 };
 
 const _setAppId = (ctx: RnvContext, appId: string) => {
-    const currentAppConfigId = ctx.files.project?.configLocal?._meta?.currentAppConfigId;
+    const currentAppConfigId = ctx.files.project?.configLocal?.local?._meta?.currentAppConfigId;
 
     logTask('_setAppId', `appId:${appId} runtime.appId:${ctx.runtime.appId} _meta.appId:${currentAppConfigId}`);
     ctx.runtime.appId = appId || ctx.runtime.appId || currentAppConfigId;

@@ -48,7 +48,7 @@ const Question = async (data: NewProjectData) => {
     const optsPlatforms = c.program.opts().platform && [c.program.opts().platform];
     const selectedPlatforms =
         optsPlatforms ||
-        files.template.renativeTemplateConfig?.projectTemplate?.bootstrapConfig?.defaultSelectedPlatforms ||
+        files.template.renativeTemplateConfig?.template?.bootstrapConfig?.defaultSelectedPlatforms ||
         supportedPlatforms;
 
     if (supportedPlatforms.length === 0) {

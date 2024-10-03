@@ -13,19 +13,24 @@ import { generatePlatformTemplatePaths } from './configProject';
 import { RnvFileName } from '../enums/fileName';
 import { getContext } from '../context/provider';
 import { RnvFolderName } from '../enums/folderName';
-import type { ConfigFileTemplates } from '../schema/types';
+import type { ConfigFileRenative, ConfigFileTemplates } from '../schema/types';
 
-export const loadFileExtended = (fileObj: Record<string, any>, pathObj: RnvContextPathObj, key: RnvContextFileKey) => {
+export const loadFileExtended = (
+    fileObj: Record<string, any>,
+    pathObj: RnvContextPathObj,
+    key: RnvContextFileKey,
+    namespace?: keyof ConfigFileRenative
+) => {
     const c = getContext();
-    const result = loadFile(fileObj, pathObj, key);
+    const result = loadFile(fileObj, pathObj, key, namespace);
     if (fileObj[key]) {
         fileObj[`${key}_original`] = { ...fileObj[key] };
     }
-    const extendsTemplate = fileObj[key]?.extendsTemplate;
+    const extendsTemplate = fileObj[key]?.project?.extendsTemplate || fileObj[key]?.app?.extendsTemplate;
+
     if (key === 'config' && extendsTemplate) {
         // extendsTemplate only applies to standard 'config'
-        let currTemplate =
-            c.files.project[key]?.projectTemplate?.templateConfig?.name || fileObj[key].templateConfig?.name;
+        let currTemplate = c.files.project[key]?.template?.templateConfig?.name || fileObj[key].templateConfig?.name;
         if (!currTemplate) {
             if (extendsTemplate.startsWith('@')) {
                 currTemplate = extendsTemplate.split('/').slice(0, 2).join('/');
@@ -64,20 +69,22 @@ export const loadFileExtended = (fileObj: Record<string, any>, pathObj: RnvConte
 const _loadConfigFiles = (
     fileObj: RnvContextFileObj<object>,
     pathObj: RnvContextPathObj,
-    parseAppConfigs?: boolean
+    parseAppConfigs?: boolean,
+    namespace?: keyof ConfigFileRenative
 ) => {
     // let result = false;
     let extendAppId: string | undefined;
 
-    const extendedFileLoadResult = loadFileExtended(fileObj, pathObj, 'config');
+    const extendedFileLoadResult = loadFileExtended(fileObj, pathObj, 'config', namespace);
+
     const fileObjConfig = fileObj.config;
     if (fileObjConfig && 'extend' in fileObjConfig && extendedFileLoadResult) {
         extendAppId = (fileObjConfig.extend as string) || extendAppId;
         // result = true;
     }
 
-    loadFileExtended(fileObj, pathObj, 'configLocal');
-    loadFileExtended(fileObj, pathObj, 'configPrivate');
+    loadFileExtended(fileObj, pathObj, 'configLocal', 'local');
+    loadFileExtended(fileObj, pathObj, 'configPrivate', 'private');
     //Do not Extend local configs
     // if (loadFileExtended(c, fileObj, pathObj, 'configLocal')) {
     //     extendAppId = fileObj.configLocal?.extend || extendAppId;
@@ -123,9 +130,9 @@ const _loadConfigFiles = (
         pathObj.configsPrivate.push(pathObj1.configPrivate);
         pathObj.configsLocal.push(pathObj1.configLocal);
         // FILE1: appConfigs/base
-        loadFileExtended(fileObj1, pathObj1, 'config');
-        loadFileExtended(fileObj1, pathObj1, 'configPrivate');
-        loadFileExtended(fileObj1, pathObj1, 'configLocal');
+        loadFileExtended(fileObj1, pathObj1, 'config', 'app');
+        loadFileExtended(fileObj1, pathObj1, 'configPrivate', 'private');
+        loadFileExtended(fileObj1, pathObj1, 'configLocal', 'local');
         if (fileObj1.config) fileObj.configs.push(fileObj1.config);
         if (fileObj1.configPrivate) fileObj.configsPrivate.push(fileObj1.configPrivate);
         if (fileObj1.configLocal) fileObj.configsLocal.push(fileObj1.configLocal);
@@ -153,9 +160,9 @@ const _loadConfigFiles = (
                 pathObj.configsLocal.push(pathObj2.configLocal);
                 pathObj.configsPrivate.push(pathObj2.configPrivate);
                 // FILE2: appConfigs/<extendConfig>
-                loadFileExtended(fileObj2, pathObj2, 'config');
-                loadFileExtended(fileObj2, pathObj2, 'configPrivate');
-                loadFileExtended(fileObj2, pathObj2, 'configLocal');
+                loadFileExtended(fileObj2, pathObj2, 'config', 'app');
+                loadFileExtended(fileObj2, pathObj2, 'configPrivate', 'private');
+                loadFileExtended(fileObj2, pathObj2, 'configLocal', 'local');
 
                 if (fileObj2.config) fileObj.configs.push(fileObj2.config);
                 if (fileObj2.configLocal) fileObj.configsLocal.push(fileObj2.configLocal);
@@ -172,9 +179,9 @@ const _loadConfigFiles = (
         pathObj.configsLocal.push(path.join(path3, RnvFileName.renativeLocal));
         pathObj.configsPrivate.push(path.join(path3, RnvFileName.renativePrivate));
         // FILE3: appConfigs/<appId>
-        loadFileExtended(fileObj, pathObj, 'config');
-        loadFileExtended(fileObj, pathObj, 'configPrivate');
-        loadFileExtended(fileObj, pathObj, 'configLocal');
+        loadFileExtended(fileObj, pathObj, 'config', 'app');
+        loadFileExtended(fileObj, pathObj, 'configPrivate', 'private');
+        loadFileExtended(fileObj, pathObj, 'configLocal', 'local');
         if (fileObj.config) fileObj.configs.push(fileObj.config);
         if (fileObj.configPrivate) fileObj.configsPrivate.push(fileObj.configPrivate);
         if (fileObj.configLocal) fileObj.configsLocal.push(fileObj.configLocal);
@@ -228,7 +235,7 @@ export const loadDefaultConfigTemplates = async () => {
     if (rnvConfigTemplates) {
         ctx.files.rnvConfigTemplates.config = rnvConfigTemplates;
         ctx.files.scopedConfigTemplates = {
-            rnv: rnvConfigTemplates,
+            rnv: rnvConfigTemplates.templates?.pluginTemplates,
         };
     }
 
@@ -265,7 +272,7 @@ export const parseRenativeConfigs = async () => {
     const wsDir = getRealPath(await getWorkspaceDirPath(c));
     if (wsDir) {
         generateContextPaths(c.paths.workspace, wsDir);
-        _loadConfigFiles(c.files.workspace, c.paths.workspace);
+        _loadConfigFiles(c.files.workspace, c.paths.workspace, false, 'workspace');
     }
 
     // LOAD DEFAULT WORKSPACE //not needed anymore. loaded at the initial stage
@@ -298,11 +305,10 @@ export const parseRenativeConfigs = async () => {
     c.paths.workspace.project.appConfigBase.dir = path.join(c.paths.workspace.project.dir, 'appConfigs', 'base');
 
     generatePlatformTemplatePaths();
-
     if (c.runtime.appId) {
         if (c.runtime.appConfigDir) {
             generateContextPaths(c.paths.appConfig, c.runtime.appConfigDir);
-            _loadConfigFiles(c.files.appConfig, c.paths.appConfig, true);
+            _loadConfigFiles(c.files.appConfig, c.paths.appConfig, true, 'app');
         }
 
         const workspaceAppConfigsDir = getRealPath(c.buildConfig.workspaceAppConfigsDir);

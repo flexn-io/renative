@@ -24,7 +24,7 @@ export const configureTemplateFiles = async () => {
     const templateConfig = readObjectSync<ConfigFileTemplate>(c.paths.template.configTemplate);
 
     let mergedObj = _getProjectTemplateMergedConfig(templateConfig);
-    const includedPaths = mergedObj?.projectTemplate.templateConfig?.includedPaths;
+    const includedPaths = mergedObj?.template.templateConfig?.includedPaths;
 
     if (includedPaths) {
         includedPaths.forEach((pth) => {
@@ -65,7 +65,8 @@ export const isTemplateInstalled = () => {
 export const applyTemplate = async () => {
     const c = getContext();
     logDefault('applyTemplate');
-    if (c.buildConfig?.project?.isTemplate) return true;
+
+    if (c.buildConfig?.isTemplate) return true;
     if (!c.files.project.config) {
         logError('Project config not loaded. cannot apply template');
         return false;
@@ -80,7 +81,7 @@ export const applyTemplate = async () => {
 const _applyTemplate = async (c: RnvContext) => {
     logDefault('_applyTemplate');
 
-    const tplName = c.buildConfig?.project?.templateConfig?.name;
+    const tplName = c.buildConfig?.templateConfig?.name;
     if (!tplName) {
         logError(`Template config missing. Make sure renative.json >> templateConfig.name is set`);
         return;

@@ -1000,15 +1000,13 @@ export const checkForPluginDependencies = async (postInjectHandler?: AsyncCallba
     if (!c.buildConfig.plugins) return;
 
     const bcPlugins = c.buildConfig.plugins;
-
     Object.keys(c.buildConfig.plugins).forEach((pluginName) => {
         const renativePluginConfig = _getPluginConfiguration(c, pluginName);
 
         if (renativePluginConfig) {
             c._renativePluginCache[pluginName] = renativePluginConfig;
         }
-
-        const pluginDeps = renativePluginConfig?.pluginTemplates.pluginDependencies;
+        const pluginDeps = renativePluginConfig?.plugin?.pluginDependencies;
         if (pluginDeps) {
             // we have dependencies for this plugin
             Object.keys(pluginDeps).forEach((p) => {

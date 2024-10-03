@@ -197,7 +197,7 @@ const Question = async (data: NewProjectData) => {
             },
         });
         mergeIntoProjectConfig(data, {
-            projectTemplate: {
+            template: {
                 templateConfig: {
                     name: inputs.template.packageName,
                     version: filePath,
@@ -233,7 +233,7 @@ const Question = async (data: NewProjectData) => {
             });
         }
         mergeIntoProjectConfig(data, {
-            projectTemplate: {
+            template: {
                 templateConfig: {
                     name: inputs.template.packageName,
                     version: inputs.template.version,
@@ -261,10 +261,7 @@ const Question = async (data: NewProjectData) => {
     const renativeTemplateConfig: ConfigFileTemplate = readObjectSync<ConfigFileTemplate>(
         path.join(templateDir, RnvFileName.renativeTemplate)
     ) || {
-        integrationTemplates: {},
-        platformTemplates: {},
-        pluginTemplates: {},
-        projectTemplate: {},
+        template: {},
     };
     if (renativeTemplateConfig) {
         files.template.renativeTemplateConfig = renativeTemplateConfig;

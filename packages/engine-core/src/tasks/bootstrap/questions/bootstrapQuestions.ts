@@ -4,10 +4,10 @@ import type { NewProjectData } from '../types';
 import { getContext } from '../../../getContext';
 
 type ConfigProp = Required<
-    Required<Required<ConfigFileTemplate>['projectTemplate']>['bootstrapConfig']
+    Required<Required<ConfigFileTemplate>['template']>['bootstrapConfig']
 >['bootstrapQuestions'][number]['configProp'];
 type BootstrapQuestions = Required<
-    Required<Required<ConfigFileTemplate>['projectTemplate']>['bootstrapConfig']
+    Required<Required<ConfigFileTemplate>['template']>['bootstrapConfig']
 >['bootstrapQuestions'];
 type QuestionResults = Record<
     string,
@@ -23,7 +23,7 @@ const Question = async (data: NewProjectData) => {
     const { inputs, files } = data;
     inputs.bootstrapQuestions = {};
     const bootstrapQuestions =
-        files.template.renativeTemplateConfig?.projectTemplate?.bootstrapConfig?.bootstrapQuestions || [];
+        files.template.renativeTemplateConfig?.template?.bootstrapConfig?.bootstrapQuestions || [];
     const results: QuestionResults = {};
     const providedAnswers: Record<string, any> = {};
 

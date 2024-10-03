@@ -175,7 +175,7 @@ export type RnvContextFiles = {
         package?: NpmPackageFile;
         config?: ConfigFileTemplates;
     };
-    scopedConfigTemplates: Record<string, ConfigFileTemplates>;
+    scopedConfigTemplates: Record<string, ConfigFileTemplates['templates']['pluginTemplates']>;
     workspace: RnvContextFileObj<ConfigFileWorkspace> & {
         project: RnvContextFileObj<ConfigFileProject>;
         appConfig: RnvContextFileObj<ConfigFileApp>;
@@ -197,7 +197,7 @@ export type RnvContextFiles = {
 export type RnvContextFileObj<T> = {
     config?: T;
     config_original?: T;
-    configLocal?: Partial<ConfigFileLocal>;
+    configLocal?: Partial<ConfigFileLocal> & { $schema?: string };
     configPrivate?: Partial<ConfigFilePrivate>;
     configs: Array<T>;
     configsLocal: Array<Partial<ConfigFileLocal>>;

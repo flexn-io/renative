@@ -25,10 +25,13 @@ export const checkAndUpdateProjectIfRequired = async () => {
     const { isMonorepo } = c.buildConfig;
     if (isMonorepo) return true;
     await applyTemplate();
-    console.log('c.paths.template.configTemplate', c.paths.template.configTemplate);
+
     const originalTemplateConfigFile = readObjectSync<ConfigFileTemplate>(c.paths.template.configTemplate);
     if (originalTemplateConfigFile) {
-        const templateConfigFile = getUpdatedConfigFile<ConfigFileTemplate>(originalTemplateConfigFile);
+        const templateConfigFile = getUpdatedConfigFile<ConfigFileTemplate>(
+            originalTemplateConfigFile,
+            c.paths.template.configTemplate
+        );
 
         const availablePlatforms = _getAllAvailablePlatforms(templateConfigFile);
         if (!availablePlatforms.includes(platform)) {

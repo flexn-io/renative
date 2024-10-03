@@ -175,7 +175,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
                     })),
             });
 
-            const localOverridden = !!c.files.project.configLocal?.defaultTargets?.[c.platform];
+            const localOverridden = !!c.files.project.configLocal?.local?.defaultTargets?.[c.platform];
 
             const actionLocalUpdate = `Update ${chalk().green('project')} default target for platform ${c.platform}`;
             const actionGlobalUpdate = `Update ${chalk().green('global')}${
@@ -195,8 +195,11 @@ export const getIosDeviceToRunOn = async (c: Context) => {
 
             if (chosenAction === actionLocalUpdate || (chosenAction === actionGlobalUpdate && localOverridden)) {
                 const configLocal = c.files.project.configLocal || {};
-                if (!configLocal.defaultTargets) configLocal.defaultTargets = {};
-                configLocal.defaultTargets[c.platform] = sim.name;
+                if (!configLocal?.local?.defaultTargets) {
+                    configLocal.local = configLocal.local || {};
+                    configLocal.local.defaultTargets = {};
+                }
+                configLocal.local.defaultTargets[c.platform] = sim.name;
 
                 c.files.project.configLocal = configLocal;
                 writeFileSync(c.paths.project.configLocal, configLocal);

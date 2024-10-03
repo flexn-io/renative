@@ -14,6 +14,7 @@ import { getContext } from '../context/provider';
 import type { RnvContext, RnvContextBuildConfig } from '../context/types';
 import type { FileUtilsPropConfig } from '../system/types';
 import type { RnvPlatformKey } from '../types';
+import { ConfigFileRenative } from '../schema/types';
 
 const _arrayMergeOverride = (_destinationArray: Array<string>, sourceArray: Array<string>) => sourceArray;
 
@@ -44,6 +45,66 @@ const getEnginesPluginDelta = () => {
     }
     c.runtime.missingEnginePlugins = missingEnginePlugins;
     return enginePlugins;
+};
+export type FlatConfigFile = Record<string, any>;
+export type ConfigFile = ConfigFileRenative | FlatConfigFile;
+
+const renativeKeys: (keyof ConfigFileRenative)[] = [
+    'app',
+    'project',
+    'workspace',
+    'local',
+    'overrides',
+    'integration',
+    'engine',
+    'plugin',
+    'private',
+    'integration',
+    'template',
+    'templates',
+    'workspaces',
+];
+const isConfigFileNamespace = (file: ConfigFile): file is ConfigFileRenative => {
+    if (!file || typeof file !== 'object') return false;
+    return renativeKeys.some((key) => key in file);
+};
+
+const transformConfig = (config: ConfigFileRenative): FlatConfigFile => {
+    const transformedConfig: FlatConfigFile = {};
+    Object.entries(config).forEach(([key, value]) => {
+        if (renativeKeys.includes(key as keyof ConfigFileRenative)) {
+            if (typeof value === 'object' && value !== null) {
+                Object.entries(value).forEach(([nestedKey, nestedValue]) => {
+                    if (nestedKey === '$schema') {
+                        transformedConfig[nestedKey] = nestedValue;
+                    } else {
+                        if (transformedConfig[nestedKey] && typeof transformedConfig[nestedKey] === 'object') {
+                            transformedConfig[nestedKey] = merge(transformedConfig[nestedKey], nestedValue);
+                        } else {
+                            transformedConfig[nestedKey] = nestedValue;
+                        }
+                    }
+                });
+            } else {
+                transformedConfig[key] = value;
+            }
+        }
+    });
+    return transformedConfig;
+};
+const categorizeFiles = (
+    file: ConfigFile | undefined,
+    namespaceFiles: FlatConfigFile[],
+    nonNamespaceFiles: FlatConfigFile[]
+) => {
+    if (file) {
+        if (isConfigFileNamespace(file)) {
+            const transformedFile = transformConfig(file);
+            namespaceFiles.push(transformedFile);
+        } else {
+            nonNamespaceFiles.push(file);
+        }
+    }
 };
 
 export const generateBuildConfig = () => {
@@ -77,6 +138,9 @@ export const generateBuildConfig = () => {
     ];
     const mergePaths = [...mergePathsPublic, ...mergePathsPrivate];
 
+    const namespaceFiles: ConfigFileRenative[] = [];
+    const nonNamespaceFiles: FlatConfigFile[] = [];
+
     const mergeFilesPublic = [
         // TODO: do we need to merge .rnv/renative.json with .customWorkspace/reantive.json ?
         // c.files.dotRnv.config,
@@ -104,7 +168,8 @@ export const generateBuildConfig = () => {
     ];
     const mergeFiles = [...mergeFilesPublic, ...mergeFilesPrivate];
 
-    _generateBuildConfig(mergePaths, mergeFiles);
+    mergeFiles.forEach((file) => categorizeFiles(file, namespaceFiles, nonNamespaceFiles));
+    _generateBuildConfig(mergePaths, [...namespaceFiles, ...nonNamespaceFiles]);
 };
 
 const _generateBuildConfig = (mergePaths: string[], mergeFiles: Array<object | undefined>) => {
@@ -123,7 +188,7 @@ const _generateBuildConfig = (mergePaths: string[], mergeFiles: Array<object | u
     const scopedPluginTemplates: Record<string, any> = {};
     if (c.files.scopedConfigTemplates) {
         Object.keys(c.files.scopedConfigTemplates).forEach((v) => {
-            const plgs = c.files.scopedConfigTemplates[v].pluginTemplates;
+            const plgs = c.files.scopedConfigTemplates[v];
             scopedPluginTemplates[v] = plgs;
         });
     }

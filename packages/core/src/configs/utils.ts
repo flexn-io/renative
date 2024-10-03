@@ -1,5 +1,5 @@
 import { RnvFileName } from '../enums/fileName';
-import { logDebug } from '../logger';
+import { logDebug, logInfo, logWarning } from '../logger';
 import { ConfigFileRenative } from '../schema/types';
 import { writeFileSync } from '../system/fs';
 import { generateBuildConfig } from './buildConfig';
@@ -12,10 +12,13 @@ export const writeRenativeConfigFile = (configPath: string | undefined, configDa
 
 export const getUpdatedConfigFile = <T extends Record<string, any>>(
     configFile: T,
+    configPath?: string,
     namespace?: keyof ConfigFileRenative
 ): T => {
     const updatedConfigFile: Record<string, any> = {};
-
+    if ((!configFile?.$schema && namespace) || !configFile.$schema?.includes(RnvFileName.schema)) {
+        console.log(`Config is old ${configPath}`);
+    }
     if (!configFile?.$schema && namespace) {
         updatedConfigFile[namespace as string] = { ...configFile };
     }

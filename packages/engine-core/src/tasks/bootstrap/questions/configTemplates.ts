@@ -16,7 +16,7 @@ const Question = async (data: NewProjectData): Promise<void> => {
 
     const cnfTemplatesName = '@rnv/config-templates';
     const cnfDepVer =
-        files.template.renativeTemplateConfig?.projectTemplate?.templateConfig?.package_json?.devDependencies?.[
+        files.template.renativeTemplateConfig?.template?.templateConfig?.package_json?.devDependencies?.[
             cnfTemplatesName
         ];
     if (cnfDepVer) {

@@ -2,7 +2,385 @@
     "$schema": "../../.rnv/schema/renative-1.0.schema.json",
     "app": {
         "id": "base",
-        "hidden": true
+        "hidden": true,
+        "common": {
+            "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
+            "license": "MIT",
+            "includedPlugins": ["*"],
+            "includedFonts": ["*"],
+            "includedPermissions": ["INTERNET"],
+            "buildSchemes": {
+                "debug": {
+                    "description": "Hello ReNative - Use for local development"
+                },
+                "test": {
+                    "description": "Hello ReNative - Use to run automation"
+                },
+                "release": {
+                    "description": "Hello ReNative - Use for production deployments"
+                }
+            },
+            "backgroundColor": "#FFFFFF",
+            "fontSources": ["{{resolvePackage(react-native-vector-icons)}}/Fonts"],
+            "assetSources": ["{{resolvePackage(@flexn/assets-renative-outline)}}/assets"]
+        },
+        "platforms": {
+            "ios": {
+                "entryFile": "index",
+                "provisioningStyle": "Automatic",
+                "systemCapabilities": {
+                    "com.apple.AccessWiFi": false,
+                    "com.apple.ApplePay": false,
+                    "com.apple.ApplicationGroups.iOS": false,
+                    "com.apple.AutoFillCredentialProvider": false,
+                    "com.apple.BackgroundModes": false,
+                    "com.apple.ClassKit": false,
+                    "com.apple.DataProtection": false,
+                    "com.apple.GameCenter.iOS": false,
+                    "com.apple.HealthKit": false,
+                    "com.apple.HomeKit": false,
+                    "com.apple.HotspotConfiguration": false,
+                    "com.apple.InAppPurchase": false,
+                    "com.apple.InterAppAudio": false,
+                    "com.apple.Keychain": false,
+                    "com.apple.Maps.iOS": false,
+                    "com.apple.Multipath": false,
+                    "com.apple.NearFieldCommunicationTagReading": false,
+                    "com.apple.NetworkExtensions.iOS": false,
+                    "com.apple.Push": false,
+                    "com.apple.SafariKeychain": false,
+                    "com.apple.Siri": false,
+                    "com.apple.VPNLite": false,
+                    "com.apple.WAC": false,
+                    "com.apple.Wallet": false,
+                    "com.apple.iCloud": false
+                },
+                "entitlements": {},
+                "includedPermissions": ["*"],
+                "buildSchemes": {
+                    "debug": {
+                        "runScheme": "Debug",
+                        "bundleAssets": false
+                    },
+                    "test": {
+                        "runScheme": "Debug",
+                        "bundleAssets": false,
+                        "sdk": "iphonesimulator"
+                    },
+                    "release": {
+                        "runScheme": "Release",
+                        "bundleAssets": true,
+                        "bundleIsDev": false
+                    }
+                }
+            },
+            "tvos": {
+                "entryFile": "index",
+                "provisioningStyle": "Automatic",
+                "entitlements": {},
+                "includedPermissions": ["*"],
+                "buildSchemes": {
+                    "debug": {
+                        "runScheme": "Debug",
+                        "bundleAssets": false
+                    },
+                    "test": {
+                        "runScheme": "Debug",
+                        "bundleAssets": false,
+                        "sdk": "appletvsimulator"
+                    },
+                    "release": {
+                        "runScheme": "Release",
+                        "bundleAssets": true,
+                        "bundleIsDev": false
+                    }
+                }
+            },
+            "macos": {
+                "entryFile": "index",
+                "provisioningStyle": "Automatic",
+                "includedPermissions": ["*"],
+                "buildSchemes": {
+                    "debug": {
+                        "runScheme": "Debug",
+                        "bundleAssets": false
+                    },
+                    "test": {
+                        "runScheme": "Debug",
+                        "bundleAssets": true
+                    },
+                    "release": {
+                        "runScheme": "Release",
+                        "bundleAssets": true,
+                        "bundleIsDev": false
+                    }
+                }
+            },
+            "android": {
+                "entryFile": "index",
+                "includedPermissions": ["INTERNET"],
+                "buildSchemes": {
+                    "debug": {
+                        "signingConfig": "Debug",
+                        "bundleAssets": false
+                    },
+                    "test": {
+                        "signingConfig": "Debug",
+                        "bundleAssets": false
+                    },
+                    "canary": {
+                        "signingConfig": "Release",
+                        "bundleAssets": true,
+                        "bundleIsDev": false,
+                        "multipleAPKs": false
+                    },
+                    "release": {
+                        "signingConfig": "Release",
+                        "multipleAPKs": true,
+                        "bundleAssets": true,
+                        "bundleIsDev": false
+                    }
+                }
+            },
+            "androidtv": {
+                "entryFile": "index",
+                "multipleAPKs": false,
+                "assetFolderPlatform": "android",
+                "includedPermissions": ["*"],
+                "buildSchemes": {
+                    "debug": {
+                        "signingConfig": "Debug",
+                        "bundleAssets": false
+                    },
+                    "test": {
+                        "signingConfig": "Debug",
+                        "bundleAssets": false
+                    },
+                    "release": {
+                        "signingConfig": "Release",
+                        "multipleAPKs": true,
+                        "bundleAssets": true,
+                        "bundleIsDev": false
+                    }
+                }
+            },
+            "firetv": {
+                "entryFile": "index",
+                "multipleAPKs": false,
+                "assetFolderPlatform": "android",
+                "includedPermissions": ["*"],
+                "buildSchemes": {
+                    "debug": {
+                        "signingConfig": "Debug",
+                        "bundleAssets": false
+                    },
+                    "test": {
+                        "signingConfig": "Debug",
+                        "bundleAssets": false
+                    },
+                    "release": {
+                        "signingConfig": "Release",
+                        "multipleAPKs": true,
+                        "bundleAssets": true,
+                        "bundleIsDev": false
+                    }
+                }
+            },
+            "androidwear": {
+                "entryFile": "index",
+                "multipleAPKs": false,
+                "assetFolderPlatform": "android",
+                "includedPermissions": ["*"],
+                "buildSchemes": {
+                    "debug": {
+                        "signingConfig": "Debug",
+                        "bundleAssets": false
+                    },
+                    "test": {
+                        "signingConfig": "Debug",
+                        "bundleAssets": false
+                    },
+                    "release": {
+                        "signingConfig": "Release",
+                        "bundleAssets": true,
+                        "bundleIsDev": false
+                    }
+                }
+            },
+            "tizen": {
+                "appName": "RNVanillaTV",
+                "entryFile": "index",
+                "certificateProfile": "RNVanillaCert",
+                "package": "NkVRhWHJSX",
+                "id": "NkVRhWHJSX.RNVanillaTV",
+                "buildSchemes": {
+                    "debug": {
+                        "bundleAssets": false
+                    },
+                    "release": {
+                        "bundleAssets": true,
+                        "bundleIsDev": false
+                    }
+                }
+            },
+            "tizenwatch": {
+                "appName": "RNVanillaWatch",
+                "entryFile": "index",
+                "certificateProfile": "RNVanillaCert",
+                "package": "cHIP2fIRQZ",
+                "id": "cHIP2fIRQZ.RNVanillaWatch",
+                "buildSchemes": {
+                    "debug": {
+                        "bundleAssets": false
+                    },
+                    "release": {
+                        "bundleAssets": true,
+                        "bundleIsDev": false
+                    }
+                }
+            },
+            "tizenmobile": {
+                "appName": "RNVanillaMobile",
+                "entryFile": "index",
+                "certificateProfile": "RNVanillaCert",
+                "package": "PauodvCU2r",
+                "id": "PauodvCU2r.RNVanillaMobile",
+                "buildSchemes": {
+                    "debug": {
+                        "bundleAssets": false
+                    },
+                    "release": {
+                        "bundleAssets": true,
+                        "bundleIsDev": false
+                    }
+                }
+            },
+            "web": {
+                "entryFile": "index",
+                "pagesDir": "src/pages",
+                "devServerHost": "0.0.0.0",
+                "buildSchemes": {
+                    "debug": {
+                        "bundleAssets": false,
+                        "environment": "development"
+                    },
+                    "test": {
+                        "bundleAssets": false,
+                        "environment": "development"
+                    },
+                    "release": {
+                        "bundleAssets": true,
+                        "bundleIsDev": false,
+                        "environment": "production"
+                    }
+                },
+                "custom": {
+                    "deploy": {
+                        "type": "none"
+                    }
+                }
+            },
+            "webtv": {
+                "entryFile": "index",
+                "pagesDir": "src/pages",
+                "devServerHost": "0.0.0.0",
+                "buildSchemes": {
+                    "debug": {
+                        "bundleAssets": false,
+                        "environment": "development"
+                    },
+                    "release": {
+                        "bundleAssets": true,
+                        "bundleIsDev": false,
+                        "environment": "production"
+                    }
+                },
+                "custom": {
+                    "deploy": {
+                        "type": "none"
+                    }
+                }
+            },
+            "webos": {
+                "entryFile": "index",
+                "buildSchemes": {
+                    "debug": {
+                        "bundleAssets": false
+                    },
+                    "release": {
+                        "bundleAssets": true,
+                        "bundleIsDev": false
+                    }
+                }
+            },
+            "windows": {
+                "entryFile": "index",
+                "templateVSProject": {
+                    "language": "cpp"
+                },
+                "buildSchemes": {
+                    "debug": {
+                        "bundleAssets": false
+                    },
+                    "release": {
+                        "bundleAssets": true,
+                        "bundleIsDev": false,
+                        "enableSourceMaps": true
+                    }
+                }
+            },
+            "linux": {
+                "entryFile": "index",
+                "buildSchemes": {
+                    "debug": {
+                        "bundleAssets": false
+                    },
+                    "release": {
+                        "bundleAssets": true,
+                        "bundleIsDev": false,
+                        "enableSourceMaps": true
+                    }
+                }
+            },
+            "xbox": {
+                "entryFile": "index",
+                "templateVSProject": {
+                    "language": "cpp",
+                    "arch": "x64"
+                },
+                "buildSchemes": {
+                    "debug": {
+                        "bundleAssets": false
+                    },
+                    "release": {
+                        "bundleAssets": true,
+                        "bundleIsDev": false,
+                        "enableSourceMaps": true
+                    }
+                }
+            },
+            "kaios": {
+                "entryFile": "index",
+                "buildSchemes": {
+                    "debug": {
+                        "bundleAssets": false
+                    },
+                    "release": {
+                        "bundleAssets": true,
+                        "bundleIsDev": false
+                    }
+                }
+            },
+            "chromecast": {
+                "entryFile": "index",
+                "webpackConfig": {
+                    "customScripts": [
+                        "www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js",
+                        "www.gstatic.com/cast/sdk/libs/devtools/debug_layer/caf_receiver_logger.js"
+                    ]
+                }
+            }
+        }
     },
     "project": {},
     "templates": {}

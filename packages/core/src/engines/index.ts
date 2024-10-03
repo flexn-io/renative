@@ -181,10 +181,9 @@ export const loadEnginePluginDeps = async (engineConfigs: Array<RnvEngineInstall
     // Check engine dependencies
     const addedPlugins: Record<string, Array<string>> = {};
     let hasAddedPlugins = false;
-    const originalProjectPlugins = cnf.engine.plugins || {};
+    const originalProjectPlugins = cnf.engine?.plugins || {};
     engineConfigs.forEach((ecf) => {
         const engineConfig = readObjectSync<ConfigFileEngine>(ecf.configPath);
-
         const engPlugins = engineConfig?.engine.plugins;
         if (engPlugins) {
             const projectPlugins = c.files.project.config?.project.plugins;
@@ -354,7 +353,7 @@ export const getFilteredEngines = (c: RnvContext) => {
         logError('Engine configs missing in your renative.json. FIXING...DONE');
         return {};
     }
-    const rnvPlatforms = c.files.rnvConfigTemplates.config?.platformTemplates?.platformTemplates;
+    const rnvPlatforms = c.files.rnvConfigTemplates.config?.templates?.platformTemplates;
     const supportedPlatforms = c.files.project.config?.project?.defaults?.supportedPlatforms || [];
 
     const filteredEngines: Record<string, string> = {};

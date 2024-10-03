@@ -1,34 +1,36 @@
 {
-    "$schema": "../../.rnv/schema/rnv.engine.json",
-    "name": "@rnv/engine-rn",
-    "engineExtension": "rn",
-    "overview": "Default react-native based engine. Runs standard react native apps with native support",
-    "plugins": {
-        "react": "source:rnv",
-        "react-art": "source:rnv",
-        "react-dom": "source:rnv",
-        "react-native": "source:rnv"
-    },
-    "npm": {
-        "devDependencies": {}
-    },
-    "platforms": {
-        "ios": {
-            "engine": "engine-rn",
-            "npm": {
-                "dependencies": {
-                    "dotenv": "16.4.5"
+    "$schema": "../../.rnv/schema/renative-1.0.schema.json",
+    "engine": {
+        "name": "@rnv/engine-rn",
+        "engineExtension": "rn",
+        "overview": "Default react-native based engine. Runs standard react native apps with native support",
+        "plugins": {
+            "react": "source:rnv",
+            "react-art": "source:rnv",
+            "react-dom": "source:rnv",
+            "react-native": "source:rnv"
+        },
+        "npm": {
+            "devDependencies": {}
+        },
+        "platforms": {
+            "ios": {
+                "engine": "engine-rn",
+                "npm": {
+                    "dependencies": {
+                        "dotenv": "16.4.5"
+                    }
                 }
+            },
+            "macos": {
+                "engine": "engine-rn"
+            },
+            "android": {
+                "engine": "engine-rn"
+            },
+            "androidwear": {
+                "engine": "engine-rn"
             }
-        },
-        "macos": {
-            "engine": "engine-rn"
-        },
-        "android": {
-            "engine": "engine-rn"
-        },
-        "androidwear": {
-            "engine": "engine-rn"
         }
     }
 }

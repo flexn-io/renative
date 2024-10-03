@@ -12,6 +12,7 @@ import {
     createTask,
     RnvTaskName,
     RnvFileName,
+    getUpdatedConfigFile,
 } from '@rnv/core';
 import { writeFileSync } from 'fs';
 
@@ -42,7 +43,9 @@ export default createTask({
         }
 
         if (fsExistsSync(paths.workspace.config)) {
-            files.workspace.config = JSON.parse(fsReadFileSync(paths.workspace.config).toString());
+            const configFile = JSON.parse(fsReadFileSync(paths.workspace.config).toString());
+            const updatedFile = getUpdatedConfigFile(configFile, paths.workspace.config, 'workspace');
+            files.workspace.config = updatedFile;
 
             if (files.workspace.config?.workspace?.appConfigsPath) {
                 if (!fsExistsSync(files.workspace.config.workspace?.appConfigsPath)) {
@@ -60,7 +63,6 @@ export default createTask({
                     paths.project.appConfigsDir = files.workspace.config.workspace.appConfigsPath;
                 }
             }
-
             // Check config sanity
             if (files.workspace.config?.workspace?.defaultTargets === undefined) {
                 logWarning(

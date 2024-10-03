@@ -49,6 +49,7 @@ export const createPlatformBuild = (platform: RnvPlatform) =>
         if (!platform || !_isPlatformSupportedSync(platform, undefined, reject)) return;
 
         const ptDir = c.paths.project.platformTemplatesDirs[platform];
+        console.log('@@@@@@@ ptDir', ptDir, c.paths.project.platformTemplatesDirs);
         if (!ptDir) {
             logError(`Cannot create platform build: c.paths.project.platformTemplatesDirs[${platform}] is not defined`);
             return;

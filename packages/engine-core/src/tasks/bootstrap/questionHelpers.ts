@@ -92,7 +92,7 @@ export const initNewProject = async () => {
             configTemplates: {},
             template: {
                 renativeTemplateConfig: {
-                    projectTemplate: {},
+                    template: {},
                 },
                 renativeConfig: {},
             },
