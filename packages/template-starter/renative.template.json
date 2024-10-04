@@ -16,39 +16,20 @@
                     ".gitignore",
                     "appConfigs/app",
                     "appConfigs/base/assets",
-                    "appConfigs/base/fonts"
+                    "appConfigs/base/fonts",
+                    "scripts"
                 ]
             },
             {
-                "paths": [
-                    "Gemfile",
-                    "metro.config.js",
-                    ".bundle",
-                    "react-native.config.js"
-                ],
-                "platforms": [
-                    "ios",
-                    "android",
-                    "androidwear",
-                    "tvos",
-                    "firetv",
-                    "androidtv"
-                ]
+                "paths": ["Gemfile", "metro.config.js", ".bundle", "react-native.config.js"],
+                "platforms": ["ios", "android", "androidwear", "tvos", "firetv", "androidtv"]
             },
             {
-                "paths": [
-                    "next.config.js",
-                    "next-env.d.ts",
-                    "src/pages"
-                ],
-                "platforms": [
-                    "web"
-                ]
+                "paths": ["next.config.js", "next-env.d.ts", "src/pages"],
+                "platforms": ["web"]
             },
             {
-                "paths": [
-                    "webpack.config.js"
-                ],
+                "paths": ["webpack.config.js"],
                 "platforms": [
                     "windows",
                     "macos",
@@ -83,10 +64,10 @@
                 "minipass": "7.1.2",
                 "readable-stream": "4.5.2"
             },
-            "browserslist": [
-                ">0.2%",
-                "not op_mini all"
-            ]
+            "browserslist": [">0.2%", "not op_mini all"],
+            "scripts": {
+                "postinstall": "node scripts/postinstall.js"
+            }
         }
     },
     "bootstrapConfig": {
@@ -94,10 +75,6 @@
             "pkg-dir": "7.0.0",
             "xmlbuilder": "^15.1.1"
         },
-        "defaultSelectedPlatforms": [
-            "web",
-            "ios",
-            "android"
-        ]
+        "defaultSelectedPlatforms": ["web", "ios", "android"]
     }
 }
