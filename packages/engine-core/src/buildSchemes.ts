@@ -18,7 +18,6 @@ export const isBuildSchemeSupported = async () => {
 
     const baseBuildSchemes = c.buildConfig.common?.buildSchemes || {};
     const platformBuildSchemes = platforms[c.platform]?.buildSchemes || {};
-
     const buildSchemes = merge(baseBuildSchemes, platformBuildSchemes);
 
     c.buildConfig.platforms = platforms;

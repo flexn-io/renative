@@ -204,7 +204,17 @@ console.log(gcEngine3().payload.UNTYPED);
 
 const engine1 = createRnvEngine({
     tasks: [task1, task2, task3, task4, task5, task6],
-    config: {},
+    config: {
+        engine: {
+            engineExtension: 'js',
+            name: 'test',
+            npm: {},
+            overview: '',
+            platforms: {},
+            plugins: {},
+            custom: {},
+        },
+    },
     platforms: {},
 });
 type GCEngine1 = GetContextType<typeof engine1.getContext>;
@@ -234,7 +244,17 @@ console.log(gcEngine1().program.opts().preset1Key1);
 
 const engine2 = createRnvEngine({
     tasks: [],
-    config: {},
+    config: {
+        engine: {
+            engineExtension: 'js',
+            name: 'test',
+            npm: {},
+            overview: '',
+            platforms: {},
+            plugins: {},
+            custom: {},
+        },
+    },
     platforms: {},
 });
 type GCEngine2 = GetContextType<typeof engine2.getContext>;
@@ -254,7 +274,17 @@ console.log(gcEngine2().payload.UNTYPED);
 const engine3 = createRnvEngine({
     extendModules: [module1, module3],
     tasks: [],
-    config: {},
+    config: {
+        engine: {
+            engineExtension: 'js',
+            name: 'test',
+            npm: {},
+            overview: '',
+            platforms: {},
+            plugins: {},
+            custom: {},
+        },
+    },
     platforms: {},
 });
 type GCEngine3 = GetContextType<typeof engine3.getContext>;
@@ -289,7 +319,17 @@ console.log(gcEngine3().payload.UNTYPED);
 const engine4 = createRnvEngine({
     extendModules: [module1, module2, module3],
     tasks: [task2, task3, task4, task5, task6],
-    config: {},
+    config: {
+        engine: {
+            engineExtension: 'js',
+            name: 'test',
+            npm: {},
+            overview: '',
+            platforms: {},
+            plugins: {},
+            custom: {},
+        },
+    },
     platforms: {},
 });
 type GCEngine4 = GetContextType<typeof engine4.getContext>;

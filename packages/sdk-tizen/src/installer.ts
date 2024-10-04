@@ -84,8 +84,8 @@ const _attemptAutoFix = async (c: RnvContext, shouldThrow?: boolean) => {
 
         if (confirmSdk) {
             try {
-                if (!c.files.workspace.config?.sdks) c.files.workspace.config.sdks = {};
-                c.files.workspace.config.sdks.TIZEN_SDK = result;
+                if (!c.files.workspace.config?.workspace?.sdks) c.files.workspace.config.workspace.sdks = {};
+                c.files.workspace.config.workspace.sdks.TIZEN_SDK = result;
                 //TODO: use config_original here?
                 writeFileSync(c.paths.workspace.config, c.files.workspace.config);
                 generateBuildConfig();
@@ -97,7 +97,6 @@ const _attemptAutoFix = async (c: RnvContext, shouldThrow?: boolean) => {
             return true;
         }
     }
-
 
     if (shouldThrow) {
         throw new Error(`_attemptAutoFix: no sdks found. searched at: ${getSdkLocations().join(', ')}`);

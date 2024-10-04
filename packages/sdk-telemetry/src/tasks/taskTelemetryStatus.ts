@@ -3,7 +3,7 @@ import { chalk, logToSummary, createTask, RnvTaskName } from '@rnv/core';
 export default createTask({
     description: 'Show current rnv telemetry status on your machine',
     fn: async ({ ctx }) => {
-        const disableTelemetry = ctx.files.dotRnv.config?.disableTelemetry;
+        const disableTelemetry = ctx.files.dotRnv.config?.workspace?.disableTelemetry;
 
         if (disableTelemetry) {
             logToSummary(

@@ -172,12 +172,12 @@ export const prePublish = async (c: RnvContext) => {
                 pkgFile = readObjectSync<any>(_pkgPath);
                 pkgName = pkgFile?.name;
             }
-            const _rnvPath = path.join(dirPath, 'renative.json');
+            const _rnvPath = path.join(dirPath, RnvFileName.renative);
             if (fsExistsSync(_rnvPath)) {
                 rnvPath = _rnvPath;
                 rnvFile = readObjectSync(rnvPath);
             }
-            const _rnvTempPath = path.join(dirPath, 'renative.template.json');
+            const _rnvTempPath = path.join(dirPath, RnvFileName.renativeTemplate);
             if (fsExistsSync(_rnvTempPath)) {
                 rnvTempPath = _rnvTempPath;
                 rnvTempFile = readObjectSync(rnvTempPath);

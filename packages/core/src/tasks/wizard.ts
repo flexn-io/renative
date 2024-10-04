@@ -10,7 +10,7 @@ import { RnvTask } from './types';
 const isTaskSupportedOnPlatform = (task: RnvTask, platform: RnvPlatform) => {
     if (!task.platforms) return true;
 
-    const selectedEngineID = getEngineRunnerByPlatform(platform)?.config.name;
+    const selectedEngineID = getEngineRunnerByPlatform(platform)?.config.engine.name;
     if (task.ownerType === 'engine' && selectedEngineID && task.ownerID && task.ownerID !== selectedEngineID) {
         // If we already specified platform we can skip tasks registered to unsupported engines
         return false;

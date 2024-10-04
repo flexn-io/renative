@@ -3,7 +3,7 @@ import intersection from 'lodash/intersection';
 
 export const getPluginList = (isUpdate = false) => {
     const c = getContext();
-
+    console.log();
     const output: PluginListResponse = {
         asString: '',
         asArray: [],
@@ -14,7 +14,7 @@ export const getPluginList = (isUpdate = false) => {
     let i = 1;
 
     Object.keys(c.files.scopedConfigTemplates).forEach((pk) => {
-        const plugins = c.files.scopedConfigTemplates[pk]?.pluginTemplates;
+        const plugins = c.files.scopedConfigTemplates[pk]?.templates?.pluginTemplates;
         if (!plugins) return;
         Object.keys(plugins).forEach((k) => {
             const plugin = plugins[k];

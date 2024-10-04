@@ -22,7 +22,7 @@ const Question = async (data: NewProjectData): Promise<void> => {
     c.paths.project.package = path.join(c.paths.project.dir, RnvFileName.package);
     c.paths.project.config = path.join(c.paths.project.dir, RnvFileName.renative);
 
-    files.project.renativeConfig.projectName = inputs.projectName;
+    files.project.renativeConfig.project.projectName = inputs.projectName;
     files.project.packageJson.name = inputs.packageName;
 
     if (fsExistsSync(c.paths.project.dir)) {

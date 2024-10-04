@@ -1,7 +1,6 @@
 import type {
     ConfigFileBuildConfig,
     ConfigFileProject,
-    ConfigFileTemplate,
     ConfigFileTemplates,
     NpmPackageFile,
     RnvPlatformKey,
@@ -33,14 +32,14 @@ export type NewProjectData = {
     };
     files: {
         template: {
-            renativeTemplateConfig: ConfigFileTemplate;
-            renativeConfig: ConfigFileProject;
+            renativeTemplateConfig: Pick<ConfigFileProject, 'template'>;
+            renativeConfig: Partial<ConfigFileProject>;
         };
         configTemplates: {
             config?: ConfigFileTemplates;
         };
         project: {
-            renativeConfig: ConfigFileProject;
+            renativeConfig: Partial<ConfigFileProject> & Pick<ConfigFileProject, 'project'>;
             packageJson: NpmPackageFile;
             // renativeAppConfig: ConfigFileApp;
         };

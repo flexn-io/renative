@@ -26,7 +26,7 @@ export const listAppConfigsFoldersSync = (ignoreHiddenConfigs: boolean, appConfi
                 if (fsExistsSync(appConfig)) {
                     try {
                         const config = readObjectSync<ConfigFileApp>(appConfig);
-                        if (config?.hidden !== true) {
+                        if (config?.app?.hidden !== true) {
                             appConfigsDirs.push(dir);
                         }
                     } catch (e) {

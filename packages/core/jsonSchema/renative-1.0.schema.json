@@ -5279,6 +5279,12 @@
               }
             }
           },
+          "required": [
+            "name",
+            "engineExtension",
+            "plugins",
+            "npm"
+          ],
           "additionalProperties": false
         },
         "plugin": {
@@ -5629,7 +5635,7 @@
           },
           "additionalProperties": false
         },
-        "configTemplates": {
+        "templates": {
           "type": "object",
           "properties": {
             "projectTemplates": {
@@ -5809,20 +5815,6 @@
           "description": "schema definition"
         }
       },
-      "required": [
-        "app",
-        "project",
-        "local",
-        "overrides",
-        "integration",
-        "engine",
-        "plugin",
-        "private",
-        "template",
-        "configTemplates",
-        "workspace",
-        "workspaces"
-      ],
       "additionalProperties": false
     }
   },
