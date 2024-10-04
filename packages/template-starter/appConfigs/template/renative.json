@@ -2,7 +2,9 @@
     "$schema": "../../.rnv/schema/renative-1.0.schema.json",
     "app": {
         "extend": "base",
-        "id": "template",
+        "id": "template"
+    },
+    "project": {
         "isTemplate": true,
         "isMonorepo": true,
         "defaults": {
@@ -24,7 +26,6 @@
                 "kaios": 8093
             }
         },
-        "skipBootstrapCopy": true,
         "common": {
             "id": "renative.helloworld",
             "title": "ReNative",
@@ -42,7 +43,60 @@
             "runtime": {
                 "welcomeMessage": "Hello ReNative!"
             }
+        },
+        "platforms": {
+            "android": {
+                "buildSchemes": {
+                    "debug": {}
+                }
+            },
+            "androidtv": {
+                "buildSchemes": {
+                    "debug": {}
+                }
+            },
+            "firetv": {
+                "buildSchemes": {
+                    "debug": {}
+                }
+            },
+            "androidwear": {
+                "buildSchemes": {
+                    "debug": {}
+                }
+            },
+            "ios": {
+                "buildSchemes": {
+                    "debug": {}
+                }
+            },
+            "tvos": {
+                "buildSchemes": {
+                    "debug": {}
+                }
+            },
+            "macos": {
+                "buildSchemes": {
+                    "debug": {}
+                }
+            },
+            "linux": {
+                "buildSchemes": {
+                    "debug": {}
+                }
+            },
+            "tizen": {
+                "package": "NkVRhWHJSX",
+                "id": "NkVRhWHJSX.RNVanillaTV"
+            },
+            "tizenwatch": {
+                "package": "cHIP2fIRQZ",
+                "id": "cHIP2fIRQZ.RNVanillaWatch"
+            },
+            "tizenmobile": {
+                "package": "PauodvCU2r",
+                "id": "PauodvCU2r.RNVanillaMobile"
+            }
         }
-    },
-    "project": {}
+    }
 }

@@ -1,7 +1,9 @@
 {
     "app": {
         "extendsTemplate": "@rnv/template-starter/appConfigs/base/renative.json",
-        "id": "harness",
+        "id": "harness"
+    },
+    "project": {
         "common": {
             "id": "renative.harness",
             "title": "Harness",
@@ -19,12 +21,8 @@
                     "title": "Test Harness"
                 }
             },
-            "fontSources": [
-                "{{resolvePackage(react-native-vector-icons)}}/Fonts"
-            ],
-            "excludedPlugins": [
-                "@react-native-firebase/app"
-            ]
+            "fontSources": ["{{resolvePackage(react-native-vector-icons)}}/Fonts"],
+            "excludedPlugins": ["@react-native-firebase/app"]
         },
         "platforms": {
             "ios": {
@@ -38,9 +36,7 @@
                         "teamID": "9VVQTZS9NN",
                         "templateXcode": {
                             "Podfile": {
-                                "sources": [
-                                    "https://github.com/CocoaPods/Specs.git"
-                                ],
+                                "sources": ["https://github.com/CocoaPods/Specs.git"],
                                 "header": [
                                     "plugin 'cocoapods-user-defined-build-types'",
                                     "enable_user_defined_build_types!"

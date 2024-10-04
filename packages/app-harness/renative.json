@@ -16,9 +16,7 @@
             "ios": {
                 "templateXcode": {
                     "AppDelegate_h": {
-                        "appDelegateMethods": [
-                            "@property (nonatomic, strong) UIView *appSwitcherView;"
-                        ]
+                        "appDelegateMethods": ["@property (nonatomic, strong) UIView *appSwitcherView;"]
                     },
                     "AppDelegate_mm": {
                         "appDelegateMethods": {
@@ -43,16 +41,11 @@
                     "NSPrivacyAccessedAPITypes": [
                         {
                             "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryActiveKeyboards",
-                            "NSPrivacyAccessedAPITypeReasons": [
-                                "CA92.1"
-                            ]
+                            "NSPrivacyAccessedAPITypeReasons": ["CA92.1"]
                         },
                         {
                             "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategorySystemBootTime",
-                            "NSPrivacyAccessedAPITypeReasons": [
-                                "CA92.1",
-                                "E174.1"
-                            ]
+                            "NSPrivacyAccessedAPITypeReasons": ["CA92.1", "E174.1"]
                         }
                     ]
                 }
@@ -60,9 +53,7 @@
             "tvos": {
                 "templateXcode": {
                     "AppDelegate_h": {
-                        "appDelegateMethods": [
-                            "@property (nonatomic, strong) UIView *appSwitcherView;"
-                        ]
+                        "appDelegateMethods": ["@property (nonatomic, strong) UIView *appSwitcherView;"]
                     },
                     "AppDelegate_mm": {
                         "appDelegateMethods": {
@@ -87,16 +78,11 @@
                     "NSPrivacyAccessedAPITypes": [
                         {
                             "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryActiveKeyboards",
-                            "NSPrivacyAccessedAPITypeReasons": [
-                                "CA92.1"
-                            ]
+                            "NSPrivacyAccessedAPITypeReasons": ["CA92.1"]
                         },
                         {
                             "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategorySystemBootTime",
-                            "NSPrivacyAccessedAPITypeReasons": [
-                                "CA92.1",
-                                "E174.1"
-                            ]
+                            "NSPrivacyAccessedAPITypeReasons": ["CA92.1", "E174.1"]
                         }
                     ]
                 }
@@ -106,22 +92,11 @@
                     "build_gradle": {
                         "buildscript": {
                             "custom": [],
-                            "dependencies": [
-                                "def customVar2 = '2'"
-                            ],
-                            "repositories": [
-                                "def customVar1 = '1'"
-                            ],
-                            "ext": [
-                                "playServicesLocationVersion = \"21.0.1\""
-                            ]
+                            "dependencies": ["def customVar2 = '2'"],
+                            "repositories": ["def customVar1 = '1'"],
+                            "ext": ["playServicesLocationVersion = \"21.0.1\""]
                         },
-                        "injectAfterAll": [
-                            "allprojects {",
-                            "   repositories {",
-                            "   }",
-                            "}"
-                        ]
+                        "injectAfterAll": ["allprojects {", "   repositories {", "   }", "}"]
                     },
                     "styles_xml": {
                         "tag": "resources",
@@ -148,13 +123,12 @@
                 "ios": {
                     "templateXcode": {
                         "project_pbxproj": {
-                            "resourceFiles": [
-                                "RNVApp/launch-image.png"
-                            ]
+                            "resourceFiles": ["RNVApp/launch-image.png"]
                         }
                     }
                 }
             },
+
             "rn-fetch-blob": "source:rnv",
             "react-native-carplay": "source:rnv",
             "@react-native-community/push-notification-ios": "source:rnv",
@@ -162,9 +136,7 @@
                 "android": {
                     "templateAndroid": {
                         "MainApplication_kt": {
-                            "packages": [
-                                "MyAppPackage"
-                            ]
+                            "packages": ["MyAppPackage"]
                         }
                     },
                     "forceLinking": true
@@ -185,9 +157,7 @@
                     ],
                     "templateXcode": {
                         "Podfile": {
-                            "header": [
-                                "$RNFirebaseAsStaticFramework = true"
-                            ]
+                            "header": ["$RNFirebaseAsStaticFramework = true"]
                         }
                     }
                 }
@@ -245,12 +215,8 @@
                                 "Resources/arrow4.png",
                                 "Resources/arrow5.png"
                             ],
-                            "sourceFiles": [
-                                "RNPhotoEditor/RNPhotoEditor.m"
-                            ],
-                            "headerFiles": [
-                                "RNPhotoEditor/RNPhotoEditor.h"
-                            ]
+                            "sourceFiles": ["RNPhotoEditor/RNPhotoEditor.m"],
+                            "headerFiles": ["RNPhotoEditor/RNPhotoEditor.h"]
                         }
                     }
                 },
@@ -264,12 +230,8 @@
                 "ios": {
                     "templateXcode": {
                         "Podfile": {
-                            "header": [
-                                "node_require('react-native-permissions/scripts/setup.rb')"
-                            ],
-                            "injectLines": [
-                                "setup_permissions([{{props.PERMISSIONS}}])"
-                            ]
+                            "header": ["node_require('react-native-permissions/scripts/setup.rb')"],
+                            "injectLines": ["setup_permissions([{{props.PERMISSIONS}}])"]
                         }
                     }
                 },

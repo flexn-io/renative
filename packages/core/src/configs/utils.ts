@@ -1,4 +1,5 @@
 import path from 'path';
+import merge from 'deepmerge';
 import { inquirerPrompt } from '../api';
 import { getConfigRootProp } from '../context/contextProps';
 import { getContext } from '../context/provider';
@@ -24,7 +25,7 @@ export const getUpdatedConfigFile = async <T extends Record<string, any>>(
     let misNamespace = namespace;
     if (!configFile?.$schema && misNamespace) {
         isOldFile = true;
-        updatedConfigFile[misNamespace] = { ...configFile };
+        updatedConfigFile[misNamespace] = merge({}, configFile);
     }
     if (configFile?.$schema && !configFile.$schema.includes(RnvFileName.schema)) {
         isOldFile = true;

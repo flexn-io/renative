@@ -2,7 +2,9 @@
     "$schema": "../../.rnv/schema/renative-1.0.schema.json",
     "app": {
         "id": "base",
-        "hidden": true,
+        "hidden": true
+    },
+    "project": {
         "common": {
             "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
             "license": "MIT",
@@ -381,7 +383,5 @@
                 }
             }
         }
-    },
-    "project": {},
-    "templates": {}
+    }
 }
