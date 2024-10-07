@@ -259,9 +259,6 @@
             }
         },
         "react-native-google-cast": {
-            "ios": {
-                "disabled": true
-            },
             "androidwear": {
                 "disabled": true
             },

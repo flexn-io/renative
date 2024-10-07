@@ -72,8 +72,11 @@ describe('Test App Harness', () => {
             await FlexnRunner.expectToBeDisplayedByText('Cast to');
             await FlexnRunner.waitForDisplayedByText('OK');
             await FlexnRunner.expectToBeDisplayedByText('OK');
+        } else if (process.env.PLATFORM === 'ios') {
+            await FlexnRunner.clickById('app-harness-home-cast-support-button');
+            await FlexnRunner.expectToBeDisplayedByText('Cast to');
         } else {
             await FlexnRunner.expectToHaveTextById('app-harness-home-cast-support-text', 'Not supported');
-        }
+        } 
     });
 });
