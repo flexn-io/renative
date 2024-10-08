@@ -48,7 +48,7 @@ describe('checkAndUpdateProjectIfRequired', () => {
         const c = getContext();
         c.platform = 'test' as RnvPlatform;
         c.buildConfig.isMonorepo = false;
-        c.files.project.config = { defaults: { supportedPlatforms: ['ios'] } };
+        c.files.project.config = { project: { defaults: { supportedPlatforms: ['ios'] } } };
         c.paths.template.configTemplate = '/path/to/template';
         jest.mocked(readObjectSync).mockReturnValue({
             templateConfig: { includedPaths: [{ platforms: ['android'], paths: ['mockFile.js'] }] },
@@ -65,7 +65,7 @@ describe('checkAndUpdateProjectIfRequired', () => {
         const c = getContext();
         c.platform = 'android';
         c.buildConfig.isMonorepo = false;
-        c.files.project.config = { defaults: { supportedPlatforms: ['ios'] } };
+        c.files.project.config = { project: { defaults: { supportedPlatforms: ['ios'] } } };
         c.paths.template.configTemplate = '/path/to/template';
         jest.mocked(readObjectSync).mockReturnValue({
             templateConfig: { includedPaths: [{ platforms: ['android'], paths: ['mockFile.js'] }] },
@@ -81,7 +81,7 @@ describe('checkAndUpdateProjectIfRequired', () => {
         const c = getContext();
         c.platform = 'android';
         c.buildConfig.isMonorepo = false;
-        c.files.project.config = { defaults: { supportedPlatforms: ['ios'] } };
+        c.files.project.config = { project: { defaults: { supportedPlatforms: ['ios'] } } };
         c.paths.project.dir = '/project/dir';
         c.paths.project.config = '/project/dir/renative.json';
         c.paths.template.dir = '/template/dir';

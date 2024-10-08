@@ -299,10 +299,7 @@ export type ConfigFilePlugin = Pick<ConfigFileRenative, 'plugin'>;
 export type ConfigFileApp = Pick<ConfigFileRenative, 'app' | 'project'>;
 export type ConfigFilePrivate = ConfigFileRenative;
 export type ConfigFileProject = ConfigFileRenative;
-// export type ConfigFileTemplate = Pick<
-//     ConfigFileRenative,
-//     'pluginTemplates' | 'platformTemplates' | 'integrationTemplates' | 'projectTemplate'
-// >;
+
 export type ConfigFileTemplate = Pick<ConfigFileRenative, 'template'>;
 export type ConfigFileTemplates = Pick<ConfigFileRenative, 'templates'>;
 export type ConfigFileWorkspace = Pick<ConfigFileRenative, 'workspace'>;
