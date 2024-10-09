@@ -59,7 +59,7 @@ const Question = async (data: NewProjectData): Promise<void> => {
         };
     }
 
-    const packageJson = files.template.renativeTemplateConfig.template.templateConfig?.package_json || {};
+    const packageJson = files.template.renativeTemplateConfig?.template.templateConfig?.package_json || {};
     files.project.packageJson = mergeObjects(c, files.project.packageJson, packageJson);
 };
 

@@ -298,7 +298,7 @@ export type ConfigFileOverrides = Pick<ConfigFileRenative, 'overrides'>;
 export type ConfigFilePlugin = Pick<ConfigFileRenative, 'plugin'>;
 export type ConfigFileApp = Pick<ConfigFileRenative, 'app' | 'project'>;
 export type ConfigFilePrivate = ConfigFileRenative;
-export type ConfigFileProject = ConfigFileRenative;
+export type ConfigFileProject = Pick<ConfigFileRenative, 'project'>;
 
 export type ConfigFileTemplate = Pick<ConfigFileRenative, 'template'>;
 export type ConfigFileTemplates = Pick<ConfigFileRenative, 'templates'>;

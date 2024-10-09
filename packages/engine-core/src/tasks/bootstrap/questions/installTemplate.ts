@@ -27,7 +27,7 @@ import { saveProgressIntoProjectConfig } from '../questionHelpers';
 import { merge } from 'lodash';
 import { getContext } from '../../../getContext';
 
-const mergeIntoProjectConfig = (data: NewProjectData, updateObj: Partial<ConfigFileProject>) => {
+const mergeIntoProjectConfig = (data: NewProjectData, updateObj: ConfigFileTemplate) => {
     const { files } = data;
     files.project.renativeConfig = merge(files.project.renativeConfig, updateObj);
 };
