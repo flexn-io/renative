@@ -6,6 +6,7 @@ import type {
     ConfigFilePlugin,
     ConfigFilePrivate,
     ConfigFileProject,
+    ConfigFileRenative,
     ConfigFileRuntime,
     ConfigFileTemplates,
     ConfigFileWorkspace,
@@ -184,7 +185,7 @@ export type RnvContextFiles = {
     //     project: RnvContextFileObj<ConfigFileProject>;
     //     appConfig: RnvContextFileObj<ConfigFileApp>;
     // };
-    project: RnvContextFileObj<ConfigFileProject> & {
+    project: RnvContextFileObj<ConfigFileRenative> & {
         builds: Record<string, ConfigFileBuildConfig>;
         assets: {
             config?: ConfigFileRuntime;
