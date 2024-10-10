@@ -1,3 +1,4 @@
+import { createRnvApi } from '../../api';
 import { generateApiDefaults } from '../../api/defaults';
 import { getApi } from '../../api/provider';
 import { generateContextDefaults } from '../../context/defaults';
@@ -8,6 +9,9 @@ jest.mock('../../logger');
 jest.mock('../../context/provider');
 jest.mock('../../api/provider');
 
+beforeAll(() => {
+    createRnvApi();
+});
 beforeEach(() => {
     // NOTE: do not call createRnvContext() in core library itself. It is not a mock
     jest.mocked(getApi).mockReturnValue(generateApiDefaults());
