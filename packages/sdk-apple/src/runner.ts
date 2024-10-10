@@ -69,18 +69,35 @@ export const getIosDeviceToRunOn = async (c: Context) => {
 
     if (!c.platform) return;
 
-    const { device } = c.program.opts();
+    const { device, target } = c.program.opts();
     let devicesArr: AppleDevice[] = [];
-    if (device === true) {
+    if (device) {
         devicesArr = await getAppleDevices(false, true);
     } else {
-        devicesArr = await getAppleDevices(true, false);
+        devicesArr = await getAppleDevices(false, false);
     }
+    const run = (selectedDevice: AppleDevice) => {
+        logDebug(`Selected device: ${JSON.stringify(selectedDevice, null, 3)}`);
+        c.runtime.targetUDID = selectedDevice.udid;
+        if (selectedDevice.udid) {
+            p = `--udid ${selectedDevice.udid}`;
+        } else {
+            p = `--device ${selectedDevice.name}`;
+        }
+
+        return p;
+    };
 
     let p;
+    const isAvailableDevice = (device: string | boolean) => {
+        if (device !== true) {
+            return devicesArr.find((d) => d.name === device) ? true : false;
+        }
+        return true;
+    };
 
-    if (device === true) {
-        if (devicesArr.length === 1) {
+    if (device) {
+        if (devicesArr.length === 1 && !target && isAvailableDevice(device)) {
             logSuccess(
                 `Found one device connected! Device name: ${chalk().bold.white(
                     devicesArr[0].name
@@ -92,20 +109,8 @@ export const getIosDeviceToRunOn = async (c: Context) => {
             } else {
                 p = `--device ${devicesArr[0].name}`;
             }
-        } else if (devicesArr.length > 1) {
-            const run = (selectedDevice: AppleDevice) => {
-                logDebug(`Selected device: ${JSON.stringify(selectedDevice, null, 3)}`);
-                c.runtime.targetUDID = selectedDevice.udid;
-                if (selectedDevice.udid) {
-                    p = `--udid ${selectedDevice.udid}`;
-                } else {
-                    p = `--device ${selectedDevice.name}`;
-                }
-
-                return p;
-            };
-
-            if (c.runtime.target) {
+        } else if (devicesArr.length && (target || devicesArr.find((d) => d.isDevice))) {
+            if (c.runtime.target && device === true) {
                 const selectedDevice = devicesArr.find((d) => d.name === c.runtime.target);
                 if (selectedDevice) {
                     return run(selectedDevice);
@@ -133,8 +138,6 @@ export const getIosDeviceToRunOn = async (c: Context) => {
         } else {
             return Promise.reject(`No ${c.platform} devices connected!`);
         }
-    } else if (device) {
-        p = `--device ${device}`;
     } else if (c.runtime.isTargetTrue) {
         const devices = devicesArr.map((v) => ({
             name: `${v.name} | ${v.icon} | v: ${chalk().green(v.version)} | udid: ${chalk().grey(v.udid)}${
@@ -143,16 +146,19 @@ export const getIosDeviceToRunOn = async (c: Context) => {
             value: v,
         }));
 
-        const { sim } = await inquirerPrompt({
-            name: 'sim',
-            message: 'Select the simulator you want to launch on',
+        const { chosenTarget } = await inquirerPrompt({
+            name: 'chosenTarget',
+            message: 'Select the simulator or device you want to launch on',
             type: 'list',
             choices: devices,
         });
-
-        c.runtime.target = sim.name;
-        if (c.runtime.target) {
-            p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
+        if (!chosenTarget.isDevice) {
+            c.runtime.target = chosenTarget.name;
+            if (c.runtime.target) {
+                p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
+            }
+        } else {
+            return run(chosenTarget);
         }
     } else if (c.runtime.target || devicesArr.length > 0) {
         // check if the default sim is available
