@@ -57,12 +57,11 @@ const AppThemed = () => {
                 <TouchableOpacity
                     ref={buttonRef}
                     onPress={toggle}
+                    onLongPress={toggle}
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
                     style={[theme.styles.button, isFocused && { ...theme.styles.focusedButton, outline: 'none' }]}
-                    // Set the initial AndroidTV and tvOS focus to be on the button
                     hasTVPreferredFocus
-                    // On AndroidTV going up can appear as lost focus, so block focus up
                     nextFocusUp={findNodeHandle(buttonRef.current) || undefined}
                     {...testProps('template-starter-home-screen-try-my-button')}
                 >
