@@ -20,22 +20,23 @@ const AppThemed = () => {
 
     const onPressLong = () => {
         toggle();
-        sessionStorage.setItem('theme', String(!dark));
-        window.location.reload();
+        if (isWebBased && isFactorTv && buttonRef?.current) {
+            sessionStorage.setItem('theme', String(!dark));
+            window.location.reload();
+        }
     };
 
     useEffect(() => {
-        const currentTheme = sessionStorage.getItem('theme');
-        if (!currentTheme) {
-            sessionStorage.setItem('theme', dark.toString());
-        } else if (dark.toString() !== currentTheme) {
-            toggle();
-        }
-
         setPixelRatio(PixelRatio.get());
         setFontScale(PixelRatio.getFontScale());
         setIsClient(true);
         if (isWebBased && isFactorTv && buttonRef?.current) {
+            const currentTheme = sessionStorage.getItem('theme');
+            if (!currentTheme) {
+                sessionStorage.setItem('theme', dark.toString());
+            } else if (dark.toString() !== currentTheme) {
+                toggle();
+            }
             buttonRef?.current.focus();
         }
     }, []);
