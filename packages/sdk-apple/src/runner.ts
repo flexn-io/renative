@@ -72,12 +72,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
     if (!c.platform) return;
 
     const { device, target } = c.program.opts();
-    let devicesArr: AppleDevice[] = [];
-    if (device) {
-        devicesArr = await getAppleDevices(false, true);
-    } else {
-        devicesArr = await getAppleDevices(false, false);
-    }
+    const devicesArr = await getAppleDevices(false, !!device);
     const run = (selectedDevice: AppleDevice) => {
         logDebug(`Selected device: ${JSON.stringify(selectedDevice, null, 3)}`);
         c.runtime.targetUDID = selectedDevice.udid;
