@@ -18,7 +18,20 @@ const AppThemed = () => {
     const [isClient, setIsClient] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
 
+    const onPressLong = () => {
+        toggle();
+        sessionStorage.setItem('theme', String(!dark));
+        window.location.reload();
+    };
+
     useEffect(() => {
+        const currentTheme = sessionStorage.getItem('theme');
+        if (!currentTheme) {
+            sessionStorage.setItem('theme', dark.toString());
+        } else if (dark.toString() !== currentTheme) {
+            toggle();
+        }
+
         setPixelRatio(PixelRatio.get());
         setFontScale(PixelRatio.getFontScale());
         setIsClient(true);
@@ -57,7 +70,7 @@ const AppThemed = () => {
                 <TouchableOpacity
                     ref={buttonRef}
                     onPress={toggle}
-                    onLongPress={toggle}
+                    onLongPress={() => onPressLong()}
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
                     style={[theme.styles.button, isFocused && { ...theme.styles.focusedButton, outline: 'none' }]}
