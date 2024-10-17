@@ -39,12 +39,11 @@ const updateContext = () => {
     const ctx = getContext();
     ctx.paths.workspace.dir = 'workspace/path/.rnv';
     ctx.files.project.config = {
-        projectName: 'testProject',
-        crypto: { path: './secrets/privateConfigs.enc' },
+        project: { projectName: 'testProject', crypto: { path: './secrets/privateConfigs.enc' } },
     };
     ctx.command = 'crypto';
     ctx.paths.project.dir = 'project/path';
-    ctx.files.project.config_original = {};
+    ctx.files.project.config_original = { project: {} };
     ctx.program.opts = jest.fn().mockReturnValue({ key: 'testKey', reset: false, ci: false });
     return ctx;
 };
@@ -67,7 +66,7 @@ describe('taskCryptoDecrypt tests', () => {
         // GIVEN
         const ctx = getContext();
         ctx.files.project.config = {
-            projectName: '@rnv/testProject',
+            project: { projectName: '@rnv/testProject' },
         };
         // WHEN
         // THEN
@@ -86,7 +85,10 @@ describe('taskCryptoDecrypt tests', () => {
     });
     it('should prompt user if decrypted file already exists and use existing file if confirmed', async () => {
         const ctx = updateContext();
-        const decryptedFilePath = path.join(ctx.paths.workspace.dir, `${ctx.files.project.config?.projectName}.tgz`);
+        const decryptedFilePath = path.join(
+            ctx.paths.workspace.dir,
+            `${ctx.files.project.config?.project?.projectName}.tgz`
+        );
         jest.mocked(getEnvVar).mockReturnValue('CRYPTO_RNV_TESTPROJECT');
         jest.mocked(fsExistsSync).mockReturnValueOnce(true).mockReturnValueOnce(true).mockReturnValueOnce(true);
         jest.mocked(inquirerPrompt).mockResolvedValue({ confirm: true });
@@ -110,7 +112,7 @@ describe('taskCryptoDecrypt tests', () => {
         });
         expect(removeFilesSync).toHaveBeenCalledWith([decryptedFilePath]);
         expect(logSuccess).toHaveBeenCalledWith(
-            `Files successfully extracted into ${ctx.paths.workspace.dir}/${ctx.files.project.config?.projectName}`
+            `Files successfully extracted into ${ctx.paths.workspace.dir}/${ctx.files.project.config?.project?.projectName}`
         );
     });
     it('should prompt user if decrypted folder already exists and skip decryption if user selects skip option', async () => {
@@ -134,7 +136,7 @@ describe('taskCryptoDecrypt tests', () => {
             name: 'option',
             type: 'list',
             choices: ['Yes - override (recommended)', 'Yes - merge', 'Skip'],
-            message: `How to decrypt to ${ctx.paths.workspace.dir}/${ctx.files.project.config?.projectName} ?`,
+            message: `How to decrypt to ${ctx.paths.workspace.dir}/${ctx.files.project.config?.project?.projectName} ?`,
         });
     });
 

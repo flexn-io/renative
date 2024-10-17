@@ -95,14 +95,14 @@ const initializeCryptoDirectory = async (sourceFolder: string) => {
 const _checkAndConfigureCrypto = async () => {
     const ctx = getContext();
     // handle missing config
-    const source = `./${ctx.files.project.config?.projectName}`;
+    const source = `./${ctx.files.project.config?.project?.projectName}`;
 
     const cnf = ctx.files.project.config_original;
     if (!cnf) return;
     const envVar = getEnvVar();
     if (!envVar) return;
 
-    if (ctx.files.project.config && !ctx.files.project.config.crypto) {
+    if (ctx.files.project.config && !ctx.files.project.config.project.crypto) {
         const { location } = await inquirerPrompt({
             type: 'input',
             name: 'location',
@@ -110,10 +110,10 @@ const _checkAndConfigureCrypto = async () => {
                 'Where would you like your secrets to be residing? (path relative to renative project root, without leading or trailing slash. Ex. `myPrivateConfig/encrypt`)',
             default: 'secrets',
         });
-        cnf.crypto = {
+        cnf.project.crypto = {
             path: `./${location}/privateConfigs.enc`,
         };
-        ctx.files.project.config.crypto = cnf.crypto;
+        ctx.files.project.config.project.crypto = cnf.project.crypto;
 
         writeFileSync(ctx.paths.project.config, cnf);
     }
@@ -178,7 +178,7 @@ export default createTask({
     description: 'Encrypts secure files from `~/<wokspace>/<project>/..` to project',
     dependsOn: [RnvTaskName.configureSoft],
     fn: async ({ ctx }) => {
-        const projectName = ctx.files.project.config?.projectName;
+        const projectName = ctx.files.project.config?.project?.projectName;
         if (!projectName) {
             return Promise.reject(
                 `projectName is missing. Make sure you're in a ReNative project or integration and have projectName defined.`
@@ -189,7 +189,7 @@ export default createTask({
 
         await _checkAndConfigureCrypto();
 
-        const destRaw = ctx.files.project.config?.crypto?.path;
+        const destRaw = ctx.files.project.config?.project?.crypto?.path;
         const tsWorkspacePath = path.join(ctx.paths.workspace.dir, projectName, 'timestamp');
         const envVar = getEnvVar();
 

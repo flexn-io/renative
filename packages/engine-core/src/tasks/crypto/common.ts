@@ -40,9 +40,9 @@ export const checkCrypto = async (parentTaskName?: string, originTaskName?: stri
     const c = getContext();
     logTask('checkCrypto');
 
-    if (c.program.opts().ci || c.files.project.config?.crypto?.isOptional) return;
+    if (c.program.opts().ci || c.files.project.config?.project?.crypto?.isOptional) return;
 
-    const sourceRaw = c.files.project.config?.crypto?.path;
+    const sourceRaw = c.files.project.config?.project?.crypto?.path;
     if (!c.files.project.package.name) {
         logError('package.json requires `name` field. cannot check crypto');
         return;

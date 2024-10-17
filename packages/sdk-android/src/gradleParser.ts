@@ -28,7 +28,6 @@ export const parseBuildGradleSync = () => {
     const c = getContext();
     const appFolder = getAppFolder();
 
-
     const templateAndroid = getConfigProp('templateAndroid');
     const buildscript = templateAndroid?.build_gradle?.buildscript;
 
@@ -522,7 +521,7 @@ export const parseSettingsGradleSync = () => {
         },
         {
             pattern: '{{RN_GRADLE_PROJECT_NAME}}',
-            override: c.files.project.config?.projectName?.replace('/', '-'),
+            override: c.files.project.config?.project?.projectName?.replace('/', '-'),
         },
         {
             pattern: '{{SETTINGS_GRADLE_INCLUDE}}',

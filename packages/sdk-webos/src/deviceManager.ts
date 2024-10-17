@@ -208,9 +208,9 @@ const _updateDefaultTargets = async (c: RnvContext, selectedSimulator: string) =
     const workspaceConfig = c.files.workspace.config;
 
     if (workspaceConfig && c.platform) {
-        if (!workspaceConfig.defaultTargets) workspaceConfig.defaultTargets = {};
+        if (!workspaceConfig.workspace.defaultTargets) workspaceConfig.workspace.defaultTargets = {};
 
-        workspaceConfig.defaultTargets[c.platform] = selectedSimulator;
+        workspaceConfig.workspace.defaultTargets[c.platform] = selectedSimulator;
 
         c.files.workspace.config = workspaceConfig;
         writeFileSync(c.paths.workspace.config, workspaceConfig);

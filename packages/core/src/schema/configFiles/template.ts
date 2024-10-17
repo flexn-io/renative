@@ -68,7 +68,7 @@ export const zodConfigFileTemplate: AnyZodObject = z
 //     type: 'list',
 //     configProp: {
 //         key: 'runtime.myServiceConfig',
-//         file: 'renative.json',
+//         file: 'RnvFileName.renative',
 //     },
 //     options: [
 //         {

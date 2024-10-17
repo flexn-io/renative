@@ -4,7 +4,7 @@ export default createTask({
     description: 'Allows you to change supportedPlatforms for your project',
     dependsOn: [RnvTaskName.projectConfigure],
     fn: async ({ ctx }) => {
-        const currentPlatforms = ctx.files.project.config?.defaults?.supportedPlatforms || [];
+        const currentPlatforms = ctx.files.project.config?.project?.defaults?.supportedPlatforms || [];
 
         const { inputSupportedPlatforms } = await inquirerPrompt({
             name: 'inputSupportedPlatforms',

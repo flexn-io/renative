@@ -5,7 +5,7 @@ export default createTask({
     dependsOn: [RnvTaskName.projectConfigure],
     fn: async ({ ctx }) => {
         const cnf = ctx.files.dotRnv.configWorkspaces;
-        if (!cnf) return;
+        if (!cnf?.workspaces) return;
 
         const opts = Object.keys(cnf.workspaces).map((v) => `${v} ${getWorkspaceConnectionString(cnf.workspaces[v])}`);
 

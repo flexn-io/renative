@@ -224,7 +224,7 @@ export const installPackageDependencies = async (failOnError = false) => {
         }
     }
     try {
-        const plats = c.files.project.config?.defaults?.supportedPlatforms;
+        const plats = c.files.project.config?.project?.defaults?.supportedPlatforms;
         if (
             Array.isArray(plats) &&
             (plats.includes('android') ||
@@ -235,10 +235,12 @@ export const installPackageDependencies = async (failOnError = false) => {
             if (!c.files.project.configLocal) {
                 c.files.project.configLocal = {};
             }
-            if (!c.files.project.configLocal?._meta) {
-                c.files.project.configLocal._meta = {};
+            if (!c.files.project.configLocal?.local?._meta) {
+                c.files.project.configLocal.local = c.files.project.configLocal.local || {};
+
+                c.files.project.configLocal.local._meta = {};
             }
-            c.files.project.configLocal._meta.requiresJetify = true;
+            c.files.project.configLocal.local._meta.requiresJetify = true;
             writeFileSync(c.paths.project.configLocal, c.files.project.configLocal);
         }
         c._requiresNpmInstall = false;

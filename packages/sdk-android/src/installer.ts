@@ -21,7 +21,7 @@ import {
 
 import { CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from './constants';
 
-type SDKKey = keyof Required<ConfigFileWorkspace>['sdks'];
+type SDKKey = keyof Required<Required<ConfigFileWorkspace>['workspace']>['sdks'];
 
 const getSdkLocations = () => {
     const ctx = getContext();
@@ -155,8 +155,10 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: SDKKe
 
         if (confirmSdk && c.files.workspace.config) {
             try {
-                if (!c.files.workspace.config?.sdks) c.files.workspace.config.sdks = {};
-                c.files.workspace.config.sdks[sdkKey] = result;
+                if (!c.files.workspace.config?.workspace?.sdks) {
+                    c.files.workspace.config.workspace.sdks = {};
+                }
+                c.files.workspace.config.workspace.sdks[sdkKey] = result;
                 writeFileSync(c.paths.workspace.config, c.files.workspace.config);
                 generateBuildConfig();
                 await checkAndConfigureAndroidSdks();

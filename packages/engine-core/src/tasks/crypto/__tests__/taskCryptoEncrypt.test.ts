@@ -35,11 +35,13 @@ const updateContext = () => {
     const ctx = getContext();
     ctx.paths.workspace.dir = 'workspace/path/.rnv';
     ctx.files.project.config = {
-        projectName: 'testProject',
-        crypto: { path: './secrets/privateConfigs.enc' },
+        project: {
+            projectName: 'testProject',
+            crypto: { path: './secrets/privateConfigs.enc' },
+        },
     };
     ctx.paths.project.dir = 'project/path';
-    ctx.files.project.config_original = {};
+    ctx.files.project.config_original = { project: {} };
     ctx.program.opts = jest.fn().mockReturnValue({ key: 'testKey' });
     return ctx;
 };
@@ -79,7 +81,7 @@ describe('taskCryptoEncrypt tests', () => {
         //GIVEN
         const ctx = getContext();
         ctx.files.project.config = {
-            projectName: '@rnv/testProject',
+            project: { projectName: '@rnv/testProject' },
         };
         ctx.paths.workspace.dir = 'workspace/dir';
         ctx.program.opts = jest.fn().mockReturnValue({ key: 'testKey' });
@@ -207,9 +209,9 @@ describe('taskCryptoEncrypt tests', () => {
         ctx.paths.project.configPrivate = 'project/path/renative.private.json';
         ctx.paths.project.appConfigsDir = 'project/path/appConfigs';
         ctx.paths.project.configPrivateExists = true;
-        ctx.files.project.config = { projectName: 'testProject' };
+        ctx.files.project.config = { project: { projectName: 'testProject' } };
 
-        const sourceFolder = `${ctx.paths.workspace.dir}/${ctx.files.project.config.projectName}`;
+        const sourceFolder = `${ctx.paths.workspace.dir}/${ctx.files.project.config.project.projectName}`;
         const appConfigsDir = path.join(sourceFolder, 'appConfigs');
         const targetFile = 'renative.private.json';
 

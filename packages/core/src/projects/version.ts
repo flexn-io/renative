@@ -8,7 +8,7 @@ export const versionCheck = async (c: RnvContext) => {
 
     if (
         c.runtime.versionCheckCompleted ||
-        c.files.project?.config?.skipAutoUpdate ||
+        c.files.project?.config?.project?.skipAutoUpdate ||
         c.program.opts().skipDependencyCheck
     ) {
         return true;

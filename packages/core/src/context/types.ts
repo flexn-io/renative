@@ -6,6 +6,7 @@ import type {
     ConfigFilePlugin,
     ConfigFilePrivate,
     ConfigFileProject,
+    ConfigFileRenative,
     ConfigFileRuntime,
     ConfigFileTemplates,
     ConfigFileWorkspace,
@@ -175,7 +176,7 @@ export type RnvContextFiles = {
         package?: NpmPackageFile;
         config?: ConfigFileTemplates;
     };
-    scopedConfigTemplates: Record<string, ConfigFileTemplates>;
+    scopedConfigTemplates: Record<string, ConfigFileTemplates['templates']['pluginTemplates']>;
     workspace: RnvContextFileObj<ConfigFileWorkspace> & {
         project: RnvContextFileObj<ConfigFileProject>;
         appConfig: RnvContextFileObj<ConfigFileApp>;
@@ -184,7 +185,7 @@ export type RnvContextFiles = {
     //     project: RnvContextFileObj<ConfigFileProject>;
     //     appConfig: RnvContextFileObj<ConfigFileApp>;
     // };
-    project: RnvContextFileObj<ConfigFileProject> & {
+    project: RnvContextFileObj<ConfigFileRenative> & {
         builds: Record<string, ConfigFileBuildConfig>;
         assets: {
             config?: ConfigFileRuntime;
@@ -197,11 +198,11 @@ export type RnvContextFiles = {
 export type RnvContextFileObj<T> = {
     config?: T;
     config_original?: T;
-    configLocal?: ConfigFileLocal;
-    configPrivate?: ConfigFilePrivate;
+    configLocal?: Partial<ConfigFileLocal> & { $schema?: string };
+    configPrivate?: Partial<ConfigFilePrivate>;
     configs: Array<T>;
-    configsLocal: Array<ConfigFileLocal>;
-    configsPrivate: Array<ConfigFilePrivate>;
+    configsLocal: Array<Partial<ConfigFileLocal>>;
+    configsPrivate: Array<Partial<ConfigFilePrivate>>;
 };
 
 export type RnvContextPaths = {

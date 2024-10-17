@@ -31,16 +31,20 @@ describe('taskPlatformEject', () => {
             files: {
                 project: {
                     config_original: {
-                        paths: {
-                            platformTemplatesDirs: {
-                                android: './path/to/android',
+                        project: {
+                            paths: {
+                                platformTemplatesDirs: {
+                                    android: './path/to/android',
+                                },
                             },
                         },
                     },
                     config: {
-                        paths: {
-                            platformTemplatesDirs: {
-                                android: './path/to/android',
+                        project: {
+                            paths: {
+                                platformTemplatesDirs: {
+                                    android: './path/to/android',
+                                },
                             },
                         },
                     },
@@ -69,18 +73,22 @@ describe('taskPlatformEject', () => {
             files: {
                 project: {
                     config_original: {
-                        paths: {
-                            platformTemplatesDirs: {
-                                android: './path/to/android',
-                                ios: './path/to/ios',
+                        project: {
+                            paths: {
+                                platformTemplatesDirs: {
+                                    android: './path/to/android',
+                                    ios: './path/to/ios',
+                                },
                             },
                         },
                     },
                     config: {
-                        paths: {
-                            platformTemplatesDirs: {
-                                android: './path/to/android',
-                                ios: './path/to/ios',
+                        project: {
+                            paths: {
+                                platformTemplatesDirs: {
+                                    android: './path/to/android',
+                                    ios: './path/to/ios',
+                                },
                             },
                         },
                     },

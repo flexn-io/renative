@@ -36,16 +36,20 @@ describe('taskPlatformEject', () => {
             files: {
                 project: {
                     config: {
-                        paths: {
-                            platformTemplatesDirs: {
-                                android: './platformTemplates',
+                        project: {
+                            paths: {
+                                platformTemplatesDirs: {
+                                    android: './platformTemplates',
+                                },
                             },
                         },
                     },
                     config_original: {
-                        paths: {
-                            platformTemplatesDirs: {
-                                android: './platformTemplates',
+                        project: {
+                            paths: {
+                                platformTemplatesDirs: {
+                                    android: './platformTemplates',
+                                },
                             },
                         },
                     },
@@ -64,9 +68,11 @@ describe('taskPlatformEject', () => {
         // THEN
         expect(ejectPlatform).toHaveBeenCalledWith('android');
         expect(writeFileSync).toHaveBeenCalledWith('/path/to/project/config', {
-            paths: {
-                platformTemplatesDirs: {
-                    android: './platformTemplates',
+            project: {
+                paths: {
+                    platformTemplatesDirs: {
+                        android: './platformTemplates',
+                    },
                 },
             },
         });

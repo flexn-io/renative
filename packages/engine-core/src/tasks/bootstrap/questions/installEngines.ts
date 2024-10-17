@@ -79,15 +79,15 @@ const Question = async (data: NewProjectData) => {
 
                 if (engineConfig && supportedPlatforms) {
                     supportedPlatforms.forEach((platform) => {
-                        const npmDeps = engineConfig?.platforms?.[platform]?.npm;
+                        const npmDeps = engineConfig?.engine?.platforms?.[platform]?.npm;
                         if (npmDeps) {
                             _mergeDependencies(deps, npmDeps.dependencies);
                             _mergeDependencies(devDeps, npmDeps.devDependencies);
                         }
                     });
-                    if (engineConfig?.npm) {
-                        _mergeDependencies(deps, engineConfig.npm.dependencies);
-                        _mergeDependencies(devDeps, engineConfig.npm.devDependencies);
+                    if (engineConfig?.engine?.npm) {
+                        _mergeDependencies(deps, engineConfig.engine.npm.dependencies);
+                        _mergeDependencies(devDeps, engineConfig.engine.npm.devDependencies);
                     }
                 }
             }

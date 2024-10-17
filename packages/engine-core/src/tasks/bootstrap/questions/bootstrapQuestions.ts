@@ -3,8 +3,12 @@ import lSet from 'lodash/set';
 import type { NewProjectData } from '../types';
 import { getContext } from '../../../getContext';
 
-type ConfigProp = Required<Required<ConfigFileTemplate>['bootstrapConfig']>['bootstrapQuestions'][number]['configProp'];
-type BootstrapQuestions = Required<Required<ConfigFileTemplate>['bootstrapConfig']>['bootstrapQuestions'];
+type ConfigProp = Required<
+    Required<Required<ConfigFileTemplate>['template']>['bootstrapConfig']
+>['bootstrapQuestions'][number]['configProp'];
+type BootstrapQuestions = Required<
+    Required<Required<ConfigFileTemplate>['template']>['bootstrapConfig']
+>['bootstrapQuestions'];
 type QuestionResults = Record<
     string,
     {
@@ -18,7 +22,8 @@ const Question = async (data: NewProjectData) => {
     const c = getContext();
     const { inputs, files } = data;
     inputs.bootstrapQuestions = {};
-    const bootstrapQuestions = files.template.renativeTemplateConfig?.bootstrapConfig?.bootstrapQuestions || [];
+    const bootstrapQuestions =
+        files.template.renativeTemplateConfig?.template?.bootstrapConfig?.bootstrapQuestions || [];
     const results: QuestionResults = {};
     const providedAnswers: Record<string, any> = {};
 

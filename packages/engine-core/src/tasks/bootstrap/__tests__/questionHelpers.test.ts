@@ -61,10 +61,12 @@ describe('configureConfigOverrides', () => {
             files: {
                 project: {
                     renativeConfig: {
-                        platforms: {
-                            platform1: {},
-                            platform2: {},
-                            platform3: {},
+                        project: {
+                            platforms: {
+                                platform1: {},
+                                platform2: {},
+                                platform3: {},
+                            },
                         },
                     },
                 },
@@ -73,11 +75,11 @@ describe('configureConfigOverrides', () => {
 
         await configureConfigOverrides(data as any);
 
-        expect(data.files.project.renativeConfig.platforms).toEqual({
+        expect(data.files.project.renativeConfig.project.platforms).toEqual({
             platform1: {},
             platform2: {},
         });
-        expect((data.files.project.renativeConfig as any).defaults).toEqual({
+        expect((data.files.project.renativeConfig.project as any).defaults).toEqual({
             supportedPlatforms: ['platform1', 'platform2'],
         });
     });

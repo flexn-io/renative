@@ -12,6 +12,7 @@ import {
     createTask,
     RnvTaskName,
     RnvFileName,
+    getUpdatedConfigFile,
 } from '@rnv/core';
 import { writeFileSync } from 'fs';
 
@@ -42,27 +43,28 @@ export default createTask({
         }
 
         if (fsExistsSync(paths.workspace.config)) {
-            files.workspace.config = JSON.parse(fsReadFileSync(paths.workspace.config).toString());
+            const configFile = JSON.parse(fsReadFileSync(paths.workspace.config).toString());
+            const updatedFile = await getUpdatedConfigFile(configFile, paths.workspace.config, 'workspace');
+            files.workspace.config = updatedFile;
 
-            if (files.workspace.config?.appConfigsPath) {
-                if (!fsExistsSync(files.workspace.config.appConfigsPath)) {
+            if (files.workspace.config?.workspace?.appConfigsPath) {
+                if (!fsExistsSync(files.workspace.config.workspace?.appConfigsPath)) {
                     logWarning(
                         `Your custom global appConfig is pointing to ${chalk().bold.white(
-                            files.workspace.config.appConfigsPath
+                            files.workspace.config.workspace.appConfigsPath
                         )} which doesn't exist! Make sure you create one in that location`
                     );
                 } else {
                     logInfo(
                         `Found custom appConfing location pointing to ${chalk().bold.white(
-                            files.workspace.config.appConfigsPath
+                            files.workspace.config.workspace.appConfigsPath
                         )}. ReNativewill now swith to that location!`
                     );
-                    paths.project.appConfigsDir = files.workspace.config.appConfigsPath;
+                    paths.project.appConfigsDir = files.workspace.config.workspace.appConfigsPath;
                 }
             }
-
             // Check config sanity
-            if (files.workspace.config?.defaultTargets === undefined) {
+            if (files.workspace.config?.workspace?.defaultTargets === undefined) {
                 logWarning(
                     `You're missing defaultTargets in your config ${chalk().bold.white(
                         paths.workspace.config

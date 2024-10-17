@@ -130,8 +130,8 @@ const _attemptAutoFix = async (c: RnvContext, shouldThrow?: boolean) => {
             const cnf = c.files.workspace.config;
             if (!cnf) return false;
             try {
-                if (!cnf.sdks) cnf.sdks = {};
-                cnf.sdks.WEBOS_SDK = result;
+                if (!cnf.workspace.sdks) cnf.workspace.sdks = {};
+                cnf.workspace.sdks.WEBOS_SDK = result;
                 writeFileSync(c.paths.workspace.config, cnf);
                 generateBuildConfig();
                 await checkAndConfigureWebosSdks();
