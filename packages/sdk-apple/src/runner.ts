@@ -235,14 +235,7 @@ export const runXcodeProject = async (runDeviceArguments?: string) => {
         if (bundleAssets) {
             await packageReactNativeIOS(bundleIsDev);
         }
-        if (c.platform === 'tvos' && !runDeviceArguments.includes('--simulator')) {
-            try {
-                return _checkLockAndExec(c, appPath, schemeTarget, runScheme, runDeviceArguments);
-            } catch (e) {
-                await _handleMissingTeam(c, e);
-            }
-            return;
-        }
+
         return _checkLockAndExec(c, appPath, schemeTarget, runScheme, runDeviceArguments);
     }
 
