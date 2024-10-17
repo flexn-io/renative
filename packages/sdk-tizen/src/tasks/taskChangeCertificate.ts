@@ -8,7 +8,6 @@ export default createTask({
     fn: async ({ ctx }) => {
         for (const config of ctx.paths.appConfig.configs) {
             if (config.includes('base')) {
-                const configFile = await JSON.parse(fs.readFileSync(config, 'utf-8'));
                 const { confirm } = await inquirerPrompt({
                     message:
                         'Tizen - used certificate change. NOTE: you must create the certificate first through the tizens certificate-manager. Continue?',
@@ -32,6 +31,29 @@ export default createTask({
                 if (name === '') {
                     logInfo('No certificate name entered.');
                     return;
+                }
+
+                if (!fs.existsSync(config)) {
+                    const configContent = JSON.stringify(
+                        {
+                            platforms: {
+                                [platform]: {
+                                    certificateProfile: name,
+                                },
+                            },
+                        },
+                        null,
+                        2
+                    );
+
+                    fs.writeFileSync(config, configContent);
+                    return;
+                }
+
+                const configFile = await JSON.parse(fs.readFileSync(config, 'utf-8'));
+
+                if (!configFile.platforms[platform]) {
+                    configFile.platforms[platform] = {};
                 }
 
                 configFile.platforms[`${platform}`].certificateProfile = name;
