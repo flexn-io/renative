@@ -140,10 +140,10 @@ const _copyIncludedPaths = (c: RnvContext, name: string) => {
     if (!fsExistsSync(destPath) && fsExistsSync(sourcePath)) {
         try {
             if (fsLstatSync(sourcePath).isDirectory()) {
-                logInfo(`Missing directory ${chalk().bold.white(`${destPath}.js`)}. COPYING from TEMPLATE...DONE`);
+                logInfo(`Missing directory ${chalk().bold.white(`${destPath}`)}. COPYING from TEMPLATE...DONE`);
                 copyFolderContentsRecursiveSync(sourcePath, destPath);
             } else {
-                logInfo(`Missing file ${chalk().bold.white(`${destPath}.js`)}. COPYING from TEMPLATE...DONE`);
+                logInfo(`Missing file ${chalk().bold.white(`${destPath}`)}. COPYING from TEMPLATE...DONE`);
                 copyFileSync(sourcePath, destPath);
             }
         } catch (e) {

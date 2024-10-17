@@ -32,5 +32,5 @@
             }
         }
     },
-    "$schema": "../../../.rnv/schema/renative-1.0.schema.json"
+    "$schema": "../../.rnv/schema/renative-1.0.schema.json"
 }

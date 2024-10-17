@@ -1,4 +1,5 @@
 import child_process, { ExecFileOptions } from 'child_process';
+import _ from 'lodash';
 import path from 'path';
 import {
     fsExistsSync,
@@ -22,6 +23,7 @@ import {
     logRaw,
     inquirerPrompt,
     CoreEnvVars,
+    logInfo,
 } from '@rnv/core';
 import { getAppleDevices } from './deviceManager';
 
@@ -69,20 +71,33 @@ export const getIosDeviceToRunOn = async (c: Context) => {
 
     if (!c.platform) return;
 
-    const { device } = c.program.opts();
-    let devicesArr: AppleDevice[] = [];
-    if (device === true) {
-        devicesArr = await getAppleDevices(false, true);
-    } else {
-        devicesArr = await getAppleDevices(true, false);
-    }
+    const { device, target } = c.program.opts();
+    const devicesArr = await getAppleDevices(false, !!device);
+    const run = (selectedDevice: AppleDevice) => {
+        logDebug(`Selected device: ${JSON.stringify(selectedDevice, null, 3)}`);
+        c.runtime.targetUDID = selectedDevice.udid;
+        if (selectedDevice.udid) {
+            p = `--udid ${selectedDevice.udid}`;
+        } else {
+            p = `--device ${selectedDevice.name}`;
+        }
+
+        return p;
+    };
 
     let p;
 
-    if (device === true) {
-        if (devicesArr.length === 1) {
+    const { isValidTarget, isValidDevice } = await _getAvailableTarget({
+        target,
+        device,
+        devicesArr,
+    });
+
+    if (device || isValidTarget) {
+        const availableDevices = devicesArr.filter((d) => d.isDevice);
+        if (availableDevices.length === 1 && ((device && !target && isValidDevice) || isValidTarget)) {
             logSuccess(
-                `Found one device connected! Device name: ${chalk().bold.white(
+                `Found device connected! Device name: ${chalk().bold.white(
                     devicesArr[0].name
                 )} udid: ${chalk().bold.white(devicesArr[0].udid)}`
             );
@@ -92,19 +107,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
             } else {
                 p = `--device ${devicesArr[0].name}`;
             }
-        } else if (devicesArr.length > 1) {
-            const run = (selectedDevice: AppleDevice) => {
-                logDebug(`Selected device: ${JSON.stringify(selectedDevice, null, 3)}`);
-                c.runtime.targetUDID = selectedDevice.udid;
-                if (selectedDevice.udid) {
-                    p = `--udid ${selectedDevice.udid}`;
-                } else {
-                    p = `--device ${selectedDevice.name}`;
-                }
-
-                return p;
-            };
-
+        } else if (availableDevices.length) {
             if (c.runtime.target) {
                 const selectedDevice = devicesArr.find((d) => d.name === c.runtime.target);
                 if (selectedDevice) {
@@ -113,7 +116,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
                 logWarning(`Could not find device ${c.runtime.target}`);
             }
 
-            const devices = devicesArr.map((v) => ({
+            const devices = availableDevices.map((v) => ({
                 name: `${v.name} | ${v.icon} | v: ${chalk().green(v.version)} | udid: ${chalk().grey(v.udid)}${
                     v.isDevice ? chalk().red(' (device)') : ''
                 }`,
@@ -133,8 +136,6 @@ export const getIosDeviceToRunOn = async (c: Context) => {
         } else {
             return Promise.reject(`No ${c.platform} devices connected!`);
         }
-    } else if (device) {
-        p = `--device ${device}`;
     } else if (c.runtime.isTargetTrue) {
         const devices = devicesArr.map((v) => ({
             name: `${v.name} | ${v.icon} | v: ${chalk().green(v.version)} | udid: ${chalk().grey(v.udid)}${
@@ -143,38 +144,38 @@ export const getIosDeviceToRunOn = async (c: Context) => {
             value: v,
         }));
 
-        const { sim } = await inquirerPrompt({
-            name: 'sim',
-            message: 'Select the simulator you want to launch on',
+        const { chosenTarget } = await inquirerPrompt({
+            name: 'chosenTarget',
+            message: 'Select the simulator or device you want to launch on',
             type: 'list',
             choices: devices,
         });
-
-        c.runtime.target = sim.name;
-        if (c.runtime.target) {
-            p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
+        if (!chosenTarget.isDevice) {
+            c.runtime.target = chosenTarget.name;
+            if (c.runtime.target) {
+                p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
+            }
+        } else {
+            return run(chosenTarget);
         }
     } else if (c.runtime.target || devicesArr.length > 0) {
-        // check if the default sim is available
-        const desiredSim = devicesArr.find((d) => d.name === c.runtime.target && !d.isDevice);
+        let desiredSim = devicesArr.find((d) => d.name === c.runtime.target);
 
         if (!desiredSim) {
-            const { sim } = await inquirerPrompt({
-                name: 'sim',
+            const { currentTarget } = await inquirerPrompt({
+                name: 'currentTarget',
                 message: !c.runtime.target
-                    ? `No global or project default simulator defined. Please select a supported simulator to use`
-                    : `We couldn't find ${c.runtime.target} as a simulator supported by the current version of your Xcode. Please select another sim`,
+                    ? `No global or project default simulator or device defined. Please select a supported simulator to use`
+                    : `We couldn't find ${c.runtime.target} as a target supported by the current version of your Xcode or as a connected device. Please select another simulator or device`,
                 type: 'list',
-                choices: devicesArr
-                    .filter((d) => !d.isDevice)
-                    .map((v) => ({
-                        name: `${v.name} | ${v.icon} | v: ${chalk().green(v.version)} | udid: ${chalk().grey(v.udid)}${
-                            v.isDevice ? chalk().red(' (device)') : ''
-                        }`,
-                        value: v,
-                    })),
+                choices: devicesArr.map((v) => ({
+                    name: `${v.name} | ${v.icon} | v: ${chalk().green(v.version)} | udid: ${chalk().grey(v.udid)}${
+                        v.isDevice ? chalk().red(' (device)') : ''
+                    }`,
+                    value: v,
+                })),
             });
-
+            desiredSim = currentTarget;
             const localOverridden = !!c.files.project.configLocal?.local?.defaultTargets?.[c.platform];
 
             const actionLocalUpdate = `Update ${chalk().green('project')} default target for platform ${c.platform}`;
@@ -188,10 +189,10 @@ export const getIosDeviceToRunOn = async (c: Context) => {
                 type: 'list',
                 name: 'chosenAction',
                 choices: [actionLocalUpdate, actionGlobalUpdate, actionNoUpdate],
-                warningMessage: `Your default target for platform ${c.platform} is set to ${c.runtime.target}. This seems to not be supported by Xcode anymore`,
+                warningMessage: `Your default target for platform ${c.platform} is set to ${c.runtime.target}.`,
             });
 
-            c.runtime.target = sim.name;
+            c.runtime.target = currentTarget.name;
 
             if (chosenAction === actionLocalUpdate || (chosenAction === actionGlobalUpdate && localOverridden)) {
                 const configLocal = c.files.project.configLocal || {};
@@ -199,7 +200,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
                     configLocal.local = configLocal.local || {};
                     configLocal.local.defaultTargets = {};
                 }
-                configLocal.local.defaultTargets[c.platform] = sim.name;
+                configLocal.local.defaultTargets[c.platform] = currentTarget.name;
 
                 c.files.project.configLocal = configLocal;
                 writeFileSync(c.paths.project.configLocal, configLocal);
@@ -209,20 +210,61 @@ export const getIosDeviceToRunOn = async (c: Context) => {
                 const configGlobal = c.files.workspace.config;
                 if (configGlobal) {
                     if (!configGlobal.workspace.defaultTargets) configGlobal.workspace.defaultTargets = {};
-                    configGlobal.workspace.defaultTargets[c.platform] = sim.name;
+                    configGlobal.workspace.defaultTargets[c.platform] = currentTarget.name;
 
                     c.files.workspace.config = configGlobal;
                     writeFileSync(c.paths.workspace.config, configGlobal);
                 }
             }
         }
+        if (!desiredSim?.isDevice) {
+            const target = c.runtime.target?.replace(/(\s+)/g, '\\$1');
 
-        const target = c.runtime.target?.replace(/(\s+)/g, '\\$1');
-
-        p = `--simulator ${target}`;
+            p = `--simulator ${target}`;
+        } else {
+            return run(desiredSim);
+        }
     }
 
     return p;
+};
+
+const _getAvailableTarget = async ({
+    target,
+    device,
+    devicesArr,
+}: {
+    target: string | undefined | boolean;
+    device: string | undefined | boolean;
+    devicesArr: AppleDevice[];
+}) => {
+    let isValidTarget = false;
+    let isValidDevice = false;
+
+    if (_.isString(target)) {
+        const targetMatch = devicesArr.filter((d) => d.isDevice).find((d) => d.name === target);
+        isValidTarget = !!targetMatch || (await _isValidIP(target));
+    }
+    if (_.isString(device)) {
+        const deviceMatch = devicesArr.find((d) => d.isDevice && d.name === device);
+        isValidDevice = !!deviceMatch || (await _isValidIP(device));
+    }
+    if (device === true) {
+        isValidDevice = true;
+    }
+
+    return { isValidTarget, isValidDevice };
+};
+
+const _isValidIP = async (ip: string) => {
+    try {
+        await executeAsync(`ping -c 1 ${ip}`, { silent: true });
+        logInfo(`Target IP ${ip} is a valid IP address`);
+        return true;
+    } catch (error) {
+        logInfo(`Target IP ${ip} is not a valid IP address`);
+        return false;
+    }
 };
 
 export const runXcodeProject = async (runDeviceArguments?: string) => {

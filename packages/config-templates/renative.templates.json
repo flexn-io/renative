@@ -11,35 +11,35 @@
         },
         "engineTemplates": {
             "@rnv/engine-rn": {
-                "version": "1.3.0-rc.0",
+                "version": "1.4.0-rc.0",
                 "id": "engine-rn"
             },
             "@rnv/engine-rn-tvos": {
-                "version": "1.3.0-rc.0",
+                "version": "1.4.0-rc.0",
                 "id": "engine-rn-tvos"
             },
             "@rnv/engine-rn-web": {
-                "version": "1.3.0-rc.0",
+                "version": "1.4.0-rc.0",
                 "id": "engine-rn-web"
             },
             "@rnv/engine-rn-next": {
-                "version": "1.3.0-rc.0",
+                "version": "1.4.0-rc.0",
                 "id": "engine-rn-next"
             },
             "@rnv/engine-rn-electron": {
-                "version": "1.3.0-rc.0",
+                "version": "1.4.0-rc.0",
                 "id": "engine-rn-electron"
             },
             "@rnv/engine-lightning": {
-                "version": "1.3.0-rc.0",
+                "version": "1.4.0-rc.0",
                 "id": "engine-lightning"
             },
             "@rnv/engine-rn-macos": {
-                "version": "1.3.0-rc.0",
+                "version": "1.4.0-rc.0",
                 "id": "engine-rn-macos"
             },
             "@rnv/engine-rn-windows": {
-                "version": "1.3.0-rc.0",
+                "version": "1.4.0-rc.0",
                 "id": "engine-rn-windows"
             }
         },
@@ -980,7 +980,7 @@
                 "version": "^1.8.1"
             },
             "@rnv/renative": {
-                "version": "1.3.0-rc.0"
+                "version": "1.4.0-rc.0"
             },
             "@sentry/react": {
                 "version": "6.13.3"
@@ -2433,28 +2433,19 @@
                 },
                 "ios": {
                     "templateXcode": {
-                        "appDelegateImports": ["GoogleCast"],
                         "AppDelegate_mm": {
                             "appDelegateImports": ["GoogleCast/GoogleCast.h"],
                             "appDelegateMethods": {
                                 "application": {
                                     "didFinishLaunchingWithOptions": [
                                         "NSString *receiverAppID = kGCKDefaultMediaReceiverApplicationID; // or @\"ABCD1234\"",
-                                        "GCKDiscoveryCriteria *criteria = [[GCKDiscoveryCriteria alloc] initWithApplicationID:receiverAppID];",
-                                        "GCKCastOptions* options = [[GCKCastOptions alloc] initWithDiscoveryCriteria:criteria];",
-                                        "[GCKCastContext setSharedInstanceWithOptions:options];"
+                                        "GCKDiscoveryCriteria *criteria = [[GCKDiscoveryCriteria alloc] initWithApplicationID:receiverAppID]",
+                                        "GCKCastOptions* options = [[GCKCastOptions alloc] initWithDiscoveryCriteria:criteria]",
+                                        "options.disableDiscoveryAutostart = {{props.DISABLE_DISCOVERY_AUTOSTART}}",
+                                        "options.startDiscoveryAfterFirstTapOnCastButton = {{props.START_DISCOVERY_AFTER_FIRST_TAP_ON_CAST_BUTTON}}",
+                                        "[GCKCastContext setSharedInstanceWithOptions:options]"
                                     ]
                                 }
-                            }
-                        },
-                        "appDelegateMethods": {
-                            "application": {
-                                "didFinishLaunchingWithOptions": [
-                                    "let receiverAppID = \"{{props.APPLICATION_ID}}\" // or \"ABCD1234\"",
-                                    "let criteria = GCKDiscoveryCriteria(applicationID: receiverAppID)",
-                                    "let options = GCKCastOptions(discoveryCriteria: criteria)",
-                                    "GCKCastContext.setSharedInstanceWith(options)"
-                                ]
                             }
                         },
                         "Info_plist": {
@@ -2467,8 +2458,11 @@
                     "podName": "react-native-google-cast/NoBluetoothArm"
                 },
                 "props": {
-                    "APPLICATION_ID": "01234"
+                    "APPLICATION_ID": "01234",
+                    "DISABLE_DISCOVERY_AUTOSTART": "false",
+                    "START_DISCOVERY_AFTER_FIRST_TAP_ON_CAST_BUTTON": "false"
                 },
+
                 "version": "4.8.0"
             },
             "react-native-home-indicator": {

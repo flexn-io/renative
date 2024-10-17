@@ -25,28 +25,31 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-target 'RNVApp' do
-  config = use_native_modules!
-  platform :ios, '{{INJECT_PLUGIN_DEPLOYMENT_TARGET}}'
+####### For now, only one target at a time can be used in a React Native podfile ########
+####### https://github.com/react-native-tvos/react-native-tvos/issues/619        ########
 
-  use_react_native!(
-    :path => config[:reactNativePath],
-    # Enables Flipper.
-    #
-    # Note that if you have use_frameworks! enabled, Flipper will not work and
-    # you should disable the next line.
-    :flipper_configuration => flipper_config,
-    # Hermes is now enabled by default. Disable by setting this flag to false.
-    :hermes_enabled => {{INJECT_HERMES_ENABLED}},
-    # An absolute path to your application root.
-    :app_path => "#{Pod::Config.instance.installation_root}/../.."
-  )
-
-  target 'RNVAppTests' do
-    inherit! :complete
-    # Pods for testing
-  end
-end
+# target 'RNVApp' do
+#   config = use_native_modules!
+#   platform :ios, '{{INJECT_PLUGIN_DEPLOYMENT_TARGET}}'
+#
+#   use_react_native!(
+#     :path => config[:reactNativePath],
+#     # Enables Flipper.
+#     #
+#     # Note that if you have use_frameworks! enabled, Flipper will not work and
+#     # you should disable the next line.
+#     :flipper_configuration => flipper_config,
+#     # Hermes is now enabled by default. Disable by setting this flag to false.
+#     :hermes_enabled => {{INJECT_HERMES_ENABLED}},
+#     # An absolute path to your application root.
+#     :app_path => "#{Pod::Config.instance.installation_root}/../.."
+#   )
+#
+#   target 'RNVAppTests' do
+#     inherit! :complete
+#     # Pods for testing
+#   end
+# end
 
 target 'RNVApp-tvOS' do
   config = use_native_modules!
@@ -82,7 +85,7 @@ post_install do |installer|
     :mac_catalyst_enabled => false
   )
   {{INJECT_POST_INSTALL}}
-  
+
   installer.pods_project.targets.each do |target|
     if target.name == 'Flipper'
       file_path = 'Pods/Flipper/xplat/Flipper/FlipperTransportTypes.h'

@@ -128,7 +128,6 @@
                     }
                 }
             },
-
             "rn-fetch-blob": "source:rnv",
             "react-native-carplay": "source:rnv",
             "@react-native-community/push-notification-ios": "source:rnv",
@@ -262,9 +261,6 @@
                 }
             },
             "react-native-google-cast": {
-                "ios": {
-                    "disabled": true
-                },
                 "androidwear": {
                     "disabled": true
                 },
