@@ -20,12 +20,17 @@ export const getUpdatedConfigFile = async <T extends Record<string, any>>(
     configPath?: string,
     namespace?: keyof ConfigFileRenative
 ): Promise<T> => {
-    const updatedConfigFile: Record<string, any> = {};
+    let updatedConfigFile: Record<string, any> = {};
+
     let isOldFile = false;
     let misNamespace = namespace;
     if (!configFile?.$schema && misNamespace) {
         isOldFile = true;
-        updatedConfigFile[misNamespace] = merge({}, configFile);
+        if (configFile[misNamespace]) {
+            updatedConfigFile = merge({}, configFile);
+        } else {
+            updatedConfigFile[misNamespace] = merge({}, configFile);
+        }
     }
     if (configFile?.$schema && !configFile.$schema.includes(RnvFileName.schema)) {
         isOldFile = true;

@@ -5289,8 +5289,7 @@
           "required": [
             "name",
             "engineExtension",
-            "plugins",
-            "npm"
+            "plugins"
           ],
           "additionalProperties": false
         },

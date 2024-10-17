@@ -23,7 +23,7 @@ export const zodConfigFileEngine = z.object({
     engineExtension: z.string().describe('Engine extension used by rnv during compilation'),
     overview: z.string().describe('Overview description of engine').optional(),
     plugins: z.record(z.string(), z.string()).describe('List of required plugins for this engine to work properly'),
-    npm: zodEngineNpm,
+    npm: z.optional(zodEngineNpm),
     platforms: z.record(zodPlatformsKeys, zodEnginePlatform).optional(),
 });
 //  .partial();
