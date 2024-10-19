@@ -505,7 +505,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
             await execCLI(CLI_TIZEN, `install -- "${tOut}" -n ${wgtClean} -t ${deviceID}`);
             hasDevice = true;
         } catch (err) {
-            if (err.includes('Non trusted certificate is used')) {
+            if (String(err).includes('Non trusted certificate is used')) {
                 logError('Non trusted certificate is used. Register valid certificate.');
                 logWarning(`You can update the Tizen certificate by using the rnv command: "rnv tizen certificate".`);
             } else {
