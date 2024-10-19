@@ -505,19 +505,23 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
             await execCLI(CLI_TIZEN, `install -- "${tOut}" -n ${wgtClean} -t ${deviceID}`);
             hasDevice = true;
         } catch (err) {
-            logError(err);
-            logWarning(
-                `There is no target connected! Let's try to launch it. "${chalk().white.bold(
-                    `rnv target launch -p ${platform} -t ${target}`
-                )}"`
-            );
+            if (err.includes('Non trusted certificate is used')) {
+                logError('Non trusted certificate is used. Register valid certificate.');
+                logWarning(`You can update the Tizen certificate by using the rnv command: "rnv tizen certificate".`);
+            } else {
+                logError(err);
+            }
 
-            if (target) {
+            if (!target) {
+                return Promise.reject('Not target specified. (-t)');
+            }
+
+            if (hasDevice) {
+                await launchTizenTarget(true);
+            } else {
                 isRunningEmulator = true;
                 await launchTizenTarget(target);
                 hasDevice = await _waitForEmulatorToBeReady(target);
-            } else {
-                return Promise.reject('Not target specified. (-t)');
             }
         }
 
@@ -529,7 +533,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
         // }
 
         if (platform !== 'tizenwatch' && platform !== 'tizenmobile' && hasDevice) {
-            // change id for for emulator because tizen 8+ fails to run app
+            // change id for for emulator because tizen 8+ fails to run app with
             await execCLI(CLI_TIZEN, `run -p ${isRunningEmulator ? tId.split('.')[0] : tId} -t ${deviceID}`);
         } else if ((platform === 'tizenwatch' || platform === 'tizenmobile') && hasDevice) {
             const packageID = tId.split('.');
