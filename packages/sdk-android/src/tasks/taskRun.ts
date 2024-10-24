@@ -34,6 +34,7 @@ export default createTask({
         ...RnvTaskOptionPresets.withRun(),
         TaskOptions.resetAdb,
         TaskOptions.skipTargetCheck,
+        TaskOptions.uninstall,
     ],
     platforms: SdkPlatforms,
 });
