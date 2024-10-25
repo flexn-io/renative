@@ -102,9 +102,10 @@ export const getIosDeviceToRunOn = async (c: Context) => {
                 )} udid: ${chalk().bold.white(devicesArr[0].udid)}`
             );
             if (devicesArr[0].udid) {
-                p = `--udid ${devicesArr[0].udid}`;
                 c.runtime.targetUDID = devicesArr[0].udid;
+                p = `--udid ${devicesArr[0].udid}`;
             } else {
+                c.runtime.targetUDID = devicesArr[0].udid;
                 p = `--device ${devicesArr[0].name}`;
             }
         } else if (availableDevices.length) {
@@ -152,6 +153,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
         });
         if (!chosenTarget.isDevice) {
             c.runtime.target = chosenTarget.name;
+            c.runtime.targetUDID = chosenTarget.udid;
             if (c.runtime.target) {
                 p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
             }
@@ -193,7 +195,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
             });
 
             c.runtime.target = currentTarget.name;
-
+            c.runtime.targetUDID = currentTarget.udid;
             if (chosenAction === actionLocalUpdate || (chosenAction === actionGlobalUpdate && localOverridden)) {
                 const configLocal = c.files.project.configLocal || {};
                 if (!configLocal.defaultTargets) configLocal.defaultTargets = {};
@@ -216,7 +218,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
         }
         if (!desiredSim?.isDevice) {
             const target = c.runtime.target?.replace(/(\s+)/g, '\\$1');
-
+            c.runtime.targetUDID = desiredSim?.udid;
             p = `--simulator ${target}`;
         } else {
             return run(desiredSim);
@@ -273,11 +275,31 @@ export const runXcodeProject = async (runDeviceArguments?: string) => {
     const runScheme = getConfigProp('runScheme') || 'Debug';
     const bundleIsDev = getConfigProp('bundleIsDev') === true;
     const bundleAssets = getConfigProp('bundleAssets') === true;
+    const { uninstall } = c.program.opts();
 
     if (runDeviceArguments) {
         // await launchAppleSimulator(c, c.runtime.target); @TODO - do we still need this? RN CLI does it as well
         //const allowProvisioningUpdates = getConfigProp('allowProvisioningUpdates', true);
         //if (allowProvisioningUpdates) p = `${p} --allowProvisioningUpdates`;
+        if (uninstall) {
+            const packageId = getConfigProp('id');
+            if (packageId) {
+                try {
+                    if (runDeviceArguments.includes('simulator')) {
+                        await executeAsync(`xcrun simctl uninstall ${c.runtime.targetUDID} ${packageId}`);
+                    } else {
+                        console.log(`xcrun devicectl device uninstall app -d ${c.runtime.targetUDID} ${packageId}`);
+                        await executeAsync(
+                            `xcrun devicectl device uninstall app -d ${c.runtime.targetUDID} ${packageId}`
+                        );
+                    }
+                } catch (e) {
+                    console.log(e);
+                    logWarning(`Failed to uninstall ${packageId}`);
+                }
+            }
+        }
+
         if (bundleAssets) {
             await packageReactNativeIOS(bundleIsDev);
         }

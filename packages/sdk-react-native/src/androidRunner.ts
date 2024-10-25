@@ -134,10 +134,18 @@ export const runReactNativeAndroid = async (device: { udid?: string } | undefine
 
                 return await executeCommand();
             } else {
-                return Promise.reject(error);
+                if (typeof error === 'string') {
+                    return Promise.reject(error);
+                } else if (error instanceof Error) {
+                    return Promise.reject(error.message);
+                }
             }
         } else {
-            return Promise.reject(error);
+            if (typeof error === 'string') {
+                return Promise.reject(error);
+            } else if (error instanceof Error) {
+                return Promise.reject(error.message);
+            }
         }
     }
 };

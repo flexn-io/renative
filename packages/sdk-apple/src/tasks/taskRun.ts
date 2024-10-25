@@ -28,6 +28,7 @@ export default createTask({
         ...RnvTaskOptionPresets.withConfigure(),
         ...RnvTaskOptionPresets.withRun(),
         TaskOptions.skipTargetCheck,
+        TaskOptions.uninstall,
         ...TaskOptionPresets.withConfigure(),
     ],
     platforms: SdkPlatforms,
