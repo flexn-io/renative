@@ -4,7 +4,7 @@ import { withMetroConfig, mergeConfig, InputConfig } from '@rnv/sdk-react-native
 // TODO merge with packages/engine-rn-macos/src/adapters/metroAdapter.ts and place in @rnv/sdk-react-native
 const path = require('path');
 
-const sharedBlacklist = [
+const sharedExclusions = [
     /node_modules\/react\/dist\/.*/,
     /website\/node_modules\/.*/,
     /heapCapture\/bundle\.js/,
@@ -22,11 +22,11 @@ function escapeRegExp(pattern: RegExp | string) {
     } else if (Object.prototype.toString.call(pattern) === '[object RegExp]') {
         return pattern.source.replace(/\//g, path.sep);
     }
-    throw new Error(`Unexpected blacklist pattern: ${pattern}`);
+    throw new Error(`Unexpected exclusion pattern: ${pattern}`);
 }
 
-function blocklist(additionalBlacklist: RegExp[]) {
-    return [...additionalBlacklist, ...sharedBlacklist].map((regexp) => new RegExp(escapeRegExp(regexp)));
+function exclusionList(additionalExclusions: RegExp[]) {
+    return [...additionalExclusions, ...sharedExclusions].map((regexp) => new RegExp(escapeRegExp(regexp)));
 }
 
 export const withRNVMetro = (config: InputConfig): InputConfig => {
@@ -65,7 +65,7 @@ export const withRNVMetro = (config: InputConfig): InputConfig => {
             },
         },
         resolver: {
-            blockList: blocklist(
+            blockList: exclusionList(
                 [
                     /platformBuilds\/.*/,
                     /buildHooks\/.*/,
