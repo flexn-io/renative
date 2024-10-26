@@ -26,8 +26,8 @@ function escapeRegExp(pattern: RegExp | string) {
     throw new Error(`Unexpected blacklist pattern: ${pattern}`);
 }
 
-function blacklist(additionalBlacklist: RegExp[]) {
-    return new RegExp(`(${(additionalBlacklist || []).concat(sharedBlacklist).map(escapeRegExp).join('|')})$`);
+function blocklist(additionalBlacklist: RegExp[]) {
+    return [...additionalBlacklist, ...sharedBlacklist].map((regexp) => new RegExp(escapeRegExp(regexp)));
 }
 
 export const withRNVMetro = (config: InputConfig) => {
@@ -51,24 +51,6 @@ export const withRNVMetro = (config: InputConfig) => {
     }
 
     const exts: string = env.RNV_EXTENSIONS || '';
-
-    let blacklistRE = [
-        blacklist([
-            /platformBuilds\/.*/,
-            /buildHooks\/.*/,
-            /projectConfig\/.*/,
-            /website\/.*/,
-            /appConfigs\/.*/,
-            /renative.local.*/,
-            /metro.config.local.*/,
-            /.expo\/.*/,
-            /.rollup.cache\/.*/,
-        ]),
-    ];
-
-    if (config?.resolver?.blacklistRE) {
-        blacklistRE = blacklistRE.concat(config.resolver.blacklistRE);
-    }
 
     const cnfRnv: InputConfig = {
         cacheStores: (metroCache) => {
@@ -127,7 +109,21 @@ export const withRNVMetro = (config: InputConfig) => {
                 // Optionally, chain to the standard Metro resolver.
                 return context.resolveRequest(context, moduleName, platform);
             },
-            blacklistRE,
+            blockList: blocklist(
+                [
+                    /platformBuilds\/.*/,
+                    /buildHooks\/.*/,
+                    /projectConfig\/.*/,
+                    /website\/.*/,
+                    /appConfigs\/.*/,
+                    /renative.local.*/,
+                    /metro.config.local.*/,
+                    /.expo\/.*/,
+                    /.rollup.cache\/.*/,
+                ]
+                    .concat(config?.resolver?.blockList || [])
+                    .concat(config?.resolver?.blacklistRE || [])
+            ),
             sourceExts: [...(config?.resolver?.sourceExts || []), ...exts.split(',')],
         },
         watchFolders,
