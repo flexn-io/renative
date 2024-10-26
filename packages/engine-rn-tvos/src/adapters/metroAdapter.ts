@@ -124,6 +124,7 @@ export const withRNVMetro = (config: InputConfig) => {
                     .concat(config?.resolver?.blockList || [])
                     .concat(config?.resolver?.blacklistRE || [])
             ),
+            blacklistRE: undefined, // must be reset to prevent it from being processed by metro
             sourceExts: [...(config?.resolver?.sourceExts || []), ...exts.split(',')],
         },
         watchFolders,
