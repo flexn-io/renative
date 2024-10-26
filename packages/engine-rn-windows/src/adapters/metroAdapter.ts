@@ -1,7 +1,8 @@
-const path = require('path');
 import { Env } from '@rnv/core';
 import fs from 'fs';
-import { InputConfig } from '@rnv/sdk-react-native';
+import { withMetroConfig, mergeConfig, InputConfig } from '@rnv/sdk-react-native';
+
+const path = require('path');
 
 const sharedBlacklist = [
     /node_modules\/react\/dist\/.*/,
@@ -29,13 +30,16 @@ function blacklist(additionalBlacklist: RegExp[]) {
 }
 
 export const withRNVMetro = (config: InputConfig): InputConfig => {
-    const projectPath = process.env.RNV_PROJECT_ROOT || process.cwd();
+    const projectPath = env.RNV_PROJECT_ROOT || process.cwd();
+
     const rnwPath = fs.realpathSync(path.resolve(require.resolve('react-native-windows/package.json'), '..'));
+
+    const defaultConfig = withMetroConfig(projectPath);
 
     const watchFolders = [path.resolve(projectPath, 'node_modules')];
 
     if (env.RNV_IS_MONOREPO === 'true' || env.RNV_IS_MONOREPO === true) {
-        const monoRootPath = process.env.RNV_MONO_ROOT || projectPath;
+        const monoRootPath = env.RNV_MONO_ROOT || projectPath;
         watchFolders.push(path.resolve(monoRootPath, 'node_modules'));
         watchFolders.push(path.resolve(monoRootPath, 'packages'));
     }
@@ -45,42 +49,54 @@ export const withRNVMetro = (config: InputConfig): InputConfig => {
 
     const exts: string = env.RNV_EXTENSIONS || '';
 
-    const cnf = {
-        ...config,
+    let blacklistRE = [
+        blacklist([
+            /platformBuilds\/.*/,
+            /buildHooks\/.*/,
+            /projectConfig\/.*/,
+            /website\/.*/,
+            /appConfigs\/.*/,
+            /renative.local.*/,
+            /metro.config.local.*/,
+            /.expo\/.*/,
+            /.rollup.cache\/.*/,
+        ]),
+    ];
+
+    if (config?.resolver?.blacklistRE) {
+        blacklistRE = blacklistRE.concat(config.resolver.blacklistRE);
+    }
+
+    const cnfRnv: InputConfig = {
         transformer: {
-            getTransformOptions: async () => ({
-                transform: {
-                    experimentalImportSupport: false,
-                    // this defeats the RCTDeviceEventEmitter is not a registered callable module
-                    inlineRequires: true,
-                },
-            }),
-            ...(config?.resolver || {}),
-            sourceExts: [...(config?.resolver?.sourceExts || []), ...exts.split(',')],
-            extraNodeModules: config?.resolver?.extraNodeModules,
-            ...(config?.transformer || {}),
+            getTransformOptions: async (entryPoints, options, getDependenciesOf) => {
+                const transformOptions =
+                    (await config?.transformer?.getTransformOptions?.(entryPoints, options, getDependenciesOf)) || {};
+
+                return {
+                    ...transformOptions,
+                    transform: {
+                        experimentalImportSupport: false,
+                        // this defeats the RCTDeviceEventEmitter is not a registered callable module
+                        inlineRequires: true,
+                        ...(transformOptions?.transform || {}),
+                    },
+                };
+            },
         },
         resolver: {
-            blacklistRE: blacklist([
-                /platformBuilds\/.*/,
-                /buildHooks\/.*/,
-                /projectConfig\/.*/,
-                /website\/.*/,
-                /appConfigs\/.*/,
-                /renative.local.*/,
-                /metro.config.local.*/,
-                /.expo\/.*/,
-                /.rollup.cache\/.*/,
-            ]),
+            blacklistRE,
+            sourceExts: [...(config?.resolver?.sourceExts || []), ...exts.split(',')],
             extraNodeModules: {
-                // Redirect react-native-windows to avoid symlink (metro doesn't like symlinks)
+                ...(config?.resolver?.extraNodeModules || {}),
                 'react-native-windows': rnwPath,
             },
         },
         watchFolders,
-        sourceExts: [...(config?.resolver?.sourceExts || []), ...exts.split(',')],
-        projectRoot: path.resolve(projectPath),
+        projectRoot: config?.projectRoot || path.resolve(projectPath),
     };
+
+    const cnf = mergeConfig(defaultConfig, config, cnfRnv);
 
     return cnf;
 };

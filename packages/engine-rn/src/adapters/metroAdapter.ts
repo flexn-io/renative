@@ -47,30 +47,50 @@ export const withRNVMetro = (config: InputConfig): InputConfig => {
 
     const exts: string = env.RNV_EXTENSIONS || '';
 
-    const cnfRnv = {
+    let blacklistRE = [
+        blacklist([
+            /platformBuilds\/.*/,
+            /buildHooks\/.*/,
+            /projectConfig\/.*/,
+            /website\/.*/,
+            /appConfigs\/.*/,
+            /renative.local.*/,
+            /metro.config.local.*/,
+            /.expo\/.*/,
+            /.rollup.cache\/.*/,
+        ]),
+    ];
+
+    if (config?.resolver?.blacklistRE) {
+        blacklistRE = blacklistRE.concat(config.resolver.blacklistRE);
+    }
+
+    const cnfRnv: InputConfig = {
+        transformer: {
+            getTransformOptions: async (entryPoints, options, getDependenciesOf) => {
+                const transformOptions =
+                    (await config?.transformer?.getTransformOptions?.(entryPoints, options, getDependenciesOf)) || {};
+
+                return {
+                    ...transformOptions,
+                    transform: {
+                        experimentalImportSupport: false,
+                        // this defeats the RCTDeviceEventEmitter is not a registered callable module
+                        inlineRequires: true,
+                        ...(transformOptions?.transform || {}),
+                    },
+                };
+            },
+        },
         resolver: {
-            blacklistRE: blacklist([
-                /platformBuilds\/.*/,
-                /buildHooks\/.*/,
-                /projectConfig\/.*/,
-                /website\/.*/,
-                /appConfigs\/.*/,
-                /renative.local.*/,
-                /metro.config.local.*/,
-                /.expo\/.*/,
-                /.rollup.cache\/.*/,
-            ]),
-            ...(config?.resolver || {}),
+            blacklistRE,
             sourceExts: [...(config?.resolver?.sourceExts || []), ...exts.split(',')],
-            extraNodeModules: config?.resolver?.extraNodeModules,
         },
         watchFolders,
-        projectRoot: path.resolve(projectPath),
+        projectRoot: config?.projectRoot || path.resolve(projectPath),
     };
 
-    const cnfWithRnv = mergeConfig(defaultConfig, cnfRnv);
-
-    const cnf = mergeConfig(cnfWithRnv, config);
+    const cnf = mergeConfig(defaultConfig, config, cnfRnv);
 
     return cnf;
 };

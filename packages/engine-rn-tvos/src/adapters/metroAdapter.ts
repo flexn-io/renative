@@ -52,21 +52,62 @@ export const withRNVMetro = (config: InputConfig) => {
 
     const exts: string = env.RNV_EXTENSIONS || '';
 
+    let blacklistRE = [
+        blacklist([
+            /platformBuilds\/.*/,
+            /buildHooks\/.*/,
+            /projectConfig\/.*/,
+            /website\/.*/,
+            /appConfigs\/.*/,
+            /renative.local.*/,
+            /metro.config.local.*/,
+            /.expo\/.*/,
+            /.rollup.cache\/.*/,
+        ]),
+    ];
+
+    if (config?.resolver?.blacklistRE) {
+        blacklistRE = blacklistRE.concat(config.resolver.blacklistRE);
+    }
+
     const cnfRnv: InputConfig = {
-        cacheStores: [
-            new FileStore({
-                root: path.join(os.tmpdir(), 'metro-cache-tvos'),
-            }),
-        ],
+        cacheStores: (metroCache) => {
+            let cacheStores: ReturnType<Extract<InputConfig['cacheStores'], (...args: any[]) => any>> = [];
+
+            if (typeof config?.cacheStores === 'function') {
+                cacheStores = config.cacheStores(metroCache);
+            } else if (config?.cacheStores?.length) {
+                // eslint-disable-next-line prefer-destructuring
+                cacheStores = config.cacheStores;
+            }
+
+            cacheStores = [
+                ...cacheStores,
+                new FileStore({
+                    root: path.join(os.tmpdir(), 'metro-cache-tvos'),
+                }),
+            ];
+
+            return cacheStores;
+        },
         transformer: {
-            getTransformOptions: async () => ({
-                transform: {
-                    experimentalImportSupport: false,
-                    // this defeats the RCTDeviceEventEmitter is not a registered callable module
-                    inlineRequires: true,
-                },
-            }),
-            assetRegistryPath: path.resolve(`${doResolve('react-native-tvos')}/Libraries/Image/AssetRegistry.js`),
+            getTransformOptions: async (entryPoints, options, getDependenciesOf) => {
+                const transformOptions =
+                    (await config?.transformer?.getTransformOptions?.(entryPoints, options, getDependenciesOf)) || {};
+
+                return {
+                    ...transformOptions,
+                    transform: {
+                        experimentalImportSupport: false,
+                        // this defeats the RCTDeviceEventEmitter is not a registered callable module
+                        inlineRequires: true,
+                        ...(transformOptions?.transform || {}),
+                    },
+                };
+            },
+            assetRegistryPath:
+                config?.transformer?.assetRegistryPath ||
+                path.resolve(`${doResolve('react-native-tvos')}/Libraries/Image/AssetRegistry.js`),
         },
         resolver: {
             resolveRequest: (context, moduleName, platform) => {
@@ -77,31 +118,23 @@ export const withRNVMetro = (config: InputConfig) => {
                         platform
                     );
                 }
+
+                // Chain to the custom config resolver if provided.
+                if (typeof config?.resolver?.resolveRequest === 'function') {
+                    return config.resolver.resolveRequest(context, moduleName, platform);
+                }
+
                 // Optionally, chain to the standard Metro resolver.
                 return context.resolveRequest(context, moduleName, platform);
             },
-            blacklistRE: blacklist([
-                /platformBuilds\/.*/,
-                /buildHooks\/.*/,
-                /projectConfig\/.*/,
-                /website\/.*/,
-                /appConfigs\/.*/,
-                /renative.local.*/,
-                /metro.config.local.*/,
-                /.expo\/.*/,
-                /.rollup.cache\/.*/,
-            ]),
-            ...(config?.resolver || {}),
+            blacklistRE,
             sourceExts: [...(config?.resolver?.sourceExts || []), ...exts.split(',')],
-            extraNodeModules: config?.resolver?.extraNodeModules,
         },
         watchFolders,
-        projectRoot: path.resolve(projectPath),
+        projectRoot: config?.projectRoot || path.resolve(projectPath),
     };
 
-    const cnfWithRnv = mergeConfig(defaultConfig, cnfRnv);
-
-    const cnf = mergeConfig(cnfWithRnv, config);
+    const cnf = mergeConfig(defaultConfig, config, cnfRnv);
 
     return cnf;
 };
