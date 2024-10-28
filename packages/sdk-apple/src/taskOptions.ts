@@ -67,10 +67,6 @@ export const TaskOptions = createTaskOptionsMap([
         isRequired: true,
         description: 'Filter value',
     },
-    {
-        key: 'uninstall',
-        description: 'Uninstall the app with the current id',
-    },
 ]);
 
 export const TaskOptionPresets = createTaskOptionsPreset({
