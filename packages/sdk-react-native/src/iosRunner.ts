@@ -16,11 +16,14 @@ import {
     inquirerPrompt,
     RnvEnvContext,
     isOfflineMode,
+    logWarning,
 } from '@rnv/core';
 import { EnvVars } from './env';
 import shellQuote from 'shell-quote';
 import path from 'path';
 import crypto from 'crypto';
+import { ObjectEncodingOptions } from 'fs';
+import child_process, { ExecFileOptions } from 'child_process';
 
 export const packageReactNativeIOS = (isDev = false) => {
     const c = getContext();
@@ -93,6 +96,18 @@ export const runReactNativeIOS = async (
     };
 
     try {
+        // Check if it's an older XCode and show a warning as xcrun commands used
+        // to install and launch were introduced in xcode 15
+        const opts: ObjectEncodingOptions & ExecFileOptions = { encoding: 'utf8' };
+        const child = child_process.spawnSync('xcodebuild', ['-version'], opts);
+        const xcodeVersion =
+            JSON.stringify(child.stdout).substring(
+                JSON.stringify(child.stdout).indexOf('Xcode ') + 6,
+                JSON.stringify(child.stdout).indexOf('Build') - 2
+            ) || '0';
+        if (Number(xcodeVersion) < 15)
+            logWarning('Installing application and launching it with an Xcode older than 15 may not work');
+
         // Inherit full logs
         // return executeAsync(c, cmd, { stdio: 'inherit', silent: true });
         return executeAsync(cmd, {
