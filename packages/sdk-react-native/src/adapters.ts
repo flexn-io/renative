@@ -128,7 +128,7 @@ export const withMetroConfig = (projectRoot: string): ConfigT => {
         ].join('|')
     );
 
-    const config = {
+    const config: InputConfig = {
         resolver: {
             resolverMainFields: ['react-native', 'browser', 'main'],
             platforms: ['android', 'ios'],
@@ -179,7 +179,7 @@ export const withMetroConfig = (projectRoot: string): ConfigT => {
     return mergeConfig(getDefaultConfig.getDefaultValues(projectRoot), config);
 };
 
-export const mergeConfig = (config1: ConfigT, config2: InputConfig) => {
+export const mergeConfig = (defaultConfig: ConfigT, ...configs: InputConfig[]): ConfigT => {
     const mc = require('metro-config');
-    return mc.mergeConfig(config1, config2);
+    return mc.mergeConfig(defaultConfig, ...configs);
 };
