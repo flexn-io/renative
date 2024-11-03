@@ -49,7 +49,6 @@ const Question = async (data: NewProjectData) => {
 
     const projectTemplates = c.buildConfig.projectTemplates || {}; // c.files.rnvConfigTemplates.config?.projectTemplates || {};
     const projectTemplateKeys = Object.keys(projectTemplates);
-
     inputs.template = {};
 
     if (checkInputValue(projectTemplate)) {
@@ -118,7 +117,8 @@ const Question = async (data: NewProjectData) => {
         if (!fsExistsSync(localTemplatePath)) {
             return Promise.reject(`Local template path ${localTemplatePath} does not exist`);
         }
-        const templateConfigPath = path.join(localTemplatePath, RnvFileName.renativeTemplate);
+        const templateConfigPath = path.join(localTemplatePath, RnvFileName.rnv || RnvFileName.renativeTemplate);
+
         if (!fsExistsSync(templateConfigPath)) {
             return Promise.reject(
                 `Renative template config path ${templateConfigPath} does not exist. Are you sure the path provided is a correct template folder?`
@@ -163,7 +163,9 @@ const Question = async (data: NewProjectData) => {
             RnvFolderName.platformAssets,
             RnvFolderName.secrets,
             RnvFolderName.dotRnv,
+            RnvFileName.renative,
         ];
+
         fsReaddirSync(localTemplatePath).forEach((file) => {
             if (!ignorePaths.includes(file) && localTemplatePath) {
                 const sourcePath = path.join(localTemplatePath, file);
@@ -259,7 +261,7 @@ const Question = async (data: NewProjectData) => {
     const templateDir = path.join(c.paths.project.dir, 'node_modules', inputs.template.packageName);
 
     const renativeTemplateConfig: ConfigFileTemplate = readObjectSync<ConfigFileTemplate>(
-        path.join(templateDir, RnvFileName.renativeTemplate)
+        path.join(templateDir, RnvFileName.rnv)
     ) || {
         template: {},
     };
@@ -267,7 +269,7 @@ const Question = async (data: NewProjectData) => {
         files.template.renativeTemplateConfig = renativeTemplateConfig;
     }
 
-    const renativeConfig = readObjectSync<ConfigFileProject>(path.join(templateDir, RnvFileName.renative));
+    const renativeConfig = readObjectSync<ConfigFileProject>(path.join(templateDir, RnvFileName.rnv));
     if (renativeConfig) {
         files.template.renativeConfig = renativeConfig;
     }

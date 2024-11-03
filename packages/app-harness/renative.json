@@ -1,293 +1,289 @@
 {
-    "project": {
-        "extendsTemplate": "@rnv/template-starter/renative.json",
-        "projectName": "@rnv/app-harness",
-        "crypto": {
-            "path": "./secrets/privateConfigs.enc"
+    "$schema": ".rnv/schema/rnv.project.json",
+    "extendsTemplate": "@rnv/template-starter/renative.json",
+    "projectName": "@rnv/app-harness",
+    "crypto": {
+        "path": "./secrets/privateConfigs.enc"
+    },
+    "isMonorepo": true,
+    "integrations": {
+        "@rnv/integration-starter": {}
+    },
+    "defaults": {
+        "portOffset": 10
+    },
+    "platforms": {
+        "ios": {
+            "templateXcode": {
+                "AppDelegate_h": {
+                    "appDelegateMethods": ["@property (nonatomic, strong) UIView *appSwitcherView;"]
+                },
+                "AppDelegate_mm": {
+                    "appDelegateMethods": {
+                        "custom": [
+                            "- (UIImage *)createScreenshotOfCurrentContext {",
+                            "   CGSize screenSize = self.window.screen.bounds.size;",
+                            "   UIGraphicsBeginImageContext(screenSize);",
+                            "   CGContextRef currentContext = UIGraphicsGetCurrentContext();",
+                            "   if (!currentContext) {",
+                            "       return nil;",
+                            "   }",
+                            "   [self.window.layer renderInContext:currentContext];",
+                            "   UIImage *image = UIGraphicsGetImageFromCurrentImageContext();",
+                            "   UIGraphicsEndImageContext();",
+                            "   return image;",
+                            "}"
+                        ]
+                    }
+                }
+            },
+            "privacyManifests": {
+                "NSPrivacyAccessedAPITypes": [
+                    {
+                        "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryActiveKeyboards",
+                        "NSPrivacyAccessedAPITypeReasons": ["CA92.1"]
+                    },
+                    {
+                        "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategorySystemBootTime",
+                        "NSPrivacyAccessedAPITypeReasons": ["CA92.1", "E174.1"]
+                    }
+                ]
+            }
         },
-        "isMonorepo": true,
-        "integrations": {
-            "@rnv/integration-starter": {}
+        "tvos": {
+            "templateXcode": {
+                "AppDelegate_h": {
+                    "appDelegateMethods": ["@property (nonatomic, strong) UIView *appSwitcherView;"]
+                },
+                "AppDelegate_mm": {
+                    "appDelegateMethods": {
+                        "custom": [
+                            "- (UIImage *)createScreenshotOfCurrentContext {",
+                            "   CGSize screenSize = self.window.screen.bounds.size;",
+                            "   UIGraphicsBeginImageContext(screenSize);",
+                            "   CGContextRef currentContext = UIGraphicsGetCurrentContext();",
+                            "   if (!currentContext) {",
+                            "       return nil;",
+                            "   }",
+                            "   [self.window.layer renderInContext:currentContext];",
+                            "   UIImage *image = UIGraphicsGetImageFromCurrentImageContext();",
+                            "   UIGraphicsEndImageContext();",
+                            "   return image;",
+                            "}"
+                        ]
+                    }
+                }
+            },
+            "privacyManifests": {
+                "NSPrivacyAccessedAPITypes": [
+                    {
+                        "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryActiveKeyboards",
+                        "NSPrivacyAccessedAPITypeReasons": ["CA92.1"]
+                    },
+                    {
+                        "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategorySystemBootTime",
+                        "NSPrivacyAccessedAPITypeReasons": ["CA92.1", "E174.1"]
+                    }
+                ]
+            }
         },
-        "defaults": {
-            "portOffset": 10
-        },
-        "platforms": {
+        "android": {
+            "templateAndroid": {
+                "build_gradle": {
+                    "buildscript": {
+                        "custom": [],
+                        "dependencies": ["def customVar2 = '2'"],
+                        "repositories": ["def customVar1 = '1'"],
+                        "ext": ["playServicesLocationVersion = \"21.0.1\""]
+                    },
+                    "injectAfterAll": ["allprojects {", "   repositories {", "   }", "}"]
+                },
+                "styles_xml": {
+                    "tag": "resources",
+                    "children": [
+                        {
+                            "tag": "style",
+                            "name": "AppTheme",
+                            "children": [
+                                {
+                                    "tag": "item",
+                                    "name": "android:windowIsTranslucent",
+                                    "value": "true"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "plugins": {
+        "react-native-safe-area-context": "source:rnv",
+        "react-native-splash-screen": {
             "ios": {
                 "templateXcode": {
-                    "AppDelegate_h": {
-                        "appDelegateMethods": ["@property (nonatomic, strong) UIView *appSwitcherView;"]
-                    },
-                    "AppDelegate_mm": {
-                        "appDelegateMethods": {
-                            "custom": [
-                                "- (UIImage *)createScreenshotOfCurrentContext {",
-                                "   CGSize screenSize = self.window.screen.bounds.size;",
-                                "   UIGraphicsBeginImageContext(screenSize);",
-                                "   CGContextRef currentContext = UIGraphicsGetCurrentContext();",
-                                "   if (!currentContext) {",
-                                "       return nil;",
-                                "   }",
-                                "   [self.window.layer renderInContext:currentContext];",
-                                "   UIImage *image = UIGraphicsGetImageFromCurrentImageContext();",
-                                "   UIGraphicsEndImageContext();",
-                                "   return image;",
-                                "}"
-                            ]
-                        }
+                    "project_pbxproj": {
+                        "resourceFiles": ["RNVApp/launch-image.png"]
                     }
-                },
-                "privacyManifests": {
-                    "NSPrivacyAccessedAPITypes": [
-                        {
-                            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryActiveKeyboards",
-                            "NSPrivacyAccessedAPITypeReasons": ["CA92.1"]
-                        },
-                        {
-                            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategorySystemBootTime",
-                            "NSPrivacyAccessedAPITypeReasons": ["CA92.1", "E174.1"]
-                        }
-                    ]
                 }
-            },
-            "tvos": {
-                "templateXcode": {
-                    "AppDelegate_h": {
-                        "appDelegateMethods": ["@property (nonatomic, strong) UIView *appSwitcherView;"]
-                    },
-                    "AppDelegate_mm": {
-                        "appDelegateMethods": {
-                            "custom": [
-                                "- (UIImage *)createScreenshotOfCurrentContext {",
-                                "   CGSize screenSize = self.window.screen.bounds.size;",
-                                "   UIGraphicsBeginImageContext(screenSize);",
-                                "   CGContextRef currentContext = UIGraphicsGetCurrentContext();",
-                                "   if (!currentContext) {",
-                                "       return nil;",
-                                "   }",
-                                "   [self.window.layer renderInContext:currentContext];",
-                                "   UIImage *image = UIGraphicsGetImageFromCurrentImageContext();",
-                                "   UIGraphicsEndImageContext();",
-                                "   return image;",
-                                "}"
-                            ]
-                        }
-                    }
-                },
-                "privacyManifests": {
-                    "NSPrivacyAccessedAPITypes": [
-                        {
-                            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryActiveKeyboards",
-                            "NSPrivacyAccessedAPITypeReasons": ["CA92.1"]
-                        },
-                        {
-                            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategorySystemBootTime",
-                            "NSPrivacyAccessedAPITypeReasons": ["CA92.1", "E174.1"]
-                        }
-                    ]
-                }
-            },
+            }
+        },
+
+        "rn-fetch-blob": "source:rnv",
+        "react-native-carplay": "source:rnv",
+        "@react-native-community/push-notification-ios": "source:rnv",
+        "TestNativeModule": {
             "android": {
                 "templateAndroid": {
-                    "build_gradle": {
-                        "buildscript": {
-                            "custom": [],
-                            "dependencies": ["def customVar2 = '2'"],
-                            "repositories": ["def customVar1 = '1'"],
-                            "ext": ["playServicesLocationVersion = \"21.0.1\""]
-                        },
-                        "injectAfterAll": ["allprojects {", "   repositories {", "   }", "}"]
-                    },
-                    "styles_xml": {
-                        "tag": "resources",
+                    "MainApplication_kt": {
+                        "packages": ["MyAppPackage"]
+                    }
+                },
+                "forceLinking": true
+            }
+        },
+        "@react-native-firebase/app": {
+            "disablePluginTemplateOverrides": true,
+            "version": "20.0.0",
+            "ios": {
+                "podNames": [
+                    "pod 'Firebase', :build_type => :static_framework",
+                    "pod 'FirebaseCoreInternal', :build_type => :static_framework",
+                    "pod 'FirebaseCore', :build_type => :static_framework",
+                    "pod 'GoogleUtilities', :build_type => :static_framework",
+                    "pod 'FirebaseStorage', :build_type => :static_framework",
+                    "pod 'FirebaseAppCheckInterop', :build_type => :static_framework",
+                    "pod 'FirebaseAuthInterop', :build_type => :static_framework"
+                ],
+                "templateXcode": {
+                    "Podfile": {
+                        "header": ["$RNFirebaseAsStaticFramework = true"]
+                    }
+                }
+            }
+        },
+        "react-native-photo-editor": {
+            "android": {
+                "templateAndroid": {
+                    "AndroidManifest_xml": {
+                        "tag": "manifest",
                         "children": [
                             {
-                                "tag": "style",
-                                "name": "AppTheme",
+                                "tag": "uses-permission ",
+                                "android:name": "android.permission.WRITE_EXTERNAL_STORAGE",
+                                "children": []
+                            },
+                            {
+                                "tag": "application",
+                                "android:name": ".MainApplication",
                                 "children": [
                                     {
-                                        "tag": "item",
-                                        "name": "android:windowIsTranslucent",
-                                        "value": "true"
+                                        "tag": "activity",
+                                        "android:name": "com.ahmedadeltito.photoeditor.PhotoEditorActivity",
+                                        "children": []
                                     }
                                 ]
                             }
                         ]
                     }
-                }
-            }
-        },
-        "plugins": {
-            "react-native-safe-area-context": "source:rnv",
-            "react-native-splash-screen": {
-                "ios": {
-                    "templateXcode": {
-                        "project_pbxproj": {
-                            "resourceFiles": ["RNVApp/launch-image.png"]
-                        }
-                    }
-                }
+                },
+                "package": "ui.photoeditor.RNPhotoEditorPackage"
             },
-            "rn-fetch-blob": "source:rnv",
-            "react-native-carplay": "source:rnv",
-            "@react-native-community/push-notification-ios": "source:rnv",
-            "TestNativeModule": {
-                "android": {
-                    "templateAndroid": {
-                        "MainApplication_kt": {
-                            "packages": ["MyAppPackage"]
-                        }
-                    },
-                    "forceLinking": true
-                }
+            "androidtv": {
+                "package": "ui.photoeditor.RNPhotoEditorPackage"
             },
-            "@react-native-firebase/app": {
-                "disablePluginTemplateOverrides": true,
-                "version": "20.0.0",
-                "ios": {
-                    "podNames": [
-                        "pod 'Firebase', :build_type => :static_framework",
-                        "pod 'FirebaseCoreInternal', :build_type => :static_framework",
-                        "pod 'FirebaseCore', :build_type => :static_framework",
-                        "pod 'GoogleUtilities', :build_type => :static_framework",
-                        "pod 'FirebaseStorage', :build_type => :static_framework",
-                        "pod 'FirebaseAppCheckInterop', :build_type => :static_framework",
-                        "pod 'FirebaseAuthInterop', :build_type => :static_framework"
-                    ],
-                    "templateXcode": {
-                        "Podfile": {
-                            "header": ["$RNFirebaseAsStaticFramework = true"]
-                        }
-                    }
-                }
+            "firetv": {
+                "package": "ui.photoeditor.RNPhotoEditorPackage"
             },
-            "react-native-photo-editor": {
-                "android": {
-                    "templateAndroid": {
-                        "AndroidManifest_xml": {
-                            "tag": "manifest",
-                            "children": [
-                                {
-                                    "tag": "uses-permission ",
-                                    "android:name": "android.permission.WRITE_EXTERNAL_STORAGE",
-                                    "children": []
-                                },
-                                {
-                                    "tag": "application",
-                                    "android:name": ".MainApplication",
-                                    "children": [
-                                        {
-                                            "tag": "activity",
-                                            "android:name": "com.ahmedadeltito.photoeditor.PhotoEditorActivity",
-                                            "children": []
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    },
-                    "package": "ui.photoeditor.RNPhotoEditorPackage"
-                },
-                "androidtv": {
-                    "package": "ui.photoeditor.RNPhotoEditorPackage"
-                },
-                "firetv": {
-                    "package": "ui.photoeditor.RNPhotoEditorPackage"
-                },
-                "ios": {
-                    "podName": "iOSPhotoEditor",
-                    "git": "https://github.com/prscX/photo-editor",
-                    "commit": "4924e9ec984d25d03644e58aa148282642171de9",
-                    "buildType": "dynamic",
-                    "templateXcode": {
-                        "Podfile": {
-                            "header": [
-                                "plugin 'cocoapods-user-defined-build-types'",
-                                "enable_user_defined_build_types!"
-                            ]
-                        },
-                        "project_pbxproj": {
-                            "resourceFiles": [
-                                "Resources/arrow1.png",
-                                "Resources/arrow2.png",
-                                "Resources/arrow3.png",
-                                "Resources/arrow4.png",
-                                "Resources/arrow5.png"
-                            ],
-                            "sourceFiles": ["RNPhotoEditor/RNPhotoEditor.m"],
-                            "headerFiles": ["RNPhotoEditor/RNPhotoEditor.h"]
-                        }
-                    }
-                },
-                "tvos": {
-                    "disabled": true
-                },
-                "pluginDependencies": null,
-                "version": "github:AppGyver/react-native-photo-editor#v0.1.2"
-            },
-            "react-native-permissions": {
-                "ios": {
-                    "templateXcode": {
-                        "Podfile": {
-                            "header": ["node_require('react-native-permissions/scripts/setup.rb')"],
-                            "injectLines": ["setup_permissions([{{props.PERMISSIONS}}])"]
-                        }
-                    }
-                },
-                "android": {
-                    "templateAndroid": {
-                        "AndroidManifest_xml": {
-                            "tag": "manifest",
-                            "children": [
-                                {
-                                    "tag": "uses-permission ",
-                                    "android:name": "android.permission.WRITE_CONTACTS",
-                                    "children": []
-                                }
-                            ]
-                        }
-                    }
-                },
-                "props": {
-                    "PERMISSIONS": "'Calendars', 'Contacts'"
-                },
-                "tvos": {
-                    "disabled": true
-                }
-            },
-            "react-native": {
-                "android": {
-                    "implementation": "// TEST"
-                }
-            },
-            "react-native-google-cast": {
-                "androidwear": {
-                    "disabled": true
-                },
-                "tvos": {
-                    "disabled": true
-                }
-            }
-        },
-        "permissions": {
             "ios": {
-                "NSCalendarsUsageDescription": {
-                    "desc": "Calendars usage description"
-                },
-                "NSContactsUsageDescription": {
-                    "desc": "Contacts usage description"
-                },
-                "NSLocalNetworkUsageDescription": {
-                    "desc": "${PRODUCT_NAME} uses the local network to discover Cast-enabled devices on your WiFi network."
-                },
-                "NSPhotoLibraryAddUsageDescription": {
-                    "desc": "Application needs permission to write photos..."
-                },
-                "NSPhotoLibraryUsageDescription": {
-                    "desc": "iOS 10 needs permission to write photos..."
+                "podName": "iOSPhotoEditor",
+                "git": "https://github.com/prscX/photo-editor",
+                "commit": "4924e9ec984d25d03644e58aa148282642171de9",
+                "buildType": "dynamic",
+                "templateXcode": {
+                    "Podfile": {
+                        "header": ["plugin 'cocoapods-user-defined-build-types'", "enable_user_defined_build_types!"]
+                    },
+                    "project_pbxproj": {
+                        "resourceFiles": [
+                            "Resources/arrow1.png",
+                            "Resources/arrow2.png",
+                            "Resources/arrow3.png",
+                            "Resources/arrow4.png",
+                            "Resources/arrow5.png"
+                        ],
+                        "sourceFiles": ["RNPhotoEditor/RNPhotoEditor.m"],
+                        "headerFiles": ["RNPhotoEditor/RNPhotoEditor.h"]
+                    }
                 }
+            },
+            "tvos": {
+                "disabled": true
+            },
+            "pluginDependencies": null,
+            "version": "github:AppGyver/react-native-photo-editor#v0.1.2"
+        },
+        "react-native-permissions": {
+            "ios": {
+                "templateXcode": {
+                    "Podfile": {
+                        "header": ["node_require('react-native-permissions/scripts/setup.rb')"],
+                        "injectLines": ["setup_permissions([{{props.PERMISSIONS}}])"]
+                    }
+                }
+            },
+            "android": {
+                "templateAndroid": {
+                    "AndroidManifest_xml": {
+                        "tag": "manifest",
+                        "children": [
+                            {
+                                "tag": "uses-permission ",
+                                "android:name": "android.permission.WRITE_CONTACTS",
+                                "children": []
+                            }
+                        ]
+                    }
+                }
+            },
+            "props": {
+                "PERMISSIONS": "'Calendars', 'Contacts'"
+            },
+            "tvos": {
+                "disabled": true
+            }
+        },
+        "react-native": {
+            "android": {
+                "implementation": "// TEST"
+            }
+        },
+        "react-native-google-cast": {
+            "androidwear": {
+                "disabled": true
+            },
+            "tvos": {
+                "disabled": true
             }
         }
     },
-    "$schema": ".rnv/schema/renative-1.0.schema.json"
+    "permissions": {
+        "ios": {
+            "NSCalendarsUsageDescription": {
+                "desc": "Calendars usage description"
+            },
+            "NSContactsUsageDescription": {
+                "desc": "Contacts usage description"
+            },
+            "NSLocalNetworkUsageDescription": {
+                "desc": "${PRODUCT_NAME} uses the local network to discover Cast-enabled devices on your WiFi network."
+            },
+            "NSPhotoLibraryAddUsageDescription": {
+                "desc": "Application needs permission to write photos..."
+            },
+            "NSPhotoLibraryUsageDescription": {
+                "desc": "iOS 10 needs permission to write photos..."
+            }
+        }
+    }
 }

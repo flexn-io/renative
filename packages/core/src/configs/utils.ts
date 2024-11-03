@@ -41,22 +41,22 @@ export const getUpdatedConfigFile = async <T extends Record<string, any>>(
         }
     }
 
-    if (isOldFile) {
-        const { confirm } = await inquirerPrompt({
-            type: 'confirm',
-            name: 'confirm',
-            message: `Your config file does not match the new schema structure ${configPath}. Fix it now?`,
-        });
-        if (confirm) {
-            const relativeShemePath = generateNewSchemaPath(configPath || '');
-            if (misNamespace) {
-                delete updatedConfigFile[misNamespace].$schema;
-            }
-            updatedConfigFile.$schema = relativeShemePath;
-            writeFileSync(configPath, updatedConfigFile);
-            logInfo(`Config file has been updated to support the new schema structure ${configPath}`);
-        }
-    }
+    // if (isOldFile) {
+    //     const { confirm } = await inquirerPrompt({
+    //         type: 'confirm',
+    //         name: 'confirm',
+    //         message: `Your config file does not match the new schema structure ${configPath}. Fix it now?`,
+    //     });
+    //     if (confirm) {
+    //         const relativeShemePath = generateNewSchemaPath(configPath || '');
+    //         if (misNamespace) {
+    //             delete updatedConfigFile[misNamespace].$schema;
+    //         }
+    //         updatedConfigFile.$schema = relativeShemePath;
+    //         // writeFileSync(configPath, updatedConfigFile);
+    //         logInfo(`Config file has been updated to support the new schema structure ${configPath}`);
+    //     }
+    // }
     return Object.keys(updatedConfigFile).length ? (updatedConfigFile as T) : configFile;
 };
 

@@ -30,7 +30,7 @@ export const resolveEngineDependencies = async () => {
                             },
                             type: depType,
                             msg: 'Missing dependency',
-                            source: 'engine.npm (renative.engine.json)',
+                            source: 'engine.npm (rnv.json)',
                             targetPath: c.paths.project.package,
                         });
                     } else if (ver !== deps[k]) {
@@ -44,7 +44,7 @@ export const resolveEngineDependencies = async () => {
                             },
                             type: depType,
                             msg: 'Outdated dependency',
-                            source: 'engine.npm (renative.engine.json)',
+                            source: 'engine.npm (rnv.json)',
                             targetPath: c.paths.project.package,
                         });
                     }

@@ -18,6 +18,7 @@ import { createDependencyMutation } from '../projects/mutations';
 import type { ConfigFileEngine } from '../schema/types';
 import { generateLookupPaths } from '../configs';
 import { extractEngineName } from './nameExtractor';
+import { RnvFileName } from '../enums/fileName';
 
 export const registerEngine = async (engine: RnvEngine, platform?: RnvPlatform, engConfig?: RnvEngineTemplate) => {
     const c = getContext();
@@ -429,7 +430,7 @@ export const installEngines = async (failOnMissingDeps?: boolean): Promise<boole
         const pathLookups = generateLookupPaths(k);
         const engineRootPath = pathLookups.find((v) => fsExistsSync(v));
 
-        const configPath = engineRootPath ? path.join(engineRootPath, 'renative.engine.json') : null;
+        const configPath = engineRootPath ? path.join(engineRootPath, RnvFileName.rnv) : null;
         if (!configPath || !fsExistsSync(configPath)) {
             const engVer = getScopedVersion(c, k, filteredEngines[k], 'engineTemplates');
             if (engVer) {

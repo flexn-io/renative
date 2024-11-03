@@ -22,7 +22,7 @@ export const listAppConfigsFoldersSync = (ignoreHiddenConfigs: boolean, appConfi
         const appConfigDir = path.join(dirPath, dir);
         if (!IGNORE_FOLDERS.includes(dir) && fsLstatSync(appConfigDir).isDirectory()) {
             if (ignoreHiddenConfigs) {
-                const appConfig = path.join(appConfigDir, RnvFileName.renative);
+                const appConfig = path.join(appConfigDir, RnvFileName.rnv);
                 if (fsExistsSync(appConfig)) {
                     try {
                         const config = readObjectSync<ConfigFileApp>(appConfig);

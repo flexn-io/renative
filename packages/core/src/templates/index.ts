@@ -94,9 +94,9 @@ const _applyTemplate = async (c: RnvContext) => {
     c.paths.template.dir = tpPath;
 
     if (c.paths.template.dir) {
-        c.paths.template.configTemplate = path.join(c.paths.template.dir, RnvFileName.renativeTemplate);
+        c.paths.template.configTemplate = path.join(c.paths.template.dir, RnvFileName.rnv);
 
-        c.paths.template.config = path.join(c.paths.template.dir, RnvFileName.renative);
+        c.paths.template.config = path.join(c.paths.template.dir, RnvFileName.rnv);
     }
     if (!fsExistsSync(c.paths.template.configTemplate)) {
         logWarning(

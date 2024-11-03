@@ -71,7 +71,7 @@ export const initNewProject = async () => {
     const c = getContext();
 
     c.paths.project.package = path.join(c.paths.project.dir, RnvFileName.package);
-    c.paths.project.config = path.join(c.paths.project.dir, RnvFileName.renative);
+    c.paths.project.config = path.join(c.paths.project.dir, RnvFileName.rnv);
 
     const data: NewProjectData = {
         defaults: {

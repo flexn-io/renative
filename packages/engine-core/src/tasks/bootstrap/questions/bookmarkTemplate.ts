@@ -38,6 +38,9 @@ const Question = async (data: NewProjectData) => {
 
         if (configFile) {
             if (confirmAddTemplate) {
+                if (!configFile.workspace) {
+                    configFile.workspace = {};
+                }
                 if (!configFile.workspace.projectTemplates) {
                     configFile.workspace.projectTemplates = {};
                 }

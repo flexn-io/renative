@@ -1,4 +1,5 @@
 import path from 'path';
+import merge from 'deepmerge';
 import {
     copyFileSync,
     mkdirSync,
@@ -12,7 +13,7 @@ import {
     createTask,
     RnvTaskName,
     RnvFileName,
-    getUpdatedConfigFile,
+    // getUpdatedConfigFile,
 } from '@rnv/core';
 import { writeFileSync } from 'fs';
 
@@ -30,22 +31,23 @@ export default createTask({
 
         // Check globalConfig
         if (fsExistsSync(paths.workspace.config)) {
-            logDebug(`${paths.workspace.dir}/${RnvFileName.renative} file exists!`);
+            logDebug(`${paths.workspace.dir}/${RnvFileName.rnv} file exists!`);
         } else {
             const oldGlobalConfigPath = path.join(paths.workspace.dir, 'config.json');
             if (fsExistsSync(oldGlobalConfigPath)) {
                 logWarning('Found old version of your config. will copy it to new renative.json config');
                 copyFileSync(oldGlobalConfigPath, paths.workspace.config);
             } else {
-                logInfo(`${paths.workspace.dir}/${RnvFileName.renative} file missing! Creating one for you...`);
+                logInfo(`${paths.workspace.dir}/${RnvFileName.rnv} file missing! Creating one for you...`);
                 writeFileSync(paths.workspace.config, '{}');
             }
         }
 
         if (fsExistsSync(paths.workspace.config)) {
             const configFile = JSON.parse(fsReadFileSync(paths.workspace.config).toString());
-            const updatedFile = await getUpdatedConfigFile(configFile, paths.workspace.config, 'workspace');
-            files.workspace.config = updatedFile;
+            // const updatedFile = await getUpdatedConfigFile(configFile, paths.workspace.config, 'workspace');
+            // console.log('updatedFile', updatedFile);
+            files.workspace.config = configFile;
 
             if (files.workspace.config?.workspace?.appConfigsPath) {
                 if (!fsExistsSync(files.workspace.config.workspace?.appConfigsPath)) {
@@ -70,11 +72,7 @@ export default createTask({
                         paths.workspace.config
                     )}. Let's add them!`
                 );
-
-                const newConfig = {
-                    ...files.workspace.config,
-                    defaultTargets: {},
-                };
+                const newConfig = merge(files.workspace.config || {}, { workspace: { defaultTargets: {} } });
                 fsWriteFileSync(paths.workspace.config, JSON.stringify(newConfig, null, 2));
             }
         }

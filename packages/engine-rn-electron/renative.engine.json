@@ -1,34 +1,32 @@
 {
-    "$schema": "../../.rnv/schema/renative-1.0.schema.json",
-    "engine": {
-        "name": "@rnv/engine-rn-electron",
-        "engineExtension": "rne",
-        "overview": "React native based engine with web transpiler provided by react-native-web and native desktop wrapper provided by electron",
-        "plugins": {
-            "react": "source:rnv",
-            "react-art": "source:rnv",
-            "react-dom": "source:rnv",
-            "react-native": "source:rnv",
-            "react-native-web": "source:rnv"
+    "$schema": "../../.rnv/schema/rnv.engine.json",
+    "name": "@rnv/engine-rn-electron",
+    "engineExtension": "rne",
+    "overview": "React native based engine with web transpiler provided by react-native-web and native desktop wrapper provided by electron",
+    "plugins": {
+        "react": "source:rnv",
+        "react-art": "source:rnv",
+        "react-dom": "source:rnv",
+        "react-native": "source:rnv",
+        "react-native-web": "source:rnv"
+    },
+    "npm": {
+        "devDependencies": {}
+    },
+    "platforms": {
+        "macos": {
+            "npm": {
+                "devDependencies": {}
+            }
         },
-        "npm": {
-            "devDependencies": {}
+        "windows": {
+            "npm": {
+                "devDependencies": {}
+            }
         },
-        "platforms": {
-            "macos": {
-                "npm": {
-                    "devDependencies": {}
-                }
-            },
-            "windows": {
-                "npm": {
-                    "devDependencies": {}
-                }
-            },
-            "linux": {
-                "npm": {
-                    "devDependencies": {}
-                }
+        "linux": {
+            "npm": {
+                "devDependencies": {}
             }
         }
     }

@@ -17,7 +17,7 @@
         "LICENSE",
         "lib",
         "pluginTemplates",
-        "renative.engine.json",
+        "rnv.json",
         "templateFiles"
     ],
     "main": "lib/index.js",

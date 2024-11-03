@@ -1,26 +1,24 @@
 {
-    "$schema": "../../.rnv/schema/renative-1.0.schema.json",
-    "engine": {
-        "name": "@rnv/engine-rn-tvos",
-        "engineExtension": "rntvos",
-        "overview": "React native based engine with added support for tvOS platform. Runs standard react native apps with native support",
-        "plugins": {
-            "react": "source:rnv",
-            "react-art": "source:rnv",
-            "react-dom": "source:rnv",
-            "react-native": "source:rnv",
-            "react-native-tvos": "source:rnv"
-        },
-        "npm": {
-            "devDependencies": {}
-        },
-        "platforms": {
-            "tvos": {
-                "engine": "engine-rn-tvos",
-                "npm": {
-                    "dependencies": {
-                        "dotenv": "16.4.5"
-                    }
+    "$schema": "../../.rnv/schema/rnv.engine.json",
+    "name": "@rnv/engine-rn-tvos",
+    "engineExtension": "rntvos",
+    "overview": "React native based engine with added support for tvOS platform. Runs standard react native apps with native support",
+    "plugins": {
+        "react": "source:rnv",
+        "react-art": "source:rnv",
+        "react-dom": "source:rnv",
+        "react-native": "source:rnv",
+        "react-native-tvos": "source:rnv"
+    },
+    "npm": {
+        "devDependencies": {}
+    },
+    "platforms": {
+        "tvos": {
+            "engine": "engine-rn-tvos",
+            "npm": {
+                "dependencies": {
+                    "dotenv": "16.4.5"
                 }
             }
         }

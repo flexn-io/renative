@@ -74,7 +74,13 @@ const Question = async (data: NewProjectData) => {
                 devDeps[key] = version;
 
                 const nmDir = path.join(cwd, 'node_modules');
-                const engineConfigPath = path.join(nmDir, key, RnvFileName.renativeEngine);
+                const isNewConfigPath = fsExistsSync(path.join(nmDir, key, RnvFileName.rnv));
+
+                const engineConfigPath = path.join(
+                    nmDir,
+                    key,
+                    isNewConfigPath ? RnvFileName.rnv : RnvFileName.renativeEngine
+                );
                 const engineConfig = readObjectSync<ConfigFileEngine>(engineConfigPath);
 
                 if (engineConfig && supportedPlatforms) {

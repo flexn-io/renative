@@ -1,6 +1,7 @@
 import { fsExistsSync, writeFileSync, readObjectSync, mkdirSync } from '../system/fs';
 import { getContext } from '../context/provider';
 import path from 'path';
+import merge from 'deepmerge';
 import { chalk, logDefault, logDebug, logInfo, logWarning } from '../logger';
 import type { RnvContext } from '../context/types';
 import { generateOptions, inquirerPrompt } from '../api';
@@ -130,8 +131,10 @@ export const loadWorkspacesConfigSync = () => {
     }
 
     const defWsPath = c.paths.dotRnv.config;
-
     if (defWsPath && fsExistsSync(defWsPath)) {
-        c.files.dotRnv.config = readObjectSync<ConfigFileWorkspace>(defWsPath) || { workspace: {} };
+        const configFile = readObjectSync<ConfigFileWorkspace>(defWsPath) || { workspace: {} };
+        if (!configFile?.workspace) {
+            c.files.dotRnv.config = merge(configFile, { workspace: {} });
+        }
     }
 };

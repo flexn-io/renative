@@ -1,18 +1,16 @@
 {
-    "$schema": "../../.rnv/schema/renative-1.0.schema.json",
-    "engine": {
-        "name": "@rnv/engine-lightning",
-        "overview": "ReNative Engine to build lightning based apps.",
-        "plugins": {
-            "@lightningjs/sdk": "source:rnv",
-            "@lightningjs/cli": "source:rnv"
-        },
-        "npm": {
-            "devDependencies": {}
-        },
-        "platforms": {
-            "tizen": {},
-            "webos": {}
-        }
+    "$schema": "../../.rnv/schema/rnv.engine.json",
+    "name": "@rnv/engine-lightning",
+    "overview": "ReNative Engine to build lightning based apps.",
+    "plugins": {
+        "@lightningjs/sdk": "source:rnv",
+        "@lightningjs/cli": "source:rnv"
+    },
+    "npm": {
+        "devDependencies": {}
+    },
+    "platforms": {
+        "tizen": {},
+        "webos": {}
     }
 }

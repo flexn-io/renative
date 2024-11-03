@@ -25,7 +25,7 @@ const Question = async (data: NewProjectData): Promise<void> => {
         await executeAsync(`${isYarnInstalled() ? 'yarn' : 'npm'} add ${cnfTemplatesName}@${cnfDepVer} --dev`, {
             cwd: c.paths.project.dir,
         });
-        const ctCnfPath = path.join(c.paths.project.nodeModulesDir, cnfTemplatesName, RnvFileName.renativeTemplates);
+        const ctCnfPath = path.join(c.paths.project.nodeModulesDir, cnfTemplatesName, RnvFileName.rnv);
         if (fsExistsSync(ctCnfPath)) {
             files.configTemplates.config = readObjectSync<ConfigFileTemplates>(ctCnfPath) || undefined;
         }
