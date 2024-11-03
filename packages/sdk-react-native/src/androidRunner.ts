@@ -129,7 +129,7 @@ export const runReactNativeAndroid = async (device: { udid?: string } | undefine
                 try {
                     await execCLI('androidAdb', `uninstall ${packageId}`, { silent: true });
                 } catch (e) {
-                    logWarning(`Failed to uninstall ${packageId}`);
+                    return Promise.reject(`Failed to uninstall ${packageId}`);
                 }
 
                 return await executeCommand();

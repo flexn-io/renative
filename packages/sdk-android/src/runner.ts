@@ -195,7 +195,7 @@ export const runAndroid = async (device: AndroidDevice) => {
             try {
                 await execCLI(CLI_ANDROID_ADB, `uninstall ${packageId}`, { silent: true });
             } catch (e) {
-                logWarning(`Failed to uninstall ${packageId}`);
+                return Promise.reject(`Failed to uninstall ${packageId}`);
             }
         }
     }
