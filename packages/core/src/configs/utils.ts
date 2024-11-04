@@ -1,10 +1,10 @@
 import path from 'path';
 import merge from 'deepmerge';
-import { inquirerPrompt } from '../api';
+// import { inquirerPrompt } from '../api';
 import { getConfigRootProp } from '../context/contextProps';
 import { getContext } from '../context/provider';
 import { RnvFileName } from '../enums/fileName';
-import { logDebug, logInfo } from '../logger';
+import { logDebug } from '../logger';
 import { ConfigFileRenative } from '../schema/types';
 import { writeFileSync } from '../system/fs';
 import { generateBuildConfig } from './buildConfig';
@@ -22,10 +22,10 @@ export const getUpdatedConfigFile = async <T extends Record<string, any>>(
 ): Promise<T> => {
     let updatedConfigFile: Record<string, any> = {};
 
-    let isOldFile = false;
+    // let isOldFile = false;
     let misNamespace = namespace;
     if (!configFile?.$schema && misNamespace) {
-        isOldFile = true;
+        // isOldFile = true;
         if (configFile[misNamespace]) {
             updatedConfigFile = merge({}, configFile);
         } else {
@@ -33,7 +33,7 @@ export const getUpdatedConfigFile = async <T extends Record<string, any>>(
         }
     }
     if (configFile?.$schema && !configFile.$schema.includes(RnvFileName.schema)) {
-        isOldFile = true;
+        // isOldFile = true;
         const currentScheme = configFile.$schema;
         misNamespace = namespace || _getNameSpace(currentScheme);
         if (misNamespace) {

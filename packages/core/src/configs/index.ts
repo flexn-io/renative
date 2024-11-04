@@ -14,10 +14,16 @@ import { RnvFileName } from '../enums/fileName';
 import { getContext } from '../context/provider';
 import { RnvFolderName } from '../enums/folderName';
 import type { ConfigFileRenative, ConfigFileTemplates } from '../schema/types';
+import { getUpdatedConfigFile } from './utils';
 
-export const loadFileExtended = (fileObj: Record<string, any>, pathObj: RnvContextPathObj, key: RnvContextFileKey) => {
+export const loadFileExtended = async (
+    fileObj: Record<string, any>,
+    pathObj: RnvContextPathObj,
+    key: RnvContextFileKey,
+    namespace?: keyof ConfigFileRenative
+) => {
     const c = getContext();
-    const result = loadFile(fileObj, pathObj, key);
+    const result = await loadFile(fileObj, pathObj, key, namespace);
     if (fileObj[key]) {
         fileObj[`${key}_original`] = { ...fileObj[key] };
     }
@@ -45,8 +51,9 @@ export const loadFileExtended = (fileObj: Record<string, any>, pathObj: RnvConte
 
                 if (fsExistsSync(extendsPath)) {
                     const extendsFile = readObjectSync(extendsPath) || {};
+                    const updatedExtendsFile = await getUpdatedConfigFile(extendsFile, extendsPath, namespace);
 
-                    fileObj[key] = mergeObjects(c, extendsFile, fileObj[key], false, true);
+                    fileObj[key] = mergeObjects(c, updatedExtendsFile, fileObj[key], false, true);
                     // CLEAN props which should not be inherited
                     delete fileObj[key].isTemplate;
                     delete fileObj[key].tasks;
@@ -61,32 +68,32 @@ export const loadFileExtended = (fileObj: Record<string, any>, pathObj: RnvConte
     return result;
 };
 
-const _loadConfigFiles = (
+const _loadConfigFiles = async (
     fileObj: RnvContextFileObj<object>,
     pathObj: RnvContextPathObj,
-    parseAppConfigs?: boolean
+    parseAppConfigs?: boolean,
+    namespace?: keyof ConfigFileRenative
 ) => {
     // let result = false;
     let extendAppId: string | undefined;
 
-    const extendedFileLoadResult = loadFileExtended(fileObj, pathObj, 'config');
-
+    const extendedFileLoadResult = await loadFileExtended(fileObj, pathObj, 'config', namespace);
     const fileObjConfig = fileObj.config;
     if (fileObjConfig && 'extend' in fileObjConfig && extendedFileLoadResult) {
         extendAppId = (fileObjConfig.extend as string) || extendAppId;
         // result = true;
     }
 
-    loadFileExtended(fileObj, pathObj, 'configLocal');
-    loadFileExtended(fileObj, pathObj, 'configPrivate');
+    await loadFileExtended(fileObj, pathObj, 'configLocal', 'local');
+    await loadFileExtended(fileObj, pathObj, 'configPrivate', 'private');
     //Do not Extend local configs
-    // if (await loadFileExtended(c, fileObj, pathObj, 'configLocal')) {
+    // if ( loadFileExtended(c, fileObj, pathObj, 'configLocal')) {
     //     extendAppId = fileObj.configLocal?.extend || extendAppId;
     //     result = true;
     // }
 
     //Do not Extend private configs
-    // if (await loadFileExtended(c, fileObj, pathObj, 'configPrivate')) {
+    // if ( loadFileExtended(c, fileObj, pathObj, 'configPrivate')) {
     //     extendAppId = fileObj?.configPrivate?.extend || extendAppId;
     //     result = true;
     // }
@@ -124,9 +131,9 @@ const _loadConfigFiles = (
         pathObj.configsPrivate.push(pathObj1.configPrivate);
         pathObj.configsLocal.push(pathObj1.configLocal);
         // FILE1: appConfigs/base
-        loadFileExtended(fileObj1, pathObj1, 'config');
-        loadFileExtended(fileObj1, pathObj1, 'configPrivate');
-        loadFileExtended(fileObj1, pathObj1, 'configLocal');
+        await loadFileExtended(fileObj1, pathObj1, 'config', 'app');
+        await loadFileExtended(fileObj1, pathObj1, 'configPrivate', 'private');
+        await loadFileExtended(fileObj1, pathObj1, 'configLocal', 'local');
         if (fileObj1.config) fileObj.configs.push(fileObj1.config);
         if (fileObj1.configPrivate) fileObj.configsPrivate.push(fileObj1.configPrivate);
         if (fileObj1.configLocal) fileObj.configsLocal.push(fileObj1.configLocal);
@@ -154,8 +161,9 @@ const _loadConfigFiles = (
                 pathObj.configsLocal.push(pathObj2.configLocal);
                 pathObj.configsPrivate.push(pathObj2.configPrivate);
                 // FILE2: appConfigs/<extendConfig>
-                loadFileExtended(fileObj2, pathObj2, 'config');
-                loadFileExtended(fileObj2, pathObj2, 'configPrivate');
+                await loadFileExtended(fileObj2, pathObj2, 'config', 'app');
+                await loadFileExtended(fileObj2, pathObj2, 'configPrivate', 'private');
+                await loadFileExtended(fileObj2, pathObj2, 'configLocal', 'local');
 
                 if (fileObj2.config) fileObj.configs.push(fileObj2.config);
                 if (fileObj2.configLocal) fileObj.configsLocal.push(fileObj2.configLocal);
@@ -172,9 +180,9 @@ const _loadConfigFiles = (
         pathObj.configsLocal.push(path.join(path3, RnvFileName.renativeLocal));
         pathObj.configsPrivate.push(path.join(path3, RnvFileName.renativePrivate));
         // FILE3: appConfigs/<appId>
-        loadFileExtended(fileObj, pathObj, 'config');
-        loadFileExtended(fileObj, pathObj, 'configPrivate');
-        loadFileExtended(fileObj, pathObj, 'configLocal');
+        await loadFileExtended(fileObj, pathObj, 'config', 'app');
+        await loadFileExtended(fileObj, pathObj, 'configPrivate', 'private');
+        await loadFileExtended(fileObj, pathObj, 'configLocal', 'local');
         if (fileObj.config) fileObj.configs.push(fileObj.config);
         if (fileObj.configPrivate) fileObj.configsPrivate.push(fileObj.configPrivate);
         if (fileObj.configLocal) fileObj.configsLocal.push(fileObj.configLocal);
@@ -222,6 +230,7 @@ export const loadDefaultConfigTemplates = async () => {
 
     ctx.paths.rnvConfigTemplates.pluginTemplatesDir = path.join(configTemplatesPath, 'pluginTemplates');
     ctx.paths.rnvConfigTemplates.config = path.join(configTemplatesPath, RnvFileName.rnv);
+    console.log('ctx.paths.rnvConfigTemplates.config', ctx.paths.rnvConfigTemplates.config);
     const rnvConfigTemplates = readObjectSync<ConfigFileTemplates>(ctx.paths.rnvConfigTemplates.config);
 
     if (rnvConfigTemplates) {
@@ -249,7 +258,7 @@ export const parseRenativeConfigs = async () => {
     await loadFile(c.files.project, c.paths.project, 'package');
 
     // LOAD ./RENATIVE.*.JSON
-    await _loadConfigFiles(c.files.project, c.paths.project);
+    await _loadConfigFiles(c.files.project, c.paths.project, false, 'project');
 
     if (c.runtime.appId) {
         c.paths.project.builds.config = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}.json`);
@@ -264,7 +273,7 @@ export const parseRenativeConfigs = async () => {
     const wsDir = getRealPath(await getWorkspaceDirPath(c));
     if (wsDir) {
         generateContextPaths(c.paths.workspace, wsDir);
-        await _loadConfigFiles(c.files.workspace, c.paths.workspace, false);
+        await _loadConfigFiles(c.files.workspace, c.paths.workspace, false, 'workspace');
     }
 
     // LOAD DEFAULT WORKSPACE //not needed anymore. loaded at the initial stage
@@ -300,7 +309,7 @@ export const parseRenativeConfigs = async () => {
     if (c.runtime.appId) {
         if (c.runtime.appConfigDir) {
             generateContextPaths(c.paths.appConfig, c.runtime.appConfigDir);
-            _loadConfigFiles(c.files.appConfig, c.paths.appConfig, true);
+            await _loadConfigFiles(c.files.appConfig, c.paths.appConfig, true, 'app');
         }
 
         const workspaceAppConfigsDir = getRealPath(c.buildConfig.workspaceAppConfigsDir);
@@ -312,21 +321,23 @@ export const parseRenativeConfigs = async () => {
             path.join(c.paths.workspace.project.appConfigsDir, c.runtime.appId)
         );
 
-        _loadConfigFiles(c.files.workspace.appConfig, c.paths.workspace.appConfig, true);
+        await _loadConfigFiles(c.files.workspace.appConfig, c.paths.workspace.appConfig, true);
 
-        loadFile(c.files.project.assets, c.paths.project.assets, 'config');
+        await loadFile(c.files.project.assets, c.paths.project.assets, 'config');
 
         // LOAD WORKSPACE /RENATIVE.*.JSON
         const wsPath = await getWorkspaceDirPath(c);
+        console.log('wsPath', wsPath);
         if (wsPath) {
             const wsPathReal = getRealPath(wsPath);
             if (wsPathReal) {
                 generateContextPaths(c.paths.workspace, wsPathReal);
-                _loadConfigFiles(c.files.workspace, c.paths.workspace);
+                await _loadConfigFiles(c.files.workspace, c.paths.workspace);
             }
         }
 
         generateLocalConfig();
         generateBuildConfig();
     }
+    console.log('@@@@@@@', c.buildConfig);
 };

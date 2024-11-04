@@ -355,7 +355,7 @@ export const loadEnginePackageDeps = async (engineConfigs: Array<RnvEngineInstal
 export const getFilteredEngines = (c: RnvContext) => {
     const engines = c.buildConfig?.engines;
     if (!engines) {
-        logError('Engine configs missing in your renative.json. FIXING...DONE');
+        logError('Engine configs missing in your rnv.json. FIXING...DONE');
         return {};
     }
     const rnvPlatforms = c.files.rnvConfigTemplates.config?.templates?.platformTemplates;
@@ -431,6 +431,7 @@ export const installEngines = async (failOnMissingDeps?: boolean): Promise<boole
         const engineRootPath = pathLookups.find((v) => fsExistsSync(v));
 
         const configPath = engineRootPath ? path.join(engineRootPath, RnvFileName.rnv) : null;
+        console.log('configPath', configPath);
         if (!configPath || !fsExistsSync(configPath)) {
             const engVer = getScopedVersion(c, k, filteredEngines[k], 'engineTemplates');
             if (engVer) {

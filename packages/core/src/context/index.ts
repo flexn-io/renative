@@ -124,11 +124,13 @@ export const populateContextPaths = (c: RnvContext, RNV_HOME_DIR: string | undef
     }
     c.paths.dotRnv.config = path.join(
         c.paths.dotRnv.dir,
-        currentConfigName ? `${currentConfigName}.json` : RnvFileName.rnv
+        // currentConfigName ? `${currentConfigName}.json` : RnvFileName.rnv
+        RnvFileName.rnv
     );
     c.paths.dotRnv.configWorkspaces = path.join(
         c.paths.dotRnv.dir,
-        currentConfigName ? `${currentConfigName}.workspaces.json` : RnvFileName.rnv
+        // currentConfigName ? `${currentConfigName}.workspaces.json` : RnvFileName.rnv
+        RnvFileName.rnv
     );
 
     // workspace ------------------

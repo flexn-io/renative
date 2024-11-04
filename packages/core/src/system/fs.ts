@@ -756,10 +756,11 @@ export const getFileListSync = (dir: fs.PathLike) => {
     return results;
 };
 
-export const loadFile = <T, K extends Extract<keyof T, string>>(
+export const loadFile = async <T, K extends Extract<keyof T, string>>(
     fileObj: T,
     pathObj: Partial<Record<K, unknown>>,
-    key: K
+    key: K,
+    namespace?: keyof ConfigFileRenative
 ) => {
     const pKey = `${key}Exists` as K;
     const pth = pathObj[key];
@@ -776,8 +777,8 @@ export const loadFile = <T, K extends Extract<keyof T, string>>(
             const fileString = fsReadFileSync(pth).toString();
             const configFile = JSON.parse(fileString);
 
-            // const updatedConfigFile = await getUpdatedConfigFile(configFile, pth, namespace);
-            fileObj[key] = configFile;
+            const updatedConfigFile = await getUpdatedConfigFile(configFile, pth, namespace);
+            fileObj[key] = updatedConfigFile;
             pathObj[pKey] = true;
             logDebug(`FILE_EXISTS: ${key}:true size:${formatBytes(Buffer.byteLength(fileString, 'utf8'))}`);
             // if (validateRuntimeObjectSchema && fileObj[key]) {
