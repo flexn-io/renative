@@ -36,10 +36,13 @@ import taskUnlink from './tasks/linking/taskUnlink';
 import taskSwitch from './tasks/app/taskAppSwitch';
 import taskPatchReset from './tasks/patch/taskPatchReset';
 const Config: ConfigFileEngine = {
-    platforms: {},
-    npm: {},
-    engineExtension: 'core',
-    name: '@rnv/engine-core',
+    engine: {
+        platforms: {},
+        npm: {},
+        engineExtension: 'core',
+        name: '@rnv/engine-core',
+        plugins: {},
+    },
 };
 
 const Engine = createRnvEngine({

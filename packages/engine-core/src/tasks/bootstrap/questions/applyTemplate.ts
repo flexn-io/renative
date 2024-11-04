@@ -16,7 +16,7 @@ const Question = async (data: NewProjectData): Promise<void> => {
     const { configOption } = await inquirerPrompt({
         name: 'configOption',
         type: 'list',
-        message: 'How to create config renative.json?',
+        message: 'How to create config?',
         default: optExtend,
         choices: options,
     });
@@ -26,10 +26,32 @@ const Question = async (data: NewProjectData): Promise<void> => {
     }
 
     if (configOption === optExtend) {
-        const rnvConfig = files.template.renativeTemplateConfig.templateConfig?.renative_json || {
-            extendsTemplate: `${tplName}/renative.json`,
+        const rnvConfig = files.template.renativeTemplateConfig?.template?.templateConfig?.renative_json || {
+            extendsTemplate: `${tplName}/rnv.json`,
         };
-        files.project.renativeConfig = { ...rnvConfig, ...files.project.renativeConfig };
+
+        if (rnvConfig?.$schema) {
+            const { $schema, ...restRnvConfig } = rnvConfig;
+            const projectConfig = {
+                $schema,
+                project: {
+                    ...restRnvConfig,
+                    ...files.project.renativeConfig.project,
+                },
+            };
+            files.project.renativeConfig = {
+                ...files.project.renativeConfig,
+                ...projectConfig,
+            };
+        } else {
+            files.project.renativeConfig = {
+                ...files.project.renativeConfig,
+                project: {
+                    ...files.project.renativeConfig.project,
+                    ...rnvConfig,
+                },
+            };
+        }
     } else if (configOption === optCopy) {
         files.project.renativeConfig = {
             ...files.template.renativeConfig,
@@ -37,7 +59,7 @@ const Question = async (data: NewProjectData): Promise<void> => {
         };
     }
 
-    const packageJson = files.template.renativeTemplateConfig.templateConfig?.package_json || {};
+    const packageJson = files.template.renativeTemplateConfig?.template.templateConfig?.package_json || {};
     files.project.packageJson = mergeObjects(c, files.project.packageJson, packageJson);
 };
 

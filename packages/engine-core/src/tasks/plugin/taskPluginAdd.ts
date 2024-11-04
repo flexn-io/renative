@@ -48,8 +48,8 @@ export default createTask({
             return;
         }
 
-        const cnfPlugins = cnfOriginal.plugins || {};
-        cnfOriginal.plugins = cnfPlugins;
+        const cnfPlugins = cnfOriginal.project.plugins || {};
+        cnfOriginal.project.plugins = cnfPlugins;
 
         Object.keys(selectedPlugins).forEach((key) => {
             // c.buildConfig.plugins[key] = 'source:rnv';

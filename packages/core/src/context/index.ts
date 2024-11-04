@@ -10,9 +10,9 @@ import { RnvFolderName } from '../enums/folderName';
 
 export const generateContextPaths = (pathObj: RnvContextPathObj, dir: string, configName?: string) => {
     pathObj.dir = dir;
-    pathObj.config = path.join(dir, configName || RnvFileName.renative);
-    pathObj.configLocal = path.join(dir, RnvFileName.renativeLocal);
-    pathObj.configPrivate = path.join(dir, RnvFileName.renativePrivate);
+    pathObj.config = path.join(dir, configName ? `${configName}.json` : RnvFileName.rnv);
+    pathObj.configLocal = path.join(dir, configName ? `${configName}.local.json` : RnvFileName.rnvLocal);
+    pathObj.configPrivate = path.join(dir, configName ? `${configName}.private.json` : RnvFileName.rnvPrivate);
     pathObj.appConfigsDir = path.join(dir, '..');
 };
 
@@ -97,6 +97,7 @@ ${msg}
 };
 
 export const populateContextPaths = (c: RnvContext, RNV_HOME_DIR: string | undefined) => {
+    const currentConfigName = c.program.opts().configName;
     // user ------------------
     c.paths.user.homeDir = homedir();
     c.paths.user.currentDir = path.resolve('.');
@@ -121,8 +122,16 @@ export const populateContextPaths = (c: RnvContext, RNV_HOME_DIR: string | undef
     if (!fsExistsSync(c.paths.dotRnv.dir)) {
         mkdirSync(c.paths.dotRnv.dir);
     }
-    c.paths.dotRnv.config = path.join(c.paths.dotRnv.dir, RnvFileName.renative);
-    c.paths.dotRnv.configWorkspaces = path.join(c.paths.dotRnv.dir, RnvFileName.renativeWorkspaces);
+    c.paths.dotRnv.config = path.join(
+        c.paths.dotRnv.dir,
+        // currentConfigName ? `${currentConfigName}.json` : RnvFileName.rnv
+        RnvFileName.rnv
+    );
+    c.paths.dotRnv.configWorkspaces = path.join(
+        c.paths.dotRnv.dir,
+        // currentConfigName ? `${currentConfigName}.workspaces.json` : RnvFileName.rnv
+        RnvFileName.rnv
+    );
 
     // workspace ------------------
     generateContextPaths(c.paths.workspace, c.paths.dotRnv.dir);
@@ -131,7 +140,7 @@ export const populateContextPaths = (c: RnvContext, RNV_HOME_DIR: string | undef
     // TODO: generate solution root paths
 
     // project ------------------
-    generateContextPaths(c.paths.project, c.paths.user.currentDir, c.program.opts().configName);
+    generateContextPaths(c.paths.project, c.paths.user.currentDir, currentConfigName);
     c.paths.buildHooks.dir = path.join(c.paths.project.dir, 'buildHooks');
     c.paths.buildHooks.src.dir = path.join(c.paths.buildHooks.dir, 'src');
     c.paths.buildHooks.dist.dir = path.join(c.paths.buildHooks.dir, 'dist');
@@ -150,7 +159,10 @@ export const populateContextPaths = (c: RnvContext, RNV_HOME_DIR: string | undef
     c.paths.project.appConfigBase.fontsDirs = [c.paths.project.appConfigBase.fontsDir];
     c.paths.project.assets.dir = path.join(c.paths.project.dir, 'platformAssets');
     c.paths.project.assets.runtimeDir = path.join(c.paths.project.assets.dir, 'runtime');
-    c.paths.project.assets.config = path.join(c.paths.project.assets.dir, RnvFileName.renativeRuntime);
+    c.paths.project.assets.config = path.join(
+        c.paths.project.assets.dir,
+        currentConfigName ? `${currentConfigName}.runtime.json` : RnvFileName.rnvRuntime
+    );
     c.paths.project.builds.dir = path.join(c.paths.project.dir, 'platformBuilds');
 
     // runtime

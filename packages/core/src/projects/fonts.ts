@@ -38,8 +38,8 @@ export const parseFonts = (callback: ParseFontsCallback) => {
         _parseFontSources(c, getConfigProp('fontSources') || [], callback);
         // PLUGIN FONTS
         parsePlugins((plugin) => {
-            if (plugin.config?.fontSources) {
-                _parseFontSources(c, plugin.config?.fontSources, callback);
+            if (plugin.config?.plugin?.fontSources) {
+                _parseFontSources(c, plugin.config?.plugin?.fontSources, callback);
             }
         }, true);
     }

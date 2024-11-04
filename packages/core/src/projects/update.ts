@@ -13,21 +13,26 @@ import { ConfigFileTemplate } from '../schema/types';
 import { inquirerPrompt } from '../api';
 import { applyTemplate } from '../templates';
 import { RnvPlatform } from '../types';
+import { getUpdatedConfigFile } from '../configs/utils';
 
 export const checkAndUpdateProjectIfRequired = async () => {
     logDefault('checkAndUpdateIfRequired');
     const c = getContext();
     const { platform } = c;
-    const supportedPlatforms = c.files.project.config?.defaults?.supportedPlatforms;
+    const supportedPlatforms = c.files.project.config?.project?.defaults?.supportedPlatforms;
 
     if (!platform) return;
     const { isMonorepo } = c.buildConfig;
     if (isMonorepo) return true;
     await applyTemplate();
 
-    const templateConfigFile = readObjectSync<ConfigFileTemplate>(c.paths.template.configTemplate);
+    const originalTemplateConfigFile = readObjectSync<ConfigFileTemplate>(c.paths.template.configTemplate);
+    if (originalTemplateConfigFile) {
+        const templateConfigFile = await getUpdatedConfigFile<ConfigFileTemplate>(
+            originalTemplateConfigFile,
+            c.paths.template.configTemplate
+        );
 
-    if (templateConfigFile) {
         const availablePlatforms = _getAllAvailablePlatforms(templateConfigFile);
         if (!availablePlatforms.includes(platform)) {
             logError(`Platform ${platform} is not supported!`);
@@ -85,8 +90,9 @@ export const checkAndUpdateProjectIfRequired = async () => {
 
     return true;
 };
+
 const _getAllAvailablePlatforms = (templateConfigFile: ConfigFileTemplate): string[] => {
-    const includedPaths = templateConfigFile.templateConfig?.includedPaths || [];
+    const includedPaths = templateConfigFile?.template?.templateConfig?.includedPaths || [];
     return includedPaths.reduce((acc, item) => {
         if (typeof item !== 'string' && item.platforms) {
             acc.push(...item.platforms);
@@ -101,7 +107,7 @@ const _getMisFilesForPlatform = (opts: {
     templatePath: string;
 }) => {
     const { templateConfigFile, platform, projectPath, templatePath } = opts;
-    const includedPaths = templateConfigFile.templateConfig?.includedPaths || [];
+    const includedPaths = templateConfigFile?.template?.templateConfig?.includedPaths || [];
     const result = includedPaths.find(
         (item) => typeof item !== 'string' && item.platforms && item.platforms.includes(platform!)
     );

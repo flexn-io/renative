@@ -7,11 +7,11 @@ export const getTargetWithOptionalPrompt = async () => {
     const options = [];
 
     if (platform && !target) {
-        const projectTarget = ctx.files.project.configLocal?.defaultTargets?.[platform];
+        const projectTarget = ctx.files.project.configLocal?.local?.defaultTargets?.[platform];
         if (projectTarget) {
             options.push({ name: `${projectTarget} (project default)`, value: projectTarget });
         }
-        const workspaceTarget = ctx.files.workspace.config?.defaultTargets?.[platform];
+        const workspaceTarget = ctx.files.workspace.config?.workspace.defaultTargets?.[platform];
         if (workspaceTarget) {
             options.push({ name: `${workspaceTarget} (global default)`, value: workspaceTarget });
         }

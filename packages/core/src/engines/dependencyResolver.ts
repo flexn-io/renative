@@ -10,8 +10,8 @@ export const resolveEngineDependencies = async () => {
     const c = getContext();
     const { platform } = c;
     const engine = getEngineRunnerByPlatform(platform);
-    const npmDepsBase = engine?.config?.npm || {};
-    const npmDepsExt = platform ? engine?.config?.platforms?.[platform]?.npm || {} : {};
+    const npmDepsBase = engine?.config?.engine?.npm || {};
+    const npmDepsExt = platform ? engine?.config?.engine?.platforms?.[platform]?.npm || {} : {};
 
     const npmDeps = merge<Pick<NpmPackageFile, NpmDepKey>>(npmDepsBase, npmDepsExt);
 
@@ -30,7 +30,7 @@ export const resolveEngineDependencies = async () => {
                             },
                             type: depType,
                             msg: 'Missing dependency',
-                            source: 'engine.npm (renative.engine.json)',
+                            source: 'engine.npm (rnv.json)',
                             targetPath: c.paths.project.package,
                         });
                     } else if (ver !== deps[k]) {
@@ -44,7 +44,7 @@ export const resolveEngineDependencies = async () => {
                             },
                             type: depType,
                             msg: 'Outdated dependency',
-                            source: 'engine.npm (renative.engine.json)',
+                            source: 'engine.npm (rnv.json)',
                             targetPath: c.paths.project.package,
                         });
                     }

@@ -16,14 +16,16 @@ const Question = async (data: NewProjectData): Promise<void> => {
 
     const cnfTemplatesName = '@rnv/config-templates';
     const cnfDepVer =
-        files.template.renativeTemplateConfig?.templateConfig?.package_json?.devDependencies?.[cnfTemplatesName];
+        files.template.renativeTemplateConfig?.template?.templateConfig?.package_json?.devDependencies?.[
+            cnfTemplatesName
+        ];
     if (cnfDepVer) {
         // If we find the config-templates package in the devDependencies of the project's package.json,
         // we will use it as source for engines
         await executeAsync(`${isYarnInstalled() ? 'yarn' : 'npm'} add ${cnfTemplatesName}@${cnfDepVer} --dev`, {
             cwd: c.paths.project.dir,
         });
-        const ctCnfPath = path.join(c.paths.project.nodeModulesDir, cnfTemplatesName, RnvFileName.renativeTemplates);
+        const ctCnfPath = path.join(c.paths.project.nodeModulesDir, cnfTemplatesName, RnvFileName.rnv);
         if (fsExistsSync(ctCnfPath)) {
             files.configTemplates.config = readObjectSync<ConfigFileTemplates>(ctCnfPath) || undefined;
         }

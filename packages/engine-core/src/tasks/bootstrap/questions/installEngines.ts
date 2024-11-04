@@ -74,20 +74,26 @@ const Question = async (data: NewProjectData) => {
                 devDeps[key] = version;
 
                 const nmDir = path.join(cwd, 'node_modules');
-                const engineConfigPath = path.join(nmDir, key, RnvFileName.renativeEngine);
+                const isNewConfigPath = fsExistsSync(path.join(nmDir, key, RnvFileName.rnv));
+
+                const engineConfigPath = path.join(
+                    nmDir,
+                    key,
+                    isNewConfigPath ? RnvFileName.rnv : RnvFileName.renativeEngine
+                );
                 const engineConfig = readObjectSync<ConfigFileEngine>(engineConfigPath);
 
                 if (engineConfig && supportedPlatforms) {
                     supportedPlatforms.forEach((platform) => {
-                        const npmDeps = engineConfig?.platforms?.[platform]?.npm;
+                        const npmDeps = engineConfig?.engine?.platforms?.[platform]?.npm;
                         if (npmDeps) {
                             _mergeDependencies(deps, npmDeps.dependencies);
                             _mergeDependencies(devDeps, npmDeps.devDependencies);
                         }
                     });
-                    if (engineConfig?.npm) {
-                        _mergeDependencies(deps, engineConfig.npm.dependencies);
-                        _mergeDependencies(devDeps, engineConfig.npm.devDependencies);
+                    if (engineConfig?.engine?.npm) {
+                        _mergeDependencies(deps, engineConfig.engine.npm.dependencies);
+                        _mergeDependencies(devDeps, engineConfig.engine.npm.devDependencies);
                     }
                 }
             }

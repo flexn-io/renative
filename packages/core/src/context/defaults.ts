@@ -224,13 +224,16 @@ export const generateContextDefaults = (): RnvContext => ({
             configWorkspaces: {
                 workspaces: {},
             },
-            config: {},
+            config: {
+                workspace: {},
+            },
         },
         rnvCore: {
             package: {},
         },
         rnvConfigTemplates: {
-            config: {},
+            // config: {},
+            ...generateRnvConfigFileObj(),
             package: {},
         },
         scopedConfigTemplates: {},

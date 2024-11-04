@@ -1,3 +1,5 @@
+import { ConfigFileRenative } from '../schema/types';
+
 export const RnvFileName = {
     renative: 'renative.json',
     renativeLocal: 'renative.local.json',
@@ -11,5 +13,26 @@ export const RnvFileName = {
     renativeEngine: 'renative.engine.json',
     package: 'package.json',
     appliedOverride: 'applied_overrides.json',
+    schema: 'renative-1.0.schema.json',
+    rnv: 'rnv.json',
+    rnvLocal: 'rnv.local.json',
+    rnvPrivate: 'rnv.private.json',
+    rnvRuntime: 'rnv.runtime.json',
     // renativeProject: 'renative.project.json',
 } as const;
+
+export const renativeKeys: (keyof ConfigFileRenative)[] = [
+    'app',
+    'project',
+    'workspace',
+    'local',
+    'overrides',
+    'integration',
+    'engine',
+    'plugin',
+    'private',
+    'integration',
+    'template',
+    'templates',
+    'workspaces',
+];

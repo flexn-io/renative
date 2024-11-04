@@ -18,13 +18,13 @@ const Question = async (data: NewProjectData): Promise<void> => {
     const appConfigs = listAppConfigsFoldersSync(true);
     if (appConfigs && appConfigs.length > 0) {
         appConfigs.forEach((appConfigID) => {
-            const appCnfPath = path.join(c.paths.project.appConfigsDir, appConfigID, RnvFileName.renative);
+            const appCnfPath = path.join(c.paths.project.appConfigsDir, appConfigID, RnvFileName.rnv);
             const appConfig = readObjectSync<ConfigFileApp>(appCnfPath);
             if (appConfig) {
-                appConfig.common = appConfig.common || {};
-                appConfig.common.title = inputs.appTitle;
-                appConfig.common.id = inputs.appID;
-                appConfig.common.description = `This is ${inputs.appTitle} app!`;
+                appConfig.project.common = appConfig.app.common || appConfig.project.common || {};
+                appConfig.project.common.title = inputs.appTitle;
+                appConfig.project.common.id = inputs.appID;
+                appConfig.project.common.description = `This is ${inputs.appTitle} app!`;
                 logInfo(
                     `Updating appConfig ${chalk().bold.white(appConfigID)} with title: ${chalk().bold.white(
                         inputs.appTitle

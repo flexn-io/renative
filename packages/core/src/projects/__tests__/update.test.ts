@@ -6,6 +6,7 @@ import { generateContextDefaults } from '../../context/defaults';
 import { copyFileSync, fsExistsSync, fsLstatSync, readObjectSync, writeFileSync } from '../../system/fs';
 import { inquirerPrompt } from '../../api';
 import { RnvPlatform } from '../../types';
+import { getUpdatedConfigFile } from '../../configs/utils';
 
 jest.mock('path');
 jest.mock('../../api');
@@ -13,6 +14,7 @@ jest.mock('../../context/provider');
 jest.mock('../../system/fs');
 jest.mock('../../logger');
 jest.mock('../../templates');
+jest.mock('../../configs/utils');
 
 afterEach(() => {
     jest.resetAllMocks();
@@ -48,10 +50,15 @@ describe('checkAndUpdateProjectIfRequired', () => {
         const c = getContext();
         c.platform = 'test' as RnvPlatform;
         c.buildConfig.isMonorepo = false;
-        c.files.project.config = { defaults: { supportedPlatforms: ['ios'] } };
+        c.files.project.config = { project: { defaults: { supportedPlatforms: ['ios'] } } };
         c.paths.template.configTemplate = '/path/to/template';
         jest.mocked(readObjectSync).mockReturnValue({
             templateConfig: { includedPaths: [{ platforms: ['android'], paths: ['mockFile.js'] }] },
+        });
+        jest.mocked(getUpdatedConfigFile).mockResolvedValue({
+            template: {
+                templateConfig: { includedPaths: [{ platforms: ['android'], paths: ['mockFile.js'] }] },
+            },
         });
         jest.mocked(inquirerPrompt).mockResolvedValue({ confirm: true });
         //WHEN
@@ -65,10 +72,15 @@ describe('checkAndUpdateProjectIfRequired', () => {
         const c = getContext();
         c.platform = 'android';
         c.buildConfig.isMonorepo = false;
-        c.files.project.config = { defaults: { supportedPlatforms: ['ios'] } };
+        c.files.project.config = { project: { defaults: { supportedPlatforms: ['ios'] } } };
         c.paths.template.configTemplate = '/path/to/template';
         jest.mocked(readObjectSync).mockReturnValue({
             templateConfig: { includedPaths: [{ platforms: ['android'], paths: ['mockFile.js'] }] },
+        });
+        jest.mocked(getUpdatedConfigFile).mockResolvedValue({
+            template: {
+                templateConfig: { includedPaths: [{ platforms: ['android'], paths: ['mockFile.js'] }] },
+            },
         });
         jest.mocked(inquirerPrompt).mockResolvedValue({ confirm: false });
         //WHEN
@@ -81,13 +93,18 @@ describe('checkAndUpdateProjectIfRequired', () => {
         const c = getContext();
         c.platform = 'android';
         c.buildConfig.isMonorepo = false;
-        c.files.project.config = { defaults: { supportedPlatforms: ['ios'] } };
+        c.files.project.config = { project: { defaults: { supportedPlatforms: ['ios'] } } };
         c.paths.project.dir = '/project/dir';
         c.paths.project.config = '/project/dir/renative.json';
         c.paths.template.dir = '/template/dir';
         c.paths.template.configTemplate = '/path/to/template';
         jest.mocked(readObjectSync).mockReturnValue({
             templateConfig: { includedPaths: [{ platforms: ['android'], paths: ['mockFile.js'] }] },
+        });
+        jest.mocked(getUpdatedConfigFile).mockResolvedValue({
+            template: {
+                templateConfig: { includedPaths: [{ platforms: ['android'], paths: ['mockFile.js'] }] },
+            },
         });
         jest.mocked(inquirerPrompt).mockResolvedValue({ confirm: true });
         jest.mocked(fsExistsSync)
@@ -104,7 +121,7 @@ describe('checkAndUpdateProjectIfRequired', () => {
         await expect(checkAndUpdateProjectIfRequired()).resolves.toEqual(true);
         //THEN
         expect(writeFileSync).toHaveBeenCalledWith('/project/dir/renative.json', {
-            defaults: { supportedPlatforms: ['ios', 'android'] },
+            project: { defaults: { supportedPlatforms: ['ios', 'android'] } },
         });
         expect(copyFileSync).toHaveBeenCalledWith(sourcePath, destPath);
         expect(logInfo).toHaveBeenCalledWith(expect.stringContaining('COPYING from TEMPLATE...DONE'));
@@ -115,13 +132,18 @@ describe('checkAndUpdateProjectIfRequired', () => {
         const c = getContext();
         c.platform = 'android';
         c.buildConfig.isMonorepo = false;
-        c.files.project.config = { defaults: { supportedPlatforms: ['ios', 'android'] } };
+        c.files.project.config = { project: { defaults: { supportedPlatforms: ['ios', 'android'] } } };
         c.paths.project.dir = '/project/dir';
         c.paths.project.config = '/project/dir/renative.json';
         c.paths.template.dir = '/template/dir';
         c.paths.template.configTemplate = '/path/to/template';
         jest.mocked(readObjectSync).mockReturnValue({
             templateConfig: { includedPaths: [{ platforms: ['android'], paths: ['mockFile.js'] }] },
+        });
+        jest.mocked(getUpdatedConfigFile).mockResolvedValue({
+            template: {
+                templateConfig: { includedPaths: [{ platforms: ['android'], paths: ['mockFile.js'] }] },
+            },
         });
         jest.mocked(inquirerPrompt).mockResolvedValue({ confirm: true });
         jest.mocked(fsExistsSync)

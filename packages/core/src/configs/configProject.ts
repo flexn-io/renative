@@ -52,8 +52,8 @@ export const upgradeDependencies = (
     _fixDeps(packageFile?.devDependencies, version);
     _fixDeps(packageFile?.dependencies, version);
     _fixDeps(packageFile?.peerDependencies, version);
-    if (configFile?.templateConfig) {
-        configFile.templateConfig.version = version;
+    if (configFile?.project?.templateConfig) {
+        configFile.project.templateConfig.version = version;
     }
 
     if (packageFile) {
@@ -86,8 +86,8 @@ export const updateProjectPlatforms = (platforms: Array<RnvPlatformKey>) => {
     } = c.paths;
     const currentConfig = c.files.project.config;
     if (currentConfig) {
-        currentConfig.defaults = currentConfig.defaults || {};
-        currentConfig.defaults.supportedPlatforms = platforms;
+        currentConfig.project.defaults = currentConfig.project.defaults || {};
+        currentConfig.project.defaults.supportedPlatforms = platforms;
         writeFileSync(config, currentConfig);
     } else {
         logWarning('Config not loaded yet. skipping updateProjectPlatforms');
@@ -108,8 +108,8 @@ export const generatePlatformTemplatePaths = () => {
     const pt = c.buildConfig.paths?.platformTemplatesDirs || {};
     const result: Record<string, string> = {};
 
-    if (c.buildConfig.defaults) {
-        c.buildConfig.defaults?.supportedPlatforms?.forEach((platform: RnvPlatform) => {
+    if (c.buildConfig?.defaults) {
+        c.buildConfig?.defaults?.supportedPlatforms?.forEach((platform: RnvPlatform) => {
             if (platform) {
                 const engine = c.runtime.enginesByPlatform[platform];
                 if (engine) {

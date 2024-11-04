@@ -9,8 +9,7 @@ import { getContext } from './provider';
 
 export const configureRuntimeDefaults = async () => {
     const c = getContext();
-
-    c.runtime.appId = c.files.project?.configLocal?._meta?.currentAppConfigId || _getAppId(c);
+    c.runtime.appId = c.files.project?.configLocal?.local?._meta?.currentAppConfigId || _getAppId(c);
     if (c.runtime.appId) {
         c.runtime.appConfigDir = path.join(c.paths.project.appConfigsDir, c.runtime.appId);
     }
@@ -87,12 +86,14 @@ export const configureRuntimeDefaults = async () => {
 const _getAppId = (c: RnvContext) => {
     logDebug(`_getAppId`);
     const localConfigPath = path.join(c.paths.project.dir, 'renative.local.json');
+
     if (!fsExistsSync(localConfigPath)) return undefined;
     try {
         const fileAsString = fsReadFileSync(localConfigPath).toString();
+
         if (!fileAsString) return undefined;
 
-        const appId = JSON.parse(fileAsString)?._meta?.currentAppConfigId;
+        const appId = JSON.parse(fileAsString)?.local?._meta?.currentAppConfigId;
         return appId;
     } catch (error) {
         return undefined;

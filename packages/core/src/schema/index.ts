@@ -19,36 +19,36 @@ import * as _platformsFragmentsTemplateAndroid from './platforms/fragments/templ
 import * as _platformsFragmentsTemplateXcode from './platforms/fragments/templateXcode';
 import * as _platformsFragmentsElectron from './platforms/fragments/electron';
 import * as _platformsFragmentsWebos from './platforms/fragments/webos';
-import * as _app from './configFiles/app';
-import * as _engine from './configFiles/engine';
-import * as _integration from './configFiles/integration';
-import * as _local from './configFiles/local';
-import * as _overrides from './configFiles/overrides';
-import * as _plugin from './configFiles/plugin';
-import * as _private from './configFiles/private';
-import * as _project from './configFiles/project';
+// import * as _app from './configFiles/app';
+// import * as _engine from './configFiles/engine';
+// import * as _integration from './configFiles/integration';
+// import * as _local from './configFiles/local';
+// import * as _overrides from './configFiles/overrides';
+// import * as _plugin from './configFiles/plugin';
+// import * as _private from './configFiles/private';
+// import * as _project from './configFiles/project';
 import * as _root from './configFiles/root';
 import * as _runtime from './configFiles/runtime';
-import * as _template from './configFiles/template';
-import * as _templates from './configFiles/templates';
-import * as _workspace from './configFiles/workspace';
-import * as _workspaces from './configFiles/workspaces';
+// import * as _template from './configFiles/template';
+// import * as _templates from './configFiles/templates';
+// import * as _workspace from './configFiles/workspace';
+// import * as _workspaces from './configFiles/workspaces';
 
 export const ZodFileSchema = {
-    zodConfigFileApp: _app.zodConfigFileApp,
-    zodConfigFileEngine: _engine.zodConfigFileEngine,
-    zodConfigFileIntegration: _integration.zodConfigFileIntegration,
-    zodConfigFileLocal: _local.zodConfigFileLocal,
-    zodConfigFileOverrides: _overrides.zodConfigFileOverrides,
-    zodConfigFilePlugin: _plugin.zodConfigFilePlugin,
-    zodConfigFilePrivate: _private.zodConfigFilePrivate,
-    zodConfigFileProject: _project.zodConfigFileProject,
+    // zodConfigFileApp: _app.zodConfigFileApp,
+    // zodConfigFileEngine: _engine.zodConfigFileEngine,
+    // zodConfigFileIntegration: _integration.zodConfigFileIntegration,
+    // zodConfigFileLocal: _local.zodConfigFileLocal,
+    // zodConfigFileOverrides: _overrides.zodConfigFileOverrides,
+    // zodConfigFilePlugin: _plugin.zodConfigFilePlugin,
+    // zodConfigFilePrivate: _private.zodConfigFilePrivate,
+    // zodConfigFileProject: _project.zodConfigFileProject,
     zodConfigFileRoot: _root.zodConfigFileRoot,
     zodConfigFileRuntime: _runtime.zodConfigFileRuntime,
-    zodConfigFileTemplate: _template.zodConfigFileTemplate,
-    zodConfigFileTemplates: _templates.zodConfigFileTemplates,
-    zodConfigFileWorkspace: _workspace.zodConfigFileWorkspace,
-    zodConfigFileWorkspaces: _workspaces.zodConfigFileWorkspaces,
+    // zodConfigFileTemplate: _template.zodConfigFileTemplate,
+    // zodConfigFileTemplates: _templates.zodConfigFileTemplates,
+    // zodConfigFileWorkspace: _workspace.zodConfigFileWorkspace,
+    // zodConfigFileWorkspaces: _workspaces.zodConfigFileWorkspaces,
 };
 
 export const ZodSharedSchema = {

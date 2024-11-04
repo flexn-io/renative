@@ -1,4 +1,4 @@
 import type { ConfigFileEngine } from '@rnv/core';
 //@ts-ignore
-import CNF from '../renative.engine.json';
+import CNF from '../rnv.json';
 export const Config: ConfigFileEngine = CNF;

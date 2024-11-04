@@ -11,8 +11,9 @@ import type { FileUtilsPropConfig, OverridesOptions, TimestampPathsConfig } from
 import { getApi } from '../api/provider';
 import { getContext } from '../context/provider';
 import { matchRegEx } from './regEx';
-import type { ConfigPropKey } from '../schema/types';
+import type { ConfigFileRenative, ConfigPropKey } from '../schema/types';
 import lGet from 'lodash/get';
+import { getUpdatedConfigFile } from '../configs/utils';
 
 export const fsWriteFileSync = (dest: string | undefined, data: string, options?: fs.WriteFileOptions) => {
     // if (dest && dest.includes('renative.json')) {
@@ -755,10 +756,11 @@ export const getFileListSync = (dir: fs.PathLike) => {
     return results;
 };
 
-export const loadFile = <T, K extends Extract<keyof T, string>>(
+export const loadFile = async <T, K extends Extract<keyof T, string>>(
     fileObj: T,
     pathObj: Partial<Record<K, unknown>>,
-    key: K
+    key: K,
+    namespace?: keyof ConfigFileRenative
 ) => {
     const pKey = `${key}Exists` as K;
     const pth = pathObj[key];
@@ -773,7 +775,10 @@ export const loadFile = <T, K extends Extract<keyof T, string>>(
     try {
         if (typeof pth === 'string') {
             const fileString = fsReadFileSync(pth).toString();
-            fileObj[key] = JSON.parse(fileString);
+            const configFile = JSON.parse(fileString);
+
+            const updatedConfigFile = await getUpdatedConfigFile(configFile, pth, namespace);
+            fileObj[key] = updatedConfigFile;
             pathObj[pKey] = true;
             logDebug(`FILE_EXISTS: ${key}:true size:${formatBytes(Buffer.byteLength(fileString, 'utf8'))}`);
             // if (validateRuntimeObjectSchema && fileObj[key]) {
@@ -782,7 +787,7 @@ export const loadFile = <T, K extends Extract<keyof T, string>>(
             //         logWarning(`Invalid schema in ${pathObj[key]}. ISSUES: ${JSON.stringify(ajv.errors, null, 2)}`);
             //     }
             // }
-            // if (pathObj[key].includes?.('renative.json')) {
+            // if (pathObj[key].includes?.(RnvFileName.renative)) {
             //     console.log(`FILE_EXISTS: ${key}:true size:${formatBytes(Buffer.byteLength(fileString, 'utf8'))}`);
             // }
         }

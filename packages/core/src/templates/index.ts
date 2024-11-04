@@ -24,7 +24,7 @@ export const configureTemplateFiles = async () => {
     const templateConfig = readObjectSync<ConfigFileTemplate>(c.paths.template.configTemplate);
 
     let mergedObj = _getProjectTemplateMergedConfig(templateConfig);
-    const includedPaths = mergedObj?.templateConfig?.includedPaths;
+    const includedPaths = mergedObj?.template.templateConfig?.includedPaths;
 
     if (includedPaths) {
         includedPaths.forEach((pth) => {
@@ -65,6 +65,7 @@ export const isTemplateInstalled = () => {
 export const applyTemplate = async () => {
     const c = getContext();
     logDefault('applyTemplate');
+
     if (c.buildConfig?.isTemplate) return true;
     if (!c.files.project.config) {
         logError('Project config not loaded. cannot apply template');
@@ -80,7 +81,7 @@ export const applyTemplate = async () => {
 const _applyTemplate = async (c: RnvContext) => {
     logDefault('_applyTemplate');
 
-    const tplName = c.buildConfig.templateConfig?.name;
+    const tplName = c.buildConfig?.templateConfig?.name;
     if (!tplName) {
         logError(`Template config missing. Make sure renative.json >> templateConfig.name is set`);
         return;
@@ -93,9 +94,9 @@ const _applyTemplate = async (c: RnvContext) => {
     c.paths.template.dir = tpPath;
 
     if (c.paths.template.dir) {
-        c.paths.template.configTemplate = path.join(c.paths.template.dir, RnvFileName.renativeTemplate);
+        c.paths.template.configTemplate = path.join(c.paths.template.dir, RnvFileName.rnv);
 
-        c.paths.template.config = path.join(c.paths.template.dir, RnvFileName.renative);
+        c.paths.template.config = path.join(c.paths.template.dir, RnvFileName.rnv);
     }
     if (!fsExistsSync(c.paths.template.configTemplate)) {
         logWarning(
