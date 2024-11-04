@@ -29,6 +29,7 @@ import {
     RnvPlatform,
     logInfo,
     RnvPlatformKey,
+    execCLI,
 } from '@rnv/core';
 import { parseAndroidManifestSync } from './manifestParser';
 import {
@@ -186,7 +187,18 @@ export const getAndroidDeviceToRunOn = async () => {
 
 export const runAndroid = async (device: AndroidDevice) => {
     logDefault('runAndroid', `target:${device.udid}`);
-
+    const c = getContext();
+    const { uninstall } = c.program.opts();
+    if (uninstall) {
+        const packageId = getConfigProp('id');
+        if (packageId) {
+            try {
+                await execCLI(CLI_ANDROID_ADB, `uninstall ${packageId}`, { silent: true });
+            } catch (e) {
+                return Promise.reject(`Failed to uninstall ${packageId}`);
+            }
+        }
+    }
     await runReactNativeAndroid(device);
 };
 

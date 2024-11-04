@@ -18,4 +18,8 @@ export const TaskOptions = createTaskOptionsMap([
         altKey: 'resetAdb',
         description: 'Forces to reset android adb',
     },
+    {
+        key: 'uninstall',
+        description: 'Uninstall the app with the current id',
+    },
 ]);
