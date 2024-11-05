@@ -33,7 +33,7 @@
     "dependencies": {},
     "devDependencies": {},
     "peerDependencies": {
-        "@rnv/core": "^1.5.0-rc.0"
+        "@rnv/core": "^1.6.0-rc.0"
     },
     "private": false,
     "publishConfig": {
