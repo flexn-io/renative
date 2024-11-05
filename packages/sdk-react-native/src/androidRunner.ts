@@ -13,7 +13,6 @@ import {
     ExecOptionsPresets,
     getContext,
     execCLI,
-    logWarning,
     inquirerPrompt,
 } from '@rnv/core';
 import { EnvVars } from './env';
