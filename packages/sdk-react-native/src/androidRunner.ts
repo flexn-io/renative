@@ -12,6 +12,8 @@ import {
     CoreEnvVars,
     ExecOptionsPresets,
     getContext,
+    execCLI,
+    inquirerPrompt,
 } from '@rnv/core';
 import { EnvVars } from './env';
 import { getEntryFile } from '@rnv/sdk-utils';
@@ -95,20 +97,56 @@ export const runReactNativeAndroid = async (device: { udid?: string } | undefine
     if (udid) {
         command += ` --deviceId=${udid}`;
     }
+    const executeCommand = async () => {
+        return executeAsync(command, {
+            env: {
+                ...CoreEnvVars.BASE(),
+                ...CoreEnvVars.RNV_EXTENSIONS(),
+                ...EnvVars.RCT_METRO_PORT(),
+                ...EnvVars.RNV_REACT_NATIVE_PATH(),
+                ...EnvVars.RNV_APP_ID(),
+                ...EnvVars.RNV_SKIP_LINKING(),
+            },
+            cwd: appFolder,
+            // To display react-native CLI logs in RNV executed terminal
+            ...ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER,
+        });
+    };
 
-    return executeAsync(command, {
-        env: {
-            ...CoreEnvVars.BASE(),
-            ...CoreEnvVars.RNV_EXTENSIONS(),
-            ...EnvVars.RCT_METRO_PORT(),
-            ...EnvVars.RNV_REACT_NATIVE_PATH(),
-            ...EnvVars.RNV_APP_ID(),
-            ...EnvVars.RNV_SKIP_LINKING(),
-        },
-        cwd: appFolder,
-        //This is required to make rn cli logs visible in rnv executed terminal
-        ...ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER,
-    });
+    try {
+        return await executeCommand();
+    } catch (error) {
+        const packageId = getConfigProp('id');
+        if (packageId) {
+            const { confirm } = await inquirerPrompt({
+                name: 'confirm',
+                type: 'confirm',
+                message: `Failed to build the app. Try to uninstall and retry?`,
+            });
+
+            if (confirm) {
+                try {
+                    await execCLI('androidAdb', `uninstall ${packageId}`, { silent: true });
+                } catch (e) {
+                    return Promise.reject(`Failed to uninstall ${packageId}`);
+                }
+
+                return await executeCommand();
+            } else {
+                if (typeof error === 'string') {
+                    return Promise.reject(error);
+                } else if (error instanceof Error) {
+                    return Promise.reject(error.message);
+                }
+            }
+        } else {
+            if (typeof error === 'string') {
+                return Promise.reject(error);
+            } else if (error instanceof Error) {
+                return Promise.reject(error.message);
+            }
+        }
+    }
 };
 
 export const buildReactNativeAndroid = async () => {

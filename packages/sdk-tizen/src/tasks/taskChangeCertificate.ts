@@ -8,7 +8,6 @@ export default createTask({
     fn: async ({ ctx }) => {
         for (const config of ctx.paths.appConfig.configs) {
             if (config.includes('base')) {
-                const configFile = await JSON.parse(fs.readFileSync(config, 'utf-8'));
                 const { confirm } = await inquirerPrompt({
                     message:
                         'Tizen - used certificate change. NOTE: you must create the certificate first through the tizens certificate-manager. Continue?',
@@ -18,11 +17,15 @@ export default createTask({
                 if (!confirm) {
                     return;
                 }
-                const { platform } = await inquirerPrompt({
+                const { selectedPlatforms } = await inquirerPrompt({
                     message: 'For which platform do you want to set the new certificate?',
-                    type: 'list',
-                    name: 'platform',
-                    choices: ['tizen', 'tizenwatch', 'tizenmobile'],
+                    type: 'checkbox',
+                    name: 'selectedPlatforms',
+                    choices: ctx.buildConfig.defaults?.supportedPlatforms?.filter((platform) =>
+                        platform.includes('tizen')
+                    ),
+                    pageSize: 20,
+                    validate: (val) => !!val.length || 'Please select at least a platform',
                 });
                 const { name } = await inquirerPrompt({
                     message: 'Enter the new certificate name:',
@@ -34,7 +37,31 @@ export default createTask({
                     return;
                 }
 
-                configFile.platforms[`${platform}`].certificateProfile = name;
+                if (!fs.existsSync(config)) {
+                    const configContent = JSON.stringify(
+                        {
+                            platforms: {
+                                [selectedPlatforms[0]]: {
+                                    certificateProfile: name,
+                                },
+                            },
+                        },
+                        null,
+                        2
+                    );
+
+                    fs.writeFileSync(config, configContent);
+                }
+
+                const configFile = await JSON.parse(fs.readFileSync(config, 'utf-8'));
+
+                selectedPlatforms.forEach((platform: string) => {
+                    if (!configFile.platforms[platform]) {
+                        configFile.platforms[platform] = {};
+                    }
+
+                    configFile.platforms[`${platform}`].certificateProfile = name;
+                });
 
                 fs.writeFileSync(config, JSON.stringify(configFile, null, 2));
 
