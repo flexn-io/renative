@@ -11,6 +11,7 @@ import {
     fsExistsSync,
     fsLstatSync,
     fsReaddirSync,
+    getUpdatedConfigFile,
     inquirerPrompt,
     inquirerSeparator,
     isYarnInstalled,
@@ -260,18 +261,30 @@ const Question = async (data: NewProjectData) => {
 
     const templateDir = path.join(c.paths.project.dir, 'node_modules', inputs.template.packageName);
 
-    const renativeTemplateConfig: ConfigFileTemplate = readObjectSync<ConfigFileTemplate>(
-        path.join(templateDir, RnvFileName.rnv)
-    ) || {
+    const isNewConfigPath = fsExistsSync(path.join(templateDir, RnvFileName.rnv));
+    const templateConfigPath = isNewConfigPath
+        ? path.join(templateDir, RnvFileName.rnv)
+        : path.join(templateDir, RnvFileName.renativeTemplate);
+    const renativeTemplateConfig: ConfigFileTemplate = readObjectSync<ConfigFileTemplate>(templateConfigPath) || {
         template: {},
     };
     if (renativeTemplateConfig) {
-        files.template.renativeTemplateConfig = renativeTemplateConfig;
-    }
+        const updatedRenativeTemplateConfig = await getUpdatedConfigFile(
+            renativeTemplateConfig,
+            templateConfigPath,
+            'template'
+        );
 
-    const renativeConfig = readObjectSync<ConfigFileProject>(path.join(templateDir, RnvFileName.rnv));
+        files.template.renativeTemplateConfig = updatedRenativeTemplateConfig;
+    }
+    const configPath = isNewConfigPath
+        ? path.join(templateDir, RnvFileName.rnv)
+        : path.join(templateDir, RnvFileName.renative);
+    const renativeConfig = readObjectSync<ConfigFileProject>(configPath);
     if (renativeConfig) {
-        files.template.renativeConfig = renativeConfig;
+        const updatedRenativeConfig = await getUpdatedConfigFile(renativeConfig, configPath, 'project');
+
+        files.template.renativeConfig = updatedRenativeConfig;
     }
 };
 

@@ -1,4 +1,4 @@
-import { getContext, inquirerPrompt, mergeObjects } from '@rnv/core';
+import { generateNewSchemaPath, getContext, inquirerPrompt, mergeObjects } from '@rnv/core';
 import type { NewProjectData } from '../types';
 
 const Question = async (data: NewProjectData): Promise<void> => {
@@ -33,7 +33,7 @@ const Question = async (data: NewProjectData): Promise<void> => {
         if (rnvConfig?.$schema) {
             const { $schema, ...restRnvConfig } = rnvConfig;
             const projectConfig = {
-                $schema,
+                $schema: generateNewSchemaPath(c.paths.project.config),
                 project: {
                     ...restRnvConfig,
                     ...files.project.renativeConfig.project,

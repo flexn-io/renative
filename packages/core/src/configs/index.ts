@@ -339,5 +339,4 @@ export const parseRenativeConfigs = async () => {
         generateLocalConfig();
         generateBuildConfig();
     }
-    console.log('@@@@@@@', c.buildConfig);
 };

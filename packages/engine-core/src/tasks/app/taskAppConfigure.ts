@@ -13,7 +13,7 @@ import {
     fsReadFileSync,
     fsRenameSync,
     RnvTaskOptionPresets,
-    listAppConfigsFoldersSync,
+    listAppConfigsFoldersAsync,
     updateRenativeConfigs,
     inquirerPrompt,
     RnvContext,
@@ -151,20 +151,20 @@ const _setAppId = (ctx: RnvContext, appId: string) => {
 
 const appConfigure = async () => {
     const ctx = getContext();
-    ctx.paths.project.appConfigsDirNames = listAppConfigsFoldersSync(true);
+    ctx.paths.project.appConfigsDirNames = await listAppConfigsFoldersAsync(true);
     ctx.paths.project.appConfigsDirNames.forEach((dirName) => {
         ctx.paths.project.appConfigsDirs.push(path.join(ctx.paths.project.appConfigsDir, dirName));
     });
 
     const appConfigsDirsExt = ctx.buildConfig?.paths?.appConfigsDirs;
     if (appConfigsDirsExt) {
-        appConfigsDirsExt.forEach((apePath) => {
-            const appConfigsExt = listAppConfigsFoldersSync(true, apePath);
+        for (const apePath of appConfigsDirsExt) {
+            const appConfigsExt: string[] = await listAppConfigsFoldersAsync(true, apePath);
             appConfigsExt.forEach((appExtName) => {
                 ctx.paths.project.appConfigsDirNames.push(appExtName);
                 ctx.paths.project.appConfigsDirs.push(path.join(apePath, appExtName));
             });
-        });
+        }
     }
 
     // Reset appId if appConfig no longer exists but renative.local.json still has reference to it

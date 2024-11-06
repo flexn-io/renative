@@ -9,7 +9,7 @@ import {
     isPlatformWeb,
     isPlatformAndroidwear,
 } from '@rnv/renative';
-import CONFIG from '../platformAssets/rnv.runtime.json';
+import CONFIG from '../platformAssets/renative.runtime.json';
 import '../platformAssets/runtime/fontManager';
 import ICON_LOGO from '../platformAssets/runtime/logo.png';
 

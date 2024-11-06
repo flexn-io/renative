@@ -161,7 +161,8 @@ export const populateContextPaths = (c: RnvContext, RNV_HOME_DIR: string | undef
     c.paths.project.assets.runtimeDir = path.join(c.paths.project.assets.dir, 'runtime');
     c.paths.project.assets.config = path.join(
         c.paths.project.assets.dir,
-        currentConfigName ? `${currentConfigName}.runtime.json` : RnvFileName.rnvRuntime
+        // currentConfigName ? `${currentConfigName}.runtime.json` : RnvFileName.rnvRuntime
+        RnvFileName.renativeRuntime
     );
     c.paths.project.builds.dir = path.join(c.paths.project.dir, 'platformBuilds');
 

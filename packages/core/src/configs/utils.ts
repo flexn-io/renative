@@ -27,8 +27,11 @@ export const getUpdatedConfigFile = async <T extends Record<string, any>>(
     if (!configFile?.$schema && misNamespace) {
         // isOldFile = true;
         if (configFile[misNamespace]) {
+            delete configFile.$schema;
+
             updatedConfigFile = merge({}, configFile);
         } else {
+            delete configFile.$schema;
             updatedConfigFile[misNamespace] = merge({}, configFile);
         }
     }
@@ -37,6 +40,7 @@ export const getUpdatedConfigFile = async <T extends Record<string, any>>(
         const currentScheme = configFile.$schema;
         misNamespace = namespace || _getNameSpace(currentScheme);
         if (misNamespace) {
+            delete configFile.$schema;
             updatedConfigFile[misNamespace] = { ...configFile };
         }
     }
@@ -49,9 +53,9 @@ export const getUpdatedConfigFile = async <T extends Record<string, any>>(
     //     });
     //     if (confirm) {
     //         const relativeShemePath = generateNewSchemaPath(configPath || '');
-    //         if (misNamespace) {
-    //             delete updatedConfigFile[misNamespace].$schema;
-    //         }
+    // if (misNamespace) {
+    //     delete updatedConfigFile[misNamespace].$schema;
+    // }
     //         updatedConfigFile.$schema = relativeShemePath;
     //         // writeFileSync(configPath, updatedConfigFile);
     //         logInfo(`Config file has been updated to support the new schema structure ${configPath}`);

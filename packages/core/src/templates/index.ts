@@ -15,6 +15,7 @@ import { getContext } from '../context/provider';
 import { RnvFolderName } from '../enums/folderName';
 import { checkIfProjectAndNodeModulesExists } from '../projects/npm';
 import type { ConfigFileProject, ConfigFileTemplate } from '../schema/types';
+import { getUpdatedConfigFile } from '../configs/utils';
 
 export const configureTemplateFiles = async () => {
     logDefault('configureTemplateFiles');
@@ -22,8 +23,12 @@ export const configureTemplateFiles = async () => {
     const c = getContext();
 
     const templateConfig = readObjectSync<ConfigFileTemplate>(c.paths.template.configTemplate);
-
-    let mergedObj = _getProjectTemplateMergedConfig(templateConfig);
+    const updatedTemplateConfig = await getUpdatedConfigFile(
+        templateConfig!,
+        c.paths.template.configTemplate,
+        'template'
+    );
+    let mergedObj = _getProjectTemplateMergedConfig(updatedTemplateConfig);
     const includedPaths = mergedObj?.template.templateConfig?.includedPaths;
 
     if (includedPaths) {
@@ -92,11 +97,15 @@ const _applyTemplate = async (c: RnvContext) => {
         return;
     }
     c.paths.template.dir = tpPath;
-
     if (c.paths.template.dir) {
-        c.paths.template.configTemplate = path.join(c.paths.template.dir, RnvFileName.rnv);
+        const isNewConfigPath = fsExistsSync(path.join(c.paths.template.dir, RnvFileName.rnv));
+        const templateConfigPath = isNewConfigPath
+            ? path.join(c.paths.template.dir, RnvFileName.rnv)
+            : path.join(c.paths.template.dir, RnvFileName.renativeTemplate);
 
-        c.paths.template.config = path.join(c.paths.template.dir, RnvFileName.rnv);
+        c.paths.template.configTemplate = path.join(templateConfigPath);
+
+        c.paths.template.config = path.join(templateConfigPath);
     }
     if (!fsExistsSync(c.paths.template.configTemplate)) {
         logWarning(
