@@ -21,7 +21,6 @@ import {
     getAppFolder,
     getContext,
     logError,
-    writeFileSync,
 } from '@rnv/core';
 import { WebosDevice } from './types';
 import {
@@ -33,7 +32,7 @@ import {
     CLI_WEBOS_ARES_DEVICE_INFO,
 } from './constants';
 import semver from 'semver';
-import { isUrlLocalhost } from '@rnv/sdk-utils';
+import { isUrlLocalhost, updateDefaultTargets } from '@rnv/sdk-utils';
 
 export const launchWebOSimulator = async (target: string | boolean) => {
     logTask('launchWebOSimulator', `${target}`);
@@ -175,7 +174,7 @@ const launchAppOnSimulator = async (c: RnvContext, appPath: string) => {
             selectedSimulator = availableEmulatorVersions[0];
             logInfo(`Found simulator ${chalk().bold.white(selectedSimulator)} in ${simulatorDirPath}`);
         }
-        await _updateDefaultTargets(c, selectedSimulator);
+        await updateDefaultTargets(c, selectedSimulator);
     }
 
     const regex = /\d+(\.\d+)?/g;
@@ -194,31 +193,6 @@ const launchAppOnSimulator = async (c: RnvContext, appPath: string) => {
     );
 };
 
-const _updateDefaultTargets = async (c: RnvContext, selectedSimulator: string) => {
-    const defaultTarget = c.runtime.target;
-    const { confirm } = await inquirerPrompt({
-        type: 'confirm',
-        name: 'confirm',
-        message: `Your default target for platform ${c.platform} is ${
-            !defaultTarget ? 'not defined' : `set to ${defaultTarget}`
-        }. Do you want to ${!defaultTarget ? 'set' : `update `} it to ${selectedSimulator} `,
-    });
-    if (!confirm) return;
-
-    const workspaceConfig = c.files.workspace.config;
-
-    if (workspaceConfig && c.platform) {
-        if (!workspaceConfig.defaultTargets) workspaceConfig.defaultTargets = {};
-
-        workspaceConfig.defaultTargets[c.platform] = selectedSimulator;
-
-        c.files.workspace.config = workspaceConfig;
-        writeFileSync(c.paths.workspace.config, workspaceConfig);
-    }
-    logInfo(
-        `Your default target for platform ${c.platform} has been updated successfully in ${c.paths.workspace.config}`
-    );
-};
 // Used for actual devices
 const installAndLaunchApp = async (target: string, appPath: string, tId: string) => {
     try {

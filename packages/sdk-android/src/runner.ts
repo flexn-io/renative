@@ -61,7 +61,7 @@ import {
 } from './deviceManager';
 import { ANDROID_COLORS, ANDROID_STRINGS, ANDROID_STYLES, CLI_ANDROID_ADB } from './constants';
 import { runReactNativeAndroid, packageReactNativeAndroid, generateEnvVarsFile } from '@rnv/sdk-react-native';
-import { getEntryFile } from '@rnv/sdk-utils';
+import { getEntryFile, updateDefaultTargets } from '@rnv/sdk-utils';
 import { Context, getContext } from './getContext';
 
 export const packageAndroid = async () => {
@@ -120,6 +120,10 @@ export const getAndroidDeviceToRunOn = async () => {
                 choices,
             });
             if (chosenTarget) {
+                // update defaultTarget in .rnv/renative.json
+                if (!target) {
+                    await updateDefaultTargets(c, chosenTarget);
+                }
                 const dev = activeDevices.find((d) => d.name === chosenTarget);
                 if (dev) return dev;
 

@@ -1,4 +1,4 @@
-import { getContext, inquirerPrompt } from '@rnv/core';
+import { RnvContext, getContext, inquirerPrompt, logInfo, writeFileSync } from '@rnv/core';
 
 export const getTargetWithOptionalPrompt = async () => {
     const ctx = getContext();
@@ -30,4 +30,30 @@ export const getTargetWithOptionalPrompt = async () => {
         }
     }
     return target;
+};
+
+export const updateDefaultTargets = async (c: RnvContext, selectedTarget: string) => {
+    const defaultTarget = c.runtime.target;
+    const { confirm } = await inquirerPrompt({
+        type: 'confirm',
+        name: 'confirm',
+        message: `Your default target for platform ${c.platform} is ${
+            !defaultTarget ? 'not defined' : `set to ${defaultTarget}`
+        }. Do you want to ${!defaultTarget ? 'set' : `update `} it to ${selectedTarget} `,
+    });
+    if (!confirm) return;
+
+    const workspaceConfig = c.files.workspace.config;
+
+    if (workspaceConfig && c.platform) {
+        if (!workspaceConfig.defaultTargets) workspaceConfig.defaultTargets = {};
+
+        workspaceConfig.defaultTargets[c.platform] = selectedTarget;
+
+        c.files.workspace.config = workspaceConfig;
+        writeFileSync(c.paths.workspace.config, workspaceConfig);
+    }
+    logInfo(
+        `Your default target for platform ${c.platform} has been updated successfully in ${c.paths.workspace.config}`
+    );
 };

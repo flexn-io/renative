@@ -24,6 +24,7 @@ import {
 import { CLI_SDB_TIZEN, CLI_TIZEN, CLI_TIZEN_EMULATOR } from './constants';
 
 import { TizenDevice, TizenSecurityConfig } from './types';
+import { updateDefaultTargets } from '@rnv/sdk-utils';
 
 const xml2js = require('xml2js');
 
@@ -105,7 +106,10 @@ export const launchTizenTarget = async (name: string | true, hideDevices?: boole
                 : 'which emulator or device would you like to launch?',
             choices,
         });
-
+        if (chosenEmulator) {
+            // update defaultTarget in .rnv/renative.json
+            await updateDefaultTargets(c, chosenEmulator);
+        }
         name = chosenEmulator;
     }
     if (name && typeof name === 'string') {
