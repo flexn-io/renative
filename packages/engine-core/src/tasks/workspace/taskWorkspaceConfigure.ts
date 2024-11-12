@@ -37,7 +37,17 @@ export default createTask({
                 copyFileSync(oldGlobalConfigPath, paths.workspace.config);
             } else {
                 logInfo(`${paths.workspace.dir}/${RnvFileName.renative} file missing! Creating one for you...`);
-                writeFileSync(paths.workspace.config, '{}');
+                const defaultWorkspaceCnf = {
+                    sdks: {
+                        ANDROID_SDK: '/Users/<USER>/Library/Android/sdk',
+                        ANDROID_NDK: '/Users/<USER>/Library/Android/sdk/ndk-bundle',
+                        IOS_SDK: 'No need. Just install Xcode',
+                        TIZEN_SDK: '/Users/<USER>/tizen-studio',
+                        WEBOS_SDK: '/Users/<USER>/Library/webOS_TV_SDK',
+                        KAIOS_SDK: '/Applications/Kaiosrt.app',
+                    },
+                };
+                writeFileSync(paths.workspace.config, JSON.stringify(defaultWorkspaceCnf, null, 2));
             }
         }
 
