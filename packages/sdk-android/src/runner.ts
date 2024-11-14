@@ -120,7 +120,7 @@ export const getAndroidDeviceToRunOn = async () => {
                 choices,
             });
             if (chosenTarget) {
-                // update defaultTarget in .rnv/renative.json
+                // update defaultTarget
                 if (!target) {
                     await updateDefaultTargets(c, chosenTarget);
                 }

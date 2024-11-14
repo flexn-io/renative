@@ -45,7 +45,7 @@ import {
 import { registerDevice } from './fastlane';
 import { Context, getContext } from './getContext';
 import { parsePrivacyManifest } from './privacyManifestParser';
-import { getAppId } from '@rnv/sdk-utils';
+import { getAppId, updateDefaultTargets } from '@rnv/sdk-utils';
 
 export const packageBundleForXcode = () => {
     return packageReactNativeIOS();
@@ -176,43 +176,7 @@ export const getIosDeviceToRunOn = async (c: Context) => {
                 })),
             });
             desiredSim = currentTarget;
-            const localOverridden = !!c.files.project.configLocal?.defaultTargets?.[c.platform];
-
-            const actionLocalUpdate = `Update ${chalk().green('project')} default target for platform ${c.platform}`;
-            const actionGlobalUpdate = `Update ${chalk().green('global')}${
-                localOverridden ? ` and ${chalk().green('project')}` : ''
-            } default target for platform ${c.platform}`;
-            const actionNoUpdate = "Don't update";
-
-            const { chosenAction } = await inquirerPrompt({
-                message: 'What to do next?',
-                type: 'list',
-                name: 'chosenAction',
-                choices: [actionLocalUpdate, actionGlobalUpdate, actionNoUpdate],
-                warningMessage: `Your default target for platform ${c.platform} is set to ${c.runtime.target}.`,
-            });
-
-            c.runtime.target = currentTarget.name;
-
-            if (chosenAction === actionLocalUpdate || (chosenAction === actionGlobalUpdate && localOverridden)) {
-                const configLocal = c.files.project.configLocal || {};
-                if (!configLocal.defaultTargets) configLocal.defaultTargets = {};
-                configLocal.defaultTargets[c.platform] = currentTarget.name;
-
-                c.files.project.configLocal = configLocal;
-                writeFileSync(c.paths.project.configLocal, configLocal);
-            }
-
-            if (chosenAction === actionGlobalUpdate) {
-                const configGlobal = c.files.workspace.config;
-                if (configGlobal) {
-                    if (!configGlobal.defaultTargets) configGlobal.defaultTargets = {};
-                    configGlobal.defaultTargets[c.platform] = currentTarget.name;
-
-                    c.files.workspace.config = configGlobal;
-                    writeFileSync(c.paths.workspace.config, configGlobal);
-                }
-            }
+            await updateDefaultTargets(c, currentTarget.name);
         }
         if (!desiredSim?.isDevice) {
             const target = c.runtime.target?.replace(/(\s+)/g, '\\$1');

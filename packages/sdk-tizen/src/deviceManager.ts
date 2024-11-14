@@ -73,7 +73,11 @@ const formatXMLObject = (
     return {};
 };
 
-export const launchTizenTarget = async (name: string | true, hideDevices?: boolean): Promise<boolean> => {
+export const launchTizenTarget = async (
+    name: string | true,
+    hideDevices?: boolean,
+    updateDefault = false
+): Promise<boolean> => {
     const c = getContext();
     logDefault(`launchTizenTarget:${name}`);
     if (name === true) {
@@ -122,11 +126,16 @@ export const launchTizenTarget = async (name: string | true, hideDevices?: boole
             return new Promise(() => logInfo('Device is launched.'));
         }
         try {
-            await executeAsync(
-                `${c.cli[CLI_TIZEN_EMULATOR]} launch --name ${name}`,
-                ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY
-            );
-            return true;
+            if (updateDefault) {
+                await runTizenSimOrDevice();
+                return true;
+            } else {
+                await executeAsync(
+                    `${c.cli[CLI_TIZEN_EMULATOR]} launch --name ${name}`,
+                    ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY
+                );
+                return true;
+            }
         } catch (e) {
             if (typeof e === 'string') {
                 if (e.includes(ERROR_MSG.UNKNOWN_VM)) {
@@ -432,7 +441,7 @@ export const runTizenSimOrDevice = async () => {
     if (!tId) return Promise.reject(`Tizen platform requires "id" filed in platforms.tizen`);
     const askForEmulator = async () => {
         if (!target) {
-            launchTizenTarget(true);
+            launchTizenTarget(true, undefined, true);
             return;
         }
         const { startEmulator } = await inquirerPrompt({

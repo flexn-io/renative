@@ -1,4 +1,4 @@
-import { RnvContext, getContext, inquirerPrompt, logInfo, writeFileSync } from '@rnv/core';
+import { RnvContext, chalk, getContext, inquirerPrompt, writeFileSync } from '@rnv/core';
 
 export const getTargetWithOptionalPrompt = async () => {
     const ctx = getContext();
@@ -32,28 +32,45 @@ export const getTargetWithOptionalPrompt = async () => {
     return target;
 };
 
-export const updateDefaultTargets = async (c: RnvContext, selectedTarget: string) => {
+export const updateDefaultTargets = async (c: RnvContext, currentTarget: string) => {
+    if (!c.platform) return;
+    const localOverridden = !!c.files.project.configLocal?.defaultTargets?.[c.platform];
     const defaultTarget = c.runtime.target;
-    const { confirm } = await inquirerPrompt({
-        type: 'confirm',
-        name: 'confirm',
-        message: `Your default target for platform ${c.platform} is ${
+    const actionLocalUpdate = `Update ${chalk().green('project')} default target for platform ${c.platform}`;
+    const actionGlobalUpdate = `Update ${chalk().green('global')}${
+        localOverridden ? ` and ${chalk().green('project')}` : ''
+    } default target for platform ${c.platform}`;
+    const actionNoUpdate = "Don't update";
+
+    const { chosenAction } = await inquirerPrompt({
+        message: 'What to do next?',
+        type: 'list',
+        name: 'chosenAction',
+        choices: [actionLocalUpdate, actionGlobalUpdate, actionNoUpdate],
+        warningMessage: `Your default target for platform ${c.platform} is ${
             !defaultTarget ? 'not defined' : `set to ${defaultTarget}`
-        }. Do you want to ${!defaultTarget ? 'set' : `update `} it to ${selectedTarget} `,
+        }. `,
     });
-    if (!confirm) return;
 
-    const workspaceConfig = c.files.workspace.config;
+    c.runtime.target = currentTarget;
 
-    if (workspaceConfig && c.platform) {
-        if (!workspaceConfig.defaultTargets) workspaceConfig.defaultTargets = {};
+    if (chosenAction === actionLocalUpdate || (chosenAction === actionGlobalUpdate && localOverridden)) {
+        const configLocal = c.files.project.configLocal || {};
+        if (!configLocal.defaultTargets) configLocal.defaultTargets = {};
+        configLocal.defaultTargets[c.platform] = currentTarget;
 
-        workspaceConfig.defaultTargets[c.platform] = selectedTarget;
-
-        c.files.workspace.config = workspaceConfig;
-        writeFileSync(c.paths.workspace.config, workspaceConfig);
+        c.files.project.configLocal = configLocal;
+        writeFileSync(c.paths.project.configLocal, JSON.stringify(configLocal, null, 2));
     }
-    logInfo(
-        `Your default target for platform ${c.platform} has been updated successfully in ${c.paths.workspace.config}`
-    );
+
+    if (chosenAction === actionGlobalUpdate) {
+        const configGlobal = c.files.workspace.config;
+        if (configGlobal) {
+            if (!configGlobal.defaultTargets) configGlobal.defaultTargets = {};
+            configGlobal.defaultTargets[c.platform] = currentTarget;
+
+            c.files.workspace.config = configGlobal;
+            writeFileSync(c.paths.workspace.config, JSON.stringify(configGlobal, null, 2));
+        }
+    }
 };
