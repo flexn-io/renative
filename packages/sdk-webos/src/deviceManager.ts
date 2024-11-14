@@ -1,4 +1,5 @@
 import path from 'path';
+import { isString } from 'lodash';
 import {
     getRealPath,
     fsReadFileSync,
@@ -131,6 +132,7 @@ const parseDevices = (c: RnvContext, devicesResponse: string): Promise<Array<Web
 const launchAppOnSimulator = async (c: RnvContext, appPath: string) => {
     logDefault('launchAppOnSimulator');
     const defaultTarget = c.runtime.target;
+    const { target } = c.program.opts();
     const webosSdkPath = getRealPath(c.buildConfig?.sdks?.WEBOS_SDK);
 
     if (!webosSdkPath) {
@@ -163,17 +165,31 @@ const launchAppOnSimulator = async (c: RnvContext, appPath: string) => {
         selectedSimulator = defaultTarget;
         logInfo(`Found default simulator ${chalk().bold.white(selectedSimulator)} in ${simulatorDirPath}`);
     } else {
-        if (availableEmulatorVersions.length > 1) {
-            ({ selectedSimulator } = await inquirerPrompt({
-                name: 'selectedSimulator',
-                type: 'list',
-                choices: availableEmulatorVersions,
-                message: `Found several installed simulators. Choose which one to use:`,
-            }));
-        } else {
-            selectedSimulator = availableEmulatorVersions[0];
-            logInfo(`Found simulator ${chalk().bold.white(selectedSimulator)} in ${simulatorDirPath}`);
+        if (availableEmulatorVersions.length) {
+            if (isString(target) && availableEmulatorVersions.includes(target)) {
+                ({ selectedSimulator } = await inquirerPrompt({
+                    name: 'selectedSimulator',
+                    type: 'list',
+                    choices: availableEmulatorVersions,
+                    message: `Found installed simulators. Choose which one to use:`,
+                }));
+            } else {
+                logInfo(
+                    `The target ${
+                        !target || target === true
+                            ? 'is not specified'
+                            : `is specified, but no such target is available: ${chalk().magenta(target)}`
+                    }. Will try to find available one`
+                );
+                ({ selectedSimulator } = await inquirerPrompt({
+                    name: 'selectedSimulator',
+                    type: 'list',
+                    choices: availableEmulatorVersions,
+                    message: `Found installed simulators. Choose which one to use:`,
+                }));
+            }
         }
+
         await updateDefaultTargets(c, selectedSimulator);
     }
 
@@ -344,6 +360,12 @@ export const runWebosSimOrDevice = async () => {
             } catch (error) {
                 return logError(`${error}`);
             }
+        }
+    } else if (c.program.opts().target && !device) {
+        try {
+            return await launchAppOnSimulator(c, appLocation);
+        } catch (error) {
+            return logError(`${error}`);
         }
     } else {
         const target_name = devices.find((device) => {

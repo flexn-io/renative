@@ -49,7 +49,7 @@ export const updateDefaultTargets = async (c: RnvContext, currentTarget: string)
         choices: [actionLocalUpdate, actionGlobalUpdate, actionNoUpdate],
         warningMessage: `Your default target for platform ${c.platform} is ${
             !defaultTarget ? 'not defined' : `set to ${defaultTarget}`
-        }. `,
+        }.`,
     });
 
     c.runtime.target = currentTarget;
