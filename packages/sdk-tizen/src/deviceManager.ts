@@ -86,8 +86,9 @@ export const launchTizenTarget = async (
         const devices_lines = devices.split('\n');
         const devicesArr = devices_lines.slice(1).map((line: string) => line.split(' ')[0]); // devices array with only their ip
 
-        const allDownloadedEmulators = emulators.split('\n'); // all tizen, tizenwatch and tizenmobile emulators
-
+        const allDownloadedEmulators = emulators.split('\n').map((em) => em.trim()); // all tizen, tizenwatch and tizenmobile emulators
+        console.log('allDownloadedEmulators', allDownloadedEmulators);
+        console.log('emulators.split(', emulators.split('\n'));
         const specificEmulators = await getEmulatorType(allDownloadedEmulators, c.platform as string);
         const specificDevices = await getDeviceType(devicesArr, c.platform as string);
 
@@ -110,11 +111,17 @@ export const launchTizenTarget = async (
                 : 'which emulator or device would you like to launch?',
             choices,
         });
-        if (chosenEmulator) {
+
+        if (
+            chosenEmulator &&
+            (c.files.project.configLocal?.defaultTargets?.[c.platform!] ||
+                c.files.workspace.config?.defaultTargets?.[c.platform!] !== chosenEmulator)
+        ) {
             // update defaultTarget in .rnv/renative.json
             await updateDefaultTargets(c, chosenEmulator);
         }
         name = chosenEmulator;
+        c.runtime.target = chosenEmulator;
     }
     if (name && typeof name === 'string') {
         const ipRegex = /^(?:\d{1,3}\.){3}\d{1,3}:\d{1,5}$/;
@@ -452,7 +459,7 @@ export const runTizenSimOrDevice = async () => {
 
         if (startEmulator) {
             isRunningEmulator = true;
-            const defaultTarget = c.files.workspace.config?.defaultTargets?.[platform];
+            const defaultTarget = c.runtime.target;
             if (!defaultTarget) {
                 logError('No default target found for tizen. please provide one using -t option');
                 return;
@@ -495,10 +502,10 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
             hasDevice = true;
         } catch (e) {
             if (typeof e === 'string' && e.includes('No device matching')) {
-                if (target) {
+                if (c.runtime.target) {
                     isRunningEmulator = true;
-                    await launchTizenTarget(target);
-                    hasDevice = await _waitForEmulatorToBeReady(target);
+                    await launchTizenTarget(c.runtime.target);
+                    hasDevice = await _waitForEmulatorToBeReady(c.runtime.target);
                 } else {
                     return Promise.reject('Not target specified. (-t)');
                 }
@@ -525,7 +532,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
                 logError(err);
             }
 
-            if (!target) {
+            if (!c.runtime.target) {
                 return Promise.reject('Not target specified. (-t)');
             }
 
@@ -533,8 +540,8 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
                 await launchTizenTarget(true);
             } else {
                 isRunningEmulator = true;
-                await launchTizenTarget(target);
-                hasDevice = await _waitForEmulatorToBeReady(target);
+                await launchTizenTarget(c.runtime.target);
+                hasDevice = await _waitForEmulatorToBeReady(c.runtime.target);
             }
         }
 
@@ -579,8 +586,9 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
             // try to launch it, see if it's a emulator that's not started yet
             isRunningEmulator = true;
             await launchTizenTarget(target);
-            await _waitForEmulatorToBeReady(target);
-            deviceID = target;
+            const currentTarget = c.runtime.target || target;
+            await _waitForEmulatorToBeReady(currentTarget);
+            deviceID = currentTarget;
             return continueLaunching();
         } catch (e) {
             return askForEmulator();
