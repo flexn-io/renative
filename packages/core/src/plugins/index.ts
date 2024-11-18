@@ -830,9 +830,26 @@ export const overrideFileContents = (
                     )}. FIXING...DONE`
                 );
             } else if (overrideExists) {
-                logInfo(
-                    `${chalk().gray(dest)} overridden by: ${chalk().gray(overridePath.split('node_modules').pop())}`
-                );
+                if (originalExists) {
+                    if (fk.includes(override[fk])) {
+                        fileToFix = fileToFix.replace(originalRegEx, `${override[fk]}`);
+                        logSuccess(
+                            `${chalk().bold.white(dest)} requires override by: ${chalk().bold.white(
+                                overridePath.split('node_modules').pop()
+                            )}. FIXING...DONE`
+                        );
+                    } else {
+                        logInfo(
+                            `${chalk().gray(dest)} overridden by: ${chalk().gray(
+                                overridePath.split('node_modules').pop()
+                            )}`
+                        );
+                    }
+                } else {
+                    logInfo(
+                        `${chalk().gray(dest)} overridden by: ${chalk().gray(overridePath.split('node_modules').pop())}`
+                    );
+                }
             } else {
                 failTerms.push(fk);
             }
