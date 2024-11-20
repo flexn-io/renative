@@ -15,7 +15,7 @@ export const zodPluginBaseFragment = z
             .string()
             .describe('Marks your plugin deprecated with warning showing in the console during rnv commands'),
         source: z
-            .string()
+            .nullable(z.string())
             .describe(
                 'Will define custom scope for your plugin config to extend from.\n\nNOTE: custom scopes can be defined via paths.pluginTemplates.[CUSTOM_SCOPE].{}'
             ),
