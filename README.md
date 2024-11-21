@@ -9,8 +9,8 @@
 </p>
 
 <p align="center">
-  <a aria-label="NPM version" href="https://www.npmjs.com/package/renative">
-    <img alt="" src="https://img.shields.io/npm/v/renative.svg?style=for-the-badge&labelColor=000000" />
+  <a aria-label="NPM version" href="https://www.npmjs.com/package/rnv">
+    <img alt="" src="https://img.shields.io/npm/v/rnv.svg?style=for-the-badge&labelColor=000000" />
   </a>
   <a aria-label="License" href="https://github.com/flexn-io/renative/blob/main/license.md">
     <img alt="" src="https://img.shields.io/npm/l/renative.svg?style=for-the-badge&labelColor=000000" />
