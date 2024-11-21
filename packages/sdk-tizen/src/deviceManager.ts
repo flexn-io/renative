@@ -109,6 +109,7 @@ export const launchTizenTarget = async (
                 ? 'which emulator would you like to launch?'
                 : 'which emulator or device would you like to launch?',
             choices,
+            default: choices.find((it) => it.key.includes('samsung'))?.key || choices[0].key,
         });
 
         if (
@@ -553,7 +554,10 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
 
         if (platform !== 'tizenwatch' && platform !== 'tizenmobile' && hasDevice) {
             // change id for for emulator because tizen 8+ fails to run app with
-            await execCLI(CLI_TIZEN, `run -p ${isRunningEmulator ? tId.split('.')[0] : tId} -t ${deviceID}`);
+            await execCLI(
+                CLI_TIZEN,
+                `run -p ${isRunningEmulator && !deviceID.includes('samsung') ? tId.split('.')[0] : tId} -t ${deviceID}`
+            );
         } else if ((platform === 'tizenwatch' || platform === 'tizenmobile') && hasDevice) {
             const packageID = tId.split('.');
             await execCLI(CLI_TIZEN, `run -p ${packageID[0]} -t ${deviceID}`);
