@@ -53,7 +53,7 @@
             "buildToolsVersion": "34.0.0",
             "gradleBuildToolsVersion": "4.2.2",
             "gradleWrapperVersion": "8.3",
-            "ndkVersion": "25.1.8937393",
+            "ndkVersion": "24.0.8215888",
             "kotlinVersion": "1.8.0",
             "reactNativeEngine": "hermes",
             "enableAndroidX": true,
@@ -92,7 +92,7 @@
         "tvos": {
             "engine": "engine-rn-tvos",
             "schemeTarget": "RNVApp-tvOS",
-            "deploymentTarget": "15.5",
+            "deploymentTarget": "17.2",
             "reactNativeEngine": "hermes"
         },
         "macos": {
@@ -108,7 +108,7 @@
         },
         "ios": {
             "engine": "engine-rn",
-            "deploymentTarget": "15.5",
+            "deploymentTarget": "17.2",
             "reactNativeEngine": "hermes"
         }
     },
