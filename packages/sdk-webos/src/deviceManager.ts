@@ -296,9 +296,7 @@ export const runWebosSimOrDevice = async () => {
     const devicesResponse = await execCLI(CLI_WEBOS_ARES_DEVICE_INFO, '-D');
 
     const devices = await parseDevices(c, devicesResponse);
-    console.log('devices', devices);
     const activeDevices = devices.filter((d) => d.active);
-    console.log('activeDevices', activeDevices);
     const target_name = devices.find((device) => {
         return device.device.includes(target) || device.name.includes(target);
     })?.name;
