@@ -264,7 +264,7 @@ export const listWebOSTargets = async () => {
 
 export const runWebosSimOrDevice = async () => {
     const c = getContext();
-    const { device } = c.program.opts();
+    const { device, target } = c.program.opts();
 
     const platDir = getAppFolder();
     if (!platDir) {
@@ -294,8 +294,14 @@ export const runWebosSimOrDevice = async () => {
 
     // List all devices
     const devicesResponse = await execCLI(CLI_WEBOS_ARES_DEVICE_INFO, '-D');
+
     const devices = await parseDevices(c, devicesResponse);
+    console.log('devices', devices);
     const activeDevices = devices.filter((d) => d.active);
+    console.log('activeDevices', activeDevices);
+    const target_name = devices.find((device) => {
+        return device.device.includes(target) || device.name.includes(target);
+    })?.name;
 
     if (device) {
         // Running on a device
@@ -336,7 +342,7 @@ export const runWebosSimOrDevice = async () => {
             const tv = actualDevices[0];
             return installAndLaunchApp(tv.name, appPath, tId);
         }
-    } else if (!c.program.opts().target) {
+    } else if (!target) {
         // No target specified
         if (activeDevices.length === 1) {
             // One device present
@@ -361,19 +367,15 @@ export const runWebosSimOrDevice = async () => {
                 return logError(`${error}`);
             }
         }
-    } else if (c.program.opts().target && !device) {
+    } else if (target && !target_name) {
         try {
             return await launchAppOnSimulator(c, appLocation);
         } catch (error) {
             return logError(`${error}`);
         }
     } else {
-        const target_name = devices.find((device) => {
-            return device.device.includes(c.program.opts().target) || device.name.includes(c.program.opts().target);
-        })?.name;
-
         if (!target_name) {
-            return Promise.reject(`Target ${c.program.opts().target} doesn't exist.`);
+            return Promise.reject(`Target ${target} doesn't exist.`);
         }
         return installAndLaunchApp(target_name, appPath, tId);
     }
