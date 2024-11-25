@@ -34,7 +34,6 @@ jobs:
             - name: Run
               run: |
                   cd packages/app-harness && yarn run:android-test & sleep 480
-
             - name: E2E
               run: |
                   cd packages/app-harness && yarn e2e:android && kill $(lsof -t -i:8093)

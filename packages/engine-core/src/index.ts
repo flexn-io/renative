@@ -34,7 +34,7 @@ import taskLink from './tasks/linking/taskLink';
 import taskUnlink from './tasks/linking/taskUnlink';
 
 import taskSwitch from './tasks/app/taskAppSwitch';
-import taskPatchReset from './tasks/patch/taskPatchReset';
+
 const Config: ConfigFileEngine = {
     platforms: {},
     npm: {},
@@ -78,7 +78,6 @@ const Engine = createRnvEngine({
         taskLink,
         taskUnlink,
         taskSwitch,
-        taskPatchReset,
     ],
     config: Config,
     projectDirName: '',
