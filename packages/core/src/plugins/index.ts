@@ -832,6 +832,7 @@ export const overrideFileContents = (
             } else if (overrideExists) {
                 if (originalExists) {
                     if (fk.includes(override[fk])) {
+                        foundRegEx = true;
                         fileToFix = fileToFix.replace(originalRegEx, `${override[fk]}`);
                         logSuccess(
                             `${chalk().bold.white(dest)} requires override by: ${chalk().bold.white(
@@ -875,6 +876,8 @@ export const overrideFileContents = (
             appliedOverrides[packageName].version = packageVersion;
             fsWriteFileSync(dest, fileToFix);
             _writeAppliedOverrides(appliedOverrides, appliedOverrideFilePath);
+        } else if (foundRegEx) {
+            fsWriteFileSync(dest, fileToFix);
         }
     } else {
         logDebug(`overrideFileContents Warning: path does not exist ${dest}`);
