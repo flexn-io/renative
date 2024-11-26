@@ -17,16 +17,15 @@
                     "appConfigs/app",
                     "appConfigs/base/assets",
                     "appConfigs/base/fonts",
-                    "scripts"
+                    "scripts",
+                    "next.config.js",
+                    "next-env.d.ts",
+                    "src/pages"
                 ]
             },
             {
                 "paths": ["Gemfile", "metro.config.js", ".bundle", "react-native.config.js"],
                 "platforms": ["ios", "android", "androidwear", "tvos", "firetv", "androidtv"]
-            },
-            {
-                "paths": ["next.config.js", "next-env.d.ts", "src/pages"],
-                "platforms": ["web"]
             },
             {
                 "paths": ["webpack.config.js"],
