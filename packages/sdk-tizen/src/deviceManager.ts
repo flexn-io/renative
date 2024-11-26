@@ -24,6 +24,7 @@ import {
 import { CLI_SDB_TIZEN, CLI_TIZEN, CLI_TIZEN_EMULATOR } from './constants';
 
 import { TizenDevice, TizenSecurityConfig } from './types';
+import { updateDefaultTargets } from '@rnv/sdk-utils';
 
 const xml2js = require('xml2js');
 
@@ -72,7 +73,11 @@ const formatXMLObject = (
     return {};
 };
 
-export const launchTizenTarget = async (name: string | true, hideDevices?: boolean): Promise<boolean> => {
+export const launchTizenTarget = async (
+    name: string | true,
+    hideDevices?: boolean,
+    updateDefault = false
+): Promise<boolean> => {
     const c = getContext();
     logDefault(`launchTizenTarget:${name}`);
     if (name === true) {
@@ -81,7 +86,7 @@ export const launchTizenTarget = async (name: string | true, hideDevices?: boole
         const devices_lines = devices.split('\n');
         const devicesArr = devices_lines.slice(1).map((line: string) => line.split(' ')[0]); // devices array with only their ip
 
-        const allDownloadedEmulators = emulators.split('\n'); // all tizen, tizenwatch and tizenmobile emulators
+        const allDownloadedEmulators = emulators.split('\n').map((em) => em.trim()); // all tizen, tizenwatch and tizenmobile emulators
 
         const specificEmulators = await getEmulatorType(allDownloadedEmulators, c.platform as string);
         const specificDevices = await getDeviceType(devicesArr, c.platform as string);
@@ -104,9 +109,19 @@ export const launchTizenTarget = async (name: string | true, hideDevices?: boole
                 ? 'which emulator would you like to launch?'
                 : 'which emulator or device would you like to launch?',
             choices,
+            default: choices.find((it) => it.key.includes('samsung'))?.key || choices[0].key,
         });
 
+        if (
+            chosenEmulator &&
+            (c.files.project.configLocal?.defaultTargets?.[c.platform!] ||
+                c.files.workspace.config?.defaultTargets?.[c.platform!] !== chosenEmulator)
+        ) {
+            // update defaultTarget in .rnv/renative.json
+            await updateDefaultTargets(c, chosenEmulator);
+        }
         name = chosenEmulator;
+        c.runtime.target = chosenEmulator;
     }
     if (name && typeof name === 'string') {
         const ipRegex = /^(?:\d{1,3}\.){3}\d{1,3}:\d{1,5}$/;
@@ -118,11 +133,16 @@ export const launchTizenTarget = async (name: string | true, hideDevices?: boole
             return new Promise(() => logInfo('Device is launched.'));
         }
         try {
-            await executeAsync(
-                `${c.cli[CLI_TIZEN_EMULATOR]} launch --name ${name}`,
-                ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY
-            );
-            return true;
+            if (updateDefault) {
+                await runTizenSimOrDevice();
+                return true;
+            } else {
+                await executeAsync(
+                    `${c.cli[CLI_TIZEN_EMULATOR]} launch --name ${name}`,
+                    ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY
+                );
+                return true;
+            }
         } catch (e) {
             if (typeof e === 'string') {
                 if (e.includes(ERROR_MSG.UNKNOWN_VM)) {
@@ -428,7 +448,7 @@ export const runTizenSimOrDevice = async () => {
     if (!tId) return Promise.reject(`Tizen platform requires "id" filed in platforms.tizen`);
     const askForEmulator = async () => {
         if (!target) {
-            launchTizenTarget(true);
+            launchTizenTarget(true, undefined, true);
             return;
         }
         const { startEmulator } = await inquirerPrompt({
@@ -439,7 +459,7 @@ export const runTizenSimOrDevice = async () => {
 
         if (startEmulator) {
             isRunningEmulator = true;
-            const defaultTarget = c.files.workspace.config?.defaultTargets?.[platform];
+            const defaultTarget = c.runtime.target;
             if (!defaultTarget) {
                 logError('No default target found for tizen. please provide one using -t option');
                 return;
@@ -482,10 +502,10 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
             hasDevice = true;
         } catch (e) {
             if (typeof e === 'string' && e.includes('No device matching')) {
-                if (target) {
+                if (c.runtime.target) {
                     isRunningEmulator = true;
-                    await launchTizenTarget(target);
-                    hasDevice = await _waitForEmulatorToBeReady(target);
+                    await launchTizenTarget(c.runtime.target);
+                    hasDevice = await _waitForEmulatorToBeReady(c.runtime.target);
                 } else {
                     return Promise.reject('Not target specified. (-t)');
                 }
@@ -512,7 +532,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
                 logError(err);
             }
 
-            if (!target) {
+            if (!c.runtime.target) {
                 return Promise.reject('Not target specified. (-t)');
             }
 
@@ -520,8 +540,8 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
                 await launchTizenTarget(true);
             } else {
                 isRunningEmulator = true;
-                await launchTizenTarget(target);
-                hasDevice = await _waitForEmulatorToBeReady(target);
+                await launchTizenTarget(c.runtime.target);
+                hasDevice = await _waitForEmulatorToBeReady(c.runtime.target);
             }
         }
 
@@ -534,7 +554,10 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
 
         if (platform !== 'tizenwatch' && platform !== 'tizenmobile' && hasDevice) {
             // change id for for emulator because tizen 8+ fails to run app with
-            await execCLI(CLI_TIZEN, `run -p ${isRunningEmulator ? tId.split('.')[0] : tId} -t ${deviceID}`);
+            await execCLI(
+                CLI_TIZEN,
+                `run -p ${isRunningEmulator && !deviceID.includes('samsung') ? tId.split('.')[0] : tId} -t ${deviceID}`
+            );
         } else if ((platform === 'tizenwatch' || platform === 'tizenmobile') && hasDevice) {
             const packageID = tId.split('.');
             await execCLI(CLI_TIZEN, `run -p ${packageID[0]} -t ${deviceID}`);
@@ -566,8 +589,9 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
             // try to launch it, see if it's a emulator that's not started yet
             isRunningEmulator = true;
             await launchTizenTarget(target);
-            await _waitForEmulatorToBeReady(target);
-            deviceID = target;
+            const currentTarget = c.runtime.target || target;
+            await _waitForEmulatorToBeReady(currentTarget);
+            deviceID = currentTarget;
             return continueLaunching();
         } catch (e) {
             return askForEmulator();
