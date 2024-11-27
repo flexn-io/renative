@@ -265,7 +265,8 @@
             "tvos": {
                 "disabled": true
             }
-        }
+        },
+        "react-player": "source:rnv"
     },
     "permissions": {
         "ios": {
