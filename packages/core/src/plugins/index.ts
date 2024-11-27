@@ -1098,7 +1098,11 @@ export const overrideTemplatePlugins = async () => {
     logDefault('overrideTemplatePlugins');
 
     const c = getContext();
-
+    const { skipOverridesCheck } = c.program.opts();
+    if (skipOverridesCheck) {
+        logInfo(`Plugin overrides will not be applied because --skipOverridesCheck parameter was passed.`);
+        return true;
+    }
     const rnvPluginsDirs = c.paths.scopedConfigTemplates.pluginTemplatesDirs;
     const appPluginDirs = c.paths.appConfig.pluginDirs;
 

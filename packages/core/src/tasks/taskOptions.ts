@@ -100,6 +100,12 @@ export const RnvTaskOptions = createTaskOptionsMap([
         description: 'Skips auto update of npm dependencies if mismatch found',
     },
     {
+        key: 'skip-overrides-check',
+        altKey: 'skipOverridesCheck',
+        description:
+            'Skips applying plugin overrides. Useful for avoiding unnecessary checks on every run when overrides are already applied.',
+    },
+    {
         key: 'offline',
         description: 'Run without connecting to the internet whenever possible',
     },
@@ -238,6 +244,7 @@ export const RnvTaskCoreOptionPresets = createTaskOptionsPreset({
         RnvTaskOptions.noIntro,
         RnvTaskOptions.offline,
         RnvTaskOptions.skipDependencyCheck,
+        RnvTaskOptions.skipOverridesCheck,
     ],
 });
 
