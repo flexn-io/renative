@@ -2835,7 +2835,11 @@
             "version": "1.7.0"
         },
         "react-native-paper": {
-            "version": "4.12.8"
+            "version": "5.12.5",
+            "webpackConfig": {
+                "modulePaths": true,
+                "moduleAliases": true
+            }
         },
         "react-native-parallax-view": {
             "android": {
