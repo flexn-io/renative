@@ -279,6 +279,13 @@
                 "modulePaths": true
             }
         },
+        "react-player": {
+            "version": "2.16.0",
+            "webpackConfig": {
+                "moduleAliases": true,
+                "modulePaths": true
+            }
+        },
         "@monterosa/react-native-parallax-scroll": {
             "version": "1.8.0",
             "webpackConfig": {
