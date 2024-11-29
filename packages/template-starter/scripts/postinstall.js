@@ -11,6 +11,7 @@ const {
     logError,
     RnvFileName,
     fsExistsSync,
+    fsMkdirSync,
     fsReadFileSync,
     removeDirSync,
     revertOverrideToOriginal,
@@ -40,7 +41,11 @@ const RNV_HOME_DIR = path.join(__dirname, '..');
 })();
 
 const resetOverrides = async () => {
-    const overrideDir = path.join(process.cwd(), '.rnv', 'overrides');
+    const rnvFolder = path.join(process.cwd(), '.rnv');
+    if (!fsExistsSync(rnvFolder)) {
+        fsMkdirSync(rnvFolder);
+    }
+    const overrideDir = path.join(rnvFolder, 'overrides');
 
     const appliedOverrideFilePath = path.join(overrideDir, RnvFileName.appliedOverride);
 
