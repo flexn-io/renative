@@ -21,7 +21,8 @@ const capabilities = {
             'appium:platformVersion': '16.4',
             'appium:automationName': 'XCUITest',
             'appium:bundleId': 'renative.harness.test',
-            // 'appium:app': 'platformBuilds/harness_ios/build/RNVApp/Build/Products/Debug-iphonesimulator/RNVApp.app',
+            'appium:app': 'platformBuilds/harness_ios/build/RNVApp/Build/Products/Release-iphonesimulator/RNVApp.app',
+            'appium:fullReset': true,
         },
     ],
     tvos: [
@@ -31,8 +32,9 @@ const capabilities = {
             'appium:platformVersion': '16.4',
             'appium:automationName': 'XCUITest',
             'appium:bundleId': 'renative.harness.test',
-            // 'appium:app':
-            //     'platformBuilds/harness_tvos/build/RNVApp/Build/Products/Debug-appletvsimulator/RNVApp-tvOS.app',
+            'appium:app':
+                'platformBuilds/harness_tvos/build/RNVApp/Build/Products/Release-appletvsimulator/RNVApp-tvOS.app',
+            'appium:fullReset': true,
         },
     ],
     android: [
@@ -43,7 +45,8 @@ const capabilities = {
             'appium:automationName': 'UiAutomator2',
             'appium:appPackage': 'renative.harness.test',
             'appium:appActivity': 'renative.harness.test.MainActivity',
-            // 'appium:app': 'platformBuilds/harness_android/app/build/outputs/apk/debug/app-debug.apk',
+            'appium:app': 'platformBuilds/harness_android/app/build/outputs/apk/release/app-release.apk',
+            'appium:fullReset': true,
         },
     ],
     androidtv: [
@@ -54,7 +57,8 @@ const capabilities = {
             'appium:automationName': 'UiAutomator2',
             'appium:appPackage': 'renative.harness.test',
             'appium:appActivity': 'renative.harness.test.MainActivity',
-            // 'appium:app': 'platformBuilds/harness_androidtv/app/build/outputs/apk/debug/app-debug.apk',
+            'appium:app': 'platformBuilds/harness_androidtv/app/build/outputs/apk/release/app-release.apk',
+            'appium:fullReset': true,
         },
     ],
     macos: [

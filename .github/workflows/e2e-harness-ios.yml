@@ -32,12 +32,12 @@ jobs:
             - name: Bootstrap
               run: |
                   yarn bootstrap
-            - name: Run
+            - name: Build
               run: |
-                  cd packages/app-harness && yarn run:ios-test & sleep 420
+                  cd packages/app-harness && yarn build:ios-test
             - name: E2E
               run: |
-                  cd packages/app-harness && yarn e2e:ios && kill $(lsof -t -i:8092)
+                  cd packages/app-harness && yarn e2e:ios
             # Commented because e2e tests would fail due to minion issues
             # - name: Post message to Slack via Webhook
             #   if: ${{ github.event_name == 'push' && failure() }}
