@@ -33,7 +33,7 @@ jobs:
                   yarn bootstrap
             - name: Host
               run: |
-                  cd packages/app-harness && yarn run:web-test & sleep 60
+                  cd packages/app-harness && yarn start:web-test & sleep 60
             - name: E2E
               run: |
                   cd packages/app-harness && yarn e2e:web && kill $(lsof -t -i:8090)
