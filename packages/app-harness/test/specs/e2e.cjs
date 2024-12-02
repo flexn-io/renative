@@ -6,6 +6,10 @@ describe('Test App Harness', () => {
     });
 
     it('--> Hermes Support ', async () => {
+        if (process.env.PLATFORM === 'ios') {
+            await FlexnRunner.waitForDisplayedByText('Allow');
+            await FlexnRunner.clickByText('Allow');
+        }
         await FlexnRunner.waitForDisplayedById('app-harness-home-renative-image');
         if (process.env.PLATFORM === 'web') {
             await FlexnRunner.expectToHaveTextById('app-harness-home-hermes-support-text', 'hermes: no');
