@@ -21,13 +21,13 @@ import {
 import path from 'path';
 import { getBuildFilePath, getAppId, getAppVersion, getAppVersionCode, addSystemInjects } from '@rnv/sdk-utils';
 import { Context, getContext } from './getContext';
+import { TemplateAndroid } from './types';
 
 const currentOs = process.platform === 'darwin' ? 'osx' : process.platform === 'win32' ? 'win64' : 'linux64';
 
 export const parseBuildGradleSync = () => {
     const c = getContext();
     const appFolder = getAppFolder();
-
 
     const templateAndroid = getConfigProp('templateAndroid');
     const buildscript = templateAndroid?.build_gradle?.buildscript;
@@ -324,6 +324,9 @@ ${chalk().bold.white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`
         ${isSigningDisabled ? '' : 'signingConfig signingConfigs.release'}
         ${releaseBuildTypes.join('\n        ')}
     }`;
+
+    // APP/BUILD.GRADLE
+    _parseAppBuildGradleObject(appBuildGradle);
 
     // MULTI APK
     // const versionCodeOffset = getConfigProp('versionCodeOffset', 0);
@@ -666,36 +669,7 @@ export const parseAndroidConfigObject = (plugin?: ConfigPluginPlatformSchema, ke
     const templateAndroid = plugin?.templateAndroid;
 
     const appBuildGradle = templateAndroid?.app_build_gradle;
-    if (appBuildGradle) {
-        if (appBuildGradle.apply) {
-            appBuildGradle.apply.forEach((v) => {
-                c.payload.pluginConfigAndroid.applyPlugin += `apply ${sanitizePluginPath(v, key)}\n`;
-            });
-        }
-
-        if (appBuildGradle.defaultConfig) {
-            appBuildGradle.defaultConfig.forEach((v) => {
-                c.payload.pluginConfigAndroid.defaultConfig += `${sanitizePluginPath(v, key)}\n`;
-            });
-        }
-
-        const { implementations } = appBuildGradle;
-        if (implementations) {
-            implementations.forEach((v) => {
-                c.payload.pluginConfigAndroid.appBuildGradleImplementations += `    implementation ${sanitizePluginPath(
-                    v,
-                    key
-                )}\n`;
-            });
-        }
-
-        const afterEvaluate = appBuildGradle?.afterEvaluate;
-        if (afterEvaluate) {
-            afterEvaluate.forEach((v) => {
-                c.payload.pluginConfigAndroid.appBuildGradleAfterEvaluate += ` ${sanitizePluginPath(v, key)}\n`;
-            });
-        }
-    }
+    _parseAppBuildGradleObject(appBuildGradle, key);
 
     // BUILD.GRADLE
     const buildGradle = templateAndroid?.build_gradle;
@@ -740,6 +714,41 @@ const _fixAndroidLegacy = (c: RnvContext, modulePath: string) => {
     }
 };
 
+const _parseAppBuildGradleObject = (appBuildGradle: TemplateAndroid['app_build_gradle'] | undefined, key = '') => {
+    const c = getContext();
+    if (appBuildGradle) {
+        if (appBuildGradle.apply) {
+            appBuildGradle.apply.forEach((v) => {
+                c.payload.pluginConfigAndroid.applyPlugin += v.includes('apply')
+                    ? `${sanitizePluginPath(v, key)}\n`
+                    : `apply ${sanitizePluginPath(v, key)}\n`;
+            });
+        }
+
+        if (appBuildGradle.defaultConfig) {
+            appBuildGradle.defaultConfig.forEach((v) => {
+                c.payload.pluginConfigAndroid.defaultConfig += `${sanitizePluginPath(v, key)}\n`;
+            });
+        }
+
+        const { implementations } = appBuildGradle;
+        if (implementations) {
+            implementations.forEach((v) => {
+                c.payload.pluginConfigAndroid.appBuildGradleImplementations += `    implementation ${sanitizePluginPath(
+                    v,
+                    key
+                )}\n`;
+            });
+        }
+
+        const afterEvaluate = appBuildGradle?.afterEvaluate;
+        if (afterEvaluate) {
+            afterEvaluate.forEach((v) => {
+                c.payload.pluginConfigAndroid.appBuildGradleAfterEvaluate += ` ${sanitizePluginPath(v, key)}\n`;
+            });
+        }
+    }
+};
 // const _getPrivateConfig = (c, platform) => {
 //     let privateConfigFolder = path.join(c.paths.workspace.dir, c.files.project.package.name, c.buildConfig.id);
 //     if (!fsExistsSync(privateConfigFolder)) {

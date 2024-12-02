@@ -127,12 +127,14 @@ const templateAndroid = z
         build_gradle: z
             .object({
                 plugins: z.array(z.string()),
-                buildscript: z.object({
-                    repositories: z.array(z.string()),
-                    dependencies: z.array(z.string()),
-                    ext: z.array(z.string()),
-                    custom: z.array(z.string()),
-                }),
+                buildscript: z
+                    .object({
+                        repositories: z.array(z.string()),
+                        dependencies: z.array(z.string()),
+                        ext: z.array(z.string()),
+                        custom: z.array(z.string()),
+                    })
+                    .partial(),
                 injectAfterAll: z.array(z.string()),
             })
             .partial()

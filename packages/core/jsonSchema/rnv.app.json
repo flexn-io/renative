@@ -537,12 +537,6 @@
                                                                         }
                                                                     }
                                                                 },
-                                                                "required": [
-                                                                    "repositories",
-                                                                    "dependencies",
-                                                                    "ext",
-                                                                    "custom"
-                                                                ],
                                                                 "additionalProperties": false
                                                             },
                                                             "injectAfterAll": {
