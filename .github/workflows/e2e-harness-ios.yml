@@ -22,7 +22,7 @@ on:
 jobs:
     e2e-harness-ios:
         if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.label.name == 'e2e-harness-ios' || github.event.label.name == 'e2e' }}
-        runs-on: [self-hosted, macos, apple]
+        runs-on: [self-hosted, macos, ARM64]
         steps:
             - uses: actions/checkout@v2
             - name: Setup
