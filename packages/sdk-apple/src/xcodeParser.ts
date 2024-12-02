@@ -130,7 +130,9 @@ const _parseXcodeProject = (c: Context, platform: RnvPlatform) =>
             if (platform === 'ios') {
                 xcodeProj.updateBuildProperty('IPHONEOS_DEPLOYMENT_TARGET', deploymentTarget);
             }
-
+            if (platform === 'tvos') {
+                xcodeProj.updateBuildProperty('TVOS_DEPLOYMENT_TARGET', deploymentTarget);
+            }
             if (provisionProfileSpecifier) {
                 xcodeProj.updateBuildProperty('PROVISIONING_PROFILE_SPECIFIER', `"${provisionProfileSpecifier}"`);
             }

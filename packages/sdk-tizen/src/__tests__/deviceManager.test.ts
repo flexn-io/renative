@@ -19,6 +19,7 @@ const ERROR_MSG = {
 };
 
 jest.mock('@rnv/core');
+jest.mock('@rnv/sdk-utils');
 
 beforeEach(() => {
     jest.clearAllMocks();
@@ -135,6 +136,7 @@ describe('launchTizenTarget', () => {
                     value: '111.111.111:11111',
                 },
             ],
+            default: 'emulatorTizen',
         });
         expect(executeAsync).toHaveBeenCalledWith(
             'tizen-emulator launch --name emulatorTizen',
@@ -163,6 +165,7 @@ describe('launchTizenTarget', () => {
             name: 'chosenEmulator',
             type: 'list',
             message: 'which emulator would you like to launch?',
+            default: 'emulatorTizen',
             choices: [
                 {
                     key: 'emulatorTizen',
@@ -202,6 +205,7 @@ describe('launchTizenTarget', () => {
                 { key: 'emulatorTizen', name: 'emulatorTizen', value: 'emulatorTizen' },
                 { key: '111.111.111.111:11111', name: '111.111.111.111:11111', value: '111.111.111.111:11111' },
             ],
+            default: 'emulatorTizen',
         });
         expect(result).toBe(true);
     });
@@ -242,6 +246,7 @@ describe('launchTizenTarget', () => {
                     value: '111.111.111.111:11111',
                 },
             ],
+            default: 'emulatorTizen',
         });
         expect(executeAsync).toHaveBeenCalledWith(
             'tizen-emulator launch --name emulatorTizen',

@@ -1,4 +1,5 @@
 import path from 'path';
+import { isString } from 'lodash';
 import {
     getRealPath,
     fsReadFileSync,
@@ -21,7 +22,6 @@ import {
     getAppFolder,
     getContext,
     logError,
-    writeFileSync,
 } from '@rnv/core';
 import { WebosDevice } from './types';
 import {
@@ -33,7 +33,7 @@ import {
     CLI_WEBOS_ARES_DEVICE_INFO,
 } from './constants';
 import semver from 'semver';
-import { isUrlLocalhost } from '@rnv/sdk-utils';
+import { isUrlLocalhost, updateDefaultTargets } from '@rnv/sdk-utils';
 
 export const launchWebOSimulator = async (target: string | boolean) => {
     logTask('launchWebOSimulator', `${target}`);
@@ -132,6 +132,7 @@ const parseDevices = (c: RnvContext, devicesResponse: string): Promise<Array<Web
 const launchAppOnSimulator = async (c: RnvContext, appPath: string) => {
     logDefault('launchAppOnSimulator');
     const defaultTarget = c.runtime.target;
+    const { target } = c.program.opts();
     const webosSdkPath = getRealPath(c.buildConfig?.sdks?.WEBOS_SDK);
 
     if (!webosSdkPath) {
@@ -164,18 +165,32 @@ const launchAppOnSimulator = async (c: RnvContext, appPath: string) => {
         selectedSimulator = defaultTarget;
         logInfo(`Found default simulator ${chalk().bold.white(selectedSimulator)} in ${simulatorDirPath}`);
     } else {
-        if (availableEmulatorVersions.length > 1) {
-            ({ selectedSimulator } = await inquirerPrompt({
-                name: 'selectedSimulator',
-                type: 'list',
-                choices: availableEmulatorVersions,
-                message: `Found several installed simulators. Choose which one to use:`,
-            }));
-        } else {
-            selectedSimulator = availableEmulatorVersions[0];
-            logInfo(`Found simulator ${chalk().bold.white(selectedSimulator)} in ${simulatorDirPath}`);
+        if (availableEmulatorVersions.length) {
+            if (isString(target) && availableEmulatorVersions.includes(target)) {
+                ({ selectedSimulator } = await inquirerPrompt({
+                    name: 'selectedSimulator',
+                    type: 'list',
+                    choices: availableEmulatorVersions,
+                    message: `Found installed simulators. Choose which one to use:`,
+                }));
+            } else {
+                logInfo(
+                    `The target ${
+                        !target || target === true
+                            ? 'is not specified'
+                            : `is specified, but no such target is available: ${chalk().magenta(target)}`
+                    }. Will try to find available one`
+                );
+                ({ selectedSimulator } = await inquirerPrompt({
+                    name: 'selectedSimulator',
+                    type: 'list',
+                    choices: availableEmulatorVersions,
+                    message: `Found installed simulators. Choose which one to use:`,
+                }));
+            }
         }
-        await _updateDefaultTargets(c, selectedSimulator);
+
+        await updateDefaultTargets(c, selectedSimulator);
     }
 
     const regex = /\d+(\.\d+)?/g;
@@ -194,31 +209,6 @@ const launchAppOnSimulator = async (c: RnvContext, appPath: string) => {
     );
 };
 
-const _updateDefaultTargets = async (c: RnvContext, selectedSimulator: string) => {
-    const defaultTarget = c.runtime.target;
-    const { confirm } = await inquirerPrompt({
-        type: 'confirm',
-        name: 'confirm',
-        message: `Your default target for platform ${c.platform} is ${
-            !defaultTarget ? 'not defined' : `set to ${defaultTarget}`
-        }. Do you want to ${!defaultTarget ? 'set' : `update `} it to ${selectedSimulator} `,
-    });
-    if (!confirm) return;
-
-    const workspaceConfig = c.files.workspace.config;
-
-    if (workspaceConfig && c.platform) {
-        if (!workspaceConfig.defaultTargets) workspaceConfig.defaultTargets = {};
-
-        workspaceConfig.defaultTargets[c.platform] = selectedSimulator;
-
-        c.files.workspace.config = workspaceConfig;
-        writeFileSync(c.paths.workspace.config, workspaceConfig);
-    }
-    logInfo(
-        `Your default target for platform ${c.platform} has been updated successfully in ${c.paths.workspace.config}`
-    );
-};
 // Used for actual devices
 const installAndLaunchApp = async (target: string, appPath: string, tId: string) => {
     try {
@@ -274,7 +264,7 @@ export const listWebOSTargets = async () => {
 
 export const runWebosSimOrDevice = async () => {
     const c = getContext();
-    const { device } = c.program.opts();
+    const { device, target } = c.program.opts();
 
     const platDir = getAppFolder();
     if (!platDir) {
@@ -304,8 +294,12 @@ export const runWebosSimOrDevice = async () => {
 
     // List all devices
     const devicesResponse = await execCLI(CLI_WEBOS_ARES_DEVICE_INFO, '-D');
+
     const devices = await parseDevices(c, devicesResponse);
     const activeDevices = devices.filter((d) => d.active);
+    const target_name = devices.find((device) => {
+        return device.device.includes(target) || device.name.includes(target);
+    })?.name;
 
     if (device) {
         // Running on a device
@@ -346,7 +340,7 @@ export const runWebosSimOrDevice = async () => {
             const tv = actualDevices[0];
             return installAndLaunchApp(tv.name, appPath, tId);
         }
-    } else if (!c.program.opts().target) {
+    } else if (!target) {
         // No target specified
         if (activeDevices.length === 1) {
             // One device present
@@ -371,13 +365,15 @@ export const runWebosSimOrDevice = async () => {
                 return logError(`${error}`);
             }
         }
+    } else if (target && !target_name) {
+        try {
+            return await launchAppOnSimulator(c, appLocation);
+        } catch (error) {
+            return logError(`${error}`);
+        }
     } else {
-        const target_name = devices.find((device) => {
-            return device.device.includes(c.program.opts().target) || device.name.includes(c.program.opts().target);
-        })?.name;
-
         if (!target_name) {
-            return Promise.reject(`Target ${c.program.opts().target} doesn't exist.`);
+            return Promise.reject(`Target ${target} doesn't exist.`);
         }
         return installAndLaunchApp(target_name, appPath, tId);
     }

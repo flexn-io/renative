@@ -1,4 +1,4 @@
-import { createTask, RnvTaskName } from '@rnv/core';
+import { createTask, RnvTaskName, RnvTaskOptions } from '@rnv/core';
 import { buildXcodeProject } from '../runner';
 import { SdkPlatforms } from '../common';
 import { TaskOptionPresets, TaskOptions } from '../taskOptions';
@@ -14,6 +14,6 @@ export default createTask({
         return buildXcodeProject();
     },
     task: RnvTaskName.build,
-    options: TaskOptionPresets.withConfigure([TaskOptions.xcodebuildArgs]),
+    options: [...TaskOptionPresets.withConfigure([TaskOptions.xcodebuildArgs]), RnvTaskOptions.appConfigID],
     platforms: SdkPlatforms,
 });

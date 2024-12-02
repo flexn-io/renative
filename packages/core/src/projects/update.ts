@@ -25,75 +25,65 @@ export const checkAndUpdateProjectIfRequired = async () => {
     if (isMonorepo) return true;
     await applyTemplate();
 
+    const allPlatforms = Object.keys(c.buildConfig?.platforms || {});
+    if (!allPlatforms?.includes(platform)) {
+        logError(`Platform ${platform} is not supported!`);
+        return Promise.reject(`Platform ${platform} is not supported!`);
+    }
     const templateConfigFile = readObjectSync<ConfigFileTemplate>(c.paths.template.configTemplate);
 
     if (templateConfigFile) {
-        const availablePlatforms = _getAllAvailablePlatforms(templateConfigFile);
-        if (!availablePlatforms.includes(platform)) {
-            logError(`Platform ${platform} is not supported!`);
-            return Promise.reject(`Platform ${platform} is not supported!`);
-        } else {
-            const missingFiles = _getMisFilesForPlatform({
-                templateConfigFile,
-                platform,
-                projectPath: c.paths.project.dir,
-                templatePath: c.paths.template.dir,
+        const missingFiles = _getMisFilesForPlatform({
+            templateConfigFile,
+            platform,
+            projectPath: c.paths.project.dir,
+            templatePath: c.paths.template.dir,
+        });
+
+        if (missingFiles.length || !supportedPlatforms?.includes(platform)) {
+            const { confirm } = await inquirerPrompt({
+                type: 'confirm',
+                message: `You are trying to run platform ${chalk().bold.magenta(
+                    platform
+                )} which is not configured. Do you want to configure it now?`,
             });
-            if (missingFiles.length || !supportedPlatforms?.includes(platform)) {
-                const { confirm } = await inquirerPrompt({
-                    type: 'confirm',
-                    message: `You are trying to run platform ${chalk().bold.magenta(
-                        platform
-                    )} which is not configured. Do you want to configure it now?`,
-                });
-                if (!confirm) {
-                    return Promise.reject('Cancelled by user');
-                }
-
-                if (supportedPlatforms) {
-                    if (!supportedPlatforms.includes(platform)) {
-                        supportedPlatforms.push(platform);
-                        if (c.files.project.config) {
-                            writeFileSync(c.paths.project.config, c.files.project.config);
-                        }
-                    }
-                }
-
-                missingFiles.forEach((mf) => {
-                    const destPath = path.join(c.paths.project.dir, mf);
-                    const sourcePath = path.join(c.paths.template.dir, mf);
-
-                    if (!fsExistsSync(destPath) && fsExistsSync(sourcePath)) {
-                        try {
-                            if (fsLstatSync(sourcePath).isDirectory()) {
-                                logInfo(
-                                    `Missing directory ${chalk().bold.white(destPath)}. COPYING from TEMPLATE...DONE`
-                                );
-                                copyFolderContentsRecursiveSync(sourcePath, destPath);
-                            } else {
-                                logInfo(`Missing file ${chalk().bold.white(destPath)}. COPYING from TEMPLATE...DONE`);
-                                copyFileSync(sourcePath, destPath);
-                            }
-                        } catch (e) {
-                            console.log(e);
-                        }
-                    }
-                });
+            if (!confirm) {
+                return Promise.reject('Cancelled by user');
             }
+
+            if (supportedPlatforms) {
+                if (!supportedPlatforms.includes(platform)) {
+                    supportedPlatforms.push(platform);
+                    if (c.files.project.config) {
+                        writeFileSync(c.paths.project.config, c.files.project.config);
+                    }
+                }
+            }
+
+            missingFiles.forEach((mf) => {
+                const destPath = path.join(c.paths.project.dir, mf);
+                const sourcePath = path.join(c.paths.template.dir, mf);
+
+                if (!fsExistsSync(destPath) && fsExistsSync(sourcePath)) {
+                    try {
+                        if (fsLstatSync(sourcePath).isDirectory()) {
+                            logInfo(`Missing directory ${chalk().bold.white(destPath)}. COPYING from TEMPLATE...DONE`);
+                            copyFolderContentsRecursiveSync(sourcePath, destPath);
+                        } else {
+                            logInfo(`Missing file ${chalk().bold.white(destPath)}. COPYING from TEMPLATE...DONE`);
+                            copyFileSync(sourcePath, destPath);
+                        }
+                    } catch (e) {
+                        console.log(e);
+                    }
+                }
+            });
         }
     }
 
     return true;
 };
-const _getAllAvailablePlatforms = (templateConfigFile: ConfigFileTemplate): string[] => {
-    const includedPaths = templateConfigFile.templateConfig?.includedPaths || [];
-    return includedPaths.reduce((acc, item) => {
-        if (typeof item !== 'string' && item.platforms) {
-            acc.push(...item.platforms);
-        }
-        return acc;
-    }, [] as string[]);
-};
+
 const _getMisFilesForPlatform = (opts: {
     templateConfigFile: ConfigFileTemplate;
     platform: RnvPlatform;

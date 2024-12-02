@@ -2,6 +2,7 @@ import { inquirerPrompt, getContext, createRnvContext, logSuccess } from '@rnv/c
 import type { PromptParams } from '@rnv/core';
 import { getIosDeviceToRunOn } from '../runner';
 import { getAppleDevices } from '../deviceManager';
+import { updateDefaultTargets } from '@rnv/sdk-utils';
 
 const simJson = [
     {
@@ -33,6 +34,7 @@ const devicesJson = [
 ];
 
 jest.mock('@rnv/core');
+jest.mock('@rnv/sdk-utils');
 jest.mock('../deviceManager');
 jest.mock('chalk', () => ({
     bold: {
@@ -97,21 +99,16 @@ describe('getIosDeviceToRunOn', () => {
                     [name as string]: true,
                 };
             }
-
             if (type === 'list') {
-                // Testing the addition of global/project value should be handled in another UT
-                if (choices?.includes("Don't update")) {
-                    const choiceIndex = choices.findIndex((c) => c === "Don't update");
-                    return {
-                        [name as string]:
-                            (choices![choiceIndex] as { name: string; value: any }).value || choices![choiceIndex],
-                    };
-                }
                 // By default first value returned (aka the first simulator from the list in this case)
                 return {
                     [name as string]: (choices![0] as { name: string; value: any }).value || choices![0],
                 };
             }
+        });
+        jest.mocked(updateDefaultTargets).mockImplementation(async (ctx, currentTarget) => {
+            if (!ctx.platform) return;
+            ctx.runtime.target = currentTarget;
         });
         // WHEN
         const deviceArgs = await getIosDeviceToRunOn(ctx);
@@ -139,13 +136,18 @@ describe('getIosDeviceToRunOn', () => {
         ctx.files.workspace.config = {};
         ctx.runtime.target = 'iPhone 14';
         jest.mocked(getAppleDevices).mockResolvedValueOnce(simJson);
-        jest.mocked(inquirerPrompt).mockImplementation(async ({ type, name, choices }: PromptParams) => {
-            if (type === 'list' && choices?.includes('Update global default target for platform ios')) {
-                return { [name as string]: 'Update global default target for platform ios' };
-            }
+        jest.mocked(inquirerPrompt).mockImplementation(async ({ name, choices }: PromptParams) => {
             return {
                 [name as string]: (choices![0] as { name: string; value: any }).value || choices![0],
             };
+        });
+        jest.mocked(updateDefaultTargets).mockImplementation(async (ctx, currentTarget) => {
+            if (!ctx.platform) return;
+            const configGlobal = ctx.files.workspace.config || {};
+            configGlobal.defaultTargets = configGlobal.defaultTargets || {};
+            configGlobal.defaultTargets[ctx.platform] = currentTarget;
+            ctx.files.workspace.config = configGlobal;
+            ctx.runtime.target = currentTarget;
         });
         // WHEN
         const deviceArgs = await getIosDeviceToRunOn(ctx);
