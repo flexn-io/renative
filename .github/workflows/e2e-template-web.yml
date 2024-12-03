@@ -31,7 +31,7 @@ jobs:
             - name: Bootstrap
               run: |
                   yarn bootstrap
-            - name: Host
+            - name: Run
               run: |
                   cd packages/template-starter && yarn run:web-test & sleep 60
             - name: E2E

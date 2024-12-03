@@ -22,7 +22,7 @@ on:
 jobs:
     e2e-harness-tvos:
         if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.label.name == 'e2e-harness-tvos' || github.event.label.name == 'e2e' }}
-        runs-on: [self-hosted, macos, apple]
+        runs-on: [self-hosted, macos]
         steps:
             - uses: actions/checkout@v2
             - name: Setup
@@ -32,12 +32,12 @@ jobs:
             - name: Bootstrap
               run: |
                   yarn bootstrap
-            - name: Run
+            - name: Build
               run: |
-                  cd packages/app-harness && yarn run:tvos-test & sleep 420
+                  cd packages/app-harness && yarn build:tvos-test
             - name: E2E
               run: |
-                  cd packages/app-harness && yarn e2e:tvos && kill $(lsof -t -i:8099)
+                  cd packages/app-harness && yarn e2e:tvos
             # Commented because e2e tests would fail due to minion issues
             # - name: Post message to Slack via Webhook
             #   if: ${{ github.event_name == 'push' && failure() }}

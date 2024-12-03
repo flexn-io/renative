@@ -6,6 +6,10 @@ describe('Test App Harness', () => {
     });
 
     it('--> Hermes Support ', async () => {
+        if (process.env.PLATFORM === 'ios') {
+            await FlexnRunner.waitForDisplayedByText('Allow');
+            await FlexnRunner.clickByText('Allow');
+        }
         await FlexnRunner.waitForDisplayedById('app-harness-home-renative-image');
         if (process.env.PLATFORM === 'web') {
             await FlexnRunner.expectToHaveTextById('app-harness-home-hermes-support-text', 'hermes: no');
@@ -74,9 +78,9 @@ describe('Test App Harness', () => {
             await FlexnRunner.expectToBeDisplayedByText('OK');
         } else if (process.env.PLATFORM === 'ios') {
             await FlexnRunner.clickById('app-harness-home-cast-support-button');
-            await FlexnRunner.expectToBeDisplayedByText('Cast to');
+            await FlexnRunner.expectToBeDisplayedByText('No devices available');
         } else {
             await FlexnRunner.expectToHaveTextById('app-harness-home-cast-support-text', 'Not supported');
-        } 
+        }
     });
 });
