@@ -1,20 +1,20 @@
 {
-  "$ref": "#/definitions/rnv.integration",
-  "definitions": {
-    "rnv.integration": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string",
-          "description": "Name of the integration (best to use name of the actual package)"
-        },
-        "$schema": {
-          "type": "string",
-          "description": "schema definition"
+    "$ref": "#/definitions/rnv.integration",
+    "definitions": {
+        "rnv.integration": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of the integration (best to use name of the actual package)"
+                },
+                "$schema": {
+                    "type": "string",
+                    "description": "schema definition"
+                }
+            },
+            "additionalProperties": false
         }
-      },
-      "additionalProperties": false
-    }
-  },
-  "$schema": "http://json-schema.org/draft-04/schema#"
+    },
+    "$schema": "http://json-schema.org/draft-04/schema#"
 }
