@@ -29,7 +29,7 @@ export const launchKaiOSSimulator = async (target: string | boolean) => {
         (directory) => directory.toLowerCase().indexOf('kaios') !== -1
     );
 
-    if (target === true) {
+    if (typeof target === 'boolean') {
         const { selectedSimulator } = await inquirerPrompt({
             name: 'selectedSimulator',
             type: 'list',
