@@ -1,97 +1,97 @@
 {
-  "$ref": "#/definitions/rnv.engine",
-  "definitions": {
-    "rnv.engine": {
-      "type": "object",
-      "properties": {
-        "custom": {
-          "description": "Object used to extend your renative with custom props. This allows renative json schema to be validated"
-        },
-        "name": {
-          "type": "string",
-          "description": "Name of the engine (best to use name of the actual package)"
-        },
-        "engineExtension": {
-          "type": "string",
-          "description": "Engine extension used by rnv during compilation"
-        },
-        "overview": {
-          "type": "string",
-          "description": "Overview description of engine"
-        },
-        "plugins": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          },
-          "description": "List of required plugins for this engine to work properly"
-        },
-        "npm": {
-          "type": "object",
-          "properties": {
-            "dependencies": {
-              "type": "object",
-              "additionalProperties": {
-                "type": "string"
-              }
-            },
-            "devDependencies": {
-              "$ref": "#/definitions/rnv.engine/properties/npm/properties/dependencies"
-            },
-            "peerDependencies": {
-              "$ref": "#/definitions/rnv.engine/properties/npm/properties/dependencies"
-            },
-            "optionalDependencies": {
-              "$ref": "#/definitions/rnv.engine/properties/npm/properties/dependencies"
-            }
-          },
-          "additionalProperties": false,
-          "description": "Npm dependencies required for this plugin to work"
-        },
-        "platforms": {
-          "type": "object",
-          "additionalProperties": {
+    "$ref": "#/definitions/rnv.engine",
+    "definitions": {
+        "rnv.engine": {
             "type": "object",
             "properties": {
-              "engine": {
-                "type": "string"
-              },
-              "npm": {
-                "$ref": "#/definitions/rnv.engine/properties/npm"
-              }
+                "custom": {
+                    "description": "Object used to extend your renative with custom props. This allows renative json schema to be validated"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the engine (best to use name of the actual package)"
+                },
+                "engineExtension": {
+                    "type": "string",
+                    "description": "Engine extension used by rnv during compilation"
+                },
+                "overview": {
+                    "type": "string",
+                    "description": "Overview description of engine"
+                },
+                "plugins": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "List of required plugins for this engine to work properly"
+                },
+                "npm": {
+                    "type": "object",
+                    "properties": {
+                        "dependencies": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        },
+                        "devDependencies": {
+                            "$ref": "#/definitions/rnv.engine/properties/npm/properties/dependencies"
+                        },
+                        "peerDependencies": {
+                            "$ref": "#/definitions/rnv.engine/properties/npm/properties/dependencies"
+                        },
+                        "optionalDependencies": {
+                            "$ref": "#/definitions/rnv.engine/properties/npm/properties/dependencies"
+                        }
+                    },
+                    "additionalProperties": false,
+                    "description": "Npm dependencies required for this plugin to work"
+                },
+                "platforms": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                            "engine": {
+                                "type": "string"
+                            },
+                            "npm": {
+                                "$ref": "#/definitions/rnv.engine/properties/npm"
+                            }
+                        },
+                        "additionalProperties": false
+                    },
+                    "propertyNames": {
+                        "enum": [
+                            "web",
+                            "ios",
+                            "android",
+                            "androidtv",
+                            "firetv",
+                            "tvos",
+                            "macos",
+                            "linux",
+                            "windows",
+                            "tizen",
+                            "webos",
+                            "chromecast",
+                            "kaios",
+                            "webtv",
+                            "androidwear",
+                            "tizenwatch",
+                            "tizenmobile",
+                            "xbox"
+                        ]
+                    }
+                },
+                "$schema": {
+                    "type": "string",
+                    "description": "schema definition"
+                }
             },
             "additionalProperties": false
-          },
-          "propertyNames": {
-            "enum": [
-              "web",
-              "ios",
-              "android",
-              "androidtv",
-              "firetv",
-              "tvos",
-              "macos",
-              "linux",
-              "windows",
-              "tizen",
-              "webos",
-              "chromecast",
-              "kaios",
-              "webtv",
-              "androidwear",
-              "tizenwatch",
-              "tizenmobile",
-              "xbox"
-            ]
-          }
-        },
-        "$schema": {
-          "type": "string",
-          "description": "schema definition"
         }
-      },
-      "additionalProperties": false
-    }
-  },
-  "$schema": "http://json-schema.org/draft-04/schema#"
+    },
+    "$schema": "http://json-schema.org/draft-04/schema#"
 }
