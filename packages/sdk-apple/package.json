@@ -42,10 +42,8 @@
         "@react-native-community/cli-platform-ios": "^12.3.6",
         "@rnv/core": "^1.7.0-rc.0"
     },
-    "private": false,
     "publishConfig": {
         "access": "public"
     },
-    "gitHead": "48ef244c6ec2e206cbfd72fe8770d8dc03387591",
-    "packageManager": "yarn@3.6.4"
+    "gitHead": "48ef244c6ec2e206cbfd72fe8770d8dc03387591"
 }

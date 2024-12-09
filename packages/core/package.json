@@ -55,7 +55,6 @@
     "peerDependencies": {
         "@rnv/config-templates": "^1.7.0-rc.0"
     },
-    "private": false,
     "publishConfig": {
         "access": "public"
     },

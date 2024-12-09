@@ -37,9 +37,7 @@
     "peerDependencies": {
         "@rnv/core": "^1.7.0-rc.0"
     },
-    "private": false,
     "publishConfig": {
         "access": "public"
-    },
-    "packageManager": "yarn@3.6.4"
+    }
 }

@@ -91,6 +91,5 @@
     "browserslist": [
         ">0.2%",
         "op_mini all"
-    ],
-    "packageManager": "yarn@3.6.4"
+    ]
 }

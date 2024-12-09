@@ -58,7 +58,6 @@
         "compile:prod": "tsc -b tsconfig.json",
         "watch": "tsc --watch --preserveWatchOutput"
     },
-    "private": false,
     "publishConfig": {
         "access": "public"
     },
@@ -67,6 +66,5 @@
         "typescript": "5.2.2"
     },
     "types": "lib/index",
-    "gitHead": "48ef244c6ec2e206cbfd72fe8770d8dc03387591",
-    "packageManager": "yarn@3.6.4"
+    "gitHead": "48ef244c6ec2e206cbfd72fe8770d8dc03387591"
 }

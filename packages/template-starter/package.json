@@ -127,13 +127,11 @@
         "react-native-tvos": "0.73.6-0",
         "react-native-web": "0.19.12"
     },
-    "private": false,
     "publishConfig": {
         "access": "public"
     },
     "browserslist": [
         ">0.2%",
         "op_mini all"
-    ],
-    "packageManager": "yarn@3.6.4"
+    ]
 }

@@ -48,9 +48,7 @@
         "react": "^18",
         "react-native-web": "~0.18.0"
     },
-    "private": false,
     "publishConfig": {
         "access": "public"
-    },
-    "packageManager": "yarn@3.6.4"
+    }
 }

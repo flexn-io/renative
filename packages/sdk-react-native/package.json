@@ -41,10 +41,8 @@
         "metro-config": "^0.80.0",
         "metro-runtime": "^0.80.0"
     },
-    "private": false,
     "publishConfig": {
         "access": "public"
     },
-    "gitHead": "48ef244c6ec2e206cbfd72fe8770d8dc03387591",
-    "packageManager": "yarn@3.6.4"
+    "gitHead": "48ef244c6ec2e206cbfd72fe8770d8dc03387591"
 }
