@@ -193,7 +193,7 @@ export const RnvTaskOptions = createTaskOptionsMap([
     },
     {
         key: 'hosted',
-        description: 'Run in a hosted environment (skip budleAssets)',
+        description: 'Run in a hosted environment (skip bundleAssets)',
     },
     {
         key: 'device',
