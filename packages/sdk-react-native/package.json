@@ -31,7 +31,9 @@
     "dependencies": {
         "@react-native/metro-babel-transformer": "^0.74.0",
         "@rnv/sdk-utils": "1.7.0-rc.0",
-        "shell-quote": "1.8.1"
+        "rimraf": "2.6.2",
+        "shell-quote": "1.8.1",
+        "typescript": "5.2.2"
     },
     "peerDependencies": {
         "@react-native/js-polyfills": "^0.74.0",
@@ -43,5 +45,6 @@
     "publishConfig": {
         "access": "public"
     },
-    "gitHead": "48ef244c6ec2e206cbfd72fe8770d8dc03387591"
+    "gitHead": "48ef244c6ec2e206cbfd72fe8770d8dc03387591",
+    "packageManager": "yarn@3.6.4"
 }

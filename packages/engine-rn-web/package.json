@@ -32,14 +32,16 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@react-native/babel-preset": "0.73.21",
+        "@react-native/babel-preset": "0.76.3",
         "@rnv/adapter": "1.7.0-rc.0",
         "@rnv/sdk-kaios": "1.7.0-rc.0",
         "@rnv/sdk-tizen": "1.7.0-rc.0",
         "@rnv/sdk-utils": "1.7.0-rc.0",
         "@rnv/sdk-webos": "1.7.0-rc.0",
         "@rnv/sdk-webpack": "1.7.0-rc.0",
-        "metro-react-native-babel-preset": "0.76.8"
+        "metro-react-native-babel-preset": "0.76.8",
+        "rimraf": "2.6.2",
+        "typescript": "5.2.2"
     },
     "peerDependencies": {
         "@rnv/core": "^1.7.0-rc.0"
@@ -47,5 +49,6 @@
     "private": false,
     "publishConfig": {
         "access": "public"
-    }
+    },
+    "packageManager": "yarn@3.6.4"
 }

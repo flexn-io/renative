@@ -29,5 +29,6 @@
     "private": false,
     "publishConfig": {
         "access": "public"
-    }
+    },
+    "packageManager": "yarn@3.6.4"
 }

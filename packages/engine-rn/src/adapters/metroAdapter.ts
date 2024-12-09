@@ -88,6 +88,7 @@ export const withRNVMetro = (config: InputConfig): InputConfig => {
     };
 
     const cnf = mergeConfig(defaultConfig, config, cnfRnv);
+    console.log('metro cnf !!!!!!!!!', cnf);
 
     return cnf;
 };

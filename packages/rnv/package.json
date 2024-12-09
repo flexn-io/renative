@@ -71,11 +71,14 @@
     "dependencies": {
         "@rnv/cli": "1.7.0-rc.0",
         "@rnv/config-templates": "1.7.0-rc.0",
-        "tslib": "2.5.2"
+        "rimraf": "2.6.2",
+        "tslib": "2.5.2",
+        "typescript": "5.2.2"
     },
     "private": false,
     "publishConfig": {
         "access": "public"
     },
-    "title": "ReNative CLI"
+    "title": "ReNative CLI",
+    "packageManager": "yarn@3.6.4"
 }

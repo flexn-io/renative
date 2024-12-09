@@ -1516,7 +1516,6 @@
                         ]
                     }
                 },
-                "implementation": "implementation ('com.facebook.react:react-native:+') {\n exclude group: 'com.android.support' \n exclude group: 'javax.inject' \n }",
                 "path": "react-native"
             },
             "androidtv": {
@@ -1555,7 +1554,7 @@
                 "URL_NAME": "",
                 "URL_SCHEME": ""
             },
-            "version": "0.73.4"
+            "version": "0.76.3"
         },
         "react-native-actionsheet": {
             "version": "2.4.2"
@@ -2327,7 +2326,7 @@
             "version": "16.4.5"
         },
         "react-native-gesture-handler": {
-            "version": "2.16.2",
+            "version": "2.21.2",
             "android": {
                 "package": "com.swmansion.gesturehandler.RNGestureHandlerPackage",
                 "path": "{{PLUGIN_ROOT}}/android",

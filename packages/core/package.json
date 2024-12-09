@@ -46,6 +46,7 @@
         "svg2js": "0.0.4-alpha1",
         "tslib": "2.5.2",
         "type-fest": "4.14.0",
+        "typescript": "5.2.2",
         "zod": "3.23.8"
     },
     "devDependencies": {
@@ -58,5 +59,6 @@
     "publishConfig": {
         "access": "public"
     },
-    "title": "ReNative Core SDK"
+    "title": "ReNative Core SDK",
+    "packageManager": "yarn@3.6.4"
 }

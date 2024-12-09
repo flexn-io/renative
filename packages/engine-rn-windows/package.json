@@ -37,11 +37,13 @@
         "@rnv/adapter": "1.7.0-rc.0",
         "@rnv/sdk-react-native": "1.7.0-rc.0",
         "@xmldom/xmldom": "0.7.7",
-        "react-native-windows": "0.72.10"
+        "react-native-windows": "0.72.10",
+        "rimraf": "2.6.2",
+        "typescript": "5.2.2"
     },
     "peerDependencies": {
         "@react-native-community/cli": "*",
-        "@react-native/babel-preset": "0.73.21",
+        "@react-native/babel-preset": "0.76.3",
         "@rnv/core": "^1.7.0-rc.0",
         "react-native": "*"
     },
@@ -49,5 +51,6 @@
     "publishConfig": {
         "access": "public"
     },
-    "gitHead": "48ef244c6ec2e206cbfd72fe8770d8dc03387591"
+    "gitHead": "48ef244c6ec2e206cbfd72fe8770d8dc03387591",
+    "packageManager": "yarn@3.6.4"
 }

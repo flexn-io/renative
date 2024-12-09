@@ -92,7 +92,7 @@ export const withRNVMetro = (config: InputConfig) => {
                 path.resolve(`${doResolve('react-native-tvos')}/Libraries/Image/AssetRegistry.js`),
         },
         resolver: {
-            resolveRequest: (context, moduleName, platform) => {
+            resolveRequest: (context: any, moduleName: any, platform: any) => {
                 if (moduleName.startsWith('react-native/')) {
                     return context.resolveRequest(
                         context,

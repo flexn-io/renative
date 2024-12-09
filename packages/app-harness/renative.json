@@ -221,7 +221,7 @@
                 "disabled": true
             },
             "pluginDependencies": null,
-            "version": "github:AppGyver/react-native-photo-editor#v0.1.2"
+            "version": "github:AppGyver/react-native-photo-editor#0.1.2"
         },
         "react-native-permissions": {
             "ios": {

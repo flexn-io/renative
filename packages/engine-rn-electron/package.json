@@ -33,7 +33,7 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@react-native/babel-preset": "0.73.21",
+        "@react-native/babel-preset": "0.76.3",
         "@rnv/adapter": "1.7.0-rc.0",
         "@rnv/sdk-react-native": "1.7.0-rc.0",
         "@rnv/sdk-utils": "1.7.0-rc.0",
@@ -41,7 +41,9 @@
         "electron": "26.3.0",
         "electron-builder": "24.13.3",
         "electron-notarize": "1.2.2",
-        "metro-react-native-babel-preset": "0.76.8"
+        "metro-react-native-babel-preset": "0.76.8",
+        "rimraf": "2.6.2",
+        "typescript": "5.2.2"
     },
     "peerDependencies": {
         "@rnv/core": "^1.7.0-rc.0"
@@ -50,5 +52,6 @@
     "publishConfig": {
         "access": "public"
     },
-    "gitHead": "48ef244c6ec2e206cbfd72fe8770d8dc03387591"
+    "gitHead": "48ef244c6ec2e206cbfd72fe8770d8dc03387591",
+    "packageManager": "yarn@3.6.4"
 }
