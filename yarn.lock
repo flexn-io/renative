@@ -5362,41 +5362,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native/codegen@npm:0.73.3":
-  version: 0.73.3
-  resolution: "@react-native/codegen@npm:0.73.3"
-  dependencies:
-    "@babel/parser": ^7.20.0
-    flow-parser: ^0.206.0
-    glob: ^7.1.1
-    invariant: ^2.2.4
-    jscodeshift: ^0.14.0
-    mkdirp: ^0.5.1
-    nullthrows: ^1.1.1
-  peerDependencies:
-    "@babel/preset-env": ^7.1.6
-  checksum: 08984813003ce58c2904c837c89605cc3161e93a704f3b8a0ee1593088dbbd7bcda9b867c1b21ec4f217f71df9de21b25ce35a3f2df9587f6c73763504a4d014
-  languageName: node
-  linkType: hard
-
-"@react-native/codegen@npm:0.74.88":
-  version: 0.74.88
-  resolution: "@react-native/codegen@npm:0.74.88"
-  dependencies:
-    "@babel/parser": ^7.20.0
-    glob: ^7.1.1
-    hermes-parser: 0.19.1
-    invariant: ^2.2.4
-    jscodeshift: ^0.14.0
-    mkdirp: ^0.5.1
-    nullthrows: ^1.1.1
-    yargs: ^17.6.2
-  peerDependencies:
-    "@babel/preset-env": ^7.1.6
-  checksum: 564c40b0874f4996919cb7f709918dd56c1a3eaa2533450bc43d47800971e60b8f3b0a5620a987d584b15c0a5622cc5db2da8a43a67a8c14ee17a1ec0c68adac
-  languageName: node
-  linkType: hard
-
 "@react-native/codegen@npm:0.76.3":
   version: 0.76.3
   resolution: "@react-native/codegen@npm:0.76.3"
@@ -5412,23 +5377,6 @@ __metadata:
   peerDependencies:
     "@babel/preset-env": ^7.1.6
   checksum: 5e9677695dcddabcd045ee448472cdecb13d6db216d021a21e29830487cfaef790ff6c1e59de06a7d70d18cc816dcd939c2cbbfa5c58b78b27d04f3cbacbc5ac
-  languageName: node
-  linkType: hard
-
-"@react-native/codegen@npm:^0.72.7":
-  version: 0.72.8
-  resolution: "@react-native/codegen@npm:0.72.8"
-  dependencies:
-    "@babel/parser": ^7.20.0
-    flow-parser: ^0.206.0
-    glob: ^7.1.1
-    invariant: ^2.2.4
-    jscodeshift: ^0.14.0
-    mkdirp: ^0.5.1
-    nullthrows: ^1.1.1
-  peerDependencies:
-    "@babel/preset-env": ^7.1.6
-  checksum: c031f199cb50f44010faaec96190bfd6a3abb376349c599cad85fa4f202c21d644b54ab6f530d2d0a915f086078f45d1082e2753ed4e4f80d256852ef1d081f9
   languageName: node
   linkType: hard
 
@@ -5610,9 +5558,9 @@ __metadata:
   linkType: hard
 
 "@react-native/normalize-colors@npm:*":
-  version: 0.76.4
-  resolution: "@react-native/normalize-colors@npm:0.76.4"
-  checksum: ee4388ee973eddc9dfc98dbd6640f37fc90847e4c7aca9c60cf1bd141be65afad3095e4546f1bd12d20ae48746a33db1a2388a2d2f4ad765f458b085fb0ab30b
+  version: 0.76.5
+  resolution: "@react-native/normalize-colors@npm:0.76.5"
+  checksum: 88758b7cbed118c520ab1d5ebad37198527aa98b503fe003d956059fff9171c22e248a1b227ab87a02be574080271900e03ac71fdc3f1233c3ca4e5a6c6746b7
   languageName: node
   linkType: hard
 
@@ -10954,12 +10902,12 @@ __metadata:
   linkType: hard
 
 "call-bind-apply-helpers@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "call-bind-apply-helpers@npm:1.0.0"
+  version: 1.0.1
+  resolution: "call-bind-apply-helpers@npm:1.0.1"
   dependencies:
     es-errors: ^1.3.0
     function-bind: ^1.1.2
-  checksum: 99b8043d52587547aea8d51ee2ed32190b32f52095f3f91c6e655110f7e1bf3bda7d389ce5032f73d66c8ff7d449bb67114e7aba6d9df8ab67c29926b3f71922
+  checksum: 3c55343261bb387c58a4762d15ad9d42053659a62681ec5eb50690c6b52a4a666302a01d557133ce6533e8bd04530ee3b209f23dd06c9577a1925556f8fcccdf
   languageName: node
   linkType: hard
 
@@ -15373,13 +15321,6 @@ __metadata:
   version: 0.256.0
   resolution: "flow-parser@npm:0.256.0"
   checksum: 39e0052d6fc0b1c34bb34f61398035458f23089d54b143584b25116e4b4c80e03045b1216157a4dd8afb0e016f485e66640b8c788bd9611f2298491d8cb9512b
-  languageName: node
-  linkType: hard
-
-"flow-parser@npm:^0.206.0":
-  version: 0.206.0
-  resolution: "flow-parser@npm:0.206.0"
-  checksum: 1b87d87b59815b09852a6981543ad222da7f4d0e0c26702f9d5e0065174f5f64d2563db76d07a487c6b55e1979344e3845ac42929db70f77a82e8c9171a62a86
   languageName: node
   linkType: hard
 
