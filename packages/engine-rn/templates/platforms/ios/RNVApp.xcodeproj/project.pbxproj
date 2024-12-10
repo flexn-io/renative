@@ -69,7 +69,7 @@
 		7C717EEC7024EA4A970A8C0B /* libPods-RNVApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNVApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9408A3872A97997800B2E736 /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		9408A3882A97997800B2E736 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = RnDiffApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = RNVApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		9408A3892A97997800B2E736 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		96722C6F859B298386E53EEC /* libPods-RNVApp-RNVAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNVApp-RNVAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF8EFAC6D34EF718C410C11B /* Pods_RNVAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RNVAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
