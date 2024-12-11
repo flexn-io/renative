@@ -1516,6 +1516,7 @@
                         ]
                     }
                 },
+                "implementation": "implementation ('com.facebook.react:react-native:+') {\n exclude group: 'com.android.support' \n exclude group: 'javax.inject' \n }",
                 "path": "react-native"
             },
             "androidtv": {
@@ -3080,7 +3081,7 @@
             "webpackConfig": {
                 "modulePaths": true
             },
-            "version": "4.10.3"
+            "version": "5.0.0"
         },
         "react-native-safe-area-view": {
             "version": "4.9.0",

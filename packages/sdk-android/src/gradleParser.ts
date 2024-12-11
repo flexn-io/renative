@@ -565,7 +565,7 @@ export const parseGradlePropertiesSync = () => {
 
     const newArchEnabled = getConfigProp('newArchEnabled');
     const reactNativeEngine = getConfigProp('reactNativeEngine') || 'hermes';
-    // const enableJetifier = getConfigProp('enableJetifier') || true;
+    const enableJetifier = getConfigProp('enableJetifier') || true;
     const enableAndroidX = getConfigProp('enableAndroidX') || true;
 
     const injects = [
@@ -581,10 +581,10 @@ export const parseGradlePropertiesSync = () => {
             pattern: '{{INJECT_HERMES_ENABLED}}',
             override: reactNativeEngine === 'hermes' ? 'true' : 'false',
         },
-        // {
-        //     pattern: '{{ENABLE_JETIFIER}}',
-        //     override: enableJetifier ? 'true' : 'false',
-        // },
+        {
+            pattern: '{{ENABLE_JETIFIER}}',
+            override: enableJetifier ? 'true' : 'false',
+        },
         {
             pattern: '{{ENABLE_ANDROID_X}}',
             override: enableAndroidX ? 'true' : 'false',
