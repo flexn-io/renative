@@ -22,7 +22,7 @@ export const checkAndUpdateProjectIfRequired = async () => {
 
     if (!platform) return;
     const { isMonorepo } = c.buildConfig;
-    if (isMonorepo) return true;
+    if (isMonorepo || typeof platform === 'boolean') return true;
     await applyTemplate();
 
     const allPlatforms = Object.keys(c.buildConfig?.platforms || {});
