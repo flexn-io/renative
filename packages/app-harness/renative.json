@@ -143,26 +143,6 @@
                 "forceLinking": true
             }
         },
-        "@react-native-firebase/app": {
-            "disablePluginTemplateOverrides": true,
-            "version": "20.0.0",
-            "ios": {
-                "podNames": [
-                    "pod 'Firebase', :build_type => :static_framework",
-                    "pod 'FirebaseCoreInternal', :build_type => :static_framework",
-                    "pod 'FirebaseCore', :build_type => :static_framework",
-                    "pod 'GoogleUtilities', :build_type => :static_framework",
-                    "pod 'FirebaseStorage', :build_type => :static_framework",
-                    "pod 'FirebaseAppCheckInterop', :build_type => :static_framework",
-                    "pod 'FirebaseAuthInterop', :build_type => :static_framework"
-                ],
-                "templateXcode": {
-                    "Podfile": {
-                        "header": ["$RNFirebaseAsStaticFramework = true"]
-                    }
-                }
-            }
-        },
         "react-native-photo-editor": {
             "android": {
                 "templateAndroid": {
