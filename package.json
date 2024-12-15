@@ -127,9 +127,7 @@
     },
     "private": true,
     "resolutions": {
-        "@react-native-community/cli-platform-ios": "12.3.6",
-        "@react-native/gradle-plugin": "0.76.3",
-        "@react-native/codegen": "0.76.3"
+        "@react-native-community/cli-platform-ios": "12.3.6"
     },
     "title": "ReNative",
     "husky": {

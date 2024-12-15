@@ -1,4 +1,4 @@
-import { Env } from '@rnv/core';
+import { Env, fsExistsSync } from '@rnv/core';
 import { withMetroConfig, mergeConfig, InputConfig } from '@rnv/sdk-react-native';
 
 const path = require('path');
@@ -34,8 +34,8 @@ export const withRNVMetro = (config: InputConfig) => {
     const projectPath = env.RNV_PROJECT_ROOT || process.cwd();
 
     const defaultConfig = withMetroConfig(projectPath);
-
-    const watchFolders = [path.resolve(projectPath, 'node_modules')];
+    const projectNodeModulesPath = path.resolve(projectPath, 'node_modules');
+    const watchFolders = fsExistsSync(projectNodeModulesPath) ? [projectNodeModulesPath] : [];
 
     const metroCache = require(require.resolve('metro-cache', { paths: [projectPath] }));
 
