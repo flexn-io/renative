@@ -1,274 +1,255 @@
 {
-  "$ref": "#/definitions/rnv.template",
-  "definitions": {
-    "rnv.template": {
-      "type": "object",
-      "properties": {
-        "templateConfig": {
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string"
-            },
-            "version": {
-              "type": "string"
-            },
-            "disabled": {
-              "type": "boolean"
-            },
-            "includedPaths": {
-              "type": "array",
-              "items": {
-                "anyOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
+    "$ref": "#/definitions/rnv.template",
+    "definitions": {
+        "rnv.template": {
+            "type": "object",
+            "properties": {
+                "templateConfig": {
                     "type": "object",
                     "properties": {
-                      "paths": {
-                        "type": "array",
-                        "items": {
-                          "type": "string"
-                        }
-                      },
-                      "engines": {
-                        "type": "array",
-                        "items": {
-                          "type": "string"
-                        }
-                      },
-                      "platforms": {
-                        "type": "array",
-                        "items": {
-                          "type": "string",
-                          "enum": [
-                            "web",
-                            "ios",
-                            "android",
-                            "androidtv",
-                            "firetv",
-                            "tvos",
-                            "macos",
-                            "linux",
-                            "windows",
-                            "tizen",
-                            "webos",
-                            "chromecast",
-                            "kaios",
-                            "webtv",
-                            "androidwear",
-                            "tizenwatch",
-                            "tizenmobile",
-                            "xbox"
-                          ]
+                        "name": {
+                            "type": "string"
                         },
-                        "description": "Array list of all supported platforms in current project"
-                      }
+                        "version": {
+                            "type": "string"
+                        },
+                        "disabled": {
+                            "type": "boolean"
+                        },
+                        "includedPaths": {
+                            "type": "array",
+                            "items": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "paths": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "engines": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "platforms": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "web",
+                                                        "ios",
+                                                        "android",
+                                                        "androidtv",
+                                                        "firetv",
+                                                        "tvos",
+                                                        "macos",
+                                                        "linux",
+                                                        "windows",
+                                                        "tizen",
+                                                        "webos",
+                                                        "chromecast",
+                                                        "kaios",
+                                                        "webtv",
+                                                        "androidwear",
+                                                        "tizenwatch",
+                                                        "tizenmobile",
+                                                        "xbox"
+                                                    ]
+                                                },
+                                                "description": "Array list of all supported platforms in current project"
+                                            }
+                                        },
+                                        "required": ["paths"],
+                                        "additionalProperties": false
+                                    }
+                                ]
+                            },
+                            "description": "Defines list of all file/dir paths you want to include in template"
+                        },
+                        "renative_json": {
+                            "type": "object",
+                            "properties": {
+                                "$schema": {
+                                    "type": "string"
+                                },
+                                "extendsTemplate": {
+                                    "type": "string"
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "package_json": {
+                            "type": "object",
+                            "properties": {
+                                "dependencies": {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    }
+                                },
+                                "devDependencies": {
+                                    "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/package_json/properties/dependencies"
+                                },
+                                "peerDependencies": {
+                                    "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/package_json/properties/dependencies"
+                                },
+                                "optionalDependencies": {
+                                    "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/package_json/properties/dependencies"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "version": {
+                                    "type": "string"
+                                },
+                                "browserslist": {},
+                                "scripts": {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    },
+                                    "description": "Defines scripts you want to include in template"
+                                }
+                            },
+                            "additionalProperties": false
+                        }
                     },
-                    "required": [
-                      "paths"
-                    ],
+                    "additionalProperties": false,
+                    "description": "Used in `renative.template.json` allows you to define template behaviour."
+                },
+                "bootstrapConfig": {
+                    "type": "object",
+                    "properties": {
+                        "bootstrapQuestions": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "options": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "value": {
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "object",
+                                                            "additionalProperties": {}
+                                                        },
+                                                        {
+                                                            "type": "string"
+                                                        },
+                                                        {
+                                                            "type": "number"
+                                                        },
+                                                        {
+                                                            "type": "boolean"
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "required": ["title", "value"],
+                                            "additionalProperties": false
+                                        }
+                                    },
+                                    "configProp": {
+                                        "type": "object",
+                                        "properties": {
+                                            "prop": {
+                                                "type": "string"
+                                            },
+                                            "key": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": ["prop", "key"],
+                                        "additionalProperties": false
+                                    },
+                                    "type": {
+                                        "type": "string"
+                                    },
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "onConfirm": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "action": {
+                                                    "type": "string"
+                                                },
+                                                "prop": {
+                                                    "type": "string"
+                                                },
+                                                "path": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": ["action", "path"],
+                                            "additionalProperties": false
+                                        }
+                                    }
+                                },
+                                "required": ["type", "title"],
+                                "additionalProperties": false
+                            },
+                            "description": "Defines list of custom bootstrap questions"
+                        },
+                        "rnvNewPatchDependencies": {
+                            "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/package_json/properties/dependencies",
+                            "description": "This ensures that the correct version of the npm packages will be used to run the project for the first time after creation"
+                        },
+                        "configModifiers": {
+                            "type": "object",
+                            "properties": {
+                                "engines": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "supportedPlatforms": {
+                                                "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/includedPaths/items/anyOf/1/properties/platforms"
+                                            },
+                                            "nullifyIfFalse": {
+                                                "type": "boolean"
+                                            }
+                                        },
+                                        "required": ["name", "supportedPlatforms"],
+                                        "additionalProperties": false
+                                    }
+                                }
+                            },
+                            "required": ["engines"],
+                            "additionalProperties": false
+                        },
+                        "defaultSelectedPlatforms": {
+                            "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/includedPaths/items/anyOf/1/properties/platforms",
+                            "description": "Array list of all supported platforms in current project"
+                        }
+                    },
                     "additionalProperties": false
-                  }
-                ]
-              },
-              "description": "Defines list of all file/dir paths you want to include in template"
-            },
-            "renative_json": {
-              "type": "object",
-              "properties": {
+                },
                 "$schema": {
-                  "type": "string"
-                },
-                "extendsTemplate": {
-                  "type": "string"
+                    "type": "string",
+                    "description": "schema definition"
                 }
-              },
-              "additionalProperties": false
             },
-            "package_json": {
-              "type": "object",
-              "properties": {
-                "dependencies": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "string"
-                  }
-                },
-                "devDependencies": {
-                  "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/package_json/properties/dependencies"
-                },
-                "peerDependencies": {
-                  "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/package_json/properties/dependencies"
-                },
-                "optionalDependencies": {
-                  "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/package_json/properties/dependencies"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "version": {
-                  "type": "string"
-                },
-                "browserslist": {},
-                "scripts": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "string"
-                  },
-                  "description": "Defines scripts you want to include in template"
-                }
-              },
-              "additionalProperties": false
-            }
-          },
-          "additionalProperties": false,
-          "description": "Used in `renative.template.json` allows you to define template behaviour."
-        },
-        "bootstrapConfig": {
-          "type": "object",
-          "properties": {
-            "bootstrapQuestions": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "options": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "title": {
-                          "type": "string"
-                        },
-                        "value": {
-                          "anyOf": [
-                            {
-                              "type": "object",
-                              "additionalProperties": {}
-                            },
-                            {
-                              "type": "string"
-                            },
-                            {
-                              "type": "number"
-                            },
-                            {
-                              "type": "boolean"
-                            }
-                          ]
-                        }
-                      },
-                      "required": [
-                        "title",
-                        "value"
-                      ],
-                      "additionalProperties": false
-                    }
-                  },
-                  "configProp": {
-                    "type": "object",
-                    "properties": {
-                      "prop": {
-                        "type": "string"
-                      },
-                      "key": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "prop",
-                      "key"
-                    ],
-                    "additionalProperties": false
-                  },
-                  "type": {
-                    "type": "string"
-                  },
-                  "title": {
-                    "type": "string"
-                  },
-                  "onConfirm": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "action": {
-                          "type": "string"
-                        },
-                        "prop": {
-                          "type": "string"
-                        },
-                        "path": {
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "action",
-                        "path"
-                      ],
-                      "additionalProperties": false
-                    }
-                  }
-                },
-                "required": [
-                  "type",
-                  "title"
-                ],
-                "additionalProperties": false
-              },
-              "description": "Defines list of custom bootstrap questions"
-            },
-            "rnvNewPatchDependencies": {
-              "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/package_json/properties/dependencies",
-              "description": "This ensures that the correct version of the npm packages will be used to run the project for the first time after creation"
-            },
-            "configModifiers": {
-              "type": "object",
-              "properties": {
-                "engines": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "name": {
-                        "type": "string"
-                      },
-                      "supportedPlatforms": {
-                        "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/includedPaths/items/anyOf/1/properties/platforms"
-                      },
-                      "nullifyIfFalse": {
-                        "type": "boolean"
-                      }
-                    },
-                    "required": [
-                      "name",
-                      "supportedPlatforms"
-                    ],
-                    "additionalProperties": false
-                  }
-                }
-              },
-              "required": [
-                "engines"
-              ],
-              "additionalProperties": false
-            },
-            "defaultSelectedPlatforms": {
-              "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/includedPaths/items/anyOf/1/properties/platforms",
-              "description": "Array list of all supported platforms in current project"
-            }
-          },
-          "additionalProperties": false
-        },
-        "$schema": {
-          "type": "string",
-          "description": "schema definition"
+            "additionalProperties": false
         }
-      },
-      "additionalProperties": false
-    }
-  },
-  "$schema": "http://json-schema.org/draft-04/schema#"
+    },
+    "$schema": "http://json-schema.org/draft-04/schema#"
 }

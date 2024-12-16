@@ -1,6 +1,6 @@
 {
     "name": "@rnv/sdk-android",
-    "version": "1.7.0-rc.0",
+    "version": "1.8.0-rc.0",
     "description": "ReNative Android SDK",
     "keywords": [],
     "homepage": "https://github.com/flexn-io/renative#readme",
@@ -30,8 +30,8 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@rnv/sdk-react-native": "1.7.0-rc.0",
-        "@rnv/sdk-utils": "1.7.0-rc.0",
+        "@rnv/sdk-react-native": "1.8.0-rc.0",
+        "@rnv/sdk-utils": "1.8.0-rc.0",
         "jetifier": "2.0.0",
         "rimraf": "2.6.2",
         "typescript": "5.2.2"
@@ -39,7 +39,7 @@
     "peerDependencies": {
         "@react-native-community/cli": "^12.3.6",
         "@react-native-community/cli-platform-android": "^12.3.6",
-        "@rnv/core": "^1.7.0-rc.0"
+        "@rnv/core": "^1.8.0-rc.0"
     },
     "publishConfig": {
         "access": "public"

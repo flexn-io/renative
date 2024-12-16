@@ -1,6 +1,6 @@
 {
     "name": "@rnv/integration-starter",
-    "version": "1.7.0-rc.0",
+    "version": "1.8.0-rc.0",
     "description": "ReNative Example Integration",
     "keywords": [
         "renative",
@@ -32,7 +32,7 @@
         "typescript": "5.2.2"
     },
     "peerDependencies": {
-        "@rnv/core": "^1.7.0-rc.0"
+        "@rnv/core": "^1.8.0-rc.0"
     },
     "publishConfig": {
         "access": "public"
