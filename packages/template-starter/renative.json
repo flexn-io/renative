@@ -81,7 +81,7 @@
             "extendPlatform": "android"
         },
         "firetv": {
-            "minSdkVersion": 21,
+            "minSdkVersion": 24,
             "extendPlatform": "android",
             "engine": "engine-rn-tvos",
             "includedPermissions": ["INTERNET"]
