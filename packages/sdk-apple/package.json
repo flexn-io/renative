@@ -33,6 +33,8 @@
         "@rnv/sdk-react-native": "1.8.0-rc.0",
         "@rnv/sdk-utils": "1.8.0-rc.0",
         "ios-mobileprovision-finder": "1.1.0",
+        "rimraf": "2.6.2",
+        "typescript": "5.2.2",
         "xcode": "3.0.1"
     },
     "peerDependencies": {
@@ -40,7 +42,6 @@
         "@react-native-community/cli-platform-ios": "^12.3.6",
         "@rnv/core": "^1.8.0-rc.0"
     },
-    "private": false,
     "publishConfig": {
         "access": "public"
     },
