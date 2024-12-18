@@ -26,13 +26,13 @@ export default createTask({
     isPrivate: true,
     dependsOn: [RnvTaskName.projectConfigure],
     fn: async ({ ctx, taskName, originTaskName }) => {
-        const { program } = ctx;
+        const { program, platform } = ctx;
         await isBuildSchemeSupported();
 
         const entryFile = getConfigProp('entryFile');
 
         const dest = path.join(ctx.paths.project.dir, `${entryFile}.js`);
-        if (!fsExistsSync(dest)) {
+        if (!fsExistsSync(dest) && platform) {
             if (!entryFile) {
                 logWarning(
                     `Missing ${chalk().red(entryFile)} key for ${chalk().bold.white(
