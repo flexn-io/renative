@@ -1432,7 +1432,7 @@
             }
         },
         "next": {
-            "version": "14.2.10",
+            "version": "14.2.15",
             "supportedPlatforms": ["web"]
         },
         "next-seo": "4.28.1",
