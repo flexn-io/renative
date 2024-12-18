@@ -47,8 +47,7 @@ export const extractSingleExecutableTask = async (
     suitableTasks: RnvTask[],
     taskName: string
 ): Promise<RnvTask | undefined> => {
-    const { platform } = getContext();
-    if (suitableTasks.length === 1 && platform) {
+    if (suitableTasks.length === 1) {
         return suitableTasks[0];
     } else if (suitableTasks.length === 0) {
         return undefined;
