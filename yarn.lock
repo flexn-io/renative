@@ -2781,8 +2781,8 @@ __metadata:
     "@flexn/eslint-config": 1.0.0
     "@flexn/prettier-config": 1.0.0
     "@flexn/typescript-config": 1.0.0
-    "@rnv/build-hooks-git": 1.7.0-rc.0
-    "@rnv/core": 1.7.0-rc.0
+    "@rnv/build-hooks-git": 1.8.0-rc.0
+    "@rnv/core": 1.8.0-rc.0
     "@types/jest": ^29.5.12
     "@types/kill-port": 2.0.0
     "@types/lodash.get": 4.4.7
@@ -5445,7 +5445,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnv/adapter@1.7.0-rc.0, @rnv/adapter@workspace:packages/adapter":
+"@rnv/adapter@1.8.0-rc.0, @rnv/adapter@workspace:packages/adapter":
   version: 0.0.0-use.local
   resolution: "@rnv/adapter@workspace:packages/adapter"
   dependencies:
@@ -5467,18 +5467,18 @@ __metadata:
     "@lightningjs/sdk": 5.5.1
     "@react-native-community/push-notification-ios": 1.11.0
     "@react-native-firebase/app": 20.0.0
-    "@rnv/cli": 1.7.0-rc.0
-    "@rnv/config-templates": 1.7.0-rc.0
-    "@rnv/core": 1.7.0-rc.0
-    "@rnv/engine-lightning": 1.7.0-rc.0
-    "@rnv/engine-rn": 1.7.0-rc.0
-    "@rnv/engine-rn-electron": 1.7.0-rc.0
-    "@rnv/engine-rn-next": 1.7.0-rc.0
-    "@rnv/engine-rn-tvos": 1.7.0-rc.0
-    "@rnv/engine-rn-web": 1.7.0-rc.0
-    "@rnv/integration-starter": 1.7.0-rc.0
-    "@rnv/renative": 1.7.0-rc.0
-    "@rnv/template-starter": 1.7.0-rc.0
+    "@rnv/cli": 1.8.0-rc.0
+    "@rnv/config-templates": 1.8.0-rc.0
+    "@rnv/core": 1.8.0-rc.0
+    "@rnv/engine-lightning": 1.8.0-rc.0
+    "@rnv/engine-rn": 1.8.0-rc.0
+    "@rnv/engine-rn-electron": 1.8.0-rc.0
+    "@rnv/engine-rn-next": 1.8.0-rc.0
+    "@rnv/engine-rn-tvos": 1.8.0-rc.0
+    "@rnv/engine-rn-web": 1.8.0-rc.0
+    "@rnv/integration-starter": 1.8.0-rc.0
+    "@rnv/renative": 1.8.0-rc.0
+    "@rnv/template-starter": 1.8.0-rc.0
     "@types/react": 18.3.3
     "@types/react-dom": 18.3.0
     "@types/react-native": 0.72.2
@@ -5495,9 +5495,9 @@ __metadata:
     react-native-carplay: 2.3.0
     react-native-fs: 2.20.0
     react-native-gesture-handler: 2.21.2
-    react-native-google-cast: 4.8.0
+    react-native-google-cast: 4.8.3
     react-native-orientation-locker: 1.7.0
-    react-native-permissions: 4.1.5
+    react-native-permissions: 5.2.1
     react-native-photo-editor: "github:AppGyver/react-native-photo-editor#0.1.2"
     react-native-safe-area-context: 5.0.0
     react-native-splash-screen: 3.3.0
@@ -5508,7 +5508,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@rnv/build-hooks-git@1.7.0-rc.0, @rnv/build-hooks-git@workspace:packages/build-hooks-git":
+"@rnv/build-hooks-git@1.8.0-rc.0, @rnv/build-hooks-git@workspace:packages/build-hooks-git":
   version: 0.0.0-use.local
   resolution: "@rnv/build-hooks-git@workspace:packages/build-hooks-git"
   dependencies:
@@ -5516,7 +5516,7 @@ __metadata:
     simple-git: 3.24.0
     typescript: 5.2.2
   peerDependencies:
-    "@rnv/core": ^1.7.0-rc.0
+    "@rnv/core": ^1.8.0-rc.0
   languageName: unknown
   linkType: soft
 
@@ -5529,16 +5529,16 @@ __metadata:
     zod: 3.23.8
     zod-to-json-schema: 3.23.0
   peerDependencies:
-    "@rnv/core": ^1.7.0-rc.0
+    "@rnv/core": ^1.8.0-rc.0
   languageName: unknown
   linkType: soft
 
-"@rnv/cli@1.7.0-rc.0, @rnv/cli@workspace:packages/cli":
+"@rnv/cli@1.8.0-rc.0, @rnv/cli@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "@rnv/cli@workspace:packages/cli"
   dependencies:
-    "@rnv/engine-core": 1.7.0-rc.0
-    "@rnv/sdk-telemetry": 1.7.0-rc.0
+    "@rnv/engine-core": 1.8.0-rc.0
+    "@rnv/sdk-telemetry": 1.8.0-rc.0
     "@types/inquirer-autocomplete-prompt": ^3.0.3
     chalk: 4.1.0
     commander: 12.1.0
@@ -5547,19 +5547,19 @@ __metadata:
     rimraf: 2.6.2
     typescript: 5.2.2
   peerDependencies:
-    "@rnv/core": ^1.7.0-rc.0
+    "@rnv/core": ^1.8.0-rc.0
   bin:
     rnv: ./lib/bin.js
   languageName: unknown
   linkType: soft
 
-"@rnv/config-templates@1.7.0-rc.0, @rnv/config-templates@workspace:packages/config-templates":
+"@rnv/config-templates@1.8.0-rc.0, @rnv/config-templates@workspace:packages/config-templates":
   version: 0.0.0-use.local
   resolution: "@rnv/config-templates@workspace:packages/config-templates"
   languageName: unknown
   linkType: soft
 
-"@rnv/core@1.7.0-rc.0, @rnv/core@workspace:packages/core":
+"@rnv/core@1.8.0-rc.0, @rnv/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@rnv/core@workspace:packages/core"
   dependencies:
@@ -5583,15 +5583,15 @@ __metadata:
     typescript: 5.2.2
     zod: 3.23.8
   peerDependencies:
-    "@rnv/config-templates": ^1.7.0-rc.0
+    "@rnv/config-templates": ^1.8.0-rc.0
   languageName: unknown
   linkType: soft
 
-"@rnv/engine-core@1.7.0-rc.0, @rnv/engine-core@workspace:packages/engine-core":
+"@rnv/engine-core@1.8.0-rc.0, @rnv/engine-core@workspace:packages/engine-core":
   version: 0.0.0-use.local
   resolution: "@rnv/engine-core@workspace:packages/engine-core"
   dependencies:
-    "@rnv/sdk-utils": 1.7.0-rc.0
+    "@rnv/sdk-utils": 1.8.0-rc.0
     "@types/tar": 6.1.13
     iocane: 4.0.0
     kill-port: 1.6.1
@@ -5600,35 +5600,35 @@ __metadata:
     tar: 6.2.1
     typescript: 5.2.2
   peerDependencies:
-    "@rnv/core": ^1.7.0-rc.0
+    "@rnv/core": ^1.8.0-rc.0
   languageName: unknown
   linkType: soft
 
-"@rnv/engine-lightning@1.7.0-rc.0, @rnv/engine-lightning@workspace:packages/engine-lightning":
+"@rnv/engine-lightning@1.8.0-rc.0, @rnv/engine-lightning@workspace:packages/engine-lightning":
   version: 0.0.0-use.local
   resolution: "@rnv/engine-lightning@workspace:packages/engine-lightning"
   dependencies:
     "@lightningjs/cli": 2.13.0
     "@lightningjs/sdk": 5.5.1
-    "@rnv/sdk-tizen": 1.7.0-rc.0
-    "@rnv/sdk-utils": 1.7.0-rc.0
-    "@rnv/sdk-webos": 1.7.0-rc.0
+    "@rnv/sdk-tizen": 1.8.0-rc.0
+    "@rnv/sdk-utils": 1.8.0-rc.0
+    "@rnv/sdk-webos": 1.8.0-rc.0
     rimraf: 2.6.2
     typescript: 5.2.2
   peerDependencies:
-    "@rnv/core": ^1.7.0-rc.0
+    "@rnv/core": ^1.8.0-rc.0
   languageName: unknown
   linkType: soft
 
-"@rnv/engine-rn-electron@1.7.0-rc.0, @rnv/engine-rn-electron@workspace:packages/engine-rn-electron":
+"@rnv/engine-rn-electron@1.8.0-rc.0, @rnv/engine-rn-electron@workspace:packages/engine-rn-electron":
   version: 0.0.0-use.local
   resolution: "@rnv/engine-rn-electron@workspace:packages/engine-rn-electron"
   dependencies:
     "@react-native/babel-preset": 0.76.3
-    "@rnv/adapter": 1.7.0-rc.0
-    "@rnv/sdk-react-native": 1.7.0-rc.0
-    "@rnv/sdk-utils": 1.7.0-rc.0
-    "@rnv/sdk-webpack": 1.7.0-rc.0
+    "@rnv/adapter": 1.8.0-rc.0
+    "@rnv/sdk-react-native": 1.8.0-rc.0
+    "@rnv/sdk-utils": 1.8.0-rc.0
+    "@rnv/sdk-webpack": 1.8.0-rc.0
     electron: 26.3.0
     electron-builder: 24.13.3
     electron-notarize: 1.2.2
@@ -5636,7 +5636,7 @@ __metadata:
     rimraf: 2.6.2
     typescript: 5.2.2
   peerDependencies:
-    "@rnv/core": ^1.7.0-rc.0
+    "@rnv/core": ^1.8.0-rc.0
   languageName: unknown
   linkType: soft
 
@@ -5645,22 +5645,22 @@ __metadata:
   resolution: "@rnv/engine-rn-macos@workspace:packages/engine-rn-macos"
   dependencies:
     "@react-native/babel-preset": 0.76.3
-    "@rnv/adapter": 1.7.0-rc.0
-    "@rnv/sdk-apple": 1.7.0-rc.0
-    "@rnv/sdk-react-native": 1.7.0-rc.0
+    "@rnv/adapter": 1.8.0-rc.0
+    "@rnv/sdk-apple": 1.8.0-rc.0
+    "@rnv/sdk-react-native": 1.8.0-rc.0
     rimraf: 2.6.2
     typescript: 5.2.2
   peerDependencies:
-    "@rnv/core": ^1.7.0-rc.0
+    "@rnv/core": ^1.8.0-rc.0
   languageName: unknown
   linkType: soft
 
-"@rnv/engine-rn-next@1.7.0-rc.0, @rnv/engine-rn-next@workspace:packages/engine-rn-next":
+"@rnv/engine-rn-next@1.8.0-rc.0, @rnv/engine-rn-next@workspace:packages/engine-rn-next":
   version: 0.0.0-use.local
   resolution: "@rnv/engine-rn-next@workspace:packages/engine-rn-next"
   dependencies:
-    "@rnv/adapter": 1.7.0-rc.0
-    "@rnv/sdk-utils": 1.7.0-rc.0
+    "@rnv/adapter": 1.8.0-rc.0
+    "@rnv/sdk-utils": 1.8.0-rc.0
     babel-preset-expo: 9.5.2
     next-fonts: 1.5.1
     next-images: 1.8.4
@@ -5668,46 +5668,46 @@ __metadata:
     typescript: 5.2.2
     webpack: ^5.94.0
   peerDependencies:
-    "@rnv/core": ^1.7.0-rc.0
+    "@rnv/core": ^1.8.0-rc.0
     next: ^14
     react: ^18
     react-native-web: ~0.18.0
   languageName: unknown
   linkType: soft
 
-"@rnv/engine-rn-tvos@1.7.0-rc.0, @rnv/engine-rn-tvos@workspace:packages/engine-rn-tvos":
+"@rnv/engine-rn-tvos@1.8.0-rc.0, @rnv/engine-rn-tvos@workspace:packages/engine-rn-tvos":
   version: 0.0.0-use.local
   resolution: "@rnv/engine-rn-tvos@workspace:packages/engine-rn-tvos"
   dependencies:
     "@react-native/babel-preset": 0.76.3
-    "@rnv/adapter": 1.7.0-rc.0
-    "@rnv/sdk-android": 1.7.0-rc.0
-    "@rnv/sdk-apple": 1.7.0-rc.0
-    "@rnv/sdk-react-native": 1.7.0-rc.0
+    "@rnv/adapter": 1.8.0-rc.0
+    "@rnv/sdk-android": 1.8.0-rc.0
+    "@rnv/sdk-apple": 1.8.0-rc.0
+    "@rnv/sdk-react-native": 1.8.0-rc.0
     rimraf: 2.6.2
     typescript: 5.2.2
   peerDependencies:
-    "@rnv/core": ^1.7.0-rc.0
+    "@rnv/core": ^1.8.0-rc.0
     metro-cache: ^0.78.1
   languageName: unknown
   linkType: soft
 
-"@rnv/engine-rn-web@1.7.0-rc.0, @rnv/engine-rn-web@workspace:packages/engine-rn-web":
+"@rnv/engine-rn-web@1.8.0-rc.0, @rnv/engine-rn-web@workspace:packages/engine-rn-web":
   version: 0.0.0-use.local
   resolution: "@rnv/engine-rn-web@workspace:packages/engine-rn-web"
   dependencies:
     "@react-native/babel-preset": 0.76.3
-    "@rnv/adapter": 1.7.0-rc.0
-    "@rnv/sdk-kaios": 1.7.0-rc.0
-    "@rnv/sdk-tizen": 1.7.0-rc.0
-    "@rnv/sdk-utils": 1.7.0-rc.0
-    "@rnv/sdk-webos": 1.7.0-rc.0
-    "@rnv/sdk-webpack": 1.7.0-rc.0
+    "@rnv/adapter": 1.8.0-rc.0
+    "@rnv/sdk-kaios": 1.8.0-rc.0
+    "@rnv/sdk-tizen": 1.8.0-rc.0
+    "@rnv/sdk-utils": 1.8.0-rc.0
+    "@rnv/sdk-webos": 1.8.0-rc.0
+    "@rnv/sdk-webpack": 1.8.0-rc.0
     metro-react-native-babel-preset: 0.76.8
     rimraf: 2.6.2
     typescript: 5.2.2
   peerDependencies:
-    "@rnv/core": ^1.7.0-rc.0
+    "@rnv/core": ^1.8.0-rc.0
   languageName: unknown
   linkType: soft
 
@@ -5715,8 +5715,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@rnv/engine-rn-windows@workspace:packages/engine-rn-windows"
   dependencies:
-    "@rnv/adapter": 1.7.0-rc.0
-    "@rnv/sdk-react-native": 1.7.0-rc.0
+    "@rnv/adapter": 1.8.0-rc.0
+    "@rnv/sdk-react-native": 1.8.0-rc.0
     "@xmldom/xmldom": 0.7.7
     react-native-windows: 0.76.2
     rimraf: 2.6.2
@@ -5724,25 +5724,25 @@ __metadata:
   peerDependencies:
     "@react-native-community/cli": "*"
     "@react-native/babel-preset": 0.76.3
-    "@rnv/core": ^1.7.0-rc.0
+    "@rnv/core": ^1.8.0-rc.0
     react-native: "*"
   languageName: unknown
   linkType: soft
 
-"@rnv/engine-rn@1.7.0-rc.0, @rnv/engine-rn@workspace:packages/engine-rn":
+"@rnv/engine-rn@1.8.0-rc.0, @rnv/engine-rn@workspace:packages/engine-rn":
   version: 0.0.0-use.local
   resolution: "@rnv/engine-rn@workspace:packages/engine-rn"
   dependencies:
     "@react-native/babel-preset": 0.76.3
     "@react-native/metro-config": 0.76.3
-    "@rnv/adapter": 1.7.0-rc.0
-    "@rnv/sdk-android": 1.7.0-rc.0
-    "@rnv/sdk-apple": 1.7.0-rc.0
-    "@rnv/sdk-react-native": 1.7.0-rc.0
+    "@rnv/adapter": 1.8.0-rc.0
+    "@rnv/sdk-android": 1.8.0-rc.0
+    "@rnv/sdk-apple": 1.8.0-rc.0
+    "@rnv/sdk-react-native": 1.8.0-rc.0
     rimraf: 2.6.2
     typescript: 5.2.2
   peerDependencies:
-    "@rnv/core": ^1.7.0-rc.0
+    "@rnv/core": ^1.8.0-rc.0
   languageName: unknown
   linkType: soft
 
@@ -5753,7 +5753,7 @@ __metadata:
     rimraf: 2.6.2
     typescript: 5.2.2
   peerDependencies:
-    "@rnv/core": ^1.7.0-rc.0
+    "@rnv/core": ^1.8.0-rc.0
   languageName: unknown
   linkType: soft
 
@@ -5764,22 +5764,22 @@ __metadata:
     rimraf: 2.6.2
     typescript: 5.2.2
   peerDependencies:
-    "@rnv/core": ^1.7.0-rc.0
+    "@rnv/core": ^1.8.0-rc.0
   languageName: unknown
   linkType: soft
 
-"@rnv/integration-starter@1.7.0-rc.0, @rnv/integration-starter@workspace:packages/integration-starter":
+"@rnv/integration-starter@1.8.0-rc.0, @rnv/integration-starter@workspace:packages/integration-starter":
   version: 0.0.0-use.local
   resolution: "@rnv/integration-starter@workspace:packages/integration-starter"
   dependencies:
     rimraf: 2.6.2
     typescript: 5.2.2
   peerDependencies:
-    "@rnv/core": ^1.7.0-rc.0
+    "@rnv/core": ^1.8.0-rc.0
   languageName: unknown
   linkType: soft
 
-"@rnv/renative@1.7.0-rc.0, @rnv/renative@workspace:packages/renative":
+"@rnv/renative@1.8.0-rc.0, @rnv/renative@workspace:packages/renative":
   version: 0.0.0-use.local
   resolution: "@rnv/renative@workspace:packages/renative"
   dependencies:
@@ -5788,99 +5788,99 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@rnv/sdk-android@1.7.0-rc.0, @rnv/sdk-android@workspace:packages/sdk-android":
+"@rnv/sdk-android@1.8.0-rc.0, @rnv/sdk-android@workspace:packages/sdk-android":
   version: 0.0.0-use.local
   resolution: "@rnv/sdk-android@workspace:packages/sdk-android"
   dependencies:
-    "@rnv/sdk-react-native": 1.7.0-rc.0
-    "@rnv/sdk-utils": 1.7.0-rc.0
+    "@rnv/sdk-react-native": 1.8.0-rc.0
+    "@rnv/sdk-utils": 1.8.0-rc.0
     jetifier: 2.0.0
     rimraf: 2.6.2
     typescript: 5.2.2
   peerDependencies:
-    "@react-native-community/cli": ^12.3.6
-    "@react-native-community/cli-platform-android": ^12.3.6
-    "@rnv/core": ^1.7.0-rc.0
+    "@react-native-community/cli": ^15.0.1
+    "@react-native-community/cli-platform-android": ^15.0.1
+    "@rnv/core": ^1.8.0-rc.0
   languageName: unknown
   linkType: soft
 
-"@rnv/sdk-apple@1.7.0-rc.0, @rnv/sdk-apple@workspace:packages/sdk-apple":
+"@rnv/sdk-apple@1.8.0-rc.0, @rnv/sdk-apple@workspace:packages/sdk-apple":
   version: 0.0.0-use.local
   resolution: "@rnv/sdk-apple@workspace:packages/sdk-apple"
   dependencies:
-    "@rnv/sdk-react-native": 1.7.0-rc.0
-    "@rnv/sdk-utils": 1.7.0-rc.0
+    "@rnv/sdk-react-native": 1.8.0-rc.0
+    "@rnv/sdk-utils": 1.8.0-rc.0
     ios-mobileprovision-finder: 1.1.0
     rimraf: 2.6.2
     typescript: 5.2.2
     xcode: 3.0.1
   peerDependencies:
-    "@react-native-community/cli": ^12.3.6
+    "@react-native-community/cli": ^15.0.1
     "@react-native-community/cli-platform-ios": ^12.3.6
-    "@rnv/core": ^1.7.0-rc.0
+    "@rnv/core": ^1.8.0-rc.0
   languageName: unknown
   linkType: soft
 
-"@rnv/sdk-kaios@1.7.0-rc.0, @rnv/sdk-kaios@workspace:packages/sdk-kaios":
+"@rnv/sdk-kaios@1.8.0-rc.0, @rnv/sdk-kaios@workspace:packages/sdk-kaios":
   version: 0.0.0-use.local
   resolution: "@rnv/sdk-kaios@workspace:packages/sdk-kaios"
   dependencies:
     rimraf: 2.6.2
     typescript: 5.2.2
   peerDependencies:
-    "@rnv/core": ^1.7.0-rc.0
-    "@rnv/sdk-utils": ^1.7.0-rc.0
-    "@rnv/sdk-webpack": ^1.7.0-rc.0
+    "@rnv/core": ^1.8.0-rc.0
+    "@rnv/sdk-utils": ^1.8.0-rc.0
+    "@rnv/sdk-webpack": ^1.8.0-rc.0
   languageName: unknown
   linkType: soft
 
-"@rnv/sdk-react-native@1.7.0-rc.0, @rnv/sdk-react-native@workspace:packages/sdk-react-native":
+"@rnv/sdk-react-native@1.8.0-rc.0, @rnv/sdk-react-native@workspace:packages/sdk-react-native":
   version: 0.0.0-use.local
   resolution: "@rnv/sdk-react-native@workspace:packages/sdk-react-native"
   dependencies:
     "@react-native/metro-babel-transformer": ^0.74.0
-    "@rnv/sdk-utils": 1.7.0-rc.0
+    "@rnv/sdk-utils": 1.8.0-rc.0
     rimraf: 2.6.2
     shell-quote: 1.8.1
     typescript: 5.2.2
   peerDependencies:
     "@react-native/js-polyfills": ^0.74.0
-    "@rnv/core": ^1.7.0-rc.0
+    "@rnv/core": ^1.8.0-rc.0
     metro-config: ^0.80.0
     metro-runtime: ^0.80.0
   languageName: unknown
   linkType: soft
 
-"@rnv/sdk-telemetry@1.7.0-rc.0, @rnv/sdk-telemetry@workspace:packages/sdk-telemetry":
+"@rnv/sdk-telemetry@1.8.0-rc.0, @rnv/sdk-telemetry@workspace:packages/sdk-telemetry":
   version: 0.0.0-use.local
   resolution: "@rnv/sdk-telemetry@workspace:packages/sdk-telemetry"
   dependencies:
-    "@rnv/sdk-utils": 1.7.0-rc.0
+    "@rnv/sdk-utils": 1.8.0-rc.0
     "@sentry/integrations": 7.57.0
     "@sentry/node": 7.57.0
     node-machine-id: ^1.1.12
     rimraf: 2.6.2
     typescript: 5.2.2
   peerDependencies:
-    "@rnv/core": ^1.7.0-rc.0
+    "@rnv/core": ^1.8.0-rc.0
   languageName: unknown
   linkType: soft
 
-"@rnv/sdk-tizen@1.7.0-rc.0, @rnv/sdk-tizen@workspace:packages/sdk-tizen":
+"@rnv/sdk-tizen@1.8.0-rc.0, @rnv/sdk-tizen@workspace:packages/sdk-tizen":
   version: 0.0.0-use.local
   resolution: "@rnv/sdk-tizen@workspace:packages/sdk-tizen"
   dependencies:
-    "@rnv/sdk-utils": 1.7.0-rc.0
-    "@rnv/sdk-webpack": 1.7.0-rc.0
+    "@rnv/sdk-utils": 1.8.0-rc.0
+    "@rnv/sdk-webpack": 1.8.0-rc.0
     rimraf: 2.6.2
     typescript: 5.2.2
     xml2js: 0.6.2
   peerDependencies:
-    "@rnv/core": ^1.7.0-rc.0
+    "@rnv/core": ^1.8.0-rc.0
   languageName: unknown
   linkType: soft
 
-"@rnv/sdk-utils@1.7.0-rc.0, @rnv/sdk-utils@workspace:packages/sdk-utils":
+"@rnv/sdk-utils@1.8.0-rc.0, @rnv/sdk-utils@workspace:packages/sdk-utils":
   version: 0.0.0-use.local
   resolution: "@rnv/sdk-utils@workspace:packages/sdk-utils"
   dependencies:
@@ -5892,29 +5892,29 @@ __metadata:
     rimraf: 2.6.2
     typescript: 5.2.2
   peerDependencies:
-    "@rnv/core": ^1.7.0-rc.0
+    "@rnv/core": ^1.8.0-rc.0
   languageName: unknown
   linkType: soft
 
-"@rnv/sdk-webos@1.7.0-rc.0, @rnv/sdk-webos@workspace:packages/sdk-webos":
+"@rnv/sdk-webos@1.8.0-rc.0, @rnv/sdk-webos@workspace:packages/sdk-webos":
   version: 0.0.0-use.local
   resolution: "@rnv/sdk-webos@workspace:packages/sdk-webos"
   dependencies:
-    "@rnv/sdk-utils": 1.7.0-rc.0
-    "@rnv/sdk-webpack": 1.7.0-rc.0
+    "@rnv/sdk-utils": 1.8.0-rc.0
+    "@rnv/sdk-webpack": 1.8.0-rc.0
     rimraf: 2.6.2
     typescript: 5.2.2
   peerDependencies:
-    "@rnv/core": ^1.7.0-rc.0
+    "@rnv/core": ^1.8.0-rc.0
   languageName: unknown
   linkType: soft
 
-"@rnv/sdk-webpack@1.7.0-rc.0, @rnv/sdk-webpack@workspace:packages/sdk-webpack":
+"@rnv/sdk-webpack@1.8.0-rc.0, @rnv/sdk-webpack@workspace:packages/sdk-webpack":
   version: 0.0.0-use.local
   resolution: "@rnv/sdk-webpack@workspace:packages/sdk-webpack"
   dependencies:
     "@pmmmwh/react-refresh-webpack-plugin": ^0.5.3
-    "@rnv/sdk-utils": 1.7.0-rc.0
+    "@rnv/sdk-utils": 1.8.0-rc.0
     "@svgr/webpack": 6.3.1
     bfj: ^7.0.2
     browserslist: ^4.18.1
@@ -5959,28 +5959,28 @@ __metadata:
     webpack-merge: 5.10.0
     workbox-webpack-plugin: 6.5.4
   peerDependencies:
-    "@rnv/core": ^1.7.0-rc.0
+    "@rnv/core": ^1.8.0-rc.0
   languageName: unknown
   linkType: soft
 
-"@rnv/template-starter@1.7.0-rc.0, @rnv/template-starter@workspace:packages/template-starter":
+"@rnv/template-starter@1.8.0-rc.0, @rnv/template-starter@workspace:packages/template-starter":
   version: 0.0.0-use.local
   resolution: "@rnv/template-starter@workspace:packages/template-starter"
   dependencies:
     "@flexn/assets-renative-outline": 0.3.5
     "@flexn/graybox": 1.0.0-feat.12
     "@lightningjs/sdk": 5.5.1
-    "@rnv/adapter": 1.7.0-rc.0
-    "@rnv/cli": 1.7.0-rc.0
-    "@rnv/config-templates": 1.7.0-rc.0
-    "@rnv/core": 1.7.0-rc.0
-    "@rnv/engine-lightning": 1.7.0-rc.0
-    "@rnv/engine-rn": 1.7.0-rc.0
-    "@rnv/engine-rn-electron": 1.7.0-rc.0
-    "@rnv/engine-rn-next": 1.7.0-rc.0
-    "@rnv/engine-rn-tvos": 1.7.0-rc.0
-    "@rnv/engine-rn-web": 1.7.0-rc.0
-    "@rnv/renative": 1.7.0-rc.0
+    "@rnv/adapter": 1.8.0-rc.0
+    "@rnv/cli": 1.8.0-rc.0
+    "@rnv/config-templates": 1.8.0-rc.0
+    "@rnv/core": 1.8.0-rc.0
+    "@rnv/engine-lightning": 1.8.0-rc.0
+    "@rnv/engine-rn": 1.8.0-rc.0
+    "@rnv/engine-rn-electron": 1.8.0-rc.0
+    "@rnv/engine-rn-next": 1.8.0-rc.0
+    "@rnv/engine-rn-tvos": 1.8.0-rc.0
+    "@rnv/engine-rn-web": 1.8.0-rc.0
+    "@rnv/renative": 1.8.0-rc.0
     "@types/react": 18.3.3
     "@types/react-dom": 18.3.0
     "@types/react-native": 0.72.2
@@ -24113,13 +24113,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-google-cast@npm:4.8.0":
-  version: 4.8.0
-  resolution: "react-native-google-cast@npm:4.8.0"
+"react-native-google-cast@npm:4.8.3":
+  version: 4.8.3
+  resolution: "react-native-google-cast@npm:4.8.3"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: f376033d5688e0da8659bfe45684e901fa881f0a3eb7d856e78038d163fcf7454826c5367fbef126d61aba742c752c5a782b113fb8683855a397df82d5459306
+  checksum: 9014a05177a07384a82f577ac10a5533c4e3f2255521b348df5272171126dbbb21b2714a5659b32cab81d8d618b1a8c21c632c1aaa1eea74851401f1d50d355f
   languageName: node
   linkType: hard
 
@@ -24137,9 +24137,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-permissions@npm:4.1.5":
-  version: 4.1.5
-  resolution: "react-native-permissions@npm:4.1.5"
+"react-native-permissions@npm:5.2.1":
+  version: 5.2.1
+  resolution: "react-native-permissions@npm:5.2.1"
   peerDependencies:
     react: ">=18.1.0"
     react-native: ">=0.70.0"
@@ -24147,7 +24147,7 @@ __metadata:
   peerDependenciesMeta:
     react-native-windows:
       optional: true
-  checksum: dc4b366a0f561a47f032c027eb703a2be45e801788b915ed583e38f617eea23656eb63a77b17fb3a663fe3199b2ec25788f799e751421634e35a64f5258feed9
+  checksum: a57b0a6c71c38bb126e48e76b8eef7e62bee8083d748ec1cf7e7b5699d46867b10e96a02837c45a045b77dab37e45a5c20b1deb3637ad5cee963c9e92c6ee05a
   languageName: node
   linkType: hard
 
@@ -25199,8 +25199,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "rnv@workspace:packages/rnv"
   dependencies:
-    "@rnv/cli": 1.7.0-rc.0
-    "@rnv/config-templates": 1.7.0-rc.0
+    "@rnv/cli": 1.8.0-rc.0
+    "@rnv/config-templates": 1.8.0-rc.0
     rimraf: 2.6.2
     tslib: 2.5.2
     typescript: 5.2.2

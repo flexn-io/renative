@@ -455,11 +455,11 @@
         },
         "@react-native-community/cli": {
             "disableNpm": true,
-            "version": "^12.3.6",
+            "version": "^15.0.1",
             "supportedPlatforms": ["tvos", "ios"]
         },
         "@react-native-community/cli-platform-android": {
-            "version": "^12.3.6"
+            "version": "^15.0.1"
         },
         "@react-native-community/cli-platform-ios": {
             "version": "12.3.6",
@@ -2463,7 +2463,7 @@
                 "DISABLE_DISCOVERY_AUTOSTART": "false",
                 "START_DISCOVERY_AFTER_FIRST_TAP_ON_CAST_BUTTON": "false"
             },
-            "version": "4.8.0"
+            "version": "4.8.3"
         },
         "react-native-home-indicator": {
             "ios": {
@@ -2900,7 +2900,7 @@
             "tvos": {
                 "podName": "RNPermissions"
             },
-            "version": "4.1.5"
+            "version": "5.2.1"
         },
         "react-native-permissions-pods": {
             "ios": {
@@ -3579,7 +3579,7 @@
             "version": "0.40.1"
         },
         "react-native-windows": {
-            "version": "0.67.3"
+            "version": "0.76.2"
         },
         "react-native-zip-archive": {
             "android": {
@@ -3681,7 +3681,7 @@
         "Sentry": {
             "ios": {
                 "podName": "Sentry",
-                "version": "5.2.0"
+                "version": "6.4.0"
             },
             "disableNpm": true
         },
