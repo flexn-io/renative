@@ -33,9 +33,6 @@
         "rimraf": "2.6.2",
         "typescript": "5.2.2"
     },
-    "peerDependencies": {
-        "@rnv/core": "^1.7.0-rc.0"
-    },
     "publishConfig": {
         "access": "public"
     }

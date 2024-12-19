@@ -17,7 +17,7 @@ node_require('react-native-tvos/scripts/react_native_pods.rb')
 
 prepare_react_native_project!
 
-flipper_config = FlipperConfiguration.disabled
+# flipper_config = FlipperConfiguration.disabled
 
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
@@ -63,7 +63,7 @@ target 'RNVApp-tvOS' do
     #
     # Note that if you have use_frameworks! enabled, Flipper will not work and
     # you should disable the next line.
-    :flipper_configuration => flipper_config,
+    # :flipper_configuration => flipper_config,
     # Hermes is now enabled by default. Disable by setting this flag to false.
     :hermes_enabled => {{INJECT_HERMES_ENABLED}},
     # An absolute path to your application root.
@@ -82,7 +82,8 @@ post_install do |installer|
   react_native_post_install(
     installer,
     config[:reactNativePath],
-    :mac_catalyst_enabled => false
+    :mac_catalyst_enabled => false,
+    # :ccache_enabled => true
   )
   {{INJECT_POST_INSTALL}}
 

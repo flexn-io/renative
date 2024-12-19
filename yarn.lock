@@ -5452,8 +5452,6 @@ __metadata:
     babel-plugin-module-resolver: ^5.0.0
     rimraf: 2.6.2
     typescript: 5.2.2
-  peerDependencies:
-    "@rnv/core": ^1.7.0-rc.0
   languageName: unknown
   linkType: soft
 
@@ -5688,7 +5686,7 @@ __metadata:
     typescript: 5.2.2
   peerDependencies:
     "@rnv/core": ^1.8.0-rc.0
-    metro-cache: ^0.78.1
+    metro-cache: ^0.81.0
   languageName: unknown
   linkType: soft
 
