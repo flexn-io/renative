@@ -1,0 +1,8 @@
+{
+  "overrides": {
+      "sdks/hermes-engine/hermes-engine.podspec": {
+          "require.resolve(\n  \"react-native\",": "require.resolve(\n  \"react-native-tvos\","
+      }
+     
+  }
+}

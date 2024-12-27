@@ -61,7 +61,7 @@
         "react-native-photo-editor": "github:AppGyver/react-native-photo-editor#0.1.2",
         "react-native-safe-area-context": "5.0.0",
         "react-native-splash-screen": "3.3.0",
-        "react-native-tvos": "0.77.0-0rc1",
+        "react-native-tvos": "0.76.3-0",
         "react-native-web": "0.19.12",
         "rn-fetch-blob": "0.12.0"
     },

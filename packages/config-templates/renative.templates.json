@@ -3358,7 +3358,7 @@
             }
         },
         "react-native-tvos": {
-            "version": "0.77.0-0rc1",
+            "version": "0.76.3-0",
             "supportedPlatforms": ["tvos", "firetv", "androidtv"]
         },
         "react-native-tvos-controller": {
