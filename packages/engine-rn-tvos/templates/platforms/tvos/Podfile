@@ -1,7 +1,22 @@
-
 source 'https://github.com/react-native-tvos/react-native-tvos-podspecs.git'
 source 'https://cdn.cocoapods.org/'
 {{INJECT_PLUGIN_PODFILE_SOURCES}}
+
+
+cmake_path = `command -v cmake`
+if cmake_path == ""
+  brew_path = `command -v brew`
+  if brew_path != ""
+    Pod::UI.puts "Installing CMake using brew. This is required to build project.".red
+    `brew install cmake`
+  else
+    Pod::UI.puts "In order to build project locally, you need cmake installed, please install it and try again".red
+    return
+  end
+else
+  Pod::UI.puts "Cmake found at: #{cmake_path}".green
+end
+
 
 # Resolve react_native_pods.rb with node to allow for hoisting
 def node_require(script)
