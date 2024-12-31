@@ -454,7 +454,7 @@
             "version": "0.5.9"
         },
         "@react-native-community/cli": {
-            "disableNpm": true,
+            "disableNpm": false,
             "version": "^15.0.1",
             "supportedPlatforms": ["tvos", "ios"]
         },
@@ -464,7 +464,7 @@
         "@react-native-community/cli-platform-ios": {
             "version": "12.3.6",
             "disablePluginTemplateOverrides": false,
-            "disableNpm": true,
+            "disableNpm": false,
             "supportedPlatforms": ["tvos", "ios"],
             "nodeModuleOverrides": {
                 "^12.3.6": {

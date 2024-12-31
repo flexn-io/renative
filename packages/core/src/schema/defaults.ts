@@ -10,4 +10,5 @@ export const DEFAULTS = {
     author: 'Unknown',
     certificateProfile: 'RNVanillaCert',
     signingConfig: 'Debug',
+    yarnVersion: '3.6.4',
 };
