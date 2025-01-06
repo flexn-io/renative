@@ -56,14 +56,18 @@ export const getAppleDevices = async (ignoreDevices?: boolean, ignoreSimulators?
 
 const _parseNewIOSDevicesList = (rawDevices: Array<DeviceType>) => {
     const decideIcon = (device: DeviceType) => {
-        const { name } = device;
-        if (name?.includes('iPhone') || name?.includes('iPod')) {
+        const { name, sdk } = device;
+        if (
+            name?.includes('iPhone') ||
+            name?.includes('iPod') ||
+            sdk?.replace('com.apple.platform.', '') === 'iphoneos'
+        ) {
             return 'Phone 📱';
         }
         if (name?.includes('iPad')) {
             return 'Tablet 💊';
         }
-        if (name?.includes('Apple TV')) {
+        if (name?.includes('Apple TV') || sdk?.replace('com.apple.platform.', '') === 'appletvos') {
             return 'TV 📺';
         }
         return 'Apple Device';
@@ -77,7 +81,6 @@ const _parseNewIOSDevicesList = (rawDevices: Array<DeviceType>) => {
             name,
             icon,
             version,
-            // modelName,
             isDevice: type === 'device',
         };
     });
