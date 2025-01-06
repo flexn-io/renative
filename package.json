@@ -56,8 +56,9 @@
         "url": "git://github.com/flexn-io/renative.git"
     },
     "scripts": {
-        "bootstrap": "yarn install && yarn build && yarn link:rnv && yarn generateSchema && yarn resetOverrides",
-        "bootstrap-clean": "yarn clean-gitignore && yarn install && yarn bootstrap",
+        "bootstrap": "yarn install && yarn setup",
+        "bootstrap-clean": "yarn clean-gitignore && yarn install && yarn setup",
+        "setup": "yarn build && yarn link:rnv && yarn generateSchema && yarn resetOverrides",
         "build": "lerna run build",
         "clean-gitignore": "git clean -f -d -i -X",
         "compile": "npx lerna run compile",
