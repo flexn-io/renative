@@ -119,6 +119,7 @@
         "react-dom": "source:rnv",
         "react-native-gesture-handler": "source:rnv",
         "@react-native-community/cli-platform-ios": "source:rnv",
+        "@react-native-community/cli-platform-apple": "source:rnv",
         "@react-native-community/cli": "source:rnv",
         "react-native": "source:rnv",
         "next": "source:rnv",

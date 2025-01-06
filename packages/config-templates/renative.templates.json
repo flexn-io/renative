@@ -455,16 +455,21 @@
         },
         "@react-native-community/cli": {
             "disableNpm": false,
-            "version": "^15.0.1",
+            "version": "15.0.1",
+            "supportedPlatforms": ["tvos", "ios"]
+        },
+        "@react-native-community/cli-platform-apple": {
+            "disableNpm": true,
+            "version": "15.0.1",
             "supportedPlatforms": ["tvos", "ios"]
         },
         "@react-native-community/cli-platform-android": {
             "version": "^15.0.1"
         },
         "@react-native-community/cli-platform-ios": {
-            "version": "12.3.6",
+            "version": "15.0.1",
             "disablePluginTemplateOverrides": false,
-            "disableNpm": false,
+            "disableNpm": true,
             "supportedPlatforms": ["tvos", "ios"],
             "nodeModuleOverrides": {
                 "^12.3.6": {

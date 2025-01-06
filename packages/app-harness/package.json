@@ -42,6 +42,7 @@
     "dependencies": {
         "@lightningjs/cli": "2.13.0",
         "@lightningjs/sdk": "5.5.1",
+        "@react-native-community/cli": "15.0.1",
         "@react-native-community/push-notification-ios": "1.11.0",
         "@react-native-firebase/app": "20.0.0",
         "@rnv/renative": "1.8.0-rc.0",
