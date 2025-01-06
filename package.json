@@ -57,7 +57,7 @@
     },
     "scripts": {
         "bootstrap": "yarn install && yarn build && yarn link:rnv && yarn generateSchema && yarn resetOverrides",
-        "bootstrap-clean": "yarn clean-gitignore && yarn bootstrap",
+        "bootstrap-clean": "yarn clean-gitignore && yarn install && yarn bootstrap",
         "build": "lerna run build",
         "clean-gitignore": "git clean -f -d -i -X",
         "compile": "npx lerna run compile",
