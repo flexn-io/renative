@@ -37,9 +37,7 @@
         "chalk": "4.1.0",
         "commander": "12.1.0",
         "inquirer": "8.2.0",
-        "inquirer-autocomplete-prompt": "2.0.1",
-        "rimraf": "2.6.2",
-        "typescript": "5.2.2"
+        "inquirer-autocomplete-prompt": "2.0.1"
     },
     "devDependencies": {
         "@types/inquirer-autocomplete-prompt": "^3.0.3"

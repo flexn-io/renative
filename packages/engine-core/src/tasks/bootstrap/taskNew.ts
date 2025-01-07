@@ -24,7 +24,7 @@ import inquiryBookmarkTemplate from './questions/bookmarkTemplate';
 import inquiryAppConfigs from './questions/appConfigs';
 import inquiryConfigTemplates from './questions/configTemplates';
 import inquiryProjectInstall from './questions/installProject';
-import inquiryYarnVersion from './questions/configureYarnVersion';
+import inquiryHandlePeerDepsNpm from './questions/resolvePeerDepsNPM.ts';
 import inquiryInstallEngines from './questions/installEngines';
 import {
     configureConfigOverrides,
@@ -48,7 +48,6 @@ export default createTask({
         await inquiryHasNodeModules(payload);
         await inquiryWorkspace(payload);
         await saveProgressIntoProjectConfig(payload);
-        await inquiryYarnVersion(payload);
         // Switch execution context to new directory
         await processChdirToProject();
         // Install template only (this avoids whole npm project install)
@@ -76,6 +75,7 @@ export default createTask({
         await configureTemplateFiles();
         await generateLocalJsonSchemas();
         await inquiryAppConfigs(payload);
+        await inquiryHandlePeerDepsNpm();
         await inquiryInstallEngines(payload);
         // Telementry
         await telemetryNewProject(payload);

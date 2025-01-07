@@ -454,7 +454,7 @@
             "version": "0.5.9"
         },
         "@react-native-community/cli": {
-            "disableNpm": false,
+            "disableNpm": true,
             "version": "15.0.1",
             "supportedPlatforms": ["tvos", "ios"]
         },
@@ -1560,7 +1560,7 @@
                 "URL_NAME": "",
                 "URL_SCHEME": ""
             },
-            "version": "0.76.3"
+            "version": "0.76.5"
         },
         "react-native-actionsheet": {
             "version": "2.4.2"
@@ -3363,7 +3363,7 @@
             }
         },
         "react-native-tvos": {
-            "version": "0.76.3-0",
+            "version": "0.76.5-0",
             "supportedPlatforms": ["tvos", "firetv", "androidtv"]
         },
         "react-native-tvos-controller": {

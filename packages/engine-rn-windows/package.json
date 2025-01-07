@@ -37,9 +37,7 @@
         "@rnv/adapter": "1.9.0-rc.0",
         "@rnv/sdk-react-native": "1.9.0-rc.0",
         "@xmldom/xmldom": "0.7.7",
-        "react-native-windows": "0.76.2",
-        "rimraf": "2.6.2",
-        "typescript": "5.2.2"
+        "react-native-windows": "0.76.2"
     },
     "peerDependencies": {
         "@react-native-community/cli": "*",

@@ -24,4 +24,3 @@ pluginTemplates
 templateFiles/**/*
 !/**/*/*.json
 *.d.ts
-/.nx/workspace-data
