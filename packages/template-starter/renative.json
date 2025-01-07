@@ -43,7 +43,7 @@
     },
     "templateConfig": {
         "name": "@rnv/template-starter",
-        "version": "1.8.0-rc.0"
+        "version": "1.9.0-rc.0"
     },
     "platforms": {
         "android": {
@@ -110,6 +110,25 @@
             "engine": "engine-rn",
             "deploymentTarget": "15.5",
             "reactNativeEngine": "hermes"
+        },
+        "linux": {
+            "engine": "engine-rn-electron",
+            "assetFolderPlatform": "electron"
+        },
+        "chromecast": {
+            "engine": "engine-rn-web"
+        },
+        "webos": {
+            "engine": "engine-rn-web"
+        },
+        "tizen": {
+            "engine": "engine-rn-web"
+        },
+        "tizenwatch": {
+            "engine": "engine-rn-web"
+        },
+        "kaios": {
+            "engine": "engine-rn-web"
         }
     },
     "plugins": {

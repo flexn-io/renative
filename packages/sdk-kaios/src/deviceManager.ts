@@ -11,12 +11,14 @@ import {
     logWarning,
     chalk,
 } from '@rnv/core';
+import { updateDefaultTargets } from '@rnv/sdk-utils';
 import path from 'path';
 
 export const launchKaiOSSimulator = async (target: string | boolean) => {
     const c = getContext();
     logDefault(`launchKaiOSSimulator: ${target}`);
-
+    if (!c.platform) return;
+    const defaultTarget = c.buildConfig.defaultTargets?.[c.platform];
     const kaiosSdkPath = getRealPath(c.buildConfig?.sdks?.KAIOS_SDK);
 
     if (!kaiosSdkPath) {
@@ -27,7 +29,7 @@ export const launchKaiOSSimulator = async (target: string | boolean) => {
         (directory) => directory.toLowerCase().indexOf('kaios') !== -1
     );
 
-    if (target === true) {
+    if (typeof target === 'boolean') {
         const { selectedSimulator } = await inquirerPrompt({
             name: 'selectedSimulator',
             type: 'list',
@@ -35,11 +37,18 @@ export const launchKaiOSSimulator = async (target: string | boolean) => {
             choices: availableSimulatorVersions,
         });
         target = selectedSimulator;
+        if (!defaultTarget || defaultTarget !== selectedSimulator) {
+            await updateDefaultTargets(c, selectedSimulator);
+        }
     } else if (typeof target === 'string' && !availableSimulatorVersions.includes(target)) {
         logWarning(
-            `Target with name ${chalk().red(target)} does not exist. You can update it here: ${chalk().cyan(
-                c.paths.dotRnv.config
-            )}`
+            `${
+                defaultTarget && !c.program.opts().target
+                    ? `The default target specified in ${chalk().cyan(c.paths.dotRnv.config)} or ${chalk().cyan(
+                          c.paths.project.configLocal
+                      )}`
+                    : 'Target'
+            } with name ${chalk().red(target)} does not exist.`
         );
         await launchKaiOSSimulator(true);
         return true;
