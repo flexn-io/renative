@@ -24,7 +24,7 @@ import inquiryBookmarkTemplate from './questions/bookmarkTemplate';
 import inquiryAppConfigs from './questions/appConfigs';
 import inquiryConfigTemplates from './questions/configTemplates';
 import inquiryProjectInstall from './questions/installProject';
-import inquiryHandlePeerDepsNpm from './questions/resolvePeerDepsNPM.ts';
+import inquiryHandlePeerDepsNpm from './questions/resolvePeerDepsNPM';
 import inquiryInstallEngines from './questions/installEngines';
 import {
     configureConfigOverrides,
