@@ -243,6 +243,7 @@ export const logSummary = (opts?: { header?: string; headerStyle?: 'success' | '
             return;
         }
     }
+    console.log('!!!!!!!!!!!', ctx.paths.project.configExists, ctx.paths.IS_NPX_MODE, ctx.paths.IS_LINKED);
 
     if (ctx.paths.project.configExists && !ctx.paths.IS_NPX_MODE && !ctx.paths.IS_LINKED) {
         logAndSave(chalk().yellow('You are trying to run global rnv command in your current project.'), true);

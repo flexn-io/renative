@@ -36,6 +36,10 @@ build
 #
 npm-debug.log
 
+# Yarn
+#
+yarn-error.log
+
 # Lerna
 #
 lerna-debug.log

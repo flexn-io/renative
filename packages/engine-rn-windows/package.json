@@ -45,6 +45,7 @@
         "@rnv/core": "^1.9.0-rc.0",
         "react-native": "*"
     },
+    "private": "false",
     "publishConfig": {
         "access": "public"
     },

@@ -41,6 +41,7 @@
         "@react-native-community/cli-platform-ios": "15.0.1",
         "@rnv/core": "^1.9.0-rc.0"
     },
+    "private": "false",
     "publishConfig": {
         "access": "public"
     },

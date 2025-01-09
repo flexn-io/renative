@@ -58,10 +58,10 @@
         "compile:prod": "tsc -b tsconfig.json",
         "watch": "tsc --watch --preserveWatchOutput"
     },
+    "private": false,
     "publishConfig": {
         "access": "public"
     },
-    "dependencies": {},
     "types": "lib/index",
     "gitHead": "48ef244c6ec2e206cbfd72fe8770d8dc03387591"
 }
