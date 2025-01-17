@@ -12,6 +12,27 @@ import {
     RnvTaskName,
 } from '@rnv/core';
 
+/**
+ * CLI command `npx rnv platform connect` triggers this task to connects platform templates back to ReNative by updating the project's configuration.
+ * This task ensures that the platform templates in the local project are connected to the
+ * ReNative managed ones. It prompts the user to select platforms to connect and optionally
+ * deletes the previously used platform folders.
+ *
+ * Task Details:
+ * - Description: Connect platform template back to rnv.
+ * - Depends On: Project configuration task.
+ *
+ * Functionality:
+ * - If the original project configuration is not available, the task does nothing.
+ * - If no platform templates directories are defined in the project configuration, it logs a
+ *   message and exits.
+ * - Prompts the user to select platforms to connect, either by using the current context platform
+ *   or through a user prompt.
+ * - Updates the configuration by removing platform templates directories for the selected platforms.
+ * - Prompts the user to confirm deletion of previously used platform folders.
+ * - Deletes the platform folders if the user confirms.
+ * - Logs a success message indicating which platforms are now using ReNative platform templates.
+ */
 export default createTask({
     description: 'Connect platform template back to rnv',
     dependsOn: [RnvTaskName.projectConfigure],

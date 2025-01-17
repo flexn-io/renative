@@ -203,6 +203,16 @@ const appConfigure = async () => {
     return true;
 };
 
+/**
+ * CLI command `npx rnv run app` triggers this task, which configures the project with the specified appConfig.
+ * This task performs the following actions:
+ * - Detects available appConfigs.
+ * - Resolves the correct appConfig for the current context.
+ * - Updates Renative configuration files.
+ * - Ensures required dependencies are installed.
+ *
+ * @returns {Promise<boolean>} Returns true when the task completes successfully.
+ */
 export default createTask({
     description: 'Configure project with specific appConfig',
     fn: async ({ ctx }) => {

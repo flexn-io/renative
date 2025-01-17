@@ -1,6 +1,9 @@
 import { logToSummary, createTask, RnvTaskName } from '@rnv/core';
 import { getPluginList } from './taskHelpers';
 
+/**
+ * CLI command `npx rnv plugin list` triggers this task, which show list of all available plugins.
+ */
 export default createTask({
     description: 'Show list of all available plugins',
     dependsOn: [RnvTaskName.projectConfigure],

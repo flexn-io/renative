@@ -2,6 +2,10 @@ import { createTask, RnvTaskName, getContext, execCLI, logError, logDebug, logTo
 import envinfo from 'envinfo';
 import semver from 'semver';
 
+/**
+ * CLI command `npx rnv info` triggers this task, which is displaying relevant version info about OS, toolchain and libraries.
+ * Available globally.
+ */
 export default createTask({
     description: 'Get relevant version info about OS, toolchain and libraries',
     fn: async () => {

@@ -7,6 +7,19 @@ import { RnvContext } from '../context/types';
 import { parsePlugins } from '../plugins';
 import { resolveRelativePackage } from './utils';
 
+/**
+ * Parses font files from various directories and applies a callback function to each font found.
+ * This function performs the following operations:
+ * 1. Logs the start of the font parsing process.
+ * 2. Retrieves the current context which includes the build configuration and paths.
+ * 3. Checks the project's build configuration for a fonts directory and applies the callback to each font found.
+ * 4. Checks the app configuration for multiple font directories and applies the callback to each font found.
+ *    If no directories are specified, it checks for a single fonts directory.
+ * 5. Parses additional font sources specified in the configuration properties and applies the callback.
+ * 6. Parses font sources specified in plugin configurations and applies the callback.
+ *
+ * @param callback A function to be called for each font found. It receives the font name and its directory as arguments.
+ */
 export const parseFonts = (callback: ParseFontsCallback) => {
     logDefault('parseFonts');
 

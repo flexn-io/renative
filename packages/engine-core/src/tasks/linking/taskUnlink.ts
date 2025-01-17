@@ -17,6 +17,11 @@ const _unlinkPackage = (pkg: LinkablePackage) => {
     }
 };
 
+/**
+ * CLI command `npx rnv unlink` triggers this task that unlinks development version of renative with this project.
+ * Replaces rnv version in project with original node_modules version
+ * Available globally.
+ */
 export default createTask({
     description: 'Replaces rnv version in project with original node_modules version',
     fn: async () => {

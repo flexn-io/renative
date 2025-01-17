@@ -7,7 +7,7 @@ import {
     fsExistsSync,
     formatBytes,
     mkdirSync,
-    writeFileSync
+    writeFileSync,
 } from '../system/fs';
 import { chalk, logDefault, logWarning, logDebug } from '../logger';
 import { getContext } from '../context/provider';
@@ -45,6 +45,23 @@ const getEnginesPluginDelta = () => {
     return enginePlugins;
 };
 
+/**
+ * Generates a build configuration by merging multiple configuration files and plugins.
+ *
+ * This function:
+ * 1. Retrieves the current context and any engine plugin deltas
+ * 2. Defines merge paths for both public and private configurations:
+ *    - Workspace configurations
+ *    - Project configurations
+ *    - App configurations
+ *    - Local configurations
+ *    - Private configurations
+ * 3. Creates corresponding merge files arrays that contain the actual configuration content
+ * 4. Calls _generateBuildConfig to process and save the merged configuration
+ *
+ * The configuration files are merged in a specific order, with later files
+ * taking precedence over earlier ones in the merge sequence.
+ */
 export const generateBuildConfig = () => {
     logDebug('generateBuildConfig');
 

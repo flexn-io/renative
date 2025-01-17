@@ -56,12 +56,33 @@ export const configureTemplateFiles = async () => {
     }
 };
 
+/**
+ * Checks if the template specified in the context's build configuration is installed.
+ *
+ * This function retrieves the current context and attempts to resolve the template
+ * name specified in the build configuration's templateConfig. If the template name
+ * is present and resolvable, the function returns the resolved path; otherwise, it
+ * returns false, indicating that the template is not installed.
+ *
+ * @returns {string | false} - The resolved path of the template if installed, or false if not.
+ */
 export const isTemplateInstalled = () => {
     const ctx = getContext();
     const tplName = ctx.buildConfig.templateConfig?.name;
     return tplName ? doResolve(tplName) : false;
 };
 
+/**
+ * Applies the template configuration to the current project.
+ * This function retrieves the current context and checks if the project is marked as a template.
+ * If it is, the function exits early. If the project configuration is not loaded, an error is logged,
+ * and the function returns false. It also checks if the required template is installed; if not,
+ * it ensures that the project and node modules exist before proceeding. Finally, it applies the
+ * template by calling the internal `_applyTemplate` function with the current context.
+ *
+ * @returns {Promise<boolean>} - A promise that resolves to true if the template is applied successfully,
+ *                               or false if the project configuration is not loaded.
+ */
 export const applyTemplate = async () => {
     const c = getContext();
     logDefault('applyTemplate');

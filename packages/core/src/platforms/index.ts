@@ -19,6 +19,25 @@ export const generatePlatformChoices = () => {
     return options;
 };
 
+/**
+ * Cleans the platform build directory for a specific platform or all platforms.
+ *
+ * This function removes build artifacts from the project's build directory. It can either
+ * clean a single platform's build or all platforms' builds depending on the parameters.
+ *
+ * @param platform - The RnvPlatform to clean. This is the specific platform whose build directory will be cleaned.
+ * @param cleanAllPlatforms - Optional boolean flag. If true, cleans build directories for all supported platforms
+ *                           in the build config. If false or undefined, only cleans the specified platform.
+ *
+ * @returns A Promise that resolves when all cleaning tasks are complete.
+ *
+ * @example
+ * // Clean only iOS platform
+ * await cleanPlatformBuild('ios');
+ *
+ * // Clean all platforms
+ * await cleanPlatformBuild('ios', true);
+ */
 export const cleanPlatformBuild = async (platform: RnvPlatform, cleanAllPlatforms?: boolean) => {
     logDebug('cleanPlatformBuild');
 
@@ -41,6 +60,25 @@ export const cleanPlatformBuild = async (platform: RnvPlatform, cleanAllPlatform
     await Promise.all(cleanTasks);
 };
 
+/**
+ * Creates a platform build for the specified platform by copying the necessary template files
+ * to the appropriate build directory.
+ *
+ * This function sets up the build environment for a given platform by copying files from the
+ * platform's template directory to the application's build directory. It ensures that the
+ * platform is supported and that the necessary directories are defined before proceeding with
+ * the file operations.
+ *
+ * @param platform - The RnvPlatform for which to create the build. This specifies the target
+ *                   platform whose build environment will be prepared.
+ *
+ * @returns A Promise that resolves when the platform build creation is complete. If the platform
+ *          is not supported or if required paths are not defined, the Promise will be rejected.
+ *
+ * @example
+ * // Create a platform build for iOS
+ * await createPlatformBuild('ios');
+ */
 export const createPlatformBuild = (platform: RnvPlatform) =>
     new Promise<void>((resolve, reject) => {
         logDefault('createPlatformBuild');

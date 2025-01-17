@@ -13,6 +13,26 @@ import {
 import { checkAndInstallIfRequired } from '../../taskHelpers';
 import { getPluginList } from './taskHelpers';
 
+/**
+ * CLI command `npx rnv plugin add` triggers this task, which allows to add plugin to the project by selecting from a list of available plugins.
+ * It handles both the selection process via a command-line prompt and the configuration update required
+ * to integrate the selected plugins into the project. The task ensures that any dependencies required
+ * by the plugins are resolved and installed.
+ * - If a plugin key is provided as a command-line argument, the task will use it to select the plugin directly.
+ * - If no plugin key is provided, the task will prompt the user to select a plugin from a list.
+ * - The task then updates the project's configuration file to include the selected plugins.
+ * - If a plugin requires additional properties, the user will be prompted to input values for these properties.
+ * - The task installs the plugins and any necessary dependencies, displaying a success message upon completion.
+ *
+ * Dependencies:
+ * - This task depends on the 'projectConfigure' task.
+ *
+ * Returns:
+ * - A boolean indicating the success of the plugin addition process.
+ *
+ * Note:
+ * - Plugin properties can be manually edited later in the './renative.json' file.
+ */
 export default createTask({
     description: 'Add selected plugin to the project',
     dependsOn: [RnvTaskName.projectConfigure],

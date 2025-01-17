@@ -12,6 +12,10 @@ import {
 import { checkPortInUse } from '@rnv/sdk-utils';
 import killPort from 'kill-port';
 
+/**
+ * CLI command `npx rnv kill` triggers this task, which kills all the processes related to this project.
+ * Available globally.
+ */
 export default createTask({
     description: 'Kills all the processes related to this project',
     fn: async ({ ctx, taskName, originTaskName }) => {
