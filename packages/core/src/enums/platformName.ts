@@ -1,3 +1,14 @@
+/**
+ * Supported platforms:
+ * - Web: web, webtv, chromecast
+ * - Mobile: ios, android, kaios, tizenmobile
+ * - TV: androidtv, firetv, tvos
+ * - Desktop: macos, linux, windows
+ * - Smart TV: tizen, webos
+ * - Wearable: androidwear, tizenwatch
+ * - Gaming: xbox
+ */
+
 export const RnvPlatformName = {
     web: 'web',
     ios: 'ios',

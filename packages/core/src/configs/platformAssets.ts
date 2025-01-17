@@ -3,6 +3,21 @@ import { getConfigProp } from '../context/contextProps';
 import { logDefault } from '../logger';
 import { getContext } from '../context/provider';
 
+/**
+ * Generates runtime configuration for platform assets by merging various config sources.
+ *
+ * This function:
+ * 1. Retrieves the current context
+ * 2. Merges multiple configuration layers in the following order:
+ *    - Base asset config
+ *    - Runtime build config
+ *    - Common runtime config
+ *    - Platform-specific runtime config
+ *    - Runtime config from config props
+ * 3. If assets directory exists, sanitizes the merged config and writes it to the assets config file
+ *
+ * @returns {Promise<boolean>} Returns true when the operation completes successfully
+ */
 export const generatePlatformAssetsRuntimeConfig = async () => {
     logDefault('generateRuntimeConfig');
     const c = getContext();

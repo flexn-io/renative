@@ -1,5 +1,8 @@
 import { writeFileSync, logSuccess, logWarning, inquirerPrompt, createTask, RnvTaskName } from '@rnv/core';
 
+/**
+ * CLI command `npx rnv plugin update` triggers this task to update specific plugin to latest supported version (rnv).
+ */
 export default createTask({
     description: 'Update specific plugin to latest supported version (rnv)',
     dependsOn: [RnvTaskName.projectConfigure],

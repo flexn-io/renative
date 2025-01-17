@@ -44,8 +44,15 @@ const _linkPackage = (pkg: LinkablePackage) => {
 
 const runtimeLibs = ['@rnv/renative'];
 
+/**
+ * CLI command `npx rnv link` triggers this task that links development version of renative with this project.
+ * This task can be used to link source packages from another project into the current project.
+ * It checks which packages are linked, finds the broken links, and prompts the user to select
+ * the packages they want to link. Once selected, it attempts to link each package.
+ * Available globally.
+ */
 export default createTask({
-    description: 'Links development version or renative with this project',
+    description: 'Links development version of renative with this project',
     fn: async () => {
         const linkablePackages = traverseTargetProject(getSourceDir());
 

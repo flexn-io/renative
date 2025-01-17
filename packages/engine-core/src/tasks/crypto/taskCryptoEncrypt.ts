@@ -175,6 +175,28 @@ Make sure you take into account special characters that might need to be escaped
 };
 
 export default createTask({
+    /**
+     * CLI command `npx rnv crypto decrypt ` triggers this task, which encrypts secure files from the project directory to a specified encrypted path.
+     * This task is responsible for ensuring the secure files in a ReNative project are encrypted
+     * and stored safely. It checks for necessary configurations and prompts the user for any missing
+     * information. If the destination path for encrypted files is not set, it warns the user.
+     *
+     * Dependencies:
+     * - Depends on the 'configureSoft' task to be executed prior to this task.
+     *
+     * Functionality:
+     * - Validates the presence of a project name and crypto path configuration.
+     * - Initializes the crypto directory if it's the first run.
+     * - Generates an encryption key if not provided, ensuring it's stored securely.
+     * - Compresses and encrypts the project's secure files using the specified or generated key.
+     * - Writes the encrypted data to the destination path.
+     * - Updates timestamps for tracking encryption time.
+     *
+     * Options:
+     * - Accepts a 'key' option for providing the encryption key directly.
+     *
+     * @param {Object} ctx - The context object containing project and workspace configurations.
+     */
     description: 'Encrypts secure files from `~/<wokspace>/<project>/..` to project',
     dependsOn: [RnvTaskName.configureSoft],
     fn: async ({ ctx }) => {

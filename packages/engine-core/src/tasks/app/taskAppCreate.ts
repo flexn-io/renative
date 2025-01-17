@@ -17,6 +17,25 @@ import {
 } from '@rnv/core';
 import { getContext } from '../../getContext';
 
+/**
+ * CLI command `npx rnv app create` triggers this task to create a new app config by copying an existing one.
+ * This task performs the following actions:
+ * 1. Logs the task name and configures runtime defaults.
+ * 2. Determines the source path for the app configuration:
+ *    - If `sourceAppConfigID` is provided via command-line options, it uses the corresponding directory in the project's appConfigsDir.
+ *    - If running in CI mode, it attempts to find a suitable directory in the template's appConfigsDir.
+ *    - Otherwise, it prompts the user to select a source app configuration from available project and template configurations.
+ * 3. Determines the destination path for the new app configuration:
+ *    - If `appConfigID` is provided via command-line options, it uses it as the new app configuration ID.
+ *    - Otherwise, it prompts the user to input a name for the new app configuration.
+ * 4. Copies the contents from the source path to the destination path.
+ * 5. Reads and updates the `renative.json` configuration file in the destination directory:
+ *    - Sets the app configuration ID and common settings such as title and bundle identifier.
+ *    - These settings can be provided via command-line options or prompted from the user.
+ * 6. Writes the updated configuration back to the file system.
+ *
+ * @returns {Promise<boolean>} Resolves to true upon successful completion.
+ */
 export default createTask({
     description: 'Create new app config',
     fn: async () => {

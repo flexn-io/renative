@@ -1,5 +1,8 @@
 import { chalk, logToSummary, generatePlatformChoices, createTask, RnvTaskName } from '@rnv/core';
 
+/**
+ * CLI command `npx rnv platform list` triggers this task, which displays a list of all available platforms.
+ */
 export default createTask({
     description: 'List all available platforms',
     dependsOn: [RnvTaskName.projectConfigure],

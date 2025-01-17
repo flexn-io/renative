@@ -21,6 +21,21 @@ import path from 'path';
 import { checkAndInstallIfRequired } from '../../taskHelpers';
 // import { configureFonts } from '@rnv/sdk-utils';
 
+/**
+ * CLI command `npx rnv project configure` triggers this task to prepare the platformBuilds folder.
+ * This task is private and is a dependency of the projectConfigure task.
+ * Functionality:
+ * - Validates if the build scheme is supported.
+ * - Retrieves the entry file configuration property.
+ * - Checks if the destination file exists, and logs a warning if the entry file key is missing.
+ * - Executes the sdkConfigure task optionally.
+ * - Configures runtime defaults and checks for necessary installations.
+ * - Logs the presence of the build folder.
+ * - Cleans the platform build if reset options are provided and reset is not disabled.
+ * - Creates the platform build and resolves engine dependencies.
+ *
+ * @returns {Promise<boolean>} - Returns true upon successful execution of the task.
+ */
 export default createTask({
     description: 'Low-level task used by engines to prepare platformBuilds folder',
     isPrivate: true,

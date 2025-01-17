@@ -52,6 +52,17 @@ const _getPluginScope = (plugin: ConfigPluginSchema | string): RnvPluginScope =>
     return { scope: 'rnv' };
 };
 
+/**
+ * Retrieves and merges the configuration of a specified plugin.
+ *
+ * This function fetches the plugin configuration from the build configuration using the provided
+ * plugin key. It then merges the plugin configurations across different scopes, if available,
+ * and returns the final merged configuration.
+ *
+ * @param {RnvContext} c - The context object containing the build configuration and other contextual data.
+ * @param {string} key - The key identifying the plugin to retrieve and merge.
+ * @returns {RnvPlugin | null} - The merged plugin configuration, or null if the plugin is not found.
+ */
 export const getMergedPlugin = (c: RnvContext, key: string) => {
     logDebug(`getMergedPlugin:${key}`);
 
@@ -175,6 +186,29 @@ const _applyPackageDependency = (deps: Record<string, string>, key: string, vers
     }
 };
 
+/**
+ * Configures the plugins for the current project by ensuring that the necessary
+ * dependencies are correctly set in the project's package.json file.
+ *
+ * This function performs the following tasks:
+ * - Retrieves the current context and configuration.
+ * - Skips the process if the `skipDependencyCheck` option is set.
+ * - Ensures that the project's package.json has a dependencies object.
+ * - Iterates over each plugin defined in the build configuration.
+ * - For each plugin, checks if it is enabled and supported on the current platform.
+ * - Validates the version of each plugin against the version specified in package.json.
+ *   - If a mismatch is found, creates a dependency mutation record.
+ *   - If a plugin is missing from package.json, creates a mutation to add it.
+ * - Handles npm dependencies specified within each plugin.
+ *   - Detects conflicts between top-level and plugin-specific dependencies.
+ *   - Creates mutation records for missing or mismatched npm dependencies.
+ *
+ * The function does not modify the package.json directly if the context indicates
+ * that the current project is a template or if the `skipDependencyCheck` option
+ * is set. Instead, it logs warnings and prepares mutations for later processing.
+ *
+ * @returns {Promise<boolean>} - Resolves to true when the process is complete.
+ */
 export const configurePlugins = async () => {
     logDefault('configurePlugins');
 
@@ -454,6 +488,20 @@ const _resolvePluginDependencies = async (
     }
     return true;
 };
+
+/**
+ * Parses and processes the plugins defined in the build configuration.
+ *
+ * This function iterates over the plugins specified in the build configuration,
+ * applying the provided callback function to each active plugin. It considers the
+ * inclusion and exclusion lists specified in the configuration, as well as platform
+ * support and deprecation status of each plugin.
+ *
+ * @param {PluginCallback} pluginCallback - A callback function to be invoked for each active plugin.
+ * @param {boolean} [ignorePlatformObjectCheck=false] - If true, bypasses platform-specific checks.
+ * @param {boolean} [includeDisabledOrExcludedPlugins=false] - If true, includes plugins that are
+ * disabled or excluded in the processing.
+ */
 
 export const parsePlugins = (
     pluginCallback: PluginCallback,
@@ -784,6 +832,19 @@ const _applyOverrideFiles = (source: string, dest: string, dir: string) => {
     logInfo(`${chalk().gray(dest)} overriden by: ${chalk().gray(source.split('node_modules').pop())}`);
 };
 
+/**
+ * Overrides the contents of a file based on specified regex patterns.
+ *
+ * This function reads the contents of a specified file, applies regex-based overrides,
+ * and writes the modified content back to the file. If the file has been modified before,
+ * it reverts to the original content before applying new overrides. It also maintains a backup
+ * of the original file content and tracks applied overrides to avoid redundant operations.
+ *
+ * @param {string} dest - The file path to apply overrides to.
+ * @param {Record<string, string>} override - A map of regex patterns and their replacements.
+ * @param {string} [overridePath=''] - The path to the override source, used for logging.
+ * @param {string} fileKey - A unique key representing the file, used for tracking overrides.
+ */
 export const overrideFileContents = (
     dest: string,
     override: Record<string, string>,
@@ -1094,6 +1155,25 @@ export const checkForPluginDependencies = async (postInjectHandler?: AsyncCallba
 
 // const getPluginPlatformFromString = (p: string): RnvPluginPlatform => p as RnvPluginPlatform;
 
+/**
+ * Overrides the template plugins for the current project.
+ * This function applies overrides to the plugins defined in the project configuration.
+ * It performs the following tasks:
+ * - Logs the start of the override process.
+ * - Retrieves the current context and options.
+ * - Checks if the `skipOverridesCheck` option is set, and if so, skips the override process.
+ * - Retrieves the directories for scoped and app-specific plugin templates.
+ * - Iterates over each plugin using the `parsePlugins` function.
+ * - For each plugin, checks if template overrides are disabled.
+ *   - If not disabled, applies overrides from scoped plugin directories.
+ *   - Applies overrides from app-specific plugin directories.
+ * - Logs a message if plugin template overrides are disabled for a plugin.
+ * The function ensures that the correct overrides are applied based on the plugin's scope
+ * and configuration settings. Overrides are not applied if the `skipOverridesCheck` option
+ * is specified in the program options.
+ *
+ * @returns {Promise<boolean>} - Resolves to true when the override process is complete.
+ */
 export const overrideTemplatePlugins = async () => {
     logDefault('overrideTemplatePlugins');
 
@@ -1132,6 +1212,27 @@ export const overrideTemplatePlugins = async () => {
     return true;
 };
 
+/**
+ * Copies plugin templates synchronously to the application folder.
+ *
+ * This function iterates over all plugins defined in the context and copies their respective
+ * template folders to the application's destination folder. The function performs the following tasks:
+ *
+ * - Constructs the destination path for the application folder.
+ * - Iterates over each plugin using the `parsePlugins` function.
+ * - For each plugin, creates an array of override options based on the plugin's properties.
+ * - Copies folder contents from various source paths to the destination path:
+ *   - Project configuration plugin paths.
+ *   - Private project configuration plugin paths.
+ *   - Application configuration plugin paths.
+ *   - Private application configuration plugin paths.
+ *   - Scoped plugin template paths.
+ *
+ * The function ensures that the folder contents are merged recursively and any dynamic properties
+ * specified in the plugin's configuration are replaced in the destination files.
+ *
+ * @param {RnvContext} c - The context object containing configuration and paths.
+ */
 export const copyTemplatePluginsSync = (c: RnvContext) => {
     const destPath = path.join(getAppFolder());
 

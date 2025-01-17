@@ -40,6 +40,27 @@ function clearWindowsCacheFiles() {
     return true;
 }
 
+/**
+ * CLI command `npx rnv clean` triggers this task, which is responsible for cleaning up various files and directories within a project.
+ * It removes node_modules, lock files, build directories, local configuration files, and caches.
+ * The task performs the following actions:
+ * - Identifies directories and files to be removed, such as node_modules, package-lock.json, yarn.lock,
+ *   and distribution folders within the project and its dependencies.
+ * - Prompts the user to confirm removal of specific types of files/directories unless the process is
+ *   running in a continuous integration (CI) environment, where it skips the prompts.
+ * - Offers options to clean:
+ *   - Node module related files/folders
+ *   - Platform builds and assets
+ *   - Local configuration files
+ *   - NPM and bundler cache
+ * - Executes the cleaning process based on user confirmation or CI settings.
+ * - Handles cache clearing differently for Windows systems by executing specific commands to clean
+ *   temporary files, NuGet cache, Yarn/NPM cache, and Watchman cache.
+ *
+ * Available globally.
+ *
+ * @returns {Promise<boolean>} - Returns true if the task completes successfully.
+ */
 export default createTask({
     description: 'Automatically removes all node_modules and lock in your project and its dependencies',
     fn: async ({ ctx }) => {

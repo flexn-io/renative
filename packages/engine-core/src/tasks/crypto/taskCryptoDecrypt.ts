@@ -45,6 +45,36 @@ const _unzipAndCopy = async (
     logSuccess(`Files successfully extracted into ${destFolder}`);
 };
 
+/**
+ * CLI command `npx rnv crypto decrypt` triggers this task, which is responsible for decrypting encrypted project files into the local workspace directory.
+ * Description:
+ * - The task decrypts encrypted project files and places them into the specified local workspace directory
+ *   under the project folder.
+ * - It checks if the decryption is optional based on the project's configuration and proceeds only if
+ *   necessary.
+ * - It handles existing decrypted files, prompting the user to choose whether to override, merge, or skip
+ *   the operation.
+ * - The task also verifies the existence of necessary environment variables and the decryption key.
+ *
+ * Dependencies:
+ * - Depends on the 'configureSoft' task to be executed before this task.
+ *
+ * Parameters:
+ * - ctx: The context object containing information about the current project, paths, and configurations.
+ *
+ * Returns:
+ * - A promise that resolves to true if the decryption is successful or skipped.
+ *
+ * Error Handling:
+ * - If the decryption key is missing, it rejects with a message prompting the user to provide the key.
+ * - If the source file to decrypt is missing, it rejects with an appropriate message.
+ * - Handles specific decryption errors such as 'Signature mismatch' and 'Authentication failed', providing
+ *   suggestions and guidance to the user.
+ *
+ * Options:
+ * - Supports the 'key' option to provide a decryption key.
+ * - Supports the 'ci' option to automate decisions without user prompts in continuous integration environments.
+ */
 export default createTask({
     description: 'Decrypt encrypted project files into local `~/<wokspace>/<project>/..`',
     dependsOn: [RnvTaskName.configureSoft],

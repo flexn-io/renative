@@ -2,6 +2,17 @@ import { getContext } from '../context/provider';
 import { logDefault } from '../logger';
 import { writeFileSync } from '../system/fs';
 
+/**
+ * Generates or updates the local configuration file for the project.
+ *
+ * This function manages the local configuration by either updating or resetting
+ * the current application configuration ID. It operates on the configLocal object
+ * within the project files and persists changes to the filesystem.
+ *
+ * @param resetAppId - Optional boolean flag. When true, removes the currentAppConfigId
+ *                     from the configuration. When false or undefined, sets the
+ *                     currentAppConfigId to the current runtime appId.
+ */
 export const generateLocalConfig = (resetAppId?: boolean) => {
     logDefault('generateLocalConfig', `resetAppId:${!!resetAppId}`);
     const c = getContext();
