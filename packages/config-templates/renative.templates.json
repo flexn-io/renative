@@ -342,7 +342,7 @@
             "tvos": {
                 "podName": "RNCAsyncStorage"
             },
-            "version": "1.17.10",
+            "version": "1.24.0",
             "webpackConfig": {
                 "modulePaths": true
             }
