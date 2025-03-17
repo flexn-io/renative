@@ -72,10 +72,7 @@ const AppContent = () => {
         if (isWebBased && isFactorTv && focusableRefs[0]?.current) {
             focusableRefs[0].current.focus();
             setFocusedIndex(0);
-        } else if (!isWebBased) {
-            // Set the initial AndroidTV and tvOS focus to be on the button
-            focusableRefs[0]?.current?.setNativeProps({ hasTVPreferredFocus: true });
-        }
+        } 
         return () => {
             removeNotificationListeners(handleNotification);
         };
@@ -161,6 +158,7 @@ const AppContent = () => {
                                 focusedIndex === 0 && styles.buttonFocused,
                                 isWebBased && isFactorTv && { outline: 'none' },
                             ]}
+                            hasTVPreferredFocus={!isWebBased && isFactorTv}
                         />
                     </TestCase>
                     <TestCase id={3} title="Orientation support ">

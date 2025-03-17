@@ -6,7 +6,7 @@ import { testProps } from '../../config';
 
 type ButtonProps = TouchableOpacityProps;
 export const NewModuleButton = forwardRef<React.ElementRef<typeof TouchableOpacity>, ButtonProps>(
-    ({ onBlur, onFocus, style }, ref) => {
+    ({ onBlur, onFocus, style,hasTVPreferredFocus }, ref) => {
         const { TestNativeModule } = NativeModules;
         const { logDebug } = useLoggerContext();
         const callback = (error: any, result: string) => {
@@ -24,7 +24,7 @@ export const NewModuleButton = forwardRef<React.ElementRef<typeof TouchableOpaci
             }
         };
         return (
-            <TouchableOpacity ref={ref} onPress={onPress} onFocus={onFocus} onBlur={onBlur} style={style}>
+            <TouchableOpacity ref={ref} onPress={onPress} onFocus={onFocus} onBlur={onBlur} style={style} hasTVPreferredFocus={hasTVPreferredFocus}>
                 <Text style={styles.buttonTitle} {...testProps('app-harness-home-native-call-button')}>
                     Click to invoke native module!
                 </Text>
