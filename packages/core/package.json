@@ -1,6 +1,6 @@
 {
     "name": "@rnv/core",
-    "version": "1.10.0-rc.0",
+    "version": "1.10.0-rc.1",
     "description": "RNV Core SDK",
     "keywords": [],
     "homepage": "https://github.com/flexn-io/renative#readme",
@@ -46,15 +46,16 @@
         "svg2js": "0.0.4-alpha1",
         "tslib": "2.5.2",
         "type-fest": "4.14.0",
+        "typescript": "5.2.2",
         "zod": "3.23.8"
     },
     "devDependencies": {
         "@types/envinfo": "7.8.4"
     },
     "peerDependencies": {
-        "@rnv/config-templates": "^1.10.0-rc.0"
+        "@rnv/config-templates": "^1.10.0-rc.1"
     },
-    "private": false,
+    "private": "false",
     "publishConfig": {
         "access": "public"
     },

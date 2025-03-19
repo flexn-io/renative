@@ -54,11 +54,11 @@ const App = () => (
 );
 
 const AppContent = () => {
-    const orientationBtnRef = useRef<TouchableOpacity>(null);
-    const permissionBtnRef = useRef<TouchableOpacity>(null);
-    const splashBtnRef = useRef<TouchableOpacity>(null);
-    const photoEditorBtnRef = useRef<TouchableOpacity>(null);
-    const nativeModuleBtnRef = useRef<TouchableOpacity>(null);
+    const orientationBtnRef = useRef<React.ElementRef<typeof TouchableOpacity>>(null);
+    const permissionBtnRef = useRef<React.ElementRef<typeof TouchableOpacity>>(null);
+    const splashBtnRef = useRef<React.ElementRef<typeof TouchableOpacity>>(null);
+    const photoEditorBtnRef = useRef<React.ElementRef<typeof TouchableOpacity>>(null);
+    const nativeModuleBtnRef = useRef<React.ElementRef<typeof TouchableOpacity>>(null);
     const [showVideo, setShowVideo] = useState(false);
     const [logsFocused, setLogsFocused] = useState(false);
     const { logDebug, logs } = useLoggerContext();
@@ -72,10 +72,7 @@ const AppContent = () => {
         if (isWebBased && isFactorTv && focusableRefs[0]?.current) {
             focusableRefs[0].current.focus();
             setFocusedIndex(0);
-        } else if (!isWebBased) {
-            // Set the initial AndroidTV and tvOS focus to be on the button
-            focusableRefs[0]?.current?.setNativeProps({ hasTVPreferredFocus: true });
-        }
+        } 
         return () => {
             removeNotificationListeners(handleNotification);
         };
@@ -161,6 +158,7 @@ const AppContent = () => {
                                 focusedIndex === 0 && styles.buttonFocused,
                                 isWebBased && isFactorTv && { outline: 'none' },
                             ]}
+                            hasTVPreferredFocus={!isWebBased && isFactorTv}
                         />
                     </TestCase>
                     <TestCase id={3} title="Orientation support ">
