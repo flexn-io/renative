@@ -34,7 +34,7 @@
         "@rnv/sdk-utils": "^1.10.0-rc.1",
         "@rnv/sdk-webpack": "^1.10.0-rc.1"
     },
-    "private": "false",
+    "private": false,
     "publishConfig": {
         "access": "public"
     },

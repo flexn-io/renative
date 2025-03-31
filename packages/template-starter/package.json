@@ -127,7 +127,7 @@
         "react-native-tvos": "0.76.5-0",
         "react-native-web": "0.19.12"
     },
-    "private": "false",
+    "private": false,
     "publishConfig": {
         "access": "public"
     },
