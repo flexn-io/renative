@@ -42,7 +42,7 @@
         "@rnv/core": "^1.10.0-rc.3",
         "metro-cache": "^0.81.0"
     },
-    "private": "false",
+    "private": false,
     "publishConfig": {
         "access": "public"
     },
