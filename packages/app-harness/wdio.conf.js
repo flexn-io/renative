@@ -2,8 +2,8 @@ const fs = require('fs');
 const path = require('path');
 
 let customCapabilities = {};
-if (fs.existsSync(path.join(__dirname, '../../../wdio.capabilities.template.js'))) {
-    const { capabilities } = require('../../../wdio.capabilities.template');
+if (fs.existsSync(path.join(__dirname, '../../../wdio.capabilities.harness.js'))) {
+    const { capabilities } = require('../../../wdio.capabilities.harness');
     customCapabilities = capabilities;
 }
 
@@ -20,8 +20,8 @@ const capabilities = {
             'appium:deviceName': deviceTarget || 'iPhone 14',
             'appium:platformVersion': '16.4',
             'appium:automationName': 'XCUITest',
-            'appium:bundleId': 'renative.helloworld.test',
-            'appium:app': 'platformBuilds/template_ios/build/RNVApp/Build/Products/Release-iphonesimulator/RNVApp.app',
+            'appium:bundleId': 'renative.harness.test',
+            'appium:app': 'platformBuilds/harness_ios/build/RNVApp/Build/Products/Release-iphonesimulator/RNVApp.app',
             'appium:fullReset': true,
         },
     ],
@@ -31,21 +31,21 @@ const capabilities = {
             'appium:deviceName': deviceTarget || 'Apple TV',
             'appium:platformVersion': '16.4',
             'appium:automationName': 'XCUITest',
-            'appium:bundleId': 'renative.helloworld.test',
+            'appium:bundleId': 'renative.harness.test',
             'appium:app':
-                'platformBuilds/template_tvos/build/RNVApp/Build/Products/Release-appletvsimulator/RNVApp-tvOS.app',
+                'platformBuilds/harness_tvos/build/RNVApp/Build/Products/Release-appletvsimulator/RNVApp-tvOS.app',
             'appium:fullReset': true,
         },
     ],
     android: [
         {
             platformName: 'Android',
-            'appium:avd': deviceTarget || 'Pixel_4_API_29',
+            'appium:avd': deviceTarget || 'Nexus_5X_API_30',
             'appium:platformVersion': '10',
             'appium:automationName': 'UiAutomator2',
-            'appium:appPackage': 'renative.helloworld.test',
-            'appium:appActivity': 'renative.helloworld.test.MainActivity',
-            'appium:app': 'platformBuilds/template_android/app/build/outputs/apk/release/app-release.apk',
+            'appium:appPackage': 'renative.harness.test',
+            'appium:appActivity': 'renative.harness.test.MainActivity',
+            'appium:app': 'platformBuilds/harness_android/app/build/outputs/apk/release/app-release.apk',
             'appium:fullReset': true,
         },
     ],
@@ -55,9 +55,9 @@ const capabilities = {
             'appium:avd': deviceTarget || 'Android_TV_1080p_API_30',
             'appium:platformVersion': '10',
             'appium:automationName': 'UiAutomator2',
-            'appium:appPackage': 'renative.helloworld.test',
-            'appium:appActivity': 'renative.helloworld.test.MainActivity',
-            'appium:app': 'platformBuilds/template_androidtv/app/build/outputs/apk/release/app-release.apk',
+            'appium:appPackage': 'renative.harness.test',
+            'appium:appActivity': 'renative.harness.test.MainActivity',
+            'appium:app': 'platformBuilds/harness_androidtv/app/build/outputs/apk/release/app-release.apk',
             'appium:fullReset': true,
         },
     ],
@@ -66,7 +66,7 @@ const capabilities = {
             browserName: 'chrome',
             'goog:chromeOptions': {
                 binary: '../../node_modules/electron/dist/Electron.app/Contents/MacOS/Electron',
-                args: ['app=./platformBuilds/template_macos/build'],
+                args: ['app=./platformBuilds/harness_macos/build'],
             },
         },
     ],
@@ -87,7 +87,7 @@ const capabilities = {
     ...customCapabilities,
 };
 
-exports.config = {
+const config = {
     //
     // ====================
     // Runner Configuration
@@ -109,7 +109,7 @@ exports.config = {
     // then the current working directory is where your `package.json` resides, so `wdio`
     // will be called from there.
     //
-    specs: ['./test/specs/e2e.cjs'],
+    specs: ['./test/specs/e2e.js'],
     // Patterns to exclude.
     exclude: [
         // 'path/to/excluded/files'
@@ -169,7 +169,7 @@ exports.config = {
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
     // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
     // gets prepended directly.
-    baseUrl: 'http://localhost:8080',
+    baseUrl: 'http://localhost:8090',
     //
     // Default timeout for all waitFor* commands.
     waitforTimeout: 10000,
@@ -382,3 +382,5 @@ exports.config = {
     // onReload: function(oldSessionId, newSessionId) {
     // }
 };
+
+module.exports = { config };
