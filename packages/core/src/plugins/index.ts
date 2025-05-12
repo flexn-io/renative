@@ -684,6 +684,10 @@ const getCleanRegExString = (str: string) => str.replace(/[-\\.,_*+?^$[\](){}!=|
 const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
     const rootPath = _getRootPath();
 
+    // Additional flag for when we want to apply overrides regardless if overrides
+    // were already applied
+    const { alwaysApplyPluginOverrides } = c.buildConfig;
+
     const nodeModulesPaths = _findAllNodeModules(rootPath);
     const source = path.join(pluginsPath, dir, 'overrides');
 
@@ -698,9 +702,9 @@ const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
         }
 
         if (flavourSource && fsExistsSync(flavourSource)) {
-            _applyOverrideFiles(flavourSource, dest, dir);
+            _applyOverrideFiles(flavourSource, dest, dir, alwaysApplyPluginOverrides);
         } else if (fsExistsSync(source)) {
-            _applyOverrideFiles(source, dest, dir);
+            _applyOverrideFiles(source, dest, dir, alwaysApplyPluginOverrides);
         } else {
             logDebug(
                 `Your plugin configuration has no override path ${chalk().bold.white(
@@ -748,7 +752,7 @@ const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
                     if (fsLstatSync(ovDir).isDirectory()) {
                         logWarning('overrides.json: Directories not supported yet. Specify path to actual file.');
                     } else {
-                        overrideFileContents(ovDir, override, overridePath, k);
+                        overrideFileContents(ovDir, override, overridePath, k, alwaysApplyPluginOverrides);
                     }
                 }
             });
@@ -756,7 +760,7 @@ const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
     });
 };
 
-const _applyOverrideFiles = (source: string, dest: string, dir: string) => {
+const _applyOverrideFiles = (source: string, dest: string, dir: string, alwaysApplyPluginOverrides = false) => {
     const overrideDir = _ensureOverrideDirExists();
     const appliedOverrideFilePath = path.join(overrideDir, RnvFileName.appliedOverride);
     const appliedOverrides = _readAppliedOverrides(appliedOverrideFilePath);
@@ -772,7 +776,9 @@ const _applyOverrideFiles = (source: string, dest: string, dir: string) => {
         }
         const currentOverride = appliedOverrides[dir] || {};
         const existingFileHash = currentOverride[fileKey];
-        if (newFileHash !== existingFileHash) {
+        if (newFileHash === existingFileHash && alwaysApplyPluginOverrides)
+            logWarning(`Applying overrides for ${dir} despite matching hash with the previously applied overrides.`);
+        if (newFileHash !== existingFileHash || alwaysApplyPluginOverrides) {
             appliedOverrides[dir] = appliedOverrides[dir] || {};
             appliedOverrides[dir][fileKey] = newFileHash;
             appliedOverrides[dir].version = packageVersion;
@@ -788,11 +794,11 @@ export const overrideFileContents = (
     dest: string,
     override: Record<string, string>,
     overridePath = '',
-    fileKey: string
+    fileKey: string,
+    alwaysApplyPluginOverrides = false
 ) => {
     const overrideDir = _ensureOverrideDirExists();
     const appliedOverrideFilePath = path.join(overrideDir, RnvFileName.appliedOverride);
-
     const appliedOverrides = _readAppliedOverrides(appliedOverrideFilePath);
 
     if (fsExistsSync(dest)) {
@@ -803,13 +809,12 @@ export const overrideFileContents = (
         const packageVersion = _getCurrentPackageVersion(packageName);
 
         const overridesChanged = JSON.stringify(previousOverride) !== JSON.stringify(override);
-        if (overridesChanged && !isFirstRun) {
+        if ((overridesChanged || alwaysApplyPluginOverrides) && !isFirstRun) {
             revertOverrideToOriginal(dest, backupPath);
             fileToFix = fsReadFileSync(dest).toString();
         }
         let foundRegEx = false;
         const failTerms: Array<string> = [];
-
         Object.keys(override).forEach((fk) => {
             const originalRegEx = new RegExp(`${getCleanRegExString(fk)}`, 'g');
             const overrideRegEx = new RegExp(`${getCleanRegExString(override[fk])}`, 'g');
@@ -870,7 +875,7 @@ export const overrideFileContents = (
             }
             // return;
         }
-        if (overridesChanged) {
+        if (overridesChanged || alwaysApplyPluginOverrides) {
             appliedOverrides[packageName] = appliedOverrides[packageName] || {};
             appliedOverrides[packageName][fileKey] = override;
             appliedOverrides[packageName].version = packageVersion;

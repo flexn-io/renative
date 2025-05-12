@@ -125,7 +125,9 @@
                                         "description": "Array list of all supported platforms in current project"
                                     }
                                 },
-                                "required": ["paths"],
+                                "required": [
+                                    "paths"
+                                ],
                                 "additionalProperties": false
                             }
                         ]
@@ -525,7 +527,10 @@
                     "description": "Marks your plugin deprecated with warning showing in the console during rnv commands"
                 },
                 "source": {
-                    "type": ["string", "null"],
+                    "type": [
+                        "string",
+                        "null"
+                    ],
                     "description": "Will define custom scope for your plugin config to extend from.\n\nNOTE: custom scopes can be defined via paths.pluginTemplates.[CUSTOM_SCOPE].{}"
                 },
                 "disableNpm": {
@@ -548,7 +553,10 @@
                         {
                             "type": "object",
                             "additionalProperties": {
-                                "type": ["string", "null"]
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
                             }
                         },
                         {
@@ -592,7 +600,9 @@
                                                         "type": "string"
                                                     }
                                                 },
-                                                "required": ["projectPath"],
+                                                "required": [
+                                                    "projectPath"
+                                                ],
                                                 "additionalProperties": false
                                             }
                                         ]
@@ -669,7 +679,11 @@
                                         "gradle_properties": {
                                             "type": "object",
                                             "additionalProperties": {
-                                                "type": ["string", "boolean", "number"]
+                                                "type": [
+                                                    "string",
+                                                    "boolean",
+                                                    "number"
+                                                ]
                                             },
                                             "description": "Overrides values in `gradle.properties` file of generated android based project"
                                         },
@@ -883,7 +897,10 @@
                                                     }
                                                 }
                                             },
-                                            "required": ["include", "project"],
+                                            "required": [
+                                                "include",
+                                                "project"
+                                            ],
                                             "additionalProperties": false
                                         },
                                         "gradle_wrapper_properties": {
@@ -1035,7 +1052,11 @@
                                                                 }
                                                             }
                                                         },
-                                                        "required": ["shellPath", "shellScript", "inputPaths"],
+                                                        "required": [
+                                                            "shellPath",
+                                                            "shellScript",
+                                                            "inputPaths"
+                                                        ],
                                                         "additionalProperties": false
                                                     }
                                                 },
@@ -1224,7 +1245,10 @@
                                 },
                                 "buildType": {
                                     "type": "string",
-                                    "enum": ["dynamic", "static"],
+                                    "enum": [
+                                        "dynamic",
+                                        "static"
+                                    ],
                                     "description": "Build type of the pod"
                                 }
                             },
@@ -1577,12 +1601,18 @@
                                         "$ref": "#/definitions/zodCommonSchema/properties/buildSchemes/additionalProperties/properties/getJsBundleFile"
                                     },
                                     "enableAndroidX": {
-                                        "type": ["boolean", "string"],
+                                        "type": [
+                                            "boolean",
+                                            "string"
+                                        ],
                                         "default": true,
                                         "description": "Enables new android X architecture"
                                     },
                                     "enableJetifier": {
-                                        "type": ["boolean", "string"],
+                                        "type": [
+                                            "boolean",
+                                            "string"
+                                        ],
                                         "default": true,
                                         "description": "Enables Jetifier"
                                     },
@@ -2205,7 +2235,9 @@
                                                 }
                                             }
                                         },
-                                        "required": ["NSPrivacyAccessedAPITypes"],
+                                        "required": [
+                                            "NSPrivacyAccessedAPITypes"
+                                        ],
                                         "additionalProperties": false
                                     },
                                     "exportOptions": {
@@ -3503,7 +3535,9 @@
                                                         "type": "boolean"
                                                     }
                                                 },
-                                                "required": ["devTools"],
+                                                "required": [
+                                                    "devTools"
+                                                ],
                                                 "additionalProperties": false,
                                                 "description": "Extra web preferences of electron app"
                                             }
@@ -4415,7 +4449,9 @@
                     "type": "string"
                 }
             },
-            "required": ["tag"],
+            "required": [
+                "tag"
+            ],
             "additionalProperties": false
         },
         "zodResourcesChildWithChildren": {
@@ -4440,7 +4476,9 @@
                     }
                 }
             },
-            "required": ["tag"],
+            "required": [
+                "tag"
+            ],
             "additionalProperties": false
         },
         "zodAndroidResources": {
@@ -4465,7 +4503,9 @@
                     }
                 }
             },
-            "required": ["tag"],
+            "required": [
+                "tag"
+            ],
             "additionalProperties": false,
             "description": "Allows you to directly manipulate `res/values files` via json override mechanism\nInjects / Overrides values in res/values files of generated android based project\n> IMPORTANT: always ensure that your object contains `tag` and `name` to target correct tag to merge into\n "
         },
@@ -4540,7 +4580,9 @@
                     "type": "string"
                 }
             },
-            "required": ["tag"],
+            "required": [
+                "tag"
+            ],
             "additionalProperties": false
         },
         "zodManifestChildWithChildren": {
@@ -4622,7 +4664,9 @@
                     }
                 }
             },
-            "required": ["tag"],
+            "required": [
+                "tag"
+            ],
             "additionalProperties": false
         },
         "zodAndroidManifest": {
@@ -4647,7 +4691,9 @@
                     }
                 }
             },
-            "required": ["tag"],
+            "required": [
+                "tag"
+            ],
             "additionalProperties": false,
             "description": "Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism\nInjects / Overrides values in AndroidManifest.xml file of generated android based project\n> IMPORTANT: always ensure that your object contains `tag` and `android:name` to target correct tag to merge into\n "
         },
@@ -4784,7 +4830,11 @@
                                         "type": "string"
                                     },
                                     "propertyNames": {
-                                        "enum": ["run", "export", "build"]
+                                        "enum": [
+                                            "run",
+                                            "export",
+                                            "build"
+                                        ]
                                     },
                                     "description": "List of default schemes for each rnv command. This is useful if you want to avoid specifying `-s ...` every time your run rnv command. bu default rnv uses `-s debug`. NOTE: you can only use schemes you defined in `buildSchemes`"
                                 },
@@ -4840,7 +4890,9 @@
                                     "description": "Mark if crypto object should not checked every run"
                                 }
                             },
-                            "required": ["path"],
+                            "required": [
+                                "path"
+                            ],
                             "additionalProperties": false,
                             "description": "This prop enables automatic encrypt and decrypt of sensitive information in your project. \nRNV will generate new env variable with can be used to encrypt and decrypt. this env var is generated by combining (and sanitizing) 2 properties from your renative.json: \nworkspaceID + projectName.\nThese 2 properties are also used to generate path on your local machine where encrypted files will be decrypted into."
                         },
@@ -4907,7 +4959,10 @@
                                                 "type": "string"
                                             }
                                         },
-                                        "required": ["npm", "path"],
+                                        "required": [
+                                            "npm",
+                                            "path"
+                                        ],
                                         "additionalProperties": false
                                     },
                                     "description": "\n        Allows you to define custom plugin template scopes. default scope for all plugins is `rnv`."
@@ -4931,7 +4986,10 @@
                                                 "type": "string"
                                             }
                                         },
-                                        "required": ["key", "security"],
+                                        "required": [
+                                            "key",
+                                            "security"
+                                        ],
                                         "additionalProperties": false
                                     },
                                     "description": "Android SDK specific permissions"
@@ -4945,7 +5003,9 @@
                                                 "type": "string"
                                             }
                                         },
-                                        "required": ["desc"],
+                                        "required": [
+                                            "desc"
+                                        ],
                                         "additionalProperties": false
                                     },
                                     "description": "iOS SDK specific permissions"
@@ -4994,7 +5054,10 @@
                                                         }
                                                     }
                                                 },
-                                                "required": ["ignore", "ignoreTasks"],
+                                                "required": [
+                                                    "ignore",
+                                                    "ignoreTasks"
+                                                ],
                                                 "additionalProperties": false
                                             },
                                             "propertyNames": {
@@ -5021,11 +5084,16 @@
                                             }
                                         }
                                     },
-                                    "required": ["script", "platform"],
+                                    "required": [
+                                        "script",
+                                        "platform"
+                                    ],
                                     "additionalProperties": false
                                 }
                             },
-                            "required": ["install"],
+                            "required": [
+                                "install"
+                            ],
                             "additionalProperties": false,
                             "description": "Allows to override specific task within renative toolchain. (currently only `install` supported). this is useful if you want to change specific behaviour of built-in task. ie install task triggers yarn/npm install by default. but that might not be desirable installation trigger"
                         },
@@ -5050,6 +5118,10 @@
                         "isMonorepo": {
                             "type": "boolean",
                             "description": "Mark if your project is part of monorepo"
+                        },
+                        "alwaysApplyPluginOverrides": {
+                            "type": "boolean",
+                            "description": "Mark if you want plugin overrides to happen regardless of if they were already applied before"
                         },
                         "monoRoot": {
                             "type": "string",
@@ -5460,7 +5532,10 @@
                                                             ]
                                                         }
                                                     },
-                                                    "required": ["title", "value"],
+                                                    "required": [
+                                                        "title",
+                                                        "value"
+                                                    ],
                                                     "additionalProperties": false
                                                 }
                                             },
@@ -5474,7 +5549,10 @@
                                                         "type": "string"
                                                     }
                                                 },
-                                                "required": ["prop", "key"],
+                                                "required": [
+                                                    "prop",
+                                                    "key"
+                                                ],
                                                 "additionalProperties": false
                                             },
                                             "type": {
@@ -5498,12 +5576,18 @@
                                                             "type": "string"
                                                         }
                                                     },
-                                                    "required": ["action", "path"],
+                                                    "required": [
+                                                        "action",
+                                                        "path"
+                                                    ],
                                                     "additionalProperties": false
                                                 }
                                             }
                                         },
-                                        "required": ["type", "title"],
+                                        "required": [
+                                            "type",
+                                            "title"
+                                        ],
                                         "additionalProperties": false
                                     },
                                     "description": "Defines list of custom bootstrap questions"
@@ -5530,12 +5614,17 @@
                                                         "type": "boolean"
                                                     }
                                                 },
-                                                "required": ["name", "supportedPlatforms"],
+                                                "required": [
+                                                    "name",
+                                                    "supportedPlatforms"
+                                                ],
                                                 "additionalProperties": false
                                             }
                                         }
                                     },
-                                    "required": ["engines"],
+                                    "required": [
+                                        "engines"
+                                    ],
                                     "additionalProperties": false
                                 },
                                 "defaultSelectedPlatforms": {
@@ -5569,7 +5658,11 @@
                                         "type": "string"
                                     }
                                 },
-                                "required": ["version", "id", "key"],
+                                "required": [
+                                    "version",
+                                    "id",
+                                    "key"
+                                ],
                                 "additionalProperties": false
                             }
                         },
@@ -5582,7 +5675,9 @@
                                         "type": "string"
                                     }
                                 },
-                                "required": ["version"],
+                                "required": [
+                                    "version"
+                                ],
                                 "additionalProperties": false
                             }
                         },
@@ -5595,7 +5690,9 @@
                                         "type": "string"
                                     }
                                 },
-                                "required": ["engine"],
+                                "required": [
+                                    "engine"
+                                ],
                                 "additionalProperties": false
                             },
                             "propertyNames": {
@@ -5696,16 +5793,23 @@
                                                 "type": "string"
                                             }
                                         },
-                                        "required": ["url", "type"],
+                                        "required": [
+                                            "url",
+                                            "type"
+                                        ],
                                         "additionalProperties": false
                                     }
                                 },
-                                "required": ["path"],
+                                "required": [
+                                    "path"
+                                ],
                                 "additionalProperties": false
                             }
                         }
                     },
-                    "required": ["workspaces"],
+                    "required": [
+                        "workspaces"
+                    ],
                     "additionalProperties": false
                 },
                 "$schema": {
