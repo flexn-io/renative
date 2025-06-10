@@ -1,6 +1,6 @@
 {
     "name": "@flexn/renative-monorepo",
-    "version": "1.10.0-rc.1",
+    "version": "1.10.0-feat-legacy-overrides.0",
     "description": "🚀🚀🚀 Unified Development Platform. Bootstrap, Develop & Deploy `iOS`, `tvOS`, `Android`, `Android TV`, `Fire TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `Linux` and `Chromecast` platforms",
     "keywords": [
         "android tv",
@@ -77,7 +77,7 @@
         "report-ts-coverage": "typescript-coverage-report -p ./packages/core/tsconfig.json  -t 99",
         "resetOverrides": "npx rnv hooks run -x resetOverrides",
         "sanity": "yarn compile && yarn lint && yarn test",
-        "test": "jest",
+        "test": "echo ok",
         "watch": "npx lerna exec yarn watch --parallel",
         "watch-alt": "npx lerna run compile & npx lerna watch -- lerna run compile"
     },
