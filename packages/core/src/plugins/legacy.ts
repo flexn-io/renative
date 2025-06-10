@@ -1,16 +1,12 @@
 import path from 'path';
-import * as crypto from 'crypto';
 import { getAppConfigBuildsFolder, getAppFolder, getConfigRootProp } from '../context/contextProps';
 import { parseRenativeConfigs } from '../configs';
 import {
     copyFolderContentsRecursiveSync,
-    fsCopyFileSync,
     fsExistsSync,
     fsLstatSync,
-    fsMkdirSync,
     fsReadFileSync,
     fsReaddirSync,
-    fsStatSync,
     fsWriteFileSync,
     mergeObjects,
     readObjectSync,
@@ -38,8 +34,6 @@ import type {
     ConfigPluginPlatformSchema,
     ConfigPluginSchema,
 } from '../schema/types';
-import { overrideTemplatePlugins as overrideTemplatePluginsLegacy, overrideFileContents as overrideFileContentsLegacy } from './legacy';
-import fs from 'fs';
 
 const _getPluginScope = (plugin: ConfigPluginSchema | string): RnvPluginScope => {
     if (typeof plugin === 'string') {
@@ -465,23 +459,15 @@ export const parsePlugins = (
     const c = getContext();
     const { platform } = c;
     logDefault('parsePlugins');
-    if (c.buildConfig) {
+    if (c.buildConfig && platform) {
         const includedPluginsConfig = getConfigProp('includedPlugins');
         // default to all plugins if it's not defined (null allowed for overrides)
         const includedPlugins = includedPluginsConfig === undefined ? ['*'] : includedPluginsConfig;
 
         const excludedPlugins = getConfigProp('excludedPlugins') || [];
-        const supportedPlatforms = c.files.project.config?.defaults?.supportedPlatforms || [];
-        const platformsToCheck = platform ? [platform] : supportedPlatforms;
-        const parsedPlugins: string[] = [];
 
         const handleActivePlugin = (plugin: RnvPlugin, pluginPlat: ConfigPluginPlatformSchema, key: string) => {
             // log deprecated if present
-            if (plugin._id) {
-                if (!parsedPlugins.includes(plugin._id)) {
-                    parsedPlugins.push(plugin._id);
-                } else return;
-            }
             if (plugin.deprecated) {
                 logWarning(plugin.deprecated);
             }
@@ -501,51 +487,45 @@ export const parsePlugins = (
                 Object.keys(plugins).forEach((key) => {
                     const plugin = getMergedPlugin(c, key);
                     if (!plugin) return;
+
                     if (
                         (includedPlugins.includes('*') || includedPlugins.includes(key)) &&
                         !excludedPlugins.includes(key)
                     ) {
-                        platformsToCheck.forEach((platformToCheck) => {
-                            const pluginPlat: ConfigPluginPlatformSchema = plugin[platformToCheck] || {};
+                        const pluginPlat: ConfigPluginPlatformSchema = plugin[platform] || {};
 
-                            // NOTE: we do not want to disable plugin just because object is missing. instead we will let people to do it explicitly
-                            // {
-                            //     skipLinking: true,
-                            //     disabled: true,
-                            // };
-                            //TODO: consider supportedPlatforms for plugins
-                            const isPluginPlatDisabled = pluginPlat.disabled === true;
-                            const isPluginDisabled = plugin.disabled === true;
-                            const isPluginPlatSupported = plugin.supportedPlatforms
-                                ? plugin.supportedPlatforms.includes(platformToCheck)
-                                : true;
+                        // NOTE: we do not want to disable plugin just because object is missing. instead we will let people to do it explicitly
+                        // {
+                        //     skipLinking: true,
+                        //     disabled: true,
+                        // };
+                        //TODO: consider supportedPlatforms for plugins
+                        const isPluginPlatDisabled = pluginPlat.disabled === true;
+                        const isPluginDisabled = plugin.disabled === true;
+                        const isPluginPlatSupported = plugin.supportedPlatforms
+                            ? plugin.supportedPlatforms.includes(platform)
+                            : true;
 
-                            if (ignorePlatformObjectCheck || includeDisabledOrExcludedPlugins) {
-                                if (isPluginDisabled) {
-                                    logDefault(`Plugin ${key} is marked disabled. skipping.`);
-                                } else if (isPluginPlatDisabled) {
-                                    logDefault(
-                                        `Plugin ${key} is marked disabled for platform ${platformToCheck}. skipping.`
-                                    );
-                                } else if (!isPluginPlatSupported) {
-                                    logDefault(
-                                        `Plugin ${key}'s supportedPlatforms does not include ${platformToCheck}. skipping.`
-                                    );
-                                }
-
-                                handleActivePlugin(plugin, pluginPlat, key);
-                            } else if (!isPluginPlatDisabled && !isPluginDisabled && isPluginPlatSupported) {
-                                handleActivePlugin(plugin, pluginPlat, key);
+                        if (ignorePlatformObjectCheck || includeDisabledOrExcludedPlugins) {
+                            if (isPluginDisabled) {
+                                logDefault(`Plugin ${key} is marked disabled. skipping.`);
+                            } else if (isPluginPlatDisabled) {
+                                logDefault(`Plugin ${key} is marked disabled for platform ${platform}. skipping.`);
+                            } else if (!isPluginPlatSupported) {
+                                logDefault(
+                                    `Plugin ${key}'s supportedPlatforms does not include ${platform}. skipping.`
+                                );
                             }
-                        });
+                            handleActivePlugin(plugin, pluginPlat, key);
+                        } else if (!isPluginPlatDisabled && !isPluginDisabled && isPluginPlatSupported) {
+                            handleActivePlugin(plugin, pluginPlat, key);
+                        }
                     } else if (includeDisabledOrExcludedPlugins) {
-                        platformsToCheck.forEach((platformToCheck) => {
-                            const pluginPlat = plugin[platformToCheck] || {};
-                            if (excludedPlugins.includes(key)) {
-                                plugin.disabled = true;
-                                handleActivePlugin(plugin, pluginPlat, key);
-                            }
-                        });
+                        const pluginPlat = plugin[platform] || {};
+                        if (excludedPlugins.includes(key)) {
+                            plugin.disabled = true;
+                            handleActivePlugin(plugin, pluginPlat, key);
+                        }
                     }
                 });
                 // Not valid warning as web based plugins might not need web definition object to work
@@ -684,343 +664,172 @@ const _parsePluginTemplateDependencies = (
 const getCleanRegExString = (str: string) => str.replace(/[-\\.,_*+?^$[\](){}!=|`]/gi, '\\$&');
 
 const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
-    const rootPath = _getRootPath();
-
-    const nodeModulesPaths = _findAllNodeModules(rootPath);
     const source = path.join(pluginsPath, dir, 'overrides');
+    const dest = doResolve(dir, false);
+    if (!dest) return;
+    const plugin = getMergedPlugin(c, dir);
 
-    nodeModulesPaths.forEach((nodeModulesPath) => {
-        const dest = path.join(nodeModulesPath, dir);
-        if (!fsExistsSync(dest)) return;
-
-        const plugin = getMergedPlugin(c, dir);
-        let flavourSource;
-        if (plugin) {
-            flavourSource = path.resolve(pluginsPath, dir, `overrides@${plugin.version}`);
-        }
-
-        if (flavourSource && fsExistsSync(flavourSource)) {
-            _applyOverrideFiles(flavourSource, dest, dir);
-        } else if (fsExistsSync(source)) {
-            _applyOverrideFiles(source, dest, dir);
-        } else {
-            logDebug(
-                `Your plugin configuration has no override path ${chalk().bold.white(
-                    source
-                )}. skipping folder override action`
-            );
-        }
-
-        let overridePath: string | undefined;
-        if (plugin?.version) {
-            const pluginVerArr = plugin.version.split('.');
-            const pluginVersions: Array<string> = [];
-            let prevVersion: string;
-            pluginVerArr.forEach((v) => {
-                if (prevVersion) {
-                    prevVersion = `${prevVersion}.${v}`;
-                } else {
-                    prevVersion = `${v}`;
-                }
-                pluginVersions.push(prevVersion);
-            });
-            pluginVersions.reverse();
-
-            for (let i = 0; i < pluginVersions.length; i++) {
-                overridePath = path.resolve(pluginsPath, dir, `overrides@${pluginVersions[i]}.json`);
-                if (fsExistsSync(overridePath)) {
-                    break;
-                }
-            }
-        }
-
-        if (!overridePath || !fsExistsSync(overridePath)) {
-            overridePath = path.resolve(pluginsPath, dir, 'overrides.json');
-        }
-
-        const overrideConfig = overridePath ? readObjectSync<ConfigFileOverrides>(overridePath) : null;
-        const overrides = overrideConfig?.overrides;
-
-        if (overrides) {
-            Object.keys(overrides).forEach((k) => {
-                const ovDir = path.join(dest, k);
-                const override = overrides[k];
-
-                if (fsExistsSync(ovDir)) {
-                    if (fsLstatSync(ovDir).isDirectory()) {
-                        logWarning('overrides.json: Directories not supported yet. Specify path to actual file.');
-                    } else {
-                        overrideFileContents(ovDir, override, overridePath, k);
-                    }
-                }
-            });
-        }
-    });
-};
-
-const _applyOverrideFiles = (source: string, dest: string, dir: string) => {
-    const overrideDir = _ensureOverrideDirExists();
-    const appliedOverrideFilePath = path.join(overrideDir, RnvFileName.appliedOverride);
-    const appliedOverrides = _readAppliedOverrides(appliedOverrideFilePath);
-    const overrideFiles = _getFilesInDirectory(source);
-    overrideFiles.forEach((file) => {
-        const relativeFilePath = path.relative(source, file);
-        const destFilePath = path.join(dest, relativeFilePath);
-        const fileKey = path.relative(dest, destFilePath);
-        const packageVersion = _getCurrentPackageVersion(dir);
-        const newFileHash = _generateChecksum(fsReadFileSync(file).toString());
-        if (fsExistsSync(destFilePath)) {
-            _backupOriginalFile(destFilePath, overrideDir, dir, fileKey);
-        }
-        const currentOverride = appliedOverrides[dir] || {};
-        const existingFileHash = currentOverride[fileKey];
-        if (newFileHash !== existingFileHash) {
-            appliedOverrides[dir] = appliedOverrides[dir] || {};
-            appliedOverrides[dir][fileKey] = newFileHash;
-            appliedOverrides[dir].version = packageVersion;
-            _writeAppliedOverrides(appliedOverrides, appliedOverrideFilePath);
-            fsCopyFileSync(file, destFilePath);
-        }
-    });
-
-    logInfo(`${chalk().gray(dest)} overriden by: ${chalk().gray(source.split('node_modules').pop())}`);
-};
-
-export const overrideFileContents = (
-    dest: string,
-    override: Record<string, string>,
-    overridePath = '',
-    fileKey: string
-) => {
-    const c = getContext();
-    const { useLegacyOverrides } = c.buildConfig;
-
-    if (useLegacyOverrides) {
-        logInfo(`Using legacy overrides`);
-        overrideFileContentsLegacy(dest, override, overridePath);
-        return;
+    let flavourSource;
+    if (plugin) {
+        flavourSource = path.resolve(pluginsPath, dir, `overrides@${plugin.version}`);
     }
 
-    const overrideDir = _ensureOverrideDirExists();
-    const appliedOverrideFilePath = path.join(overrideDir, RnvFileName.appliedOverride);
+    if (flavourSource && fsExistsSync(flavourSource)) {
+        logInfo(`${chalk().gray(dest)} overriden by: ${chalk().gray(flavourSource.split('node_modules').pop())}`);
+        copyFolderContentsRecursiveSync(flavourSource, dest, false);
+    } else if (fsExistsSync(source)) {
+        logInfo(`${chalk().gray(dest)} overriden by: ${chalk().gray(source.split('node_modules').pop())}`);
+        copyFolderContentsRecursiveSync(source, dest, false);
+        // fsReaddirSync(pp).forEach((dir) => {
+        //     copyFileSync(path.resolve(pp, file), path.resolve(c.paths.project.dir, 'node_modules', dir));
+        // });
+    } else {
+        logDebug(
+            `Your plugin configuration has no override path ${chalk().bold.white(
+                source
+            )}. skipping folder override action`
+        );
+    }
+    const overridePath = _findOverridePath(pluginsPath, dir, plugin);
 
-    const appliedOverrides = _readAppliedOverrides(appliedOverrideFilePath);
+    _applyFileOverrides(overridePath, dest);
 
+    //override plugin in nested packages
+    _applyOverridesToNestedModules(c, pluginsPath, dir, plugin);
+};
+
+const _applyOverridesToNestedModules = (c: RnvContext, pluginsPath: string, dir: string, plugin: RnvPlugin | null) => {
+    const isMonorepo = getConfigRootProp('isMonorepo');
+
+    const rootNodeModules = path.join(
+        isMonorepo ? path.join(c.paths.project.dir, '../..') : c.paths.project.dir,
+        'node_modules'
+    );
+
+    _findNodeModules(rootNodeModules).forEach((nestedNodeModules) => {
+        const nestedDest = path.join(nestedNodeModules, dir);
+        const nestedOverridePath = _findOverridePath(pluginsPath, dir, plugin);
+        _applyFileOverrides(nestedOverridePath, nestedDest);
+    });
+};
+
+const _findNodeModules = (startPath: string): string[] => {
+    const c = getContext();
+    const plugins = Object.keys(c.buildConfig.plugins || {});
+    const results: string[] = [];
+    if (!fsExistsSync(startPath)) return results;
+    const entries = fsReaddirSync(startPath);
+    if (entries.includes('node_modules')) {
+        results.push(path.join(startPath, 'node_modules'));
+    }
+    entries.forEach((entry) => {
+        const fullPath = path.join(startPath, entry);
+        if (fsLstatSync(fullPath).isDirectory() && plugins.includes(entry)) {
+            results.push(..._findNodeModules(fullPath));
+        }
+    });
+    return results;
+};
+
+const _applyFileOverrides = (overridePath: string | undefined, dest: string) => {
+    const overrideConfig = overridePath ? readObjectSync<ConfigFileOverrides>(overridePath) : null;
+    const overrides = overrideConfig?.overrides;
+    if (overrides) {
+        Object.keys(overrides).forEach((k) => {
+            const ovDir = path.join(dest, k);
+            const override = overrides[k];
+            if (fsExistsSync(ovDir)) {
+                if (fsLstatSync(ovDir).isDirectory()) {
+                    logWarning('overrides.json: Directories not supported yet. Specify path to actual file.');
+                } else {
+                    overrideFileContents(ovDir, override, overridePath);
+                }
+            }
+        });
+    }
+};
+
+const _findOverridePath = (pluginsPath: string, dir: string, plugin: RnvPlugin | null) => {
+    if (!plugin?.version) return;
+    let overridePath: string | undefined;
+
+    const pluginVerArr = plugin.version.split('.');
+    const pluginVersions: Array<string> = [];
+    let prevVersion: string;
+    pluginVerArr.forEach((v) => {
+        if (prevVersion) {
+            prevVersion = `${prevVersion}.${v}`;
+        } else {
+            prevVersion = `${v}`;
+        }
+        pluginVersions.push(prevVersion);
+    });
+    pluginVersions.reverse();
+
+    for (let i = 0; i < pluginVersions.length; i++) {
+        overridePath = path.resolve(pluginsPath, dir, `overrides@${pluginVersions[i]}.json`);
+        if (fsExistsSync(overridePath)) {
+            break;
+        }
+    }
+    if (overridePath && !fsExistsSync(overridePath)) {
+        overridePath = path.resolve(pluginsPath, dir, 'overrides.json');
+    }
+    return overridePath;
+};
+
+export const overrideFileContents = (dest: string, override: Record<string, string>, overridePath = '') => {
     if (fsExistsSync(dest)) {
         let fileToFix = fsReadFileSync(dest).toString();
-        const { backupPath, isFirstRun } = _saveOriginalFile(dest, overrideDir);
-        const packageName = _getPackageName(dest, fileKey);
-        const previousOverride = appliedOverrides[packageName]?.[fileKey] || {};
-        const packageVersion = _getCurrentPackageVersion(packageName);
 
-        const overridesChanged = JSON.stringify(previousOverride) !== JSON.stringify(override);
-        if (overridesChanged && !isFirstRun) {
-            revertOverrideToOriginal(dest, backupPath);
-            fileToFix = fsReadFileSync(dest).toString();
-        }
         let foundRegEx = false;
         const failTerms: Array<string> = [];
-
         Object.keys(override).forEach((fk) => {
-            const originalRegEx = new RegExp(`${getCleanRegExString(fk)}`, 'g');
-            const overrideRegEx = new RegExp(`${getCleanRegExString(override[fk])}`, 'g');
-            const originalExists = originalRegEx.test(fileToFix);
-            const overrideExists = overrideRegEx.test(fileToFix);
+            const regEx = new RegExp(`${getCleanRegExString(fk)}`, 'g');
+            const count = (fileToFix.match(regEx) || []).length;
 
-            if (originalExists && !overrideExists) {
-                foundRegEx = true;
-                if (override[fk].startsWith('\n')) {
-                    fileToFix = fileToFix.replace(originalRegEx, `${fk}${override[fk]}`);
+            if (!count) {
+                const overrided = override[fk];
+                const regEx2 = new RegExp(getCleanRegExString(overrided), 'g');
+                const count2 = (fileToFix.match(regEx2) || []).length;
+
+                if (!count2) {
+                    failTerms.push(fk);
                 } else {
-                    fileToFix = fileToFix.replace(originalRegEx, `${override[fk]}`);
+                    foundRegEx = true;
+                    logInfo(
+                        `${chalk().gray(dest)} overriden by: ${chalk().gray(overridePath.split('node_modules').pop())}`
+                    );
                 }
-
+            } else {
+                foundRegEx = true;
+                fileToFix = fileToFix.replace(regEx, override[fk]);
                 logSuccess(
                     `${chalk().bold.white(dest)} requires override by: ${chalk().bold.white(
                         overridePath.split('node_modules').pop()
                     )}. FIXING...DONE`
                 );
-            } else if (overrideExists) {
-                if (originalExists) {
-                    if (fk.includes(override[fk])) {
-                        foundRegEx = true;
-                        fileToFix = fileToFix.replace(originalRegEx, `${override[fk]}`);
-                        logSuccess(
-                            `${chalk().bold.white(dest)} requires override by: ${chalk().bold.white(
-                                overridePath.split('node_modules').pop()
-                            )}. FIXING...DONE`
-                        );
-                    } else {
-                        logInfo(
-                            `${chalk().gray(dest)} overridden by: ${chalk().gray(
-                                overridePath.split('node_modules').pop()
-                            )}`
-                        );
-                    }
-                } else {
-                    logInfo(
-                        `${chalk().gray(dest)} overridden by: ${chalk().gray(overridePath.split('node_modules').pop())}`
-                    );
-                }
-            } else {
-                failTerms.push(fk);
             }
         });
-
         if (!foundRegEx) {
             if (overridePath !== 'REACT_CORE_OVERRIDES') {
+                // We only warn against user defined overrides.
                 failTerms.forEach((term) => {
                     logWarning(
                         `No Match found in ${chalk().red(
                             dest.split('node_modules').pop()
-                        )} for expression: ${chalk().gray(term)}. Source: ${chalk().bold.white(
+                        )} for expression: ${chalk().gray(term)}. source: ${chalk().bold.white(
                             overridePath.split('node_modules').pop()
                         )}`
                     );
                 });
             }
-            // return;
+            return;
         }
-        if (overridesChanged) {
-            appliedOverrides[packageName] = appliedOverrides[packageName] || {};
-            appliedOverrides[packageName][fileKey] = override;
-            appliedOverrides[packageName].version = packageVersion;
-            fsWriteFileSync(dest, fileToFix);
-            _writeAppliedOverrides(appliedOverrides, appliedOverrideFilePath);
-        } else if (foundRegEx) {
-            fsWriteFileSync(dest, fileToFix);
-        }
+        fsWriteFileSync(dest, fileToFix);
     } else {
-        logDebug(`overrideFileContents Warning: path does not exist ${dest}`);
+        logDebug(`overrideFileContents Warning: path does not exists ${dest}`);
     }
-};
-const _generateChecksum = (content: string) => {
-    return crypto.createHash('sha256').update(content, 'utf8').digest('hex');
-};
-const _getCurrentPackageVersion = (packageName: string) => {
-    const rootPath = _getRootPath();
-    const packageJsonPath = path.join(rootPath, 'node_modules', packageName, RnvFileName.package);
-    if (fsExistsSync(packageJsonPath)) {
-        const packageContent = JSON.parse(fsReadFileSync(packageJsonPath).toString());
-        return packageContent.version;
-    }
-    return '';
-};
-const _backupOriginalFile = (filePath: string, overrideDir: string, dir: string, relativeFilePath: string) => {
-    const backupFilePath = path.join(overrideDir, dir, relativeFilePath);
-
-    if (!fsExistsSync(backupFilePath)) {
-        const backupFileDir = path.dirname(backupFilePath);
-        if (!fsExistsSync(backupFileDir)) {
-            fs.mkdirSync(backupFileDir, { recursive: true });
-        }
-        fsCopyFileSync(filePath, backupFilePath);
-    }
-};
-
-const _getFilesInDirectory = (dir: string) => {
-    let files: string[] = [];
-    fsReaddirSync(dir).forEach((file) => {
-        const fullPath = path.join(dir, file);
-        if (fsStatSync(fullPath).isDirectory()) {
-            files = files.concat(_getFilesInDirectory(fullPath));
-        } else {
-            files.push(fullPath);
-        }
-    });
-    return files;
-};
-const _getRootPath = () => {
-    const c = getContext();
-    const isMonorepo = getConfigRootProp('isMonorepo');
-    return path.join(isMonorepo ? path.join(c.paths.project.dir, '../..') : c.paths.project.dir, '');
-};
-
-const _getPackageName = (dest: string, fileKey: string): string => {
-    const nodeModulesIndex = dest.indexOf('node_modules');
-    if (nodeModulesIndex === -1) {
-        throw new Error('File path does not contain node_modules.');
-    }
-    const relativePath = dest.slice(nodeModulesIndex + 'node_modules'.length + 1);
-    const packageName = relativePath.replace(`/${fileKey}`, '');
-
-    return packageName;
-};
-const _saveOriginalFile = (dest: string, overrideDir: string) => {
-    const nodeModulesIndex = dest.indexOf('node_modules');
-    let isFirstRun = false;
-    if (nodeModulesIndex === -1) {
-        throw new Error('File path does not contain node_modules.');
-    }
-    const relativePathFromNodeModules = dest.substring(nodeModulesIndex + 'node_modules'.length);
-    const backupPath = path.join(overrideDir, relativePathFromNodeModules);
-    const buckupDir = path.dirname(backupPath);
-    if (!fsExistsSync(buckupDir)) {
-        fs.mkdirSync(buckupDir, { recursive: true });
-    }
-
-    if (!fsExistsSync(backupPath)) {
-        fsCopyFileSync(dest, backupPath);
-        isFirstRun = true;
-    }
-    return { backupPath, isFirstRun };
-};
-
-const _readBackupContent = (backupPath: string): string => {
-    if (fsExistsSync(backupPath)) {
-        return fsReadFileSync(backupPath).toString();
-    }
-    return '';
-};
-
-const _readAppliedOverrides = (apliedOverrideFilePath: string) => {
-    if (fsExistsSync(apliedOverrideFilePath)) {
-        return JSON.parse(fsReadFileSync(apliedOverrideFilePath).toString());
-    }
-    return {};
-};
-
-const _writeAppliedOverrides = (appliedOverrides: Record<string, string>, apliedOverrideFilePath: string) => {
-    fsWriteFileSync(apliedOverrideFilePath, JSON.stringify(appliedOverrides, null, 2), 'utf8');
-};
-
-const _ensureOverrideDirExists = () => {
-    const c = getContext();
-    const isMonorepo = getConfigRootProp('isMonorepo');
-    const overrideDir = isMonorepo
-        ? path.join(c.paths.project.dir, '../../.rnv', 'overrides')
-        : path.join(c.paths.project.dir, '.rnv', 'overrides');
-
-    if (!fsExistsSync(overrideDir)) {
-        fsMkdirSync(overrideDir);
-    }
-    return overrideDir;
-};
-export const revertOverrideToOriginal = (filePath: string, backupPath: string) => {
-    const originalContent = _readBackupContent(backupPath);
-    if (originalContent) {
-        fsWriteFileSync(filePath, originalContent);
-        logInfo(`Reverted ${filePath} to its original state.`);
-    } else {
-        logWarning(`No original file found to revert for ${filePath}.`);
-    }
-};
-const _findAllNodeModules = (dir: string) => {
-    const nodeModulesPaths: string[] = [];
-    const searchNodeModules = (currentDir: string) => {
-        const nodeModulesDir = path.join(currentDir, 'node_modules');
-        if (fsExistsSync(nodeModulesDir)) {
-            nodeModulesPaths.push(nodeModulesDir);
-            fs.readdirSync(nodeModulesDir).forEach((subDir) => {
-                const subDirPath = path.join(nodeModulesDir, subDir);
-                if (fsLstatSync(subDirPath).isDirectory()) {
-                    searchNodeModules(subDirPath);
-                }
-            });
-        }
-    };
-    searchNodeModules(dir);
-    return nodeModulesPaths;
 };
 
 const _getPluginConfiguration = (c: RnvContext, pluginName: string) => {
@@ -1109,22 +918,9 @@ export const overrideTemplatePlugins = async () => {
     logDefault('overrideTemplatePlugins');
 
     const c = getContext();
-    const { skipOverridesCheck } = c.program.opts();
-    const { useLegacyOverrides } = c.buildConfig;
 
-    if (useLegacyOverrides) {
-        logInfo(`Using legacy overrides`);
-        overrideTemplatePluginsLegacy();
-        return;
-    }
-
-    if (skipOverridesCheck) {
-        logInfo(`Plugin overrides will not be applied because --skipOverridesCheck parameter was passed.`);
-        return true;
-    }
     const rnvPluginsDirs = c.paths.scopedConfigTemplates.pluginTemplatesDirs;
     const appPluginDirs = c.paths.appConfig.pluginDirs;
-
     parsePlugins((plugin, pluginPlat, key) => {
         if (!plugin.disablePluginTemplateOverrides) {
             if (plugin?._scopes?.length) {
