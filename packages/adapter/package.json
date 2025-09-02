@@ -1,6 +1,6 @@
 {
     "name": "@rnv/adapter",
-    "version": "1.10.0-feat-legacy-overrides.0",
+    "version": "1.10.0-feat-legacy-overrides.1",
     "description": "ReNative Adapters for babel, metro, next and other build configs",
     "keywords": [],
     "homepage": "https://github.com/flexn-io/renative#readme",
