@@ -1,4 +1,4 @@
-import { RnvPlatforms, getContext, inquirerPrompt, logError } from '@rnv/core';
+import { type ConfigFileProject, RnvPlatforms, getContext, inquirerPrompt, logError } from '@rnv/core';
 import type { NewProjectData } from '../types';
 import { checkInputValue } from '../questionHelpers';
 
@@ -41,7 +41,11 @@ const Question = async (data: NewProjectData) => {
 
     const supportedPlatforms =
         // files.template.renativeTemplateConfig?.templateConfig?.renative_json?..supportedPlatforms ||
-        files.template.renativeConfig?.defaults?.supportedPlatforms || [];
+        files.template.renativeConfig?.defaults?.supportedPlatforms ||
+        // In case renative.json does not exist yet and template has only renative.template.json defined
+        (files.template.renativeTemplateConfig?.templateConfig?.renative_json as ConfigFileProject)?.defaults
+            ?.supportedPlatforms ||
+        [];
 
     supportedPlatforms.sort((a, b) => RnvPlatforms.indexOf(a) - RnvPlatforms.indexOf(b));
 
