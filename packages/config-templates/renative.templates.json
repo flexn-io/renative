@@ -398,17 +398,17 @@
         },
         "@react-native-community/blur": {
             "android": {
-                "package": "com.cmcewen.blurview.BlurViewPackage",
+                "package": "com.reactnativecommunity.blurview.BlurViewPackage",
                 "path": "{{PLUGIN_ROOT}}/android",
                 "projectName": "react-native-community-blur"
             },
             "androidtv": {
-                "package": "com.cmcewen.blurview.BlurViewPackage",
+                "package": "com.reactnativecommunity.blurview.BlurViewPackage",
                 "path": "{{PLUGIN_ROOT}}/android",
                 "projectName": "react-native-community-blur"
             },
             "firetv": {
-                "package": "com.cmcewen.blurview.BlurViewPackage",
+                "package": "com.reactnativecommunity.blurview.BlurViewPackage",
                 "path": "{{PLUGIN_ROOT}}/android",
                 "projectName": "react-native-community-blur"
             },
@@ -420,7 +420,7 @@
                 "path": "{{PLUGIN_ROOT}}",
                 "podName": "react-native-blur"
             },
-            "version": "4.3.0",
+            "version": "4.4.1",
             "web": null
         },
         "@react-native-community/cameraroll": {
