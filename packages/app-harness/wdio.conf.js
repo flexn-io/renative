@@ -15,11 +15,14 @@ if (deviceTarget) {
 
 // Verify app exists before setting capabilities
 const verifyAppPath = (appPath, platform) => {
+    console.log(`\n🔍 Checking app path for ${platform}...`);
+    console.log(`   Path: ${appPath}`);
     if (!fs.existsSync(appPath)) {
         console.warn(`⚠️  App not found at: ${appPath}`);
         console.warn(`   Make sure you've built the app first: yarn build:${platform}-test`);
         return false;
     }
+    console.log(`✅ App found!`);
     return true;
 };
 
@@ -168,7 +171,7 @@ const config = {
     // Define all options that are relevant for the WebdriverIO instance here
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
-    logLevel: 'info',
+    logLevel: 'debug',
     //
     // Set specific log levels per logger
     // loggers:
@@ -219,6 +222,7 @@ const config = {
             [
                 'appium',
                 {
+                    logPath: './reporting/',
                     args: {
                         ...(process.env.PLATFORM === 'ios' && {
                             port: 3001,
@@ -232,6 +236,8 @@ const config = {
                         ...(process.env.PLATFORM === 'androidtv' && {
                             port: 3004,
                         }),
+                        relaxedSecurity: true,
+                        log: './reporting/appium.log',
                     },
                 },
             ],
