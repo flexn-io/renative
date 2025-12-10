@@ -13,6 +13,19 @@ if (deviceTarget) {
     console.log(`Using custom device target: ${deviceTarget}`);
 }
 
+// Verify app exists before setting capabilities
+const verifyAppPath = (appPath, platform) => {
+    console.log(`\n🔍 Checking app path for ${platform}...`);
+    console.log(`   Path: ${appPath}`);
+    if (!fs.existsSync(appPath)) {
+        console.warn(`⚠️  App not found at: ${appPath}`);
+        console.warn(`   Make sure you've built the app first: yarn build:${platform}-test`);
+        return false;
+    }
+    console.log(`✅ App found!`);
+    return true;
+};
+
 const capabilities = {
     ios: [
         {
@@ -21,7 +34,14 @@ const capabilities = {
             'appium:platformVersion': '16.4',
             'appium:automationName': 'XCUITest',
             'appium:bundleId': 'renative.helloworld.test',
-            'appium:app': 'platformBuilds/template_ios/build/RNVApp/Build/Products/Release-iphonesimulator/RNVApp.app',
+            'appium:app': (() => {
+                const appPath = path.resolve(
+                    __dirname,
+                    'platformBuilds/template_ios/build/RNVApp/Build/Products/Release-iphonesimulator/RNVApp.app'
+                );
+                verifyAppPath(appPath, 'ios');
+                return appPath;
+            })(),
             'appium:fullReset': true,
         },
     ],
@@ -32,8 +52,14 @@ const capabilities = {
             'appium:platformVersion': '16.4',
             'appium:automationName': 'XCUITest',
             'appium:bundleId': 'renative.helloworld.test',
-            'appium:app':
-                'platformBuilds/template_tvos/build/RNVApp/Build/Products/Release-appletvsimulator/RNVApp-tvOS.app',
+            'appium:app': (() => {
+                const appPath = path.resolve(
+                    __dirname,
+                    'platformBuilds/template_tvos/build/RNVApp/Build/Products/Release-appletvsimulator/RNVApp-tvOS.app'
+                );
+                verifyAppPath(appPath, 'tvos');
+                return appPath;
+            })(),
             'appium:fullReset': true,
         },
     ],
@@ -45,7 +71,11 @@ const capabilities = {
             'appium:automationName': 'UiAutomator2',
             'appium:appPackage': 'renative.helloworld.test',
             'appium:appActivity': 'renative.helloworld.test.MainActivity',
-            'appium:app': 'platformBuilds/template_android/app/build/outputs/apk/release/app-release.apk',
+            'appium:app': (() => {
+                const appPath = path.resolve(__dirname, 'platformBuilds/template_android/app/build/outputs/apk/release/app-release.apk');
+                verifyAppPath(appPath, 'android');
+                return appPath;
+            })(),
             'appium:fullReset': true,
         },
     ],
@@ -57,7 +87,11 @@ const capabilities = {
             'appium:automationName': 'UiAutomator2',
             'appium:appPackage': 'renative.helloworld.test',
             'appium:appActivity': 'renative.helloworld.test.MainActivity',
-            'appium:app': 'platformBuilds/template_androidtv/app/build/outputs/apk/release/app-release.apk',
+            'appium:app': (() => {
+                const appPath = path.resolve(__dirname, 'platformBuilds/template_androidtv/app/build/outputs/apk/release/app-release.apk');
+                verifyAppPath(appPath, 'androidtv');
+                return appPath;
+            })(),
             'appium:fullReset': true,
         },
     ],
