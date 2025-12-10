@@ -13,23 +13,15 @@ buildscript {
     }
     
     subprojects { subproject ->
-        afterEvaluate {
-            if ((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
-                android {
-                    compileSdkVersion rootProject.ext.compileSdkVersion
-                    buildToolsVersion rootProject.ext.buildToolsVersion
-                }
-            }
-        }
-        configurations.all {
-            resolutionStrategy {
-                force("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
-                force("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion")
-                force("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
-                force("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+    afterEvaluate{
+        if((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
+            android {
+                compileSdkVersion rootProject.ext.compileSdkVersion
+                buildToolsVersion rootProject.ext.buildToolsVersion
             }
         }
     }
+}
     repositories {
         google()
         mavenCentral()
@@ -37,18 +29,7 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-    }
-}
-
-allprojects {
-    configurations.all {
-        resolutionStrategy {
-            force("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
-            force("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion")
-            force("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
-            force("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-        }
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
     }
 }
 

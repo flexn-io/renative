@@ -23,14 +23,6 @@ buildscript {
                 }
             }
         }
-        configurations.all {
-            resolutionStrategy {
-                force("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
-                force("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion")
-                force("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
-                force("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-            }
-        }
     }
 
     repositories {
@@ -46,23 +38,12 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
 
         {{INJECT_BUILDSCRIPT_DEPENDENCIES}}
     }
 }
 
 {{INJECT_GRADLE_AFTER_ALL}}
-
-allprojects {
-    configurations.all {
-        resolutionStrategy {
-            force("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
-            force("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion")
-            force("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
-            force("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-        }
-    }
-}
 
 apply plugin: "com.facebook.react.rootproject"
