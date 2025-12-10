@@ -13,6 +13,16 @@ if (deviceTarget) {
     console.log(`Using custom device target: ${deviceTarget}`);
 }
 
+// Verify app exists before setting capabilities
+const verifyAppPath = (appPath, platform) => {
+    if (!fs.existsSync(appPath)) {
+        console.warn(`⚠️  App not found at: ${appPath}`);
+        console.warn(`   Make sure you've built the app first: yarn build:${platform}-test`);
+        return false;
+    }
+    return true;
+};
+
 const capabilities = {
     ios: [
         {
@@ -21,7 +31,14 @@ const capabilities = {
             'appium:platformVersion': '16.4',
             'appium:automationName': 'XCUITest',
             'appium:bundleId': 'renative.harness.test',
-            'appium:app': 'platformBuilds/harness_ios/build/RNVApp/Build/Products/Release-iphonesimulator/RNVApp.app',
+            'appium:app': (() => {
+                const appPath = path.resolve(
+                    __dirname,
+                    'platformBuilds/harness_ios/build/RNVApp/Build/Products/Release-iphonesimulator/RNVApp.app'
+                );
+                verifyAppPath(appPath, 'ios');
+                return appPath;
+            })(),
             'appium:fullReset': true,
         },
     ],
@@ -32,8 +49,14 @@ const capabilities = {
             'appium:platformVersion': '16.4',
             'appium:automationName': 'XCUITest',
             'appium:bundleId': 'renative.harness.test',
-            'appium:app':
-                'platformBuilds/harness_tvos/build/RNVApp/Build/Products/Release-appletvsimulator/RNVApp-tvOS.app',
+            'appium:app': (() => {
+                const appPath = path.resolve(
+                    __dirname,
+                    'platformBuilds/harness_tvos/build/RNVApp/Build/Products/Release-appletvsimulator/RNVApp-tvOS.app'
+                );
+                verifyAppPath(appPath, 'tvos');
+                return appPath;
+            })(),
             'appium:fullReset': true,
         },
     ],
