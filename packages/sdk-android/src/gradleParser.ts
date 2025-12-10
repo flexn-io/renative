@@ -188,7 +188,7 @@ export const parseAppBuildGradleSync = () => {
     c.payload.pluginConfigAndroid.gradleBuildToolsVersion = getConfigProp('gradleBuildToolsVersion') || '4.2.2';
     c.payload.pluginConfigAndroid.supportLibVersion = getConfigProp('supportLibVersion') || '28.0.0';
     c.payload.pluginConfigAndroid.buildToolsVersion = getConfigProp('buildToolsVersion') || '35.0.0';
-    c.payload.pluginConfigAndroid.kotlinVersion = getConfigProp('kotlinVersion') || '1.9.24';
+    c.payload.pluginConfigAndroid.kotlinVersion = getConfigProp('kotlinVersion') || '2.0.21';
     c.payload.pluginConfigAndroid.googleServicesVersion = getConfigProp('googleServicesVersion') || '4.2.0';
 
     const reactNativeEngine = getConfigProp('reactNativeEngine') || 'hermes';
