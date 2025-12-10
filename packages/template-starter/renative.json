@@ -54,7 +54,7 @@
             "gradleBuildToolsVersion": "4.2.2",
             "gradleWrapperVersion": "8.10.2",
             "ndkVersion": "26.1.10909125",
-            "kotlinVersion": "1.9.24",
+            "kotlinVersion": "2.0.21",
             "reactNativeEngine": "hermes",
             "enableAndroidX": true,
             "newArchEnabled": true,

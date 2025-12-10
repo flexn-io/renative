@@ -13,6 +13,19 @@ if (deviceTarget) {
     console.log(`Using custom device target: ${deviceTarget}`);
 }
 
+// Verify app exists before setting capabilities
+const verifyAppPath = (appPath, platform) => {
+    console.log(`\n🔍 Checking app path for ${platform}...`);
+    console.log(`   Path: ${appPath}`);
+    if (!fs.existsSync(appPath)) {
+        console.warn(`⚠️  App not found at: ${appPath}`);
+        console.warn(`   Make sure you've built the app first: yarn build:${platform}-test`);
+        return false;
+    }
+    console.log(`✅ App found!`);
+    return true;
+};
+
 const capabilities = {
     ios: [
         {
@@ -21,7 +34,14 @@ const capabilities = {
             'appium:platformVersion': '16.4',
             'appium:automationName': 'XCUITest',
             'appium:bundleId': 'renative.harness.test',
-            'appium:app': 'platformBuilds/harness_ios/build/RNVApp/Build/Products/Release-iphonesimulator/RNVApp.app',
+            'appium:app': (() => {
+                const appPath = path.resolve(
+                    __dirname,
+                    'platformBuilds/harness_ios/build/RNVApp/Build/Products/Release-iphonesimulator/RNVApp.app'
+                );
+                verifyAppPath(appPath, 'ios');
+                return appPath;
+            })(),
             'appium:fullReset': true,
         },
     ],
@@ -32,8 +52,14 @@ const capabilities = {
             'appium:platformVersion': '16.4',
             'appium:automationName': 'XCUITest',
             'appium:bundleId': 'renative.harness.test',
-            'appium:app':
-                'platformBuilds/harness_tvos/build/RNVApp/Build/Products/Release-appletvsimulator/RNVApp-tvOS.app',
+            'appium:app': (() => {
+                const appPath = path.resolve(
+                    __dirname,
+                    'platformBuilds/harness_tvos/build/RNVApp/Build/Products/Release-appletvsimulator/RNVApp-tvOS.app'
+                );
+                verifyAppPath(appPath, 'tvos');
+                return appPath;
+            })(),
             'appium:fullReset': true,
         },
     ],
@@ -145,7 +171,7 @@ const config = {
     // Define all options that are relevant for the WebdriverIO instance here
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
-    logLevel: 'info',
+    logLevel: 'debug',
     //
     // Set specific log levels per logger
     // loggers:
@@ -196,6 +222,7 @@ const config = {
             [
                 'appium',
                 {
+                    logPath: './reporting/',
                     args: {
                         ...(process.env.PLATFORM === 'ios' && {
                             port: 3001,
@@ -209,6 +236,8 @@ const config = {
                         ...(process.env.PLATFORM === 'androidtv' && {
                             port: 3004,
                         }),
+                        relaxedSecurity: true,
+                        log: './reporting/appium.log',
                     },
                 },
             ],

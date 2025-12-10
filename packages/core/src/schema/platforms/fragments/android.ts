@@ -31,7 +31,7 @@ export const zodPlatformAndroidFragment = z
             .describe(
                 'Allows you define custom compileSdkVersion equivalent to: `compileSdkVersion = [VERSION]` in build.gradle'
             ),
-        kotlinVersion: z.string().default('1.7.10').describe('Allows you define custom kotlin version'),
+        kotlinVersion: z.string().default('2.0.21').describe('Allows you define custom kotlin version'),
         ndkVersion: z
             .string()
             .describe('Allows you define custom ndkVersion equivalent to: `ndkVersion = [VERSION]` in build.gradle'),
