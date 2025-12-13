@@ -47,7 +47,7 @@
         "@react-native-firebase/app": "20.0.0",
         "@rnv/renative": "1.10.0-rc.1",
         "dotenv": "16.4.5",
-        "next": "14.2.21",
+        "next": "14.2.35",
         "raf": "3.4.1",
         "react": "18.3.1",
         "react-art": "18.3.1",
