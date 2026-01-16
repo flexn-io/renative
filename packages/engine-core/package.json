@@ -34,7 +34,7 @@
         "iocane": "4.0.0",
         "kill-port": "1.6.1",
         "lodash": "4.17.21",
-        "tar": "6.2.1",
+        "tar": "7.5.3",
         "typescript": "5.2.2"
     },
     "peerDependencies": {
