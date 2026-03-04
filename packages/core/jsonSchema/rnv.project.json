@@ -2868,6 +2868,10 @@
                                                     "type": "string"
                                                 }
                                             },
+                                            "nextCliFlags": {
+                                                "type": "string",
+                                                "description": "Extra CLI flags passed directly to the Next.js commands (e.g. \"--webpack\" to force webpack bundler over turbopack in Next.js 15+). Applied to next dev, next build, next start, and next export."
+                                            },
                                             "timestampBuildFiles": {
                                                 "$ref": "#/definitions/rnv.project/properties/platforms/properties/tizen/properties/buildSchemes/additionalProperties/properties/timestampBuildFiles"
                                             },
@@ -3012,6 +3016,10 @@
                                 },
                                 "nextTranspileModules": {
                                     "$ref": "#/definitions/rnv.project/properties/platforms/properties/web/properties/buildSchemes/additionalProperties/properties/nextTranspileModules"
+                                },
+                                "nextCliFlags": {
+                                    "$ref": "#/definitions/rnv.project/properties/platforms/properties/web/properties/buildSchemes/additionalProperties/properties/nextCliFlags",
+                                    "description": "Extra CLI flags passed directly to the Next.js commands (e.g. \"--webpack\" to force webpack bundler over turbopack in Next.js 15+). Applied to next dev, next build, next start, and next export."
                                 },
                                 "timestampBuildFiles": {
                                     "$ref": "#/definitions/rnv.project/properties/platforms/properties/tizen/properties/buildSchemes/additionalProperties/properties/timestampBuildFiles"
