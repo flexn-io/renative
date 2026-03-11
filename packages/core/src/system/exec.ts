@@ -105,7 +105,7 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
     const commandAsString = Array.isArray(command) ? command.join(' ') : command;
     let cleanCommand = commandAsString;
 
-    let interval: NodeJS.Timeout;
+    let interval: ReturnType<typeof setInterval>;
     const intervalTimer = 30000; // 30s
     let timer = intervalTimer;
     const privateMask = '*******';
