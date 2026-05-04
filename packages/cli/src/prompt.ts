@@ -1,5 +1,4 @@
-import inquirer from 'inquirer';
-import inquirerAutocompletePrompt from 'inquirer-autocomplete-prompt';
+import { confirm, input, select, checkbox, search, Separator } from '@inquirer/prompts';
 import {
     chalk,
     logWarning,
@@ -10,8 +9,6 @@ import {
     PromptRenderFn,
     getContext,
 } from '@rnv/core';
-
-inquirer.registerPrompt('autocomplete', inquirerAutocompletePrompt);
 
 export const inquirerPrompt = async (params: PromptParams): Promise<Record<string, any>> => {
     const c = getContext();
@@ -46,17 +43,72 @@ export const inquirerPrompt = async (params: PromptParams): Promise<Record<strin
     if (msg && params.logMessage) logTask(msg, chalk().grey);
     if (msg && params.warningMessage) logWarning(msg);
 
-    // allow passing in just { type: 'prompt', ... } instead of { type: 'prompt', name: 'prompt', ... }
-    const { type, name } = params;
-    if (type === 'confirm' && !name) params.name = 'confirm';
+    const { type } = params;
+    if (type === 'confirm' && !params.name) params.name = 'confirm';
 
-    const resp = inquirer.prompt(params);
-    if (params.initialValue) resp.ui.rl.input.push(params.initialValue);
-    return resp;
+    const promptKey = params.name || type;
+    const message = params.message || '';
+    const choices = (params.choices || []).map((c) => (typeof c === 'string' ? { value: c } : c));
+
+    let value: any;
+
+    switch (type) {
+        case 'confirm':
+            value = await confirm({
+                message,
+                default: typeof params.default === 'boolean' ? params.default : undefined,
+            });
+            break;
+        case 'list':
+        case 'rawlist':
+            value = await select({
+                message,
+                choices,
+                default: params.default,
+                pageSize: params.pageSize,
+                loop: params.loop,
+            });
+            break;
+        case 'checkbox': {
+            const checkedChoices = params.default
+                ? choices.map((c) =>
+                      typeof c === 'object' && 'value' in c && (params.default as any[]).includes(c.value)
+                          ? { ...c, checked: true }
+                          : c
+                  )
+                : choices;
+            value = await checkbox({
+                message,
+                choices: checkedChoices,
+                pageSize: params.pageSize,
+                loop: params.loop,
+            });
+            break;
+        }
+        case 'autocomplete':
+        case 'search':
+            value = await search({
+                message,
+                source: params.source
+                    ? (term, _opt) => params.source!(undefined, term)
+                    : async () => choices,
+                pageSize: params.pageSize,
+            });
+            break;
+        default:
+            value = await input({
+                message,
+                default: params.default ?? params.initialValue,
+                validate: params.validate,
+            });
+            break;
+    }
+
+    return { [promptKey]: value };
 };
 
 export const inquirerSeparator = (text?: string) => {
-    return new inquirer.Separator(text);
+    return new Separator(text);
 };
 
 export const generateOptions = (
@@ -84,7 +136,7 @@ export const generateOptions = (
     };
     const renderer = renderMethod || _generateOptionString;
     if (isArray) {
-        inputData.forEach((v, i) => {
+        inputData.forEach((v: any, i: number) => {
             const rn = renderer(i, v, mapping, v);
             asString += rn;
             optionsAsArray.push(rn);
