@@ -32,7 +32,7 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@react-native/babel-preset": "0.76.5",
+        "@react-native/babel-preset": "0.79.6",
         "@rnv/adapter": "1.10.0-feat-legacy-overrides.2",
         "@rnv/sdk-apple": "1.10.0-feat-legacy-overrides.2",
         "@rnv/sdk-react-native": "1.10.0-feat-legacy-overrides.2"

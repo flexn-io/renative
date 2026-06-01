@@ -53,8 +53,8 @@
             "buildToolsVersion": "35.0.0",
             "gradleBuildToolsVersion": "4.2.2",
             "gradleWrapperVersion": "8.10.2",
-            "ndkVersion": "26.1.10909125",
-            "kotlinVersion": "1.9.24",
+            "ndkVersion": "27.1.12297006",
+            "kotlinVersion": "2.0.21",
             "reactNativeEngine": "hermes",
             "enableAndroidX": true,
             "newArchEnabled": true,
@@ -62,7 +62,7 @@
                 "gradle_properties": {
                     "android.useDeprecatedNdk": true,
                     "android.debug.obsoleteApi": true,
-                    "org.gradle.jvmargs": "-Xmx3g -XX:MaxPermSize=2048m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8",
+                    "org.gradle.jvmargs": "-Xmx4g -XX:MaxPermSize=2048m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8",
                     "org.gradle.daemon": true,
                     "org.gradle.parallel": true,
                     "org.gradle.configureondemand": true

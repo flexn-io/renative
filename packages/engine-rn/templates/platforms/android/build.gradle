@@ -36,7 +36,7 @@ buildscript {
     {{INJECT_BUILDSCRIPT_CUSTOM}}
 
     dependencies {
-        classpath("com.android.tools.build:gradle")
+        classpath("com.android.tools.build:gradle:{{INJECT_BUILD_TOOLS_VERSION}}")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
 
