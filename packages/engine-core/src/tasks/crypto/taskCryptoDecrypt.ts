@@ -1,5 +1,5 @@
 import path from 'path';
-import tar from 'tar';
+import * as tarModule from 'tar';
 import {
     chalk,
     logWarning,
@@ -18,6 +18,9 @@ import {
 } from '@rnv/core';
 import { getEnvExportCmd, getEnvVar } from './common';
 import { TaskOptions } from '../../taskOptions';
+
+// tar@7 sets __esModule but has no default export; keep compat with tar@6
+const tar = (tarModule as { default?: typeof tarModule }).default ?? tarModule;
 
 const iocane = require('iocane');
 

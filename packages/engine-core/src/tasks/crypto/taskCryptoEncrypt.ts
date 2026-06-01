@@ -1,5 +1,5 @@
 import path from 'path';
-import tar from 'tar';
+import * as tarModule from 'tar';
 import { promisify } from 'util';
 import {
     chalk,
@@ -23,6 +23,9 @@ import { statSync } from 'fs';
 import { getEnvExportCmd, getEnvVar } from './common';
 import { getContext } from '../../getContext';
 import { TaskOptions } from '../../taskOptions';
+
+// tar@7 sets __esModule but has no default export; keep compat with tar@6
+const tar = (tarModule as { default?: typeof tarModule }).default ?? tarModule;
 
 const iocane = require('iocane');
 
