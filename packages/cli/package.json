@@ -1,6 +1,6 @@
 {
     "name": "@rnv/cli",
-    "version": "1.10.0-feat-legacy-overrides.2",
+    "version": "1.10.0-feat-legacy-overrides.3",
     "description": "ReNative CLI",
     "keywords": [],
     "homepage": "https://github.com/flexn-io/renative#readme",
@@ -32,15 +32,15 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@rnv/engine-core": "1.10.0-feat-legacy-overrides.2",
-        "@rnv/sdk-telemetry": "1.10.0-feat-legacy-overrides.2",
+        "@inquirer/prompts": "^7.0.0",
+        "@rnv/engine-core": "1.10.0-feat-legacy-overrides.3",
+        "@rnv/sdk-telemetry": "1.10.0-feat-legacy-overrides.3",
         "chalk": "4.1.0",
-        "commander": "12.1.0",
-        "@inquirer/prompts": "^7.0.0"
+        "commander": "12.1.0"
     },
     "devDependencies": {},
     "peerDependencies": {
-        "@rnv/core": "^1.10.0-feat-legacy-overrides.2"
+        "@rnv/core": "^1.10.0-feat-legacy-overrides.3"
     },
     "private": false,
     "publishConfig": {
