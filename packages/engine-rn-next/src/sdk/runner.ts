@@ -104,13 +104,16 @@ export const buildWebNext = async () => {
     const c = getContext();
     logDefault('buildWebNext');
 
+    const cliFlags = getConfigProp('nextCliFlags') || '';
+    const flagsSuffix = cliFlags ? ` ${cliFlags}` : '';
+
     // On Windows npx does not always resolve correct path, hence we manually resolve it here
     // https://github.com/flexn-io/renative/issues/1409#issuecomment-2095531486
     const nextCmnd = `node ${path
         .join(path.dirname(require.resolve('next/package.json')), 'dist', 'bin', 'next')
         .replace(/ /g, '\\ ')}`;
     // const nextCmnd = 'npx next';
-    await executeAsync(`${nextCmnd} build`, {
+    await executeAsync(`${nextCmnd} build${flagsSuffix}`, {
         env: {
             ...CoreEnvVars.BASE(),
             ...CoreEnvVars.RNV_EXTENSIONS(),
@@ -133,6 +136,7 @@ Dev server running at: ${url}
 `);
 
     const bundleAssets = getConfigProp('bundleAssets');
+    const cliFlags = getConfigProp('nextCliFlags') || '';
     const opts = !c.program?.opts()?.json
         ? ExecOptionsPresets.INHERIT_OUTPUT_NO_SPINNER
         : ExecOptionsPresets.SPINNER_FULL_ERROR_SUMMARY;
@@ -141,7 +145,9 @@ Dev server running at: ${url}
     // https://github.com/flexn-io/renative/issues/1409#issuecomment-2095531486
     const nextCmnd = `node "${path.join(path.dirname(require.resolve('next/package.json')), 'dist', 'bin', 'next')}"`;
     // const nextCmnd = 'npx next';
-    return executeAsync(`${nextCmnd} ${bundleAssets ? 'start' : 'dev'} --port ${c.runtime.port}`, {
+    const subCommand = bundleAssets ? 'start' : 'dev';
+    const flagsSuffix = cliFlags ? ` ${cliFlags}` : '';
+    return executeAsync(`${nextCmnd} ${subCommand} --port ${c.runtime.port}${flagsSuffix}`, {
         env: {
             ...CoreEnvVars.BASE(),
             ...CoreEnvVars.RNV_EXTENSIONS(),
@@ -158,6 +164,8 @@ export const exportWebNext = async () => {
     logDefault('exportWebNext');
 
     const exportDir = getExportDir(c);
+    const cliFlags = getConfigProp('nextCliFlags') || '';
+    const flagsSuffix = cliFlags ? ` ${cliFlags}` : '';
 
     // On Windows npx does not always resolve correct path, hence we manually resolve it here
     // https://github.com/flexn-io/renative/issues/1409#issuecomment-2095531486
@@ -166,7 +174,7 @@ export const exportWebNext = async () => {
         .replace(/ /g, '\\ ')}`;
     // const nextCmnd = 'npx next';
 
-    await executeAsync(`${nextCmnd} build`, {
+    await executeAsync(`${nextCmnd} build${flagsSuffix}`, {
         env: {
             ...CoreEnvVars.BASE(),
             ...CoreEnvVars.RNV_EXTENSIONS(),
