@@ -102,8 +102,8 @@ export const parseBuildGradleSync = () => {
         {
             pattern: '{{PATH_HERMESC}}',
             override: `${
-                doResolve('hermes-compiler', true, { forceForwardPaths: true }) || 'hermes-compiler'
-            }/hermesc/${currentOs}-bin/hermesc`,
+                doResolve('react-native', true, { forceForwardPaths: true }) || 'react-native'
+            }/sdks/hermesc/${currentOs}-bin/hermesc`,
         },
         {
             pattern: '{{INJECT_BUILDSCRIPT_EXT}}',
@@ -481,8 +481,8 @@ ${chalk().bold.white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`
         {
             pattern: '{{PATH_HERMESC}}',
             override: `${
-                doResolve('hermes-compiler', true, { forceForwardPaths: true }) || 'hermes-compiler'
-            }/hermesc/${currentOs}-bin/hermesc`,
+                doResolve('react-native', true, { forceForwardPaths: true }) || 'react-native'
+            }/sdks/hermesc/${currentOs}-bin/hermesc`,
         },
     ];
 
