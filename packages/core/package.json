@@ -1,6 +1,6 @@
 {
     "name": "@rnv/core",
-    "version": "1.10.0-feat-legacy-overrides.4",
+    "version": "1.10.0-feat-legacy-overrides.5",
     "description": "RNV Core SDK",
     "keywords": [],
     "homepage": "https://github.com/flexn-io/renative#readme",
@@ -52,7 +52,7 @@
         "@types/envinfo": "7.8.4"
     },
     "peerDependencies": {
-        "@rnv/config-templates": "^1.10.0-feat-legacy-overrides.4"
+        "@rnv/config-templates": "^1.10.0-feat-legacy-overrides.5"
     },
     "private": false,
     "publishConfig": {
