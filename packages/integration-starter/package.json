@@ -1,6 +1,6 @@
 {
     "name": "@rnv/integration-starter",
-    "version": "1.10.0-feat-legacy-overrides.5",
+    "version": "1.10.0-feat-legacy-overrides.6",
     "description": "ReNative Example Integration",
     "keywords": [
         "renative",
@@ -29,7 +29,7 @@
     },
     "dependencies": {},
     "peerDependencies": {
-        "@rnv/core": "^1.10.0-feat-legacy-overrides.5"
+        "@rnv/core": "^1.10.0-feat-legacy-overrides.6"
     },
     "publishConfig": {
         "access": "public"

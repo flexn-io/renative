@@ -43,7 +43,7 @@
     },
     "templateConfig": {
         "name": "@rnv/template-starter",
-        "version": "1.10.0-feat-legacy-overrides.5"
+        "version": "1.10.0-feat-legacy-overrides.6"
     },
     "platforms": {
         "android": {
