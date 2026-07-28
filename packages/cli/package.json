@@ -36,7 +36,8 @@
         "@rnv/engine-core": "1.10.0-feat-legacy-overrides.5",
         "@rnv/sdk-telemetry": "1.10.0-feat-legacy-overrides.5",
         "chalk": "4.1.0",
-        "commander": "12.1.0"
+        "commander": "12.1.0",
+        "ora": "5.4.1"
     },
     "devDependencies": {},
     "peerDependencies": {

@@ -25,9 +25,11 @@ import TelemetrySDK from '@rnv/sdk-telemetry';
 import { Telemetry } from '@rnv/sdk-telemetry';
 import EngineCore from '@rnv/engine-core';
 
-import Spinner from './ora';
+import ora from 'ora';
 import Prompt from './prompt';
 import Logger, { logSummary } from './logger';
+
+const Spinner = ora as unknown as RnvApiSpinner;
 
 const terminateProcesses = (): void => {
     const { runningProcesses } = getContext();
