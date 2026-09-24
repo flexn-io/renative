@@ -124,7 +124,7 @@
     },
     "private": true,
     "resolutions": {
-        "@react-native-community/cli-platform-ios": "15.0.1"
+        "@react-native-community/cli-platform-ios": "20.0.0"
     },
     "title": "ReNative",
     "husky": {
