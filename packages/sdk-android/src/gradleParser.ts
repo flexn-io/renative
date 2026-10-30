@@ -23,8 +23,6 @@ import { getBuildFilePath, getAppId, getAppVersion, getAppVersionCode, addSystem
 import { Context, getContext } from './getContext';
 import { TemplateAndroid } from './types';
 
-const currentOs = process.platform === 'darwin' ? 'osx' : process.platform === 'win32' ? 'win64' : 'linux64';
-
 export const parseBuildGradleSync = () => {
     const c = getContext();
     const appFolder = getAppFolder();
@@ -102,8 +100,8 @@ export const parseBuildGradleSync = () => {
         {
             pattern: '{{PATH_HERMESC}}',
             override: `${
-                doResolve('react-native', true, { forceForwardPaths: true }) || 'react-native'
-            }/sdks/hermesc/${currentOs}-bin/hermesc`,
+                doResolve('hermes-compiler', true, { forceForwardPaths: true }) || 'hermes-compiler'
+            }/hermesc/%OS-BIN%/hermesc`,
         },
         {
             pattern: '{{INJECT_BUILDSCRIPT_EXT}}',
@@ -481,8 +479,8 @@ ${chalk().bold.white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`
         {
             pattern: '{{PATH_HERMESC}}',
             override: `${
-                doResolve('react-native', true, { forceForwardPaths: true }) || 'react-native'
-            }/sdks/hermesc/${currentOs}-bin/hermesc`,
+                doResolve('hermes-compiler', true, { forceForwardPaths: true }) || 'hermes-compiler'
+            }/hermesc/%OS-BIN%/hermesc`,
         },
     ];
 
